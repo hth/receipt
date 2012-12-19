@@ -5,6 +5,8 @@ package com.tholix.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tholix.domain.ReceiptUser;
+import com.tholix.service.ReceiptUserManager;
 import com.tholix.service.ReceiptUserValidator;
 
 /**
@@ -24,10 +27,14 @@ import com.tholix.service.ReceiptUserValidator;
 public class LoginFormController {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/**
-	 * @Autowired
-	 * @Qualifier("receiptUser") private ReceiptUser receiptUser;
-	 */
+	private ReceiptUserManager receiptUserManager;
+
+	@Autowired
+	@Qualifier("receiptUserManager")
+	public void setReceiptUserManager(ReceiptUserManager receiptUserManager) {
+		logger.info("instantiated receiptUserManager");
+		this.receiptUserManager = receiptUserManager;
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Model model) {
@@ -43,7 +50,9 @@ public class LoginFormController {
 		if (result.hasErrors()) {
 			return "login";
 		} else {
-			logger.info("Email Id: " + receiptUser.getEmailId());
+			receiptUserManager.saveReceiptUser(receiptUser);
+			ReceiptUser found = receiptUserManager.findReceiptUser(receiptUser.getEmailId());
+			logger.info("Email Id: " + receiptUser.getEmailId() + " and found " + found.getEmailId());
 			redirectAttrs.addFlashAttribute("receiptUser", receiptUser);
 			return "redirect:/landing.htm";
 		}
