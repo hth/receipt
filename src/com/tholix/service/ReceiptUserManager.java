@@ -8,8 +8,7 @@ import java.io.Serializable;
 import com.tholix.domain.ReceiptUser;
 
 /**
- * @author hitender 
- * Dec 16, 2012 1:20:31 PM
+ * @author hitender Dec 16, 2012 1:20:31 PM
  */
 public interface ReceiptUserManager extends Serializable {
 

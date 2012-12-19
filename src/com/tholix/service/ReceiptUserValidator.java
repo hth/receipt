@@ -28,11 +28,10 @@ public class ReceiptUserValidator implements Validator {
 		if (receiptUser == null) {
 			errors.rejectValue("receiptUser", "error.not-specified", null, "Value required.");
 		} else {
-			logger.info("Validating with " + receiptUser + ": " + receiptUser.getEmailId());
+			logger.info("Validating with " + receiptUser + ": '" + receiptUser.getEmailId() + "'");
 			if (receiptUser.getEmailId() == null || receiptUser.getEmailId().length() == 0) {
 				logger.info("Validating error " + receiptUser + ": " + receiptUser.getEmailId());
-				errors.rejectValue("receiptUser", "error.too-high", new Object[] { receiptUser.getEmailId() },
-						"Cannot have empty Email Id.");
+				errors.rejectValue("receiptUser", "error.too-high", new Object[] { receiptUser.getEmailId() }, "Cannot have empty Email Id.");
 			}
 		}
 

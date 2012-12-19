@@ -5,12 +5,16 @@ package com.tholix.domain;
 
 import java.io.Serializable;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * @author hitender 
  * Dec 15, 2012 8:11:45 PM
  */
 public class ReceiptUser implements Serializable {
-
+	private static final long serialVersionUID = -5207492124434434278L;
+	
 	private String emailId;
 	private String password;
 	
@@ -35,7 +39,7 @@ public class ReceiptUser implements Serializable {
 		return new ReceiptUser(emailId, password);
 	}
 	
-	public static ReceiptUser getReceiptUserInstance() {
+	private static ReceiptUser getReceiptUserInstance() {
 		return new ReceiptUser();
 	}
 
@@ -53,6 +57,5 @@ public class ReceiptUser implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	
+	}	
 }

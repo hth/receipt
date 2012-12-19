@@ -6,8 +6,7 @@ package com.tholix.service;
 import com.tholix.domain.ReceiptUser;
 
 /**
- * @author hitender 
- * Dec 16, 2012 1:20:53 PM
+ * @author hitender Dec 16, 2012 1:20:53 PM
  */
 public class ReceiptUserManagerImpl implements ReceiptUserManager {
 

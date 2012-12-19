@@ -11,5 +11,5 @@
 </style>
 </head>
 <body>
-	You have landed with user id <c:out value="${model.receiptUserId}" /> : & <c:out value="${model.now}" />
+	You have landed with user id <c:out value="${receiptUser.emailId}" />
 </body>

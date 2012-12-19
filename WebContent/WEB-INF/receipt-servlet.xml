@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:context="http://www.springframework.org/schema/context"	
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
 		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
@@ -11,13 +12,18 @@
           http://www.springframework.org/schema/data/mongo
           http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
           http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/aop
+          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
           
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
 	<context:component-scan base-package="com.tholix" />
-
+	
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
+	
+	<!-- Autowired -->
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>	
 
 	<!-- Forwards requests to the "/" resource to the "welcome" view -->
 	<mvc:view-controller path="/" view-name="login"/>
@@ -28,32 +34,23 @@
 		<property name="cacheSeconds" value="0" />
 	</bean>
 	
+	<!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
+	<!-- an HTTP Session-scoped bean exposed as a proxy -->
+    <!-- <bean id="receiptUser" class="com.tholix.domain.ReceiptUser" scope="session">
+      <aop:scoped-proxy/>
+    </bean> -->
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>	
+	
+	<!-- Database settings -->
 	<mongo:mongo host="localhost" port="27017" />
 	<mongo:db-factory dbname="rm" />
  
 	<bean id="mongoTemplate"  class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
 	</bean>
-	
-	<!-- <bean name="/login.htm" class="com.tholix.web.LoginFormController">
-		<property name="sessionForm" value="true" />
-		<property name="commandName" value="receiptUser" />
-		<property name="commandClass" value="com.tholix.domain.ReceiptUser" />
-		<property name="validator">
-			<bean class="com.tholix.service.ReceiptUserValidator" />
-		</property>
-		<property name="formView" value="login" />
-		<property name="successView" value="landing.htm" /> 
-	</bean>
-	
-	<bean name="/landing.htm" class="com.tholix.web.LandingFormController">
-	    
-	</bean> -->
-	
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
-		<property name="prefix" value="/WEB-INF/jsp/"></property>
-		<property name="suffix" value=".jsp"></property>
-	</bean>
-
 </beans>
