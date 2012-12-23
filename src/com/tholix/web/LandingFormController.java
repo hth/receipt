@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.tholix.domain.ReceiptUser;
 
 /**
- * @author hitender Dec 17, 2012 3:19:01 PM
+ * @author hitender 
+ * @when Dec 17, 2012 3:19:01 PM
  */
 @Controller
 @RequestMapping(value = "/landing")

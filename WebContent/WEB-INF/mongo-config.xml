@@ -13,9 +13,14 @@
 	<!-- ==================== -->
 	<!-- MongoDB Setup Starts -->
 	<!-- ==================== -->
-	<!-- mkyong example is bit old style -->
+	<!-- mkyong example is bit not bean instantiated style -->
 	<!-- http://www.mkyong.com/mongodb/java-mongodb-hello-world-example/ -->
 	<!-- http://blog.jeroenreijn.com/2011/07/getting-started-with-mongodb-and-spring.html -->	
+	
+	<!-- Refer for GridFSTemplate -->
+	<!-- http://jeviathon.com/2012/08/14/why-you-should-be-using-mongodbgridfs-and-spring-data/ -->
+	<!-- http://support.cloudfoundry.com/entries/20073453-spring-data-mongodb-unauthorized-mappingmongoconverter -->
+	<!-- http://stackoverflow.com/questions/10501300/remove-class-from-mongodb-document -->
 	
 	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->	
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

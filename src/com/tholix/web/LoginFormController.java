@@ -3,6 +3,8 @@
  */
 package com.tholix.web;
 
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tholix.domain.ReceiptUser;
+import com.tholix.domain.UserProfile;
 import com.tholix.service.ReceiptUserManager;
 import com.tholix.service.ReceiptUserValidator;
+import com.tholix.service.UserProfileManager;
 
 /**
- * @author hitender Dec 16, 2012 6:12:17 PM
+ * @author hitender 
+ * @when Dec 16, 2012 6:12:17 PM
  */
 @Controller
 @RequestMapping(value = "/login")
@@ -30,6 +35,9 @@ public class LoginFormController {
 	@Autowired
 	@Qualifier("receiptUserManager")
 	private ReceiptUserManager receiptUserManager;
+	
+	@Autowired
+	private UserProfileManager userProfileManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Model model) {
@@ -45,8 +53,12 @@ public class LoginFormController {
 		if (result.hasErrors()) {
 			return "login";
 		} else {
-			receiptUserManager.saveReceiptUser(receiptUser);
-			ReceiptUser found = receiptUserManager.findReceiptUser(receiptUser.getEmailId());
+			receiptUserManager.saveObject(receiptUser);
+			ReceiptUser found = receiptUserManager.getObject(receiptUser.getEmailId());
+			
+			UserProfile userProfile = UserProfile.newInstance("Tom", "Shawn", new Date(), found);
+			userProfileManager.saveObject(userProfile);
+			
 			logger.info("Email Id: " + receiptUser.getEmailId() + " and found " + found.getEmailId());
 			redirectAttrs.addFlashAttribute("receiptUser", receiptUser);
 			return "redirect:/landing.htm";

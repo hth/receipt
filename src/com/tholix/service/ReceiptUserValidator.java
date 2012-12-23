@@ -11,7 +11,8 @@ import org.springframework.validation.Validator;
 import com.tholix.domain.ReceiptUser;
 
 /**
- * @author hitender Dec 16, 2012 6:52:46 PM
+ * @author hitender 
+ * @when Dec 16, 2012 6:52:46 PM
  */
 public class ReceiptUserValidator implements Validator {
 

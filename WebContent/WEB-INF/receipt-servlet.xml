@@ -34,7 +34,11 @@
 	<!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
 	<!-- an HTTP Session-scoped bean exposed as a proxy -->
     <bean id="receiptUserManager" class="com.tholix.service.ReceiptUserManagerImpl">
-      <aop:scoped-proxy/>
+    	<aop:scoped-proxy/>
+    </bean>
+    
+    <bean id="userProfileManager" class="com.tholix.service.UserProfileManagerImpl">
+    	<aop:scoped-proxy/>
     </bean>
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
