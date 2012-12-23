@@ -4,13 +4,10 @@
 	xmlns:context="http://www.springframework.org/schema/context"	
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
 		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		  http://www.springframework.org/schema/context
           http://www.springframework.org/schema/context/spring-context-3.0.xsd
-          http://www.springframework.org/schema/data/mongo
-          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
           http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
           http://www.springframework.org/schema/aop
@@ -39,15 +36,10 @@
     <bean id="receiptUserManager" class="com.tholix.service.ReceiptUserManagerImpl">
       <aop:scoped-proxy/>
     </bean>
-    
-    <!-- <bean id="receiptUser" class="com.tholix.domain.ReceiptUser" scope="session">
-      <aop:scoped-proxy/>
-    </bean> -->
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>	
-	
 </beans>

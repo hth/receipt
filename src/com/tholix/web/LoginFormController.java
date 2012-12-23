@@ -27,19 +27,14 @@ import com.tholix.service.ReceiptUserValidator;
 public class LoginFormController {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private ReceiptUserManager receiptUserManager;
-
 	@Autowired
 	@Qualifier("receiptUserManager")
-	public void setReceiptUserManager(ReceiptUserManager receiptUserManager) {
-		logger.info("instantiated receiptUserManager");
-		this.receiptUserManager = receiptUserManager;
-	}
+	private ReceiptUserManager receiptUserManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Model model) {
 		logger.info("LoginFormController login");
-		model.addAttribute("receiptUser", ReceiptUser.getReceiptUserForFinding(""));
+		model.addAttribute("receiptUser", ReceiptUser.findReceiptUser(""));
 		return "login";
 	}
 

@@ -4,13 +4,17 @@
 package com.tholix.domain;
 
 import java.io.Serializable;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author hitender Dec 15, 2012 8:11:45 PM
  */
+@Document
 public class ReceiptUser implements Serializable {
 	private static final long serialVersionUID = -5207492124434434278L;
 
+	@Id
 	private String emailId;
 	private String password;
 
@@ -27,16 +31,12 @@ public class ReceiptUser implements Serializable {
 		this.password = password;
 	}
 
-	public static ReceiptUser getReceiptUserForFinding(String emailId) {
+	public static ReceiptUser findReceiptUser(String emailId) {
 		return new ReceiptUser(emailId);
 	}
 
-	public static ReceiptUser getReceiptUserForSignup(String emailId, String password) {
+	public static ReceiptUser signupReceiptUser(String emailId, String password) {
 		return new ReceiptUser(emailId, password);
-	}
-
-	private static ReceiptUser getReceiptUserInstance() {
-		return new ReceiptUser();
 	}
 
 	public String getEmailId() {
@@ -54,4 +54,9 @@ public class ReceiptUser implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public String toString() {
+		return "ReceiptUser [emailId=" + emailId + ", password=" + password + "]";
+	}	
 }

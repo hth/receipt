@@ -16,6 +16,7 @@ import com.mongodb.Mongo;
  */
 
 @Configuration
+@Deprecated
 public class SpringMongoConfig {
 	private static final String DB = "rm";
 

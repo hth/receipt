@@ -10,12 +10,42 @@
           http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
-	<!-- Database settings -->
+	<!-- ==================== -->
+	<!-- MongoDB Setup Starts -->
+	<!-- ==================== -->
+	<!-- mkyong example is bit old style -->
+	<!-- http://www.mkyong.com/mongodb/java-mongodb-hello-world-example/ -->
+	<!-- http://blog.jeroenreijn.com/2011/07/getting-started-with-mongodb-and-spring.html -->	
+	
+	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->	
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongo"/>
+		<constructor-arg name="databaseName" value="rm"/>
+	</bean>
+	
+	<!-- Factory bean that creates the Mongo instance -->
+    <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+    	<property name="host" value="localhost"/>
+    	<property name="port" value="27017"/>
+    </bean>
+	
+	<!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	
+	<!-- ==================== -->
+	<!-- MongoDB Setup Ends   -->
+	<!-- ==================== -->
+	
+	<!-- mkyong example is bit old style -->
+	<!-- http://www.mkyong.com/mongodb/java-mongodb-hello-world-example/ -->
+	<!-- Database settings -->	
+	<!-- 
 	<mongo:mongo host="localhost" port="27017" />
 	<mongo:db-factory dbname="rm" />
  
 	<bean id="mongoTemplate"  class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-	</bean>
+	</bean> 
+	-->
 
 </beans>

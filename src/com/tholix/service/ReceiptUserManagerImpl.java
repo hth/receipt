@@ -8,28 +8,34 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Repository;
+
 import com.tholix.domain.ReceiptUser;
-import com.tholix.utils.MongoDB;
 
 /**
  * @author hitender Dec 16, 2012 1:20:53 PM
  */
+@Repository
 public class ReceiptUserManagerImpl implements ReceiptUserManager {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private static final long serialVersionUID = 5745317401200234475L;
-
-	public static ReceiptUserManagerImpl newInstance() {
-		return new ReceiptUserManagerImpl();
-	}
+	private static final long serialVersionUID = 5745317401200234475L;	
+	
+	@Autowired
+    MongoTemplate mongoTemplate;
 
 	@Override
 	public ReceiptUser findReceiptUser(String emailId) {
-		return MongoDB.mo().findOne(new Query(Criteria.where("emailId").is(emailId)), ReceiptUser.class, TABLE);
+		logger.info("Find user : " + emailId);
+		return mongoTemplate.findOne(new Query(Criteria.where("emailId").is(emailId)), ReceiptUser.class, TABLE);
 	}
 
 	@Override
 	public void saveReceiptUser(ReceiptUser receiptUser) {
-		MongoDB.mo().save(receiptUser, TABLE);
+		logger.info("save " + receiptUser);
+		mongoTemplate.save(receiptUser, TABLE);
+		logger.info("saved successfully");
 	}
 }

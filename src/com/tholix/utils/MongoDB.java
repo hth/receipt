@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
  * @author hitender Dec 18, 2012 11:22:33 PM
  * 
  */
+@Deprecated
 public class MongoDB {
 
 	private static final MongoOperations mongoOperations;
