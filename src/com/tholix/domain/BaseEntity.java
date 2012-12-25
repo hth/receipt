@@ -4,6 +4,7 @@
 package com.tholix.domain;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 
 import org.springframework.data.annotation.Id;
 
@@ -40,4 +41,27 @@ public abstract class BaseEntity implements Serializable {
 		this.version = version;
 	}
 
+	/**
+	 * 
+	 * http://thierrywasyl.wordpress.com/2011/05/12/get-annotations-fields-value-easily/
+	 * 
+	 * @param classType
+	 * @param annotationType
+	 * @param attributeName
+	 * @return Collection Name
+	 */
+	public static String getClassAnnotationValue(Class<?> classType, Class annotationType, String attributeName) {
+        String value = null;
+
+        Annotation annotation = classType.getAnnotation(annotationType);
+        if (annotation != null) {
+            try {
+                value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
+            } catch (Exception ex) {
+            }
+        }
+
+        return value;
+    }
+	
 }
