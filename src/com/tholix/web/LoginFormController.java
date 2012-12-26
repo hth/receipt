@@ -69,12 +69,14 @@ public class LoginFormController {
 			if(found != null) {
 				if(found.equals(receiptUser)) {
 					log.info("Email Id: " + receiptUser.getEmailId() + " and found " + found.getEmailId());
-					redirectAttrs.addFlashAttribute("receiptUser", receiptUser);
+					redirectAttrs.addFlashAttribute("receiptUser", found);
 					return "redirect:/landing.htm";					
 				} else {
+					result.rejectValue("emailId", "field.emailId.notMatching");
 					return "login";
 				}
 			} else {
+				result.rejectValue("emailId", "field.emailId.notFound");
 				return "login";
 			}
 		}

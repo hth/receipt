@@ -7,8 +7,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.WriteResult;
+import com.tholix.domain.ReceiptUserEntity;
 import com.tholix.domain.UserProfileEntity;
 
 /**
@@ -34,10 +37,18 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
+	public UserProfileEntity getObject(ReceiptUserEntity id) {
+		return mongoTemplate.findOne(
+				new Query(Criteria.where("receiptUser").is(id)), 
+				UserProfileEntity.class, 
+				TABLE);
+	}
+
+	@Override
 	public UserProfileEntity getObject(String id) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}	
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
@@ -62,7 +73,5 @@ public class UserProfileManagerImpl implements UserProfileManager {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
 }

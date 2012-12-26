@@ -93,4 +93,12 @@ public class UserProfileEntity extends BaseEntity {
 	public void setHoursOffset(int hoursOffset) {
 		this.hoursOffset = hoursOffset;
 	}
+	
+	/**
+	 * Method appends first and last name
+	 * @return Name
+	 */
+	public String getName() {
+		return this.firstName + " " + this.lastName;
+	}
 }
