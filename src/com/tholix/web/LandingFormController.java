@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.tholix.domain.ReceiptUser;
+import com.tholix.domain.ReceiptUserEntity;
 
 /**
  * @author hitender 
@@ -19,11 +19,11 @@ import com.tholix.domain.ReceiptUser;
 @Controller
 @RequestMapping(value = "/landing")
 public class LandingFormController {
-	protected final Log logger = LogFactory.getLog(getClass());
+	private final Log log = LogFactory.getLog(getClass());
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm(@ModelAttribute("receiptUser") ReceiptUser receiptUser) {
-		logger.info("LandingFormController loadForm: " + receiptUser.getEmailId());
+	public String loadForm(@ModelAttribute("receiptUser") ReceiptUserEntity receiptUser) {
+		log.info("LandingFormController loadForm: " + receiptUser.getEmailId());
 		return "landing";
 	}
 

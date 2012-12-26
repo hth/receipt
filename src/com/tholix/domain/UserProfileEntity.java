@@ -6,13 +6,13 @@ package com.tholix.domain;
 import java.util.Date;
 
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author hitender 
@@ -20,28 +20,29 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  *
  */
 @Document(collection="USER_PROFILE")
-//@CompoundIndexes({
-//    @CompoundIndex(name = "age_idx", def = "{'lastName': 1, 'age': -1}")
-//})
-public class UserProfile extends BaseEntity {
+public class UserProfileEntity extends BaseEntity {
 	
 	private static final long serialVersionUID = -1560672689033084436L;
 
 	@DBRef
 	@Indexed(unique = true)
-	private ReceiptUser receiptUser;
+	private ReceiptUserEntity receiptUser;
 	
+	@Size(min=1, max=128) 
 	private String firstName;
+	
+	@Size(min=1, max=128) 
 	private String lastName;
 	
 	@DateTimeFormat(iso=ISO.DATE)
 	private Date signup;	
 	
 	/* For time zone */
+	@NotNull
 	private int hoursOffset;
 
 	@PersistenceConstructor
-	private UserProfile(String firstName, String lastName, Date signup, ReceiptUser receiptUser) {
+	private UserProfileEntity(String firstName, String lastName, Date signup, ReceiptUserEntity receiptUser) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -49,15 +50,15 @@ public class UserProfile extends BaseEntity {
 		this.receiptUser = receiptUser;
 	}
 	
-	public static UserProfile newInstance(String firstName, String lastName, Date signup, ReceiptUser receiptUser) {
-		return new UserProfile(firstName, lastName, signup, receiptUser);
+	public static UserProfileEntity newInstance(String firstName, String lastName, Date signup, ReceiptUserEntity receiptUser) {
+		return new UserProfileEntity(firstName, lastName, signup, receiptUser);
 	}
 
-	public ReceiptUser getReceiptUser() {
+	public ReceiptUserEntity getReceiptUser() {
 		return receiptUser;
 	}
 
-	public void setReceiptUser(ReceiptUser receiptUser) {
+	public void setReceiptUser(ReceiptUserEntity receiptUser) {
 		this.receiptUser = receiptUser;
 	}
 

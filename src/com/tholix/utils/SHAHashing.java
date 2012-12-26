@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 public class SHAHashing {
-	protected static final Log logger = LogFactory.getLog(SHAHashing.class);
+	private static final Log log = LogFactory.getLog(SHAHashing.class);
 
 	private static MessageDigest md;
 
@@ -49,7 +49,7 @@ public class SHAHashing {
 			}
 			return hexString.toString();
 		} else {
-			logger.info("Un-Initailized MessageDigest");
+			log.info("Un-Initailized MessageDigest");
 			return null;
 		}
 	}

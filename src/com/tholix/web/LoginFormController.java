@@ -15,10 +15,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tholix.domain.ReceiptUser;
-import com.tholix.domain.UserProfile;
+import com.tholix.domain.ReceiptUserEntity;
+import com.tholix.domain.UserProfileEntity;
 import com.tholix.service.ReceiptUserManager;
 import com.tholix.service.ReceiptUserValidator;
 import com.tholix.service.UserProfileManager;
@@ -30,7 +31,7 @@ import com.tholix.service.UserProfileManager;
 @Controller
 @RequestMapping(value = "/login")
 public class LoginFormController {
-	protected final Log logger = LogFactory.getLog(getClass());
+	private final Log log = LogFactory.getLog(getClass());
 
 	@Autowired
 	@Qualifier("receiptUserManager")
@@ -38,30 +39,44 @@ public class LoginFormController {
 	
 	@Autowired
 	private UserProfileManager userProfileManager;
+	
+	/** 
+	 * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
+	 * 
+	 * Info: OR you could just replace it in Form Request method getReceiptUser
+	 * model.addAttribute("receiptUser", ReceiptUserEntity.findReceiptUser(""));
+	 * 
+	 * @return ReceiptUserEntity
+	 */
+	@ModelAttribute("receiptUser")
+	public ReceiptUserEntity getReceiptUser() {
+		return ReceiptUserEntity.findReceiptUser("");
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Model model) {
-		logger.info("LoginFormController login");
-		model.addAttribute("receiptUser", ReceiptUser.findReceiptUser(""));
+		log.info("LoginFormController login");		
 		return "login";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String post(@ModelAttribute ReceiptUser receiptUser, BindingResult result, final RedirectAttributes redirectAttrs) {
-		logger.info("post");
+	public String post(@ModelAttribute("receiptUser") ReceiptUserEntity receiptUser, BindingResult result, final RedirectAttributes redirectAttrs) {
 		new ReceiptUserValidator().validate(receiptUser, result);
 		if (result.hasErrors()) {
 			return "login";
 		} else {
-			receiptUserManager.saveObject(receiptUser);
-			ReceiptUser found = receiptUserManager.getObject(receiptUser.getEmailId());
-			
-			UserProfile userProfile = UserProfile.newInstance("Tom", "Shawn", new Date(), found);
-			userProfileManager.saveObject(userProfile);
-			
-			logger.info("Email Id: " + receiptUser.getEmailId() + " and found " + found.getEmailId());
-			redirectAttrs.addFlashAttribute("receiptUser", receiptUser);
-			return "redirect:/landing.htm";
+			ReceiptUserEntity found = receiptUserManager.getObject(receiptUser.getEmailId());
+			if(found != null) {
+				if(found.equals(receiptUser)) {
+					log.info("Email Id: " + receiptUser.getEmailId() + " and found " + found.getEmailId());
+					redirectAttrs.addFlashAttribute("receiptUser", receiptUser);
+					return "redirect:/landing.htm";					
+				} else {
+					return "login";
+				}
+			} else {
+				return "login";
+			}
 		}
 	}
 }

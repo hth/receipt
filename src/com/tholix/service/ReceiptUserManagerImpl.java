@@ -7,16 +7,20 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.CommandResult;
+import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
-import com.tholix.domain.ReceiptUser;
+import com.tholix.domain.ReceiptUserEntity;
 
 /**
  * @author hitender 
@@ -24,7 +28,7 @@ import com.tholix.domain.ReceiptUser;
  */
 @Repository
 public class ReceiptUserManagerImpl implements ReceiptUserManager {
-	protected final Log logger = LogFactory.getLog(getClass());
+	private final Log log = LogFactory.getLog(getClass());
 
 	private static final long serialVersionUID = 5745317401200234475L;	
 	
@@ -32,20 +36,26 @@ public class ReceiptUserManagerImpl implements ReceiptUserManager {
     MongoTemplate mongoTemplate;
 	
 	@Override
-	public List<ReceiptUser> getAllObjects() {
-		return mongoTemplate.findAll(ReceiptUser.class);
+	public List<ReceiptUserEntity> getAllObjects() {
+		return mongoTemplate.findAll(ReceiptUserEntity.class);
 	}
 
 	@Override
-	public void saveObject(ReceiptUser receiptUser) {
-		mongoTemplate.insert(receiptUser, TABLE);
+	public void saveObject(ReceiptUserEntity receiptUser) throws Exception {
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		try {
+			mongoTemplate.insert(receiptUser, TABLE);
+		} catch (DataIntegrityViolationException e) {
+			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			throw new Exception(e.getMessage());
+		}
 	}
 	
 	@Override
-	public ReceiptUser getObject(String emailId) {
+	public ReceiptUserEntity getObject(String emailId) {
 		return mongoTemplate.findOne(
 				new Query(Criteria.where("emailId").is(emailId)), 
-				ReceiptUser.class, 
+				ReceiptUserEntity.class, 
 				TABLE);
 	}
 

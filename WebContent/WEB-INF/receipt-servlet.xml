@@ -40,6 +40,10 @@
     <bean id="userProfileManager" class="com.tholix.service.UserProfileManagerImpl">
     	<aop:scoped-proxy/>
     </bean>
+    
+    <bean id="userPreferenceManager" class="com.tholix.service.UserPreferenceManagerImpl">
+    	<aop:scoped-proxy/>
+    </bean>
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>

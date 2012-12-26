@@ -3,10 +3,8 @@
  */
 package com.tholix.domain;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,52 +16,41 @@ import com.tholix.utils.SHAHashing;
  * @when Dec 15, 2012 8:11:45 PM
  */
 @Document(collection="USER")
-public class ReceiptUser implements Serializable {
+public class ReceiptUserEntity extends BaseEntity {
 	private static final long serialVersionUID = -5207492124434434278L;
-
-	@Id
-	private ObjectId id;
 	
 	@Indexed(unique = true)
 	private String emailId;
 	
 	@Transient
-	private String password;		
+	private String password;
+	
+	//TODO follow http://www.jpalace.org/docs/tutorials/spring/mvc_21.html 
+	@NotNull
 	private String passwordHash;
 
 	/**
 	 * Required for Bean Instantiation
 	 */
-	private ReceiptUser() {
+	private ReceiptUserEntity() {
 	}
 
-	private ReceiptUser(String emailId) {
+	private ReceiptUserEntity(String emailId) {
 		this.emailId = emailId;
 	}
-
-	/**
-	 * Does not event gets instantiated 
-	 * 
-	 * @param emailId
-	 * @param password
-	 */
-	private ReceiptUser(String emailId, String password) {
+	
+	private ReceiptUserEntity(String emailId, String password) {
 		this.emailId = emailId;
 		this.passwordHash = SHAHashing.hashCode(password);
 	}
 
-	public static ReceiptUser findReceiptUser(String emailId) {
-		return new ReceiptUser(emailId);
+	public static ReceiptUserEntity findReceiptUser(String emailId) {
+		return new ReceiptUserEntity(emailId);
 	}
 	
-	private static ReceiptUser newInstance(String emailId, String password) {
-		return new ReceiptUser(emailId, password);
+	public static ReceiptUserEntity newInstance(String emailId, String password) {
+		return new ReceiptUserEntity(emailId, password);
 	}	
-
-	/** Exposed for unit test mostly */
-	public ObjectId getId() {
-		return id;
-	}
 
 	public String getEmailId() {
 		return emailId;
@@ -101,9 +88,9 @@ public class ReceiptUser implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof ReceiptUser))
+		if (!(obj instanceof ReceiptUserEntity))
 			return false;
-		ReceiptUser other = (ReceiptUser) obj;
+		ReceiptUserEntity other = (ReceiptUserEntity) obj;
 		if (emailId == null) {
 			if (other.emailId != null)
 				return false;
