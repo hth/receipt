@@ -3,8 +3,6 @@
  */
 package com.tholix.domain;
 
-import java.util.Date;
-
 import org.joda.time.DateTime;
 
 /**
@@ -19,24 +17,25 @@ public class NewUserWrapper {
 	private String emailId;
 	private String password;
 	private AccountTypeEnum accountType;
-	
+
 	public static NewUserWrapper newInstance() {
 		return new NewUserWrapper();
 	}
-	
+
 	/**
 	 * Gets a new instance of Receipt User
+	 * 
 	 * @return
 	 */
-	public ReceiptUserEntity newReceiptUserEntity() {
-		return ReceiptUserEntity.newInstance(emailId, password);
+	public UserEntity newReceiptUserEntity() {
+		return UserEntity.newInstance(emailId, password);
 	}
-	
-	public UserProfileEntity newUserProfileEntity(ReceiptUserEntity receiptUser) {
+
+	public UserProfileEntity newUserProfileEntity(UserEntity receiptUser) {
 		return UserProfileEntity.newInstance(firstName, lastName, DateTime.now().toDate(), receiptUser);
 	}
-	
-	public UserPreferenceEntity newUserPreferenceEntity(ReceiptUserEntity receiptUser) {
+
+	public UserPreferenceEntity newUserPreferenceEntity(UserEntity receiptUser) {
 		return UserPreferenceEntity.newInstance(accountType, receiptUser);
 	}
 
@@ -79,7 +78,5 @@ public class NewUserWrapper {
 	public void setAccountType(AccountTypeEnum accountType) {
 		this.accountType = accountType;
 	}
-	
-	
 
 }

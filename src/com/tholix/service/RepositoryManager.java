@@ -9,9 +9,11 @@ import java.util.List;
 import com.mongodb.WriteResult;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Dec 22, 2012 8:56:01 PM
- * @link http://orangeslate.com/2012/07/11/step-by-step-guide-to-create-a-sample-crud-java-application-using-mongodb-and-spring-data-for-mongodb/
+ * @link 
+ *       http://orangeslate.com/2012/07/11/step-by-step-guide-to-create-a-sample-
+ *       crud-java-application-using-mongodb-and-spring-data-for-mongodb/
  */
 public interface RepositoryManager<T> extends Serializable {
 
@@ -22,7 +24,8 @@ public interface RepositoryManager<T> extends Serializable {
 
 	/**
 	 * Saves a record.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void saveObject(T object) throws Exception;
 

@@ -5,62 +5,62 @@ package com.tholix.domain;
 
 import java.util.Date;
 
-import org.joda.time.DateTime;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Dec 23, 2012 1:48:09 AM
- *
+ * 
  */
-@Document(collection="USER_PROFILE")
+@Document(collection = "USER_PROFILE")
 public class UserProfileEntity extends BaseEntity {
-	
+
 	private static final long serialVersionUID = -1560672689033084436L;
 
 	@DBRef
 	@Indexed(unique = true)
-	private ReceiptUserEntity receiptUser;
-	
-	@Size(min=1, max=128) 
+	private UserEntity user;
+
+	@Size(min = 1, max = 128)
 	private String firstName;
-	
-	@Size(min=1, max=128) 
+
+	@Size(min = 1, max = 128)
 	private String lastName;
-	
-	@DateTimeFormat(iso=ISO.DATE)
-	private Date registration;	
-	
+
+	@DateTimeFormat(iso = ISO.DATE)
+	private Date registration;
+
 	/* For time zone */
 	@NotNull
 	private int hoursOffset;
 
 	@PersistenceConstructor
-	private UserProfileEntity(String firstName, String lastName, Date registration, ReceiptUserEntity receiptUser) {
+	private UserProfileEntity(String firstName, String lastName, Date registration, UserEntity user) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.registration = registration;
-		this.receiptUser = receiptUser;
-	}
-	
-	public static UserProfileEntity newInstance(String firstName, String lastName, Date registration, ReceiptUserEntity receiptUser) {
-		return new UserProfileEntity(firstName, lastName, registration, receiptUser);
+		this.user = user;
 	}
 
-	public ReceiptUserEntity getReceiptUser() {
-		return receiptUser;
+	public static UserProfileEntity newInstance(String firstName, String lastName, Date registration, UserEntity user) {
+		return new UserProfileEntity(firstName, lastName, registration, user);
 	}
 
-	public void setReceiptUser(ReceiptUserEntity receiptUser) {
-		this.receiptUser = receiptUser;
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
 	public String getFirstName() {
@@ -94,9 +94,10 @@ public class UserProfileEntity extends BaseEntity {
 	public void setHoursOffset(int hoursOffset) {
 		this.hoursOffset = hoursOffset;
 	}
-	
+
 	/**
 	 * Method appends first and last name
+	 * 
 	 * @return Name
 	 */
 	public String getName() {

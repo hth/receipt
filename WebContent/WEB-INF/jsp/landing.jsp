@@ -155,6 +155,6 @@
 	</style>
 </head>
 <body>
-	User <c:out value="${receiptUser.emailId}" /> '<c:out value="${receiptUser.id}" />'
+	User <c:out value="${user.emailId}" /> '<c:out value="${user.id}" />'
 </body>
 </html>

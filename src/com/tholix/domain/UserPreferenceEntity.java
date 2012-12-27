@@ -11,39 +11,39 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Dec 23, 2012 1:48:36 AM
- *
+ * 
  */
-@Document(collection="USER_PREFERENCE")
+@Document(collection = "USER_PREFERENCE")
 public class UserPreferenceEntity extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1096957451728520230L;
-	
+
 	@DBRef
 	@Indexed(unique = true)
-	private ReceiptUserEntity receiptUser;
-	
+	private UserEntity user;
+
 	@NotNull
 	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
-	
+
 	@PersistenceConstructor
-	private UserPreferenceEntity(AccountTypeEnum accountType, ReceiptUserEntity receiptUser) {
+	private UserPreferenceEntity(AccountTypeEnum accountType, UserEntity user) {
 		super();
 		this.accountType = accountType;
-		this.receiptUser = receiptUser;
-	}
-	
-	public static UserPreferenceEntity newInstance(AccountTypeEnum accountType, ReceiptUserEntity receiptUser) {
-		return new UserPreferenceEntity(accountType, receiptUser);
+		this.user = user;
 	}
 
-	public ReceiptUserEntity getReceiptUser() {
-		return receiptUser;
+	public static UserPreferenceEntity newInstance(AccountTypeEnum accountType, UserEntity user) {
+		return new UserPreferenceEntity(accountType, user);
 	}
 
-	public void setReceiptUser(ReceiptUserEntity receiptUser) {
-		this.receiptUser = receiptUser;
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
 	public AccountTypeEnum getAccountType() {
@@ -53,6 +53,5 @@ public class UserPreferenceEntity extends BaseEntity {
 	public void setAccountType(AccountTypeEnum accountType) {
 		this.accountType = accountType;
 	}
-	
-	
+
 }
