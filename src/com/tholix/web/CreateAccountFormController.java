@@ -30,11 +30,11 @@ import com.tholix.domain.ReceiptUserEntity;
 import com.tholix.domain.NewUserWrapper;
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
-import com.tholix.service.NewUserValidator;
 import com.tholix.service.ReceiptUserManager;
-import com.tholix.service.ReceiptUserValidator;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
+import com.tholix.service.validator.NewUserValidator;
+import com.tholix.service.validator.ReceiptUserValidator;
 
 /**
  * @author hitender 

@@ -5,6 +5,7 @@ package com.tholix.domain;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -35,23 +36,23 @@ public class UserProfileEntity extends BaseEntity {
 	private String lastName;
 	
 	@DateTimeFormat(iso=ISO.DATE)
-	private Date signup;	
+	private Date registration;	
 	
 	/* For time zone */
 	@NotNull
 	private int hoursOffset;
 
 	@PersistenceConstructor
-	private UserProfileEntity(String firstName, String lastName, Date signup, ReceiptUserEntity receiptUser) {
+	private UserProfileEntity(String firstName, String lastName, Date registration, ReceiptUserEntity receiptUser) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.signup = signup;
+		this.registration = registration;
 		this.receiptUser = receiptUser;
 	}
 	
-	public static UserProfileEntity newInstance(String firstName, String lastName, Date signup, ReceiptUserEntity receiptUser) {
-		return new UserProfileEntity(firstName, lastName, signup, receiptUser);
+	public static UserProfileEntity newInstance(String firstName, String lastName, Date registration, ReceiptUserEntity receiptUser) {
+		return new UserProfileEntity(firstName, lastName, registration, receiptUser);
 	}
 
 	public ReceiptUserEntity getReceiptUser() {
@@ -78,12 +79,12 @@ public class UserProfileEntity extends BaseEntity {
 		this.lastName = lastName;
 	}
 
-	public Date getSignup() {
-		return signup;
+	public Date getRegistration() {
+		return registration;
 	}
 
-	public void setSignup(Date signup) {
-		this.signup = signup;
+	public void setRegistration(Date registration) {
+		this.registration = registration;
 	}
 
 	public int getHoursOffset() {

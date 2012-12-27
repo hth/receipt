@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tholix.service;
+package com.tholix.service.validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

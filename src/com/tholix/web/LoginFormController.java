@@ -21,8 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tholix.domain.ReceiptUserEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.service.ReceiptUserManager;
-import com.tholix.service.ReceiptUserValidator;
 import com.tholix.service.UserProfileManager;
+import com.tholix.service.validator.ReceiptUserValidator;
 
 /**
  * @author hitender 

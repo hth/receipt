@@ -4,9 +4,13 @@
 package com.tholix.domain;
 
 import java.io.Serializable;
+import org.joda.time.DateTime;
 import java.lang.annotation.Annotation;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * @author hitender
@@ -19,6 +23,9 @@ public abstract class BaseEntity implements Serializable {
 	@Id
 	protected String id;
 	private Long version;
+	
+	@DateTimeFormat(iso=ISO.DATE_TIME)
+	private Date recordDate = DateTime.now().toDate();
 
 	public BaseEntity() {
 		super();
@@ -38,6 +45,10 @@ public abstract class BaseEntity implements Serializable {
 
 	public void setVersion(Long version) {
 		this.version = version;
+	}	
+
+	public Date getRecordDate() {
+		return recordDate;
 	}
 
 	/**

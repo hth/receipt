@@ -5,6 +5,8 @@ package com.tholix.domain;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 /**
  * @author hitender
  * @when Dec 25, 2012 12:01:53 PM
@@ -31,7 +33,7 @@ public class NewUserWrapper {
 	}
 	
 	public UserProfileEntity newUserProfileEntity(ReceiptUserEntity receiptUser) {
-		return UserProfileEntity.newInstance(firstName, lastName, new Date(), receiptUser);
+		return UserProfileEntity.newInstance(firstName, lastName, DateTime.now().toDate(), receiptUser);
 	}
 	
 	public UserPreferenceEntity newUserPreferenceEntity(ReceiptUserEntity receiptUser) {
