@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tholix.domain.UserEntity;
 import com.tholix.service.UserManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.ReceiptUserValidator;
+import com.tholix.service.validator.UserValidator;
 
 /**
  * @author hitender
@@ -60,7 +60,7 @@ public class LoginFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("user") UserEntity user, BindingResult result, final RedirectAttributes redirectAttrs) {
-		new ReceiptUserValidator().validate(user, result);
+		new UserValidator().validate(user, result);
 		if (result.hasErrors()) {
 			return "login";
 		} else {

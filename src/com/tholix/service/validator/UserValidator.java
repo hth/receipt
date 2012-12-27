@@ -15,7 +15,7 @@ import com.tholix.domain.UserEntity;
  * @author hitender
  * @when Dec 16, 2012 6:52:46 PM
  */
-public class ReceiptUserValidator implements Validator {
+public class UserValidator implements Validator {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
