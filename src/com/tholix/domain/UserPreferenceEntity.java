@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.tholix.domain.types.AccountTypeEnum;
+
 /**
  * @author hitender
  * @when Dec 23, 2012 1:48:36 AM
@@ -27,13 +29,20 @@ public class UserPreferenceEntity extends BaseEntity {
 	@NotNull
 	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
 
-	@PersistenceConstructor
+	//@PersistenceConstructor
 	private UserPreferenceEntity(AccountTypeEnum accountType, UserEntity user) {
 		super();
 		this.accountType = accountType;
 		this.user = user;
 	}
 
+	/**
+	 * This method is used when the Entity is created for the first time. 
+	 * 
+	 * @param accountType
+	 * @param user
+	 * @return
+	 */
 	public static UserPreferenceEntity newInstance(AccountTypeEnum accountType, UserEntity user) {
 		return new UserPreferenceEntity(accountType, user);
 	}

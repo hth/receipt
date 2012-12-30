@@ -7,8 +7,10 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Version;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -22,10 +24,15 @@ public abstract class BaseEntity implements Serializable {
 
 	@Id
 	protected String id;
+	
+	@Version
 	private Long version;
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private Date updated = DateTime.now().toDate();
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private Date recordDate = DateTime.now().toDate();
+	private Date created = DateTime.now().toDate();
 
 	public BaseEntity() {
 		super();
@@ -45,16 +52,27 @@ public abstract class BaseEntity implements Serializable {
 
 	public void setVersion(Long version) {
 		this.version = version;
+	}	
+
+	public Date getUpdated() {
+		return updated;
 	}
 
-	public Date getRecordDate() {
-		return recordDate;
+	public void setUpdated() {
+		this.updated = DateTime.now().toDate();
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 	/**
 	 * 
-	 * http://thierrywasyl.wordpress.com/2011/05/12/get-annotations-fields-value
-	 * -easily/
+	 * http://thierrywasyl.wordpress.com/2011/05/12/get-annotations-fields-value-easily/
 	 * 
 	 * @param classType
 	 * @param annotationType

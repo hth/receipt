@@ -33,7 +33,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public void saveObject(UserProfileEntity object) {
-		mongoTemplate.insert(object, TABLE);
+		mongoTemplate.save(object, TABLE);
 	}
 
 	@Override

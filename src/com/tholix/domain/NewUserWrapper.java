@@ -5,6 +5,9 @@ package com.tholix.domain;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.types.AccountTypeEnum;
+import com.tholix.utils.SHAHashing;
+
 /**
  * @author hitender
  * @when Dec 25, 2012 12:01:53 PM
@@ -27,16 +30,16 @@ public class NewUserWrapper {
 	 * 
 	 * @return
 	 */
-	public UserEntity newReceiptUserEntity() {
-		return UserEntity.newInstance(emailId, password);
+	public UserEntity newUserEntity() {
+		return UserEntity.newInstance(emailId, SHAHashing.hashCode(password));
 	}
 
-	public UserProfileEntity newUserProfileEntity(UserEntity receiptUser) {
-		return UserProfileEntity.newInstance(firstName, lastName, DateTime.now().toDate(), receiptUser);
+	public UserProfileEntity newUserProfileEntity(UserEntity user) {
+		return UserProfileEntity.newInstance(firstName, lastName, DateTime.now().toDate(), user);
 	}
 
-	public UserPreferenceEntity newUserPreferenceEntity(UserEntity receiptUser) {
-		return UserPreferenceEntity.newInstance(accountType, receiptUser);
+	public UserPreferenceEntity newUserPreferenceEntity(UserEntity user) {
+		return UserPreferenceEntity.newInstance(accountType, user);
 	}
 
 	public String getFirstName() {
@@ -78,5 +81,4 @@ public class NewUserWrapper {
 	public void setAccountType(AccountTypeEnum accountType) {
 		this.accountType = accountType;
 	}
-
 }

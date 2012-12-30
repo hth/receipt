@@ -42,7 +42,7 @@ public class UserProfileEntity extends BaseEntity {
 	@NotNull
 	private int hoursOffset;
 
-	@PersistenceConstructor
+	//@PersistenceConstructor
 	private UserProfileEntity(String firstName, String lastName, Date registration, UserEntity user) {
 		super();
 		this.firstName = firstName;
@@ -51,6 +51,15 @@ public class UserProfileEntity extends BaseEntity {
 		this.user = user;
 	}
 
+	/**
+	 * This method is used when the Entity is created for the first time. 
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 * @param registration
+	 * @param user
+	 * @return
+	 */
 	public static UserProfileEntity newInstance(String firstName, String lastName, Date registration, UserEntity user) {
 		return new UserProfileEntity(firstName, lastName, registration, user);
 	}

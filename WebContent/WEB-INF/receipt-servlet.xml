@@ -33,17 +33,23 @@
 	
 	<!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
 	<!-- an HTTP Session-scoped bean exposed as a proxy -->
-    <bean id="userManager" class="com.tholix.service.UserManagerImpl">
+    <bean id="userManager" class="com.tholix.service.UserManagerImpl">    	
     	<aop:scoped-proxy/>
     </bean>
     
-    <bean id="userProfileManager" class="com.tholix.service.UserProfileManagerImpl">
-    	<aop:scoped-proxy/>
-    </bean>
+    <bean id="userProfileManager" class="com.tholix.service.UserProfileManagerImpl" />
     
-    <bean id="userPreferenceManager" class="com.tholix.service.UserPreferenceManagerImpl">
-    	<aop:scoped-proxy/>
-    </bean>
+    <bean id="userPreferenceManager" class="com.tholix.service.UserPreferenceManagerImpl" />
+    
+    <bean id="newUserValidator" class="com.tholix.service.validator.NewUserValidator" />
+    
+    <bean id="userValidator" class="com.tholix.service.validator.UserValidator" />
+    
+    <bean id="receiptManager" class="com.tholix.service.ReceiptManagerImpl" />
+    
+    <bean id="itemManager" class="com.tholix.service.ItemManagerImpl" />
+    
+    <bean id="itemFeatureManager" class="com.tholix.service.ItemFeatureManagerImpl" />
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +42,9 @@ public class CreateAccountFormController {
 
 	@Autowired
 	private UserPreferenceManager userPreferenceManager;
+	
+	@Autowired
+	private NewUserValidator newUserValidator;
 
 	/** For Drop down */
 	// @ModelAttribute("accountTypeMap")
@@ -65,15 +69,16 @@ public class CreateAccountFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("newUserWrapper") NewUserWrapper newUserWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
-		new NewUserValidator().validate(newUserWrapper, result);
+		newUserValidator.validate(newUserWrapper, result);
 		if (result.hasErrors()) {
 			return "newaccount";
 		} else {
 			UserEntity user;
 			try {
-				userManager.saveObject(newUserWrapper.newReceiptUserEntity());
+				userManager.saveObject(newUserWrapper.newUserEntity());
 				user = userManager.getObject(newUserWrapper.getEmailId());
 			} catch (Exception e) {
+				log.error("During saving UserEntity: " + e.getLocalizedMessage());
 				result.rejectValue("emailId", "field.emailId.duplicate");
 				return "newaccount";
 			}
@@ -81,14 +86,14 @@ public class CreateAccountFormController {
 			try {
 				userProfileManager.saveObject(newUserWrapper.newUserProfileEntity(user));
 			} catch (Exception e) {
-				log.error(e.getLocalizedMessage());
+				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
 				return "newaccount";
 			}
 
 			try {
 				userPreferenceManager.saveObject(newUserWrapper.newUserPreferenceEntity(user));
 			} catch (Exception e) {
-				log.error(e.getLocalizedMessage());
+				log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
 				return "newaccount";
 			}
 

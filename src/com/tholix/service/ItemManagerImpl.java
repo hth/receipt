@@ -14,67 +14,83 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Repository;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
-import com.tholix.domain.UserEntity;
+import com.tholix.domain.ItemEntity;
+import com.tholix.domain.UserPreferenceEntity;
 
 /**
- * @author hitender
- * @when Dec 16, 2012 1:20:53 PM
+ * @author hitender 
+ * @when Dec 26, 2012 9:16:44 PM
+ *
  */
-@Repository
-public class UserManagerImpl implements UserManager {
+public class ItemManagerImpl implements ItemManager {
 	private final Log log = LogFactory.getLog(getClass());
-
-	private static final long serialVersionUID = 5745317401200234475L;
-
+	
+	private static final long serialVersionUID = 5734660649481504610L;
+	
 	@Autowired
-	MongoTemplate mongoTemplate;
+	private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<UserEntity> getAllObjects() {
-		return mongoTemplate.findAll(UserEntity.class);
+	public List<ItemEntity> getAllObjects() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void saveObject(UserEntity object) throws Exception {
+	public void saveObject(ItemEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
+			object.setUpdated();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
-		}
+		} 			
 	}
 
 	@Override
-	public UserEntity getObject(String emailId) {
-		return mongoTemplate.findOne(new Query(Criteria.where("emailId").is(emailId)), UserEntity.class, TABLE);
+	public ItemEntity getObject(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(id)), Update.update("name", name), TABLE);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void deleteObject(String id) {
-		mongoTemplate.remove(new Query(Criteria.where("id").is(id)), TABLE);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void createCollection() {
-		if (!mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.createCollection(TABLE);
-		}
-
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public WriteResult updateObject(ItemEntity object) {
+		Query query = new Query(Criteria.where("_id").is(object.getId()));
+		Update update = Update.update("name", object.getName());	
+		return mongoTemplate.updateFirst(query, update, TABLE);
+	}
+
+	
+	
+	
+
 }

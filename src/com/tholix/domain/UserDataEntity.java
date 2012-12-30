@@ -29,13 +29,20 @@ public class UserDataEntity extends BaseEntity {
 	@Size(min = 1, max = 128)
 	private String clientName;
 
-	@PersistenceConstructor
+	//@PersistenceConstructor
 	private UserDataEntity(String clientName, UserEntity user) {
 		super();
 		this.clientName = clientName;
 		this.user = user;
 	}
 
+	/**
+	 * This method is used when the Entity is created for the first time. 
+	 * 
+	 * @param clientName
+	 * @param user
+	 * @return
+	 */
 	public static UserDataEntity newInstance(String clientName, UserEntity user) {
 		return new UserDataEntity(clientName, user);
 	}

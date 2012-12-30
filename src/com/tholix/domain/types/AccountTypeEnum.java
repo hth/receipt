@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tholix.domain;
+package com.tholix.domain.types;
 
 /**
  * @author hitender

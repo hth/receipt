@@ -18,7 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tholix.domain.UserEntity;
 import com.tholix.service.UserManager;
 import com.tholix.service.UserProfileManager;
+import com.tholix.service.validator.NewUserValidator;
 import com.tholix.service.validator.UserValidator;
+import com.tholix.utils.SHAHashing;
 
 /**
  * @author hitender
@@ -35,15 +37,15 @@ public class LoginFormController {
 
 	@Autowired
 	private UserProfileManager userProfileManager;
+	
+	@Autowired
+	private UserValidator userValidator;
 
 	/**
-	 * @link 
-	 *       http://stackoverflow.com/questions/1069958/neither-bindingresult-nor
-	 *       -plain-target-object-for-bean-name-available-as-request
+	 * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
 	 * 
-	 *       Info: OR you could just replace it in Form Request method
-	 *       getReceiptUser model.addAttribute("receiptUser",
-	 *       UserEntity.findReceiptUser(""));
+	 * @info: OR you could just replace it in Form Request method getReceiptUser 
+	 *        model.addAttribute("receiptUser", UserEntity.findReceiptUser(""));
 	 * 
 	 * @return UserEntity
 	 */
@@ -60,12 +62,13 @@ public class LoginFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("user") UserEntity user, BindingResult result, final RedirectAttributes redirectAttrs) {
-		new UserValidator().validate(user, result);
+		userValidator.validate(user, result);
 		if (result.hasErrors()) {
 			return "login";
 		} else {
 			UserEntity found = userManager.getObject(user.getEmailId());
 			if (found != null) {
+				user.setPassword(SHAHashing.hashCode(user.getPassword()));
 				if (found.equals(user)) {
 					log.info("Email Id: " + user.getEmailId() + " and found " + found.getEmailId());
 					redirectAttrs.addFlashAttribute("user", found);
