@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,16 +44,6 @@ public class CreateAccountFormController {
 	
 	@Autowired
 	private NewUserValidator newUserValidator;
-
-	/** For Drop down */
-	// @ModelAttribute("accountTypeMap")
-	// public Map<String, String> populateAccountTypeMap() {
-	// Map<String, String> result = new HashMap<String, String>();
-	// for (AccountTypeEnum accountType : AccountTypeEnum.values()) {
-	// result.put(accountType.getName(), accountType.getVisibleName());
-	// }
-	// return result;
-	// }
 
 	@ModelAttribute("newUserWrapper")
 	public NewUserWrapper getNewUserWrapper() {

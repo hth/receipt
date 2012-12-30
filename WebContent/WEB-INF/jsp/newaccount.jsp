@@ -178,7 +178,7 @@
 				<td width="20%">
 					<form:select path="accountType" > 
 						<form:option value="0" label="Chose Account Type" />
-						<form:options/>
+						<form:options itemValue="name" itemLabel="description" />
 					</form:select>
 				</td>
 				<td width="60%"><form:errors path="accountType" cssClass="error" /></td>
