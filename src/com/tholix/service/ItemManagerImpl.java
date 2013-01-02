@@ -19,6 +19,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.tholix.domain.ItemEntity;
+import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserPreferenceEntity;
 
 /**
@@ -59,6 +60,11 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
+	public List<ItemEntity> getObjectWithRecipt(ReceiptEntity receipt) {
+		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class, TABLE);
+	}
+
+	@Override
 	public WriteResult updateObject(String id, String name) {
 		// TODO Auto-generated method stub
 		return null;
@@ -78,8 +84,9 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
-		
+		if (mongoTemplate.collectionExists(TABLE)) {
+			mongoTemplate.dropCollection(TABLE);	
+		}
 	}
 
 	@Override
@@ -88,9 +95,4 @@ public class ItemManagerImpl implements ItemManager {
 		Update update = Update.update("name", object.getName());	
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}
-
-	
-	
-	
-
 }

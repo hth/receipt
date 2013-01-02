@@ -67,8 +67,9 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
-
+		if (mongoTemplate.collectionExists(TABLE)) {
+			mongoTemplate.dropCollection(TABLE);
+		}
 	}
 
 }

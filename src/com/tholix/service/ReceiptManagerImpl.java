@@ -33,8 +33,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public List<ReceiptEntity> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findAll(ReceiptEntity.class, TABLE);
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public ReceiptEntity getObject(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("_id").is(id)), ReceiptEntity.class, TABLE);
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
 
 	@Override
@@ -78,10 +77,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
-		
+		if (mongoTemplate.collectionExists(TABLE)) {
+			mongoTemplate.dropCollection(TABLE);		
+		}
 	}
-	
-	
-
 }

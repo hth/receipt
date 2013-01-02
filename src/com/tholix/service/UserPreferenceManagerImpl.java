@@ -59,8 +59,9 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
-
+		if (mongoTemplate.collectionExists(TABLE)) {
+			mongoTemplate.dropCollection(TABLE);
+		}
 	}
 
 }

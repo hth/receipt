@@ -59,7 +59,9 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
+		if (mongoTemplate.collectionExists(TABLE)) {
+			mongoTemplate.dropCollection(TABLE);
+		}
 		
 	}
 	

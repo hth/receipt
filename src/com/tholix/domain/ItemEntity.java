@@ -117,4 +117,11 @@ public class ItemEntity extends BaseEntity {
 	public void setUser(UserEntity user) {
 		this.user = user;
 	}
+
+	@Override
+	public String toString() {
+		return "ItemEntity [quantity=" + quantity + ", name=" + name + ", price=" + price + ", taxed=" + taxed + "]";
+	}
+	
+	
 }

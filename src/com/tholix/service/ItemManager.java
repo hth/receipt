@@ -3,6 +3,8 @@
  */
 package com.tholix.service;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.WriteResult;
@@ -19,4 +21,6 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
 	
 	public WriteResult updateObject(ItemEntity object);
+	
+	public List<ItemEntity> getObjectWithRecipt(ReceiptEntity receipt);
 }
