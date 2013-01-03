@@ -3,16 +3,23 @@
  */
 package com.tholix.web;
 
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
@@ -32,7 +39,12 @@ import com.tholix.utils.DateUtil;
 @Controller
 @RequestMapping(value = "/landing")
 public class LandingFormController {
-	private final Log log = LogFactory.getLog(getClass());
+	private final Log log = LogFactory.getLog(getClass());	
+	
+	/**
+	 * Refers to landing.jsp
+	 */
+	private String nextPageIsCalledLanding = "/landing";
 
 	@Autowired
 	private UserProfileManager userProfileManager;
@@ -44,24 +56,33 @@ public class LandingFormController {
 	private ItemManager itemManager;
 	
 	@Autowired
-	private ItemFeatureManager itemFeatureManager;
+	private ItemFeatureManager itemFeatureManager;	
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm(@ModelAttribute("user") UserEntity user) {
+	public ModelAndView loadForm(@ModelAttribute("user") UserEntity user) {
 		log.info("LandingFormController loadForm: " + user.getEmailId());
+		
+		//TODO remove the following two lines
+		receiptManager.dropCollection();
+		itemManager.dropCollection();
+		
 		UserProfileEntity userProfileEntity = userProfileManager.getObject(user);
 		populate(user);
+		
+		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
+		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(user);
+		modelAndView.addObject("receipts", receipts);
+		
 		log.info(userProfileEntity.getName());
-		return "landing";
+		return modelAndView;
 	}
-
+	
 	private void populate(UserEntity user) {
 		
 		try {			
 			//Item from Barnes and Noble
 			ReceiptEntity receipt = ReceiptEntity.newInstance("Barnes & Noble Booksellers #1944", DateUtil.getDateFromString("12/15/2012 02:13PM"), 8.13, 0.63, user);
 			receiptManager.saveObject(receipt);
-			//receipt = receiptManager.getObject(receipt.getId().toString());
 			log.info("Receipt Id: " + receipt.getId());
 			
 			ItemEntity item1 = ItemEntity.newInstance(1, "Marble Moc Macchia Tall", 3.75, TaxEnum.TAXED, receipt, user);
@@ -72,7 +93,6 @@ public class LandingFormController {
 			//Item from Lucky
 			receipt = ReceiptEntity.newInstance("Lucky", DateUtil.getDateFromString("12/25/12 16:54:57"), 14.61, .34, user);
 			receiptManager.saveObject(receipt);
-			//receipt = receiptManager.getObject(receipt.getId().toString());
 			log.info("Receipt Id: " + receipt.getId());
 			
 			item1 = ItemEntity.newInstance(1, "SANTA HT LEOPARD", 4.00, TaxEnum.TAXED, receipt, user);

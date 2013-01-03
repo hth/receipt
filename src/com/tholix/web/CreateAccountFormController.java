@@ -58,6 +58,10 @@ public class CreateAccountFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("newUserWrapper") NewUserWrapper newUserWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
+		userManager.dropCollection();
+		userProfileManager.dropCollection();
+		userPreferenceManager.dropCollection();
+		
 		newUserValidator.validate(newUserWrapper, result);
 		if (result.hasErrors()) {
 			return "newaccount";
@@ -65,7 +69,7 @@ public class CreateAccountFormController {
 			UserEntity user;
 			try {
 				userManager.saveObject(newUserWrapper.newUserEntity());
-				user = userManager.getObject(newUserWrapper.getEmailId());
+				user = userManager.getObjectUsingEmail(newUserWrapper.getEmailId());
 			} catch (Exception e) {
 				log.error("During saving UserEntity: " + e.getLocalizedMessage());
 				result.rejectValue("emailId", "field.emailId.duplicate");

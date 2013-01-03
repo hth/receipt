@@ -66,7 +66,7 @@ public class LoginFormController {
 		if (result.hasErrors()) {
 			return "login";
 		} else {
-			UserEntity found = userManager.getObject(user.getEmailId());
+			UserEntity found = userManager.getObjectUsingEmail(user.getEmailId());
 			if (found != null) {
 				user.setPassword(SHAHashing.hashCode(user.getPassword()));
 				if (found.equals(user)) {

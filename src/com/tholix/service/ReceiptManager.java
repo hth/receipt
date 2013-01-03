@@ -3,6 +3,8 @@
  */
 package com.tholix.service;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tholix.domain.BaseEntity;
@@ -16,4 +18,6 @@ import com.tholix.domain.UserEntity;
  */
 public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
+	
+	public List<ReceiptEntity> getAllObjectsForUser(UserEntity user);
 }

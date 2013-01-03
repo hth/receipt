@@ -155,6 +155,42 @@
 	</style>
 </head>
 <body>
-	User <c:out value="${user.emailId}" /> '<c:out value="${user.id}" />'
+	User Id <c:out value="${user.emailId}" /> 
+	
+	<c:if test="${receipts.size() > 0}">
+	<table border="1" style="background-color:#c5c021;border:1px dotted black;width:500px;border-collapse:collapse;">
+		<tbody>
+			<tr style="background-color:orange;color:white;">
+				<th style="padding:3px;">Status</th>
+				<th style="padding:3px;">Title</th>
+				<th style="padding:3px;">Receipt Date</th>
+				<th style="padding:3px;">Tax</th>				
+				<th style="padding:3px;">Total</th>
+			</tr>
+		</tbody>
+			<c:forEach var="receipt" items="${receipts}"  varStatus="status">
+			<tr>
+				<td style="padding:3px;">
+					${status.count} ??
+				</td>
+				<td style="padding:3px;" title="${receipt.description}">
+					<spring:eval expression="receipt.title" />
+				</td>
+				<td style="padding:3px;">
+					<spring:eval expression="receipt.receiptDate" />
+				</td>
+				<td style="padding:3px;" align="right">
+					<spring:eval expression="receipt.tax" />
+				</td>
+				<td style="padding:3px;" align="right">
+					<a href="${pageContext.request.contextPath}/showreceipt.htm?id=${receipt.id}&uid=${user.id}">
+						<spring:eval expression="receipt.total" />				
+					</a>
+				</td>
+			</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	</c:if>
 </body>
 </html>

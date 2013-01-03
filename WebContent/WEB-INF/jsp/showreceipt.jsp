@@ -202,7 +202,7 @@
 					<tr>
 						<td colspan="4">
 							<div class="leftAlign"><b>${receipt.title}</b></div>
-							<div class="rightAlign"><b>${receipt.receiptDate}</b></div>
+							<div class="rightAlign"><b><spring:eval expression="receipt.receiptDate" /></b></div>
 						</td>
 					</tr>
 					<tr>
@@ -213,10 +213,18 @@
 					</tr>
 					<c:forEach items="${items}" var="item" varStatus="status">
 					<tr>
-						<td align="right">${item.quantity}</td>
-						<td align="left">${item.name}</td>
-						<td align="right">${item.price}</td>
-						<td>${item.taxed.description}</td>
+						<td align="right">
+							<spring:eval expression="item.quantity" />
+						</td>
+						<td align="left">
+				    		${item.name}
+						</td>
+						<td align="right">
+				    		<spring:eval expression="item.price" />
+						</td>
+						<td>
+							${item.taxed.description}
+						</td>
 					</tr>
 					</c:forEach>
 					<tr>
@@ -226,8 +234,14 @@
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
-						<td colspan="2" align="right"><span>Tax &nbsp;</span> <b>${receipt.tax}</b> <span>&nbsp;&nbsp;Total &nbsp;</span></td>
-						<td align="right"><b>${receipt.total}</b></td>
+						<td colspan="2" align="right">
+							<span>Tax &nbsp;</span> 
+							<b><spring:eval expression="receipt.tax" /></b> 
+							<span>&nbsp;&nbsp;Total &nbsp;</span>
+						</td>
+						<td align="right">
+							<b><spring:eval expression="receipt.total" /></b>
+						</td>
 					</tr>
 				</table>
 			</td>

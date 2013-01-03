@@ -5,6 +5,7 @@ package com.tholix.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -26,20 +27,33 @@ import org.springframework.format.annotation.NumberFormat.Style;
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
+	/**
+	 * Description is provided by the user. This can be empty.
+	 */
+	@Size(min = 0, max = 128)
+	private String description;
+	
+	@NotNull
 	@Size(min = 1, max = 128)
 	private String title;
-
-	@DateTimeFormat(iso = ISO.DATE_TIME)
+	
+	@NotNull
 	private Date receiptDate;
 
-	@NumberFormat(style = Style.CURRENCY)
+	@NotNull
+	@NumberFormat(style = Style.CURRENCY)	
 	private Double total;
 
+	@NotNull
 	@NumberFormat(style = Style.CURRENCY)
-	private Double tax;
+	private Double tax = 0.00;
 
 	@DBRef
 	private UserEntity user;
+	
+	private ReceiptEntity() {
+		
+	}
 
 	private ReceiptEntity(String title, Date receiptDate, Double total, Double tax, UserEntity user) {
 		super();
@@ -64,6 +78,18 @@ public class ReceiptEntity extends BaseEntity {
 	public static ReceiptEntity newInstance(String title, Date receiptDate, Double total, Double tax, UserEntity user) {
 		return new ReceiptEntity(title, receiptDate, total, tax, user);
 	}
+	
+	public static ReceiptEntity newInstance() {
+		return new ReceiptEntity();
+	}	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public String getTitle() {
 		return title;
@@ -73,10 +99,12 @@ public class ReceiptEntity extends BaseEntity {
 		this.title = title;
 	}
 
+	@DateTimeFormat(iso = ISO.NONE)
 	public Date getReceiptDate() {
 		return receiptDate;
 	}
 
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	public void setReceiptDate(Date receiptDate) {
 		this.receiptDate = receiptDate;
 	}
@@ -84,7 +112,7 @@ public class ReceiptEntity extends BaseEntity {
 	public Double getTotal() {
 		return total;
 	}
-
+	
 	public void setTotal(Double total) {
 		this.total = total;
 	}
