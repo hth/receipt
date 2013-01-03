@@ -41,6 +41,7 @@ public class DateUtil {
 			return regex;
 		}
 		
+		@SuppressWarnings("unused")
 		public String getExample() {
 			return example;
 		}

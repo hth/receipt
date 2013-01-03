@@ -8,12 +8,14 @@
 	<title><fmt:message key="login.title" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+	
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
-	<link href="jquery/css/smoothness/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.9.2.custom.css'>
+	
 	<script type="text/javascript" src="jquery/js/jquery-1.8.3.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.9.2.custom.js"></script>
-	<script type='text/javascript' src='jquery/fullcalendar/fullcalendar.min.js'></script>
+	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
 	
 	<script>
 	$(function() {

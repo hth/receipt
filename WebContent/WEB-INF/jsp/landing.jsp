@@ -8,12 +8,14 @@
 	<title><fmt:message key="title" /></title>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+	
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
-	<link href="jquery/css/smoothness/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.9.2.custom.css'>
+	
 	<script type="text/javascript" src="jquery/js/jquery-1.8.3.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.9.2.custom.js"></script>
-	<script type='text/javascript' src='jquery/fullcalendar/fullcalendar.min.js'></script>
+	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
 	
 	<script>
 	$(function() {
@@ -157,40 +159,56 @@
 <body>
 	User Id <c:out value="${user.emailId}" /> 
 	
-	<c:if test="${receipts.size() > 0}">
-	<table border="1" style="background-color:#c5c021;border:1px dotted black;width:500px;border-collapse:collapse;">
-		<tbody>
-			<tr style="background-color:orange;color:white;">
-				<th style="padding:3px;">Status</th>
-				<th style="padding:3px;">Title</th>
-				<th style="padding:3px;">Receipt Date</th>
-				<th style="padding:3px;">Tax</th>				
-				<th style="padding:3px;">Total</th>
-			</tr>
-		</tbody>
-			<c:forEach var="receipt" items="${receipts}"  varStatus="status">
-			<tr>
-				<td style="padding:3px;">
-					${status.count} ??
-				</td>
-				<td style="padding:3px;" title="${receipt.description}">
-					<spring:eval expression="receipt.title" />
-				</td>
-				<td style="padding:3px;">
-					<spring:eval expression="receipt.receiptDate" />
-				</td>
-				<td style="padding:3px;" align="right">
-					<spring:eval expression="receipt.tax" />
-				</td>
-				<td style="padding:3px;" align="right">
-					<a href="${pageContext.request.contextPath}/showreceipt.htm?id=${receipt.id}&uid=${user.id}">
-						<spring:eval expression="receipt.total" />				
-					</a>
-				</td>
-			</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-	</c:if>
+	<!-- Tabs -->
+	<h2 class="demoHeaders">Dashboard</h2>
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1">Receipts</a></li>
+			<li><a href="#tabs-2">Expense Analysis</a></li>
+			<li><a href="#tabs-3">More</a></li>
+		</ul>
+		<div id="tabs-1">				
+			<c:if test="${receipts.size() > 0}">
+			<table border="1" style="background-color:#c5c021;border:1px dotted black;width:500px;border-collapse:collapse;">
+				<tbody>
+					<tr style="background-color:orange;color:white;">
+						<th style="padding:3px;">Status</th>
+						<th style="padding:3px;">Title</th>
+						<th style="padding:3px;">Receipt Date</th>
+						<th style="padding:3px;">Tax</th>				
+						<th style="padding:3px;">Total</th>
+					</tr>
+				</tbody>
+					<c:forEach var="receipt" items="${receipts}"  varStatus="status">
+					<tr>
+						<td style="padding:3px;">
+							${status.count} ??
+						</td>
+						<td style="padding:3px;" title="${receipt.description}">
+							<spring:eval expression="receipt.title" />
+						</td>
+						<td style="padding:3px;">
+							<spring:eval expression="receipt.receiptDate" />
+						</td>
+						<td style="padding:3px;" align="right">
+							<spring:eval expression="receipt.tax" />
+						</td>
+						<td style="padding:3px;" align="right">
+							<a href="${pageContext.request.contextPath}/showreceipt.htm?id=${receipt.id}&uid=${user.id}">
+								<spring:eval expression="receipt.total" />				
+							</a>
+						</td>
+					</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			</c:if>
+		</div>
+		<div id="tabs-2">			
+			
+		</div>
+		<div id="tabs-3">
+		
+		</div>
 </body>
 </html>
