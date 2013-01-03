@@ -22,17 +22,17 @@
 	<!-- http://support.cloudfoundry.com/entries/20073453-spring-data-mongodb-unauthorized-mappingmongoconverter -->
 	<!-- http://stackoverflow.com/questions/10501300/remove-class-from-mongodb-document -->
 	
-	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->	
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongo" ref="mongo"/>
-		<constructor-arg name="databaseName" value="rm"/>
-	</bean>
-	
 	<!-- Factory bean that creates the Mongo instance -->
     <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
     	<property name="host" value="localhost"/>
     	<property name="port" value="27017"/>
     </bean>
+	
+	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->	
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongo"/>
+		<constructor-arg name="databaseName" value="rm"/>
+	</bean>
 	
 	<!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
