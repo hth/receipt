@@ -159,6 +159,31 @@
 <body>
 	User Id <c:out value="${user.emailId}" /> 
 	
+	<form:form modelAttribute="uploadItem" method="post" enctype="multipart/form-data">
+		<fieldset style="width:310px;">
+		    <legend>Upload Receipt</legend>
+		
+		    <p>
+		        <form:label for="description" path="description">
+		        &nbsp;&nbsp;&nbsp;&nbsp;Description:&nbsp; 
+		        </form:label> 
+		        <form:input path="description" size="32"/>
+		    </p>
+		
+		    <p>
+		        <form:label for="fileData" path="fileData">
+		        Receipt Image:&nbsp; 
+		        </form:label> 
+		        <form:input path="fileData" type="file"/>
+		    </p>
+		
+		    <p align="center">
+		        <input type="submit" value="Upload My Receipt"/>
+		    </p>
+		
+		</fieldset>
+    </form:form>
+	
 	<!-- Tabs -->
 	<h2 class="demoHeaders">Dashboard</h2>
 	<div id="tabs">
@@ -210,5 +235,6 @@
 		<div id="tabs-3">
 		
 		</div>
+	</div>
 </body>
 </html>

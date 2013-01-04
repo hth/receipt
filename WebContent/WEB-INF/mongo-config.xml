@@ -23,20 +23,21 @@
 	<!-- http://stackoverflow.com/questions/10501300/remove-class-from-mongodb-document -->
 	
 	<!-- Factory bean that creates the Mongo instance -->
-    <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+    <!-- <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
     	<property name="host" value="localhost"/>
     	<property name="port" value="27017"/>
-    </bean>
+    </bean> -->
+    
+    <!-- <mongo:db-factory dbname="rm" mongo-ref="mongo"/> -->
 	
 	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->	
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongo" ref="mongo"/>
-		<constructor-arg name="databaseName" value="rm"/>
-	</bean>
+	<!-- <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+	</bean>	 -->
 	
 	<!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
-    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-	
+    <!-- <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	 -->
 	<!-- ==================== -->
 	<!-- MongoDB Setup Ends   -->
 	<!-- ==================== -->

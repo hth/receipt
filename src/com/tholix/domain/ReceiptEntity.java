@@ -23,7 +23,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
  * 
  */
 @Document(collection = "RECEIPT")
-@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptDate': -1, 'user': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptBlobId': 1, 'user': 1}") })
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
@@ -36,6 +36,9 @@ public class ReceiptEntity extends BaseEntity {
 	@NotNull
 	@Size(min = 1, max = 128)
 	private String title;
+	
+	@NotNull
+	private String receiptBlobId;
 	
 	@NotNull
 	private Date receiptDate;
@@ -55,14 +58,20 @@ public class ReceiptEntity extends BaseEntity {
 		
 	}
 
-	private ReceiptEntity(String title, Date receiptDate, Double total, Double tax, UserEntity user) {
+	private ReceiptEntity(String title, Date receiptDate, Double total, Double tax) {
 		super();
 		this.title = title;
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
-		this.user = user;
 		
+	}
+	
+	private ReceiptEntity(String description, String receiptBlobId, UserEntity user) {
+		super();
+		this.description = description;
+		this.receiptBlobId = receiptBlobId;
+		this.user = user;
 	}
 	
 	/**
@@ -72,11 +81,14 @@ public class ReceiptEntity extends BaseEntity {
 	 * @param receiptDate
 	 * @param total
 	 * @param tax
-	 * @param user
 	 * @return
 	 */
-	public static ReceiptEntity newInstance(String title, Date receiptDate, Double total, Double tax, UserEntity user) {
-		return new ReceiptEntity(title, receiptDate, total, tax, user);
+	public static ReceiptEntity updateInstance(String title, Date receiptDate, Double total, Double tax) {
+		return new ReceiptEntity(title, receiptDate, total, tax);
+	}
+	
+	public static ReceiptEntity newInstance(String description, String receiptBlobId, UserEntity user) {
+		return new ReceiptEntity(description, receiptBlobId, user);
 	}
 	
 	public static ReceiptEntity newInstance() {
@@ -97,6 +109,14 @@ public class ReceiptEntity extends BaseEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public String getReceiptBlobId() {
+		return receiptBlobId;
+	}
+	
+	public void setReceiptBlobId(String receiptBlobId) {
+		this.receiptBlobId = receiptBlobId;
 	}
 
 	@DateTimeFormat(iso = ISO.NONE)

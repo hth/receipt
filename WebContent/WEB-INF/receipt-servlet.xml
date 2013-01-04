@@ -58,6 +58,9 @@
     
     <bean id="itemFeatureManager" class="com.tholix.service.ItemFeatureManagerImpl" />
     
+    <!-- ===================================== -->
+    <!-- Mongo Configuration                   -->
+    <!-- ===================================== -->
     <!-- Factory bean that creates the Mongo instance -->
     <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
     	<property name="host" value="localhost"/>
@@ -71,13 +74,16 @@
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
 	</bean>	
 	
-	<!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
-    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-    
     <bean id="gridfsDb" factory-bean="mongoTemplate" factory-method="getDb" />
 	<bean id="storageManager" class="com.tholix.service.StorageManagerImpl">
  		<constructor-arg index="0" name="gridfsDb" ref="gridfsDb" />
-	</bean>
+	</bean>	
+	
+	<!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    <!-- ===================================== -->
+    <!-- Mongo Configuration Ends              -->
+    <!-- ===================================== -->
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>

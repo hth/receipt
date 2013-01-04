@@ -40,6 +40,8 @@ public class LoginFormController {
 	
 	@Autowired
 	private UserValidator userValidator;
+	
+	//TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
 	/**
 	 * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request

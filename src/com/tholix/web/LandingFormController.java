@@ -3,32 +3,49 @@
  */
 package com.tholix.web;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mongodb.gridfs.GridFSFile;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.TaxEnum;
 import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ReceiptManager;
+import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.utils.DateUtil;
 
@@ -57,10 +74,14 @@ public class LandingFormController {
 	
 	@Autowired
 	private ItemFeatureManager itemFeatureManager;	
+	
+	@Autowired
+	private StorageManager storageManager;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("user") UserEntity user) {
+	public ModelAndView loadForm(@ModelAttribute("user") UserEntity user, HttpSession session) {
 		log.info("LandingFormController loadForm: " + user.getEmailId());
+		session.setAttribute("user", user);
 		
 		//TODO remove the following two lines
 		receiptManager.dropCollection();
@@ -72,8 +93,56 @@ public class LandingFormController {
 		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
 		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(user);
 		modelAndView.addObject("receipts", receipts);
+		modelAndView.addObject("uploadItem", new UploadReceiptImage());
 		
 		log.info(userProfileEntity.getName());
+		return modelAndView;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ModelAndView create(UploadReceiptImage uploadReceiptImage, BindingResult result, HttpSession session) {
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		if (result.hasErrors()) {
+			for (ObjectError error : result.getAllErrors()) {
+				System.err.println("Error: " + error.getCode() + " - " + error.getDefaultMessage());
+			}
+			
+			ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
+			List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(user);
+			modelAndView.addObject("receipts", receipts);
+			modelAndView.addObject("uploadItem", new UploadReceiptImage());
+			modelAndView.addObject("user", user);
+			
+			return modelAndView;
+		}
+
+		// Some type of file processing...
+		log.info("-------------------------------------------");
+		log.info("Test upload: " + uploadReceiptImage.getDescription());
+		log.info("Test upload: " + uploadReceiptImage.getFileData().getOriginalFilename());
+		log.info("Test upload: " + uploadReceiptImage.getFileData().getContentType());
+		log.info("-------------------------------------------");
+		
+		try {
+			String receiptBlobId = storageManager.save(uploadReceiptImage);
+		    log.info("BolbId: " + receiptBlobId);
+		    
+		    ReceiptEntity receiptEntity = ReceiptEntity.newInstance(uploadReceiptImage.getDescription(), receiptBlobId, user);
+		    receiptManager.saveObject(receiptEntity);
+		} catch (IOException e) {
+			log.error("IOException occured during saving receipt : " + e.getLocalizedMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			log.error("Exception occured during saving receipt : " + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		
+		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
+		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(user);
+		modelAndView.addObject("receipts", receipts);
+		modelAndView.addObject("uploadItem", new UploadReceiptImage());
+		modelAndView.addObject("user", user);
+
 		return modelAndView;
 	}
 	
@@ -81,7 +150,10 @@ public class LandingFormController {
 		
 		try {			
 			//Item from Barnes and Noble
-			ReceiptEntity receipt = ReceiptEntity.newInstance("Barnes & Noble Booksellers #1944", DateUtil.getDateFromString("12/15/2012 02:13PM"), 8.13, 0.63, user);
+			ReceiptEntity receipt = ReceiptEntity.updateInstance("Barnes & Noble Booksellers #1944", DateUtil.getDateFromString("12/15/2012 02:13PM"), 8.13, 0.63);
+			receipt.setDescription("Item from Barnes and Noble");
+			receipt.setUser(user);
+			receipt.setReceiptBlobId("1");
 			receiptManager.saveObject(receipt);
 			log.info("Receipt Id: " + receipt.getId());
 			
@@ -91,7 +163,10 @@ public class LandingFormController {
 			itemManager.saveObject(item2);
 			
 			//Item from Lucky
-			receipt = ReceiptEntity.newInstance("Lucky", DateUtil.getDateFromString("12/25/12 16:54:57"), 14.61, .34, user);
+			receipt = ReceiptEntity.updateInstance("Lucky", DateUtil.getDateFromString("12/25/12 16:54:57"), 14.61, .34);
+			receipt.setDescription("Item from Lucky");
+			receipt.setUser(user);
+			receipt.setReceiptBlobId("2");
 			receiptManager.saveObject(receipt);
 			log.info("Receipt Id: " + receipt.getId());
 			
