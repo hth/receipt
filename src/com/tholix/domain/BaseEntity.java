@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Date;
 
-import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Version;

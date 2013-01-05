@@ -15,9 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.WriteResult;
-import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.UserEntity;
 
 /**
  * @author hitender 
@@ -38,8 +36,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 	
 	@Override
-	public List<ReceiptEntity> getAllObjectsForUser(UserEntity user) {
-		return mongoTemplate.find(new Query(Criteria.where("user").is(user)), ReceiptEntity.class, TABLE);
+	public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
+		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)), ReceiptEntity.class, TABLE);
 	}
 
 	@Override

@@ -31,15 +31,15 @@ public class NewUserWrapper {
 	 * @return
 	 */
 	public UserEntity newUserEntity() {
-		return UserEntity.newInstance(emailId, SHAHashing.hashCode(password));
+		return UserEntity.newInstance(SHAHashing.hashCode(password));
 	}
 
 	public UserProfileEntity newUserProfileEntity(UserEntity user) {
-		return UserProfileEntity.newInstance(firstName, lastName, DateTime.now().toDate(), user);
+		return UserProfileEntity.newInstance(emailId, firstName, lastName, DateTime.now().toDate(), user);
 	}
 
-	public UserPreferenceEntity newUserPreferenceEntity(UserEntity user) {
-		return UserPreferenceEntity.newInstance(accountType, user);
+	public UserPreferenceEntity newUserPreferenceEntity(UserProfileEntity userProfile) {
+		return UserPreferenceEntity.newInstance(accountType, userProfile);
 	}
 
 	public String getFirstName() {

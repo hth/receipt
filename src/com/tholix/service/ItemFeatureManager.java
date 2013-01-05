@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.ItemFeatureEntity;
-import com.tholix.domain.ReceiptEntity;
 
 /**
  * @author hitender 

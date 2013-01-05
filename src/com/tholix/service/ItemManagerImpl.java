@@ -15,12 +15,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.UserPreferenceEntity;
 
 /**
  * @author hitender 

@@ -5,8 +5,12 @@ package com.tholix.service;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -21,6 +25,7 @@ import com.tholix.domain.UserProfileEntity;
  */
 public class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
+	private final Log log = LogFactory.getLog(getClass());
 
 	@Autowired
 	MongoTemplate mongoTemplate;
@@ -32,19 +37,29 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public void saveObject(UserProfileEntity object) {
-		mongoTemplate.save(object, TABLE);
+	public void saveObject(UserProfileEntity object) throws Exception {
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		try {
+			mongoTemplate.save(object, TABLE);
+		} catch (DataIntegrityViolationException e) {
+			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			throw new Exception(e.getMessage());
+		}
 	}
 
 	@Override
-	public UserProfileEntity getObject(UserEntity id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("user").is(id)), UserProfileEntity.class, TABLE);
+	public UserProfileEntity getObject(UserEntity object) {
+		return mongoTemplate.findOne(new Query(Criteria.where("user").is(object)), UserProfileEntity.class, TABLE);
+	}
+	
+	@Override
+	public UserProfileEntity getObjectUsingEmail(String emailId) {
+		return mongoTemplate.findOne(new Query(Criteria.where("emailId").is(emailId)), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
 	public UserProfileEntity getObject(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), UserProfileEntity.class, TABLE);
 	}
 
 	@Override

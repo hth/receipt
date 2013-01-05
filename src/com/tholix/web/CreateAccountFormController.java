@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tholix.domain.NewUserWrapper;
 import com.tholix.domain.UserEntity;
+import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.UserSession;
 import com.tholix.service.UserManager;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
@@ -58,6 +60,7 @@ public class CreateAccountFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("newUserWrapper") NewUserWrapper newUserWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
+		//TODO remove the next three lines
 		userManager.dropCollection();
 		userProfileManager.dropCollection();
 		userPreferenceManager.dropCollection();
@@ -67,9 +70,10 @@ public class CreateAccountFormController {
 			return "newaccount";
 		} else {
 			UserEntity user;
+			UserProfileEntity userProfile;
 			try {
-				userManager.saveObject(newUserWrapper.newUserEntity());
-				user = userManager.getObjectUsingEmail(newUserWrapper.getEmailId());
+				user = newUserWrapper.newUserEntity();
+				userManager.saveObject(user);
 			} catch (Exception e) {
 				log.error("During saving UserEntity: " + e.getLocalizedMessage());
 				result.rejectValue("emailId", "field.emailId.duplicate");
@@ -78,20 +82,24 @@ public class CreateAccountFormController {
 
 			try {
 				userProfileManager.saveObject(newUserWrapper.newUserProfileEntity(user));
+				userProfile = userProfileManager.getObject(user);
 			} catch (Exception e) {
 				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
 				return "newaccount";
 			}
 
 			try {
-				userPreferenceManager.saveObject(newUserWrapper.newUserPreferenceEntity(user));
+				userPreferenceManager.saveObject(newUserWrapper.newUserPreferenceEntity(userProfile));
 			} catch (Exception e) {
 				log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
 				return "newaccount";
 			}
 
-			log.info("Registered new Email Id: " + user.getEmailId());
-			redirectAttrs.addFlashAttribute("user", user);
+			log.info("Registered new Email Id: " + userProfile.getEmailId());
+			
+			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());					
+			redirectAttrs.addFlashAttribute("userSession", userSession);
+			
 			return "redirect:/landing.htm";
 		}
 	}

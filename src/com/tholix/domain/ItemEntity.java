@@ -3,6 +3,7 @@
  */
 package com.tholix.domain;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -42,17 +43,17 @@ public class ItemEntity extends BaseEntity {
 	@DBRef
 	private ReceiptEntity receipt;
 
-	@DBRef
-	private UserEntity user;
+	@NotNull
+	private String userProfileId;
 
-	private ItemEntity(int quantity, String name, Double price, TaxEnum taxed, ReceiptEntity receipt, UserEntity user) {
+	private ItemEntity(int quantity, String name, Double price, TaxEnum taxed, ReceiptEntity receipt, String userProfileId) {
 		super();
 		this.quantity = quantity;
 		this.name = name;
 		this.price = price;
 		this.taxed = taxed;
 		this.receipt = receipt;
-		this.user = user;
+		this.userProfileId = userProfileId;
 	}
 
 	/**
@@ -66,8 +67,8 @@ public class ItemEntity extends BaseEntity {
 	 * @param user
 	 * @return
 	 */
-	public static ItemEntity newInstance(int quantity, String name, Double price, TaxEnum taxed, ReceiptEntity receipt, UserEntity user) {
-		return new ItemEntity(quantity, name, price, taxed, receipt, user);
+	public static ItemEntity newInstance(int quantity, String name, Double price, TaxEnum taxed, ReceiptEntity receipt, String userProfileId) {
+		return new ItemEntity(quantity, name, price, taxed, receipt, userProfileId);
 	}
 
 	public int getQuantity() {
@@ -110,18 +111,16 @@ public class ItemEntity extends BaseEntity {
 		this.receipt = receipt;
 	}
 
-	public UserEntity getUser() {
-		return user;
+	public String getUserProfileId() {
+		return userProfileId;
 	}
 
-	public void setUser(UserEntity user) {
-		this.user = user;
+	public void setUserProfileId(String userProfileId) {
+		this.userProfileId = userProfileId;
 	}
 
 	@Override
 	public String toString() {
 		return "ItemEntity [quantity=" + quantity + ", name=" + name + ", price=" + price + ", taxed=" + taxed + "]";
-	}
-	
-	
+	}	
 }

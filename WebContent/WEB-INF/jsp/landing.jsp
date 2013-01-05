@@ -157,7 +157,7 @@
 	</style>
 </head>
 <body>
-	User Id <c:out value="${user.emailId}" /> 
+	User Id <c:out value="${userSession.emailId}" /> 
 	
 	<form:form modelAttribute="uploadItem" method="post" enctype="multipart/form-data">
 		<fieldset style="width:310px;">
@@ -219,7 +219,7 @@
 							<spring:eval expression="receipt.tax" />
 						</td>
 						<td style="padding:3px;" align="right">
-							<a href="${pageContext.request.contextPath}/showreceipt.htm?id=${receipt.id}&uid=${user.id}">
+							<a href="${pageContext.request.contextPath}/showreceipt.htm?id=${receipt.id}&uid=${userSession.profileId}">
 								<spring:eval expression="receipt.total" />				
 							</a>
 						</td>

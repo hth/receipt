@@ -8,7 +8,6 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,10 +23,9 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class UserProfileEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -1560672689033084436L;
-
-	@DBRef
+	
 	@Indexed(unique = true)
-	private UserEntity user;
+	private String emailId;
 
 	@Size(min = 1, max = 128)
 	private String firstName;
@@ -41,10 +39,13 @@ public class UserProfileEntity extends BaseEntity {
 	/* For time zone */
 	@NotNull
 	private int hoursOffset;
+	
+	@DBRef
+	private UserEntity user;
 
-	//@PersistenceConstructor
-	private UserProfileEntity(String firstName, String lastName, Date registration, UserEntity user) {
+	private UserProfileEntity(String emailId, String firstName, String lastName, Date registration, UserEntity user) {
 		super();
+		this.emailId = emailId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.registration = registration;
@@ -60,8 +61,8 @@ public class UserProfileEntity extends BaseEntity {
 	 * @param user
 	 * @return
 	 */
-	public static UserProfileEntity newInstance(String firstName, String lastName, Date registration, UserEntity user) {
-		return new UserProfileEntity(firstName, lastName, registration, user);
+	public static UserProfileEntity newInstance(String emailId, String firstName, String lastName, Date registration, UserEntity user) {
+		return new UserProfileEntity(emailId, firstName, lastName, registration, user);
 	}
 
 	public UserEntity getUser() {
@@ -70,6 +71,14 @@ public class UserProfileEntity extends BaseEntity {
 
 	public void setUser(UserEntity user) {
 		this.user = user;
+	}	
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 	public String getFirstName() {

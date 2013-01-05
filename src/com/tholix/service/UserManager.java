@@ -15,6 +15,6 @@ import com.tholix.domain.UserEntity;
 public interface UserManager extends RepositoryManager<UserEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(UserEntity.class, Document.class, "collection");
 	
-	public UserEntity getObjectUsingEmail(String emailId);
+	
 
 }

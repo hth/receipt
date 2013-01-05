@@ -52,11 +52,6 @@ public class UserManagerImpl implements UserManager {
 	public UserEntity getObject(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), UserEntity.class, TABLE);
 	}
-	
-	@Override
-	public UserEntity getObjectUsingEmail(String emailId) {
-		return mongoTemplate.findOne(new Query(Criteria.where("emailId").is(emailId)), UserEntity.class, TABLE);
-	}
 
 	@Override
 	public WriteResult updateObject(String id, String name) {

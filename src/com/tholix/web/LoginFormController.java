@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tholix.domain.UserEntity;
+import com.tholix.domain.UserLoginWrapper;
+import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.UserSession;
 import com.tholix.service.UserManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.NewUserValidator;
 import com.tholix.service.validator.UserValidator;
 import com.tholix.utils.SHAHashing;
 
@@ -51,9 +53,9 @@ public class LoginFormController {
 	 * 
 	 * @return UserEntity
 	 */
-	@ModelAttribute("user")
-	public UserEntity getUser() {
-		return UserEntity.findUser("");
+	@ModelAttribute("userLoginWrapper")
+	public UserLoginWrapper getUserLoginWrapper() {
+		return UserLoginWrapper.newInstance();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -63,23 +65,29 @@ public class LoginFormController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String post(@ModelAttribute("user") UserEntity user, BindingResult result, final RedirectAttributes redirectAttrs) {
-		userValidator.validate(user, result);
+	public String post(@ModelAttribute("userLoginWrapper") UserLoginWrapper userLoginWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
+		userValidator.validate(userLoginWrapper, result);
 		if (result.hasErrors()) {
 			return "login";
 		} else {
-			UserEntity found = userManager.getObjectUsingEmail(user.getEmailId());
-			if (found != null) {
-				user.setPassword(SHAHashing.hashCode(user.getPassword()));
-				if (found.equals(user)) {
-					log.info("Email Id: " + user.getEmailId() + " and found " + found.getEmailId());
-					redirectAttrs.addFlashAttribute("user", found);
+			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginWrapper.getEmailId());
+			if (userProfile != null) {
+				userLoginWrapper.setPassword(SHAHashing.hashCode(userLoginWrapper.getPassword()));
+				UserEntity user = userManager.getObject(userProfile.getUser().getId());
+				if(user.getPassword().equals(userLoginWrapper.getPassword())) {
+					log.info("Email Id: " + userLoginWrapper.getEmailId() + " and found " + userProfile.getEmailId());
+					
+					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());					
+					redirectAttrs.addFlashAttribute("userSession", userSession);
+					
 					return "redirect:/landing.htm";
 				} else {
+					log.error("Password not matching for user : " + userLoginWrapper.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
 					return "login";
 				}
 			} else {
+				log.error("No Email Id found in record : " + userLoginWrapper.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
 				return "login";
 			}

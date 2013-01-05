@@ -5,7 +5,6 @@ package com.tholix.domain;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,16 +23,16 @@ public class UserPreferenceEntity extends BaseEntity {
 
 	@DBRef
 	@Indexed(unique = true)
-	private UserEntity user;
+	private UserProfileEntity userProfile;
 
 	@NotNull
 	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
 
 	//@PersistenceConstructor
-	private UserPreferenceEntity(AccountTypeEnum accountType, UserEntity user) {
+	private UserPreferenceEntity(AccountTypeEnum accountType, UserProfileEntity userProfile) {
 		super();
 		this.accountType = accountType;
-		this.user = user;
+		this.userProfile = userProfile;
 	}
 
 	/**
@@ -43,16 +42,16 @@ public class UserPreferenceEntity extends BaseEntity {
 	 * @param user
 	 * @return
 	 */
-	public static UserPreferenceEntity newInstance(AccountTypeEnum accountType, UserEntity user) {
-		return new UserPreferenceEntity(accountType, user);
+	public static UserPreferenceEntity newInstance(AccountTypeEnum accountType, UserProfileEntity userProfile) {
+		return new UserPreferenceEntity(accountType, userProfile);
+	}	
+
+	public UserProfileEntity getUserProfile() {
+		return userProfile;
 	}
 
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
+	public void setUserProfile(UserProfileEntity userProfile) {
+		this.userProfile = userProfile;
 	}
 
 	public AccountTypeEnum getAccountType() {

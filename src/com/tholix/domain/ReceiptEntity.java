@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -23,7 +22,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
  * 
  */
 @Document(collection = "RECEIPT")
-@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptBlobId': 1, 'user': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
@@ -51,8 +50,8 @@ public class ReceiptEntity extends BaseEntity {
 	@NumberFormat(style = Style.CURRENCY)
 	private Double tax = 0.00;
 
-	@DBRef
-	private UserEntity user;
+	@NotNull
+	private String userProfileId;
 	
 	private ReceiptEntity() {
 		
@@ -67,11 +66,11 @@ public class ReceiptEntity extends BaseEntity {
 		
 	}
 	
-	private ReceiptEntity(String description, String receiptBlobId, UserEntity user) {
+	private ReceiptEntity(String description, String receiptBlobId, String userProfileId) {
 		super();
 		this.description = description;
 		this.receiptBlobId = receiptBlobId;
-		this.user = user;
+		this.userProfileId = userProfileId;
 	}
 	
 	/**
@@ -87,8 +86,8 @@ public class ReceiptEntity extends BaseEntity {
 		return new ReceiptEntity(title, receiptDate, total, tax);
 	}
 	
-	public static ReceiptEntity newInstance(String description, String receiptBlobId, UserEntity user) {
-		return new ReceiptEntity(description, receiptBlobId, user);
+	public static ReceiptEntity newInstance(String description, String receiptBlobId, String userProfileId) {
+		return new ReceiptEntity(description, receiptBlobId, userProfileId);
 	}
 	
 	public static ReceiptEntity newInstance() {
@@ -145,11 +144,11 @@ public class ReceiptEntity extends BaseEntity {
 		this.tax = tax;
 	}
 
-	public UserEntity getUser() {
-		return user;
+	public String getUserProfileId() {
+		return userProfileId;
 	}
 
-	public void setUser(UserEntity user) {
-		this.user = user;
+	public void setUserProfileId(String userProfileId) {
+		this.userProfileId = userProfileId;
 	}
 }

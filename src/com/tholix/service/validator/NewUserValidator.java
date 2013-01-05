@@ -28,6 +28,7 @@ public class NewUserValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
+		log.debug("Executing validation for new user");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[] { "First Name" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[] { "Last Name" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[] { "Email ID" });
