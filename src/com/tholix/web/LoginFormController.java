@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tholix.domain.UserEntity;
+import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserLoginWrapper;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
-import com.tholix.service.UserManager;
+import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UserLoginValidator;
 import com.tholix.utils.SHAHashing;
@@ -34,8 +34,8 @@ public class LoginFormController {
 	private final Log log = LogFactory.getLog(getClass());
 
 	@Autowired
-	@Qualifier("userManager")
-	private UserManager userManager;
+	@Qualifier("userAuthenticationManager")
+	private UserAuthenticationManager userAuthenticationManager;
 
 	@Autowired
 	private UserProfileManager userProfileManager;
@@ -49,9 +49,9 @@ public class LoginFormController {
 	 * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
 	 * 
 	 * @info: OR you could just replace it in Form Request method getReceiptUser 
-	 *        model.addAttribute("receiptUser", UserEntity.findReceiptUser(""));
+	 *        model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
 	 * 
-	 * @return UserEntity
+	 * @return UserAuthenticationEntity
 	 */
 	@ModelAttribute("userLoginWrapper")
 	public UserLoginWrapper getUserLoginWrapper() {
@@ -73,7 +73,7 @@ public class LoginFormController {
 			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginWrapper.getEmailId());
 			if (userProfile != null) {
 				userLoginWrapper.setPassword(SHAHashing.hashCode(userLoginWrapper.getPassword()));
-				UserEntity user = userManager.getObject(userProfile.getUser().getId());
+				UserAuthenticationEntity user = userAuthenticationManager.getObject(userProfile.getUserAuthentication().getId());
 				if(user.getPassword().equals(userLoginWrapper.getPassword())) {
 					log.info("Email Id: " + userLoginWrapper.getEmailId() + " and found " + userProfile.getEmailId());
 					

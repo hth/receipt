@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tholix.domain.UserRegistrationWrapper;
-import com.tholix.domain.UserEntity;
+import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
-import com.tholix.service.UserManager;
+import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UserRegistrationValidator;
@@ -35,8 +35,8 @@ public class CreateAccountFormController {
 	private final Log log = LogFactory.getLog(getClass());
 
 	@Autowired
-	@Qualifier("userManager")
-	private UserManager userManager;
+	@Qualifier("userAuthenticationManager")
+	private UserAuthenticationManager userAuthenticationManager;
 
 	@Autowired
 	private UserProfileManager userProfileManager;
@@ -61,7 +61,7 @@ public class CreateAccountFormController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userRegistrationWrapper") UserRegistrationWrapper userRegistrationWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
 		//TODO remove the next three lines
-		userManager.dropCollection();
+		userAuthenticationManager.dropCollection();
 		userProfileManager.dropCollection();
 		userPreferenceManager.dropCollection();
 		
@@ -69,20 +69,20 @@ public class CreateAccountFormController {
 		if (result.hasErrors()) {
 			return "newaccount";
 		} else {
-			UserEntity user;
+			UserAuthenticationEntity userAuthentication;
 			UserProfileEntity userProfile;
 			try {
-				user = userRegistrationWrapper.newUserEntity();
-				userManager.saveObject(user);
+				userAuthentication = userRegistrationWrapper.newUserAuthenticationEntity();
+				userAuthenticationManager.saveObject(userAuthentication);
 			} catch (Exception e) {
-				log.error("During saving UserEntity: " + e.getLocalizedMessage());
+				log.error("During saving UserAuthenticationEntity: " + e.getLocalizedMessage());
 				result.rejectValue("emailId", "field.emailId.duplicate");
 				return "newaccount";
 			}
 
 			try {
-				userProfileManager.saveObject(userRegistrationWrapper.newUserProfileEntity(user));
-				userProfile = userProfileManager.getObject(user);
+				userProfileManager.saveObject(userRegistrationWrapper.newUserProfileEntity(userAuthentication));
+				userProfile = userProfileManager.getObject(userAuthentication);
 			} catch (Exception e) {
 				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
 				return "newaccount";

@@ -6,6 +6,7 @@ package com.tholix.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,11 +18,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.UserEntity;
+import com.tholix.domain.UserAuthenticationEntity;
+import com.tholix.domain.UserSession;
 import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ReceiptManager;
-import com.tholix.service.UserManager;
+import com.tholix.service.UserAuthenticationManager;
 
 /**
  * @author hitender 
@@ -37,7 +39,7 @@ public class ShowReceiptFormController {
 	private String nextPageIsCalledShowReceipt = "/showreceipt";
 	
 	@Autowired
-	private UserManager userManager;
+	private UserAuthenticationManager userAuthenticationManager;
 	
 	@Autowired
 	private ReceiptManager receiptManager;
@@ -49,10 +51,10 @@ public class ShowReceiptFormController {
 	private ItemFeatureManager itemFeatureManager;		
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(HttpServletRequest request) {
+	public ModelAndView loadForm(HttpServletRequest request, HttpSession session) {
+		UserSession userSession = (UserSession) session.getAttribute("userSession");
 		log.info("Loading Receipt Item with id: " + request.getParameter("id"));
 		
-		UserEntity user = userManager.getObject(request.getParameter("uid"));
 		ReceiptEntity receipt = receiptManager.getObject(request.getParameter("id"));
 		List<ItemEntity> items = itemManager.getObjectWithRecipt(receipt);
 		

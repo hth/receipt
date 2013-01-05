@@ -42,7 +42,7 @@
 	<!-- refer this for session scope -->
 	<!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
 	<!-- an HTTP Session-scoped bean exposed as a proxy -->
-    <bean id="userManager" class="com.tholix.service.UserManagerImpl" />
+    <bean id="userAuthenticationManager" class="com.tholix.service.UserAuthenticationManagerImpl" />
     
     <bean id="userProfileManager" class="com.tholix.service.UserProfileManagerImpl" />
     

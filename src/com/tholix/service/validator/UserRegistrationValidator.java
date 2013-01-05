@@ -34,20 +34,20 @@ public class UserRegistrationValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[] { "Email ID" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[] { "Password" });
 
-		UserRegistrationWrapper newUser = (UserRegistrationWrapper) obj;
-		if (newUser.getPassword().length() < 4) {
+		UserRegistrationWrapper userRegistration = (UserRegistrationWrapper) obj;
+		if (userRegistration.getPassword().length() < 4) {
 			errors.rejectValue("firstName", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 
-		if (newUser.getPassword().length() < 4) {
+		if (userRegistration.getPassword().length() < 4) {
 			errors.rejectValue("lastName", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 
-		if (!newUser.getEmailId().matches(EMAIL_REGEX)) {
-			errors.rejectValue("emailId", "email.notValid", new Object[] { newUser.getEmailId() }, "Not a valid email");
+		if (!userRegistration.getEmailId().matches(EMAIL_REGEX)) {
+			errors.rejectValue("emailId", "email.notValid", new Object[] { userRegistration.getEmailId() }, "Not a valid email");
 		}
 
-		if (newUser.getPassword().length() < 4) {
+		if (userRegistration.getPassword().length() < 4) {
 			errors.rejectValue("password", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 	}

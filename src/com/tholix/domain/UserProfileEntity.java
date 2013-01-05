@@ -41,15 +41,15 @@ public class UserProfileEntity extends BaseEntity {
 	private int hoursOffset;
 	
 	@DBRef
-	private UserEntity user;
+	private UserAuthenticationEntity userAuthentication;
 
-	private UserProfileEntity(String emailId, String firstName, String lastName, Date registration, UserEntity user) {
+	private UserProfileEntity(String emailId, String firstName, String lastName, Date registration, UserAuthenticationEntity userAuthentication) {
 		super();
 		this.emailId = emailId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.registration = registration;
-		this.user = user;
+		this.userAuthentication = userAuthentication;
 	}
 
 	/**
@@ -58,20 +58,20 @@ public class UserProfileEntity extends BaseEntity {
 	 * @param firstName
 	 * @param lastName
 	 * @param registration
-	 * @param user
+	 * @param userAuthentication
 	 * @return
 	 */
-	public static UserProfileEntity newInstance(String emailId, String firstName, String lastName, Date registration, UserEntity user) {
-		return new UserProfileEntity(emailId, firstName, lastName, registration, user);
+	public static UserProfileEntity newInstance(String emailId, String firstName, String lastName, Date registration, UserAuthenticationEntity userAuthentication) {
+		return new UserProfileEntity(emailId, firstName, lastName, registration, userAuthentication);
+	}
+	
+	public UserAuthenticationEntity getUserAuthentication() {
+		return userAuthentication;
 	}
 
-	public UserEntity getUser() {
-		return user;
+	public void setUserAuthentication(UserAuthenticationEntity userAuthentication) {
+		this.userAuthentication = userAuthentication;
 	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
-	}	
 
 	public String getEmailId() {
 		return emailId;

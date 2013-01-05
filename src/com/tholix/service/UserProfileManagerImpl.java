@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.WriteResult;
-import com.tholix.domain.UserEntity;
+import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 
 /**
@@ -48,8 +48,8 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public UserProfileEntity getObject(UserEntity object) {
-		return mongoTemplate.findOne(new Query(Criteria.where("user").is(object)), UserProfileEntity.class, TABLE);
+	public UserProfileEntity getObject(UserAuthenticationEntity object) {
+		return mongoTemplate.findOne(new Query(Criteria.where("userAuthentication").is(object)), UserProfileEntity.class, TABLE);
 	}
 	
 	@Override

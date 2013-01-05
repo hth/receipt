@@ -30,12 +30,12 @@ public class UserRegistrationWrapper {
 	 * 
 	 * @return
 	 */
-	public UserEntity newUserEntity() {
-		return UserEntity.newInstance(SHAHashing.hashCode(password));
+	public UserAuthenticationEntity newUserAuthenticationEntity() {
+		return UserAuthenticationEntity.newInstance(SHAHashing.hashCode(password));
 	}
 
-	public UserProfileEntity newUserProfileEntity(UserEntity user) {
-		return UserProfileEntity.newInstance(emailId, firstName, lastName, DateTime.now().toDate(), user);
+	public UserProfileEntity newUserProfileEntity(UserAuthenticationEntity userAuthentication) {
+		return UserProfileEntity.newInstance(emailId, firstName, lastName, DateTime.now().toDate(), userAuthentication);
 	}
 
 	public UserPreferenceEntity newUserPreferenceEntity(UserProfileEntity userProfile) {

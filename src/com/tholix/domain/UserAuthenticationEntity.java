@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @see http://www.jpalace.org/docs/tutorials/spring/mvc_21.html
  */
 @Document(collection = "USER_AUTHENTICATION")
-public class UserEntity extends BaseEntity {
+public class UserAuthenticationEntity extends BaseEntity {
 	private static final long serialVersionUID = -5207492124434434278L;	
 
 	@NotNull
@@ -24,7 +24,7 @@ public class UserEntity extends BaseEntity {
 	/**
 	 * Required for Bean Instantiation
 	 */
-	private UserEntity() {
+	private UserAuthenticationEntity() {
 	}
 
 	/**
@@ -32,12 +32,12 @@ public class UserEntity extends BaseEntity {
 	 * @param password
 	 */
 	//@PersistenceConstructor
-	private UserEntity(String password) {
+	private UserAuthenticationEntity(String password) {
 		this.password =  password; 
 	}
 
-	public static UserEntity findUser(String emailId) {
-		return new UserEntity(emailId);
+	public static UserAuthenticationEntity findUser(String emailId) {
+		return new UserAuthenticationEntity(emailId);
 	}
 
 	/**
@@ -47,8 +47,8 @@ public class UserEntity extends BaseEntity {
 	 * @param passwordHash
 	 * @return
 	 */
-	public static UserEntity newInstance(String password) {
-		return new UserEntity(password);
+	public static UserAuthenticationEntity newInstance(String password) {
+		return new UserAuthenticationEntity(password);
 	}
 	
 	public String getPassword() {

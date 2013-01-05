@@ -17,14 +17,14 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
-import com.tholix.domain.UserEntity;
+import com.tholix.domain.UserAuthenticationEntity;
 
 /**
  * @author hitender
  * @when Dec 16, 2012 1:20:53 PM
  */
 @Repository
-public class UserManagerImpl implements UserManager {
+public class UserAuthenticationManagerImpl implements UserAuthenticationManager {
 	private final Log log = LogFactory.getLog(getClass());
 
 	private static final long serialVersionUID = 5745317401200234475L;
@@ -33,12 +33,12 @@ public class UserManagerImpl implements UserManager {
 	MongoTemplate mongoTemplate;
 
 	@Override
-	public List<UserEntity> getAllObjects() {
-		return mongoTemplate.findAll(UserEntity.class, TABLE);
+	public List<UserAuthenticationEntity> getAllObjects() {
+		return mongoTemplate.findAll(UserAuthenticationEntity.class, TABLE);
 	}
 
 	@Override
-	public void saveObject(UserEntity object) throws Exception {
+	public void saveObject(UserAuthenticationEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
 			mongoTemplate.save(object, TABLE);
@@ -49,8 +49,8 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public UserEntity getObject(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), UserEntity.class, TABLE);
+	public UserAuthenticationEntity getObject(String id) {
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
 	}
 
 	@Override
