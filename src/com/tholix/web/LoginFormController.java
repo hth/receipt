@@ -21,7 +21,7 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.UserManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.UserValidator;
+import com.tholix.service.validator.UserLoginValidator;
 import com.tholix.utils.SHAHashing;
 
 /**
@@ -41,7 +41,7 @@ public class LoginFormController {
 	private UserProfileManager userProfileManager;
 	
 	@Autowired
-	private UserValidator userValidator;
+	private UserLoginValidator userLoginValidator;
 	
 	//TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
@@ -66,7 +66,7 @@ public class LoginFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userLoginWrapper") UserLoginWrapper userLoginWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
-		userValidator.validate(userLoginWrapper, result);
+		userLoginValidator.validate(userLoginWrapper, result);
 		if (result.hasErrors()) {
 			return "login";
 		} else {

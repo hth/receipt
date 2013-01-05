@@ -9,21 +9,21 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.tholix.domain.NewUserWrapper;
+import com.tholix.domain.UserRegistrationWrapper;
 
 /**
  * @author hitender
  * @when Dec 25, 2012 12:17:57 PM
  * 
  */
-public class NewUserValidator implements Validator {
+public class UserRegistrationValidator implements Validator {
 	private final Log log = LogFactory.getLog(getClass());
 
 	public static final String EMAIL_REGEX = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return NewUserWrapper.class.equals(clazz);
+		return UserRegistrationWrapper.class.equals(clazz);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class NewUserValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[] { "Email ID" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[] { "Password" });
 
-		NewUserWrapper newUser = (NewUserWrapper) obj;
+		UserRegistrationWrapper newUser = (UserRegistrationWrapper) obj;
 		if (newUser.getPassword().length() < 4) {
 			errors.rejectValue("firstName", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}

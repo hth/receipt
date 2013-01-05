@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tholix.domain.NewUserWrapper;
+import com.tholix.domain.UserRegistrationWrapper;
 import com.tholix.domain.UserEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.UserManager;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.NewUserValidator;
+import com.tholix.service.validator.UserRegistrationValidator;
 
 /**
  * @author hitender
@@ -45,11 +45,11 @@ public class CreateAccountFormController {
 	private UserPreferenceManager userPreferenceManager;
 	
 	@Autowired
-	private NewUserValidator newUserValidator;
+	private UserRegistrationValidator userRegistrationValidator;
 
-	@ModelAttribute("newUserWrapper")
-	public NewUserWrapper getNewUserWrapper() {
-		return NewUserWrapper.newInstance();
+	@ModelAttribute("userRegistrationWrapper")
+	public UserRegistrationWrapper getUserRegistrationWrapper() {
+		return UserRegistrationWrapper.newInstance();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -59,20 +59,20 @@ public class CreateAccountFormController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String post(@ModelAttribute("newUserWrapper") NewUserWrapper newUserWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
+	public String post(@ModelAttribute("userRegistrationWrapper") UserRegistrationWrapper userRegistrationWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
 		//TODO remove the next three lines
 		userManager.dropCollection();
 		userProfileManager.dropCollection();
 		userPreferenceManager.dropCollection();
 		
-		newUserValidator.validate(newUserWrapper, result);
+		userRegistrationValidator.validate(userRegistrationWrapper, result);
 		if (result.hasErrors()) {
 			return "newaccount";
 		} else {
 			UserEntity user;
 			UserProfileEntity userProfile;
 			try {
-				user = newUserWrapper.newUserEntity();
+				user = userRegistrationWrapper.newUserEntity();
 				userManager.saveObject(user);
 			} catch (Exception e) {
 				log.error("During saving UserEntity: " + e.getLocalizedMessage());
@@ -81,7 +81,7 @@ public class CreateAccountFormController {
 			}
 
 			try {
-				userProfileManager.saveObject(newUserWrapper.newUserProfileEntity(user));
+				userProfileManager.saveObject(userRegistrationWrapper.newUserProfileEntity(user));
 				userProfile = userProfileManager.getObject(user);
 			} catch (Exception e) {
 				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
@@ -89,7 +89,7 @@ public class CreateAccountFormController {
 			}
 
 			try {
-				userPreferenceManager.saveObject(newUserWrapper.newUserPreferenceEntity(userProfile));
+				userPreferenceManager.saveObject(userRegistrationWrapper.newUserPreferenceEntity(userProfile));
 			} catch (Exception e) {
 				log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
 				return "newaccount";

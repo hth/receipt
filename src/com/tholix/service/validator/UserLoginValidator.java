@@ -15,7 +15,7 @@ import com.tholix.domain.UserLoginWrapper;
  * @author hitender
  * @when Dec 16, 2012 6:52:46 PM
  */
-public class UserValidator implements Validator {
+public class UserLoginValidator implements Validator {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -30,7 +30,7 @@ public class UserValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[] { "Password" });
 
 		UserLoginWrapper userLoginWrapper = (UserLoginWrapper) obj;
-		if (!userLoginWrapper.getEmailId().matches(NewUserValidator.EMAIL_REGEX)) {
+		if (!userLoginWrapper.getEmailId().matches(UserRegistrationValidator.EMAIL_REGEX)) {
 			errors.rejectValue("emailId", "email.notValid", new Object[] { userLoginWrapper.getEmailId() }, "Not a valid email");
 		}
 

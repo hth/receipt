@@ -48,9 +48,9 @@
     
     <bean id="userPreferenceManager" class="com.tholix.service.UserPreferenceManagerImpl" />
     
-    <bean id="newUserValidator" class="com.tholix.service.validator.NewUserValidator" />
+    <bean id="userRegistrationValidator" class="com.tholix.service.validator.UserRegistrationValidator" />
     
-    <bean id="userValidator" class="com.tholix.service.validator.UserValidator" />
+    <bean id="userLoginValidator" class="com.tholix.service.validator.UserLoginValidator" />
     
     <bean id="receiptManager" class="com.tholix.service.ReceiptManagerImpl" />
     

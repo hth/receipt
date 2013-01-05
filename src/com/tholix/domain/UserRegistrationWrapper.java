@@ -13,7 +13,7 @@ import com.tholix.utils.SHAHashing;
  * @when Dec 25, 2012 12:01:53 PM
  * 
  */
-public class NewUserWrapper {
+public class UserRegistrationWrapper {
 
 	private String firstName;
 	private String lastName;
@@ -21,8 +21,8 @@ public class NewUserWrapper {
 	private String password;
 	private AccountTypeEnum accountType;
 
-	public static NewUserWrapper newInstance() {
-		return new NewUserWrapper();
+	public static UserRegistrationWrapper newInstance() {
+		return new UserRegistrationWrapper();
 	}
 
 	/**
