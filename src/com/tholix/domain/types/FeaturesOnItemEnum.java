@@ -9,10 +9,13 @@ package com.tholix.domain.types;
  * 
  */
 public enum FeaturesOnItemEnum {
-
-	RETURN_120_DAY("RETURN_120_DAY", "120 Days Return Notification"), RETURN_90_DAY("RETURN_90_DAY", "90 Days Return Notification"), RETURN_60_DAY("RETURN_60_DAY",
-			"60 Days Return Notification"), RETURN_30_DAY("RETURN_30_DAY", "30 Days Return Notification"), RETURN_15_DAY("RETURN_15_DAY", "15 Days Return Notification"), PRICE_CHECK_30_DAY(
-			"PRICE_CHECK_30_DAY", "30 Days Price Check");
+	RETURN_120_DAY("RETURN_120_DAY", 			"120 Days Return Notification"), 
+	RETURN_90_DAY("RETURN_90_DAY", 				"90 Days Return Notification"), 
+	RETURN_60_DAY("RETURN_60_DAY", 				"60 Days Return Notification"), 
+	RETURN_30_DAY("RETURN_30_DAY", 				"30 Days Return Notification"), 
+	RETURN_15_DAY("RETURN_15_DAY", 				"15 Days Return Notification"), 
+	PRICE_CHECK_30_DAY("PRICE_CHECK_30_DAY", 	"30 Days Price Check")
+	;
 
 	private final String description;
 	private final String name;

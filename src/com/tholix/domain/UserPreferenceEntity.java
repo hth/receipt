@@ -39,7 +39,7 @@ public class UserPreferenceEntity extends BaseEntity {
 	 * This method is used when the Entity is created for the first time. 
 	 * 
 	 * @param accountType
-	 * @param user
+	 * @param userProfile
 	 * @return
 	 */
 	public static UserPreferenceEntity newInstance(AccountTypeEnum accountType, UserProfileEntity userProfile) {
