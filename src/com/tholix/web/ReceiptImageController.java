@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mongodb.gridfs.GridFSDBFile;
@@ -48,12 +49,11 @@ public class ReceiptImageController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getReceipt(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	public ModelAndView getReceipt(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
-		String imageId = request.getParameter("id");
 		
 		try {
-			GridFSDBFile gridFSDBFile = storageManager.get(imageId);
+			GridFSDBFile gridFSDBFile = storageManager.get(id);
 			if(gridFSDBFile == null) {
 				response.setContentType("image/gif");
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
@@ -70,7 +70,7 @@ public class ReceiptImageController {
 			return null;
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage());
-			log.error("Image retrival error occured: " + imageId + " for user : " + userSession.getEmailId());
+			log.error("Image retrival error occured: " + id + " for user : " + userSession.getEmailId());
 			return null;
 		} 
 	}

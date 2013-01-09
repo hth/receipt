@@ -93,7 +93,7 @@ public class StorageManagerImpl implements StorageManager {
 		try {
 			return gridFs.findOne(new ObjectId(id));
 		} catch(IllegalArgumentException iae) {
-			log.error(iae.getLocalizedMessage());
+			log.error("Submitted image id " + id + ", error mesaage - " + iae.getLocalizedMessage());
 			return null;
 		}
 	}

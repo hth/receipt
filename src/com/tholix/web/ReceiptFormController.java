@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tholix.domain.ItemEntity;
@@ -50,11 +51,10 @@ public class ReceiptFormController {
 	private ItemFeatureManager itemFeatureManager;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(HttpServletRequest request, HttpSession session) {
-		UserSession userSession = (UserSession) session.getAttribute("userSession");
-		log.info("Loading Receipt Item with id: " + request.getParameter("id"));
+	public ModelAndView loadForm(@RequestParam("id") String id) {
+		log.info("Loading Receipt Item with id: " + id);
 
-		ReceiptEntity receipt = receiptManager.getObject(request.getParameter("id"));
+		ReceiptEntity receipt = receiptManager.getObject(id);
 		List<ItemEntity> items = itemManager.getObjectWithRecipt(receipt);
 
 		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledReceipt);

@@ -224,7 +224,7 @@
 						    		${receipt.description}
 								</td>
 								<td align="left">
-									<spring:eval expression="receipt.created" />
+									${receipt.created}
 								</td>
 								<td>
 									<%-- <FORM>
