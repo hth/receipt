@@ -3,33 +3,27 @@
  */
 package com.tholix.domain;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 12:09:01 AM
+ * @when Jan 6, 2013 1:04:43 PM
  * 
  */
-@Document(collection = "RECEIPT")
-@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
-public class ReceiptEntity extends BaseEntity {
-	private static final long serialVersionUID = -7218588762395325831L;
+@Document(collection = "RECEIPT_OCR")
+@CompoundIndexes({ @CompoundIndex(name = "user_receipt_ocr_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
+public class ReceiptEntityOCR extends BaseEntity {
+	private static final long serialVersionUID = 5258538763598321136L;
 
 	/**
-	 * Description is provided by the user. This can be empty.
+	 * Description is provided by the user. Description can be empty.
 	 */
 	@Size(min = 0, max = 128)
 	private String description;
@@ -45,24 +39,25 @@ public class ReceiptEntity extends BaseEntity {
 	private String receiptBlobId;
 
 	@NotNull
-	private Date receiptDate;
+	private String receiptDate;
 
 	@NotNull
-	@NumberFormat(style = Style.CURRENCY)
-	private Double total;
+	private String total;
 
 	@NotNull
-	@NumberFormat(style = Style.CURRENCY)
-	private Double tax = 0.00;
+	private String tax = "0.00";
 
 	@NotNull
 	private String userProfileId;
 
-	private ReceiptEntity() {
+	@NotNull
+	private String receiptOCRTranslation;
+
+	private ReceiptEntityOCR() {
 
 	}
 
-	private ReceiptEntity(String title, Date receiptDate, Double total, Double tax) {
+	private ReceiptEntityOCR(String title, String receiptDate, String total, String tax) {
 		super();
 		this.title = title;
 		this.receiptDate = receiptDate;
@@ -70,15 +65,17 @@ public class ReceiptEntity extends BaseEntity {
 		this.tax = tax;
 	}
 
-	private ReceiptEntity(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	private ReceiptEntityOCR(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
 		super();
 		this.description = description;
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
+		this.receiptOCRTranslation = receiptOCRTranslation;
 	}
 
-	private ReceiptEntity(String title, Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	private ReceiptEntityOCR(String title, String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
+			String userProfileId) {
 		super();
 		this.title = title;
 		this.receiptDate = receiptDate;
@@ -99,21 +96,21 @@ public class ReceiptEntity extends BaseEntity {
 	 * @param tax
 	 * @return
 	 */
-	public static ReceiptEntity updateInstance(String title, Date receiptDate, Double total, Double tax) {
-		return new ReceiptEntity(title, receiptDate, total, tax);
+	public static ReceiptEntityOCR updateInstance(String title, String receiptDate, String total, String tax) {
+		return new ReceiptEntityOCR(title, receiptDate, total, tax);
 	}
 
-	public static ReceiptEntity newInstance(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
-		return new ReceiptEntity(description, receiptStatus, receiptBlobId, userProfileId);
+	public static ReceiptEntityOCR newInstance(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
+		return new ReceiptEntityOCR(description, receiptStatus, receiptBlobId, userProfileId, receiptOCRTranslation);
 	}
 
-	public static ReceiptEntity newInstance(String title, Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
-			String userProfileId) {
-		return new ReceiptEntity(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+	public static ReceiptEntityOCR newInstance(String title, String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus,
+			String receiptBlobId, String userProfileId) {
+		return new ReceiptEntityOCR(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
 	}
 
-	public static ReceiptEntity newInstance() {
-		return new ReceiptEntity();
+	public static ReceiptEntityOCR newInstance() {
+		return new ReceiptEntityOCR();
 	}
 
 	public String getDescription() {
@@ -148,29 +145,27 @@ public class ReceiptEntity extends BaseEntity {
 		this.receiptBlobId = receiptBlobId;
 	}
 
-	@DateTimeFormat(iso = ISO.NONE)
-	public Date getReceiptDate() {
+	public String getReceiptDate() {
 		return receiptDate;
 	}
 
-	@DateTimeFormat(iso = ISO.DATE_TIME)
-	public void setReceiptDate(Date receiptDate) {
+	public void setReceiptDate(String receiptDate) {
 		this.receiptDate = receiptDate;
 	}
 
-	public Double getTotal() {
+	public String getTotal() {
 		return total;
 	}
 
-	public void setTotal(Double total) {
+	public void setTotal(String total) {
 		this.total = total;
 	}
 
-	public Double getTax() {
+	public String getTax() {
 		return tax;
 	}
 
-	public void setTax(Double tax) {
+	public void setTax(String tax) {
 		this.tax = tax;
 	}
 
@@ -180,5 +175,13 @@ public class ReceiptEntity extends BaseEntity {
 
 	public void setUserProfileId(String userProfileId) {
 		this.userProfileId = userProfileId;
+	}
+
+	public String getReceiptOCRTranslation() {
+		return receiptOCRTranslation;
+	}
+
+	public void setReceiptOCRTranslation(String receiptOCRTranslation) {
+		this.receiptOCRTranslation = receiptOCRTranslation;
 	}
 }

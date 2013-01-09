@@ -43,7 +43,7 @@ public class CreateAccountFormController {
 
 	@Autowired
 	private UserPreferenceManager userPreferenceManager;
-	
+
 	@Autowired
 	private UserRegistrationValidator userRegistrationValidator;
 
@@ -60,11 +60,11 @@ public class CreateAccountFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userRegistrationWrapper") UserRegistrationWrapper userRegistrationWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
-		//TODO remove the next three lines
+		// TODO remove the next three lines
 		userAuthenticationManager.dropCollection();
 		userProfileManager.dropCollection();
 		userPreferenceManager.dropCollection();
-		
+
 		userRegistrationValidator.validate(userRegistrationWrapper, result);
 		if (result.hasErrors()) {
 			return "newaccount";
@@ -96,10 +96,10 @@ public class CreateAccountFormController {
 			}
 
 			log.info("Registered new Email Id: " + userProfile.getEmailId());
-			
-			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());					
+
+			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());
 			redirectAttrs.addFlashAttribute("userSession", userSession);
-			
+
 			return "redirect:/landing.htm";
 		}
 	}

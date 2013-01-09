@@ -20,15 +20,15 @@ import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Dec 26, 2012 9:16:44 PM
- *
+ * 
  */
 public class ItemManagerImpl implements ItemManager {
 	private final Log log = LogFactory.getLog(getClass());
-	
+
 	private static final long serialVersionUID = 5734660649481504610L;
-	
+
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
@@ -47,7 +47,18 @@ public class ItemManagerImpl implements ItemManager {
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
-		} 			
+		}
+	}
+
+	@Override
+	public void saveObjects(List<ItemEntity> objects) throws Exception {
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		try {
+			mongoTemplate.insert(objects, TABLE);
+		} catch (DataIntegrityViolationException e) {
+			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			throw new Exception(e.getMessage());
+		}
 	}
 
 	@Override
@@ -70,26 +81,26 @@ public class ItemManagerImpl implements ItemManager {
 	@Override
 	public void deleteObject(String id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void createCollection() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dropCollection() {
 		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);	
+			mongoTemplate.dropCollection(TABLE);
 		}
 	}
 
 	@Override
 	public WriteResult updateObject(ItemEntity object) {
 		Query query = new Query(Criteria.where("_id").is(object.getId()));
-		Update update = Update.update("name", object.getName());	
+		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}
 }

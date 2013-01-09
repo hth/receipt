@@ -11,14 +11,14 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  * 
  * @see http://www.ioncannon.net/programming/975/spring-3-file-upload-example/
  * 
- * For GridFsTemplate
+ *      For GridFsTemplate
  * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
  */
 public class UploadReceiptImage {
 
 	private String description;
-	private CommonsMultipartFile fileData;	
-	
+	private CommonsMultipartFile fileData;
+
 	public static UploadReceiptImage newInstance() {
 		return new UploadReceiptImage();
 	}
@@ -38,7 +38,7 @@ public class UploadReceiptImage {
 	public void setFileData(CommonsMultipartFile fileData) {
 		this.fileData = fileData;
 	}
-	
+
 	public String getFileName() {
 		return this.fileData.getOriginalFilename();
 	}

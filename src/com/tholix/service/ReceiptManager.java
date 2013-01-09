@@ -17,6 +17,6 @@ import com.tholix.domain.ReceiptEntity;
  */
 public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
-	
+
 	public List<ReceiptEntity> getAllObjectsForUser(String userProfileId);
 }

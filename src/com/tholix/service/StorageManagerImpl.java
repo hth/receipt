@@ -26,9 +26,9 @@ import com.tholix.domain.UploadReceiptImage;
 public class StorageManagerImpl implements StorageManager {
 	private static final long serialVersionUID = -5264258042433041673L;
 	private final Log log = LogFactory.getLog(getClass());
-	
+
 	private final GridFS gridFs;
-	
+
 	public StorageManagerImpl(DB gridfsDb) {
 		gridFs = new GridFS(gridfsDb);
 	}
@@ -38,16 +38,16 @@ public class StorageManagerImpl implements StorageManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public void saveObject(UploadReceiptImage object) throws Exception {
-		
+
 	}
 
 	@Override
 	public String save(UploadReceiptImage object) throws IOException {
 		return save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
-	}	
+	}
 
 	@Override
 	public UploadReceiptImage getObject(String id) {
@@ -64,19 +64,19 @@ public class StorageManagerImpl implements StorageManager {
 	@Override
 	public void deleteObject(String id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void createCollection() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dropCollection() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -84,13 +84,18 @@ public class StorageManagerImpl implements StorageManager {
 		boolean closeStreamOnPersist = true;
 		GridFSInputFile receiptBlob = gridFs.createFile(inputStream, filename, closeStreamOnPersist);
 		receiptBlob.setContentType(contentType);
-		receiptBlob.save(); 
+		receiptBlob.save();
 		return receiptBlob.getId().toString();
 	}
 
 	@Override
 	public GridFSDBFile get(String id) {
-		return gridFs.findOne(new ObjectId(id));
+		try {
+			return gridFs.findOne(new ObjectId(id));
+		} catch(IllegalArgumentException iae) {
+			log.error(iae.getLocalizedMessage());
+			return null;
+		}
 	}
 
 	@Override

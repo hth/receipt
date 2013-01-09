@@ -13,41 +13,35 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.WriteResult;
-import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.ItemEntity;
+import com.tholix.domain.ItemEntityOCR;
+import com.tholix.domain.ReceiptEntityOCR;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 9:17:04 PM
+ * @when Jan 6, 2013 1:35:47 PM
  * 
  */
-public class ReceiptManagerImpl implements ReceiptManager {
+public class ItemOCRManagerImpl implements ItemOCRManager {
+	private static final long serialVersionUID = -6094519223354771552L;
 	private final Log log = LogFactory.getLog(getClass());
-
-	private static final long serialVersionUID = -8812261440000722447L;
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<ReceiptEntity> getAllObjects() {
-		return mongoTemplate.findAll(ReceiptEntity.class, TABLE);
+	public List<ItemEntityOCR> getAllObjects() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
-		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)), ReceiptEntity.class, TABLE);
-	}
-
-	@Override
-	public void saveObject(ReceiptEntity object) throws Exception {
+	public void saveObject(ItemEntityOCR object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
-			// Cannot use insert because insert does not perform update like save.
-			// Save will always try to update or create new record.
-			// mongoTemplate.insert(object, TABLE);
-
 			object.setUpdated();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
@@ -57,8 +51,19 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 
 	@Override
-	public ReceiptEntity getObject(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
+	public void saveObjects(List<ItemEntityOCR> objects) throws Exception {
+		mongoTemplate.insert(objects, TABLE);
+	}
+
+	@Override
+	public ItemEntityOCR getObject(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ItemEntityOCR> getObjectWithRecipt(ReceiptEntityOCR receipt) {
+		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)), ItemEntityOCR.class, TABLE);
 	}
 
 	@Override
@@ -81,8 +86,14 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public WriteResult updateObject(ItemEntityOCR object) {
+		Query query = new Query(Criteria.where("_id").is(object.getId()));
+		Update update = Update.update("name", object.getName());
+		return mongoTemplate.updateFirst(query, update, TABLE);
 	}
 }

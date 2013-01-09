@@ -19,8 +19,10 @@ import com.tholix.domain.ReceiptEntity;
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
-	
+
+	public void saveObjects(List<ItemEntity> objects) throws Exception;
+
 	public WriteResult updateObject(ItemEntity object);
-	
+
 	public List<ItemEntity> getObjectWithRecipt(ReceiptEntity receipt);
 }

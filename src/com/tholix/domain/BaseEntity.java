@@ -13,6 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Version;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.mongodb.ReflectionDBObject;
+
 /**
  * @author hitender
  * @when Dec 23, 2012 2:02:10 AM
@@ -23,10 +25,10 @@ public abstract class BaseEntity implements Serializable {
 
 	@Id
 	protected String id;
-	
+
 	@Version
 	private Long version;
-	
+
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date updated = DateTime.now().toDate();
 
@@ -51,8 +53,9 @@ public abstract class BaseEntity implements Serializable {
 
 	public void setVersion(Long version) {
 		this.version = version;
-	}	
+	}
 
+	@DateTimeFormat(iso = ISO.NONE)
 	public Date getUpdated() {
 		return updated;
 	}
@@ -61,6 +64,7 @@ public abstract class BaseEntity implements Serializable {
 		this.updated = DateTime.now().toDate();
 	}
 
+	@DateTimeFormat(iso = ISO.NONE)
 	public Date getCreated() {
 		return created;
 	}

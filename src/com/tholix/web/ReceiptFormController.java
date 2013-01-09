@@ -26,42 +26,41 @@ import com.tholix.service.ReceiptManager;
 import com.tholix.service.UserAuthenticationManager;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Jan 1, 2013 11:55:19 AM
- *
+ * 
  */
 @Controller
-@RequestMapping(value = "/showreceipt")
-public class ShowReceiptFormController {
-	
+@RequestMapping(value = "/receipt")
+public class ReceiptFormController {
 	private final Log log = LogFactory.getLog(getClass());
-	
-	private String nextPageIsCalledShowReceipt = "/showreceipt";
-	
+
+	private String nextPageIsCalledReceipt = "/receipt";
+
 	@Autowired
 	private UserAuthenticationManager userAuthenticationManager;
-	
+
 	@Autowired
 	private ReceiptManager receiptManager;
-	
+
 	@Autowired
 	private ItemManager itemManager;
-	
+
 	@Autowired
-	private ItemFeatureManager itemFeatureManager;		
-	
+	private ItemFeatureManager itemFeatureManager;
+
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(HttpServletRequest request, HttpSession session) {
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
 		log.info("Loading Receipt Item with id: " + request.getParameter("id"));
-		
+
 		ReceiptEntity receipt = receiptManager.getObject(request.getParameter("id"));
 		List<ItemEntity> items = itemManager.getObjectWithRecipt(receipt);
-		
-		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledShowReceipt);
+
+		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledReceipt);
 		modelAndView.addObject("items", items);
 		modelAndView.addObject("receipt", receipt);
-		
+
 		return modelAndView;
 	}
 

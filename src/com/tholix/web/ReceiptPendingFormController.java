@@ -1,0 +1,50 @@
+/**
+ * 
+ */
+package com.tholix.web;
+
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.UserSession;
+import com.tholix.service.ReceiptOCRManager;
+
+/**
+ * @author hitender 
+ * @when Jan 6, 2013 4:33:23 PM
+ *
+ */
+@Controller
+@RequestMapping(value = "/receiptpending")
+public class ReceiptPendingFormController {
+	@SuppressWarnings("unused")
+	private final Log log = LogFactory.getLog(getClass());
+
+	private String nextPageIsCalledReceiptPending = "receiptpending";
+
+	@Autowired
+	private ReceiptOCRManager receiptOCRManager;
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView loadForm(HttpSession session) {
+		UserSession userSession = (UserSession) session.getAttribute("userSession");
+
+		List<ReceiptEntityOCR> receipts = receiptOCRManager.getAllObjects(userSession.getUserProfileId());
+
+		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledReceiptPending);
+		modelAndView.addObject("receipts", receipts);
+
+		return modelAndView;
+	}
+
+}

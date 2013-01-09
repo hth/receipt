@@ -201,59 +201,54 @@
 	
 	<br/>
 
-	<table>
-		<tr>
-			<td valign="top">
-				<table border="1" style="width: 400px" class="atable">
-					<tr>
-						<td colspan="4">
-							<div class="leftAlign"><b>${receipt.title}</b></div>
-							<div class="rightAlign"><b><spring:eval expression="receipt.receiptDate" /></b></div>
-						</td>
-					</tr>
-					<tr>
-						<th align="left">&nbsp;Name</th>
-						<th align="left">&nbsp;Price</th>
-						<th align="left">&nbsp;</th>
-					</tr>
-					<c:forEach items="${items}" var="item" varStatus="status">
-					<tr>
-						<td align="left">
-				    		${item.name}
-						</td>
-						<td align="right">
-				    		<spring:eval expression="item.price" />
-						</td>
-						<td>
-							${item.taxed.description}
-						</td>
-					</tr>
-					</c:forEach>
-					<tr>
-						<td colspan="2" align="right">
-							Sub Total &nbsp;&nbsp;&nbsp; <fmt:formatNumber value="${receipt.total - receipt.tax}" type="currency" currencySymbol="$" /> 
-						</td>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td colspan="1" align="right">
-							<span>Tax &nbsp;</span> 
-							<b><spring:eval expression="receipt.tax" /></b> 
-							<span>&nbsp;&nbsp;Total &nbsp;</span>
-						</td>
-						<td align="right">
-							<b><spring:eval expression="receipt.total" /></b>
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td width="6px">&nbsp;</td>
-			<td valign="top">			 
-			 	<img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receipt.receiptBlobId}" width="400px" height="300px"/>			 
-			</td>
-		</tr>
-	</table>
-
-
+	<c:choose>
+		<c:when test="${receipts.size() > 0}">
+			<h2 class="demoHeaders">Pending receipt</h2>	
+		
+			<table>
+				<tr>
+					<td valign="top">
+						<table border="1" style="width: 400px" class="atable">
+							<tr>
+								<th align="left">&nbsp;</th>
+								<th align="left">&nbsp;Description</th>
+								<th align="left">&nbsp;Upload Date</th>
+								<th align="left">&nbsp;</th>
+							</tr>
+							<c:forEach items="${receipts}" var="receipt" varStatus="status">
+							<tr>
+								<td align="right">
+									${status.count}
+								</td>
+								<td align="left">
+						    		${receipt.description}
+								</td>
+								<td align="left">
+									<spring:eval expression="receipt.created" />
+								</td>
+								<td>
+									<%-- <FORM>
+										<INPUT type="button" value="Show Receipt" onClick="window.open('${pageContext.request.contextPath}/receiptimage.htm?id=${receipt.receiptBlobId}','mywindow','width=400,height=200')">
+									</FORM> --%>	
+									
+									<a href="${pageContext.request.contextPath}/receiptupdate.htm?id=${receipt.id}">
+										Show Receipt				
+									</a>								
+								</td>
+							</tr>
+							</c:forEach>
+						</table>
+					</td>
+					<td width="6px">&nbsp;</td>
+					<td>
+					 Image goes here
+					</td>
+				</tr>
+			</table>
+		</c:when>
+		<c:otherwise>
+			<h2 class="demoHeaders">No pending receipt</h2>			
+		</c:otherwise>
+	</c:choose>	
 </body>
 </html>

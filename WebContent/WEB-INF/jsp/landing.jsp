@@ -157,11 +157,34 @@
 	</style>
 </head>
 <body>
-	User Id <c:out value="${userSession.emailId}" /> 
+	<div>
+		<p>User Id  ${sessionScope['userSession'].emailId} </p>		
+	</div>
 	
+	<br/>
+		
 	<form:form modelAttribute="uploadItem" method="post" enctype="multipart/form-data">
 		<fieldset style="width:310px;">
-		    <legend>Upload Receipt</legend>
+		    <legend>Upload Receipt</legend>	    
+		    
+		    <%-- <ul id="icons" class="ui-widget ui-helper-clearfix">
+				<li class="ui-state-default ui-corner-all" title="Shows number of pending receipt(s) to be processed"><span class="ui-icon ui-icon-info"></span>
+					<span style="display:block; width:310px;">
+					<a href="${pageContext.request.contextPath}/receiptpending.htm">${userSession.pendingCount} pending receipt(s) to be processed</a>
+					</span> 
+				</li>
+			</ul> --%>
+			
+			<div class="ui-widget">
+				<div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+					<p>
+					<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
+					<span style="display:block; width:310px;">
+					Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/receiptpending.htm"><strong>${userSession.pendingCount}</strong></a>
+					</span> 
+					</p>
+				</div>
+			</div>
 		
 		    <p>
 		        <form:label for="description" path="description">
@@ -182,7 +205,7 @@
 		    </p>
 		
 		</fieldset>
-    </form:form>
+    </form:form>  
 	
 	<!-- Tabs -->
 	<h2 class="demoHeaders">Dashboard</h2>
@@ -194,10 +217,9 @@
 		</ul>
 		<div id="tabs-1">				
 			<c:if test="${receipts.size() > 0}">
-			<table border="1" style="background-color:#c5c021;border:1px dotted black;width:500px;border-collapse:collapse;">
+			<table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
 				<tbody>
 					<tr style="background-color:orange;color:white;">
-						<th style="padding:3px;">Status</th>
 						<th style="padding:3px;">Title</th>
 						<th style="padding:3px;">Receipt Date</th>
 						<th style="padding:3px;">Tax</th>				
@@ -206,9 +228,6 @@
 				</tbody>
 					<c:forEach var="receipt" items="${receipts}"  varStatus="status">
 					<tr>
-						<td style="padding:3px;">
-							${status.count} ??
-						</td>
 						<td style="padding:3px;" title="${receipt.description}">
 							<spring:eval expression="receipt.title" />
 						</td>
@@ -219,7 +238,7 @@
 							<spring:eval expression="receipt.tax" />
 						</td>
 						<td style="padding:3px;" align="right">
-							<a href="${pageContext.request.contextPath}/showreceipt.htm?id=${receipt.id}">
+							<a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
 								<spring:eval expression="receipt.total" />				
 							</a>
 						</td>

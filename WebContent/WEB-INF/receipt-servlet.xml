@@ -56,6 +56,10 @@
     
     <bean id="itemManager" class="com.tholix.service.ItemManagerImpl" />
     
+    <bean id="receiptOCRManager" class="com.tholix.service.ReceiptOCRManagerImpl" />
+    
+    <bean id="itemOCRManager" class="com.tholix.service.ItemOCRManagerImpl" />
+    
     <bean id="itemFeatureManager" class="com.tholix.service.ItemFeatureManagerImpl" />
     
     <!-- ===================================== -->

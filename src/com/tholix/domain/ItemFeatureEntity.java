@@ -9,8 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.tholix.domain.types.FeaturesOnItemEnum;
 
 /**
- * Add various features to an existing Item. It could be like price check for
- * next thirty days. Or add a return reminder on an item.
+ * Add various features to an existing Item. It could be like price check for next thirty days. Or add a return reminder on an item.
  * 
  * @author hitender
  * @when Dec 26, 2012 1:47:36 PM
@@ -32,7 +31,7 @@ public class ItemFeatureEntity extends BaseEntity {
 	}
 
 	/**
-	 * This method is used when the Entity is created for the first time. 
+	 * This method is used when the Entity is created for the first time.
 	 * 
 	 * @param featureOnItem
 	 * @param itemEntity

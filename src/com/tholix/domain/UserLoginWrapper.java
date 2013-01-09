@@ -11,7 +11,7 @@ package com.tholix.domain;
 public class UserLoginWrapper {
 	private String emailId;
 	private String password;
-	
+
 	public static UserLoginWrapper newInstance() {
 		return new UserLoginWrapper();
 	}

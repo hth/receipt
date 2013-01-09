@@ -12,13 +12,13 @@ import com.mongodb.WriteResult;
 import com.tholix.domain.ItemFeatureEntity;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Dec 26, 2012 9:21:35 PM
- *
+ * 
  */
 public class ItemFeatureManagerImpl implements ItemFeatureManager {
 	private static final long serialVersionUID = -2211419786590573846L;
-	
+
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
@@ -30,7 +30,7 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 
 	@Override
 	public void saveObject(ItemFeatureEntity object) throws Exception {
-		mongoTemplate.save(object, TABLE);		
+		mongoTemplate.save(object, TABLE);
 	}
 
 	@Override
@@ -48,13 +48,13 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 	@Override
 	public void deleteObject(String id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void createCollection() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -62,9 +62,7 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);
 		}
-		
+
 	}
-	
-	
 
 }

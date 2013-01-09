@@ -23,7 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class UserProfileEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -1560672689033084436L;
-	
+
 	@Indexed(unique = true)
 	private String emailId;
 
@@ -39,7 +39,7 @@ public class UserProfileEntity extends BaseEntity {
 	/* For time zone */
 	@NotNull
 	private int hoursOffset;
-	
+
 	@DBRef
 	private UserAuthenticationEntity userAuthentication;
 
@@ -53,7 +53,7 @@ public class UserProfileEntity extends BaseEntity {
 	}
 
 	/**
-	 * This method is used when the Entity is created for the first time. 
+	 * This method is used when the Entity is created for the first time.
 	 * 
 	 * @param firstName
 	 * @param lastName
@@ -64,7 +64,7 @@ public class UserProfileEntity extends BaseEntity {
 	public static UserProfileEntity newInstance(String emailId, String firstName, String lastName, Date registration, UserAuthenticationEntity userAuthentication) {
 		return new UserProfileEntity(emailId, firstName, lastName, registration, userAuthentication);
 	}
-	
+
 	public UserAuthenticationEntity getUserAuthentication() {
 		return userAuthentication;
 	}

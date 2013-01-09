@@ -14,7 +14,5 @@ import com.tholix.domain.UserAuthenticationEntity;
  */
 public interface UserAuthenticationManager extends RepositoryManager<UserAuthenticationEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(UserAuthenticationEntity.class, Document.class, "collection");
-	
-	
 
 }

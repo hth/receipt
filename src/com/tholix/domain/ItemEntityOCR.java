@@ -16,34 +16,30 @@ import org.springframework.format.annotation.NumberFormat.Style;
 import com.tholix.domain.types.TaxEnum;
 
 /**
- * Represents each individual item on a receipt.
- * 
  * @author hitender
- * @when Dec 25, 2012 11:43:10 PM
+ * @when Jan 6, 2013 1:17:12 PM
  * 
  */
-// mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
-@Document(collection = "ITEM")
-@CompoundIndexes({ @CompoundIndex(name = "user_item_idx", def = "{'receipt': -1, 'user': 1}") })
-public class ItemEntity extends BaseEntity {
-
-	private static final long serialVersionUID = 1031429034359059354L;
+@Document(collection = "ITEM_OCR")
+@CompoundIndexes({ @CompoundIndex(name = "user_item_ocr_idx", def = "{'receipt': -1, 'userProfileId': 1}") })
+public class ItemEntityOCR extends BaseEntity {
+	private static final long serialVersionUID = -8655601429195675799L;
 
 	@Size(min = 1, max = 128)
 	private String name;
 
 	@NumberFormat(style = Style.CURRENCY)
-	private Double price;
+	private String price;
 
 	private TaxEnum taxed = TaxEnum.NOT_TAXED;
 
 	@DBRef
-	private ReceiptEntity receipt;
+	private ReceiptEntityOCR receipt;
 
 	@NotNull
 	private String userProfileId;
 
-	private ItemEntity(String name, Double price, TaxEnum taxed, ReceiptEntity receipt, String userProfileId) {
+	private ItemEntityOCR(String name, String price, TaxEnum taxed, ReceiptEntityOCR receipt, String userProfileId) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -55,16 +51,15 @@ public class ItemEntity extends BaseEntity {
 	/**
 	 * This method is used when the Entity is created for the first time.
 	 * 
-	 * @param quantity
 	 * @param name
 	 * @param price
 	 * @param taxed
 	 * @param receipt
-	 * @param user
+	 * @param userProfileId
 	 * @return
 	 */
-	public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, ReceiptEntity receipt, String userProfileId) {
-		return new ItemEntity(name, price, taxed, receipt, userProfileId);
+	public static ItemEntityOCR newInstance(String name, String price, TaxEnum taxed, ReceiptEntityOCR receipt, String userProfileId) {
+		return new ItemEntityOCR(name, price, taxed, receipt, userProfileId);
 	}
 
 	public String getName() {
@@ -75,11 +70,11 @@ public class ItemEntity extends BaseEntity {
 		this.name = name;
 	}
 
-	public Double getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 
@@ -91,11 +86,11 @@ public class ItemEntity extends BaseEntity {
 		this.taxed = taxed;
 	}
 
-	public ReceiptEntity getReceipt() {
+	public ReceiptEntityOCR getReceipt() {
 		return this.receipt;
 	}
 
-	public void setReceipt(ReceiptEntity receipt) {
+	public void setReceipt(ReceiptEntityOCR receipt) {
 		this.receipt = receipt;
 	}
 

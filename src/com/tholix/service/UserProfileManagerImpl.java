@@ -51,7 +51,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	public UserProfileEntity getObject(UserAuthenticationEntity object) {
 		return mongoTemplate.findOne(new Query(Criteria.where("userAuthentication").is(object)), UserProfileEntity.class, TABLE);
 	}
-	
+
 	@Override
 	public UserProfileEntity getObjectUsingEmail(String emailId) {
 		return mongoTemplate.findOne(new Query(Criteria.where("emailId").is(emailId)), UserProfileEntity.class, TABLE);

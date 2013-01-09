@@ -39,17 +39,16 @@ public class LoginFormController {
 
 	@Autowired
 	private UserProfileManager userProfileManager;
-	
+
 	@Autowired
 	private UserLoginValidator userLoginValidator;
-	
-	//TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
+
+	// TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
 	/**
 	 * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
 	 * 
-	 * @info: OR you could just replace it in Form Request method getReceiptUser 
-	 *        model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
+	 * @info: OR you could just replace it in Form Request method getReceiptUser model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
 	 * 
 	 * @return UserAuthenticationEntity
 	 */
@@ -74,12 +73,12 @@ public class LoginFormController {
 			if (userProfile != null) {
 				userLoginWrapper.setPassword(SHAHashing.hashCode(userLoginWrapper.getPassword()));
 				UserAuthenticationEntity user = userAuthenticationManager.getObject(userProfile.getUserAuthentication().getId());
-				if(user.getPassword().equals(userLoginWrapper.getPassword())) {
+				if (user.getPassword().equals(userLoginWrapper.getPassword())) {
 					log.info("Email Id: " + userLoginWrapper.getEmailId() + " and found " + userProfile.getEmailId());
-					
-					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());					
+
+					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());
 					redirectAttrs.addFlashAttribute("userSession", userSession);
-					
+
 					return "redirect:/landing.htm";
 				} else {
 					log.error("Password not matching for user : " + userLoginWrapper.getEmailId());

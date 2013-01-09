@@ -11,12 +11,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author hitender
  * @when Dec 15, 2012 8:11:45 PM
  * 
- * The link below is for field annotation settings
+ *       The link below is for field annotation settings
  * @see http://www.jpalace.org/docs/tutorials/spring/mvc_21.html
  */
 @Document(collection = "USER_AUTHENTICATION")
 public class UserAuthenticationEntity extends BaseEntity {
-	private static final long serialVersionUID = -5207492124434434278L;	
+	private static final long serialVersionUID = -5207492124434434278L;
 
 	@NotNull
 	private String password;
@@ -31,9 +31,9 @@ public class UserAuthenticationEntity extends BaseEntity {
 	 * 
 	 * @param password
 	 */
-	//@PersistenceConstructor
+	// @PersistenceConstructor
 	private UserAuthenticationEntity(String password) {
-		this.password =  password; 
+		this.password = password;
 	}
 
 	public static UserAuthenticationEntity findUser(String emailId) {
@@ -41,7 +41,7 @@ public class UserAuthenticationEntity extends BaseEntity {
 	}
 
 	/**
-	 * This method is used when the Entity is created for the first time. 
+	 * This method is used when the Entity is created for the first time.
 	 * 
 	 * @param emailId
 	 * @param passwordHash
@@ -50,12 +50,12 @@ public class UserAuthenticationEntity extends BaseEntity {
 	public static UserAuthenticationEntity newInstance(String password) {
 		return new UserAuthenticationEntity(password);
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}	
+	}
 }

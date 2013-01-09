@@ -18,5 +18,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 	public static String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
 
 	public UserProfileEntity getObject(UserAuthenticationEntity object);
+
 	public UserProfileEntity getObjectUsingEmail(String emailId);
 }

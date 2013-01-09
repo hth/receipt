@@ -28,7 +28,7 @@ public class UserPreferenceEntity extends BaseEntity {
 	@NotNull
 	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
 
-	//@PersistenceConstructor
+	// @PersistenceConstructor
 	private UserPreferenceEntity(AccountTypeEnum accountType, UserProfileEntity userProfile) {
 		super();
 		this.accountType = accountType;
@@ -36,7 +36,7 @@ public class UserPreferenceEntity extends BaseEntity {
 	}
 
 	/**
-	 * This method is used when the Entity is created for the first time. 
+	 * This method is used when the Entity is created for the first time.
 	 * 
 	 * @param accountType
 	 * @param userProfile
@@ -44,7 +44,7 @@ public class UserPreferenceEntity extends BaseEntity {
 	 */
 	public static UserPreferenceEntity newInstance(AccountTypeEnum accountType, UserProfileEntity userProfile) {
 		return new UserPreferenceEntity(accountType, userProfile);
-	}	
+	}
 
 	public UserProfileEntity getUserProfile() {
 		return userProfile;

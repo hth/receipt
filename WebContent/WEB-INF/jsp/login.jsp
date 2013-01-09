@@ -172,7 +172,7 @@
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td><input type="submit" align="center" value="Login"></td>
+				<td align="center"><input type="submit" value="Login"></td>
 			</tr>
 		</table>		
 	</form:form>
