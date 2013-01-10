@@ -144,9 +144,9 @@
 	</style>	
 	
 	<style>
-	.error {
-		color: red;
-	}
+		.error {
+			color: red;
+		}
 	</style>
 </head>
 <body>

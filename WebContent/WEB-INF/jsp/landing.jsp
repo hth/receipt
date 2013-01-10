@@ -165,15 +165,7 @@
 		
 	<form:form modelAttribute="uploadItem" method="post" enctype="multipart/form-data">
 		<fieldset style="width:310px;">
-		    <legend>Upload Receipt</legend>	    
-		    
-		    <%-- <ul id="icons" class="ui-widget ui-helper-clearfix">
-				<li class="ui-state-default ui-corner-all" title="Shows number of pending receipt(s) to be processed"><span class="ui-icon ui-icon-info"></span>
-					<span style="display:block; width:310px;">
-					<a href="${pageContext.request.contextPath}/receiptpending.htm">${userSession.pendingCount} pending receipt(s) to be processed</a>
-					</span> 
-				</li>
-			</ul> --%>
+		    <legend>Upload Receipt</legend>	
 			
 			<div class="ui-widget">
 				<div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
@@ -191,6 +183,7 @@
 		        &nbsp;&nbsp;&nbsp;&nbsp;Description:&nbsp; 
 		        </form:label> 
 		        <form:input path="description" size="32"/>
+		        <form:errors path="description" cssClass="error" />
 		    </p>
 		
 		    <p>
@@ -198,6 +191,7 @@
 		        Receipt Image:&nbsp; 
 		        </form:label> 
 		        <form:input path="fileData" type="file"/>
+		        <form:errors path="fileData" cssClass="error" />
 		    </p>
 		
 		    <p align="center">

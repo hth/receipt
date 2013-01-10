@@ -61,9 +61,9 @@ public class CreateAccountFormController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userRegistrationWrapper") UserRegistrationWrapper userRegistrationWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
 		// TODO remove the next three lines
-		userAuthenticationManager.dropCollection();
-		userProfileManager.dropCollection();
-		userPreferenceManager.dropCollection();
+//		userAuthenticationManager.dropCollection();
+//		userProfileManager.dropCollection();
+//		userPreferenceManager.dropCollection();
 
 		userRegistrationValidator.validate(userRegistrationWrapper, result);
 		if (result.hasErrors()) {
@@ -100,6 +100,7 @@ public class CreateAccountFormController {
 			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());
 			redirectAttrs.addFlashAttribute("userSession", userSession);
 
+			/** This code to invoke the controller */
 			return "redirect:/landing.htm";
 		}
 	}

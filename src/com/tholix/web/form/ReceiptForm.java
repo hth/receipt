@@ -14,10 +14,11 @@ import com.tholix.domain.ReceiptEntityOCR;
  * @author hitender
  * @when Jan 7, 2013 9:30:32 AM
  * 
+ * This is a Form Backing Object (FBO) for showing the receipt and its items 
  */
 public class ReceiptForm {
 	ReceiptEntityOCR receipt;
-	AutoPopulatingList<ItemEntityOCR> items;	
+	List<ItemEntityOCR> items;	
 	
 	/**
 	 * Need for bean instantiation in ReceiptUpdateForm
@@ -26,14 +27,18 @@ public class ReceiptForm {
 		
 	}
 
-	private ReceiptForm(ReceiptEntityOCR receipt, AutoPopulatingList<ItemEntityOCR> items) {
+	private ReceiptForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
 		super();
 		this.receipt = receipt;
 		this.items = items;
 	}
 
-	public static ReceiptForm newInstance(ReceiptEntityOCR receipt, AutoPopulatingList<ItemEntityOCR> items) {
+	public static ReceiptForm newInstance(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
 		return new ReceiptForm(receipt, items);
+	}
+	
+	public static ReceiptForm newInstance() {
+		return new ReceiptForm();
 	}
 
 	public ReceiptEntityOCR getReceipt() {
@@ -44,11 +49,18 @@ public class ReceiptForm {
 		this.receipt = receipt;
 	}
 
-	public AutoPopulatingList<ItemEntityOCR> getItems() {
+	public List<ItemEntityOCR> getItems() {
 		return items;
 	}
 
-	public void setItems(AutoPopulatingList<ItemEntityOCR> items) {
+	public void setItems(List<ItemEntityOCR> items) {
 		this.items = items;
 	}
+
+	@Override
+	public String toString() {
+		return "ReceiptForm [receipt=" + receipt + ", items=" + items + "]";
+	}
+	
+	
 }

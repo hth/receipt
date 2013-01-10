@@ -16,8 +16,7 @@ import com.tholix.domain.UserLoginWrapper;
  * @when Dec 16, 2012 6:52:46 PM
  */
 public class UserLoginValidator implements Validator {
-
-	protected final Log logger = LogFactory.getLog(getClass());
+	protected final Log log = LogFactory.getLog(getClass());
 
 	@Override
 	public boolean supports(Class<?> clazz) {

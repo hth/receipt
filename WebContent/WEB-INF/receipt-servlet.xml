@@ -62,6 +62,8 @@
     
     <bean id="itemFeatureManager" class="com.tholix.service.ItemFeatureManagerImpl" />
     
+    <bean id="uploadReceiptImageValidator" class="com.tholix.service.validator.UploadReceiptImageValidator" />
+    
     <!-- ===================================== -->
     <!-- Mongo Configuration                   -->
     <!-- ===================================== -->

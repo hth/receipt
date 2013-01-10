@@ -39,6 +39,7 @@ import com.tholix.service.ReceiptManager;
 import com.tholix.service.ReceiptOCRManager;
 import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
+import com.tholix.service.validator.UploadReceiptImageValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.ReceiptParser;
 
@@ -77,6 +78,9 @@ public class LandingFormController {
 
 	@Autowired
 	private StorageManager storageManager;
+	
+	@Autowired
+	private UploadReceiptImageValidator uploadReceiptImageValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, HttpSession session) {
@@ -87,11 +91,11 @@ public class LandingFormController {
 		session.setAttribute("userSession", userSession);
 
 		// TODO remove the following two lines
-		receiptManager.dropCollection();
-		itemManager.dropCollection();
+//		receiptManager.dropCollection();
+//		itemManager.dropCollection();
 
 		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSession.getUserProfileId());
-		populate(userProfileEntity);
+		//populate(userProfileEntity);
 
 		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
 		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
@@ -105,17 +109,19 @@ public class LandingFormController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView create(UploadReceiptImage uploadReceiptImage, BindingResult result, HttpSession session) {
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
+		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
+		
+		/** Check if the uploaded file is of type image. */
 		if (result.hasErrors()) {
 			for (ObjectError error : result.getAllErrors()) {
-				System.err.println("Error: " + error.getCode() + " - " + error.getDefaultMessage());
-			}
-
+				log.error("Error: " + error.getCode() + " - " + error.getDefaultMessage());
+			}			
+			
 			ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
 			List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 			modelAndView.addObject("receipts", receipts);
 			modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
-			modelAndView.addObject("userSession", userSession);
-
+			
 			return modelAndView;
 		}
 

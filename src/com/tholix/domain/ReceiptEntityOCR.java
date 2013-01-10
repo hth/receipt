@@ -184,4 +184,12 @@ public class ReceiptEntityOCR extends BaseEntity {
 	public void setReceiptOCRTranslation(String receiptOCRTranslation) {
 		this.receiptOCRTranslation = receiptOCRTranslation;
 	}
+
+	@Override
+	public String toString() {
+		return "ReceiptEntityOCR [description=" + description + ", title=" + title + ", receiptStatus=" + receiptStatus + ", receiptBlobId=" + receiptBlobId + ", receiptDate="
+				+ receiptDate + ", total=" + total + ", tax=" + tax + ", userProfileId=" + userProfileId + ", receiptOCRTranslation=" + receiptOCRTranslation + "]";
+	}
+	
+	
 }
