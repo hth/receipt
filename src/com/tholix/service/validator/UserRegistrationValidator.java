@@ -36,11 +36,11 @@ public class UserRegistrationValidator implements Validator {
 
 		UserRegistrationWrapper userRegistration = (UserRegistrationWrapper) obj;
 		if (userRegistration.getPassword().length() < 4) {
-			errors.rejectValue("firstName", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
+			errors.rejectValue("firstName", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 
 		if (userRegistration.getPassword().length() < 4) {
-			errors.rejectValue("lastName", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
+			errors.rejectValue("lastName", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 
 		if (!userRegistration.getEmailId().matches(EMAIL_REGEX)) {
@@ -48,7 +48,7 @@ public class UserRegistrationValidator implements Validator {
 		}
 
 		if (userRegistration.getPassword().length() < 4) {
-			errors.rejectValue("password", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
+			errors.rejectValue("password", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 	}
 }

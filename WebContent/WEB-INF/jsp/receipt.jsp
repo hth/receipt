@@ -206,7 +206,7 @@
 			<td valign="top">
 				<table border="1" style="width: 400px" class="atable">
 					<tr>
-						<td colspan="4">
+						<td colspan="3">
 							<div class="leftAlign"><b>${receipt.title}</b></div>
 							<div class="rightAlign"><b><spring:eval expression="receipt.receiptDate" /></b></div>
 						</td>
@@ -219,7 +219,9 @@
 					<c:forEach items="${items}" var="item" varStatus="status">
 					<tr>
 						<td align="left">
+							<a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
 				    		${item.name}
+				    		</a>
 						</td>
 						<td align="right">
 				    		<spring:eval expression="item.price" />
@@ -244,6 +246,16 @@
 						<td align="right">
 							<b><spring:eval expression="receipt.total" /></b>
 						</td>
+					</tr>
+					<tr>
+						<form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
+						<form:hidden path="id" />
+						<tr height="60em">
+							<td colspan="3">
+								<div class="rightAlign"><input type="submit" value="Receipt Delete" name="receipt_delete"/></div>
+							</td>
+						</tr>
+						</form:form>
 					</tr>
 				</table>
 			</td>

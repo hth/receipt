@@ -30,7 +30,7 @@ public class ReceiptPendingFormController {
 	@SuppressWarnings("unused")
 	private final Log log = LogFactory.getLog(getClass());
 
-	private String nextPageIsCalledReceiptPending = "receiptpending";
+	private String nextPage = "receiptpending";
 
 	@Autowired
 	private ReceiptOCRManager receiptOCRManager;
@@ -41,7 +41,7 @@ public class ReceiptPendingFormController {
 
 		List<ReceiptEntityOCR> receipts = receiptOCRManager.getAllObjects(userSession.getUserProfileId());
 
-		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledReceiptPending);
+		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("receipts", receipts);
 
 		return modelAndView;

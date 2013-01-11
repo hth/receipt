@@ -28,14 +28,22 @@ public class UploadReceiptImageValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		log.info("Executing validation for new userRegistration");		
-		UploadReceiptImage uploadReceiptImage = (UploadReceiptImage) obj;
+		log.info("Executing validation for new uploadReceiptImageValidator");		
+		UploadReceiptImage uploadReceiptImage = (UploadReceiptImage) obj;		
+		if(uploadReceiptImage.getFileData().getSize() == 0) {
+			errors.rejectValue("fileData", "file.length.empty", new Object[] { "" }, "There seems to be no file or a file of empty size found");
+		}
+		
+		if(uploadReceiptImage.getFileData().getSize() > 10485760) {
+			errors.rejectValue("fileData", "file.length.high", new Object[] { "" }, "Uploaded file size exceeds the file size limitation of 10MB");
+		}
+		
 		if (uploadReceiptImage.getFileName().length() < 5) {
-			errors.rejectValue("fileData", "field.lenght", new Object[] { Integer.valueOf("5") }, "A file name should be minimum of five characters");
+			errors.rejectValue("fileData", "field.length", new Object[] { Integer.valueOf("5") }, "A file name should be minimum of five characters");
 		}
 		
 		if(!uploadReceiptImage.getFileData().getContentType().startsWith("image/")) {
-			errors.rejectValue("fileData", "correct.data", new Object[] { uploadReceiptImage.getFileName() }, "Does not seems to be a right type of image file");
+			errors.rejectValue("fileData", "correct.data", new Object[] { uploadReceiptImage.getFileName() }, "File not seems to be of image type");
 		}
 	}
 

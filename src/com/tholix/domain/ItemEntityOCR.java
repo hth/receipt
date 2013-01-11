@@ -38,6 +38,11 @@ public class ItemEntityOCR extends BaseEntity {
 
 	@NotNull
 	private String userProfileId;
+	
+	/** To keep spring happy in recreating the bean from form during submit action */
+	public ItemEntityOCR() {
+		
+	}
 
 	private ItemEntityOCR(String name, String price, TaxEnum taxed, ReceiptEntityOCR receipt, String userProfileId) {
 		super();

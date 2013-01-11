@@ -34,7 +34,7 @@ public class UserLoginValidator implements Validator {
 		}
 
 		if (userLoginWrapper.getPassword().length() < 4) {
-			errors.rejectValue("password", "field.lenght", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
+			errors.rejectValue("password", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 	}
 }

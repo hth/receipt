@@ -45,7 +45,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 			object.setUpdated();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for ItemEntityOCR: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		}
 	}

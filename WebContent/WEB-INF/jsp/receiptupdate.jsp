@@ -205,11 +205,22 @@
 		<tr>
 			<td valign="top">
 				<form:form method="post" action="receiptupdate.htm" modelAttribute="receiptForm">
-				<table border="1" style="width: 400px" class="atable">
+				<form:hidden path="receipt.receiptBlobId"/>
+				<form:hidden path="receipt.id"/>
+				<form:hidden path="receipt.userProfileId"/>
+				<form:hidden path="receipt.receiptOCRTranslation"/>
+				<form:hidden path="receipt.version"/>
+				<table border="0" style="width: 400px" class="atable">					
 					<tr>
 						<td colspan="4">
-							<div class="leftAlign">Title <input name="receiptForm.receipt.title" value="${receiptForm.receipt.title}" size="32"/></div>
-							<div class="rightAlign">Date <input name="receiptForm.receipt.receiptDate" value="${receiptForm.receipt.receiptDate}" size="32"/></div>
+							<div class="leftAlign"><form:errors path="receipt.title" cssClass="error" /></div>
+							<div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<div class="leftAlign">Title <form:input path="receipt.title" size="32"/></div>
+							<div class="rightAlign">Date <form:input path="receipt.receiptDate" size="32"/></div>
 						</td>
 					</tr>
 					<tr>
@@ -217,32 +228,30 @@
 						<th align="left">&nbsp;Price</th>
 						<th align="left">&nbsp;</th>
 					</tr>
-					<c:forEach items="${receiptForm.items}" var="item" varStatus="status">
+					<c:forEach items="${receiptForm.items}" varStatus="status">
 					<tr>
 						<td align="left">
-				    		<input name="items[${status.index}].name" value="${item.name}" size="64"/>
+				    		<form:input path="items[${status.index}].name" size="64"/>
 						</td>
 						<td align="right">
-							<input name="items[${status.index}].price" value="${item.price}" size="16"/>
+							<form:input path="items[${status.index}].price" size="16"/>
 						</td>
 						<td>
-							<form:select id="items[${status.index}].taxed" path="items[${status.index}].taxed" > 
+							<form:select path="items[${status.index}].taxed"> 
 								<form:option value="NONE" label="--- Select ---"/>
 								<form:options itemValue="name" itemLabel="description" />
 							</form:select>
-							<%-- <input name="items[${status.index}].taxed" value="${item.taxed.description}" size="10"/> --%>							
-							<%-- <form:options itemValue="name" itemLabel="description" /> --%>
 						</td>
 					</tr>
 					</c:forEach>
 					<tr>
 						<td colspan="1" align="right">
 							<span>Tax &nbsp;</span> 
-							<input name="receiptForm.receipt.tax" value="${receiptForm.receipt.tax}" size="5"/>
+							<form:input path="receipt.tax" size="5"/>
 							<span>&nbsp;&nbsp;Total &nbsp;</span>
 						</td>
 						<td align="right">
-							<input name="receiptForm.receipt.total" value="${receiptForm.receipt.total}" size="5"/>
+							<form:input path="receipt.total" size="5"/>
 						</td>
 					</tr>
 					<tr>
@@ -254,7 +263,7 @@
 			</td>
 			<td width="6px">&nbsp;</td>
 			<td valign="top">			 
-			 	<img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}" width="400px" height="300px"/>			 
+			 	<img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}" width="600px" height="600px"/>			 
 			</td>
 		</tr>
 	</table>

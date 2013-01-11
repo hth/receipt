@@ -83,7 +83,7 @@ public class LandingFormController {
 	private UploadReceiptImageValidator uploadReceiptImageValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, HttpSession session) {
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
 		log.info("LandingFormController loadForm: " + userSession.getEmailId());
 		
 		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
@@ -100,14 +100,13 @@ public class LandingFormController {
 		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
 		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
-		modelAndView.addObject("uploadItem", new UploadReceiptImage());
 
 		log.info(userProfileEntity.getName());
 		return modelAndView;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create(UploadReceiptImage uploadReceiptImage, BindingResult result, HttpSession session) {
+	public ModelAndView create(@ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, BindingResult result, HttpSession session) {
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
 		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
 		

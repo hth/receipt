@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import com.mongodb.WriteResult;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
  * @author hitender
@@ -38,12 +39,19 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public void saveObject(ReceiptEntityOCR object) throws Exception {
-		// Cannot use insert because insert does not perform update like save.
-		// Save will always try to update or create new record.
-		// mongoTemplate.insert(object, TABLE);
-
-		object.setUpdated();
-		mongoTemplate.save(object, TABLE);
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		try {
+			// Cannot use insert because insert does not perform update like save.
+			// Save will always try to update or create new record.
+			// mongoTemplate.insert(object, TABLE);
+	
+			object.setUpdated();
+			mongoTemplate.save(object, TABLE);			
+		} catch (DataIntegrityViolationException e) {
+			log.error("Duplicate record entry for ReceiptEntityOCR: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for ReceiptEntityOCR: " + object);
+			throw new Exception(e.getMessage());
+		}
 	}
 
 	@Override
@@ -77,11 +85,13 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public long numberOfPendingReceipts(String userProfileId) {
-		return mongoTemplate.count(new Query(Criteria.where("userProfileId").is(userProfileId)), TABLE);
+		return mongoTemplate.count(new Query(Criteria.where("userProfileId").is(userProfileId)
+				.andOperator(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED.name()))), TABLE);
 	}
 	
 	@Override
 	public List<ReceiptEntityOCR> getAllObjects(String userProfileId) {
-		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)), ReceiptEntityOCR.class, TABLE);
+		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)
+				.andOperator(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED.name()))), ReceiptEntityOCR.class, TABLE);
 	}
 }

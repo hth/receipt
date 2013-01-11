@@ -51,7 +51,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 			object.setUpdated();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for ReceiptEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		}
 	}
@@ -69,14 +69,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+		mongoTemplate.remove(new Query(Criteria.where("id").is(id)), ReceiptEntity.class);
 	}
 
 	@Override
 	public void createCollection() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

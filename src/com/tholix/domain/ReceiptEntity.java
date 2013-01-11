@@ -58,7 +58,7 @@ public class ReceiptEntity extends BaseEntity {
 	@NotNull
 	private String userProfileId;
 
-	private ReceiptEntity() {
+	public ReceiptEntity() {
 
 	}
 
@@ -107,6 +107,19 @@ public class ReceiptEntity extends BaseEntity {
 		return new ReceiptEntity(description, receiptStatus, receiptBlobId, userProfileId);
 	}
 
+	/**
+	 * Use this method to create the Entity for OCR Entity
+	 * 
+	 * @param title
+	 * @param receiptDate
+	 * @param total
+	 * @param tax
+	 * @param description
+	 * @param receiptStatus
+	 * @param receiptBlobId
+	 * @param userProfileId
+	 * @return
+	 */
 	public static ReceiptEntity newInstance(String title, Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
 			String userProfileId) {
 		return new ReceiptEntity(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);

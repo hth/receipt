@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package com.tholix.utils;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+
+/**
+ * @author hitender 
+ * @when Jan 9, 2013 11:13:30 PM
+ *
+ */
+public class Formatter {
+
+	/** For double */
+	public static DecimalFormat df = new DecimalFormat("#.##");
+	
+	public static NumberFormat defaultFormat = NumberFormat.getCurrencyInstance();
+	
+	public static Double getCurrencyFormatted(String value) throws ParseException {
+		Double d = 0.00;
+		if(value.startsWith("$")) {
+			Number number = defaultFormat.parse(value);
+			d = number.doubleValue();
+		} else {
+			d = Double.valueOf(value);
+		}
+		
+		return d;
+	}
+}

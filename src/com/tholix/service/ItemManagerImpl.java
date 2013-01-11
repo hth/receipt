@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import com.mongodb.WriteResult;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender
@@ -45,7 +46,7 @@ public class ItemManagerImpl implements ItemManager {
 			object.setUpdated();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		}
 	}
@@ -56,20 +57,24 @@ public class ItemManagerImpl implements ItemManager {
 		try {
 			mongoTemplate.insert(objects, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		}
 	}
 
 	@Override
 	public ItemEntity getObject(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ItemEntity.class, TABLE);
 	}
 
 	@Override
-	public List<ItemEntity> getObjectWithRecipt(ReceiptEntity receipt) {
+	public List<ItemEntity> getObjectWithReceipt(ReceiptEntity receipt) {
 		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class, TABLE);
+	}
+	
+	@Override
+	public List<ItemEntity> getAllObjectWithName(String name) {
+		return mongoTemplate.find(new Query(Criteria.where("name").regex(name)), ItemEntity.class, TABLE);
 	}
 
 	@Override
@@ -102,5 +107,11 @@ public class ItemManagerImpl implements ItemManager {
 		Query query = new Query(Criteria.where("_id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
+	}
+	
+	@Override
+	public void deleteObjectWithReceipt(ReceiptEntity receipt) {
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+		mongoTemplate.remove(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
 	}
 }

@@ -43,7 +43,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 		try {
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for UserAuthenticationEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		}
 	}

@@ -64,6 +64,8 @@
     
     <bean id="uploadReceiptImageValidator" class="com.tholix.service.validator.UploadReceiptImageValidator" />
     
+    <bean id="receiptFormValidator" class="com.tholix.service.validator.ReceiptFormValidator" />
+    
     <!-- ===================================== -->
     <!-- Mongo Configuration                   -->
     <!-- ===================================== -->

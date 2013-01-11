@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title><fmt:message key="title" /></title>
+	<title><fmt:message key="item.analytic.title" /></title>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	
@@ -162,101 +162,25 @@
 	</div>
 	
 	<br/>
-		
-	<form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
-		<fieldset style="width:310px;">
-		    <legend>Upload Receipt</legend>	
-			
-			<div class="ui-widget">
-				<div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
-					<p>
-					<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-					<span style="display:block; width:310px;">
-					Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/receiptpending.htm"><strong>${userSession.pendingCount}</strong></a>
-					</span> 
-					</p>
-				</div>
-			</div>
-		
-		    <p>
-		        <form:label for="description" path="description">
-		        &nbsp;&nbsp;&nbsp;&nbsp;Description:&nbsp; 
-		        </form:label> 
-		        <form:input path="description" size="32"/>		        
-		    </p>
-		    <p>
-		    	<form:errors path="description" cssClass="error" />
-		    </p>
-		
-		    <p>
-		        <form:label for="fileData" path="fileData">
-		        Receipt Image:&nbsp; 
-		        </form:label> 
-		        <form:input path="fileData" type="file"/>		        
-		    </p>
-		    
-		    <p>
-		    	<form:errors path="fileData" cssClass="error" />
-		    </p>
-		
-		    <p align="center">
-		        <input type="submit" value="Upload My Receipt"/>
-		    </p>
-		
-		</fieldset>
-    </form:form>  
 	
-	<!-- Tabs -->
-	<h2 class="demoHeaders">Dashboard</h2>
-	<div id="tabs">
-		<ul>
-			<li><a href="#tabs-1">Receipts</a></li>
-			<li><a href="#tabs-2">Expense Analysis</a></li>
-			<li><a href="#tabs-3">More</a></li>
-		</ul>
-		<div id="tabs-1">				
-			<c:if test="${receipts.size() > 0}">
-			<table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
-				<tbody>
-					<tr style="background-color:orange;color:white;">
-						<th style="padding:3px;"></th>
-						<th style="padding:3px;">Title</th>
-						<th style="padding:3px;">Receipt Date</th>
-						<th style="padding:3px;">Tax</th>				
-						<th style="padding:3px;">Total</th>
-					</tr>
-				</tbody>
-					<c:forEach var="receipt" items="${receipts}"  varStatus="status">
-					<tr>
-						<td style="padding:3px;" align="right">
-							${status.count}
-						</td>
-						<td style="padding:3px;" title="${receipt.description}">
-							<spring:eval expression="receipt.title" />
-						</td>
-						<td style="padding:3px;">
-							<spring:eval expression="receipt.receiptDate" />
-						</td>
-						<td style="padding:3px;" align="right">
-							<spring:eval expression="receipt.tax" />
-						</td>
-						<td style="padding:3px;" align="right">
-							<a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
-								<spring:eval expression="receipt.total" />				
-							</a>
-						</td>
-					</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			</c:if>
-		</div>
-		<div id="tabs-2">			
-			
-		</div>
-		<div id="tabs-3">
-		
-		</div>
-	</div>
+	<table border="1" style="width: 400px" class="atable">
+		<tr>
+			<th align="left">&nbsp;Name</th>
+			<th align="left">&nbsp;Price</th>
+			<th align="left">&nbsp;Average Price / Average Price for similar product</th>
+		</tr>	
+		<tr>
+			<td align="left">
+	    		${item.name}
+			</td>
+			<td align="right">
+	    		<spring:eval expression="item.price" />
+			</td>
+			<td>
+				<spring:eval expression="averagePrice"/> / <spring:eval expression="averagePriceForSimilar"/>
+			</td>
+		</tr>
+	</table>
+	
 </body>
 </html>

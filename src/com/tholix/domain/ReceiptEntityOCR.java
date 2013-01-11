@@ -53,7 +53,7 @@ public class ReceiptEntityOCR extends BaseEntity {
 	@NotNull
 	private String receiptOCRTranslation;
 
-	private ReceiptEntityOCR() {
+	public ReceiptEntityOCR() {
 
 	}
 

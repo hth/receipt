@@ -42,6 +42,10 @@ public class ItemEntity extends BaseEntity {
 
 	@NotNull
 	private String userProfileId;
+	
+	public ItemEntity() {
+		
+	}
 
 	private ItemEntity(String name, Double price, TaxEnum taxed, ReceiptEntity receipt, String userProfileId) {
 		super();
