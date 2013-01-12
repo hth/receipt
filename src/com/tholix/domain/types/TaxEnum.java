@@ -9,6 +9,7 @@ package com.tholix.domain.types;
  *
  */
 public enum TaxEnum {
+	
 	TAXED("TAXED", "Taxed"), 
 	NOT_TAXED("NOT_TAXED", "Not Taxed")
 	;

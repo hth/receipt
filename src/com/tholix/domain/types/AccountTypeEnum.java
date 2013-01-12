@@ -12,7 +12,8 @@ public enum AccountTypeEnum {
 
 	PERSONAL("PERSONAL", "Personal"), 
 	PERSONAL_BUSINESS("PERSONAL_BUSINESS", "Personal & Business"), 
-	BUSINESS_CLIENT("BUSINESS_CLIENT", "Business with multiple clients");
+	BUSINESS_CLIENT("BUSINESS_CLIENT", "Business with multiple clients")
+	;
 
 	private final String description;
 	private final String name;

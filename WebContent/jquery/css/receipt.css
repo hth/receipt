@@ -1,0 +1,105 @@
+/* This for whole page setting */
+body{
+	font: 62.5% "Trebuchet MS", sans-serif;
+	margin: 50px;
+}
+.demoHeaders {
+	margin-top: 2em;
+}
+#dialog-link {
+	padding: .4em 1em .4em 20px;
+	text-decoration: none;
+	position: relative;
+}
+#dialog-link span.ui-icon {
+	margin: 0 5px 0 0;
+	position: absolute;
+	left: .2em;
+	top: 50%;
+	margin-top: -8px;
+}
+#icons {
+	margin: 0;
+	padding: 0;
+}
+#icons li {
+	margin: 2px;
+	position: relative;
+	padding: 4px 0;
+	cursor: pointer;
+	float: left;
+	list-style: none;
+}
+#icons span.ui-icon {
+	float: left;
+	margin: 0 4px;
+}
+/* End*/
+
+/* For Calendar */ 	
+#calendar {
+	width: 300px;
+	margin: 0 auto;
+}
+/* End*/
+
+/* For error message */
+.error {
+	color: red;
+}
+/* End*/
+
+/* The code below is for the small table to show the tax, total and grand total */
+.divTable {
+     display: table;
+     width: auto;
+     background-color: #eee;
+     border:0px solid  #666666;
+     border-spacing:5px;/*cellspacing:poor IE support for  this*/
+    /* border-collapse:separate;*/
+}
+
+.divRow {
+    display:table-row;
+    width:auto;
+}
+
+.divCell {
+     float:left;/*fix for  buggy browsers*/
+     display:table-column;
+     width:100px;
+     background-color:#FFFFFF;
+}
+/* End*/
+
+/* This is for the receipt and its items table */
+.atable{
+	border-collapse:collapse;
+	border:1px solid #AAA;
+	margin-left:10px;
+}
+.atable th{
+	border:1px solid #AAF;
+	background:#BFBFFF;
+	font-weight:bold;
+}
+.atable td{
+	padding:4px;
+	border:1px solid #AAF;
+}
+.oddRow{
+	background:#FFFFFF;
+}
+.evenRow{
+	background:#DFDFFF;
+}
+/* End */
+
+/* This is for div table */
+.leftAlign {
+   	float: left;
+}
+.rightAlign {
+   	float: right;
+}
+/* End */

@@ -12,7 +12,8 @@ public enum ReceiptStatusEnum {
 
 	OCR_PROCESSED("PROCESSED", "OCR Processed"), 
 	TURK_REQUEST("TURK_REQUEST", "Turk Request"), 
-	TURK_PROCESSED("TURK_PROCESSED", "Turk Processed");
+	TURK_PROCESSED("TURK_PROCESSED", "Turk Processed")
+	;
 
 	private final String description;
 	private final String name;

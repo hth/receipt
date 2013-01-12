@@ -40,6 +40,7 @@ import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UploadReceiptImageValidator;
 import com.tholix.utils.DateUtil;
+import com.tholix.utils.Formatter;
 import com.tholix.utils.ReceiptParser;
 
 /**
@@ -74,19 +75,32 @@ public class LandingFormController {
 		userSession.setPendingCount(pendingCount);
 		session.setAttribute("userSession", userSession);
 
-		// TODO remove the following two lines
-//		receiptManager.dropCollection();
-//		itemManager.dropCollection();
-
-		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSession.getUserProfileId());
-		//populate(userProfileEntity);
-
 		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
 		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
+		
+		getTotalExpense(receipts, modelAndView);
 
+		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSession.getUserProfileId());
 		log.info(userProfileEntity.getName());
 		return modelAndView;
+	}
+
+	/**
+	 * @param receipts
+	 * @param modelAndView
+	 */
+	private void getTotalExpense(List<ReceiptEntity> receipts, ModelAndView modelAndView) {
+		double tax = 0.00;
+		double total = 0.00;
+		for(ReceiptEntity receipt : receipts) {
+			tax += receipt.getTax();
+			total += receipt.getTotal();
+		}
+		
+		modelAndView.addObject("tax", Formatter.df.format(tax));
+		modelAndView.addObject("total", Formatter.df.format(total));
+		modelAndView.addObject("grandTotal", Formatter.df.format(tax + total));
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

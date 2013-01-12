@@ -84,4 +84,9 @@ public class UserRegistrationForm {
 	public void setAccountType(AccountTypeEnum accountType) {
 		this.accountType = accountType;
 	}
+
+	@Override
+	public String toString() {
+		return "UserRegistrationForm [firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId + ", password=" + password + ", accountType=" + accountType + "]";
+	}
 }
