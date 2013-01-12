@@ -16,6 +16,8 @@
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.9.2.custom.js"></script>
 	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
 	<script type="text/javascript" src="jquery/js/raphael/raphael-min.js"></script>
+	
+	
 
 	<script>
 	$(function() {
@@ -196,13 +198,14 @@
 	</script>
 	
 	<script>
+		/* add background color to holder in tr tag /*
         window.onload = function () {
             var src = document.getElementById("receipt.image").src,
                 angle = 0;
             document.getElementById("holder").innerHTML = "";
-            var R = Raphael("holder", 640, 480);
-            R.circle(320, 240, 200).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5});
-            var img = R.image(src, 160, 120, 320, 240);
+            var R = Raphael("holder", 930, 800);
+            /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
+            var img = R.image(src, 80, 20, 750, 750);
             var butt1 = R.set(),
                 butt2 = R.set();
             butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
@@ -305,8 +308,7 @@
 			<td width="6px">&nbsp;</td>
 			<td valign="top">			 
 			 	<div id="holder">
-			 		<%-- <img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}" width="600px" height="600px"/> --%>
-			 		<img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}" width="600px" height="600px" id="receipt.image"/>
+			 		<img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}" width="700px" height="700px" id="receipt.image"/>
 			 	</div>			 
 			</td>
 		</tr>
