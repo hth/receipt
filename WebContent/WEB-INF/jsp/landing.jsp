@@ -12,8 +12,7 @@
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.9.2.custom.css'>
-	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
-	
+	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>	
 	
 	<script type="text/javascript" src="jquery/js/jquery-1.8.3.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.9.2.custom.js"></script>
@@ -112,6 +111,8 @@
 	<div>
 		<p>User Id  ${sessionScope['userSession'].emailId} </p>		
 	</div>
+	
+	<h2 class="demoHeaders">Total Expense: <a href="#tabs-2"><fmt:formatNumber value="${grandTotal}" type="currency"/></a></h2>
 		
 	<form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
 		<fieldset style="width:310px;">
@@ -200,8 +201,7 @@
 			</table>
 			</c:if>
 		</div>
-		<div id="tabs-2">
-		    
+		<div id="tabs-2">		    
 		    <fieldset style="width:315px;">
 			    <legend>Total Expense</legend>	
 				<div class="divTable">

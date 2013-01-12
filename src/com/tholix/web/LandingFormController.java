@@ -68,20 +68,24 @@ public class LandingFormController {
 	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
-		log.info("LandingFormController loadForm: " + userSession.getEmailId());
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSessionAttribute, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
+		log.info("LandingFormController loadForm: " + userSessionAttribute.getEmailId());
 		
-		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
-		userSession.setPendingCount(pendingCount);
-		session.setAttribute("userSession", userSession);
+		if(userSessionAttribute.isEmpty()) {
+			userSessionAttribute = (UserSession) session.getAttribute("userSession");
+		} 		
+
+		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSessionAttribute.getUserProfileId());
+		userSessionAttribute.setPendingCount(pendingCount);
+		session.setAttribute("userSession", userSessionAttribute);
 
 		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
-		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
+		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSessionAttribute.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 		
 		getTotalExpense(receipts, modelAndView);
 
-		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSession.getUserProfileId());
+		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSessionAttribute.getUserProfileId());
 		log.info(userProfileEntity.getName());
 		return modelAndView;
 	}

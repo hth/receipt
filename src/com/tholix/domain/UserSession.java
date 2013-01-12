@@ -17,6 +17,11 @@ public class UserSession implements Serializable {
 	String emailId;
 	String userProfileId;
 	long pendingCount;
+	
+	/** To make bean happy */
+	public UserSession() {
+		
+	}
 
 	private UserSession(String emailId, String userProfileId) {
 		this.emailId = emailId;
@@ -41,5 +46,12 @@ public class UserSession implements Serializable {
 
 	public void setPendingCount(long pendingCount) {
 		this.pendingCount = pendingCount;
+	}
+	
+	public boolean isEmpty() {
+		if(emailId == null || userProfileId == null) {
+			return true;
+		}
+		return false;
 	}
 }
