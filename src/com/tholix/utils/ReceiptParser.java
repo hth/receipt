@@ -5,6 +5,7 @@ package com.tholix.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -18,6 +19,8 @@ import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.TaxEnum;
 
 /**
+ * Parses the data from OCR 
+ * 
  * @author hitender
  * @when Jan 6, 2013 9:49:59 AM
  * 
@@ -30,6 +33,7 @@ public class ReceiptParser {
 	public static void read(String receiptOCRTranslation, ReceiptEntityOCR receiptOCR, List<ItemEntityOCR> items) {
 		StringTokenizer st = new StringTokenizer(receiptOCRTranslation, "\n");
 		String save = "";
+		int sequence = 1;
 		while (st.hasMoreTokens()) {
 			String s = st.nextToken();
 			Matcher itemMatcher = item.matcher(s);
@@ -37,7 +41,7 @@ public class ReceiptParser {
 			if (itemMatcher.find()) {
 				save = save + s;
 				p(save);
-				items.add(processItem(save, receiptOCR));
+				items.add(processItem(save, sequence, receiptOCR));
 				s = "";
 			} else if (dateMatcher.find()) {
 				// http://stackoverflow.com/questions/600733/using-java-to-find-substring-of-a-bigger-string-using-regular-expression
@@ -50,14 +54,18 @@ public class ReceiptParser {
 		}
 	}
 
-	private static ItemEntityOCR processItem(String itemString, ReceiptEntityOCR receipt) {
+	private static ItemEntityOCR processItem(String itemString, int sequence, ReceiptEntityOCR receipt) {
 		String name = itemString.substring(0, itemString.lastIndexOf("\t") + 1);
 		p(name);
+		
+		//Used for global name. This is hidden from user.
+		//String globalName = name.replaceAll("[^A-Za-z ]", "").replaceAll("\\s+", " ");
+		//p("'" + globalName.trim() + "'");
 
 		String price = itemString.substring(itemString.lastIndexOf("\t") + 1);
 		p(price);
 
-		ItemEntityOCR item = ItemEntityOCR.newInstance(name.trim(), price.trim(), TaxEnum.NOT_TAXED, receipt, receipt.getUserProfileId());
+		ItemEntityOCR item = ItemEntityOCR.newInstance(name.trim(), price.trim(), TaxEnum.NOT_TAXED, sequence, receipt, receipt.getUserProfileId());
 		return item;
 	}
 
@@ -71,6 +79,7 @@ public class ReceiptParser {
 	 */
 	public static void main(String[] args) throws IOException {
 		String receiptContent = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/BB.txt"));
-		read(receiptContent, null, null);
+		List<ItemEntityOCR> items = new ArrayList<ItemEntityOCR>();
+		read(receiptContent, ReceiptEntityOCR.newInstance(), items);
 	}
 }

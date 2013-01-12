@@ -9,6 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -64,12 +66,14 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Override
 	public ItemEntity getObject(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ItemEntity.class, TABLE);
+		Sort sort = new Sort(Direction.ASC, "sequence");
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)).with(sort), ItemEntity.class, TABLE);
 	}
 
 	@Override
 	public List<ItemEntity> getObjectWithReceipt(ReceiptEntity receipt) {
-		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class, TABLE);
+		Sort sort = new Sort(Direction.ASC, "sequence");
+		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)).with(sort), ItemEntity.class, TABLE);
 	}
 	
 	@Override
@@ -104,7 +108,7 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Override
 	public WriteResult updateObject(ItemEntity object) {
-		Query query = new Query(Criteria.where("_id").is(object.getId()));
+		Query query = new Query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}

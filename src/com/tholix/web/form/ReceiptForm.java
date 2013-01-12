@@ -88,7 +88,7 @@ public class ReceiptForm {
 		
 		for(ItemEntityOCR item : items) {
 			if(item.getName().length() != 0) {
-				ItemEntity ie = ItemEntity.newInstance(item.getName(), Formatter.getCurrencyFormatted(item.getPrice()), item.getTaxed(), receipt, receipt.getUserProfileId());
+				ItemEntity ie = ItemEntity.newInstance(item.getName(), Formatter.getCurrencyFormatted(item.getPrice()), item.getTaxed(), item.getSequence(), receipt, receipt.getUserProfileId());
 				ie.setCreated(item.getCreated());
 				ie.setUpdated();
 				

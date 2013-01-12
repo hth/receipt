@@ -163,21 +163,25 @@
 	
 	<br/>
 	
-	<table border="1" style="width: 400px" class="atable">
-		<tr>
-			<th align="left">&nbsp;Name</th>
-			<th align="left">&nbsp;Price</th>
-			<th align="left">&nbsp;Average Price</th>
-		</tr>	
+	<table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+		<tbody>
+			<tr style="background-color:orange;color:white;">			
+				<th style="padding:3px;">Name</th>
+				<th style="padding:3px;">Price</th>
+				<th style="padding:3px;">Average Price</th>
+			</tr>	
+		</tbody>
 		<tr>
 			<td align="left">
 	    		${item.name}
 			</td>
 			<td align="right">
 	    		<spring:eval expression="item.price" />
+	    		&nbsp;
 			</td>
-			<td>
+			<td align="right">
 				<spring:eval expression="averagePrice"/>
+				&nbsp;
 			</td>
 		</tr>
 	</table>

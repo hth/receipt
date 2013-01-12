@@ -13,10 +13,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.WriteResult;
-import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntityOCR;
 
@@ -34,8 +36,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public List<ItemEntityOCR> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findAll(ItemEntityOCR.class, TABLE);
 	}
 
 	@Override
@@ -63,7 +64,9 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public List<ItemEntityOCR> getObjectWithRecipt(ReceiptEntityOCR receipt) {
-		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)), ItemEntityOCR.class, TABLE);
+		Query query = new Query(Criteria.where("receipt").is(receipt));
+		Sort sort = new Sort(Direction.ASC, "sequence");
+		return mongoTemplate.find(query.with(sort), ItemEntityOCR.class, TABLE);
 	}
 
 	@Override
@@ -92,7 +95,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public WriteResult updateObject(ItemEntityOCR object) {
-		Query query = new Query(Criteria.where("_id").is(object.getId()));
+		Query query = new Query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}

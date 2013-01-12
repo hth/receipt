@@ -179,9 +179,9 @@ public class LandingFormController {
 			receiptManager.saveObject(receipt);
 			log.info("Receipt Id: " + receipt.getId());
 
-			ItemEntity item1 = ItemEntity.newInstance("1 Marble Moc Macchia Tall", 3.75, TaxEnum.TAXED, receipt, userProfile.getId());
+			ItemEntity item1 = ItemEntity.newInstance("1 Marble Moc Macchia Tall", 3.75, TaxEnum.TAXED, 1, receipt, userProfile.getId());
 			itemManager.saveObject(item1);
-			ItemEntity item2 = ItemEntity.newInstance("1 Car Brulee Latte Tall", 3.75, TaxEnum.TAXED, receipt, userProfile.getId());
+			ItemEntity item2 = ItemEntity.newInstance("1 Car Brulee Latte Tall", 3.75, TaxEnum.TAXED, 2, receipt, userProfile.getId());
 			itemManager.saveObject(item2);
 
 			// Item from Lucky
@@ -193,13 +193,13 @@ public class LandingFormController {
 			receiptManager.saveObject(receipt);
 			log.info("Receipt Id: " + receipt.getId());
 
-			item1 = ItemEntity.newInstance("1 SANTA HT LEOPARD", 4.00, TaxEnum.TAXED, receipt, userProfile.getId());
+			item1 = ItemEntity.newInstance("1 SANTA HT LEOPARD", 4.00, TaxEnum.TAXED, 1, receipt, userProfile.getId());
 			itemManager.saveObject(item1);
-			item2 = ItemEntity.newInstance("1 CUPCAKES 6C UNICED", 2.99, TaxEnum.NOT_TAXED, receipt, userProfile.getId());
+			item2 = ItemEntity.newInstance("1 CUPCAKES 6C UNICED", 2.99, TaxEnum.NOT_TAXED, 2, receipt, userProfile.getId());
 			itemManager.saveObject(item2);
-			ItemEntity item3 = ItemEntity.newInstance("1 DBK CNMN STRSL SLC", 3.99, TaxEnum.NOT_TAXED, receipt, userProfile.getId());
+			ItemEntity item3 = ItemEntity.newInstance("1 DBK CNMN STRSL SLC", 3.99, TaxEnum.NOT_TAXED, 3, receipt, userProfile.getId());
 			itemManager.saveObject(item3);
-			ItemEntity item4 = ItemEntity.newInstance("1 GRACE WHL CLV GRLC", 3.29, TaxEnum.NOT_TAXED, receipt, userProfile.getId());
+			ItemEntity item4 = ItemEntity.newInstance("1 GRACE WHL CLV GRLC", 3.29, TaxEnum.NOT_TAXED, 4, receipt, userProfile.getId());
 			itemManager.saveObject(item4);
 
 		} catch (Exception e) {

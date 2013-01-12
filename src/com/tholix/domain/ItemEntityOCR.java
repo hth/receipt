@@ -31,7 +31,11 @@ public class ItemEntityOCR extends BaseEntity {
 	@NumberFormat(style = Style.CURRENCY)
 	private String price;
 
+	@NotNull
 	private TaxEnum taxed = TaxEnum.NOT_TAXED;
+	
+	@NotNull
+	private int sequence;
 
 	@DBRef
 	private ReceiptEntityOCR receipt;
@@ -44,13 +48,14 @@ public class ItemEntityOCR extends BaseEntity {
 		
 	}
 
-	private ItemEntityOCR(String name, String price, TaxEnum taxed, ReceiptEntityOCR receipt, String userProfileId) {
+	private ItemEntityOCR(String name, String price, TaxEnum taxed, int sequence, ReceiptEntityOCR receipt, String userProfileId) {
 		super();
 		this.name = name;
 		this.price = price;
 		this.taxed = taxed;
 		this.receipt = receipt;
 		this.userProfileId = userProfileId;
+		this.sequence = sequence;
 	}
 
 	/**
@@ -63,8 +68,8 @@ public class ItemEntityOCR extends BaseEntity {
 	 * @param userProfileId
 	 * @return
 	 */
-	public static ItemEntityOCR newInstance(String name, String price, TaxEnum taxed, ReceiptEntityOCR receipt, String userProfileId) {
-		return new ItemEntityOCR(name, price, taxed, receipt, userProfileId);
+	public static ItemEntityOCR newInstance(String name, String price, TaxEnum taxed, int sequence, ReceiptEntityOCR receipt, String userProfileId) {
+		return new ItemEntityOCR(name, price, taxed, sequence, receipt, userProfileId);
 	}
 
 	public String getName() {
@@ -89,6 +94,14 @@ public class ItemEntityOCR extends BaseEntity {
 
 	public void setTaxed(TaxEnum taxed) {
 		this.taxed = taxed;
+	}	
+
+	public int getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
 	}
 
 	public ReceiptEntityOCR getReceipt() {

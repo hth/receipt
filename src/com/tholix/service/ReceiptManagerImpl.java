@@ -9,6 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -37,7 +39,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
-		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)), ReceiptEntity.class, TABLE);
+		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
+		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)).with(sort), ReceiptEntity.class, TABLE);
 	}
 
 	@Override

@@ -35,7 +35,11 @@ public class ItemEntity extends BaseEntity {
 	@NumberFormat(style = Style.CURRENCY)
 	private Double price;
 
-	private TaxEnum taxed = TaxEnum.NOT_TAXED;
+	@NotNull
+	private TaxEnum taxed = TaxEnum.NOT_TAXED;	
+
+	@NotNull
+	private int sequence;
 
 	@DBRef
 	private ReceiptEntity receipt;
@@ -47,13 +51,14 @@ public class ItemEntity extends BaseEntity {
 		
 	}
 
-	private ItemEntity(String name, Double price, TaxEnum taxed, ReceiptEntity receipt, String userProfileId) {
+	private ItemEntity(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
 		super();
 		this.name = name;
 		this.price = price;
 		this.taxed = taxed;
 		this.receipt = receipt;
 		this.userProfileId = userProfileId;
+		this.sequence = sequence;
 	}
 
 	/**
@@ -67,8 +72,8 @@ public class ItemEntity extends BaseEntity {
 	 * @param user
 	 * @return
 	 */
-	public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, ReceiptEntity receipt, String userProfileId) {
-		return new ItemEntity(name, price, taxed, receipt, userProfileId);
+	public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
+		return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
 	}
 
 	public String getName() {
@@ -93,6 +98,14 @@ public class ItemEntity extends BaseEntity {
 
 	public void setTaxed(TaxEnum taxed) {
 		this.taxed = taxed;
+	}
+
+	public int getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
 	}
 
 	public ReceiptEntity getReceipt() {
