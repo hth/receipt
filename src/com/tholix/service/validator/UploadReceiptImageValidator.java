@@ -6,12 +6,9 @@ package com.tholix.service.validator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.tholix.domain.UploadReceiptImage;
-import com.tholix.domain.UserLoginWrapper;
-import com.tholix.domain.UserRegistrationWrapper;
 
 /**
  * @author hitender 

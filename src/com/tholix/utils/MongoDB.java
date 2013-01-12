@@ -17,6 +17,7 @@ public class MongoDB {
 	private static final MongoOperations mongoOperations;
 
 	static {
+		@SuppressWarnings("resource")
 		ApplicationContext ctx = new GenericXmlApplicationContext("../mongo-config.xml");
 		mongoOperations = (MongoOperations) ctx.getBean("mongoTemplate");
 	}

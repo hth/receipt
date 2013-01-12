@@ -1,10 +1,13 @@
 /**
  * 
  */
-package com.tholix.domain;
+package com.tholix.web.form;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.UserAuthenticationEntity;
+import com.tholix.domain.UserPreferenceEntity;
+import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.AccountTypeEnum;
 import com.tholix.utils.SHAHashing;
 
@@ -13,7 +16,7 @@ import com.tholix.utils.SHAHashing;
  * @when Dec 25, 2012 12:01:53 PM
  * 
  */
-public class UserRegistrationWrapper {
+public class UserRegistrationForm {
 
 	private String firstName;
 	private String lastName;
@@ -21,8 +24,8 @@ public class UserRegistrationWrapper {
 	private String password;
 	private AccountTypeEnum accountType;
 
-	public static UserRegistrationWrapper newInstance() {
-		return new UserRegistrationWrapper();
+	public static UserRegistrationForm newInstance() {
+		return new UserRegistrationForm();
 	}
 
 	/**

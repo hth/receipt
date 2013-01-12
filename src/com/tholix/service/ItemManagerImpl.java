@@ -20,7 +20,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import com.mongodb.WriteResult;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender

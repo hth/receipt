@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tholix.domain.UserRegistrationWrapper;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
@@ -23,6 +22,7 @@ import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UserRegistrationValidator;
+import com.tholix.web.form.UserRegistrationForm;
 
 /**
  * @author hitender
@@ -41,9 +41,9 @@ public class CreateAccountFormController {
 	@Autowired private UserPreferenceManager userPreferenceManager;
 	@Autowired private UserRegistrationValidator userRegistrationValidator;
 
-	@ModelAttribute("userRegistrationWrapper")
-	public UserRegistrationWrapper getUserRegistrationWrapper() {
-		return UserRegistrationWrapper.newInstance();
+	@ModelAttribute("userRegistrationForm")
+	public UserRegistrationForm getUserRegistrationForm() {
+		return UserRegistrationForm.newInstance();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -53,20 +53,20 @@ public class CreateAccountFormController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String post(@ModelAttribute("userRegistrationWrapper") UserRegistrationWrapper userRegistrationWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
+	public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
 		// TODO remove the next three lines
 //		userAuthenticationManager.dropCollection();
 //		userProfileManager.dropCollection();
 //		userPreferenceManager.dropCollection();
 
-		userRegistrationValidator.validate(userRegistrationWrapper, result);
+		userRegistrationValidator.validate(userRegistrationForm, result);
 		if (result.hasErrors()) {
 			return "newaccount";
 		} else {
 			UserAuthenticationEntity userAuthentication;
 			UserProfileEntity userProfile;
 			try {
-				userAuthentication = userRegistrationWrapper.newUserAuthenticationEntity();
+				userAuthentication = userRegistrationForm.newUserAuthenticationEntity();
 				userAuthenticationManager.saveObject(userAuthentication);
 			} catch (Exception e) {
 				log.error("During saving UserAuthenticationEntity: " + e.getLocalizedMessage());
@@ -75,7 +75,7 @@ public class CreateAccountFormController {
 			}
 
 			try {
-				userProfileManager.saveObject(userRegistrationWrapper.newUserProfileEntity(userAuthentication));
+				userProfileManager.saveObject(userRegistrationForm.newUserProfileEntity(userAuthentication));
 				userProfile = userProfileManager.getObject(userAuthentication);
 			} catch (Exception e) {
 				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
@@ -83,7 +83,7 @@ public class CreateAccountFormController {
 			}
 
 			try {
-				userPreferenceManager.saveObject(userRegistrationWrapper.newUserPreferenceEntity(userProfile));
+				userPreferenceManager.saveObject(userRegistrationForm.newUserPreferenceEntity(userProfile));
 			} catch (Exception e) {
 				log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
 				return "newaccount";

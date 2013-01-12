@@ -5,7 +5,6 @@ package com.tholix.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;

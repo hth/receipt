@@ -3,20 +3,14 @@
  */
 package com.tholix.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.collections.FactoryUtils;
-import org.apache.commons.collections.list.GrowthList;
-import org.apache.commons.collections.list.LazyList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.AutoPopulatingList;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +23,6 @@ import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.domain.UserRegistrationWrapper;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.service.ItemManager;

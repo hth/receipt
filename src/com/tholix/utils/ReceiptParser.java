@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 
 import com.tholix.domain.ItemEntityOCR;
-import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.TaxEnum;
 

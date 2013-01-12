@@ -9,7 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.tholix.domain.UserRegistrationWrapper;
+import com.tholix.web.form.UserRegistrationForm;
 
 /**
  * @author hitender
@@ -23,7 +23,7 @@ public class UserRegistrationValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return UserRegistrationWrapper.class.equals(clazz);
+		return UserRegistrationForm.class.equals(clazz);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class UserRegistrationValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[] { "Email ID" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[] { "Password" });
 
-		UserRegistrationWrapper userRegistration = (UserRegistrationWrapper) obj;
+		UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
 		if (userRegistration.getPassword().length() < 4) {
 			errors.rejectValue("firstName", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
