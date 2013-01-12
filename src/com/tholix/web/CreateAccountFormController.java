@@ -37,15 +37,9 @@ public class CreateAccountFormController {
 	@Autowired
 	@Qualifier("userAuthenticationManager")
 	private UserAuthenticationManager userAuthenticationManager;
-
-	@Autowired
-	private UserProfileManager userProfileManager;
-
-	@Autowired
-	private UserPreferenceManager userPreferenceManager;
-
-	@Autowired
-	private UserRegistrationValidator userRegistrationValidator;
+	@Autowired private UserProfileManager userProfileManager;
+	@Autowired private UserPreferenceManager userPreferenceManager;
+	@Autowired private UserRegistrationValidator userRegistrationValidator;
 
 	@ModelAttribute("userRegistrationWrapper")
 	public UserRegistrationWrapper getUserRegistrationWrapper() {

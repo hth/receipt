@@ -32,8 +32,7 @@ public class ReceiptPendingFormController {
 
 	private String nextPage = "receiptpending";
 
-	@Autowired
-	private ReceiptOCRManager receiptOCRManager;
+	@Autowired private ReceiptOCRManager receiptOCRManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(HttpSession session) {

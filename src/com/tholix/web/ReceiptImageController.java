@@ -37,8 +37,7 @@ import com.tholix.service.StorageManager;
 public class ReceiptImageController {
 	private final Log log = LogFactory.getLog(getClass());	
 	
-	@Autowired
-	private StorageManager storageManager;
+	@Autowired private StorageManager storageManager;
 
 	/**
 	 * This is used only to serve images of Receipt

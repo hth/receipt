@@ -37,11 +37,8 @@ public class LoginFormController {
 	@Qualifier("userAuthenticationManager")
 	private UserAuthenticationManager userAuthenticationManager;
 
-	@Autowired
-	private UserProfileManager userProfileManager;
-
-	@Autowired
-	private UserLoginValidator userLoginValidator;
+	@Autowired private UserProfileManager userProfileManager;
+	@Autowired private UserLoginValidator userLoginValidator;
 
 	// TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 

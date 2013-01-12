@@ -26,7 +26,6 @@ import com.tholix.domain.types.TaxEnum;
 @Document(collection = "ITEM")
 @CompoundIndexes({ @CompoundIndex(name = "user_item_idx", def = "{'receipt': -1, 'user': 1}") })
 public class ItemEntity extends BaseEntity {
-
 	private static final long serialVersionUID = 1031429034359059354L;
 
 	@Size(min = 1, max = 128)

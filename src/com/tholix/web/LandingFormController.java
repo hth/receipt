@@ -58,29 +58,14 @@ public class LandingFormController {
 	 */
 	private String nextPageIsCalledLanding = "/landing";
 
-	@Autowired
-	private UserProfileManager userProfileManager;
-
-	@Autowired
-	private ReceiptManager receiptManager;
-
-	@Autowired
-	private ReceiptOCRManager receiptOCRManager;
-
-	@Autowired
-	private ItemManager itemManager;
-
-	@Autowired
-	private ItemOCRManager itemOCRManager;
-
-	@Autowired
-	private ItemFeatureManager itemFeatureManager;
-
-	@Autowired
-	private StorageManager storageManager;
-	
-	@Autowired
-	private UploadReceiptImageValidator uploadReceiptImageValidator;
+	@Autowired private UserProfileManager userProfileManager;
+	@Autowired private ReceiptManager receiptManager;
+	@Autowired private ReceiptOCRManager receiptOCRManager;
+	@Autowired private ItemManager itemManager;
+	@Autowired private ItemOCRManager itemOCRManager;
+	@Autowired private ItemFeatureManager itemFeatureManager;
+	@Autowired private StorageManager storageManager;	
+	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
