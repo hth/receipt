@@ -68,24 +68,25 @@ public class LandingFormController {
 	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSessionAttribute, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
-		log.info("LandingFormController loadForm: " + userSessionAttribute.getEmailId());
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
+		log.info("LandingFormController loadForm: " + userSession.getEmailId());
 		
-		if(userSessionAttribute.isEmpty()) {
-			userSessionAttribute = (UserSession) session.getAttribute("userSession");
+		if(userSession.isEmpty()) {
+			//get the UserSession from session because a reload on this page fails without having valid userSession modelAttribute 
+			userSession = (UserSession) session.getAttribute("userSession");
 		} 		
 
-		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSessionAttribute.getUserProfileId());
-		userSessionAttribute.setPendingCount(pendingCount);
-		session.setAttribute("userSession", userSessionAttribute);
+		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
+		userSession.setPendingCount(pendingCount);
+		session.setAttribute("userSession", userSession);
 
 		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
-		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSessionAttribute.getUserProfileId());
+		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 		
 		getTotalExpense(receipts, modelAndView);
 
-		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSessionAttribute.getUserProfileId());
+		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSession.getUserProfileId());
 		log.info(userProfileEntity.getName());
 		return modelAndView;
 	}
