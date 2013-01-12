@@ -9,7 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.tholix.domain.UserLoginWrapper;
+import com.tholix.web.form.UserLoginForm;
 
 /**
  * @author hitender
@@ -20,7 +20,7 @@ public class UserLoginValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return UserLoginWrapper.class.equals(clazz);
+		return UserLoginForm.class.equals(clazz);
 	}
 
 	@Override
@@ -28,12 +28,12 @@ public class UserLoginValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[] { "Email ID" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[] { "Password" });
 
-		UserLoginWrapper userLoginWrapper = (UserLoginWrapper) obj;
-		if (!userLoginWrapper.getEmailId().matches(UserRegistrationValidator.EMAIL_REGEX)) {
-			errors.rejectValue("emailId", "email.notValid", new Object[] { userLoginWrapper.getEmailId() }, "Not a valid email");
+		UserLoginForm userLoginForm = (UserLoginForm) obj;
+		if (!userLoginForm.getEmailId().matches(UserRegistrationValidator.EMAIL_REGEX)) {
+			errors.rejectValue("emailId", "email.notValid", new Object[] { userLoginForm.getEmailId() }, "Not a valid email");
 		}
 
-		if (userLoginWrapper.getPassword().length() < 4) {
+		if (userLoginForm.getPassword().length() < 4) {
 			errors.rejectValue("password", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 	}

@@ -1,19 +1,19 @@
 /**
  * 
  */
-package com.tholix.domain;
+package com.tholix.web.form;
 
 /**
  * @author hitender
  * @when Jan 4, 2013 4:41:01 PM
  * 
  */
-public class UserLoginWrapper {
+public class UserLoginForm {
 	private String emailId;
 	private String password;
 
-	public static UserLoginWrapper newInstance() {
-		return new UserLoginWrapper();
+	public static UserLoginForm newInstance() {
+		return new UserLoginForm();
 	}
 
 	public String getEmailId() {

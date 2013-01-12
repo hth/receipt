@@ -153,7 +153,7 @@
 	<h2>
 		<fmt:message key="login.heading" />
 	</h2>
-	<form:form method="post" modelAttribute="userLoginWrapper" action="login.htm">
+	<form:form method="post" modelAttribute="userLoginForm" action="login.htm">
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
 			<tr>
 				<td align="right" width="20%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email ID:</form:label></td>

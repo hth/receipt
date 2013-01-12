@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tholix.domain.UserAuthenticationEntity;
-import com.tholix.domain.UserLoginWrapper;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UserLoginValidator;
 import com.tholix.utils.SHAHashing;
+import com.tholix.web.form.UserLoginForm;
 
 /**
  * @author hitender
@@ -49,9 +49,9 @@ public class LoginFormController {
 	 * 
 	 * @return UserAuthenticationEntity
 	 */
-	@ModelAttribute("userLoginWrapper")
-	public UserLoginWrapper getUserLoginWrapper() {
-		return UserLoginWrapper.newInstance();
+	@ModelAttribute("userLoginForm")
+	public UserLoginForm getUserLoginForm() {
+		return UserLoginForm.newInstance();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -61,29 +61,29 @@ public class LoginFormController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String post(@ModelAttribute("userLoginWrapper") UserLoginWrapper userLoginWrapper, BindingResult result, final RedirectAttributes redirectAttrs) {
-		userLoginValidator.validate(userLoginWrapper, result);
+	public String post(@ModelAttribute("userLoginForm") UserLoginForm userLoginForm, BindingResult result, final RedirectAttributes redirectAttrs) {
+		userLoginValidator.validate(userLoginForm, result);
 		if (result.hasErrors()) {
 			return "login";
 		} else {
-			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginWrapper.getEmailId());
+			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginForm.getEmailId());
 			if (userProfile != null) {
-				userLoginWrapper.setPassword(SHAHashing.hashCode(userLoginWrapper.getPassword()));
+				userLoginForm.setPassword(SHAHashing.hashCode(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = userAuthenticationManager.getObject(userProfile.getUserAuthentication().getId());
-				if (user.getPassword().equals(userLoginWrapper.getPassword())) {
-					log.info("Email Id: " + userLoginWrapper.getEmailId() + " and found " + userProfile.getEmailId());
+				if (user.getPassword().equals(userLoginForm.getPassword())) {
+					log.info("Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
 
 					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());
 					redirectAttrs.addFlashAttribute("userSession", userSession);
 
 					return "redirect:/landing.htm";
 				} else {
-					log.error("Password not matching for user : " + userLoginWrapper.getEmailId());
+					log.error("Password not matching for user : " + userLoginForm.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
 					return "login";
 				}
 			} else {
-				log.error("No Email Id found in record : " + userLoginWrapper.getEmailId());
+				log.error("No Email Id found in record : " + userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
 				return "login";
 			}
