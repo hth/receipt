@@ -235,6 +235,7 @@
 						</td>
 						<td align="right">
 							<form:input path="items[${status.index}].price" size="16"/>
+							<form:errors path="items[${status.index}].price" cssClass="error" />
 						</td>
 						<td>
 							<form:select path="items[${status.index}].taxed"> 
@@ -252,6 +253,7 @@
 						</td>
 						<td align="right">
 							<form:input path="receipt.total" size="5"/>
+							<form:errors path="receipt.total" cssClass="error" />
 						</td>
 					</tr>
 					<tr>

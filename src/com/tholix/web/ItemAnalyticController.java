@@ -29,7 +29,7 @@ import com.tholix.utils.Formatter;
 @RequestMapping(value = "/itemanalytic")
 public class ItemAnalyticController {
 	
-	private String nextPageIsCalledItemAnalytic = "/itemanalytic";
+	private String nextPage = "/itemanalytic";
 
 	@Autowired ItemManager itemManager;
 	
@@ -49,15 +49,11 @@ public class ItemAnalyticController {
 			averagePrice = new Double(Formatter.df.format(averagePrice));
 		} else {
 			averagePrice = myItem.getPrice();
-		}
+		}		
 		
-		List<ItemEntity> similarItems = itemManager.getAllObjectWithName(myItem.getName());
-		Double averagePriceForSimilar = 0.00;
-		
-		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledItemAnalytic);
+		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("item", myItem);
 		modelAndView.addObject("averagePrice", averagePrice);
-		modelAndView.addObject("averagePriceForSimilar", averagePriceForSimilar);
 		
 		return modelAndView;
 	}

@@ -74,7 +74,7 @@ public class ItemManagerImpl implements ItemManager {
 	
 	@Override
 	public List<ItemEntity> getAllObjectWithName(String name) {
-		return mongoTemplate.find(new Query(Criteria.where("name").regex(name)), ItemEntity.class, TABLE);
+		return mongoTemplate.find(new Query(Criteria.where("name").is(name)), ItemEntity.class, TABLE);
 	}
 
 	@Override

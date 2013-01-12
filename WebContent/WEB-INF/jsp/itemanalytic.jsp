@@ -167,7 +167,7 @@
 		<tr>
 			<th align="left">&nbsp;Name</th>
 			<th align="left">&nbsp;Price</th>
-			<th align="left">&nbsp;Average Price / Average Price for similar product</th>
+			<th align="left">&nbsp;Average Price</th>
 		</tr>	
 		<tr>
 			<td align="left">
@@ -177,7 +177,7 @@
 	    		<spring:eval expression="item.price" />
 			</td>
 			<td>
-				<spring:eval expression="averagePrice"/> / <spring:eval expression="averagePriceForSimilar"/>
+				<spring:eval expression="averagePrice"/>
 			</td>
 		</tr>
 	</table>
