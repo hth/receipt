@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,6 +26,7 @@ public class UserProfileEntity extends BaseEntity {
 	private static final long serialVersionUID = -1560672689033084436L;
 
 	@Indexed(unique = true)
+	@Email
 	private String emailId;
 
 	@Size(min = 1, max = 128)

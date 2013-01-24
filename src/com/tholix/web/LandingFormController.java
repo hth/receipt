@@ -5,8 +5,10 @@ package com.tholix.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +33,7 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
+import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
@@ -39,6 +42,7 @@ import com.tholix.service.ReceiptOCRManager;
 import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UploadReceiptImageValidator;
+import com.tholix.utils.ABBYYCloudService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.ReceiptParser;
@@ -85,6 +89,10 @@ public class LandingFormController {
 		modelAndView.addObject("receipts", receipts);
 		
 		getTotalExpense(receipts, modelAndView);
+		
+		/** Receipt grouped by date */
+		Map<Date, Double> receiptGrouped = receiptManager.getAllObjectsGroupedByDate(userSession.getUserProfileId());
+		modelAndView.addObject("receiptGrouped", receiptGrouped);
 
 		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSession.getUserProfileId());
 		log.info(userProfileEntity.getName());
@@ -104,8 +112,8 @@ public class LandingFormController {
 		}
 		
 		modelAndView.addObject("tax", Formatter.df.format(tax));
+		modelAndView.addObject("totalWithoutTax", Formatter.df.format(total - tax));
 		modelAndView.addObject("total", Formatter.df.format(total));
-		modelAndView.addObject("grandTotal", Formatter.df.format(tax + total));
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -135,10 +143,11 @@ public class LandingFormController {
 		log.info("-------------------------------------------");
 
 		try {
-			// String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
-
+			//String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
 			//TODO remove Temp Code
-			String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/BB.txt"));
+			String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
+			log.info(receiptOCRTranslation);
+			
 			String receiptBlobId = storageManager.save(uploadReceiptImage);
 			log.info("BolbId: " + receiptBlobId);
 

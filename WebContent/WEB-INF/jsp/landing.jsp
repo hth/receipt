@@ -112,8 +112,10 @@
 		<p>User Id  ${sessionScope['userSession'].emailId} </p>		
 	</div>
 	
-	<h2 class="demoHeaders">Total Expense: <a href="#tabs-2"><fmt:formatNumber value="${grandTotal}" type="currency"/></a></h2>
-		
+	<h2 class="demoHeaders">Total Expense: <a href="${pageContext.request.contextPath}/landing.htm#tabs-2"><fmt:formatNumber value="${total}" type="currency"/></a></h2>
+
+	
+
 	<form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
 		<fieldset style="width:310px;">
 		    <legend>Upload Receipt</legend>	
@@ -206,14 +208,14 @@
 			    <legend>Total Expense</legend>	
 				<div class="divTable">
 					<div class="headRow">
-					   <div class="divCell">Grand Total</div>
-					   <div class="divCell">Expense</div>
+					   <div class="divCell">Total</div>
 					   <div class="divCell">Tax</div>
+					   <div class="divCell">Total without Tax</div>
 					</div>
 					<div class="divRow">
-						<div class="divCell">${grandTotal}</div>
-					    <div class="divCell">${total}</div>
+						<div class="divCell">${total}</div>
 					    <div class="divCell">${tax}</div>
+					    <div class="divCell">${totalWithoutTax}</div>
 					</div>
 		    	</div>	
 	    	</fieldset>

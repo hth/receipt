@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -46,6 +47,15 @@ public class ReceiptEntity extends BaseEntity {
 
 	@NotNull
 	private Date receiptDate;
+	
+	@NotNull
+	private int year;
+	
+	@NotNull
+	private int month;
+	
+	@NotNull
+	private int day;
 
 	@NotNull
 	@NumberFormat(style = Style.CURRENCY)
@@ -88,6 +98,11 @@ public class ReceiptEntity extends BaseEntity {
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
+		
+		DateTime dt = new DateTime(receiptDate);
+		this.year = dt.getYear();
+		this.month = dt.getMonthOfYear();
+		this.day = dt.getDayOfMonth();
 	}
 
 	/**
@@ -169,6 +184,18 @@ public class ReceiptEntity extends BaseEntity {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	public void setReceiptDate(Date receiptDate) {
 		this.receiptDate = receiptDate;
+	}	
+
+	public int getYear() {
+		return year;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+	
+	public int getDay() {
+		return day;
 	}
 
 	public Double getTotal() {
@@ -194,4 +221,13 @@ public class ReceiptEntity extends BaseEntity {
 	public void setUserProfileId(String userProfileId) {
 		this.userProfileId = userProfileId;
 	}
+
+	@Override
+	public String toString() {
+		return "ReceiptEntity [title=" + title + ", receiptDate=" + receiptDate + ", year=" + year + ", month=" + month 
+				+ ", day=" + day + ", total=" + total + ", tax=" + tax
+				+ "]";
+	}
+	
+	
 }

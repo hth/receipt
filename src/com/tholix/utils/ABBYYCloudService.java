@@ -39,7 +39,7 @@ public class ABBYYCloudService {
 	 */
 	public String performRecognition(byte[] fileContents) throws Exception {
 		String language = "English";
-		ProcessingSettings.OutputFormat outputFormat = ProcessingSettings.OutputFormat.xml;
+		ProcessingSettings.OutputFormat outputFormat = ProcessingSettings.OutputFormat.txt;
 
 		ProcessingSettings settings = new ProcessingSettings();
 		settings.setLanguage(language);

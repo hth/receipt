@@ -45,12 +45,14 @@ public class ReceiptFormValidator implements Validator {
 		
 		int count = 0;
 		for(ItemEntityOCR item : receiptForm.getItems()) {
-			 try {
-				Formatter.getCurrencyFormatted(item.getPrice());
-			} catch (ParseException e) {
-				errors.rejectValue("items["+count+"].price", "field.currency", new Object[] { item.getPrice() }, "Unsupported currency format");
+			if(!item.getName().isEmpty()) {
+				 try {
+					Formatter.getCurrencyFormatted(item.getPrice());
+				} catch (ParseException e) {
+					errors.rejectValue("items["+count+"].price", "field.currency", new Object[] { item.getPrice() }, "Unsupported currency format");
+				}
+				count++;
 			}
-			count++;
 		}
 		
 		if(!receiptForm.getReceipt().getTotal().isEmpty()) {
