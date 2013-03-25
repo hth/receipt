@@ -14,15 +14,28 @@ import com.tholix.domain.UploadReceiptImage;
  * @param <T>
  * @when Jan 3, 2013 3:08:12 AM
  * 
- *       For GridFsTemplate. Because of the GridFsTemplate the mongo content has been moved to receipt-servlet.xml
+ * For GridFsTemplate. Because of the GridFsTemplate the mongo content has been moved to receipt-servlet.xml
  * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
  * 
- *      Stores Receipt Image in GridFs
+ * Stores Receipt Image in GridFs
  */
 public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
 
+	/**
+	 * Saves the image and return the bolb id
+	 * @param object - File
+	 * @return String - bolbId
+	 * @throws IOException
+	 */
 	public String save(UploadReceiptImage object) throws IOException;
 
+	/**
+	 * 
+	 * @param inputStream
+	 * @param contentType - text/html, image/bmp, image/jpeg, video/mpeg, image/png, image/pict, image/x-quicktime, text/rtf, text/richtext
+	 * @param filename
+	 * @return
+	 */
 	public String save(InputStream inputStream, String contentType, String filename);
 
 	public GridFSDBFile get(String id);

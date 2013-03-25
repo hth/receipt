@@ -27,6 +27,11 @@ public class UserPreferenceEntity extends BaseEntity {
 
 	@NotNull
 	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
+	
+	/** To make bean happy */
+	private UserPreferenceEntity() {
+		
+	}
 
 	// @PersistenceConstructor
 	private UserPreferenceEntity(AccountTypeEnum accountType, UserProfileEntity userProfile) {

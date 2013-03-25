@@ -41,7 +41,7 @@ public class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public void saveObject(UploadReceiptImage object) throws Exception {
-
+		save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+		log.debug("deleted GridFs object - " + id);
+		gridFs.remove(new ObjectId(id));
 	}
 
 	@Override

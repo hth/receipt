@@ -24,6 +24,7 @@ import com.tholix.domain.UserSession;
 import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ReceiptManager;
+import com.tholix.service.StorageManager;
 import com.tholix.service.UserAuthenticationManager;
 
 /**
@@ -36,10 +37,11 @@ import com.tholix.service.UserAuthenticationManager;
 public class ReceiptFormController {
 	private final Log log = LogFactory.getLog(getClass());
 
-	private String nextPage = "/receipt";
+	private static String nextPage = "/receipt";
 
 	@Autowired private UserAuthenticationManager userAuthenticationManager;
 	@Autowired private ReceiptManager receiptManager;
+	@Autowired private StorageManager storageManager;
 	@Autowired private ItemManager itemManager;
 	@Autowired private ItemFeatureManager itemFeatureManager;
 
@@ -66,10 +68,31 @@ public class ReceiptFormController {
 		receiptForm = receiptManager.getObject(receiptForm.getId());
 		itemManager.deleteObjectWithReceipt(receiptForm);
 		receiptManager.deleteObject(receiptForm.getId());
+		storageManager.deleteObject(receiptForm.getReceiptBlobId());
 		
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
 		redirectAttrs.addFlashAttribute("userSession", userSession);
 
 		return "redirect:/landing.htm";
 	}
+
+	public void setUserAuthenticationManager(UserAuthenticationManager userAuthenticationManager) {
+		this.userAuthenticationManager = userAuthenticationManager;
+	}
+
+	public void setReceiptManager(ReceiptManager receiptManager) {
+		this.receiptManager = receiptManager;
+	}
+
+	public void setStorageManager(StorageManager storageManager) {
+		this.storageManager = storageManager;
+	}
+
+	public void setItemManager(ItemManager itemManager) {
+		this.itemManager = itemManager;
+	}
+
+	public void setItemFeatureManager(ItemFeatureManager itemFeatureManager) {
+		this.itemFeatureManager = itemFeatureManager;
+	}	
 }

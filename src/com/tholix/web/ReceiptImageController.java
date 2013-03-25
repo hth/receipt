@@ -73,4 +73,10 @@ public class ReceiptImageController {
 			return null;
 		} 
 	}
+
+	public void setStorageManager(StorageManager storageManager) {
+		this.storageManager = storageManager;
+	}
+	
+	
 }

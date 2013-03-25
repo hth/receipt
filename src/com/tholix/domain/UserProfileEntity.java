@@ -44,6 +44,11 @@ public class UserProfileEntity extends BaseEntity {
 
 	@DBRef
 	private UserAuthenticationEntity userAuthentication;
+	
+	/** To make bean happy */
+	private UserProfileEntity() {
+		
+	}
 
 	private UserProfileEntity(String emailId, String firstName, String lastName, Date registration, UserAuthenticationEntity userAuthentication) {
 		super();

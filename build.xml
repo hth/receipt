@@ -48,6 +48,12 @@
 		<copy todir="${build.dir}">
 			<fileset dir="${resources.dir}">
 				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>			
+		</copy>
+		<copy todir="${build.dir}/images">
+			<fileset dir="${web.dir}/images">
+				<include name="no_image.gif"/>
 			</fileset>
 		</copy>
 	</target>
@@ -86,7 +92,11 @@
 			<fileset dir="${build.dir}">
 				<include name="**/*.class" />
 			</fileset>
+			<fileset dir="${build.dir}">
+				<include name="**/*.*"/>
+			</fileset>
 		</delete>
+		<echo message="Cleaned" />
 	</target>
 
 	<target name="undeploy" description="Un-Deploy application">

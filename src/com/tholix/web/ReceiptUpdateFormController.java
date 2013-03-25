@@ -42,7 +42,7 @@ import com.tholix.web.form.ReceiptForm;
 public class ReceiptUpdateFormController {
 	private final Log log = LogFactory.getLog(getClass());
 
-	private String nextPage = "receiptupdate";
+	private static final String nextPage = "receiptupdate";
 
 	@Autowired private ReceiptManager receiptManager;
 	@Autowired private ItemManager itemManager;

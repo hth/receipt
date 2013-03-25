@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -48,7 +49,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public UserProfileEntity getObject(UserAuthenticationEntity object) {
+	public UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object) {
 		return mongoTemplate.findOne(new Query(Criteria.where("userAuthentication").is(object)), UserProfileEntity.class, TABLE);
 	}
 
@@ -70,8 +71,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+		mongoTemplate.remove(new Query(Criteria.where("id").is(new ObjectId(id))), TABLE);
 	}
 
 	@Override

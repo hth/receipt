@@ -54,11 +54,6 @@ public class CreateAccountFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
-		// TODO remove the next three lines
-//		userAuthenticationManager.dropCollection();
-//		userProfileManager.dropCollection();
-//		userPreferenceManager.dropCollection();
-
 		userRegistrationValidator.validate(userRegistrationForm, result);
 		if (result.hasErrors()) {
 			return "newaccount";
@@ -75,8 +70,8 @@ public class CreateAccountFormController {
 			}
 
 			try {
-				userProfileManager.saveObject(userRegistrationForm.newUserProfileEntity(userAuthentication));
-				userProfile = userProfileManager.getObject(userAuthentication);
+				userProfile = userRegistrationForm.newUserProfileEntity(userAuthentication);
+				userProfileManager.saveObject(userProfile);
 			} catch (Exception e) {
 				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
 				return "newaccount";
@@ -98,5 +93,25 @@ public class CreateAccountFormController {
 			return "redirect:/landing.htm";
 		}
 	}
+	
 
+	/**
+	 * Setters below are used by JUnit
+	 */
+	
+	public void setUserAuthenticationManager(UserAuthenticationManager userAuthenticationManager) {
+		this.userAuthenticationManager = userAuthenticationManager;
+	}
+
+	public void setUserProfileManager(UserProfileManager userProfileManager) {
+		this.userProfileManager = userProfileManager;
+	}
+
+	public void setUserPreferenceManager(UserPreferenceManager userPreferenceManager) {
+		this.userPreferenceManager = userPreferenceManager;
+	}
+
+	public void setUserRegistrationValidator(UserRegistrationValidator userRegistrationValidator) {
+		this.userRegistrationValidator = userRegistrationValidator;
+	}
 }

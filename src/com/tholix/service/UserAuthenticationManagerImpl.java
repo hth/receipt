@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -60,7 +61,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 
 	@Override
 	public void deleteObject(String id) {
-		mongoTemplate.remove(new Query(Criteria.where("id").is(id)), TABLE);
+		mongoTemplate.remove(new Query(Criteria.where("id").is(new ObjectId(id))), TABLE);
 	}
 
 	@Override

@@ -5,11 +5,15 @@ package com.tholix.service;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.WriteResult;
 import com.tholix.domain.UserPreferenceEntity;
+import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender
@@ -35,8 +39,12 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public UserPreferenceEntity getObject(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(new ObjectId(id))), UserPreferenceEntity.class, TABLE);
+	}
+	
+	@Override
+	public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile) {
+		return mongoTemplate.findOne(new Query(Criteria.where("userProfile").is(userProfile)), UserPreferenceEntity.class, TABLE);
 	}
 
 	@Override
@@ -47,8 +55,7 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+		mongoTemplate.remove(new Query(Criteria.where("id").is(new ObjectId(id))), TABLE);
 	}
 
 	@Override

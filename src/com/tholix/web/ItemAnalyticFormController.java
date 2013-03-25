@@ -23,11 +23,10 @@ import com.tholix.utils.Formatter;
  */
 @Controller
 @RequestMapping(value = "/itemanalytic")
-public class ItemAnalyticController {
-	
-	private String nextPage = "/itemanalytic";
+public class ItemAnalyticFormController {	
+	private static final String nextPage = "/itemanalytic";
 
-	@Autowired ItemManager itemManager;
+	@Autowired private ItemManager itemManager;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id) {
@@ -37,15 +36,9 @@ public class ItemAnalyticController {
 		Double averagePrice = 0.00;
 		for(ItemEntity item : items) {
 			averagePrice = averagePrice + item.getPrice();
-		}
-		
-		//TODO this is a redundant logic as there is always going to be one item in the list
-		if(items != null && items.size() > 0) {
-			averagePrice = averagePrice/items.size();
-			averagePrice = new Double(Formatter.df.format(averagePrice));
-		} else {
-			averagePrice = myItem.getPrice();
 		}		
+		averagePrice = averagePrice/items.size();
+		averagePrice = new Double(Formatter.df.format(averagePrice));
 		
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("item", myItem);
@@ -53,4 +46,10 @@ public class ItemAnalyticController {
 		
 		return modelAndView;
 	}
+
+	public void setItemManager(ItemManager itemManager) {
+		this.itemManager = itemManager;
+	}
+	
+	
 }

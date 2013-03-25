@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page import="com.tholix.domain.value.ReceiptGrouped, java.util.Date, java.util.Map" %>
 
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -107,57 +108,103 @@
 		});
 	</script>
 </head>
-<body>
-	<div>
-		<p>User Id  ${sessionScope['userSession'].emailId} </p>		
-	</div>
+<body>		
+ 	
+ 	<div class="divTable">
+		<div class="divRow">
+			<div class="divOfCell200"><h3>User Id <a href="${pageContext.request.contextPath}/userprofilepreference.htm">${userSession.emailId}</a></h3></div>
+		    <div class="divOfCell200"><h3>Total Expense: <a href="${pageContext.request.contextPath}/landing.htm#tabs-2"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
+		</div>
+   	</div>	
 	
-	<h2 class="demoHeaders">Total Expense: <a href="${pageContext.request.contextPath}/landing.htm#tabs-2"><fmt:formatNumber value="${total}" type="currency"/></a></h2>
-
-	
-
-	<form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
-		<fieldset style="width:310px;">
-		    <legend>Upload Receipt</legend>	
-			
-			<div class="ui-widget">
-				<div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
-					<p>
-					<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-					<span style="display:block; width:310px;">
-					Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/receiptpending.htm"><strong>${userSession.pendingCount}</strong></a>
-					</span> 
-					</p>
-				</div>
-			</div>
-		
-		    <p>
-		        <form:label for="description" path="description">
-		        &nbsp;&nbsp;&nbsp;&nbsp;Description:&nbsp; 
-		        </form:label> 
-		        <form:input path="description" size="32"/>		        
-		    </p>
-		    <p>
-		    	<form:errors path="description" cssClass="error" />
-		    </p>
-		
-		    <p>
-		        <form:label for="fileData" path="fileData">
-		        Receipt Image:&nbsp; 
-		        </form:label> 
-		        <form:input path="fileData" type="file"/>		        
-		    </p>
-		    
-		    <p>
-		    	<form:errors path="fileData" cssClass="error" />
-		    </p>
-		
-		    <p align="center">
-		        <input type="submit" value="Upload My Receipt"/>
-		    </p>
-		
-		</fieldset>
-    </form:form>  
+	<table>
+		<tr>
+			<td valign="top">
+				<form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
+					<fieldset style="width:310px;">
+					    <legend>Upload Receipt</legend>	
+						
+						<div class="ui-widget">
+							<div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+								<p>
+								<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
+								<span style="display:block; width:310px;">
+								Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/receiptpending.htm"><strong>${userSession.pendingCount}</strong></a>
+								</span> 
+								</p>
+							</div>
+						</div>
+					
+					    <p>
+					        <form:label for="description" path="description">
+					        &nbsp;&nbsp;&nbsp;&nbsp;Description:&nbsp; 
+					        </form:label> 
+					        <form:input path="description" size="32"/>		        
+					    </p>
+					    <p>
+					    	<form:errors path="description" cssClass="error" />
+					    </p>
+					
+					    <p>
+					        <form:label for="fileData" path="fileData">
+					        Receipt Image:&nbsp; 
+					        </form:label> 
+					        <form:input path="fileData" type="file"/>		        
+					    </p>
+					    
+					    <p>
+					    	<form:errors path="fileData" cssClass="error" />
+					    </p>
+					
+					    <p align="center">
+					        <input type="submit" value="Upload My Receipt"/>
+					    </p>
+					
+					</fieldset>
+			    </form:form>  
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	
+			</td>
+			<td valign="top">
+				<div>
+					<script type='text/javascript'>
+						$(document).ready(function() {
+					
+							var date = new Date();
+							var d = date.getDate();
+							var m = date.getMonth();
+							var y = date.getFullYear();
+					
+							$('#calendar').fullCalendar({
+								header : {
+									left : 'prev,next today',
+									center : '',
+									right : 'title'
+								},
+								editable : false,
+								events : [ 		
+								<% @SuppressWarnings("unchecked") Map<Date, Double> receiptGrouped = (Map<Date, Double>) request.getAttribute("receiptGrouped"); %>
+								<% if(receiptGrouped != null && receiptGrouped.size() > 0) { %>
+								<% for(Date date : receiptGrouped.keySet()) { %>
+								{
+									title : '<%= receiptGrouped.get(date) %>',
+									start : '<%= date %>',
+									end   : '<%= date %>',
+									url   : '${pageContext.request.contextPath}/dayreceipt?date=<%= date.toString() %>',
+								} ,		
+								<% } %>
+								<% } %>
+								]
+							});
+					
+						});
+					</script>
+					<div id='calendar'></div>
+			    </div>
+			</td>
+		</tr>
+	</table>
 	
 	<!-- Tabs -->
 	<h2 class="demoHeaders">Dashboard</h2>

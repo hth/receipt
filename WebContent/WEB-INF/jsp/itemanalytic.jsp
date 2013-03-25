@@ -20,7 +20,7 @@
 </head>
 <body>
 	<div>
-		<p>User Id  ${sessionScope['userSession'].emailId} </p>		
+		<p>User Id <a href="${pageContext.request.contextPath}/userprofilepreference.htm">${sessionScope['userSession'].emailId}</a></p>		
 	</div>
 	
 	<br/>

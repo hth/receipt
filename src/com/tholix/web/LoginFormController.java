@@ -89,4 +89,21 @@ public class LoginFormController {
 			}
 		}
 	}
+	
+	
+	/**
+	 * Setters below are used by JUnit
+	 */
+
+	public void setUserAuthenticationManager(UserAuthenticationManager userAuthenticationManager) {
+		this.userAuthenticationManager = userAuthenticationManager;
+	}
+
+	public void setUserProfileManager(UserProfileManager userProfileManager) {
+		this.userProfileManager = userProfileManager;
+	}
+
+	public void setUserLoginValidator(UserLoginValidator userLoginValidator) {
+		this.userLoginValidator = userLoginValidator;
+	}
 }

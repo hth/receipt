@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.UserPreferenceEntity;
+import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender
@@ -15,4 +16,6 @@ import com.tholix.domain.UserPreferenceEntity;
  */
 public interface UserPreferenceManager extends RepositoryManager<UserPreferenceEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(UserPreferenceEntity.class, Document.class, "collection");
+
+	public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
 }

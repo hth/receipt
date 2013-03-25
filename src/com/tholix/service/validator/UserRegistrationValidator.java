@@ -35,19 +35,19 @@ public class UserRegistrationValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[] { "Password" });
 
 		UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
-		if (userRegistration.getPassword().length() < 4) {
+		if (userRegistration.getFirstName() != null && userRegistration.getFirstName().length() < 4) {
 			errors.rejectValue("firstName", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 
-		if (userRegistration.getPassword().length() < 4) {
+		if (userRegistration.getLastName() != null && userRegistration.getLastName().length() < 4) {
 			errors.rejectValue("lastName", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 
-		if (!userRegistration.getEmailId().matches(EMAIL_REGEX)) {
+		if (userRegistration.getEmailId() != null && !userRegistration.getEmailId().matches(EMAIL_REGEX)) {
 			errors.rejectValue("emailId", "email.notValid", new Object[] { userRegistration.getEmailId() }, "Not a valid email");
 		}
 
-		if (userRegistration.getPassword().length() < 4) {
+		if (userRegistration.getPassword() != null && userRegistration.getPassword().length() < 4) {
 			errors.rejectValue("password", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
 		}
 	}
