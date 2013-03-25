@@ -117,7 +117,8 @@ public class ReceiptFormTest {
 	 */
 	@Test
 	public void testToString() {
-		assertEquals("ReceiptForm [receipt=ReceiptEntityOCR [description=Test Description, title=Receipt Title, receiptStatus=Turk Processed, receiptBlobId=507f1f77bcf86cd799439011, receiptDate=01/01/13 12:01, total=80.00, tax=20.00, userProfileId=userTest, receiptOCRTranslation=null], items=[ItemEntity [name=Item1, price=80.00, taxed=Taxed]]]", receiptForm.toString());
+		String expected = "ReceiptForm [receipt=ReceiptEntityOCR [description=Test Description, title=Receipt Title, receiptStatus=Turk Processed, receiptBlobId=507f1f77bcf86cd799439011, receiptDate=01/01/13 12:01, total=80.00, tax=20.00, userProfileId=test@test.com, receiptOCRTranslation=null], items=[ItemEntity [name=Item1, price=80.00, taxed=Taxed]]]";
+		assertEquals(expected, receiptForm.toString());
 	}
 
 	/**

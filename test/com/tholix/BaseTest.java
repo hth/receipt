@@ -3,19 +3,14 @@
  */
 package com.tholix;
 
-import java.util.Date;
+import static org.junit.Assert.assertNull;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tholix.domain.ItemEntityOCR;
-import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.domain.types.TaxEnum;
-import com.tholix.utils.DateUtil;
 
 /**
  * @author hitender
@@ -34,4 +29,9 @@ public class BaseTest {
 	public final static ReceiptStatusEnum receiptStatus = ReceiptStatusEnum.TURK_PROCESSED;
 	public final static String receiptBlobId = "507f1f77bcf86cd799439011";
 	public final static String userProfileId = "test@test.com"; 
+	
+	@Test
+	public void someTest() {
+		assertNull(null);
+	}
 }

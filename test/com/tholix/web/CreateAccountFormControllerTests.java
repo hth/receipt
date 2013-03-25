@@ -22,6 +22,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.tholix.domain.UserAuthenticationEntity;
+import com.tholix.domain.UserPreferenceEntity;
+import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.UserSession;
 import com.tholix.domain.types.AccountTypeEnum;
 import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserPreferenceManager;
@@ -136,14 +140,24 @@ public class CreateAccountFormControllerTests {
         userRegistrationForm.setEmailId("dummy@tholix.com");
         userRegistrationForm.setPassword("dummy");
         result = new BeanPropertyBindingResult(userRegistrationForm, "userRegistrationForm");
-        assertEquals("redirect:/landing.htm", controller.post(userRegistrationForm, result, redirectAttrs));
+        assertEquals("redirect:/landing.htm", controller.post(userRegistrationForm, result, redirectAttrs));        
         
-//        //TODO find the object just saved
-//        userAuthenticationManager.
-//        
-//        //TODO delete the object saved
-//        userAuthenticationManager.deleteObject(id);
-//        userProfileManager.deleteObject(id);
-//        userPreferenceManager.deleteObject(id);
+        /** Clean up - Remove the user dummy@tholix.com */
+        UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail("dummy@tholix.com");
+        UserAuthenticationEntity user = userProfile.getUserAuthentication();
+        UserPreferenceEntity preference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
+
+        userAuthenticationManager.deleteObject(user.getId());
+        userProfileManager.deleteObject(userProfile.getId());
+        userPreferenceManager.deleteObject(preference.getId());
+        
+        userProfile = userProfileManager.getObjectUsingEmail("dummy@tholix.com");   
+        assertNull(userProfile);
+        
+        user = userAuthenticationManager.getObject(user.getId());
+        assertNull(user);
+        
+        preference = userPreferenceManager.getObject(preference.getId());
+        assertNull(preference);
 	}
 }
