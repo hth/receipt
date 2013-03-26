@@ -2,12 +2,15 @@
 <project name="receipt" basedir="." default="usage">
 	<property file="build.properties" />	
 	<property name="name" value="receipt" />
+	<property name="database" value="rm" />
+	<proeprty name="database-test" value="rm-test"/>
 
 	<property name="src.dir" value="src" />
 	<property name="web.dir" value="WebContent" />
 	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
 	<property name="test.dir" value="test" />
 	<property name="resources.dir" value="resources" />
+	<property name="datadump.dir" value="${resources.dir}/dump/${database}" />
 
 	<path id="master-classpath">
 		<fileset dir="${web.dir}/WEB-INF/lib">
@@ -56,6 +59,14 @@
 				<include name="no_image.gif"/>
 			</fileset>
 		</copy>
+	</target>
+	
+	<target name="init-db" description="Initailize the database to starting point by restoring from database dump"> 
+		<exec executable="mongorestore">
+			<arg value="--db"/>
+			<arg value="${database}"/>
+			<arg value="${datadump.dir}"/>
+		</exec>
 	</target>
 
 	<target name="build" description="Compile main source tree java files" depends="resources">

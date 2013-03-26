@@ -75,7 +75,7 @@
     	<property name="port" value="27017"/>
     </bean>
     
-    <mongo:db-factory dbname="rm" mongo-ref="mongo"/>
+    <mongo:db-factory dbname="rm-test" mongo-ref="mongo"/>
 	
 	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->	
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
