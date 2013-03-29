@@ -86,7 +86,7 @@ public class CreateAccountFormController {
 
 			log.info("Registered new Email Id: " + userProfile.getEmailId());
 
-			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());
+			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
 			redirectAttrs.addFlashAttribute("userSession", userSession);
 
 			/** This code to invoke the controller */

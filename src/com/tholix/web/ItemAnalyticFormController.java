@@ -5,6 +5,8 @@ package com.tholix.web;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ import com.tholix.utils.Formatter;
 @Controller
 @RequestMapping(value = "/itemanalytic")
 public class ItemAnalyticFormController {	
+	private final Log log = LogFactory.getLog(getClass());
 	private static final String nextPage = "/itemanalytic";
 
 	@Autowired private ItemManager itemManager;

@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page import="com.tholix.domain.types.UserLevelEnum, java.util.Date, java.util.Map" %>
 
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,6 +9,15 @@
 	<title><fmt:message key="profile.title" /></title>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+	
+	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.css' />
+	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.print.css' media='print' />
+	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.9.2.custom.css'>
+	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>	
+	
+	<script type="text/javascript" src="../jquery/js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../jquery/js/jquery-ui-1.9.2.custom.js"></script>
+	<script type='text/javascript' src="../jquery/fullcalendar/fullcalendar.min.js"></script>
 	
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
@@ -109,7 +119,7 @@
 </head>
 <body>
 	<div>
-		<p>User Id <a href="${pageContext.request.contextPath}/userprofilepreference.htm">${userSession.emailId}</a></p>
+		<p>User Id <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${userSession.emailId}</a></p>
 	</div>
 		
 	<!-- Tabs -->
@@ -120,7 +130,8 @@
 			<li><a href="#tabs-2">Preferences</a></li>
 		</ul>
 		<div id="tabs-1">	
-			<form:form modelAttribute="userProfile" method="post" enctype="multipart/form-data">
+			<form:form method="post" modelAttribute="userProfile" action="/userprofilepreference.htm">
+				<form:hidden path="id"/>
 				<div class="divTable">
 					<div class="divRow">
 						<div class="divOfCell400">Name: ${userProfile.firstName}  ${userProfile.lastName}</div>
@@ -128,7 +139,25 @@
 					<div class="divRow">
 					    <div class="divOfCell400">Registration: ${userProfile.registration}</div>
 					</div>
+					<c:if test="${userSession.level.value > 5}">
+					<div class="divRow">
+						<div class="divOfCell400">Level: 
+												
+						<form:select path="level" > 
+							<form:option value="0" label="Chose Account Type" />
+							<form:options itemValue="name" itemLabel="description" />
+						</form:select>
+						</div>
+					</div>
+					</c:if>
 			   	</div>	
+			   	<div>&nbsp;</div>
+			   	
+			   	<c:if test="${userSession.level.value > 5}">
+			   	<div class="divRow">
+					<div class="divOfCell400"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
+				</div>
+				</c:if>
 			</form:form>			
 		</div>
 		<div id="tabs-2">

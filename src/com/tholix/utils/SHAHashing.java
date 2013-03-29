@@ -26,6 +26,11 @@ public class SHAHashing {
 
 		}
 	}
+	
+	public static String hashCode(int text) {
+		StringBuilder sb = new StringBuilder().append(text);
+		return hashCode(sb.toString());
+	}
 
 	public static String hashCode(String text) {
 		if (md != null) {

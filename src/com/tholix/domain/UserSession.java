@@ -5,6 +5,8 @@ package com.tholix.domain;
 
 import java.io.Serializable;
 
+import com.tholix.domain.types.UserLevelEnum;
+
 /**
  * @author hitender
  * @when Jan 4, 2013 4:58:58 PM
@@ -17,19 +19,21 @@ public class UserSession implements Serializable {
 	String emailId;
 	String userProfileId;
 	long pendingCount;
+	private UserLevelEnum level;
 	
 	/** To make bean happy */
-	public UserSession() {
+	private UserSession() {
 		
 	}
 
-	private UserSession(String emailId, String userProfileId) {
+	private UserSession(String emailId, String userProfileId, UserLevelEnum level) {
 		this.emailId = emailId;
 		this.userProfileId = userProfileId;
+		this.level = level;
 	}
 
-	public static UserSession newInstance(String emailId, String userProfileId) {
-		return new UserSession(emailId, userProfileId);
+	public static UserSession newInstance(String emailId, String userProfileId, UserLevelEnum level) {
+		return new UserSession(emailId, userProfileId, level);
 	}
 
 	public String getEmailId() {
@@ -38,6 +42,10 @@ public class UserSession implements Serializable {
 
 	public String getUserProfileId() {
 		return userProfileId;
+	}
+	
+	public UserLevelEnum getLevel() {
+		return this.level;
 	}
 
 	public long getPendingCount() {

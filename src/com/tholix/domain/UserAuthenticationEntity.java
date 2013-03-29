@@ -20,35 +20,34 @@ public class UserAuthenticationEntity extends BaseEntity {
 
 	@NotNull
 	private String password;
+	
+	@NotNull
+	private String auth;
 
 	/**
 	 * Required for Bean Instantiation
 	 */
-	private UserAuthenticationEntity() {
-	}
+	private UserAuthenticationEntity() { }
 
 	/**
 	 * 
 	 * @param password
 	 */
-	// @PersistenceConstructor
-	private UserAuthenticationEntity(String password) {
+	// @PersistenceConstructor	
+	private UserAuthenticationEntity(String password, String auth) {
 		this.password = password;
-	}
-
-	public static UserAuthenticationEntity findUser(String emailId) {
-		return new UserAuthenticationEntity(emailId);
+		this.auth = auth;
 	}
 
 	/**
 	 * This method is used when the Entity is created for the first time.
 	 * 
-	 * @param emailId
-	 * @param passwordHash
+	 * @param password
+	 * @param auth - (password + time stamp) to HashCode this needs to go to OAuth
 	 * @return
 	 */
-	public static UserAuthenticationEntity newInstance(String password) {
-		return new UserAuthenticationEntity(password);
+	public static UserAuthenticationEntity newInstance(String password, String auth) {
+		return new UserAuthenticationEntity(password, auth);
 	}
 
 	public String getPassword() {
@@ -57,5 +56,10 @@ public class UserAuthenticationEntity extends BaseEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	//TODO implement OAuth 
+	public String getAuth() {
+		return auth;
 	}
 }

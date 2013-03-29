@@ -9,6 +9,7 @@ import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.AccountTypeEnum;
+import com.tholix.utils.HashMe;
 import com.tholix.utils.SHAHashing;
 
 /**
@@ -34,7 +35,8 @@ public class UserRegistrationForm {
 	 * @return
 	 */
 	public UserAuthenticationEntity newUserAuthenticationEntity() {
-		return UserAuthenticationEntity.newInstance(SHAHashing.hashCode(password));
+		String key = new StringBuilder().append(password).append(System.currentTimeMillis()).toString();
+		return UserAuthenticationEntity.newInstance(SHAHashing.hashCode(password), SHAHashing.hashCode(HashMe.code(key)));
 	}
 
 	public UserProfileEntity newUserProfileEntity(UserAuthenticationEntity userAuthentication) {

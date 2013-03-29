@@ -73,16 +73,42 @@ public class LoginFormController {
 				if (user.getPassword().equals(userLoginForm.getPassword())) {
 					log.info("Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
 
-					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());
+					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
 					redirectAttrs.addFlashAttribute("userSession", userSession);
 
-					return "redirect:/landing.htm";
+					String path = "redirect:/landing.htm";
+					switch(userProfile.getLevel()) {
+						case ADMIN:
+							path = "redirect:/admin/landing.htm";
+							break;
+						case USER_PAID:
+							//do nothing for now
+							break;
+						case USER:
+							//do nothing for now
+							break;
+						case EMPLOYER:
+							//do nothing for now
+							break;
+						case EMPLOYER_PAID:
+							//do nothing for now
+							break;
+						case WORKER:
+							//do nothing for now
+							break;
+						case SUPERVISOR:
+							//do nothing for now
+							break;
+					}								
+					return path;
 				} else {
+					userLoginForm.setPassword("");
 					log.error("Password not matching for user : " + userLoginForm.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
 					return "login";
 				}
 			} else {
+				userLoginForm.setPassword("");
 				log.error("No Email Id found in record : " + userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
 				return "login";

@@ -15,6 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.tholix.domain.types.UserLevelEnum;
+
 /**
  * @author hitender
  * @when Dec 23, 2012 1:48:09 AM
@@ -44,6 +46,9 @@ public class UserProfileEntity extends BaseEntity {
 
 	@DBRef
 	private UserAuthenticationEntity userAuthentication;
+	
+	@NotNull
+	private UserLevelEnum level = UserLevelEnum.USER;
 	
 	/** To make bean happy */
 	private UserProfileEntity() {
@@ -118,6 +123,14 @@ public class UserProfileEntity extends BaseEntity {
 
 	public void setHoursOffset(int hoursOffset) {
 		this.hoursOffset = hoursOffset;
+	}
+
+	public UserLevelEnum getLevel() {
+		return level;
+	}
+
+	public void setLevel(UserLevelEnum level) {
+		this.level = level;
 	}
 
 	/**

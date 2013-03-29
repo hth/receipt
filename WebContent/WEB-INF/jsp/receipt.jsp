@@ -68,7 +68,7 @@
 </head>
 <body>
 	<div>
-		<p>User Id <a href="${pageContext.request.contextPath}/userprofilepreference.htm">${sessionScope['userSession'].emailId}</a></p>
+		<p>User Id <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${sessionScope['userSession'].emailId}</a></p>
 	</div>
 	
 	<br/>

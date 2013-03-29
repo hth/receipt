@@ -54,7 +54,7 @@ import com.tholix.utils.ReceiptParser;
 @SuppressWarnings("unused")
 @Controller
 @RequestMapping(value = "/landing")
-public class LandingFormController {
+public class LandingFormController extends BaseController {
 	private final Log log = LogFactory.getLog(getClass());
 
 	/**
@@ -75,11 +75,9 @@ public class LandingFormController {
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
 		log.info("LandingFormController loadForm: " + userSession.getEmailId());
 		
-		if(userSession.isEmpty()) {
-			//get the UserSession from session because a reload on this page fails without having valid userSession modelAttribute 
-			userSession = (UserSession) session.getAttribute("userSession");
-		} 		
+		userSession = isSessionSet(userSession, session); 		
 
+		//TODO why pendingCount saved in session
 		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
 		userSession.setPendingCount(pendingCount);
 		session.setAttribute("userSession", userSession);

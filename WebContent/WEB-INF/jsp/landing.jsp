@@ -112,7 +112,7 @@
  	
  	<div class="divTable">
 		<div class="divRow">
-			<div class="divOfCell200"><h3>User Id <a href="${pageContext.request.contextPath}/userprofilepreference.htm">${userSession.emailId}</a></h3></div>
+			<div class="divOfCell200"><h3>User Id <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${userSession.emailId}</a></h3></div>
 		    <div class="divOfCell200"><h3>Total Expense: <a href="${pageContext.request.contextPath}/landing.htm#tabs-2"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
    	</div>	

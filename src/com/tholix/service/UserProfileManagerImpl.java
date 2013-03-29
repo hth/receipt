@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.WriteResult;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.types.UserLevelEnum;
 
 /**
  * @author hitender
@@ -60,13 +63,20 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity getObject(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(new ObjectId(id))), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
+		// return mongoTemplate.updateFirst(
+		// new Query(Criteria.where("id").is(id)),
+		// Update.update("level", name), TABLE);
 		return null;
+	}
+
+	@Override
+	public WriteResult updateObject(String id, UserLevelEnum level) {
+		return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(new ObjectId(id))), Update.update("level", level), TABLE);
 	}
 
 	@Override
@@ -87,4 +97,12 @@ public class UserProfileManagerImpl implements UserProfileManager {
 		}
 	}
 
+	@Override
+	public List<UserProfileEntity> searchUser(String name) {
+		//TODO this does not seems to be working query
+		Criteria a = Criteria.where("firstName").regex(name, "i");
+		//Criteria b = Criteria.where("lastName").regex(name, "i");
+		//return mongoTemplate.find(new Query(a.orOperator(b)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.find(new Query(a), UserProfileEntity.class, TABLE);
+	}
 }
