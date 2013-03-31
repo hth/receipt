@@ -10,11 +10,11 @@
 	
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
-	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.9.2.custom.css'>
+	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>	
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
 	
-	<script type="text/javascript" src="jquery/js/jquery-1.8.3.js"></script>
-	<script type="text/javascript" src="jquery/js/jquery-ui-1.9.2.custom.js"></script>
+	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
 	<script type="text/javascript" src="jquery/js/raphael/raphael-min.js"></script>	
 
