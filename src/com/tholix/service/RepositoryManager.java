@@ -40,7 +40,7 @@ public interface RepositoryManager<T> extends Serializable {
 	/**
 	 * Delete a record for a particular id.
 	 */
-	public void deleteObject(String id);
+	public void deleteObject(T id);
 
 	/**
 	 * Create a collection if the collection does not already exists.

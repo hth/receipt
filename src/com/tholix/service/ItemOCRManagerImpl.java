@@ -5,17 +5,15 @@ package com.tholix.service;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.WriteResult;
@@ -29,7 +27,7 @@ import com.tholix.domain.ReceiptEntityOCR;
  */
 public class ItemOCRManagerImpl implements ItemOCRManager {
 	private static final long serialVersionUID = -6094519223354771552L;
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(ItemOCRManagerImpl.class);
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -53,17 +51,20 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public void saveObjects(List<ItemEntityOCR> objects) throws Exception {
-		mongoTemplate.insert(objects, TABLE);
+		//TODO reflection error saving the list
+		//mongoTemplate.insert(objects, TABLE);
+		for(ItemEntityOCR object : objects) {
+			saveObject(object);
+		}
 	}
 
 	@Override
 	public ItemEntityOCR getObject(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-	public List<ItemEntityOCR> getObjectWithRecipt(ReceiptEntityOCR receipt) {
+	public List<ItemEntityOCR> getWhereRecipt(ReceiptEntityOCR receipt) {
 		Query query = new Query(Criteria.where("receipt").is(receipt));
 		Sort sort = new Sort(Direction.ASC, "sequence");
 		return mongoTemplate.find(query.with(sort), ItemEntityOCR.class, TABLE);
@@ -71,26 +72,28 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+	public void deleteObject(ItemEntityOCR object) {
+		mongoTemplate.remove(object, TABLE);
+	}
+	
+	@Override
+	public void deleteWhereReceipt(ReceiptEntityOCR receipt) {
+		Query query = new Query(Criteria.where("receipt").is(receipt));
+		mongoTemplate.remove(query, ItemEntityOCR.class);
 	}
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override

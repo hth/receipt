@@ -3,7 +3,7 @@
 	<property file="build.properties" />	
 	<property name="name" value="receipt" />
 	<property name="database" value="rm" />
-	<proeprty name="database-test" value="rm-test"/>
+	<property name="database.test" value="rm-test"/>
 
 	<property name="src.dir" value="src" />
 	<property name="web.dir" value="WebContent" />

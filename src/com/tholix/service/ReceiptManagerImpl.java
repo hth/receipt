@@ -8,21 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
-import org.springframework.data.mongodb.core.mapreduce.GroupBy;
-import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
-import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
-import com.google.common.collect.Lists;
 
 import com.mongodb.WriteResult;
 import com.tholix.domain.ReceiptEntity;
@@ -34,7 +28,7 @@ import com.tholix.domain.value.ReceiptGrouped;
  * 
  */
 public class ReceiptManagerImpl implements ReceiptManager {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
 
 	private static final long serialVersionUID = -8812261440000722447L;
 
@@ -101,18 +95,17 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		mongoTemplate.remove(new Query(Criteria.where("id").is(id)), ReceiptEntity.class);
+	public void deleteObject(ReceiptEntity object) {
+		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override

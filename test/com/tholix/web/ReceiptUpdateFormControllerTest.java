@@ -64,7 +64,7 @@ public class ReceiptUpdateFormControllerTest {
 	 */
 	@Test
 	public void testLoadForm() {
-		//controller.loadForm(id, receiptForm);
+		controller.loadForm(id, receiptForm);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class ReceiptUpdateFormControllerTest {
 	 */
 	@Test
 	public void testPost() {
-		//controller.post(receiptForm, session, result, redirectAttrs);
+		controller.post(receiptForm, session, result, redirectAttrs);
 	}
 
 }

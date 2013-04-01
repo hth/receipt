@@ -3,8 +3,7 @@
  */
 package com.tholix.web;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -32,7 +31,7 @@ import com.tholix.web.form.UserRegistrationForm;
 @Controller
 @RequestMapping(value = "/newaccount")
 public class CreateAccountFormController {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(CreateAccountFormController.class);
 
 	@Autowired
 	@Qualifier("userAuthenticationManager")

@@ -5,9 +5,7 @@ package com.tholix.service;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.bson.types.ObjectId;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -26,7 +24,7 @@ import com.tholix.domain.UserAuthenticationEntity;
  */
 @Repository
 public class UserAuthenticationManagerImpl implements UserAuthenticationManager {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(UserAuthenticationManagerImpl.class);
 
 	private static final long serialVersionUID = 5745317401200234475L;
 
@@ -60,8 +58,8 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		mongoTemplate.remove(new Query(Criteria.where("id").is(new ObjectId(id))), TABLE);
+	public void deleteObject(UserAuthenticationEntity object) {
+		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
 
@@ -73,7 +74,7 @@ public class UserProfilePreferenceFormControllerTest {
 		
 		UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail("test@test.com");
 		UserPreferenceEntity userPreference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
-		userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId());
+		userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), UserLevelEnum.USER);
 		session.setAttribute("userSession", userSession);
 		
 		ModelAndView modelAndView = controller.loadForm(userProfile, userPreference, session);

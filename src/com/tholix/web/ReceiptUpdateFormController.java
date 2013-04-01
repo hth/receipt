@@ -7,8 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -40,7 +39,7 @@ import com.tholix.web.form.ReceiptForm;
 @Controller
 @RequestMapping(value = "/receiptupdate")
 public class ReceiptUpdateFormController {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(ReceiptUpdateFormController.class);
 
 	private static final String nextPage = "receiptupdate";
 
@@ -69,7 +68,7 @@ public class ReceiptUpdateFormController {
 		ReceiptEntityOCR receipt = receiptOCRManager.getObject(id);		
 		receiptForm.setReceipt(receipt);
 		
-		List<ItemEntityOCR> items = itemOCRManager.getObjectWithRecipt(receipt);	
+		List<ItemEntityOCR> items = itemOCRManager.getWhereRecipt(receipt);	
 		receiptForm.setItems(items);
 		
 		return  new ModelAndView(nextPage);
@@ -82,10 +81,12 @@ public class ReceiptUpdateFormController {
 		if (result.hasErrors()) {
 			return nextPage;
 		} else {
+			ReceiptEntity receipt = null;
+			List<ItemEntity> items = null;
 			try {
-				ReceiptEntity receipt = receiptForm.getReceiptEntity();
+				receipt = receiptForm.getReceiptEntity();
 				receiptManager.saveObject(receipt);
-				List<ItemEntity> items = receiptForm.getItemEntity(receipt);			
+				items = receiptForm.getItemEntity(receipt);			
 				itemManager.saveObjects(items);
 				
 				ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
@@ -99,6 +100,15 @@ public class ReceiptUpdateFormController {
 			} catch(Exception exce) {
 				log.error(exce.getLocalizedMessage());
 				result.rejectValue("receipt.receiptDate", exce.getLocalizedMessage(), exce.getLocalizedMessage());
+				
+				int sizeReceiptInitial = receiptManager.getAllObjects().size();
+				if(receipt != null) {
+					receiptManager.deleteObject(receipt);
+					itemManager.deleteWhereReceipt(receipt);
+				}
+				int sizeReceiptFinal = receiptManager.getAllObjects().size();
+				log.info(sizeReceiptInitial + " " + sizeReceiptFinal);
+				
 				return nextPage;
 			}
 		}		

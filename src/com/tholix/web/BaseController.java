@@ -5,8 +5,7 @@ package com.tholix.web;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import com.tholix.domain.UserSession;
 
@@ -16,8 +15,7 @@ import com.tholix.domain.UserSession;
  *
  */
 public abstract class BaseController {
-
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(BaseController.class);
 	
 	/**
 	 * @param userSession

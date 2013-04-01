@@ -24,9 +24,9 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
 	public WriteResult updateObject(ItemEntity object);
 
-	public List<ItemEntity> getObjectWithReceipt(ReceiptEntity receipt);
+	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt);
 	
 	public List<ItemEntity> getAllObjectWithName(String name);
 	
-	public void deleteObjectWithReceipt(ReceiptEntity receipt);
+	public void deleteWhereReceipt(ReceiptEntity receipt);
 }

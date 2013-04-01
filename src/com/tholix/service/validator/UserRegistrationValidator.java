@@ -3,8 +3,7 @@
  */
 package com.tholix.service.validator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -17,7 +16,7 @@ import com.tholix.web.form.UserRegistrationForm;
  * 
  */
 public class UserRegistrationValidator implements Validator {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(UserRegistrationValidator.class);
 
 	public static final String EMAIL_REGEX = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
 

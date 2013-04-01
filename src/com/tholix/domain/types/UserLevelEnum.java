@@ -10,23 +10,25 @@ package com.tholix.domain.types;
  */
 public enum UserLevelEnum {
 	
-	USER("USER", "User", 1), 
-	USER_PAID("USER_PAID", "User Paid", 2),
-	EMPLOYER("EMPLOYER", "Employer", 3),
-	EMPLOYER_PAID("EMPLOYER_PAID", "Employer Paid", 4),
-	WORKER("WORKER", "Worker", 5),
-	SUPERVISOR("SUPERVISOR", "Supervisor", 6),
-	ADMIN("ADMIN", "Admin", 7),
+	USER("USER", "User", 1, 4), 
+	EMPLOYER("EMPLOYER", "Employer", 2, 5),
+	USER_PAID("USER_PAID", "User Paid", 3 , 6),
+	EMPLOYER_PAID("EMPLOYER_PAID", "Employer Paid", 4, 7),
+	WORKER("WORKER", "Worker", 5, 8),
+	SUPERVISOR("SUPERVISOR", "Supervisor", 6, 9),
+	ADMIN("ADMIN", "Admin", 7, 10),
 	;
 	
 	private final String description;
 	private final String name;
 	private final int value;
+	private final int messagePriorityJMS;
 
-	private UserLevelEnum(String name, String description, int value) {
+	private UserLevelEnum(String name, String description, int value, int messagePriorityJMS) {
 		this.name = name;
 		this.description = description;
 		this.value = value;
+		this.messagePriorityJMS = messagePriorityJMS;
 	}
 
 	public String getName() {
@@ -37,8 +39,16 @@ public enum UserLevelEnum {
 		return description;
 	}
 	
+	/**
+	 * This gets you level value. More like the order of precedence.
+	 * @return
+	 */
 	public int getValue() {
 		return value;
+	}	
+
+	public int getMessagePriorityJMS() {
+		return messagePriorityJMS;
 	}
 
 	@Override

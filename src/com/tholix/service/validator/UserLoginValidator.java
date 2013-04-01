@@ -3,8 +3,7 @@
  */
 package com.tholix.service.validator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -16,7 +15,7 @@ import com.tholix.web.form.UserLoginForm;
  * @when Dec 16, 2012 6:52:46 PM
  */
 public class UserLoginValidator implements Validator {
-	protected final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(UserLoginValidator.class);
 
 	@Override
 	public boolean supports(Class<?> clazz) {

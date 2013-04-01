@@ -6,8 +6,7 @@ package com.tholix.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * @author hitender
@@ -15,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 public class SHAHashing {
-	private static final Log log = LogFactory.getLog(SHAHashing.class);
+	private static final Logger log = Logger.getLogger(SHAHashing.class);
 
 	private static MessageDigest md;
 

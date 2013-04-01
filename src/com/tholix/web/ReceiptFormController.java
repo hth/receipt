@@ -7,8 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,7 +34,7 @@ import com.tholix.service.UserAuthenticationManager;
 @Controller
 @RequestMapping(value = "/receipt")
 public class ReceiptFormController {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(ReceiptFormController.class);
 
 	private static String nextPage = "/receipt";
 
@@ -50,7 +49,7 @@ public class ReceiptFormController {
 		log.info("Loading Receipt Item with id: " + id);
 
 		ReceiptEntity receipt = receiptManager.getObject(id);
-		List<ItemEntity> items = itemManager.getObjectWithReceipt(receipt);
+		List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("items", items);
@@ -66,8 +65,8 @@ public class ReceiptFormController {
 		log.info("Delete receipt " + receiptForm.getId());
 		
 		receiptForm = receiptManager.getObject(receiptForm.getId());
-		itemManager.deleteObjectWithReceipt(receiptForm);
-		receiptManager.deleteObject(receiptForm.getId());
+		itemManager.deleteWhereReceipt(receiptForm);
+		receiptManager.deleteObject(receiptForm);
 		storageManager.deleteObject(receiptForm.getReceiptBlobId());
 		
 		UserSession userSession = (UserSession) session.getAttribute("userSession");

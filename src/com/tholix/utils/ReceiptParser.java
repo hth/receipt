@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntityOCR;
@@ -25,7 +26,7 @@ import com.tholix.domain.types.TaxEnum;
  * 
  */
 public class ReceiptParser {
-
+	private static final Logger log = Logger.getLogger(ReceiptParser.class);
 	private static Pattern item = Pattern.compile("[-+]?[$]?[-+]?[0-9]*\\.[0-9]{2}[\\s]?[\\w{1}]?$"); // PP I $246456.99 $2.99
 	private static Pattern date = Pattern.compile("[0-9]{1,2}[/|-|\\.][0-9]{1,2}[/|-|\\.][19|20]?[0-9]{2}"); // DATETIME: 12/26/2012 5:29:44 PM
 

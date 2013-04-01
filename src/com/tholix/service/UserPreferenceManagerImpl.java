@@ -28,8 +28,7 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public List<UserPreferenceEntity> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findAll(UserPreferenceEntity.class, TABLE);
 	}
 
 	@Override
@@ -49,19 +48,17 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		mongoTemplate.remove(new Query(Criteria.where("id").is(new ObjectId(id))), TABLE);
+	public void deleteObject(UserPreferenceEntity object) {
+		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override

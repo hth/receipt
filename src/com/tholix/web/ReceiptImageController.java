@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +34,7 @@ import com.tholix.service.StorageManager;
 @Controller
 @RequestMapping(value = "/receiptimage")
 public class ReceiptImageController {
-	private final Log log = LogFactory.getLog(getClass());	
+	private static final Logger log = Logger.getLogger(ReceiptImageController.class);
 	
 	@Autowired private StorageManager storageManager;
 

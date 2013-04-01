@@ -41,5 +41,12 @@ public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
 	public GridFSDBFile get(String id);
 
 	public GridFSDBFile getByFilename(String filename);
+	
+	public void deleteObject(String id);
 
+	/**
+	 * Gets size of the GridFs
+	 * @return
+	 */
+	public int getSize();
 }

@@ -5,8 +5,7 @@ package com.tholix.service;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -27,7 +26,7 @@ import com.tholix.domain.ReceiptEntity;
  * 
  */
 public class ItemManagerImpl implements ItemManager {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(ItemManagerImpl.class);
 
 	private static final long serialVersionUID = 5734660649481504610L;
 
@@ -36,8 +35,7 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Override
 	public List<ItemEntity> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findAll(ItemEntity.class, TABLE);
 	}
 
 	@Override
@@ -56,7 +54,11 @@ public class ItemManagerImpl implements ItemManager {
 	public void saveObjects(List<ItemEntity> objects) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
-			mongoTemplate.insert(objects, TABLE);
+			//TODO reflection error saving the list
+			//mongoTemplate.insert(objects, TABLE);
+			for(ItemEntity object : objects) {
+				saveObject(object);
+			}
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
@@ -70,7 +72,7 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-	public List<ItemEntity> getObjectWithReceipt(ReceiptEntity receipt) {
+	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt) {
 		Sort sort = new Sort(Direction.ASC, "sequence");
 		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)).with(sort), ItemEntity.class, TABLE);
 	}
@@ -82,20 +84,17 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+	public void deleteObject(ItemEntity object) {
+		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
@@ -113,7 +112,7 @@ public class ItemManagerImpl implements ItemManager {
 	}
 	
 	@Override
-	public void deleteObjectWithReceipt(ReceiptEntity receipt) {
+	public void deleteWhereReceipt(ReceiptEntity receipt) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.remove(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
 	}

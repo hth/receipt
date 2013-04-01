@@ -99,8 +99,8 @@ public class ItemAnalyticFormControllerTest {
 		assertEquals(60.00, modelAndView.getModel().get("averagePrice"));
 		
 		storageManager.deleteObject(receiptBlobId);
-		itemManager.deleteObjectWithReceipt(receipt);
-		receiptManager.deleteObject(receipt.getId());
+		itemManager.deleteWhereReceipt(receipt);
+		receiptManager.deleteObject(receipt);
 	}
 
 }

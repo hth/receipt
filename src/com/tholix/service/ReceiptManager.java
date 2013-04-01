@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.value.ReceiptGrouped;
 
 /**
  * @author hitender

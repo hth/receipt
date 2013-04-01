@@ -5,6 +5,7 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:jms="http://www.springframework.org/schema/jms"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
 		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		  http://www.springframework.org/schema/context
@@ -14,7 +15,9 @@
           http://www.springframework.org/schema/data/mongo
           http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
           http://www.springframework.org/schema/aop
-          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+          http://www.springframework.org/schema/jms 
+          http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
           
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
 	<context:component-scan base-package="com.tholix" />
@@ -22,8 +25,31 @@
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
 	
+	<!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
+	
 	<!-- Autowired -->
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>	
+	
+	<!-- ====================== -->
+	<!-- JMS                    -->
+	<!-- ====================== -->
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+            <value>tcp://localhost:61616</value>
+        </property>
+    </bean>
+    
+    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="orderQueue"/>
+    </bean>
+    
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="destination" />
+    </bean>
+    <!-- ====================== -->
+	<!-- JMS End                -->
+	<!-- ====================== -->
 
 	<!-- Forwards requests to the "/" resource to the "welcome" view -->
 	<mvc:view-controller path="/" view-name="login"/>
@@ -65,6 +91,19 @@
     <bean id="uploadReceiptImageValidator" class="com.tholix.service.validator.UploadReceiptImageValidator" />
     
     <bean id="receiptFormValidator" class="com.tholix.service.validator.ReceiptFormValidator" />
+    
+    <!-- ===================================== -->
+    <!-- JSM bean                              -->
+    <!-- ===================================== -->
+    <bean id="receiptSenderJMS" class="com.tholix.utils.ReceiptSenderJMS" />
+    <bean id="receiptListenerJMS" class="com.tholix.utils.ReceiptListenerJMS" />
+    
+    <jms:listener-container  connection-factory="connectionFactory">
+    	<jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+	</jms:listener-container>
+    <!-- ===================================== -->
+    <!-- JSM bean End                          -->
+    <!-- ===================================== -->
     
     <!-- ===================================== -->
     <!-- Mongo Configuration                   -->

@@ -7,8 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +25,8 @@ import com.tholix.service.ReceiptOCRManager;
  */
 @Controller
 @RequestMapping(value = "/receiptpending")
-public class ReceiptPendingFormController {
-	@SuppressWarnings("unused")
-	private final Log log = LogFactory.getLog(getClass());
+public class ReceiptPendingFormController {	
+	private static final Logger log = Logger.getLogger(ReceiptPendingFormController.class);
 
 	private String nextPage = "receiptpending";
 

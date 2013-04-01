@@ -5,13 +5,15 @@ package com.tholix.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 
 import com.mongodb.DB;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -25,7 +27,7 @@ import com.tholix.domain.UploadReceiptImage;
  */
 public class StorageManagerImpl implements StorageManager {
 	private static final long serialVersionUID = -5264258042433041673L;
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(StorageManagerImpl.class);
 
 	private final GridFS gridFs;
 
@@ -35,8 +37,17 @@ public class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public List<UploadReceiptImage> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		List<UploadReceiptImage> list = new ArrayList<UploadReceiptImage>();
+		DBCursor dbCursor = gridFs.getFileList();
+		while(dbCursor.hasNext()) {
+			DBObject dbObject = dbCursor.next();
+			gridFs.find(dbObject.toString());
+		}
+		throw new UnsupportedOperationException("Method not implemented");
+	}
+	
+	public int getSize() {
+		return gridFs.getFileList().size();
 	}
 
 	@Override
@@ -51,16 +62,19 @@ public class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public UploadReceiptImage getObject(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
+	@Override
+	public void deleteObject(UploadReceiptImage object) {
+		throw new UnsupportedOperationException("Method not implemented");
+	}
+	
 	@Override
 	public void deleteObject(String id) {
 		log.debug("deleted GridFs object - " + id);
@@ -69,14 +83,12 @@ public class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override

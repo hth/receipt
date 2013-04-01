@@ -24,8 +24,7 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 
 	@Override
 	public List<ItemFeatureEntity> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findAll(ItemFeatureEntity.class, TABLE);
 	}
 
 	@Override
@@ -35,26 +34,22 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 
 	@Override
 	public ItemFeatureEntity getObject(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+	public void deleteObject(ItemFeatureEntity object) {
+		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override

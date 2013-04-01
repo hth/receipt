@@ -5,8 +5,7 @@ package com.tholix.utils;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -17,7 +16,7 @@ import org.joda.time.format.DateTimeFormatter;
  * 
  */
 public class DateUtil {
-	private static final Log log = LogFactory.getLog(DateUtil.class);
+	private static final Logger log = Logger.getLogger(DateUtil.class);
 
 	private enum DateType {
 		FRM_1("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|AM)", 				"12/15/2012 02:13PM", 		"MM/dd/yyyy hh:mma"), 

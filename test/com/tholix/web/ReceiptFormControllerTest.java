@@ -136,8 +136,8 @@ public class ReceiptFormControllerTest {
 		
 		/** Delete operation */
 		storageManager.deleteObject(receiptBlobId);
-		itemManager.deleteObjectWithReceipt(receipt);
-		receiptManager.deleteObject(receipt.getId());
+		itemManager.deleteWhereReceipt(receipt);
+		receiptManager.deleteObject(receipt);
 		assertNull(null, storageManager.get(receiptBlobId));
 	}
 

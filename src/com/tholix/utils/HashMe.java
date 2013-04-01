@@ -3,8 +3,7 @@
  */
 package com.tholix.utils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * @author hitender 
@@ -12,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 public class HashMe {
-	private static final Log log = LogFactory.getLog(HashMe.class);
+	private static final Logger log = Logger.getLogger(HashMe.class);
 	public static final int PRIME = 16908799;
 	
 	public static int code(String key) {

@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,7 @@ import org.junit.Test;
  *
  */
 public class HashMeTest {
-	private static final Log log = LogFactory.getLog(HashMeTest.class);
+	private static final Logger log = Logger.getLogger(HashMeTest.class);
 	
 	/**
 	 * Test method for {@link com.tholix.utils.HashMe#code(java.lang.String)}.

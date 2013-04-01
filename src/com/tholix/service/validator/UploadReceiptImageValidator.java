@@ -3,8 +3,7 @@
  */
 package com.tholix.service.validator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -16,7 +15,7 @@ import com.tholix.domain.UploadReceiptImage;
  *
  */
 public class UploadReceiptImageValidator implements Validator {
-	protected final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(UploadReceiptImageValidator.class);
 
 	@Override
 	public boolean supports(Class<?> clazz) {

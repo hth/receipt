@@ -1,5 +1,12 @@
-import com.abbyy.ocrsdk.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Vector;
+
+import com.abbyy.ocrsdk.BarcodeSettings;
+import com.abbyy.ocrsdk.BusCardSettings;
+import com.abbyy.ocrsdk.Client;
+import com.abbyy.ocrsdk.ProcessingSettings;
+import com.abbyy.ocrsdk.Task;
+import com.abbyy.ocrsdk.TextFieldSettings;
 
 public class TestApp {
 

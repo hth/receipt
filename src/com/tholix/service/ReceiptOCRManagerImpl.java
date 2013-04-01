@@ -5,8 +5,7 @@ package com.tholix.service;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -18,7 +17,9 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.WriteResult;
 import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.utils.ReceiptSenderJMS;
 
 /**
  * @author hitender
@@ -27,27 +28,44 @@ import com.tholix.domain.types.ReceiptStatusEnum;
  */
 public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	private static final long serialVersionUID = 8740416340416509290L;
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	
+	@Autowired
+	private UserProfileManager userProfileManager;
+	
+	@Autowired
+	private ReceiptSenderJMS senderJMS;
 
 	@Override
 	public List<ReceiptEntityOCR> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findAll(ReceiptEntityOCR.class, TABLE);
 	}
 
+	//TODO invoke transaction here
 	@Override
 	public void saveObject(ReceiptEntityOCR object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
+			boolean sendToJMS = false;
+			if(object.getId() == null) {
+				//Once the ReceiptOCR has been saved and has a populate ID then send it across to WORKER via JMS
+				sendToJMS = true;
+			}
 			// Cannot use insert because insert does not perform update like save.
 			// Save will always try to update or create new record.
 			// mongoTemplate.insert(object, TABLE);
 	
 			object.setUpdated();
-			mongoTemplate.save(object, TABLE);			
+			mongoTemplate.save(object, TABLE);
+			
+			if(sendToJMS) {
+				log.info("ReceiptEntityOCR @Id after save: " + object.getId());
+				UserProfileEntity userProfile = userProfileManager.getObject(object.getUserProfileId());
+				senderJMS.send(object, userProfile);
+			}
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntityOCR: " + e.getLocalizedMessage());
 			log.error("Duplicate record entry for ReceiptEntityOCR: " + object);
@@ -58,30 +76,27 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	@Override
 	public ReceiptEntityOCR getObject(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntityOCR.class, TABLE);
+		
 	}
 
 	@Override
 	public WriteResult updateObject(String id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		// TODO Auto-generated method stub
-
+	public void deleteObject(ReceiptEntityOCR object) {
+		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public void dropCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override

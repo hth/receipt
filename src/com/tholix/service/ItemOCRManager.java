@@ -25,5 +25,7 @@ public interface ItemOCRManager extends RepositoryManager<ItemEntityOCR> {
 
 	public WriteResult updateObject(ItemEntityOCR object);
 
-	public List<ItemEntityOCR> getObjectWithRecipt(ReceiptEntityOCR receipt);
+	public List<ItemEntityOCR> getWhereRecipt(ReceiptEntityOCR receipt);
+	
+	public void deleteWhereReceipt(ReceiptEntityOCR receipt);
 }

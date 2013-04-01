@@ -5,14 +5,12 @@ package com.tholix.service;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
-import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -29,15 +27,14 @@ import com.tholix.domain.types.UserLevelEnum;
  */
 public class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(UserProfileManagerImpl.class);
 
 	@Autowired
 	MongoTemplate mongoTemplate;
 
 	@Override
 	public List<UserProfileEntity> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return mongoTemplate.findAll(UserProfileEntity.class, TABLE);
 	}
 
 	@Override
@@ -71,7 +68,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 		// return mongoTemplate.updateFirst(
 		// new Query(Criteria.where("id").is(id)),
 		// Update.update("level", name), TABLE);
-		return null;
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
@@ -80,14 +77,13 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public void deleteObject(String id) {
-		mongoTemplate.remove(new Query(Criteria.where("id").is(new ObjectId(id))), TABLE);
+	public void deleteObject(UserProfileEntity object) {
+		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
 	public void createCollection() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
@@ -99,6 +95,9 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public List<UserProfileEntity> searchUser(String name) {
+		//TODO look into PageRequest for limit data
+		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
+
 		//TODO this does not seems to be working query
 		Criteria a = Criteria.where("firstName").regex(name, "i");
 		//Criteria b = Criteria.where("lastName").regex(name, "i");

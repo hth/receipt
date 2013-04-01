@@ -4,7 +4,6 @@
 package com.tholix.web;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,7 +31,6 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
-import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
@@ -42,7 +39,6 @@ import com.tholix.service.ReceiptOCRManager;
 import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UploadReceiptImageValidator;
-import com.tholix.utils.ABBYYCloudService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.ReceiptParser;
@@ -55,7 +51,7 @@ import com.tholix.utils.ReceiptParser;
 @Controller
 @RequestMapping(value = "/landing")
 public class LandingFormController extends BaseController {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(LandingFormController.class);
 
 	/**
 	 * Refers to landing.jsp
@@ -140,29 +136,44 @@ public class LandingFormController extends BaseController {
 		log.info("Test upload: " + uploadReceiptImage.getFileData().getContentType());
 		log.info("-------------------------------------------");
 
+		String receiptBlobId = null;
+		ReceiptEntityOCR receiptOCR = null;
+		List<ItemEntityOCR> items = null;
 		try {
 			//String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
 			//TODO remove Temp Code
 			String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
 			log.info(receiptOCRTranslation);
 			
-			String receiptBlobId = storageManager.save(uploadReceiptImage);
+			receiptBlobId = storageManager.save(uploadReceiptImage);
 			log.info("BolbId: " + receiptBlobId);
 
-			ReceiptEntityOCR receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);
-			receiptOCRManager.saveObject(receiptOCR);
-			
-			List<ItemEntityOCR> items = new LinkedList<ItemEntityOCR>();
+			receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);			
+			items = new LinkedList<ItemEntityOCR>();
 			ReceiptParser.read(receiptOCRTranslation, receiptOCR, items);
 
 			receiptOCRManager.saveObject(receiptOCR);
 			itemOCRManager.saveObjects(items);
-		} catch (IOException e) {
-			log.error("IOException occured during saving receipt : " + e.getLocalizedMessage());
-			e.printStackTrace();
 		} catch (Exception e) {
 			log.error("Exception occured during saving receipt : " + e.getLocalizedMessage());
 			e.printStackTrace();
+			
+			int sizeFSInitial = storageManager.getSize();			
+			log.error("Undo all the saves");
+			if(receiptBlobId != null) {
+				storageManager.deleteObject(receiptBlobId);
+			}
+			int sizeFSFinal = storageManager.getSize();
+			
+			int sizeReceiptInitial = receiptOCRManager.getAllObjects().size();
+			if(receiptOCR != null) {
+				receiptOCRManager.deleteObject(receiptOCR);
+				itemOCRManager.deleteWhereReceipt(receiptOCR);
+			}
+			int sizeReceiptFinal = receiptOCRManager.getAllObjects().size();
+			log.info(sizeReceiptInitial + " " + sizeReceiptFinal);
+			
+			//TODO throw a message to let user know the upload has failed to process
 		}
 
 		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());

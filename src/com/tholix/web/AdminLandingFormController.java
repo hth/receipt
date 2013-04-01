@@ -4,14 +4,11 @@
 package com.tholix.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,13 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tholix.domain.ItemEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
-import com.tholix.service.ItemManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.utils.Formatter;
-import com.tholix.web.form.UserLoginForm;
 import com.tholix.web.form.UserSearchForm;
 
 /**
@@ -39,7 +32,7 @@ import com.tholix.web.form.UserSearchForm;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminLandingFormController extends BaseController {
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = Logger.getLogger(AdminLandingFormController.class);
 	private static final String nextPage = "/admin/landing";
 	
 	@Autowired UserProfileManager userProfileManager;
