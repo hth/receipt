@@ -32,12 +32,12 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 	}
 
 	@Override
-	public void saveObject(UserPreferenceEntity object) {
+	public void save(UserPreferenceEntity object) {
 		mongoTemplate.save(object, TABLE);
 	}
 
 	@Override
-	public UserPreferenceEntity getObject(String id) {
+	public UserPreferenceEntity findOne(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(new ObjectId(id))), UserPreferenceEntity.class, TABLE);
 	}
 	
@@ -52,7 +52,7 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 	}
 
 	@Override
-	public void deleteObject(UserPreferenceEntity object) {
+	public void delete(UserPreferenceEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

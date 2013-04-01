@@ -61,7 +61,7 @@ public class CreateAccountFormController {
 			UserProfileEntity userProfile;
 			try {
 				userAuthentication = userRegistrationForm.newUserAuthenticationEntity();
-				userAuthenticationManager.saveObject(userAuthentication);
+				userAuthenticationManager.save(userAuthentication);
 			} catch (Exception e) {
 				log.error("During saving UserAuthenticationEntity: " + e.getLocalizedMessage());
 				result.rejectValue("emailId", "field.emailId.duplicate");
@@ -70,14 +70,14 @@ public class CreateAccountFormController {
 
 			try {
 				userProfile = userRegistrationForm.newUserProfileEntity(userAuthentication);
-				userProfileManager.saveObject(userProfile);
+				userProfileManager.save(userProfile);
 			} catch (Exception e) {
 				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
 				return "newaccount";
 			}
 
 			try {
-				userPreferenceManager.saveObject(userRegistrationForm.newUserPreferenceEntity(userProfile));
+				userPreferenceManager.save(userRegistrationForm.newUserPreferenceEntity(userProfile));
 			} catch (Exception e) {
 				log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
 				return "newaccount";

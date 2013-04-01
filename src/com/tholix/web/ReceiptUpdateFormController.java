@@ -65,7 +65,7 @@ public class ReceiptUpdateFormController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("receiptForm") ReceiptForm receiptForm) {
-		ReceiptEntityOCR receipt = receiptOCRManager.getObject(id);		
+		ReceiptEntityOCR receipt = receiptOCRManager.findOne(id);		
 		receiptForm.setReceipt(receipt);
 		
 		List<ItemEntityOCR> items = itemOCRManager.getWhereRecipt(receipt);	
@@ -85,13 +85,13 @@ public class ReceiptUpdateFormController {
 			List<ItemEntity> items = null;
 			try {
 				receipt = receiptForm.getReceiptEntity();
-				receiptManager.saveObject(receipt);
+				receiptManager.save(receipt);
 				items = receiptForm.getItemEntity(receipt);			
 				itemManager.saveObjects(items);
 				
 				ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
 				receiptEntityOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);			
-				receiptOCRManager.saveObject(receiptEntityOCR);
+				receiptOCRManager.save(receiptEntityOCR);
 				
 				UserSession userSession = (UserSession) session.getAttribute("userSession");
 				redirectAttrs.addFlashAttribute("userSession", userSession);
@@ -103,7 +103,7 @@ public class ReceiptUpdateFormController {
 				
 				int sizeReceiptInitial = receiptManager.getAllObjects().size();
 				if(receipt != null) {
-					receiptManager.deleteObject(receipt);
+					receiptManager.delete(receipt);
 					itemManager.deleteWhereReceipt(receipt);
 				}
 				int sizeReceiptFinal = receiptManager.getAllObjects().size();

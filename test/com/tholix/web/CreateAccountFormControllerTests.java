@@ -147,17 +147,17 @@ public class CreateAccountFormControllerTests {
         UserAuthenticationEntity user = userProfile.getUserAuthentication();
         UserPreferenceEntity preference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
 
-        userAuthenticationManager.deleteObject(user);
-        userProfileManager.deleteObject(userProfile);
-        userPreferenceManager.deleteObject(preference);
+        userAuthenticationManager.delete(user);
+        userProfileManager.delete(userProfile);
+        userPreferenceManager.delete(preference);
         
         userProfile = userProfileManager.getObjectUsingEmail("dummy@tholix.com");   
         assertNull(userProfile);
         
-        user = userAuthenticationManager.getObject(user.getId());
+        user = userAuthenticationManager.findOne(user.getId());
         assertNull(user);
         
-        preference = userPreferenceManager.getObject(preference.getId());
+        preference = userPreferenceManager.findOne(preference.getId());
         assertNull(preference);
 	}
 }

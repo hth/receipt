@@ -117,10 +117,10 @@ public class ReceiptFormControllerTest {
 		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
 		
 		ReceiptEntity receipt = ReceiptEntity.newInstance(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
-		receiptManager.saveObject(receipt);
+		receiptManager.save(receipt);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");		
-		itemManager.saveObject(item);
+		itemManager.save(item);
 		
 		ModelAndView modelAndView = controller.loadForm(receipt.getId(), ReceiptEntity.newInstance());
 		assertNotNull(modelAndView);
@@ -137,7 +137,7 @@ public class ReceiptFormControllerTest {
 		/** Delete operation */
 		storageManager.deleteObject(receiptBlobId);
 		itemManager.deleteWhereReceipt(receipt);
-		receiptManager.deleteObject(receipt);
+		receiptManager.delete(receipt);
 		assertNull(null, storageManager.get(receiptBlobId));
 	}
 
@@ -164,10 +164,10 @@ public class ReceiptFormControllerTest {
 		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
 		
 		ReceiptEntity receipt = ReceiptEntity.newInstance(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
-		receiptManager.saveObject(receipt);
+		receiptManager.save(receipt);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");		
-		itemManager.saveObject(item);
+		itemManager.save(item);
 		
 		assertEquals("redirect:/landing.htm", controller.delete(receipt, session, redirectAttrs));
 	}

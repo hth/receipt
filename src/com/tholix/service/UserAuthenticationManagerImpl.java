@@ -37,7 +37,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	}
 
 	@Override
-	public void saveObject(UserAuthenticationEntity object) throws Exception {
+	public void save(UserAuthenticationEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
 			mongoTemplate.save(object, TABLE);
@@ -48,7 +48,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	}
 
 	@Override
-	public UserAuthenticationEntity getObject(String id) {
+	public UserAuthenticationEntity findOne(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
 	}
 
@@ -58,7 +58,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	}
 
 	@Override
-	public void deleteObject(UserAuthenticationEntity object) {
+	public void delete(UserAuthenticationEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

@@ -73,7 +73,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 
 	@Override
-	public void saveObject(ReceiptEntity object) throws Exception {
+	public void save(ReceiptEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
 			// Cannot use insert because insert does not perform update like save.
@@ -89,7 +89,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 
 	@Override
-	public ReceiptEntity getObject(String id) {
+	public ReceiptEntity findOne(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
 
@@ -99,7 +99,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 
 	@Override
-	public void deleteObject(ReceiptEntity object) {
+	public void delete(ReceiptEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

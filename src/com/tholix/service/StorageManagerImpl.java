@@ -51,17 +51,17 @@ public class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
-	public void saveObject(UploadReceiptImage object) throws Exception {
+	public void save(UploadReceiptImage object) throws Exception {
 		save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
 	}
 
 	@Override
-	public String save(UploadReceiptImage object) throws IOException {
+	public String saveFile(UploadReceiptImage object) throws IOException {
 		return save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
 	}
 
 	@Override
-	public UploadReceiptImage getObject(String id) {
+	public UploadReceiptImage findOne(String id) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
@@ -71,7 +71,7 @@ public class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
-	public void deleteObject(UploadReceiptImage object) {
+	public void delete(UploadReceiptImage object) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 	

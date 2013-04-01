@@ -46,7 +46,7 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	//TODO invoke transaction here
 	@Override
-	public void saveObject(ReceiptEntityOCR object) throws Exception {
+	public void save(ReceiptEntityOCR object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
 			boolean sendToJMS = false;
@@ -63,7 +63,7 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 			
 			if(sendToJMS) {
 				log.info("ReceiptEntityOCR @Id after save: " + object.getId());
-				UserProfileEntity userProfile = userProfileManager.getObject(object.getUserProfileId());
+				UserProfileEntity userProfile = userProfileManager.findOne(object.getUserProfileId());
 				senderJMS.send(object, userProfile);
 			}
 		} catch (DataIntegrityViolationException e) {
@@ -74,7 +74,7 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	}
 
 	@Override
-	public ReceiptEntityOCR getObject(String id) {
+	public ReceiptEntityOCR findOne(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntityOCR.class, TABLE);
 		
 	}
@@ -85,7 +85,7 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	}
 
 	@Override
-	public void deleteObject(ReceiptEntityOCR object) {
+	public void delete(ReceiptEntityOCR object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

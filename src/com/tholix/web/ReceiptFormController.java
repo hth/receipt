@@ -48,7 +48,7 @@ public class ReceiptFormController {
 	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
 		log.info("Loading Receipt Item with id: " + id);
 
-		ReceiptEntity receipt = receiptManager.getObject(id);
+		ReceiptEntity receipt = receiptManager.findOne(id);
 		List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
@@ -64,9 +64,9 @@ public class ReceiptFormController {
 	public String delete(@ModelAttribute("receiptForm") ReceiptEntity receiptForm, HttpSession session, final RedirectAttributes redirectAttrs) {
 		log.info("Delete receipt " + receiptForm.getId());
 		
-		receiptForm = receiptManager.getObject(receiptForm.getId());
+		receiptForm = receiptManager.findOne(receiptForm.getId());
 		itemManager.deleteWhereReceipt(receiptForm);
-		receiptManager.deleteObject(receiptForm);
+		receiptManager.delete(receiptForm);
 		storageManager.deleteObject(receiptForm.getReceiptBlobId());
 		
 		UserSession userSession = (UserSession) session.getAttribute("userSession");

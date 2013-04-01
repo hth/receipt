@@ -68,7 +68,7 @@ public class LoginFormController {
 			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginForm.getEmailId());
 			if (userProfile != null) {
 				userLoginForm.setPassword(SHAHashing.hashCode(userLoginForm.getPassword()));
-				UserAuthenticationEntity user = userAuthenticationManager.getObject(userProfile.getUserAuthentication().getId());
+				UserAuthenticationEntity user = userAuthenticationManager.findOne(userProfile.getUserAuthentication().getId());
 				if (user.getPassword().equals(userLoginForm.getPassword())) {
 					log.info("Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
 

@@ -52,7 +52,7 @@ public class UserProfilePreferenceFormController {
 	
 	@RequestMapping(value = "/their", method = RequestMethod.GET)
 	public ModelAndView getUser(@RequestParam("id") String id) {		
-		UserProfileEntity userProfile = userProfileManager.getObject(id);
+		UserProfileEntity userProfile = userProfileManager.findOne(id);
 		ModelAndView modelAndView = populateData(userProfile);
 		
 		return modelAndView;
@@ -62,7 +62,7 @@ public class UserProfilePreferenceFormController {
 	public ModelAndView getUser(@ModelAttribute("userProfile") UserProfileEntity userProfile, HttpSession session) {		
 		userProfileManager.updateObject(userProfile.getId(), userProfile.getLevel());
 		
-		userProfile = userProfileManager.getObject(userProfile.getId());
+		userProfile = userProfileManager.findOne(userProfile.getId());
 		ModelAndView modelAndView = populateData(userProfile);
 		
 		return modelAndView;

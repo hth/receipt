@@ -28,12 +28,12 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 	}
 
 	@Override
-	public void saveObject(ItemFeatureEntity object) throws Exception {
+	public void save(ItemFeatureEntity object) throws Exception {
 		mongoTemplate.save(object, TABLE);
 	}
 
 	@Override
-	public ItemFeatureEntity getObject(String id) {
+	public ItemFeatureEntity findOne(String id) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
@@ -43,7 +43,7 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 	}
 
 	@Override
-	public void deleteObject(ItemFeatureEntity object) {
+	public void delete(ItemFeatureEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

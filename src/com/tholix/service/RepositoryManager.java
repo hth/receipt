@@ -25,12 +25,12 @@ public interface RepositoryManager<T> extends Serializable {
 	 * 
 	 * @throws Exception
 	 */
-	public void saveObject(T object) throws Exception;
+	public void save(T object) throws Exception;
 
 	/**
 	 * Gets a record for a particular id.
 	 */
-	public T getObject(String id);
+	public T findOne(String id);
 
 	/**
 	 * Updates a record name for a particular id.
@@ -38,9 +38,9 @@ public interface RepositoryManager<T> extends Serializable {
 	public WriteResult updateObject(String id, String name);
 
 	/**
-	 * Delete a record for a particular id.
+	 * Delete a record for a particular object.
 	 */
-	public void deleteObject(T id);
+	public void delete(T object);
 
 	/**
 	 * Create a collection if the collection does not already exists.

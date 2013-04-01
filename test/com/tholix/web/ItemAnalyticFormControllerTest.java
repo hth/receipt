@@ -86,13 +86,13 @@ public class ItemAnalyticFormControllerTest {
 		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
 		
 		ReceiptEntity receipt = ReceiptEntity.newInstance(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
-		receiptManager.saveObject(receipt);
+		receiptManager.save(receipt);
 
 		ItemEntity item1 = ItemEntity.newInstance("Item-Test1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");		
-		itemManager.saveObject(item1);
+		itemManager.save(item1);
 		
 		ItemEntity item2 = ItemEntity.newInstance("Item-Test1", 40.00, TaxEnum.TAXED, 1, receipt, "test@test.com");	
-		itemManager.saveObject(item2);
+		itemManager.save(item2);
 		
 		ModelAndView modelAndView = controller.loadForm(item1.getId());
 		assertEquals("/itemanalytic", modelAndView.getViewName());
@@ -100,7 +100,7 @@ public class ItemAnalyticFormControllerTest {
 		
 		storageManager.deleteObject(receiptBlobId);
 		itemManager.deleteWhereReceipt(receipt);
-		receiptManager.deleteObject(receipt);
+		receiptManager.delete(receipt);
 	}
 
 }

@@ -27,7 +27,7 @@ public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
 	 * @return String - bolbId
 	 * @throws IOException
 	 */
-	public String save(UploadReceiptImage object) throws IOException;
+	public String saveFile(UploadReceiptImage object) throws IOException;
 
 	/**
 	 * 

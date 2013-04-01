@@ -32,7 +32,7 @@ public class ItemAnalyticFormController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id) {
-		ItemEntity myItem = itemManager.getObject(id);
+		ItemEntity myItem = itemManager.findOne(id);
 		List<ItemEntity> items = itemManager.getAllObjectWithName(myItem.getName());		
 		
 		Double averagePrice = 0.00;

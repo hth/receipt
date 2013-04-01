@@ -38,7 +38,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public void saveObject(UserProfileEntity object) throws Exception {
+	public void save(UserProfileEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
 			mongoTemplate.save(object, TABLE);
@@ -59,7 +59,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public UserProfileEntity getObject(String id) {
+	public UserProfileEntity findOne(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(new ObjectId(id))), UserProfileEntity.class, TABLE);
 	}
 
@@ -77,7 +77,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public void deleteObject(UserProfileEntity object) {
+	public void delete(UserProfileEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

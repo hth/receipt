@@ -88,7 +88,7 @@ public class LandingFormController extends BaseController {
 		Map<Date, Double> receiptGrouped = receiptManager.getAllObjectsGroupedByDate(userSession.getUserProfileId());
 		modelAndView.addObject("receiptGrouped", receiptGrouped);
 
-		UserProfileEntity userProfileEntity = userProfileManager.getObject(userSession.getUserProfileId());
+		UserProfileEntity userProfileEntity = userProfileManager.findOne(userSession.getUserProfileId());
 		log.info(userProfileEntity.getName());
 		return modelAndView;
 	}
@@ -145,14 +145,14 @@ public class LandingFormController extends BaseController {
 			String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
 			log.info(receiptOCRTranslation);
 			
-			receiptBlobId = storageManager.save(uploadReceiptImage);
+			receiptBlobId = storageManager.saveFile(uploadReceiptImage);
 			log.info("BolbId: " + receiptBlobId);
 
 			receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);			
 			items = new LinkedList<ItemEntityOCR>();
 			ReceiptParser.read(receiptOCRTranslation, receiptOCR, items);
 
-			receiptOCRManager.saveObject(receiptOCR);
+			receiptOCRManager.save(receiptOCR);
 			itemOCRManager.saveObjects(items);
 		} catch (Exception e) {
 			log.error("Exception occured during saving receipt : " + e.getLocalizedMessage());
@@ -167,7 +167,7 @@ public class LandingFormController extends BaseController {
 			
 			int sizeReceiptInitial = receiptOCRManager.getAllObjects().size();
 			if(receiptOCR != null) {
-				receiptOCRManager.deleteObject(receiptOCR);
+				receiptOCRManager.delete(receiptOCR);
 				itemOCRManager.deleteWhereReceipt(receiptOCR);
 			}
 			int sizeReceiptFinal = receiptOCRManager.getAllObjects().size();
@@ -197,13 +197,13 @@ public class LandingFormController extends BaseController {
 			receipt.setUserProfileId(userProfile.getId());
 			receipt.setReceiptBlobId("1");
 			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-			receiptManager.saveObject(receipt);
+			receiptManager.save(receipt);
 			log.info("Receipt Id: " + receipt.getId());
 
 			ItemEntity item1 = ItemEntity.newInstance("1 Marble Moc Macchia Tall", 3.75, TaxEnum.TAXED, 1, receipt, userProfile.getId());
-			itemManager.saveObject(item1);
+			itemManager.save(item1);
 			ItemEntity item2 = ItemEntity.newInstance("1 Car Brulee Latte Tall", 3.75, TaxEnum.TAXED, 2, receipt, userProfile.getId());
-			itemManager.saveObject(item2);
+			itemManager.save(item2);
 
 			// Item from Lucky
 			receipt = ReceiptEntity.updateInstance("Lucky", DateUtil.getDateFromString("12/25/12 16:54:57"), 14.61, .34);
@@ -211,17 +211,17 @@ public class LandingFormController extends BaseController {
 			receipt.setUserProfileId(userProfile.getId());
 			receipt.setReceiptBlobId("2");
 			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-			receiptManager.saveObject(receipt);
+			receiptManager.save(receipt);
 			log.info("Receipt Id: " + receipt.getId());
 
 			item1 = ItemEntity.newInstance("1 SANTA HT LEOPARD", 4.00, TaxEnum.TAXED, 1, receipt, userProfile.getId());
-			itemManager.saveObject(item1);
+			itemManager.save(item1);
 			item2 = ItemEntity.newInstance("1 CUPCAKES 6C UNICED", 2.99, TaxEnum.NOT_TAXED, 2, receipt, userProfile.getId());
-			itemManager.saveObject(item2);
+			itemManager.save(item2);
 			ItemEntity item3 = ItemEntity.newInstance("1 DBK CNMN STRSL SLC", 3.99, TaxEnum.NOT_TAXED, 3, receipt, userProfile.getId());
-			itemManager.saveObject(item3);
+			itemManager.save(item3);
 			ItemEntity item4 = ItemEntity.newInstance("1 GRACE WHL CLV GRLC", 3.29, TaxEnum.NOT_TAXED, 4, receipt, userProfile.getId());
-			itemManager.saveObject(item4);
+			itemManager.save(item4);
 
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage());

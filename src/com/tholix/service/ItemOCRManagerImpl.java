@@ -38,7 +38,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 	}
 
 	@Override
-	public void saveObject(ItemEntityOCR object) throws Exception {
+	public void save(ItemEntityOCR object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
 			object.setUpdated();
@@ -54,12 +54,12 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 		//TODO reflection error saving the list
 		//mongoTemplate.insert(objects, TABLE);
 		for(ItemEntityOCR object : objects) {
-			saveObject(object);
+			save(object);
 		}
 	}
 
 	@Override
-	public ItemEntityOCR getObject(String id) {
+	public ItemEntityOCR findOne(String id) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
@@ -76,7 +76,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 	}
 
 	@Override
-	public void deleteObject(ItemEntityOCR object) {
+	public void delete(ItemEntityOCR object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 	

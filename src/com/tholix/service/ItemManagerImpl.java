@@ -39,7 +39,7 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-	public void saveObject(ItemEntity object) throws Exception {
+	public void save(ItemEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
 			object.setUpdated();
@@ -57,7 +57,7 @@ public class ItemManagerImpl implements ItemManager {
 			//TODO reflection error saving the list
 			//mongoTemplate.insert(objects, TABLE);
 			for(ItemEntity object : objects) {
-				saveObject(object);
+				save(object);
 			}
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
@@ -66,7 +66,7 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-	public ItemEntity getObject(String id) {
+	public ItemEntity findOne(String id) {
 		Sort sort = new Sort(Direction.ASC, "sequence");
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)).with(sort), ItemEntity.class, TABLE);
 	}
@@ -88,7 +88,7 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-	public void deleteObject(ItemEntity object) {
+	public void delete(ItemEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
