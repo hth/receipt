@@ -29,27 +29,6 @@
 	
 	<!-- Autowired -->
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>	
-	
-	<!-- ====================== -->
-	<!-- JMS                    -->
-	<!-- ====================== -->
-	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL">
-            <value>tcp://localhost:61616</value>
-        </property>
-    </bean>
-    
-    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg value="orderQueue"/>
-    </bean>
-    
-    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="defaultDestination" ref="destination" />
-    </bean>
-    <!-- ====================== -->
-	<!-- JMS End                -->
-	<!-- ====================== -->
 
 	<!-- Forwards requests to the "/" resource to the "welcome" view -->
 	<mvc:view-controller path="/" view-name="login"/>
@@ -91,16 +70,66 @@
     <bean id="uploadReceiptImageValidator" class="com.tholix.service.validator.UploadReceiptImageValidator" />
     
     <bean id="receiptFormValidator" class="com.tholix.service.validator.ReceiptFormValidator" />
+    <!-- ===================================== -->
+    <!-- JMS configuration                     -->
+    <!-- ===================================== -->    
+    <!-- JMS connection factory for ActiveMQ connecting to a remote broker on a specific host name and port. -->	
+	<!-- CachingConnectionFactory -->
+	<!-- preferred way of doing it -->
+	<!-- <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+            <value>tcp://localhost:61616</value>
+        </property>
+    </bean>  
+	
+	<bean id="jmsFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+		<property name="connectionFactory" ref="connectionFactory"/>
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="destination" />
+	</bean>
+	
+	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="orderQueue"/>
+    </bean>
+	
+	<jms:listener-container connection-factory="connectionFactory">
+    	<jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+	</jms:listener-container>
+	
+	<bean id="receiptSenderJMS" class="com.tholix.utils.ReceiptSenderJMS" />	
+	<bean id="receiptListenerJMS" class="com.tholix.utils.ReceiptListenerJMS" />    --> 
+    <!-- ===================================== -->
+    <!-- JMS configuration end                 -->
+    <!-- ===================================== -->
     
-    <!-- ===================================== -->
-    <!-- JSM bean                              -->
-    <!-- ===================================== -->
-    <bean id="receiptSenderJMS" class="com.tholix.utils.ReceiptSenderJMS" />
-    <bean id="receiptListenerJMS" class="com.tholix.utils.ReceiptListenerJMS" />
+    
+    <!-- ====================== -->
+	<!-- JMS                    -->
+	<!-- ====================== -->
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+            <value>tcp://localhost:61616</value>
+        </property>
+    </bean>   
+    
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="destination" />
+    </bean>  
+    
+    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="orderQueue"/>
+    </bean>  
     
     <jms:listener-container  connection-factory="connectionFactory">
     	<jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
 	</jms:listener-container>
+    
+    <bean id="receiptSenderJMS" class="com.tholix.utils.ReceiptSenderJMS" />
+    <bean id="receiptListenerJMS" class="com.tholix.utils.ReceiptListenerJMS" />
     <!-- ===================================== -->
     <!-- JSM bean End                          -->
     <!-- ===================================== -->
