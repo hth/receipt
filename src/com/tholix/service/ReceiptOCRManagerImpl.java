@@ -3,8 +3,11 @@
  */
 package com.tholix.service;
 
-import java.util.List;
-
+import com.mongodb.WriteResult;
+import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.service.routes.ReceiptSenderJMS;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,11 +18,7 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.mongodb.WriteResult;
-import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.domain.UserProfileEntity;
-import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.utils.ReceiptSenderJMS;
+import java.util.List;
 
 /**
  * @author hitender

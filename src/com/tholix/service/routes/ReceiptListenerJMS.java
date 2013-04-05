@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.tholix.utils;
-
-import java.util.Map;
+package com.tholix.service.routes;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * @author hitender 
@@ -22,6 +22,6 @@ public class ReceiptListenerJMS {
 		String description = (String) message.get("description");
 		String level = (String) message.get("level");
 		
-		log.info("Received message: " + id + ", description: " + description + ", user level: " + level);
+		log.info("Message received: " + id + ", description: " + description + ", user level: " + level);
 	}
 }

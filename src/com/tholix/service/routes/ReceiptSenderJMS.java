@@ -1,20 +1,19 @@
 /**
  * 
  */
-package com.tholix.utils;
+package com.tholix.service.routes;
 
-import javax.jms.JMSException;
-import javax.jms.MapMessage;
-import javax.jms.Message;
-import javax.jms.Session;
-
+import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.UserProfileEntity;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
-import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.domain.UserProfileEntity;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.Session;
 
 /**
  * @author hitender 
@@ -44,6 +43,6 @@ public class ReceiptSenderJMS {
 					}
 				}
 				);
-		log.info("ReceiptOCR sent - id: "+ receiptOCR.getId()  + ". With level: " + userProfile.getLevel().getDescription());
+		log.info("Message sent ReceiptOCR - id: "+ receiptOCR.getId()  + ". With level: " + userProfile.getLevel().getDescription());
     }
 }
