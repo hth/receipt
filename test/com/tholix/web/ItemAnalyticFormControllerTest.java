@@ -1,12 +1,19 @@
 package com.tholix.web;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +21,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.tholix.BaseTest;
 import com.tholix.domain.ItemEntity;

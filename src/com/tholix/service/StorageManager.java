@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.mongodb.gridfs.GridFSDBFile;
+
 import com.tholix.domain.UploadReceiptImage;
 
 /**
  * @author hitender
- * @param <T>
  * @when Jan 3, 2013 3:08:12 AM
  * 
  * For GridFsTemplate. Because of the GridFsTemplate the mongo content has been moved to receipt-servlet.xml

@@ -3,13 +3,10 @@
  */
 package com.tholix.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
+
 import org.junit.Test;
 
 /**
