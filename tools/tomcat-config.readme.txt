@@ -1,0 +1,12 @@
+http://tomcat.apache.org/tomcat-7.0-doc/logging.html#Using_Log4j
+
+For the exception
+
+    Apr 06, 2013 12:30:49 AM org.apache.catalina.core.StandardContext startInternal
+    SEVERE: Error listenerStart
+    Apr 06, 2013 12:30:49 AM org.apache.catalina.core.StandardContext startInternal
+    SEVERE: Context [/receipt] startup failed due to previous errors
+
+Follow
+
+    Create a file called log4j.properties with the following content and save it into $CATALINA_BASE/lib
