@@ -106,6 +106,7 @@
     <!-- ====================== -->
 	<!-- JMS                    -->
 	<!-- ====================== -->
+    <!-- http://sourceforge.net/projects/activemqbrowser/files/ -->
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL">
             <value>tcp://localhost:61616</value>
@@ -162,5 +163,7 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
-	</bean>	
+        <property name="cache"  value="false" />
+        <property name="order"  value="1" />
+    </bean>
 </beans>
