@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page import="com.tholix.domain.types.UserLevelEnum" %>
 
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,15 +9,15 @@
 	<title><fmt:message key="receipt.update" /></title>		
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
-	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>	
-	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
+	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.css' />
+	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.print.css' media='print' />
+	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 	
-	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
-	<script type="text/javascript" src="jquery/js/raphael/raphael-min.js"></script>	
+	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script type='text/javascript' src="../jquery/fullcalendar/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="../jquery/js/raphael/raphael-min.js"></script>
 
 	<script type="text/javascript">
 		$("document").ready(function(){
@@ -68,70 +69,80 @@
 	<div>
 		<p>User Id <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${userSession.emailId}</a></p>
 	</div>
-	
+
+    <h2 class="demoHeaders">Pending receipt</h2>
 	<br/>
 
 	<table>
 		<tr>
 			<td valign="top">
-				<form:form method="post" action="receiptupdate.htm" modelAttribute="receiptForm">
-				<form:hidden path="receipt.receiptBlobId"/>
-				<form:hidden path="receipt.id"/>
-				<form:hidden path="receipt.userProfileId"/>
-				<form:hidden path="receipt.receiptOCRTranslation"/>
-				<form:hidden path="receipt.version"/>
-				<table border="0" style="width: 400px" class="atable">					
-					<tr>
-						<td colspan="4">
-							<div class="leftAlign"><form:errors path="receipt.title" cssClass="error" /></div>
-							<div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="4">
-							<div class="leftAlign">Title <form:input path="receipt.title" size="32"/></div>
-							<div class="rightAlign">Date <form:input path="receipt.receiptDate" size="32"/></div>
-						</td>
-					</tr>
-					<tr>
-						<th align="left">&nbsp;Name</th>
-						<th align="left">&nbsp;Price</th>
-						<th align="left">&nbsp;</th>
-					</tr>
-					<c:forEach items="${receiptForm.items}" varStatus="status">
-					<tr>
-						<td align="left">
-				    		<form:input path="items[${status.index}].name" size="64"/>
-						</td>
-						<td align="right">
-							<form:input path="items[${status.index}].price" size="16"/>
-							<form:errors path="items[${status.index}].price" cssClass="error" />
-						</td>
-						<td>
-							<form:select path="items[${status.index}].taxed"> 
-								<form:option value="NONE" label="--- Select ---"/>
-								<form:options itemValue="name" itemLabel="description" />
-							</form:select>
-						</td>
-					</tr>
-					</c:forEach>
-					<tr>
-						<td colspan="1" align="right">
-							<span>Tax &nbsp;</span> 
-							<form:input path="receipt.tax" size="5"/>
-							<span>&nbsp;&nbsp;Total &nbsp;</span>
-						</td>
-						<td align="right">
-							<form:input path="receipt.total" size="5"/>
-							<form:errors path="receipt.total" cssClass="error" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="1">&nbsp;</td>
-						<td colspan="2" align="left"><input type="submit" value="Receipt Update" name="receipt_update"/></td>
-					</tr>
-				</table>
-				</form:form>
+                <c:choose>
+                    <%--//TODO change from constant--%>
+                    <c:when test="${userSession.level.value ge 5}">
+                        <form:form method="post" action="receiptupdate.htm" modelAttribute="receiptForm">
+                            <form:hidden path="receipt.receiptBlobId"/>
+                            <form:hidden path="receipt.id"/>
+                            <form:hidden path="receipt.userProfileId"/>
+                            <form:hidden path="receipt.receiptOCRTranslation"/>
+                            <form:hidden path="receipt.version"/>
+                            <table border="0" style="width: 400px" class="atable">
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="leftAlign"><form:errors path="receipt.title" cssClass="error" /></div>
+                                        <div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="leftAlign">Title <form:input path="receipt.title" size="32"/></div>
+                                        <div class="rightAlign">Date <form:input path="receipt.receiptDate" size="32"/></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th align="left">&nbsp;Name</th>
+                                    <th align="left">&nbsp;Price</th>
+                                    <th align="left">&nbsp;</th>
+                                </tr>
+                                <c:forEach items="${receiptForm.items}" varStatus="status">
+                                    <tr>
+                                        <td align="left">
+                                            <form:input path="items[${status.index}].name" size="64"/>
+                                        </td>
+                                        <td align="right">
+                                            <form:input path="items[${status.index}].price" size="16"/>
+                                            <form:errors path="items[${status.index}].price" cssClass="error" />
+                                        </td>
+                                        <td>
+                                            <form:select path="items[${status.index}].taxed">
+                                                <form:option value="NONE" label="--- Select ---"/>
+                                                <form:options itemValue="name" itemLabel="description" />
+                                            </form:select>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <tr>
+                                    <td colspan="1" align="right">
+                                        <span>Tax &nbsp;</span>
+                                        <form:input path="receipt.tax" size="5"/>
+                                        <span>&nbsp;&nbsp;Total &nbsp;</span>
+                                    </td>
+                                    <td align="right">
+                                        <form:input path="receipt.total" size="5"/>
+                                        <form:errors path="receipt.total" cssClass="error" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1">&nbsp;</td>
+                                    <td colspan="2" align="left"><input type="submit" value="Receipt Update" name="receipt_update"/></td>
+                                </tr>
+                            </table>
+                        </form:form>
+                    </c:when>
+                    <c:otherwise>
+                        &nbsp;
+                    </c:otherwise>
+                </c:choose>
+
 			</td>
 			<td width="6px">&nbsp;</td>
 			<td valign="top">			 

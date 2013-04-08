@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
  * 
  */
 @Deprecated
-public class MongoDB {
+public final class MongoDB {
 	
 	private static final MongoOperations mongoOperations;
 

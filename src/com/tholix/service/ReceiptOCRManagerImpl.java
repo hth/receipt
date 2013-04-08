@@ -49,7 +49,7 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	//TODO invoke transaction here
 	@Override
 	public void save(ReceiptEntityOCR object) throws Exception {
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			boolean sendToJMS = false;
 			if(object.getId() == null) {

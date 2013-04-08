@@ -1,0 +1,2 @@
+db.USER_PROFILE.update( { lastName : "Admin"}, {$set : { level : "ADMIN"}});
+db.MESSAGE_RECEIPT_OCR.update( { recordLocked: false, receiptStatus: "OCR_PROCESSED"}, {$set: {emailId: "test@test.com", profileId: "", recordLocked: true }})

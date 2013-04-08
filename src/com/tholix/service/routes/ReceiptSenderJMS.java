@@ -26,10 +26,10 @@ public class ReceiptSenderJMS {
 	private static final Logger log = Logger.getLogger(ReceiptSenderJMS.class);
 
 	@Autowired
-    private JmsTemplate jmsTemplate;
+    private JmsTemplate jmsSenderTemplate;
 	
 	public void send(final ReceiptEntityOCR receiptOCR, final UserProfileEntity userProfile){
-		jmsTemplate.send("orderQueue",
+        jmsSenderTemplate.send("orderQueue",
 				new MessageCreator() {
 					public Message createMessage(Session session) throws JMSException {
 						MapMessage mapMessage = session.createMapMessage();

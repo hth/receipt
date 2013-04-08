@@ -41,7 +41,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public void save(ItemEntityOCR object) throws Exception {
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			object.setUpdated();
 			mongoTemplate.save(object, TABLE);

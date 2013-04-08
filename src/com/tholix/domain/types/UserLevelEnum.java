@@ -9,20 +9,22 @@ package com.tholix.domain.types;
  *
  */
 public enum UserLevelEnum {
-	
-	USER("USER", "User", 1, 4), 
-	EMPLOYER("EMPLOYER", "Employer", 2, 5),
-	USER_PAID("USER_PAID", "User Paid", 3 , 6),
-	EMPLOYER_PAID("EMPLOYER_PAID", "Employer Paid", 4, 7),
-	WORKER("WORKER", "Worker", 5, 8),
-	SUPERVISOR("SUPERVISOR", "Supervisor", 6, 9),
-	ADMIN("ADMIN", "Admin", 7, 10),
+	USER("USER", "User",                            1, UserLevelEnum.DEFAULT_JMS_LEVEL),
+	EMPLOYER("EMPLOYER", "Employer",                2, UserLevelEnum.DEFAULT_JMS_LEVEL + 1),
+	USER_PAID("USER_PAID", "User_Paid",             3, UserLevelEnum.DEFAULT_JMS_LEVEL + 2),
+	EMPLOYER_PAID("EMPLOYER_PAID", "Employer_Paid", 4, UserLevelEnum.DEFAULT_JMS_LEVEL + 3),
+	WORKER("WORKER", "Worker",                      5, UserLevelEnum.DEFAULT_JMS_LEVEL + 4),
+	SUPERVISOR("SUPERVISOR", "Supervisor",          6, UserLevelEnum.DEFAULT_JMS_LEVEL + 5),
+	ADMIN("ADMIN", "Admin",                         7, UserLevelEnum.DEFAULT_JMS_LEVEL + 6),
 	;
+
+    //TODO to use JMS message setting in future. Currently message is picked based on level of the user.
+    private static final int DEFAULT_JMS_LEVEL = 4;
 	
-	private final String description;
-	private final String name;
-	private final int value;
-	private final int messagePriorityJMS;
+	public final String description;
+	public final String name;
+	public final int value;
+	public final int messagePriorityJMS;
 
 	private UserLevelEnum(String name, String description, int value, int messagePriorityJMS) {
 		this.name = name;

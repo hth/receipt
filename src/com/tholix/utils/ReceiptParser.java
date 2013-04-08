@@ -25,7 +25,7 @@ import com.tholix.domain.types.TaxEnum;
  * @when Jan 6, 2013 9:49:59 AM
  * 
  */
-public class ReceiptParser {
+public final class ReceiptParser {
 	private static final Logger log = Logger.getLogger(ReceiptParser.class);
 	private static Pattern item = Pattern.compile("[-+]?[$]?[-+]?[0-9]*\\.[0-9]{2}[\\s]?[\\w{1}]?$"); // PP I $246456.99 $2.99
 	private static Pattern date = Pattern.compile("[0-9]{1,2}[/|-|\\.][0-9]{1,2}[/|-|\\.][19|20]?[0-9]{2}"); // DATETIME: 12/26/2012 5:29:44 PM

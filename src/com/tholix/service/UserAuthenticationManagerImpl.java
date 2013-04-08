@@ -40,7 +40,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 
 	@Override
 	public void save(UserAuthenticationEntity object) throws Exception {
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {

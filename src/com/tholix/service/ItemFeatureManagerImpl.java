@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.WriteResultChecking;
 
 import com.mongodb.WriteResult;
 
@@ -30,6 +31,7 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 
 	@Override
 	public void save(ItemFeatureEntity object) throws Exception {
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.save(object, TABLE);
 	}
 

@@ -76,7 +76,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
 	public void save(ReceiptEntity object) throws Exception {
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			// Cannot use insert because insert does not perform update like save.
 			// Save will always try to update or create new record.

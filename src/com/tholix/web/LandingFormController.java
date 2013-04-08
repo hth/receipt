@@ -21,6 +21,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tholix.domain.ItemEntity;
@@ -39,6 +40,7 @@ import com.tholix.service.ReceiptManager;
 import com.tholix.service.ReceiptOCRManager;
 import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
+import com.tholix.service.routes.MessageManager;
 import com.tholix.service.validator.UploadReceiptImageValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
@@ -48,16 +50,17 @@ import com.tholix.utils.ReceiptParser;
  * @author hitender
  * @when Dec 17, 2012 3:19:01 PM
  */
-@SuppressWarnings("unused")
 @Controller
 @RequestMapping(value = "/landing")
+@SessionAttributes("userSession")
 public class LandingFormController extends BaseController {
 	private static final Logger log = Logger.getLogger(LandingFormController.class);
 
 	/**
 	 * Refers to landing.jsp
 	 */
-	private String nextPageIsCalledLanding = "/landing";
+	private static final String NEXT_PAGE_IS_CALLED_LANDING = "/landing";
+    private static final String RELOAD_PAGE = "redirect:/landing.htm";
 
 	@Autowired private UserProfileManager userProfileManager;
 	@Autowired private ReceiptManager receiptManager;
@@ -67,6 +70,7 @@ public class LandingFormController extends BaseController {
 	@Autowired private ItemFeatureManager itemFeatureManager;
 	@Autowired private StorageManager storageManager;	
 	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
+    @Autowired private MessageManager messageManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
@@ -77,9 +81,9 @@ public class LandingFormController extends BaseController {
 		//TODO why pendingCount saved in session
 		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
 		userSession.setPendingCount(pendingCount);
-		session.setAttribute("userSession", userSession);
+		//session.setAttribute("userSession", userSession);
 
-		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
+		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
 		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 		
@@ -90,7 +94,7 @@ public class LandingFormController extends BaseController {
 		modelAndView.addObject("receiptGrouped", receiptGrouped);
 
 		UserProfileEntity userProfileEntity = userProfileManager.findOne(userSession.getUserProfileId());
-		log.info(userProfileEntity.getName());
+		log.debug("Logged in user name: " + userProfileEntity.getName());
 		return modelAndView;
 	}
 
@@ -111,6 +115,9 @@ public class LandingFormController extends BaseController {
 		modelAndView.addObject("total", Formatter.df.format(total));
 	}
 
+    //http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html
+    //16.3.3.16 Support for the 'Last-Modified' Response Header To Facilitate Content Caching
+    //TODO make sure hitting refresh should not load the receipt again
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView create(@ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, BindingResult result, HttpSession session) {
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
@@ -122,7 +129,7 @@ public class LandingFormController extends BaseController {
 				log.error("Error: " + error.getCode() + " - " + error.getDefaultMessage());
 			}			
 			
-			ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
+			ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
 			List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 			modelAndView.addObject("receipts", receipts);
 			modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
@@ -150,13 +157,13 @@ public class LandingFormController extends BaseController {
 			log.info("BolbId: " + receiptBlobId);
 
 			receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);			
-			items = new LinkedList<ItemEntityOCR>();
+			items = new LinkedList<>();
 			ReceiptParser.read(receiptOCRTranslation, receiptOCR, items);
 
 			receiptOCRManager.save(receiptOCR);
 			itemOCRManager.saveObjects(items);
 		} catch (Exception e) {
-			log.error("Exception occured during saving receipt : " + e.getLocalizedMessage());
+			log.error("Exception occurred during saving receipt: " + e.getLocalizedMessage());
 			e.printStackTrace();
 			
 			int sizeFSInitial = storageManager.getSize();			
@@ -165,6 +172,7 @@ public class LandingFormController extends BaseController {
 				storageManager.deleteObject(receiptBlobId);
 			}
 			int sizeFSFinal = storageManager.getSize();
+            log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
 			
 			int sizeReceiptInitial = receiptOCRManager.getAllObjects().size();
 			if(receiptOCR != null) {
@@ -172,19 +180,22 @@ public class LandingFormController extends BaseController {
 				itemOCRManager.deleteWhereReceipt(receiptOCR);
 			}
 			int sizeReceiptFinal = receiptOCRManager.getAllObjects().size();
-			log.info(sizeReceiptInitial + " " + sizeReceiptFinal);
+            log.info("Initial size: " + sizeReceiptInitial + ", Final size: " + sizeReceiptFinal);
 			
 			//TODO throw a message to let user know the upload has failed to process
 		}
 
-		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
-		userSession.setPendingCount(pendingCount);
+        //No need to reload the UserSession because the loading of the page has changed
+		//long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
+		//userSession.setPendingCount(pendingCount);
 
-		ModelAndView modelAndView = new ModelAndView(nextPageIsCalledLanding);
-		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
-		modelAndView.addObject("receipts", receipts);
-		modelAndView.addObject("uploadItem", new UploadReceiptImage());
-		modelAndView.addObject("userSession", userSession);
+        //No need to reload the UserSession because the loading of the page has changed
+        //This will force a reload of the page after upload a file. This should prevent upload on refresh.
+		ModelAndView modelAndView = new ModelAndView(RELOAD_PAGE);
+		//List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
+		//modelAndView.addObject("receipts", receipts);
+		//modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
+		//modelAndView.addObject("userSession", userSession);
 
 		return modelAndView;
 	}

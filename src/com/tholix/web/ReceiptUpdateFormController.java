@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -29,7 +31,10 @@ import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.service.ReceiptOCRManager;
+import com.tholix.service.routes.MessageManager;
 import com.tholix.service.validator.ReceiptFormValidator;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.ReceiptForm;
 
 /**
@@ -38,7 +43,7 @@ import com.tholix.web.form.ReceiptForm;
  *
  */
 @Controller
-@RequestMapping(value = "/receiptupdate")
+@RequestMapping(value = "/emp")
 public class ReceiptUpdateFormController {
 	private static final Logger log = Logger.getLogger(ReceiptUpdateFormController.class);
 
@@ -49,6 +54,7 @@ public class ReceiptUpdateFormController {
 	@Autowired private ReceiptOCRManager receiptOCRManager;	
 	@Autowired private ItemOCRManager itemOCRManager;
 	@Autowired private ReceiptFormValidator receiptFormValidator;
+    @Autowired private MessageManager messageManager;
 	
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder) {
@@ -64,7 +70,7 @@ public class ReceiptUpdateFormController {
 //	  return "displayPet";
 //	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/receiptupdate", method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("receiptForm") ReceiptForm receiptForm) {
 		ReceiptEntityOCR receipt = receiptOCRManager.findOne(id);		
 		receiptForm.setReceipt(receipt);
@@ -75,12 +81,15 @@ public class ReceiptUpdateFormController {
 		return  new ModelAndView(nextPage);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/receiptupdate", method = RequestMethod.POST)
 	public String post(@ModelAttribute("receiptForm") ReceiptForm receiptForm, HttpSession session, BindingResult result, final RedirectAttributes redirectAttrs) {
-		log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getTitle());
+        DateTime time = DateUtil.now();
+        log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getTitle());
 		receiptFormValidator.validate(receiptForm, result);
 		if (result.hasErrors()) {
-			return nextPage;
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+
+            return nextPage;
 		} else {
 			ReceiptEntity receipt = null;
 			List<ItemEntity> items = null;
@@ -93,11 +102,20 @@ public class ReceiptUpdateFormController {
 				ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
 				receiptEntityOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);			
 				receiptOCRManager.save(receiptEntityOCR);
+
+                try {
+                    messageManager.updateObject(receiptEntityOCR.getId());
+                } catch(Exception exce) {
+                    log.error(exce.getLocalizedMessage());
+                    messageManager.updateObject(receiptEntityOCR.getId(), false);
+                    throw exce;
+                }
 				
 				UserSession userSession = (UserSession) session.getAttribute("userSession");
 				redirectAttrs.addFlashAttribute("userSession", userSession);
-	
-				return "redirect:/landing.htm";
+
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
+                return "redirect:/emp/landing.htm";
 			} catch(Exception exce) {
 				log.error(exce.getLocalizedMessage());
 				result.rejectValue("receipt.receiptDate", exce.getLocalizedMessage(), exce.getLocalizedMessage());
@@ -108,9 +126,10 @@ public class ReceiptUpdateFormController {
 					itemManager.deleteWhereReceipt(receipt);
 				}
 				int sizeReceiptFinal = receiptManager.getAllObjects().size();
-				log.info(sizeReceiptInitial + " " + sizeReceiptFinal);
-				
-				return nextPage;
+				log.info("Initial size: " + sizeReceiptInitial + ", Final size: " + sizeReceiptFinal);
+
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+                return nextPage;
 			}
 		}		
 	}

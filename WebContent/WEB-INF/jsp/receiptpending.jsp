@@ -25,7 +25,7 @@
 	<br/>
 
 	<c:choose>
-		<c:when test="${receipts.size() > 0}">
+		<c:when test="${receipts.size() gt 0}">
 			<h2 class="demoHeaders">Pending receipt</h2>	
 		
 			<table>
@@ -54,7 +54,7 @@
 										<INPUT type="button" value="Show Receipt" onClick="window.open('${pageContext.request.contextPath}/receiptimage.htm?id=${receipt.receiptBlobId}','mywindow','width=400,height=200')">
 									</FORM> --%>	
 									
-									<a href="${pageContext.request.contextPath}/receiptupdate.htm?id=${receipt.id}">
+									<a href="${pageContext.request.contextPath}/emp/receiptupdate.htm?id=${receipt.id}">
 										Show Receipt				
 									</a>								
 								</td>

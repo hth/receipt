@@ -8,6 +8,8 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -16,7 +18,7 @@ import org.joda.time.format.DateTimeFormatter;
  * @when Dec 27, 2012 2:53:16 PM
  * 
  */
-public class DateUtil {
+public final class DateUtil {
 	private static final Logger log = Logger.getLogger(DateUtil.class);
 
 	private enum DateType {
@@ -77,4 +79,40 @@ public class DateUtil {
 		throw new Exception("Unsupported date condition reached: Not supported date string : " + dateString);
 	}
 
+    /**
+     *
+     * @return DateTime of type Joda Time
+     */
+    public static DateTime now() {
+        return DateTime.now();
+    }
+
+    public static Date nowTime() {
+        return now().toDate();
+    }
+
+    public static String nowTimeString() {
+        return nowTime().toString();
+    }
+
+    /**
+     * Gets the current duration of the process
+     * @param start
+     * @return seconds
+     */
+    public static Seconds duration(DateTime start) {
+        Duration duration = new Duration(start.getMillis(), now().getMillis());
+        return duration.toStandardSeconds();
+    }
+
+    /**
+     * Gets the duration of the process between two end points
+     * @param start
+     * @param end
+     * @return seconds
+     */
+    public static long duration(DateTime start, DateTime end) {
+        Duration duration = new Duration(start.getMillis(), end.getMillis());
+        return duration.getMillis();
+    }
 }

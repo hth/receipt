@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  * @when Dec 22, 2012 11:52:04 PM
  * 
  */
-public class SHAHashing {
+public final class SHAHashing {
 	private static final Logger log = Logger.getLogger(SHAHashing.class);
 
 	private static MessageDigest md;

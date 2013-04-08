@@ -14,6 +14,8 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import org.joda.time.DateTime;
 
+import com.tholix.utils.DateUtil;
+
 /**
  * @author hitender
  * @when Dec 23, 2012 2:02:10 AM
@@ -29,10 +31,10 @@ public abstract class BaseEntity implements Serializable {
 	private Long version;
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private Date updated = DateTime.now().toDate();
+	private Date updated = DateUtil.nowTime();
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private Date created = DateTime.now().toDate();
+	private Date created = DateUtil.nowTime();
 
 	public BaseEntity() {
 		super();

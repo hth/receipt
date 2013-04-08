@@ -19,6 +19,8 @@ public class UploadReceiptImage {
 	private String description;
 	private CommonsMultipartFile fileData;
 
+    private UploadReceiptImage() { }
+
 	public static UploadReceiptImage newInstance() {
 		return new UploadReceiptImage();
 	}

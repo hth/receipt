@@ -1,0 +1,45 @@
+package com.tholix.utils;
+
+import java.util.Arrays;
+import java.util.Date;
+
+import org.apache.log4j.Logger;
+
+import org.joda.time.DateTime;
+
+/**
+ * Helps in profiling the duration it takes to complete a task
+ *
+ * User: hitender
+ * Date: 4/7/13
+ * Time: 11:39 AM
+ */
+public final class PerformanceProfiling {
+    private static final Logger log = Logger.getLogger(PerformanceProfiling.class);
+
+    /**
+     * Logs the start of the process
+     *
+     * @param type
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> Date log(Class<T> type, String... message) {
+        Date time = DateUtil.nowTime();
+        log.info(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
+        return time;
+    }
+
+    /**
+     * Logs the completion of the process
+     *
+     * @param type
+     * @param time
+     * @param message
+     * @param <T>
+     */
+    public static <T> void log(Class<T> type, DateTime time, String... message) {
+        log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  " " + time + ", duration in ms: " + DateUtil.duration(time));
+    }
+}

@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UserLoginValidator;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 import com.tholix.utils.SHAHashing;
 import com.tholix.web.form.UserLoginForm;
 
@@ -56,14 +60,18 @@ public class LoginFormController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Model model) {
+        DateTime time = DateUtil.now();
 		log.info("LoginFormController login");
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return "login";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userLoginForm") UserLoginForm userLoginForm, BindingResult result, final RedirectAttributes redirectAttrs) {
+        DateTime time = DateUtil.now();
 		userLoginValidator.validate(userLoginForm, result);
 		if (result.hasErrors()) {
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
 			return "login";
 		} else {
 			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginForm.getEmailId());
@@ -94,23 +102,26 @@ public class LoginFormController {
 							//do nothing for now
 							break;
 						case WORKER:
-							//do nothing for now
+                            path = "redirect:/emp/landing.htm";
 							break;
 						case SUPERVISOR:
 							//do nothing for now
 							break;
-					}								
+					}
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
 					return path;
 				} else {
 					userLoginForm.setPassword("");
 					log.error("Password not matching for user : " + userLoginForm.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
 					return "login";
 				}
 			} else {
 				userLoginForm.setPassword("");
 				log.error("No Email Id found in record : " + userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
 				return "login";
 			}
 		}

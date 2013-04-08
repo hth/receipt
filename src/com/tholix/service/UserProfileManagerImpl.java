@@ -41,7 +41,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public void save(UserProfileEntity object) throws Exception {
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {

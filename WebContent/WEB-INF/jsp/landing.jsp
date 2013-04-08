@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="com.tholix.domain.value.ReceiptGrouped, java.util.Date, java.util.Map" %>
+<%@ page import="java.util.Date, java.util.Map" %>
 
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -122,18 +122,34 @@
 			<td valign="top">
 				<form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
 					<fieldset style="width:310px;">
-					    <legend>Upload Receipt</legend>	
-						
+					    <legend>Upload Receipt</legend>
+
+                        <c:choose>
+                        <c:when test="${userSession.pendingCount gt 0}">
 						<div class="ui-widget">
 							<div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
 								<p>
-								<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-								<span style="display:block; width:310px;">
-								Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/receiptpending.htm"><strong>${userSession.pendingCount}</strong></a>
-								</span> 
+                                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
+                                    <span style="display:block; width:310px;">
+                                        Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/receiptpending.htm"><strong>${userSession.pendingCount}</strong></a>
+                                    </span>
 								</p>
 							</div>
 						</div>
+                        </c:when>
+                        <c:otherwise>
+                        <div class="ui-widget">
+                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+                                <p>
+                                    <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
+                                    <span style="display:block; width:310px;">
+                                        No pending receipt
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        </c:otherwise>
+                        </c:choose>
 					
 					    <p>
 					        <form:label for="description" path="description">

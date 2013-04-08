@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
  * @when Mar 25, 2013 2:36:27 PM
  *
  */
-public class HashMe {
+public final class HashMe {
 	private static final Logger log = Logger.getLogger(HashMe.class);
 	public static final int PRIME = 16908799;
 	

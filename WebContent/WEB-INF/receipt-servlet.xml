@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:amq="http://activemq.apache.org/schema/core"
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xmlns:jms="http://www.springframework.org/schema/jms"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
@@ -67,6 +68,8 @@
     <bean id="uploadReceiptImageValidator" class="com.tholix.service.validator.UploadReceiptImageValidator" />
     
     <bean id="receiptFormValidator" class="com.tholix.service.validator.ReceiptFormValidator" />
+
+    <bean id="messageManager" class="com.tholix.service.routes.MessageManagerImpl" />
     <!-- ===================================== -->
     <!-- JMS configuration                     -->
     <!-- ===================================== -->    
@@ -106,6 +109,11 @@
     <!-- ====================== -->
 	<!-- JMS                    -->
 	<!-- ====================== -->
+    <!--<amq:topic id="eventTopic" name="topic.events" />-->
+
+    <!--<amq:queue id="processingQueue" name="queue.process" />-->
+    <!--<amq:queue id="orderQueue" name="orderQueue"/>-->
+
     <!-- http://sourceforge.net/projects/activemqbrowser/files/ -->
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL">
@@ -115,9 +123,10 @@
 
     <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="orderQueue"/>
+        <!--<constructor-arg ref="orderQueue" />-->
     </bean>
 
-    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <bean id="jmsSenderTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="defaultDestination" ref="destination" />
     </bean>
@@ -125,7 +134,7 @@
     <bean id="receiptSenderJMS" class="com.tholix.service.routes.ReceiptSenderJMS" />
     <bean id="receiptListenerJMS" class="com.tholix.service.routes.ReceiptListenerJMS" />
     
-    <jms:listener-container  connection-factory="connectionFactory">
+    <jms:listener-container connection-factory="connectionFactory">
     	<jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
 	</jms:listener-container>
     <!-- ===================================== -->
@@ -163,7 +172,7 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
-        <property name="cache"  value="false" />
+        <property name="cache"  value="true" />
         <property name="order"  value="1" />
     </bean>
 </beans>

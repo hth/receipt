@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * @when Jan 9, 2013 11:13:30 PM
  *
  */
-public class Formatter {
+public final class Formatter {
 	private static final Logger log = Logger.getLogger(Formatter.class);
 	
 	/** For double */

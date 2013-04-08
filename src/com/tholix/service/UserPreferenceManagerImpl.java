@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -34,6 +35,7 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public void save(UserPreferenceEntity object) {
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.save(object, TABLE);
 	}
 
