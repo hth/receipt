@@ -19,7 +19,7 @@ import com.tholix.domain.types.ReceiptStatusEnum;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/CreateAccountFormControllerTests-context.xml" })
+@ContextConfiguration(locations = { "classpath*:/CreateAccountControllerTests-context.xml" })
 public class BaseTest {
 	public final static String title = "Receipt Title";
 	//public final static Date receiptDate = DateTime.parse("01/01/13 12:01", DateTimeFormat.forPattern("MM/dd/yy kk:mm")).toDate(); 

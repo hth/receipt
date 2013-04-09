@@ -53,8 +53,8 @@ import com.tholix.utils.ReceiptParser;
 @Controller
 @RequestMapping(value = "/landing")
 @SessionAttributes("userSession")
-public class LandingFormController extends BaseController {
-	private static final Logger log = Logger.getLogger(LandingFormController.class);
+public class LandingController extends BaseController {
+	private static final Logger log = Logger.getLogger(LandingController.class);
 
 	/**
 	 * Refers to landing.jsp
@@ -74,7 +74,7 @@ public class LandingFormController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
-		log.info("LandingFormController loadForm: " + userSession.getEmailId());
+		log.info("LandingController loadForm: " + userSession.getEmailId());
 		
 		userSession = isSessionSet(userSession, session); 		
 

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.tholix.web;
 
 import static org.junit.Assert.fail;
@@ -8,26 +11,30 @@ import org.junit.Test;
 
 /**
  * @author hitender 
- * @when Mar 23, 2013 1:00:26 PM
+ * @when Mar 24, 2013 10:08:38 PM
  *
  */
-public class LandingFormControllerTest {
+public class ReceiptPendingControllerTest {
 
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 	}
 
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 	}
 
+	/**
+	 * Test method for {@link com.tholix.web.ReceiptPendingController#loadForm(javax.servlet.http.HttpSession)}.
+	 */
 	@Test
 	public void testLoadForm() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCreate() {
 		fail("Not yet implemented");
 	}
 

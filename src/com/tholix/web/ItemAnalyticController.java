@@ -25,8 +25,8 @@ import com.tholix.utils.Formatter;
  */
 @Controller
 @RequestMapping(value = "/itemanalytic")
-public class ItemAnalyticFormController {	
-	private static final Logger log = Logger.getLogger(ItemAnalyticFormController.class);
+public class ItemAnalyticController {
+	private static final Logger log = Logger.getLogger(ItemAnalyticController.class);
 	private static final String nextPage = "/itemanalytic";
 
 	@Autowired private ItemManager itemManager;

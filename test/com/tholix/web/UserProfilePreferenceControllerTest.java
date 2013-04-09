@@ -32,11 +32,11 @@ import com.tholix.service.UserProfileManager;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
-public class UserProfilePreferenceFormControllerTest {
+public class UserProfilePreferenceControllerTest {
 	@Autowired UserProfileManager userProfileManager;
 	@Autowired UserPreferenceManager userPreferenceManager;
 	
-	private UserProfilePreferenceFormController controller;
+	private UserProfilePreferenceController controller;
     private MockHttpSession session;
     private UserSession userSession;
     
@@ -44,7 +44,7 @@ public class UserProfilePreferenceFormControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		controller = new UserProfilePreferenceFormController();
+		controller = new UserProfilePreferenceController();
 		session = new MockHttpSession();
 		
 		MockitoAnnotations.initMocks(this);

@@ -32,8 +32,8 @@ import com.tholix.web.form.UserSearchForm;
  */
 @Controller
 @RequestMapping(value = "/admin")
-public class AdminLandingFormController extends BaseController {
-	private static final Logger log = Logger.getLogger(AdminLandingFormController.class);
+public class AdminLandingController extends BaseController {
+	private static final Logger log = Logger.getLogger(AdminLandingController.class);
 	private static final String nextPage = "/admin/landing";
 	
 	@Autowired UserProfileManager userProfileManager;

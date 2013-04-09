@@ -26,7 +26,7 @@ import com.tholix.service.validator.ReceiptFormValidator;
  * @when Mar 24, 2013 10:08:19 PM
  *
  */
-public class ReceiptUpdateFormControllerTest {
+public class ReceiptUpdateControllerTest {
 	
 	@Autowired private ReceiptManager receiptManager;
 	@Autowired private ItemManager itemManager;
@@ -34,7 +34,7 @@ public class ReceiptUpdateFormControllerTest {
 	@Autowired private ItemOCRManager itemOCRManager;
 	@Autowired private ReceiptFormValidator receiptFormValidator;
 	
-	private ReceiptUpdateFormController controller;
+	private ReceiptUpdateController controller;
 	private UserSession userSession;
     
     @Mock private BindingResult result;
@@ -45,7 +45,7 @@ public class ReceiptUpdateFormControllerTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		controller = new ReceiptUpdateFormController();
+		controller = new ReceiptUpdateController();
 		
 		MockitoAnnotations.initMocks(this);
 	    Mockito.when(result.hasErrors()).thenReturn(false);	
@@ -59,7 +59,7 @@ public class ReceiptUpdateFormControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptUpdateFormController#loadForm(java.lang.String, com.tholix.web.form.ReceiptForm)}.
+	 * Test method for {@link com.tholix.web.ReceiptUpdateController#loadForm(java.lang.String, com.tholix.web.form.ReceiptForm)}.
 	 */
 	@Test
 	public void testLoadForm() {
@@ -67,7 +67,7 @@ public class ReceiptUpdateFormControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptUpdateFormController#post(com.tholix.web.form.ReceiptForm, javax.servlet.http.HttpSession, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.ReceiptUpdateController#post(com.tholix.web.form.ReceiptForm, javax.servlet.http.HttpSession, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 */
 	@Test
 	public void testPost() {

@@ -44,8 +44,8 @@ import com.tholix.web.form.ReceiptForm;
  */
 @Controller
 @RequestMapping(value = "/emp")
-public class ReceiptUpdateFormController {
-	private static final Logger log = Logger.getLogger(ReceiptUpdateFormController.class);
+public class ReceiptUpdateController {
+	private static final Logger log = Logger.getLogger(ReceiptUpdateController.class);
 
 	private static final String nextPage = "receiptupdate";
 

@@ -28,8 +28,8 @@ import com.tholix.service.UserProfileManager;
  */
 @Controller
 @RequestMapping(value = "/userprofilepreference")
-public class UserProfilePreferenceFormController {
-	private static final Logger log = Logger.getLogger(UserProfilePreferenceFormController.class);
+public class UserProfilePreferenceController {
+	private static final Logger log = Logger.getLogger(UserProfilePreferenceController.class);
 	
 	private static final String nextPage = "/userprofilepreference";
 

@@ -46,7 +46,7 @@ import com.tholix.utils.DateUtil;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
-public class ReceiptFormControllerTest {
+public class ReceiptControllerTest {
 	
 	@Autowired private UserAuthenticationManager userAuthenticationManager;
 	@Autowired private ReceiptManager receiptManager;
@@ -56,7 +56,7 @@ public class ReceiptFormControllerTest {
 	@Autowired private StorageManager storageManager;
 	@Autowired private UserProfileManager userProfileManager;
 	
-	private ReceiptFormController controller;
+	private ReceiptController controller;
     private MockHttpSession session;
     
     @Mock private BindingResult result;
@@ -64,7 +64,7 @@ public class ReceiptFormControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		controller = new ReceiptFormController();
+		controller = new ReceiptController();
 		session = new MockHttpSession();
 		
 		MockitoAnnotations.initMocks(this);

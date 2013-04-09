@@ -41,19 +41,19 @@ import com.tholix.utils.DateUtil;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
-public class ItemAnalyticFormControllerTest {
+public class ItemAnalyticControllerTest {
 	
 	@Autowired private ItemManager itemManager;
 	@Autowired private StorageManager storageManager;
 	@Autowired private ReceiptManager receiptManager;
 	@Autowired private UserProfileManager userProfileManager;
 	
-	private ItemAnalyticFormController controller;
+	private ItemAnalyticController controller;
 	@Mock private BindingResult result;
 
 	@Before
 	public void setUp() throws Exception {
-		controller = new ItemAnalyticFormController();
+		controller = new ItemAnalyticController();
 		
 		MockitoAnnotations.initMocks(this);
 	    Mockito.when(result.hasErrors()).thenReturn(false);	

@@ -26,8 +26,8 @@ import com.tholix.service.ReceiptOCRManager;
  */
 @Controller
 @RequestMapping(value = "/receiptpending")
-public class ReceiptPendingFormController {	
-	private static final Logger log = Logger.getLogger(ReceiptPendingFormController.class);
+public class ReceiptPendingController {
+	private static final Logger log = Logger.getLogger(ReceiptPendingController.class);
 
 	private String nextPage = "receiptpending";
 

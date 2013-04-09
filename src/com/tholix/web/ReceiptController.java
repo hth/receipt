@@ -34,8 +34,8 @@ import com.tholix.service.UserAuthenticationManager;
  */
 @Controller
 @RequestMapping(value = "/receipt")
-public class ReceiptFormController {
-	private static final Logger log = Logger.getLogger(ReceiptFormController.class);
+public class ReceiptController {
+	private static final Logger log = Logger.getLogger(ReceiptController.class);
 
 	private static String nextPage = "/receipt";
 

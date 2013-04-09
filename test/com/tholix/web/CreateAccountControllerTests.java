@@ -41,7 +41,7 @@ import com.tholix.web.form.UserRegistrationForm;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
-public class CreateAccountFormControllerTests {
+public class CreateAccountControllerTests {
 	
 	@Autowired
 	@Qualifier("userAuthenticationManager")
@@ -51,7 +51,7 @@ public class CreateAccountFormControllerTests {
 	@Autowired private UserRegistrationValidator userRegistrationValidator;
 	
 	private Model model;
-	private CreateAccountFormController controller; 
+	private CreateAccountController controller;
 	private UserRegistrationForm userRegistrationForm;
 	
 	@Mock BindingResult result;
@@ -73,7 +73,7 @@ public class CreateAccountFormControllerTests {
 	    Mockito.when(result.hasErrors()).thenReturn(false);		
 		
 		model = new ExtendedModelMap();
-		controller = new CreateAccountFormController();
+		controller = new CreateAccountController();
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class CreateAccountFormControllerTests {
     }
 
 	/**
-	 * Test method for {@link com.tholix.web.CreateAccountFormController#getUserRegistrationForm()}.
+	 * Test method for {@link com.tholix.web.CreateAccountController#getUserRegistrationForm()}.
 	 */
 	@Test
 	public void testGetUserRegistrationForm() {
@@ -109,7 +109,7 @@ public class CreateAccountFormControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.CreateAccountFormController#loadForm(org.springframework.ui.Model)}.
+	 * Test method for {@link com.tholix.web.CreateAccountController#loadForm(org.springframework.ui.Model)}.
 	 */
 	@Test
 	public void testLoadForm() {
@@ -117,7 +117,7 @@ public class CreateAccountFormControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.CreateAccountFormController#post(com.tholix.web.form.UserRegistrationForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.CreateAccountController#post(com.tholix.web.form.UserRegistrationForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 */
 	@Test
 	public void testPost() {

@@ -47,7 +47,7 @@ import com.tholix.web.form.UserLoginForm;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
-public class LoginFormControllerTests {
+public class LoginControllerTests {
 	
 	@Autowired private UserAuthenticationManager userAuthenticationManager;
 	@Autowired private UserProfileManager userProfileManager;
@@ -65,7 +65,7 @@ public class LoginFormControllerTests {
 	private MockHttpServletRequest request;  
     private MockHttpServletResponse response;  
     private RequestMappingHandlerAdapter handlerAdapter;  
-	private LoginFormController controller; 
+	private LoginController controller;
 	private UserLoginForm userLoginForm;
 	
 	@Mock private BindingResult result;
@@ -92,7 +92,7 @@ public class LoginFormControllerTests {
 	    Mockito.when(result.hasErrors()).thenReturn(false);			
 		
 	    /** Populate the Controller */
-		controller = new LoginFormController();
+		controller = new LoginController();
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class LoginFormControllerTests {
     }
 
 	/**
-	 * Test method for {@link com.tholix.web.LoginFormController#getUserLoginForm()}.
+	 * Test method for {@link com.tholix.web.LoginController#getUserLoginForm()}.
 	 */
 	@Test
 	public void testGetUserLoginForm() {
@@ -130,7 +130,7 @@ public class LoginFormControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.LoginFormController#loadForm(org.springframework.ui.Model)}.
+	 * Test method for {@link com.tholix.web.LoginController#loadForm(org.springframework.ui.Model)}.
 	 */
 	@Test
 	public void testLoadForm() {
@@ -139,7 +139,7 @@ public class LoginFormControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.LoginFormController#post(com.tholix.web.form.UserLoginForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.LoginController#post(com.tholix.web.form.UserLoginForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 * {@link reference http://stackoverflow.com/questions/8299607/junit-testing-for-annotated-controller}
 	 */
 	@Test

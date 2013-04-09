@@ -31,8 +31,8 @@ import com.tholix.web.form.UserRegistrationForm;
  */
 @Controller
 @RequestMapping(value = "/newaccount")
-public class CreateAccountFormController {
-	private static final Logger log = Logger.getLogger(CreateAccountFormController.class);
+public class CreateAccountController {
+	private static final Logger log = Logger.getLogger(CreateAccountController.class);
 
 	@Autowired
 	@Qualifier("userAuthenticationManager")

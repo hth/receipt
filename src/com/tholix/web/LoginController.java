@@ -34,8 +34,8 @@ import com.tholix.web.form.UserLoginForm;
  */
 @Controller
 @RequestMapping(value = "/login")
-public class LoginFormController {
-	private static final Logger log = Logger.getLogger(LoginFormController.class);
+public class LoginController {
+	private static final Logger log = Logger.getLogger(LoginController.class);
 
 	@Autowired
 	@Qualifier("userAuthenticationManager")
@@ -61,7 +61,7 @@ public class LoginFormController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Model model) {
         DateTime time = DateUtil.now();
-		log.info("LoginFormController login");
+		log.info("LoginController login");
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return "login";
 	}
