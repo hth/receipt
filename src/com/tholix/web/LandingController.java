@@ -1,9 +1,10 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +72,7 @@ public class LandingController extends BaseController {
 	@Autowired private ItemManager itemManager;
 	@Autowired private ItemOCRManager itemOCRManager;
 	@Autowired private ItemFeatureManager itemFeatureManager;
-	@Autowired private StorageManager storageManager;	
+	@Autowired private StorageManager storageManager;
 	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
     @Autowired private MessageManager messageManager;
 
@@ -79,8 +80,8 @@ public class LandingController extends BaseController {
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
         DateTime time = DateUtil.now();
         log.info("LandingController loadForm: " + userSession.getEmailId());
-		
-		userSession = isSessionSet(userSession, session); 		
+
+		userSession = isSessionSet(userSession, session);
 
 		//TODO why pendingCount saved in session
 		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
@@ -90,11 +91,11 @@ public class LandingController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
 		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
-		
+
 		getTotalExpense(receipts, modelAndView);
-		
+
 		/** Receipt grouped by date */
-		Map<Date, Double> receiptGrouped = receiptManager.getAllObjectsGroupedByDate(userSession.getUserProfileId());
+		Map<Date, BigDecimal> receiptGrouped = receiptManager.getAllObjectsGroupedByDate(userSession.getUserProfileId());
 		modelAndView.addObject("receiptGrouped", receiptGrouped);
 
 		log.debug("Logged in user name: " + (userProfileManager.findOne(userSession.getUserProfileId())).getName());
@@ -113,7 +114,7 @@ public class LandingController extends BaseController {
 			tax += receipt.getTax();
 			total += receipt.getTotal();
 		}
-		
+
 		modelAndView.addObject("tax", Formatter.df.format(tax));
 		modelAndView.addObject("totalWithoutTax", Formatter.df.format(total - tax));
 		modelAndView.addObject("total", Formatter.df.format(total));
@@ -127,13 +128,13 @@ public class LandingController extends BaseController {
         DateTime time = DateUtil.now();
         UserSession userSession = (UserSession) session.getAttribute("userSession");
 		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
-		
+
 		/** Check if the uploaded file is of type image. */
 		if (result.hasErrors()) {
 			for (ObjectError error : result.getAllErrors()) {
 				log.error("Error: " + error.getCode() + " - " + error.getDefaultMessage());
-			}			
-			
+			}
+
 			ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
 			List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 			modelAndView.addObject("receipts", receipts);
@@ -158,11 +159,11 @@ public class LandingController extends BaseController {
 			//TODO remove Temp Code
 			String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
 			log.info(receiptOCRTranslation);
-			
+
 			receiptBlobId = storageManager.saveFile(uploadReceiptImage);
 			log.info("BolbId: " + receiptBlobId);
 
-			receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);			
+			receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);
 			items = new LinkedList<>();
 			ReceiptParser.read(receiptOCRTranslation, receiptOCR, items);
 
@@ -173,15 +174,15 @@ public class LandingController extends BaseController {
         } catch (Exception e) {
 			log.error("Exception occurred during saving receipt: " + e.getLocalizedMessage());
 			e.printStackTrace();
-			
-			int sizeFSInitial = storageManager.getSize();			
+
+			int sizeFSInitial = storageManager.getSize();
 			log.error("Undo all the saves");
 			if(receiptBlobId != null) {
 				storageManager.deleteObject(receiptBlobId);
 			}
 			int sizeFSFinal = storageManager.getSize();
             log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
-			
+
 			int sizeReceiptInitial = receiptOCRManager.getAllObjects().size();
 			if(receiptOCR != null) {
 				receiptOCRManager.delete(receiptOCR);

@@ -1,11 +1,14 @@
 /**
- * 
+ *
  */
 package com.tholix.domain.value;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import org.joda.time.DateTime;
 
@@ -14,10 +17,11 @@ import com.tholix.domain.ReceiptEntity;
 /**
  * @author hitender
  * @when Jan 12, 2013 6:25:15 PM
- * 
+ *
  */
 public class ReceiptGrouped implements Serializable {
 	private static final long serialVersionUID = 291731832249108585L;
+    private static volatile Logger log = Logger.getLogger(ReceiptGrouped.class);
 
 	private Double total;
 	private int year;
@@ -28,7 +32,7 @@ public class ReceiptGrouped implements Serializable {
 	public ReceiptGrouped() {
 
 	}
-	
+
 	private ReceiptGrouped(Double total, Date date) {
 		super();
 		this.total = total;
@@ -52,11 +56,11 @@ public class ReceiptGrouped implements Serializable {
 	public static ReceiptGrouped newInstance(Double total, int year, int month, int day) {
 		return new ReceiptGrouped(total, year, month, day);
 	}
-	
+
 	public static ReceiptGrouped newInstance(Double total, Date date) {
 		return new ReceiptGrouped(total, date);
 	}
-	
+
 	public static ReceiptGrouped newInstance(ReceiptEntity receipt) {
 		return new ReceiptGrouped(receipt.getTotal(), receipt.getReceiptDate());
 	}
@@ -91,7 +95,7 @@ public class ReceiptGrouped implements Serializable {
 
 	public void setDay(int day) {
 		this.day = day;
-	}	
+	}
 
 	public Date getDate() {
 		return date;
@@ -105,15 +109,17 @@ public class ReceiptGrouped implements Serializable {
 	public String toString() {
 		return "ReceiptGrouped [total=" + total + ", year=" + year + ", month=" + month + ", day=" + day + "]";
 	}
-	
-	public static void getGroupedReceiptTotal(ReceiptEntity receipt, Map<Date, Double> receiptGroupedMap) {
+
+	public static void getGroupedReceiptTotal(ReceiptEntity receipt, Map<Date, BigDecimal> receiptGroupedMap) {
 		ReceiptGrouped rg = newInstance(receipt);
 		if(receiptGroupedMap.containsKey(rg.getDate())) {
-			Double total = receiptGroupedMap.get(rg.getDate());
-			total += rg.getTotal();
+			BigDecimal total = receiptGroupedMap.get(rg.getDate());
+            log.debug("Total Initial: " + total);
+			total = total.add(new BigDecimal(rg.getTotal().toString()));
+            log.debug("Total After addition: " + total);
 			receiptGroupedMap.put(rg.getDate(), total);
 		} else {
-			receiptGroupedMap.put(rg.getDate(), rg.getTotal());
-		}		
+			receiptGroupedMap.put(rg.getDate(), new BigDecimal(rg.getTotal().toString()));
+		}
 	}
 }

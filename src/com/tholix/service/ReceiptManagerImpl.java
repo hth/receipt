@@ -1,8 +1,9 @@
 /**
- * 
+ *
  */
 package com.tholix.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ import com.tholix.domain.value.ReceiptGrouped;
 /**
  * @author hitender
  * @when Dec 26, 2012 9:17:04 PM
- * 
+ *
  */
 public class ReceiptManagerImpl implements ReceiptManager {
 	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
@@ -47,9 +48,9 @@ public class ReceiptManagerImpl implements ReceiptManager {
 		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
 		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)).with(sort), ReceiptEntity.class, TABLE);
 	}
-	
+
 	@Override
-	public Map<Date, Double> getAllObjectsGroupedByDate(String userProfileId) {		
+	public Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId) {
 //		String map = "function() {"
 //					  + " date = Date.UTC(this.receiptDate.getFullYear(), this.receiptDate.getMonth(), this.receiptDate.getDate());"
 //					  + " emit({date: date}, {total: 0});"
@@ -57,20 +58,20 @@ public class ReceiptManagerImpl implements ReceiptManager {
 //					  ;
 //
 //		String reduce = "function(obj, result) { result.total += obj.total; } return {total: result.total};";
-//		
-//		GroupBy groupBy = GroupBy.key("{'day' : 1, 'month' : 1}").initialDocument("{ total: 0 }").reduceFunction("function(obj, result) { result.total += obj.total; }");		
+//
+//		GroupBy groupBy = GroupBy.key("{'day' : 1, 'month' : 1}").initialDocument("{ total: 0 }").reduceFunction("function(obj, result) { result.total += obj.total; }");
 //		GroupByResults<ReceiptEntity> results = mongoTemplate.group(Criteria.where("userProfileId").is(userProfileId), TABLE, groupBy, ReceiptEntity.class);
-		
-//		MapReduceResults<ReceiptGrouped> results = mongoTemplate.mapReduce(new Query(Criteria.where("userProfileId").is(userProfileId)), TABLE, map, reduce, ReceiptGrouped.class);	
-				
+
+//		MapReduceResults<ReceiptGrouped> results = mongoTemplate.mapReduce(new Query(Criteria.where("userProfileId").is(userProfileId)), TABLE, map, reduce, ReceiptGrouped.class);
+
 		List<ReceiptEntity> receipts = getAllObjectsForUser(userProfileId);
-		
-		Map<Date, Double> receiptGroupedMap = new HashMap<Date, Double>();
+
+		Map<Date, BigDecimal> receiptGroupedMap = new HashMap<>();
 		for(ReceiptEntity receipt : receipts) {
 			ReceiptGrouped.getGroupedReceiptTotal(receipt, receiptGroupedMap);
 		}
-		
-		//return Lists.<ReceiptGrouped>newArrayList(results);  
+
+		//return Lists.<ReceiptGrouped>newArrayList(results);
 		return receiptGroupedMap;
 	}
 
