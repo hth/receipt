@@ -1,30 +1,22 @@
 package com.tholix.service.routes;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Update;
 
-import com.google.gson.JsonObject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
 import com.mongodb.WriteResult;
-import org.bson.BSONObject;
 
 import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.domain.types.UserLevelEnum;
 
 /**
  * User: hitender
@@ -109,6 +101,7 @@ public class MessageManagerImpl implements MessageManager {
     @Override
     public void save(MessageReceiptEntityOCR object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+        object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
         mongoTemplate.save(object);
     }
 
