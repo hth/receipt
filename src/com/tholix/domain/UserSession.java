@@ -5,6 +5,8 @@ package com.tholix.domain;
 
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
+
 import com.tholix.domain.types.UserLevelEnum;
 
 /**
@@ -15,6 +17,7 @@ import com.tholix.domain.types.UserLevelEnum;
  */
 public class UserSession implements Serializable {
 	private static final long serialVersionUID = 7575677662361932482L;
+    private static volatile Logger log = Logger.getLogger(UserSession.class);
 
 	String emailId;
 	String userProfileId;
@@ -37,10 +40,18 @@ public class UserSession implements Serializable {
 	}
 
 	public String getEmailId() {
+        if(emailId == null) {
+            log.error("Email Id is NUll");
+            return "";
+        }
 		return emailId;
 	}
 
 	public String getUserProfileId() {
+        if(userProfileId == null) {
+            log.error("User profile Id is NULL");
+            return "";
+        }
 		return userProfileId;
 	}
 	

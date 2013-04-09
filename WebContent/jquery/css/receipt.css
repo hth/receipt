@@ -36,7 +36,7 @@ body{
 }
 /* End*/
 
-/* For Calendar */ 	
+/* For Calendar */
 #calendar {
 	width: 300px;
 	margin: 0 auto;
@@ -118,4 +118,9 @@ body{
 .rightAlign {
    	float: right;
 }
+/* End */
+
+
+/* This is for userId and home on the top of the page */
+a img, a span { vertical-align: middle; }
 /* End */

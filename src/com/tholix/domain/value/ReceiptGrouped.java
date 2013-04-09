@@ -110,6 +110,7 @@ public class ReceiptGrouped implements Serializable {
 		return "ReceiptGrouped [total=" + total + ", year=" + year + ", month=" + month + ", day=" + day + "]";
 	}
 
+    //Reading http://java-performance.info/bigdecimal-vs-double-in-financial-calculations/
 	public static void getGroupedReceiptTotal(ReceiptEntity receipt, Map<Date, BigDecimal> receiptGroupedMap) {
 		ReceiptGrouped rg = newInstance(receipt);
 		if(receiptGroupedMap.containsKey(rg.getDate())) {

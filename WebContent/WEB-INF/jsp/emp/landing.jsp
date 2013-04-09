@@ -23,6 +23,18 @@
     <p>User Id <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${userSession.emailId}</a></p>
 </div>
 
+
+<div id=?content? style='width:210px;'>
+    <div id=?leftcolumn? style='width:60px; height: 16px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+        <a href="${pageContext.request.contextPath}/landing.htm">
+            <img src="images/home.png" width="10px" height="10px" alt="Home"><span>Home</span>
+        </a>
+    </div>
+    <div id=?rightcolumn? style='width:130px; height: 16px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
+        <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${sessionScope['userSession'].emailId}</a>
+    </div>
+</div>
+
 <h2>Pending Receipts</h2>
 
 <c:if test="${pending.size() > 0}">
