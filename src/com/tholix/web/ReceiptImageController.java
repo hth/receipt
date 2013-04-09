@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mongodb.gridfs.GridFSDBFile;
+import org.joda.time.DateTime;
 
 import com.tholix.domain.UserSession;
 import com.tholix.service.StorageManager;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 
 /**
  * @author hitender 
@@ -50,7 +53,8 @@ public class ReceiptImageController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView getReceipt(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		UserSession userSession = (UserSession) session.getAttribute("userSession");
+        DateTime time = DateUtil.now();
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
 		
 		try {
 			GridFSDBFile gridFSDBFile = storageManager.get(id);
@@ -67,10 +71,12 @@ public class ReceiptImageController {
 				response.setContentType(gridFSDBFile.getContentType());
 			}
 
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  "success");
 			return null;
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage());
-			log.error("Image retrival error occured: " + id + " for user : " + userSession.getEmailId());
+			log.error("Image retrieval error occurred: " + id + " for user : " + userSession.getEmailId());
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
 			return null;
 		} 
 	}

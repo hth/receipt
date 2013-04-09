@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 
 /**
  * @author hitender 
@@ -38,7 +42,8 @@ public class UserProfilePreferenceController {
 	
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userProfile") UserProfileEntity userProfile, @ModelAttribute("userPreference") UserPreferenceEntity userPreference, HttpSession session) {
-		UserSession userSession = (UserSession) session.getAttribute("userSession");
+        DateTime time = DateUtil.now();
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
 		
 		userProfile = userProfileManager.getObjectUsingEmail(userSession.getEmailId());
 		ModelAndView modelAndView = populateData(userProfile);
@@ -47,25 +52,30 @@ public class UserProfilePreferenceController {
 //		ModelAndView modelAndView = new ModelAndView(nextPage);		
 //		modelAndView.addObject("userProfile", userProfile);
 //		modelAndView.addObject("userPreference", userPreference);
-		
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/their", method = RequestMethod.GET)
-	public ModelAndView getUser(@RequestParam("id") String id) {		
-		UserProfileEntity userProfile = userProfileManager.findOne(id);
+	public ModelAndView getUser(@RequestParam("id") String id) {
+        DateTime time = DateUtil.now();
+        UserProfileEntity userProfile = userProfileManager.findOne(id);
 		ModelAndView modelAndView = populateData(userProfile);
-		
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView getUser(@ModelAttribute("userProfile") UserProfileEntity userProfile, HttpSession session) {		
-		userProfileManager.updateObject(userProfile.getId(), userProfile.getLevel());
+	public ModelAndView getUser(@ModelAttribute("userProfile") UserProfileEntity userProfile, HttpSession session) {
+        DateTime time = DateUtil.now();
+        userProfileManager.updateObject(userProfile.getId(), userProfile.getLevel());
 		
 		userProfile = userProfileManager.findOne(userProfile.getId());
 		ModelAndView modelAndView = populateData(userProfile);
-		
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 
@@ -74,11 +84,13 @@ public class UserProfilePreferenceController {
 	 * @return
 	 */
 	private ModelAndView populateData(UserProfileEntity userProfile) {
-		UserPreferenceEntity userPreference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
+        DateTime time = DateUtil.now();
+        UserPreferenceEntity userPreference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
 		
 		ModelAndView modelAndView = new ModelAndView(nextPage);		
 		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.addObject("userPreference", userPreference);
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 

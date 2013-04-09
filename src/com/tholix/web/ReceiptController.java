@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserSession;
@@ -26,6 +28,8 @@ import com.tholix.service.ItemManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.service.StorageManager;
 import com.tholix.service.UserAuthenticationManager;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 
 /**
  * @author hitender
@@ -47,7 +51,8 @@ public class ReceiptController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
-		log.info("Loading Receipt Item with id: " + id);
+        DateTime time = DateUtil.now();
+        log.info("Loading Receipt Item with id: " + id);
 
 		ReceiptEntity receipt = receiptManager.findOne(id);
 		List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
@@ -58,12 +63,14 @@ public class ReceiptController {
 		
 		receiptForm.setId(receipt.getId());
 
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public String delete(@ModelAttribute("receiptForm") ReceiptEntity receiptForm, HttpSession session, final RedirectAttributes redirectAttrs) {
-		log.info("Delete receipt " + receiptForm.getId());
+        DateTime time = DateUtil.now();
+        log.info("Delete receipt " + receiptForm.getId());
 		
 		receiptForm = receiptManager.findOne(receiptForm.getId());
 		itemManager.deleteWhereReceipt(receiptForm);
@@ -73,6 +80,7 @@ public class ReceiptController {
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
 		redirectAttrs.addFlashAttribute("userSession", userSession);
 
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return "redirect:/landing.htm";
 	}
 

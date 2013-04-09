@@ -72,12 +72,14 @@ public class ReceiptUpdateController {
 
 	@RequestMapping(value = "/receiptupdate", method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("receiptForm") ReceiptForm receiptForm) {
-		ReceiptEntityOCR receipt = receiptOCRManager.findOne(id);		
+        DateTime time = DateUtil.now();
+        ReceiptEntityOCR receipt = receiptOCRManager.findOne(id);
 		receiptForm.setReceipt(receipt);
 		
 		List<ItemEntityOCR> items = itemOCRManager.getWhereRecipt(receipt);	
 		receiptForm.setItems(items);
-		
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return  new ModelAndView(nextPage);
 	}
 	
@@ -87,8 +89,7 @@ public class ReceiptUpdateController {
         log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getTitle());
 		receiptFormValidator.validate(receiptForm, result);
 		if (result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return nextPage;
 		} else {
 			ReceiptEntity receipt = null;
@@ -114,7 +115,7 @@ public class ReceiptUpdateController {
 				UserSession userSession = (UserSession) session.getAttribute("userSession");
 				redirectAttrs.addFlashAttribute("userSession", userSession);
 
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 return "redirect:/emp/landing.htm";
 			} catch(Exception exce) {
 				log.error(exce.getLocalizedMessage());
@@ -128,7 +129,7 @@ public class ReceiptUpdateController {
 				int sizeReceiptFinal = receiptManager.getAllObjects().size();
 				log.info("Initial size: " + sizeReceiptInitial + ", Final size: " + sizeReceiptFinal);
 
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
                 return nextPage;
 			}
 		}		

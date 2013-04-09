@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserSession;
 import com.tholix.service.ReceiptOCRManager;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 
 /**
  * @author hitender 
@@ -35,13 +39,15 @@ public class ReceiptPendingController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(HttpSession session) {
-		UserSession userSession = (UserSession) session.getAttribute("userSession");
+        DateTime time = DateUtil.now();
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
 
 		List<ReceiptEntityOCR> receipts = receiptOCRManager.getAllObjects(userSession.getUserProfileId());
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("receipts", receipts);
 
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 

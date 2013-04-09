@@ -48,6 +48,6 @@
 	
 	
 	<br>
-	<a href="<c:url value="newaccount.htm"/>">New Account Sign In</a>
+	<a href="<c:url value="new.htm"/>">New Account Sign In</a>
 </body>
 </html>

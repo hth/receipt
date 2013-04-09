@@ -113,7 +113,7 @@ public class CreateAccountControllerTests {
 	 */
 	@Test
 	public void testLoadForm() {
-		assertEquals("newaccount", controller.loadForm(model));
+		assertEquals("new", controller.loadForm(model));
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class CreateAccountControllerTests {
         userRegistrationForm.setEmailId("me@me");
         userRegistrationForm.setPassword("see");
         result = new BeanPropertyBindingResult(userRegistrationForm, "userRegistrationForm");
-        assertEquals("newaccount", controller.post(userRegistrationForm, result, redirectAttrs));
+        assertEquals("new", controller.post(userRegistrationForm, result, redirectAttrs));
         
         userRegistrationForm.setFirstName("First Dummy");
         userRegistrationForm.setLastName("Last Dummy");

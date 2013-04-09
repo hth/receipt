@@ -108,20 +108,20 @@ public class LoginController {
 							//do nothing for now
 							break;
 					}
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
 					return path;
 				} else {
 					userLoginForm.setPassword("");
 					log.error("Password not matching for user : " + userLoginForm.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
 					return "login";
 				}
 			} else {
 				userLoginForm.setPassword("");
 				log.error("No Email Id found in record : " + userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
 				return "login";
 			}
 		}

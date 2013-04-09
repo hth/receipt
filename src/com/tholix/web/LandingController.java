@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -44,6 +46,7 @@ import com.tholix.service.routes.MessageManager;
 import com.tholix.service.validator.UploadReceiptImageValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
+import com.tholix.utils.PerformanceProfiling;
 import com.tholix.utils.ReceiptParser;
 
 /**
@@ -74,7 +77,8 @@ public class LandingController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
-		log.info("LandingController loadForm: " + userSession.getEmailId());
+        DateTime time = DateUtil.now();
+        log.info("LandingController loadForm: " + userSession.getEmailId());
 		
 		userSession = isSessionSet(userSession, session); 		
 
@@ -93,9 +97,9 @@ public class LandingController extends BaseController {
 		Map<Date, Double> receiptGrouped = receiptManager.getAllObjectsGroupedByDate(userSession.getUserProfileId());
 		modelAndView.addObject("receiptGrouped", receiptGrouped);
 
-		UserProfileEntity userProfileEntity = userProfileManager.findOne(userSession.getUserProfileId());
-		log.debug("Logged in user name: " + userProfileEntity.getName());
-		return modelAndView;
+		log.debug("Logged in user name: " + (userProfileManager.findOne(userSession.getUserProfileId())).getName());
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return modelAndView;
 	}
 
 	/**
@@ -120,7 +124,8 @@ public class LandingController extends BaseController {
     //TODO make sure hitting refresh should not load the receipt again
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView create(@ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, BindingResult result, HttpSession session) {
-		UserSession userSession = (UserSession) session.getAttribute("userSession");
+        DateTime time = DateUtil.now();
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
 		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
 		
 		/** Check if the uploaded file is of type image. */
@@ -133,8 +138,9 @@ public class LandingController extends BaseController {
 			List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 			modelAndView.addObject("receipts", receipts);
 			modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
-			
-			return modelAndView;
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result check");
+            return modelAndView;
 		}
 
 		// Some type of file processing...
@@ -162,7 +168,9 @@ public class LandingController extends BaseController {
 
 			receiptOCRManager.save(receiptOCR);
 			itemOCRManager.saveObjects(items);
-		} catch (Exception e) {
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success saved receipt");
+        } catch (Exception e) {
 			log.error("Exception occurred during saving receipt: " + e.getLocalizedMessage());
 			e.printStackTrace();
 			
@@ -181,8 +189,9 @@ public class LandingController extends BaseController {
 			}
 			int sizeReceiptFinal = receiptOCRManager.getAllObjects().size();
             log.info("Initial size: " + sizeReceiptInitial + ", Final size: " + sizeReceiptFinal);
-			
-			//TODO throw a message to let user know the upload has failed to process
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure saving receipt");
+            //TODO throw a message to let user know the upload has failed to process
 		}
 
         //No need to reload the UserSession because the loading of the page has changed
@@ -197,7 +206,8 @@ public class LandingController extends BaseController {
 		//modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
 		//modelAndView.addObject("userSession", userSession);
 
-		return modelAndView;
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        return modelAndView;
 	}
 
 	private void populate(UserProfileEntity userProfile) {

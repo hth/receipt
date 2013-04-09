@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
@@ -22,6 +24,8 @@ import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UserRegistrationValidator;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.UserRegistrationForm;
 
 /**
@@ -30,9 +34,10 @@ import com.tholix.web.form.UserRegistrationForm;
  * 
  */
 @Controller
-@RequestMapping(value = "/newaccount")
+@RequestMapping(value = "/new")
 public class CreateAccountController {
 	private static final Logger log = Logger.getLogger(CreateAccountController.class);
+    private static final String NEW_ACCOUNT = "new";
 
 	@Autowired
 	@Qualifier("userAuthenticationManager")
@@ -49,14 +54,16 @@ public class CreateAccountController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Model model) {
 		log.debug("Loading New Account");
-		return "newaccount";
+		return NEW_ACCOUNT;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
-		userRegistrationValidator.validate(userRegistrationForm, result);
+        DateTime time = DateUtil.now();
+        userRegistrationValidator.validate(userRegistrationForm, result);
 		if (result.hasErrors()) {
-			return "newaccount";
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
+            return NEW_ACCOUNT;
 		} else {
 			UserAuthenticationEntity userAuthentication;
 			UserProfileEntity userProfile;
@@ -66,7 +73,8 @@ public class CreateAccountController {
 			} catch (Exception e) {
 				log.error("During saving UserAuthenticationEntity: " + e.getLocalizedMessage());
 				result.rejectValue("emailId", "field.emailId.duplicate");
-				return "newaccount";
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user authentication");
+                return NEW_ACCOUNT;
 			}
 
 			try {
@@ -74,14 +82,16 @@ public class CreateAccountController {
 				userProfileManager.save(userProfile);
 			} catch (Exception e) {
 				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
-				return "newaccount";
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user profile");
+                return NEW_ACCOUNT;
 			}
 
 			try {
 				userPreferenceManager.save(userRegistrationForm.newUserPreferenceEntity(userProfile));
 			} catch (Exception e) {
 				log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
-				return "newaccount";
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user preference");
+                return NEW_ACCOUNT;
 			}
 
 			log.info("Registered new Email Id: " + userProfile.getEmailId());
@@ -89,7 +99,8 @@ public class CreateAccountController {
 			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
 			redirectAttrs.addFlashAttribute("userSession", userSession);
 
-			/** This code to invoke the controller */
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+            /** This code to invoke the controller */
 			return "redirect:/landing.htm";
 		}
 	}

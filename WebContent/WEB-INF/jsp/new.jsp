@@ -22,7 +22,7 @@
 	<h2>
 		<fmt:message key="signup.heading" />
 	</h2>	
-	<form:form method="post" modelAttribute="userRegistrationForm" action="newaccount.htm">
+	<form:form method="post" modelAttribute="userRegistrationForm" action="new.htm">
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
 			<tr>
 				<td align="right" width="20%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>

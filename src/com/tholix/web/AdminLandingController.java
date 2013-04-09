@@ -20,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.UserProfileManager;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.UserSearchForm;
 
 /**
@@ -53,11 +57,13 @@ public class AdminLandingController extends BaseController {
 	
 	@RequestMapping(value = "/landing", method = RequestMethod.POST)
 	public ModelAndView loadUser(@ModelAttribute("userLoginForm") UserSearchForm userSearchForm, BindingResult result) {
+        DateTime time = DateUtil.now();
 		List<UserSearchForm> userSearchForms = findAllUsers(userSearchForm.getName());		
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("users", userSearchForms);
-		modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());		
-		return modelAndView;
+		modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return modelAndView;
 	}
 	
 	/**
@@ -67,12 +73,14 @@ public class AdminLandingController extends BaseController {
 	 * @return
 	 */
 	private List<String> findMatchingUsers(String name) {
+        DateTime time = DateUtil.now();
 		List<String> users = new ArrayList<String>();
 		for(UserSearchForm userSearchForm : findAllUsers(name)) {
 			users.add(userSearchForm.getName());
 		}
 		log.info(users);
-		return users;
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return users;
 	}
 
 	/**
@@ -82,6 +90,7 @@ public class AdminLandingController extends BaseController {
 	 * @return
 	 */
 	private List<UserSearchForm> findAllUsers(String name) {
+        DateTime time = DateUtil.now();
 		log.info("Search string for user name: " + name);	
 		List<UserSearchForm> userList = new ArrayList<UserSearchForm>();
 		for(UserProfileEntity user : userProfileManager.searchUser(name)) {
@@ -89,6 +98,7 @@ public class AdminLandingController extends BaseController {
 			userList.add(userForm);
 		}
 		log.info("found users.. total size " + userList.size());
-		return userList;
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return userList;
 	}
 }
