@@ -7,8 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.BaseEntity;
-import com.tholix.domain.ItemEntity;
-import com.tholix.domain.ItemFeatureEntity;
 import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.service.RepositoryManager;
 
@@ -28,6 +26,10 @@ public interface MessageManager extends RepositoryManager<MessageReceiptEntityOC
     List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId);
 
     List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, int limit);
+
+    List<MessageReceiptEntityOCR> findAllPending();
+
+    List<MessageReceiptEntityOCR> findPending(String emailId, String profileId);
 
     WriteResult updateObject(String id);
 

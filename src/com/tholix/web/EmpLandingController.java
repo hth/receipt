@@ -20,7 +20,6 @@ import com.tholix.domain.UserSession;
 import com.tholix.service.routes.MessageManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.web.form.UserSearchForm;
 
 /**
  * User: hitender
@@ -38,11 +37,14 @@ public class EmpLandingController extends BaseController {
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
     public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, HttpSession session) {
         DateTime time = DateUtil.now();
-        isSessionSet(userSession, session);
+        userSession = isSessionSet(userSession, session);
         ModelAndView modelAndView = new ModelAndView(nextPage);
 
-        List<MessageReceiptEntityOCR> list = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
-        modelAndView.addObject("pending", list);
+        List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
+        modelAndView.addObject("queue", queue);
+
+        List<MessageReceiptEntityOCR> pending = messageManager.findPending(userSession.getEmailId(), userSession.getUserProfileId());
+        modelAndView.addObject("pending", pending);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

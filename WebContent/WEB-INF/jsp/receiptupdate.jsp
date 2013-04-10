@@ -1,6 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="com.tholix.domain.types.UserLevelEnum" %>
 
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -66,25 +65,25 @@
 	</script>
 </head>
 <body>
-    <div id=?content? style='width:210px;'>
-        <div id=?leftcolumn? style='width:60px; height: 16px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+    <div id="content" style='width:210px;'>
+        <div id="leftcolumn" style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
             <c:choose>
             <%--//TODO change from constant--%>
             <c:when test="${userSession.level.value ge 5}">
-                <a href="${pageContext.request.contextPath}/emp/landing.htm">
-                    <img src="../images/home.png" width="10px" height="10px" alt="Home"><span>Home</span>
+                <a href="${pageContext.request.contextPath}/emp/landing.htm" style="text-decoration:none;">
+                    <img src="../images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
                 </a>
             </c:when>
             <c:otherwise>
-                <a href="${pageContext.request.contextPath}/landing.htm">
-                    <img src="../images/home.png" width="10px" height="10px" alt="Home"><span>Home</span>
+                <a href="${pageContext.request.contextPath}/landing.htm" style="text-decoration:none;">
+                    <img src="../images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
                 </a>
             </c:otherwise>
             </c:choose>
 
         </div>
-        <div id=?rightcolumn? style='width:130px; height: 16px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
-            <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${userSession.emailId}</a>
+        <div id="rightcolumn" style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
+            <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm" style="text-decoration:none;">${sessionScope['userSession'].emailId}</a>
         </div>
     </div>
 

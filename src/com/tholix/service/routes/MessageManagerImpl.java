@@ -99,6 +99,36 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
+    public List<MessageReceiptEntityOCR> findPending(String emailId, String profileId) {
+        Query query = new Query(Criteria.where("recordLocked").is(true))
+                .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED))
+                .addCriteria(Criteria.where("emailId").is(emailId))
+                .addCriteria(Criteria.where("userProfileId").is(profileId));
+
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "level"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "created"));
+        Sort sort = new Sort(orders);
+
+        query.with(sort);
+        return mongoTemplate.find(query, MessageReceiptEntityOCR.class, TABLE);
+    }
+
+    @Override
+    public List<MessageReceiptEntityOCR> findAllPending() {
+        Query query = new Query(Criteria.where("recordLocked").is(true))
+                .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED));
+
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "level"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "created"));
+        Sort sort = new Sort(orders);
+
+        query.with(sort);
+        return mongoTemplate.find(query, MessageReceiptEntityOCR.class, TABLE);
+    }
+
+    @Override
     public void save(MessageReceiptEntityOCR object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.

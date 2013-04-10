@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.utils.Maths;
 
 /**
  * @author hitender
@@ -110,15 +111,10 @@ public class ReceiptGrouped implements Serializable {
 		return "ReceiptGrouped [total=" + total + ", year=" + year + ", month=" + month + ", day=" + day + "]";
 	}
 
-    //Reading http://java-performance.info/bigdecimal-vs-double-in-financial-calculations/
 	public static void getGroupedReceiptTotal(ReceiptEntity receipt, Map<Date, BigDecimal> receiptGroupedMap) {
 		ReceiptGrouped rg = newInstance(receipt);
 		if(receiptGroupedMap.containsKey(rg.getDate())) {
-			BigDecimal total = receiptGroupedMap.get(rg.getDate());
-            log.debug("Total Initial: " + total);
-			total = total.add(new BigDecimal(rg.getTotal().toString()));
-            log.debug("Total After addition: " + total);
-			receiptGroupedMap.put(rg.getDate(), total);
+			receiptGroupedMap.put(rg.getDate(), Maths.add(receiptGroupedMap.get(rg.getDate()), rg.getTotal()));
 		} else {
 			receiptGroupedMap.put(rg.getDate(), new BigDecimal(rg.getTotal().toString()));
 		}
