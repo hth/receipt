@@ -45,7 +45,7 @@
         <c:forEach var="receipt" items="${pending}"  varStatus="status">
             <tr>
                 <td style="padding:3px;" align="right">
-                        ${status.count}
+                    ${status.count}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.level" />

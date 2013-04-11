@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
@@ -30,7 +30,7 @@ import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.UserSearchForm;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 26, 2013 1:14:24 AM
  * {@link http://viralpatel.net/blogs/spring-3-mvc-autocomplete-json-tutorial/}
  */
@@ -39,36 +39,35 @@ import com.tholix.web.form.UserSearchForm;
 public class AdminLandingController extends BaseController {
 	private static final Logger log = Logger.getLogger(AdminLandingController.class);
 	private static final String nextPage = "/admin/landing";
-	
+
 	@Autowired UserProfileManager userProfileManager;
-	
+
 	@RequestMapping(value = "/landing", method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, HttpSession session) {	
-		isSessionSet(userSession, session); 
-		ModelAndView modelAndView = new ModelAndView(nextPage, "userSearchForm", UserSearchForm.newInstance());		
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, HttpSession session) {
+		isSessionSet(userSession, session);
+		ModelAndView modelAndView = new ModelAndView(nextPage, "userSearchForm", UserSearchForm.newInstance());
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/find_user", method = RequestMethod.GET)
-	public @ResponseBody List<String> findUser(@RequestParam("term") String name) {	
-		//TODO This is not working because the AJAX is messed up in Spring 3.2.2
+	public @ResponseBody List<String> findUser(@RequestParam("term") String name) {
 		return findMatchingUsers(name);
 	}
-	
+
 	@RequestMapping(value = "/landing", method = RequestMethod.POST)
 	public ModelAndView loadUser(@ModelAttribute("userLoginForm") UserSearchForm userSearchForm, BindingResult result) {
         DateTime time = DateUtil.now();
-		List<UserSearchForm> userSearchForms = findAllUsers(userSearchForm.getName());		
+		List<UserSearchForm> userSearchForms = findAllUsers(userSearchForm.getName());
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("users", userSearchForms);
 		modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 	}
-	
+
 	/**
 	 * This method is called from AJAX to get the matching list of users in the system
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -85,13 +84,13 @@ public class AdminLandingController extends BaseController {
 
 	/**
 	 * This method returns well populated users with 'id' and other relevant data for showing user profile.
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
 	private List<UserSearchForm> findAllUsers(String name) {
         DateTime time = DateUtil.now();
-		log.info("Search string for user name: " + name);	
+		log.info("Search string for user name: " + name);
 		List<UserSearchForm> userList = new ArrayList<UserSearchForm>();
 		for(UserProfileEntity user : userProfileManager.searchUser(name)) {
 			UserSearchForm userForm = UserSearchForm.newInstance(user);
