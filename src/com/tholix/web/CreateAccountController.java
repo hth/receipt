@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
@@ -27,11 +29,12 @@ import com.tholix.service.validator.UserRegistrationValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.UserRegistrationForm;
+import com.tholix.web.helper.AvailabilityStatus;
 
 /**
  * @author hitender
  * @when Dec 24, 2012 3:13:26 PM
- * 
+ *
  */
 @Controller
 @RequestMapping(value = "/new")
@@ -104,12 +107,27 @@ public class CreateAccountController {
 			return "redirect:/landing.htm";
 		}
 	}
-	
+
+    @RequestMapping(value="/availability", method=RequestMethod.GET)
+    public @ResponseBody
+    AvailabilityStatus getAvailability(@RequestParam String emailId) {
+        DateTime time = DateUtil.now();
+        log.info("Auto find if the emailId is present: " + emailId);
+        UserProfileEntity userProfileEntity = userProfileManager.searchByEmail(emailId);
+        if (userProfileEntity != null || userProfileEntity.getEmailId().equals(emailId)) {
+            log.info("Not Available: " + emailId);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+            return AvailabilityStatus.notAvailable(emailId);
+        }
+        log.info("Available: " + emailId);
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        return AvailabilityStatus.available();
+    }
 
 	/**
 	 * Setters below are used by JUnit
 	 */
-	
+
 	public void setUserAuthenticationManager(UserAuthenticationManager userAuthenticationManager) {
 		this.userAuthenticationManager = userAuthenticationManager;
 	}

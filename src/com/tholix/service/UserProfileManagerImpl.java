@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service;
 
@@ -25,7 +25,7 @@ import com.tholix.domain.types.UserLevelEnum;
 /**
  * @author hitender
  * @when Dec 23, 2012 3:45:47 AM
- * 
+ *
  */
 public class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
@@ -96,7 +96,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public List<UserProfileEntity> searchUser(String name) {
+	public List<UserProfileEntity> searchByName(String name) {
 		//TODO look into PageRequest for limit data
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
@@ -106,4 +106,10 @@ public class UserProfileManagerImpl implements UserProfileManager {
 		//return mongoTemplate.find(new Query(a.orOperator(b)), UserProfileEntity.class, TABLE);
 		return mongoTemplate.find(new Query(a), UserProfileEntity.class, TABLE);
 	}
+
+    @Override
+    public UserProfileEntity searchByEmail(String emailId) {
+        Criteria a = Criteria.where("emailId").is(emailId);
+        return mongoTemplate.findOne(new Query(a), UserProfileEntity.class, TABLE);
+    }
 }

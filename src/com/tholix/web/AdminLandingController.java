@@ -92,7 +92,7 @@ public class AdminLandingController extends BaseController {
         DateTime time = DateUtil.now();
 		log.info("Search string for user name: " + name);
 		List<UserSearchForm> userList = new ArrayList<UserSearchForm>();
-		for(UserProfileEntity user : userProfileManager.searchUser(name)) {
+		for(UserProfileEntity user : userProfileManager.searchByName(name)) {
 			UserSearchForm userForm = UserSearchForm.newInstance(user);
 			userList.add(userForm);
 		}
