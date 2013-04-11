@@ -114,10 +114,12 @@ public class CreateAccountController {
         DateTime time = DateUtil.now();
         log.info("Auto find if the emailId is present: " + emailId);
         UserProfileEntity userProfileEntity = userProfileManager.searchByEmail(emailId);
-        if (userProfileEntity != null || userProfileEntity.getEmailId().equals(emailId)) {
-            log.info("Not Available: " + emailId);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-            return AvailabilityStatus.notAvailable(emailId);
+        if(userProfileEntity != null) {
+            if (userProfileEntity.getEmailId().equals(emailId)) {
+                log.info("Not Available: " + emailId);
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+                return AvailabilityStatus.notAvailable(emailId);
+            }
         }
         log.info("Available: " + emailId);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
