@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service.validator;
 
@@ -14,7 +14,7 @@ import com.tholix.web.form.UserRegistrationForm;
 /**
  * @author hitender
  * @when Dec 25, 2012 12:17:57 PM
- * 
+ *
  */
 public class UserRegistrationValidator implements Validator {
 	private static final Logger log = Logger.getLogger(UserRegistrationValidator.class);
@@ -36,19 +36,39 @@ public class UserRegistrationValidator implements Validator {
 
 		UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
 		if (userRegistration.getFirstName() != null && userRegistration.getFirstName().length() < 4) {
-			errors.rejectValue("firstName", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
+			errors.rejectValue("firstName",
+                    "field.length",
+                    new Object[] { Integer.valueOf("4") },
+                    "Minimum length of four characters");
 		}
 
 		if (userRegistration.getLastName() != null && userRegistration.getLastName().length() < 4) {
-			errors.rejectValue("lastName", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
+			errors.rejectValue("lastName",
+                    "field.length",
+                    new Object[] { Integer.valueOf("4") },
+                    "Minimum length of four characters");
 		}
 
 		if (userRegistration.getEmailId() != null && !userRegistration.getEmailId().matches(EMAIL_REGEX)) {
-			errors.rejectValue("emailId", "email.notValid", new Object[] { userRegistration.getEmailId() }, "Not a valid email");
+			errors.rejectValue("emailId",
+                    "email.notValid",
+                    new Object[] { userRegistration.getEmailId() },
+                    "Not a valid Email Address");
 		}
 
 		if (userRegistration.getPassword() != null && userRegistration.getPassword().length() < 4) {
-			errors.rejectValue("password", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
+			errors.rejectValue("password",
+                    "field.length",
+                    new Object[] { Integer.valueOf("4") },
+                    "Minimum length of four characters");
 		}
 	}
+
+    public void accountExists(Object obj, Errors errors) {
+        UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
+        errors.rejectValue("emailId",
+                "emailId.already.registered",
+                new Object[] { userRegistration.getEmailId() },
+                "Account already registered with this Email ID");
+    }
 }

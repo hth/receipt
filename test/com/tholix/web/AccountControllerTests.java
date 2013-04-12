@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
@@ -41,22 +41,22 @@ import com.tholix.web.form.UserRegistrationForm;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
-public class CreateAccountControllerTests {
-	
+public class AccountControllerTests {
+
 	@Autowired
 	@Qualifier("userAuthenticationManager")
 	private UserAuthenticationManager userAuthenticationManager;
 	@Autowired private UserProfileManager userProfileManager;
 	@Autowired private UserPreferenceManager userPreferenceManager;
 	@Autowired private UserRegistrationValidator userRegistrationValidator;
-	
+
 	private Model model;
-	private CreateAccountController controller;
+	private AccountController controller;
 	private UserRegistrationForm userRegistrationForm;
-	
+
 	@Mock BindingResult result;
 	@Mock RedirectAttributes redirectAttrs;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -64,16 +64,16 @@ public class CreateAccountControllerTests {
 	public void setUp() throws Exception {
 		//This will inject any mocked objects in the test class, so in this case it will inject mockedObject in testObject. This was mentioned above but here is the code.
 		MockitoAnnotations.initMocks(this);
-		
+
 		/**
 		 * {@link reference - http://stackoverflow.com/questions/8299607/junit-testing-for-annotated-controller}
 		 */
 		// While the default boolean return value for a mock is 'false',
-	    // it's good to be explicit anyway:  
-	    Mockito.when(result.hasErrors()).thenReturn(false);		
-		
+	    // it's good to be explicit anyway:
+	    Mockito.when(result.hasErrors()).thenReturn(false);
+
 		model = new ExtendedModelMap();
-		controller = new CreateAccountController();
+		controller = new AccountController();
 	}
 
 	/**
@@ -84,14 +84,14 @@ public class CreateAccountControllerTests {
 		userAuthenticationManager = null;
 		userProfileManager = null;
 		userPreferenceManager = null;
-		userRegistrationValidator = null;		
+		userRegistrationValidator = null;
 		controller = null;
 		model = null;
 		userRegistrationForm = null;
 		result = null;
 		redirectAttrs = null;
 	}
-	
+
 	@Test
     public void shouldAutowireDependencies() {
 		assertNotNull(userAuthenticationManager);
@@ -101,7 +101,7 @@ public class CreateAccountControllerTests {
     }
 
 	/**
-	 * Test method for {@link com.tholix.web.CreateAccountController#getUserRegistrationForm()}.
+	 * Test method for {@link com.tholix.web.AccountController#getUserRegistrationForm()}.
 	 */
 	@Test
 	public void testGetUserRegistrationForm() {
@@ -109,7 +109,7 @@ public class CreateAccountControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.CreateAccountController#loadForm(org.springframework.ui.Model)}.
+	 * Test method for {@link com.tholix.web.AccountController#loadForm(org.springframework.ui.Model)}.
 	 */
 	@Test
 	public void testLoadForm() {
@@ -117,15 +117,15 @@ public class CreateAccountControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.CreateAccountController#post(com.tholix.web.form.UserRegistrationForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.AccountController#post(com.tholix.web.form.UserRegistrationForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 */
 	@Test
 	public void testPost() {
 		controller.setUserAuthenticationManager(userAuthenticationManager);
         controller.setUserProfileManager(userProfileManager);
         controller.setUserPreferenceManager(userPreferenceManager);
-        controller.setUserRegistrationValidator(userRegistrationValidator);        
-        
+        controller.setUserRegistrationValidator(userRegistrationValidator);
+
         userRegistrationForm = UserRegistrationForm.newInstance();
         userRegistrationForm.setFirstName("First");
         userRegistrationForm.setLastName("Last");
@@ -133,14 +133,14 @@ public class CreateAccountControllerTests {
         userRegistrationForm.setPassword("see");
         result = new BeanPropertyBindingResult(userRegistrationForm, "userRegistrationForm");
         assertEquals("new", controller.post(userRegistrationForm, result, redirectAttrs));
-        
+
         userRegistrationForm.setFirstName("First Dummy");
         userRegistrationForm.setLastName("Last Dummy");
         userRegistrationForm.setEmailId("dummy@tholix.com");
         userRegistrationForm.setPassword("dummy");
         result = new BeanPropertyBindingResult(userRegistrationForm, "userRegistrationForm");
-        assertEquals("redirect:/landing.htm", controller.post(userRegistrationForm, result, redirectAttrs));        
-        
+        assertEquals("redirect:/landing.htm", controller.post(userRegistrationForm, result, redirectAttrs));
+
         /** Clean up - Remove the user dummy@tholix.com */
         UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail("dummy@tholix.com");
         UserAuthenticationEntity user = userProfile.getUserAuthentication();
@@ -149,13 +149,13 @@ public class CreateAccountControllerTests {
         userAuthenticationManager.delete(user);
         userProfileManager.delete(userProfile);
         userPreferenceManager.delete(preference);
-        
-        userProfile = userProfileManager.getObjectUsingEmail("dummy@tholix.com");   
+
+        userProfile = userProfileManager.getObjectUsingEmail("dummy@tholix.com");
         assertNull(userProfile);
-        
+
         user = userAuthenticationManager.findOne(user.getId());
         assertNull(user);
-        
+
         preference = userPreferenceManager.findOne(preference.getId());
         assertNull(preference);
 	}

@@ -32,9 +32,9 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 	 * @param name
 	 * @return
 	 */
-	List<UserProfileEntity> searchByName(String name);
+	List<UserProfileEntity> searchAllByName(String name);
 
-    UserProfileEntity searchByEmail(String emailId);
+    UserProfileEntity findOneByEmail(String emailId);
 
 	WriteResult updateObject(String id, UserLevelEnum level);
 }

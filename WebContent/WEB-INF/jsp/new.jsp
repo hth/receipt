@@ -24,7 +24,7 @@
 		<fmt:message key="signup.heading" />
 	</h2>
 	<form:form method="post" modelAttribute="userRegistrationForm" action="new.htm">
-		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
+		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="800px">
 			<tr>
 				<td align="right" width="10%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
 				<td width="30%"><form:input path="firstName" /></td>
@@ -62,7 +62,10 @@
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td><input type="submit" value="Signup" name="Signup"/></td>
+				<td>
+                    <input id="signupId" type="submit" value="Signup" name="Signup"/>
+                    <input id="recoverId" type="submit" value="Recover" name="Recover" style="display: none;"/>
+                </td>
 			</tr>
 		</table>
 	</form:form>
@@ -76,6 +79,8 @@
             $('#emailId').blur(function() {
                 if ($('#emailId').val()) {
                     checkAvailability();
+                } else {
+                    $("#recoverId").css({'display': 'none'});
                 }
             });
         });
@@ -94,15 +99,19 @@
             if (result.valid) {
                 $("#" + field + "Label").removeClass("error");
                 $("#" + field + "\\.errors").remove();
-                $('#create').attr("disabled", false);
+                $("#recoverId").css({'display': 'none'});
+                //$("#signupId").removeAttr('disable', 'disable');
             } else {
                 $("#" + field + "Label").addClass("error");
                 if ($("#" + field + "\\.errors").length == 0) {
                     $("#" + field).after("<span id='" + field + ".errors'>" + result.message + "</span>");
+
+                    //Add the button for recovery and hide button for SignUp
+                    $("#recoverId").css({'display': 'inline'});
+                    //$("#signupId").attr('disable', 'disable');
                 } else {
                     $("#" + field + "\\.errors").html("<span id='" + field + ".errors'>" + result.message + "</span>");
                 }
-                $('#create').attr("disabled", true);
             }
         }
     </script>

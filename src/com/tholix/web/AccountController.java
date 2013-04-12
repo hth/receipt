@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,8 +39,8 @@ import com.tholix.web.helper.AvailabilityStatus;
  */
 @Controller
 @RequestMapping(value = "/new")
-public class CreateAccountController {
-	private static final Logger log = Logger.getLogger(CreateAccountController.class);
+public class AccountController {
+	private static final Logger log = Logger.getLogger(AccountController.class);
     private static final String NEW_ACCOUNT = "new";
 
 	@Autowired
@@ -60,7 +61,7 @@ public class CreateAccountController {
 		return NEW_ACCOUNT;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, params = {"Signup", "SignUp", "Register"})
 	public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
         userRegistrationValidator.validate(userRegistrationForm, result);
@@ -68,8 +69,15 @@ public class CreateAccountController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
             return NEW_ACCOUNT;
 		} else {
-			UserAuthenticationEntity userAuthentication;
-			UserProfileEntity userProfile;
+            UserAuthenticationEntity userAuthentication;
+            UserProfileEntity userProfile = userProfileManager.findOneByEmail(userRegistrationForm.getEmailId());
+
+            if(userProfile != null) {
+                userRegistrationValidator.accountExists(userRegistrationForm, result);
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "account exists");
+                return NEW_ACCOUNT;
+            }
+
 			try {
 				userAuthentication = userRegistrationForm.newUserAuthenticationEntity();
 				userAuthenticationManager.save(userAuthentication);
@@ -108,12 +116,19 @@ public class CreateAccountController {
 		}
 	}
 
+    //TODO
+    @RequestMapping(method = RequestMethod.POST, params = {"Recover"})
+    public String post() {
+        log.warn("Recover method clicked. To be implemented");
+        return NEW_ACCOUNT;
+    }
+
     @RequestMapping(value="/availability", method=RequestMethod.GET)
     public @ResponseBody
     AvailabilityStatus getAvailability(@RequestParam String emailId) {
         DateTime time = DateUtil.now();
         log.info("Auto find if the emailId is present: " + emailId);
-        UserProfileEntity userProfileEntity = userProfileManager.searchByEmail(emailId);
+        UserProfileEntity userProfileEntity = userProfileManager.findOneByEmail(emailId);
         if(userProfileEntity != null) {
             if (userProfileEntity.getEmailId().equals(emailId)) {
                 log.info("Not Available: " + emailId);

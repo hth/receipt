@@ -96,7 +96,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public List<UserProfileEntity> searchByName(String name) {
+	public List<UserProfileEntity> searchAllByName(String name) {
 		//TODO look into PageRequest for limit data
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
@@ -108,7 +108,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
     @Override
-    public UserProfileEntity searchByEmail(String emailId) {
+    public UserProfileEntity findOneByEmail(String emailId) {
         Criteria a = Criteria.where("emailId").is(emailId);
         return mongoTemplate.findOne(new Query(a), UserProfileEntity.class, TABLE);
     }
