@@ -211,6 +211,8 @@ public class LandingController extends BaseController {
         return modelAndView;
 	}
 
+
+
 	private void populate(UserProfileEntity userProfile) {
 
 		try {
