@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,6 +49,7 @@ import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.utils.ReceiptParser;
+import com.tholix.web.services.LandingView;
 
 /**
  * @author hitender
@@ -208,9 +210,25 @@ public class LandingController {
         return modelAndView;
 	}
 
-    @RequestMapping(value = "/users/{userid}", method=RequestMethod.GET)
-    public String getUser(@PathVariable String userId) {
-       return "";
+    /**
+     * Provides user information of home page through a web service URL
+     * @param profileId
+     * @return
+     */
+    @RequestMapping(value = "/user/{profileId}", method=RequestMethod.GET)
+    public @ResponseBody
+    LandingView loadRest(@PathVariable String profileId) {
+        DateTime time = DateUtil.now();
+        log.info("Web Service : " + profileId);
+        UserProfileEntity userProfile = userProfileManager.findOne(profileId);
+        long pendingCount = receiptOCRManager.numberOfPendingReceipts(profileId);
+        List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(profileId);
+        LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId());
+        landingView.setPendingCount(pendingCount);
+        landingView.setReceipts(receipts);
+        log.info("Web Service returned : " + profileId + ", Email ID: " + userProfile.getEmailId());
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return landingView;
     }
 
 	private void populate(UserProfileEntity userProfile) {
