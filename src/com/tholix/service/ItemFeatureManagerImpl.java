@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service;
 
@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -16,13 +19,14 @@ import com.tholix.domain.ItemFeatureEntity;
 /**
  * @author hitender
  * @when Dec 26, 2012 9:21:35 PM
- * 
+ *
  */
+@Repository
+@Transactional(readOnly = true)
 public class ItemFeatureManagerImpl implements ItemFeatureManager {
 	private static final long serialVersionUID = -2211419786590573846L;
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
+	@Autowired private MongoTemplate mongoTemplate;
 
 	@Override
 	public List<ItemFeatureEntity> getAllObjects() {
@@ -30,6 +34,7 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ItemFeatureEntity object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.save(object, TABLE);
@@ -41,21 +46,25 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(ItemFeatureEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createCollection() {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void dropCollection() {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);
