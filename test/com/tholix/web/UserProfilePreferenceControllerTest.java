@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BindingResult;
@@ -26,40 +25,35 @@ import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 23, 2013 11:04:26 PM
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
 public class UserProfilePreferenceControllerTest {
-	@Autowired UserProfileManager userProfileManager;
-	@Autowired UserPreferenceManager userPreferenceManager;
-	
+	@Autowired private UserProfileManager userProfileManager;
+	@Autowired private UserPreferenceManager userPreferenceManager;
+
 	private UserProfilePreferenceController controller;
-    private MockHttpSession session;
-    private UserSession userSession;
-    
+
     @Mock private BindingResult result;
 
 	@Before
 	public void setUp() throws Exception {
 		controller = new UserProfilePreferenceController();
-		session = new MockHttpSession();
-		
+
 		MockitoAnnotations.initMocks(this);
-	    Mockito.when(result.hasErrors()).thenReturn(false);	
+	    Mockito.when(result.hasErrors()).thenReturn(false);
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		userProfileManager = null;
 		userPreferenceManager = null;
-		
+
 		controller = null;
-		session = null;
-		userSession = null;
-		
+
 		result = null;
 	}
 
@@ -67,20 +61,19 @@ public class UserProfilePreferenceControllerTest {
 	public void testLoadForm() {
 		controller.setUserPreferenceManager(userPreferenceManager);
 		controller.setUserProfileManager(userProfileManager);
-		
+
 		UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail("test@test.com");
 		UserPreferenceEntity userPreference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
-		userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), UserLevelEnum.USER);
-		session.setAttribute("userSession", userSession);
-		
-		ModelAndView modelAndView = controller.loadForm(userProfile, userPreference, session);
+        UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), UserLevelEnum.USER);
+
+		ModelAndView modelAndView = controller.loadForm(userProfile, userPreference, userSession);
 		assertNotNull(modelAndView);
-		
+
 		assertEquals("/userprofilepreference", modelAndView.getViewName());
-		
+
 		UserProfileEntity userProfileActual = (UserProfileEntity) modelAndView.getModelMap().get("userProfile");
 		assertEquals(userProfile.getId(), userProfileActual.getId());
-		
+
 		@SuppressWarnings("unchecked")
 		UserPreferenceEntity userPreferenceActual = (UserPreferenceEntity) modelAndView.getModelMap().get("userPreference");
 		assertEquals(userPreference.getId(), userPreferenceActual.getId());

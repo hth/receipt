@@ -6,8 +6,6 @@ package com.tholix.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
@@ -36,16 +35,17 @@ import com.tholix.web.form.UserSearchForm;
  */
 @Controller
 @RequestMapping(value = "/admin")
-public class AdminLandingController extends BaseController {
+@SessionAttributes({"userSession"})
+public class AdminLandingController {
 	private static final Logger log = Logger.getLogger(AdminLandingController.class);
 	private static final String nextPage = "/admin/landing";
 
 	@Autowired UserProfileManager userProfileManager;
 
 	@RequestMapping(value = "/landing", method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, HttpSession session) {
-		isSessionSet(userSession, session);
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
 		ModelAndView modelAndView = new ModelAndView(nextPage, "userSearchForm", UserSearchForm.newInstance());
+        modelAndView.addObject("userSession", userSession);
 		return modelAndView;
 	}
 

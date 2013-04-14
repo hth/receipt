@@ -10,8 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -57,8 +55,8 @@ import com.tholix.utils.ReceiptParser;
  */
 @Controller
 @RequestMapping(value = "/landing")
-@SessionAttributes("userSession")
-public class LandingController extends BaseController {
+@SessionAttributes({"userSession"})
+public class LandingController {
 	private static final Logger log = Logger.getLogger(LandingController.class);
 
 	/**
@@ -78,18 +76,17 @@ public class LandingController extends BaseController {
     @Autowired private MessageManager messageManager;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, HttpSession session) {
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage) {
         DateTime time = DateUtil.now();
         log.info("LandingController loadForm: " + userSession.getEmailId());
-
-		userSession = isSessionSet(userSession, session);
 
 		//TODO why pendingCount saved in session
 		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
 		userSession.setPendingCount(pendingCount);
-		//session.setAttribute("userSession", userSession);
 
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
+        modelAndView.addObject("userSession", userSession);
+
 		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 
@@ -125,9 +122,8 @@ public class LandingController extends BaseController {
     //16.3.3.16 Support for the 'Last-Modified' Response Header To Facilitate Content Caching
     //TODO make sure hitting refresh should not load the receipt again
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create(@ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, BindingResult result, HttpSession session) {
+	public ModelAndView create(@ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, @ModelAttribute UserSession userSession, BindingResult result) {
         DateTime time = DateUtil.now();
-        UserSession userSession = (UserSession) session.getAttribute("userSession");
 		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
 
 		/** Check if the uploaded file is of type image. */

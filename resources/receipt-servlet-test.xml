@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"	
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
 		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		  http://www.springframework.org/schema/context
           http://www.springframework.org/schema/context/spring-context-3.0.xsd
@@ -13,89 +13,165 @@
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
           http://www.springframework.org/schema/data/mongo
           http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
-          http://www.springframework.org/schema/aop
-          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-          
+          http://www.springframework.org/schema/jms
+          http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
+
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
-	<context:component-scan base-package="com.tholix" />
-	
-	<!-- Configures the @Controller programming model -->
-	<mvc:annotation-driven />
-	
-	<!-- Autowired -->
-	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>	
+    <context:component-scan base-package="com.tholix" />
 
-	<!-- Forwards requests to the "/" resource to the "welcome" view -->
-	<mvc:view-controller path="/" view-name="login"/>
+    <!-- Configures the @Controller programming model -->
+    <mvc:annotation-driven />
 
-	<!-- the application context definition for the receipt DispatcherServlet -->
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="messages" />		
-		<property name="cacheSeconds" value="0" />
-	</bean>
-	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    	<!-- one of the properties available; the maximum file size in bytes; supports 10MB -->
-    	<property name="maxUploadSize" value="10485760"/>
-	</bean>
-	
-	<!-- refer this for session scope -->
-	<!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
-	<!-- an HTTP Session-scoped bean exposed as a proxy -->
+    <!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
+
+    <!-- Autowired -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <!-- Forwards requests to the "/" resource to the "welcome" view -->
+    <mvc:view-controller path="/" view-name="login"/>
+
+    <!-- the application context definition for the receipt DispatcherServlet -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages" />
+        <!--<property name="cacheSeconds" value="0" />-->
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes; supports 10MB -->
+        <property name="maxUploadSize" value="10485760"/>
+    </bean>
+
+    <!-- refer this for session scope -->
+    <!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
+    <!-- an HTTP Session-scoped bean exposed as a proxy -->
     <bean id="userAuthenticationManager" class="com.tholix.service.UserAuthenticationManagerImpl" />
-    
+
     <bean id="userProfileManager" class="com.tholix.service.UserProfileManagerImpl" />
-    
+
     <bean id="userPreferenceManager" class="com.tholix.service.UserPreferenceManagerImpl" />
-    
+
     <bean id="userRegistrationValidator" class="com.tholix.service.validator.UserRegistrationValidator" />
-    
+
     <bean id="userLoginValidator" class="com.tholix.service.validator.UserLoginValidator" />
-    
+
     <bean id="receiptManager" class="com.tholix.service.ReceiptManagerImpl" />
-    
+
     <bean id="itemManager" class="com.tholix.service.ItemManagerImpl" />
-    
+
     <bean id="receiptOCRManager" class="com.tholix.service.ReceiptOCRManagerImpl" />
-    
+
     <bean id="itemOCRManager" class="com.tholix.service.ItemOCRManagerImpl" />
-    
+
     <bean id="itemFeatureManager" class="com.tholix.service.ItemFeatureManagerImpl" />
-    
+
     <bean id="uploadReceiptImageValidator" class="com.tholix.service.validator.UploadReceiptImageValidator" />
-    
+
     <bean id="receiptFormValidator" class="com.tholix.service.validator.ReceiptFormValidator" />
-    
+
+    <bean id="messageManager" class="com.tholix.service.routes.MessageManagerImpl" />
+    <!-- ===================================== -->
+    <!-- JMS configuration                     -->
+    <!-- ===================================== -->
+    <!-- JMS connection factory for ActiveMQ connecting to a remote broker on a specific host name and port. -->
+    <!-- CachingConnectionFactory -->
+    <!-- preferred way of doing it -->
+    <!-- <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+            <value>tcp://localhost:61616</value>
+        </property>
+    </bean>
+
+    <bean id="jmsFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="destination" />
+    </bean>
+
+    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="orderQueue"/>
+    </bean>
+
+    <jms:listener-container connection-factory="connectionFactory">
+        <jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+    </jms:listener-container>
+
+    <bean id="receiptSenderJMS" class="com.tholix.service.routes.ReceiptSenderJMS" />
+    <bean id="receiptListenerJMS" class="com.tholix.service.routes.ReceiptListenerJMS" />    -->
+    <!-- ===================================== -->
+    <!-- JMS configuration end                 -->
+    <!-- ===================================== -->
+
+
+    <!-- ====================== -->
+    <!-- JMS                    -->
+    <!-- ====================== -->
+    <!--<amq:topic id="eventTopic" name="topic.events" />-->
+
+    <!--<amq:queue id="processingQueue" name="queue.process" />-->
+    <!--<amq:queue id="orderQueue" name="orderQueue"/>-->
+
+    <!-- http://sourceforge.net/projects/activemqbrowser/files/ -->
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+            <value>tcp://localhost:61616</value>
+        </property>
+    </bean>
+
+    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="orderQueue"/>
+        <!--<constructor-arg ref="orderQueue" />-->
+    </bean>
+
+    <bean id="jmsSenderTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="destination" />
+    </bean>
+
+    <bean id="receiptSenderJMS" class="com.tholix.service.routes.ReceiptSenderJMS" />
+    <bean id="receiptListenerJMS" class="com.tholix.service.routes.ReceiptListenerJMS" />
+
+    <jms:listener-container connection-factory="connectionFactory">
+        <jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+    </jms:listener-container>
+    <!-- ===================================== -->
+    <!-- JSM bean End                          -->
+    <!-- ===================================== -->
+
     <!-- ===================================== -->
     <!-- Mongo Configuration                   -->
     <!-- ===================================== -->
     <!-- Factory bean that creates the Mongo instance -->
     <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
-    	<property name="host" value="localhost"/>
-    	<property name="port" value="27017"/>
+        <property name="host" value="localhost"/>
+        <property name="port" value="27017"/>
     </bean>
-    
+
     <mongo:db-factory dbname="rm-test" mongo-ref="mongo"/>
-	
-	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->	
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-	</bean>	
-	
+
+    <!-- Define the MongoTemplate which handles connectivity with MongoDB -->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+
     <bean id="gridfsDb" factory-bean="mongoTemplate" factory-method="getDb" />
-	<bean id="storageManager" class="com.tholix.service.StorageManagerImpl">
- 		<constructor-arg index="0" name="gridfsDb" ref="gridfsDb" />
-	</bean>	
-	
-	<!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
+    <bean id="storageManager" class="com.tholix.service.StorageManagerImpl">
+        <constructor-arg index="0" name="gridfsDb" ref="gridfsDb" />
+    </bean>
+
+    <!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
     <!-- ===================================== -->
     <!-- Mongo Configuration Ends              -->
     <!-- ===================================== -->
-	
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
-		<property name="prefix" value="/WEB-INF/jsp/"></property>
-		<property name="suffix" value=".jsp"></property>
-	</bean>	
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+        <property name="cache"  value="true" />
+        <property name="order"  value="1" />
+    </bean>
 </beans>

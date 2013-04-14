@@ -2,8 +2,6 @@ package com.tholix.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
@@ -28,17 +27,18 @@ import com.tholix.utils.PerformanceProfiling;
  */
 @Controller
 @RequestMapping(value = "/emp")
-public class EmpLandingController extends BaseController {
+@SessionAttributes({"userSession"})
+public class EmpLandingController {
     private static final Logger log = Logger.getLogger(EmpLandingController.class);
     private static final String nextPage = "/emp/landing";
 
     @Autowired private MessageManager messageManager;
 
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
-    public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, HttpSession session) {
+    public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
-        userSession = isSessionSet(userSession, session);
         ModelAndView modelAndView = new ModelAndView(nextPage);
+        modelAndView.addObject("userSession", userSession);
 
         List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
         modelAndView.addObject("queue", queue);

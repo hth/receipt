@@ -5,8 +5,6 @@ package com.tholix.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -25,7 +22,6 @@ import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.domain.UserSession;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
@@ -84,7 +80,7 @@ public class ReceiptUpdateController {
 	}
 
 	@RequestMapping(value = "/receiptupdate", method = RequestMethod.POST)
-	public String post(@ModelAttribute("receiptForm") ReceiptForm receiptForm, HttpSession session, BindingResult result, final RedirectAttributes redirectAttrs) {
+	public String post(@ModelAttribute("receiptForm") ReceiptForm receiptForm, BindingResult result) {
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getTitle());
 		receiptFormValidator.validate(receiptForm, result);
@@ -111,9 +107,6 @@ public class ReceiptUpdateController {
                     messageManager.updateObject(receiptEntityOCR.getId(), false);
                     throw exce;
                 }
-
-				UserSession userSession = (UserSession) session.getAttribute("userSession");
-				redirectAttrs.addFlashAttribute("userSession", userSession);
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 return "redirect:/emp/landing.htm";
