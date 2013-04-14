@@ -19,6 +19,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -30,13 +33,14 @@ import com.tholix.domain.value.ReceiptGrouped;
  * @when Dec 26, 2012 9:17:04 PM
  *
  */
+@Repository
+@Transactional(readOnly = true)
 public class ReceiptManagerImpl implements ReceiptManager {
 	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
 
 	private static final long serialVersionUID = -8812261440000722447L;
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
+	@Autowired private MongoTemplate mongoTemplate;
 
 	@Override
 	public List<ReceiptEntity> getAllObjects() {
@@ -76,6 +80,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ReceiptEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -97,21 +102,25 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(ReceiptEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createCollection() {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void dropCollection() {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);

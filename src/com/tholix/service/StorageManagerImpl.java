@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service;
 
@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
@@ -24,8 +27,9 @@ import com.tholix.domain.UploadReceiptImage;
 /**
  * @author hitender
  * @when Jan 3, 2013 3:09:08 AM
- * 
+ *
  */
+@Transactional(readOnly = true)
 public class StorageManagerImpl implements StorageManager {
 	private static final long serialVersionUID = -5264258042433041673L;
 	private static final Logger log = Logger.getLogger(StorageManagerImpl.class);
@@ -46,17 +50,20 @@ public class StorageManagerImpl implements StorageManager {
 		}
 		throw new UnsupportedOperationException("Method not implemented");
 	}
-	
+
+    @Override
 	public int getSize() {
 		return gridFs.getFileList().size();
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UploadReceiptImage object) throws Exception {
 		save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveFile(UploadReceiptImage object) throws IOException {
 		return save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
 	}
@@ -67,22 +74,26 @@ public class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(UploadReceiptImage object) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
-	
+
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteObject(String id) {
 		log.debug("deleted GridFs object - " + id);
 		gridFs.remove(new ObjectId(id));
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createCollection() {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
@@ -93,6 +104,7 @@ public class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String save(InputStream inputStream, String contentType, String filename) {
 		boolean closeStreamOnPersist = true;
 		GridFSInputFile receiptBlob = gridFs.createFile(inputStream, filename, closeStreamOnPersist);

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service;
 
@@ -16,6 +16,9 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -25,15 +28,16 @@ import com.tholix.domain.ReceiptEntity;
 /**
  * @author hitender
  * @when Dec 26, 2012 9:16:44 PM
- * 
+ *
  */
+@Repository
+@Transactional(readOnly = true)
 public class ItemManagerImpl implements ItemManager {
 	private static final Logger log = Logger.getLogger(ItemManagerImpl.class);
 
 	private static final long serialVersionUID = 5734660649481504610L;
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
+	@Autowired private MongoTemplate mongoTemplate;
 
 	@Override
 	public List<ItemEntity> getAllObjects() {
@@ -41,6 +45,7 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ItemEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -53,6 +58,7 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void saveObjects(List<ItemEntity> objects) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
 		try {
@@ -78,28 +84,32 @@ public class ItemManagerImpl implements ItemManager {
 		Sort sort = new Sort(Direction.ASC, "sequence");
 		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)).with(sort), ItemEntity.class, TABLE);
 	}
-	
+
 	@Override
 	public List<ItemEntity> getAllObjectWithName(String name) {
 		return mongoTemplate.find(new Query(Criteria.where("name").is(name)), ItemEntity.class, TABLE);
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(ItemEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createCollection() {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void dropCollection() {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);
@@ -107,13 +117,15 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntity object) {
 		Query query = new Query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}
-	
+
 	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(ReceiptEntity receipt) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.remove(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
