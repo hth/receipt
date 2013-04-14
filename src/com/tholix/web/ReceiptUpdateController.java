@@ -1,5 +1,5 @@
 /**
- *
+ * 
  */
 package com.tholix.web;
 
@@ -38,7 +38,7 @@ import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.ReceiptForm;
 
 /**
- * @author hitender
+ * @author hitender 
  * @when Jan 7, 2013 2:13:22 AM
  *
  */
@@ -51,16 +51,16 @@ public class ReceiptUpdateController {
 
 	@Autowired private ReceiptManager receiptManager;
 	@Autowired private ItemManager itemManager;
-	@Autowired private ReceiptOCRManager receiptOCRManager;
+	@Autowired private ReceiptOCRManager receiptOCRManager;	
 	@Autowired private ItemOCRManager itemOCRManager;
 	@Autowired private ReceiptFormValidator receiptFormValidator;
     @Autowired private MessageManager messageManager;
-
+	
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder) {
 //	    binder.setDisallowedFields("administrator");
-//	}
-
+//	}	
+	
 //  Refer http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/mvc.html
 //	@RequestMapping(value="/owners/{ownerId}/pets/{petId}", method=RequestMethod.GET)
 //	public String findPet(@PathVariable String ownerId, @PathVariable String petId, Model model) {
@@ -75,14 +75,14 @@ public class ReceiptUpdateController {
         DateTime time = DateUtil.now();
         ReceiptEntityOCR receipt = receiptOCRManager.findOne(id);
 		receiptForm.setReceipt(receipt);
-
-		List<ItemEntityOCR> items = itemOCRManager.getWhereReceipt(receipt);
+		
+		List<ItemEntityOCR> items = itemOCRManager.getWhereRecipt(receipt);	
 		receiptForm.setItems(items);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return  new ModelAndView(nextPage);
 	}
-
+	
 	@RequestMapping(value = "/receiptupdate", method = RequestMethod.POST)
 	public String post(@ModelAttribute("receiptForm") ReceiptForm receiptForm, HttpSession session, BindingResult result, final RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
@@ -97,11 +97,11 @@ public class ReceiptUpdateController {
 			try {
 				receipt = receiptForm.getReceiptEntity();
 				receiptManager.save(receipt);
-				items = receiptForm.getItemEntity(receipt);
+				items = receiptForm.getItemEntity(receipt);			
 				itemManager.saveObjects(items);
-
+				
 				ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
-				receiptEntityOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+				receiptEntityOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);			
 				receiptOCRManager.save(receiptEntityOCR);
 
                 try {
@@ -111,7 +111,7 @@ public class ReceiptUpdateController {
                     messageManager.updateObject(receiptEntityOCR.getId(), false);
                     throw exce;
                 }
-
+				
 				UserSession userSession = (UserSession) session.getAttribute("userSession");
 				redirectAttrs.addFlashAttribute("userSession", userSession);
 
@@ -120,7 +120,7 @@ public class ReceiptUpdateController {
 			} catch(Exception exce) {
 				log.error(exce.getLocalizedMessage());
 				result.rejectValue("receipt.receiptDate", exce.getLocalizedMessage(), exce.getLocalizedMessage());
-
+				
 				int sizeReceiptInitial = receiptManager.getAllObjects().size();
 				if(receipt != null) {
 					receiptManager.delete(receipt);
@@ -132,7 +132,7 @@ public class ReceiptUpdateController {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
                 return nextPage;
 			}
-		}
+		}		
 	}
-
+	
 }

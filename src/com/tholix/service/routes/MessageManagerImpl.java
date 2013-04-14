@@ -12,9 +12,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -26,12 +23,11 @@ import com.tholix.domain.types.ReceiptStatusEnum;
  * Date: 4/6/13
  * Time: 7:28 PM
  */
-@Repository
-@Transactional(readOnly = true)
 public class MessageManagerImpl implements MessageManager {
     private static final Logger log = Logger.getLogger(MessageManagerImpl.class);
 
-    @Autowired private MongoTemplate mongoTemplate;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<MessageReceiptEntityOCR> getAllObjects() {
@@ -58,13 +54,11 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId) {
         return findUpdateWithLimit(emailId, profileId, QUERY_LIMIT);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
@@ -135,7 +129,6 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(MessageReceiptEntityOCR object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
@@ -148,13 +141,11 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult updateObject(String id, String name) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult updateObject(String id) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = new Query(Criteria.where("recordLocked").is(true))
@@ -166,7 +157,6 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult updateObject(String id, boolean value) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = new Query(Criteria.where("recordLocked").is(true))
@@ -178,19 +168,16 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(MessageReceiptEntityOCR object) {
         mongoTemplate.remove(object, TABLE);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void createCollection() {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void dropCollection() {
         throw new UnsupportedOperationException("Method not implemented");
     }

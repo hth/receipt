@@ -14,9 +14,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 import org.bson.types.ObjectId;
@@ -30,13 +27,12 @@ import com.tholix.domain.types.UserLevelEnum;
  * @when Dec 23, 2012 3:45:47 AM
  *
  */
-@Repository
-@Transactional(readOnly = true)
 public class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
 	private static final Logger log = Logger.getLogger(UserProfileManagerImpl.class);
 
-	@Autowired private MongoTemplate mongoTemplate;
+	@Autowired
+	MongoTemplate mongoTemplate;
 
 	@Override
 	public List<UserProfileEntity> getAllObjects() {
@@ -44,7 +40,6 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UserProfileEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -71,7 +66,6 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		// return mongoTemplate.updateFirst(
 		// new Query(Criteria.where("id").is(id)),
@@ -80,26 +74,22 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, UserLevelEnum level) {
 		return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(new ObjectId(id))), Update.update("level", level), TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(UserProfileEntity object) {
+	public void delete(UserProfileEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void createCollection() {
+	public void createCollection() {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void dropCollection() {
+	public void dropCollection() {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);
 		}

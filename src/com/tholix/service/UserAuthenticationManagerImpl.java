@@ -1,5 +1,5 @@
 /**
- *
+ * 
  */
 package com.tholix.service;
 
@@ -15,8 +15,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -27,13 +25,13 @@ import com.tholix.domain.UserAuthenticationEntity;
  * @when Dec 16, 2012 1:20:53 PM
  */
 @Repository
-@Transactional(readOnly = true)
 public class UserAuthenticationManagerImpl implements UserAuthenticationManager {
 	private static final Logger log = Logger.getLogger(UserAuthenticationManagerImpl.class);
 
 	private static final long serialVersionUID = 5745317401200234475L;
 
-	@Autowired private MongoTemplate mongoTemplate;
+	@Autowired
+	MongoTemplate mongoTemplate;
 
 	@Override
 	public List<UserAuthenticationEntity> getAllObjects() {
@@ -41,7 +39,6 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UserAuthenticationEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -58,19 +55,16 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(id)), Update.update("name", name), TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(UserAuthenticationEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createCollection() {
 		if (!mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.createCollection(TABLE);
@@ -79,7 +73,6 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void dropCollection() {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);
