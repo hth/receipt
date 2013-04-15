@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.utils;
 
@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 /**
  * @author hitender
  * @when Dec 22, 2012 11:52:04 PM
- * 
+ *
  */
 public final class SHAHashing {
 	private static final Logger log = Logger.getLogger(SHAHashing.class);
@@ -25,7 +25,7 @@ public final class SHAHashing {
 
 		}
 	}
-	
+
 	public static String hashCode(int text) {
 		StringBuilder sb = new StringBuilder().append(text);
 		return hashCode(sb.toString());
@@ -53,7 +53,7 @@ public final class SHAHashing {
 			}
 			return hexString.toString();
 		} else {
-			log.info("Un-Initailized MessageDigest");
+			log.info("Un-Initialized MessageDigest");
 			return null;
 		}
 	}

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web.form;
 
@@ -9,13 +9,13 @@ import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.AccountTypeEnum;
-import com.tholix.utils.HashMe;
+import com.tholix.utils.RandomString;
 import com.tholix.utils.SHAHashing;
 
 /**
  * @author hitender
  * @when Dec 25, 2012 12:01:53 PM
- * 
+ *
  */
 public class UserRegistrationForm {
 
@@ -31,12 +31,11 @@ public class UserRegistrationForm {
 
 	/**
 	 * Gets a new instance of Receipt User
-	 * 
+	 *
 	 * @return
 	 */
 	public UserAuthenticationEntity newUserAuthenticationEntity() {
-		String key = new StringBuilder().append(password).append(System.currentTimeMillis()).toString();
-		return UserAuthenticationEntity.newInstance(SHAHashing.hashCode(password), SHAHashing.hashCode(HashMe.code(key)));
+		return UserAuthenticationEntity.newInstance(SHAHashing.hashCode(password), RandomString.newInstance().nextString());
 	}
 
 	public UserProfileEntity newUserProfileEntity(UserAuthenticationEntity userAuthentication) {

@@ -66,8 +66,8 @@ public class UserProfilePreferenceController {
 		return modelAndView;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView getUser(@ModelAttribute("userProfile") UserProfileEntity userProfile) {
+	@RequestMapping(value="/update", method = RequestMethod.POST)
+	public ModelAndView updateUser(@ModelAttribute("userProfile") UserProfileEntity userProfile) {
         DateTime time = DateUtil.now();
         userProfileManager.updateObject(userProfile.getId(), userProfile.getLevel());
 

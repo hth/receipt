@@ -36,20 +36,20 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
-import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.service.ReceiptOCRManager;
 import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.routes.MessageManager;
 import com.tholix.service.validator.UploadReceiptImageValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.utils.ReceiptParser;
-import com.tholix.web.services.LandingView;
+import com.tholix.web.rest.Base;
+import com.tholix.web.rest.Header;
+import com.tholix.web.rest.LandingView;
 
 /**
  * @author hitender
@@ -58,7 +58,7 @@ import com.tholix.web.services.LandingView;
 @Controller
 @RequestMapping(value = "/landing")
 @SessionAttributes({"userSession"})
-public class LandingController {
+public class LandingController extends BaseController {
 	private static final Logger log = Logger.getLogger(LandingController.class);
 
 	/**
@@ -72,10 +72,8 @@ public class LandingController {
 	@Autowired private ReceiptOCRManager receiptOCRManager;
 	@Autowired private ItemManager itemManager;
 	@Autowired private ItemOCRManager itemOCRManager;
-	@Autowired private ItemFeatureManager itemFeatureManager;
 	@Autowired private StorageManager storageManager;
 	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
-    @Autowired private MessageManager messageManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage) {
@@ -212,26 +210,38 @@ public class LandingController {
 
     /**
      * Provides user information of home page through a web service URL
+     *
      * @param profileId
      * @return
      */
-    @RequestMapping(value = "/user/{profileId}", method=RequestMethod.GET)
+    @RequestMapping(value = "/user/{profileId}/auth/{authKey}", method=RequestMethod.GET)
     public @ResponseBody
-    LandingView loadRest(@PathVariable String profileId) {
+    Base loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
         log.info("Web Service : " + profileId);
-        UserProfileEntity userProfile = userProfileManager.findOne(profileId);
-        long pendingCount = receiptOCRManager.numberOfPendingReceipts(profileId);
-        List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(profileId);
-        LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId());
-        landingView.setPendingCount(pendingCount);
-        landingView.setReceipts(receipts);
-        log.info("Web Service returned : " + profileId + ", Email ID: " + userProfile.getEmailId());
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return landingView;
+
+        UserProfileEntity userProfile = authenticate(profileId, authKey);
+        if(userProfile != null) {
+            long pendingCount = receiptOCRManager.numberOfPendingReceipts(profileId);
+            List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(profileId);
+
+            LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId(), Header.newInstance(getAuth(profileId)));
+            landingView.setPendingCount(pendingCount);
+            landingView.setReceipts(receipts);
+            landingView.setStatus(Header.RESULT.SUCCESS);
+
+            log.info("Web Service returned : " + profileId + ", Email ID: " + userProfile.getEmailId());
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+            return landingView;
+        } else {
+            Header header = getHeaderForProfileOrAuthFailure();
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+            return header;
+        }
     }
 
-	private void populate(UserProfileEntity userProfile) {
+    private void populate(UserProfileEntity userProfile) {
 
 		try {
 			// Item from Barnes and Noble

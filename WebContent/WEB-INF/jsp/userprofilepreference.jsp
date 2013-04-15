@@ -136,7 +136,7 @@
 			<li><a href="#tabs-2">Preferences</a></li>
 		</ul>
 		<div id="tabs-1">
-			<form:form method="post" modelAttribute="userProfile" action="/userprofilepreference.htm">
+			<form:form method="post" modelAttribute="userProfile" action="update.htm">
 				<form:hidden path="id"/>
 				<div class="divTable">
 					<div class="divRow">

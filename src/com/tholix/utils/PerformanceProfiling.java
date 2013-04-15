@@ -42,4 +42,17 @@ public final class PerformanceProfiling {
     public static <T> void log(Class<T> type, DateTime time, String... message) {
         log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ms: " + DateUtil.duration(time));
     }
+
+    /**
+     * Shows if the log is for a success of the method execution or for a failure
+     *
+     * @param type
+     * @param time
+     * @param condition - boolean
+     * @param <T>
+     */
+    public static <T> void log(Class<T> type, DateTime time, String methodName, boolean condition) {
+        String message = condition ? "Success" : "Failure";
+        log(type, time, methodName, message);
+    }
 }

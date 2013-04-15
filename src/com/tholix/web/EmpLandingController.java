@@ -40,11 +40,12 @@ public class EmpLandingController {
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("userSession", userSession);
 
-        List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
-        modelAndView.addObject("queue", queue);
-
+        //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
         List<MessageReceiptEntityOCR> pending = messageManager.findPending(userSession.getEmailId(), userSession.getUserProfileId());
         modelAndView.addObject("pending", pending);
+
+        List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
+        modelAndView.addObject("queue", queue);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

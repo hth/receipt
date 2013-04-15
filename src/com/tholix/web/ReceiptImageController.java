@@ -71,7 +71,7 @@ public class ReceiptImageController {
 				response.setContentType(gridFSDBFile.getContentType());
 			}
 
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  "success");
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
 			return null;
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage());
