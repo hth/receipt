@@ -22,11 +22,9 @@ import org.joda.time.DateTime;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserProfileEntity;
-import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.service.StorageManager;
-import com.tholix.service.UserAuthenticationManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.rest.Header;
@@ -43,11 +41,9 @@ public class ReceiptController extends BaseController {
 
 	private static String nextPage = "/receipt";
 
-	@Autowired private UserAuthenticationManager userAuthenticationManager;
 	@Autowired private ReceiptManager receiptManager;
 	@Autowired private StorageManager storageManager;
 	@Autowired private ItemManager itemManager;
-	@Autowired private ItemFeatureManager itemFeatureManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
@@ -80,10 +76,10 @@ public class ReceiptController extends BaseController {
     /**
      * Delete receipt through REST request
      *
-     * @param id
-     * @param profileId
-     * @param authKey
-     * @return
+     * @param id        receipt id to delete
+     * @param profileId user id
+     * @param authKey   auth key
+     * @return Header
      */
     @RequestMapping(value = "/d/{id}/user/{profileId}/auth/{authKey}", method=RequestMethod.GET)
     public @ResponseBody
@@ -115,7 +111,7 @@ public class ReceiptController extends BaseController {
 
     /**
      * Delete a Receipt and its associated data
-     * @param id
+     * @param id Receipt id to delete
      */
     private boolean delete(String id) {
         ReceiptEntity receiptForm;
@@ -129,10 +125,6 @@ public class ReceiptController extends BaseController {
         return false;
     }
 
-	public void setUserAuthenticationManager(UserAuthenticationManager userAuthenticationManager) {
-		this.userAuthenticationManager = userAuthenticationManager;
-	}
-
 	public void setReceiptManager(ReceiptManager receiptManager) {
 		this.receiptManager = receiptManager;
 	}
@@ -143,9 +135,5 @@ public class ReceiptController extends BaseController {
 
 	public void setItemManager(ItemManager itemManager) {
 		this.itemManager = itemManager;
-	}
-
-	public void setItemFeatureManager(ItemFeatureManager itemFeatureManager) {
-		this.itemFeatureManager = itemFeatureManager;
 	}
 }

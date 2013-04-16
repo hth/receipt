@@ -11,11 +11,13 @@
 
 	<servlet-mapping>
 		<servlet-name>receipt</servlet-name>
-		<!-- commenting the line below messes up the CSS setting for the project -->
-		<!--<url-pattern>*.htm</url-pattern>-->
-		<!--  This is required for *.htm and restful services -->
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>receipt</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
 
     <!--http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html-->
     <!--16.3.3.11 Working with "application/x-www-form-urlencoded" data-->

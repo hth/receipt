@@ -30,11 +30,9 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
-import com.tholix.service.ItemFeatureManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.service.StorageManager;
-import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.utils.DateUtil;
 
@@ -47,10 +45,8 @@ import com.tholix.utils.DateUtil;
 @ContextConfiguration(locations={"classpath:/receipt-servlet-test.xml"})
 public class ReceiptControllerTest {
 
-	@Autowired private UserAuthenticationManager userAuthenticationManager;
 	@Autowired private ReceiptManager receiptManager;
 	@Autowired private ItemManager itemManager;
-	@Autowired private ItemFeatureManager itemFeatureManager;
 
 	@Autowired private StorageManager storageManager;
 	@Autowired private UserProfileManager userProfileManager;
@@ -70,10 +66,8 @@ public class ReceiptControllerTest {
 
 	@After
 	public void tearDown() throws Exception {
-		userAuthenticationManager = null;
 		receiptManager = null;
 		itemManager = null;
-		itemFeatureManager = null;
 
 		storageManager = null;
 		userProfileManager = null;
@@ -86,9 +80,7 @@ public class ReceiptControllerTest {
 
 	@Test
 	public void testLoadForm() throws Exception {
-		controller.setUserAuthenticationManager(userAuthenticationManager);
 		controller.setItemManager(itemManager);
-		controller.setItemFeatureManager(itemFeatureManager);
 		controller.setReceiptManager(receiptManager);
 		controller.setStorageManager(storageManager);
 
@@ -133,9 +125,7 @@ public class ReceiptControllerTest {
 
 	@Test
 	public void testDelete() throws Exception {
-		controller.setUserAuthenticationManager(userAuthenticationManager);
 		controller.setItemManager(itemManager);
-		controller.setItemFeatureManager(itemFeatureManager);
 		controller.setReceiptManager(receiptManager);
 		controller.setStorageManager(storageManager);
 
