@@ -122,7 +122,7 @@ public class LandingController extends BaseController {
     //16.3.3.16 Support for the 'Last-Modified' Response Header To Facilitate Content Caching
     //TODO make sure hitting refresh should not load the receipt again
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create(@ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, @ModelAttribute UserSession userSession, BindingResult result) {
+	public ModelAndView create(@ModelAttribute UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, BindingResult result) {
         DateTime time = DateUtil.now();
 		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
 
