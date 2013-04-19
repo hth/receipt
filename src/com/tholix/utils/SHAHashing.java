@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.log4j.Logger;
 
+import org.joda.time.DateTime;
+
 /**
  * @author hitender
  * @when Dec 22, 2012 11:52:04 PM
@@ -16,22 +18,28 @@ import org.apache.log4j.Logger;
 public final class SHAHashing {
 	private static final Logger log = Logger.getLogger(SHAHashing.class);
 
-	private static MessageDigest md;
+	private static MessageDigest md1;
+    private static MessageDigest md5;
 
 	static {
 		try {
-			md = MessageDigest.getInstance("SHA-512");
+            md1 = MessageDigest.getInstance("SHA-1");
+            md5 = MessageDigest.getInstance("SHA-512");
 		} catch (NoSuchAlgorithmException exce) {
 
 		}
 	}
 
-	public static String hashCode(int text) {
-		StringBuilder sb = new StringBuilder().append(text);
-		return hashCode(sb.toString());
-	}
+    public static String hashCodeSHA1(String text) {
+        return hashCode(text, md1) ;
+    }
 
-	public static String hashCode(String text) {
+    public static String hashCodeSHA512(String text) {
+        return hashCode(text, md5) ;
+    }
+
+	private static String hashCode(String text, MessageDigest md) {
+        DateTime time = DateUtil.now();
 		if (md != null) {
 			md.update(text.getBytes());
 
@@ -51,10 +59,12 @@ public final class SHAHashing {
 					hexString.append('0');
 				hexString.append(hex);
 			}
+            PerformanceProfiling.log(SHAHashing.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
 			return hexString.toString();
 		} else {
 			log.info("Un-Initialized MessageDigest");
-			return null;
+            PerformanceProfiling.log(SHAHashing.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+            return null;
 		}
 	}
 

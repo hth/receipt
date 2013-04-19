@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tholix.domain.types.ReceiptStatusEnum;
@@ -15,7 +16,7 @@ import com.tholix.domain.types.ReceiptStatusEnum;
 /**
  * @author hitender
  * @when Jan 6, 2013 1:04:43 PM
- * 
+ *
  */
 @Document(collection = "RECEIPT_OCR")
 @CompoundIndexes({ @CompoundIndex(name = "user_receipt_ocr_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
@@ -28,6 +29,7 @@ public class ReceiptEntityOCR extends BaseEntity {
 	@Size(min = 0, max = 128)
 	private String description;
 
+    //TODO substitute with location.name
 	@NotNull
 	@Size(min = 1, max = 128)
 	private String title;
@@ -52,6 +54,9 @@ public class ReceiptEntityOCR extends BaseEntity {
 
 	@NotNull
 	private String receiptOCRTranslation;
+
+    @DBRef
+    private Location location;
 
 	public ReceiptEntityOCR() {
 
@@ -89,7 +94,7 @@ public class ReceiptEntityOCR extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param title
 	 * @param receiptDate
 	 * @param total
@@ -190,6 +195,6 @@ public class ReceiptEntityOCR extends BaseEntity {
 		return "ReceiptEntityOCR [description=" + description + ", title=" + title + ", receiptStatus=" + receiptStatus + ", receiptBlobId=" + receiptBlobId + ", receiptDate="
 				+ receiptDate + ", total=" + total + ", tax=" + tax + ", userProfileId=" + userProfileId + ", receiptOCRTranslation=" + receiptOCRTranslation + "]";
 	}
-	
-	
+
+
 }

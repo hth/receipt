@@ -125,6 +125,12 @@
         <!--<constructor-arg ref="orderQueue" />-->
     </bean>
 
+    <!--http://briansjavablog.blogspot.com/2012/09/spring-jms-tutorial-with-activemq.html-->
+    <!-- JMSTemplate is a Spring template that allows us to communicate with
+         a message broker via JMS. JMSTemplate takes care of boiler plate code such as exception handling
+         and resource management such as connection pooling. This allows us concentrate on solving the 'business'
+         problem. We supply the JMS template with the connection factory mentioned above
+     -->
     <bean id="jmsSenderTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="defaultDestination" ref="destination" />

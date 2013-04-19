@@ -35,7 +35,7 @@ public class UserRegistrationForm {
 	 * @return
 	 */
 	public UserAuthenticationEntity newUserAuthenticationEntity() {
-		return UserAuthenticationEntity.newInstance(SHAHashing.hashCode(password), RandomString.newInstance().nextString());
+		return UserAuthenticationEntity.newInstance(SHAHashing.hashCodeSHA512(password), SHAHashing.hashCodeSHA1(RandomString.newInstance().nextString()));
 	}
 
 	public UserProfileEntity newUserProfileEntity(UserAuthenticationEntity userAuthentication) {

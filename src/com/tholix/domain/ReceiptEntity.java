@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -23,7 +24,7 @@ import com.tholix.domain.types.ReceiptStatusEnum;
 /**
  * @author hitender
  * @when Dec 26, 2012 12:09:01 AM
- * 
+ *
  */
 @Document(collection = "RECEIPT")
 @CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
@@ -36,6 +37,7 @@ public class ReceiptEntity extends BaseEntity {
 	@Size(min = 0, max = 128)
 	private String description;
 
+    //TODO substitute with location.name
 	@NotNull
 	@Size(min = 1, max = 128)
 	private String title;
@@ -48,13 +50,13 @@ public class ReceiptEntity extends BaseEntity {
 
 	@NotNull
 	private Date receiptDate;
-	
+
 	@NotNull
 	private int year;
-	
+
 	@NotNull
 	private int month;
-	
+
 	@NotNull
 	private int day;
 
@@ -68,6 +70,9 @@ public class ReceiptEntity extends BaseEntity {
 
 	@NotNull
 	private String userProfileId;
+
+    @DBRef
+    private Location location;
 
 	public ReceiptEntity() {
 
@@ -99,7 +104,7 @@ public class ReceiptEntity extends BaseEntity {
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
-		
+
 		DateTime dt = new DateTime(receiptDate);
 		this.year = dt.getYear();
 		this.month = dt.getMonthOfYear();
@@ -108,7 +113,7 @@ public class ReceiptEntity extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param title
 	 * @param receiptDate
 	 * @param total
@@ -125,7 +130,7 @@ public class ReceiptEntity extends BaseEntity {
 
 	/**
 	 * Use this method to create the Entity for OCR Entity
-	 * 
+	 *
 	 * @param title
 	 * @param receiptDate
 	 * @param total
@@ -185,7 +190,7 @@ public class ReceiptEntity extends BaseEntity {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	public void setReceiptDate(Date receiptDate) {
 		this.receiptDate = receiptDate;
-	}	
+	}
 
 	public int getYear() {
 		return year;
@@ -194,7 +199,7 @@ public class ReceiptEntity extends BaseEntity {
 	public int getMonth() {
 		return month;
 	}
-	
+
 	public int getDay() {
 		return day;
 	}
@@ -225,10 +230,10 @@ public class ReceiptEntity extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "ReceiptEntity [title=" + title + ", receiptDate=" + receiptDate + ", year=" + year + ", month=" + month 
+		return "ReceiptEntity [title=" + title + ", receiptDate=" + receiptDate + ", year=" + year + ", month=" + month
 				+ ", day=" + day + ", total=" + total + ", tax=" + tax
 				+ "]";
 	}
-	
-	
+
+
 }

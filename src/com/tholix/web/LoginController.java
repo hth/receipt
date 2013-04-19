@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
@@ -48,9 +48,9 @@ public class LoginController {
 
 	/**
 	 * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
-	 * 
+	 *
 	 * @info: OR you could just replace it in Form Request method getReceiptUser model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
-	 * 
+	 *
 	 * @return UserAuthenticationEntity
 	 */
 	@ModelAttribute("userLoginForm")
@@ -76,7 +76,7 @@ public class LoginController {
 		} else {
 			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginForm.getEmailId());
 			if (userProfile != null) {
-				userLoginForm.setPassword(SHAHashing.hashCode(userLoginForm.getPassword()));
+				userLoginForm.setPassword(SHAHashing.hashCodeSHA512(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = userAuthenticationManager.findOne(userProfile.getUserAuthentication().getId());
 				if (user.getPassword().equals(userLoginForm.getPassword())) {
 					log.info("Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
@@ -126,8 +126,8 @@ public class LoginController {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Setters below are used by JUnit
 	 */
