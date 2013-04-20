@@ -45,11 +45,11 @@ public class AdminLandingController {
 
 	@RequestMapping(value = "/landing", method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
-        if(userSession.getLevel().getName().equals(UserLevelEnum.ADMIN)) {
+        if(userSession.getLevel() == UserLevelEnum.ADMIN) {
             ModelAndView modelAndView = new ModelAndView(nextPage, "userSearchForm", UserSearchForm.newInstance());
             return modelAndView;
         } else {
-            //Re-direct user to his home page because user tried accessing UN-Authorized page
+            //Re-direct user to his home page because user tried accessing Un-Authorized page
             log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
             return new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
         }

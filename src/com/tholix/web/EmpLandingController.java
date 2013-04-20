@@ -38,12 +38,8 @@ public class EmpLandingController {
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
     public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
-        ModelAndView modelAndView = null;
-        if(userSession.getLevel().getName().equals(UserLevelEnum.WORKER)) {
-            //Re-direct user to his home page because user tried accessing UN-Authorized page
-            log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
-            modelAndView = new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
-        } else {
+        ModelAndView modelAndView;
+        if(userSession.getLevel() == UserLevelEnum.WORKER) {
             modelAndView = new ModelAndView(nextPage);
             modelAndView.addObject("userSession", userSession);
 
@@ -53,6 +49,10 @@ public class EmpLandingController {
 
             List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
             modelAndView.addObject("queue", queue);
+        }  else {
+            //Re-direct user to his home page because user tried accessing UN-Authorized page
+            log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
+            modelAndView = new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
