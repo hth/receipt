@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "rm.ITEM_OCR", "name" : "_id_" }, { "v" : 1, "key" : { "receipt" : -1, "userProfileId" : 1 }, "ns" : "rm.ITEM_OCR", "name" : "user_item_ocr_idx", "dropDups" : false, "sparse" : false } ] }
