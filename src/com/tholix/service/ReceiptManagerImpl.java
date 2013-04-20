@@ -4,6 +4,7 @@
 package com.tholix.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +80,25 @@ public class ReceiptManagerImpl implements ReceiptManager {
 		return receiptGroupedMap;
 	}
 
-	@Override
+    //http://stackoverflow.com/questions/12949870/spring-mongotemplate-find-special-column
+    @Override
+    public List<String> findTitles(String title) {
+        Criteria criteria = Criteria.where("title").regex(title, "i");
+        Query query = new Query(criteria);
+
+        //This makes just one of the field populated
+        query.fields().include("title");
+        List<ReceiptEntity> list = mongoTemplate.find(query, ReceiptEntity.class, TABLE);
+
+        List<String> titles = new ArrayList<>();
+        for(ReceiptEntity re : list) {
+            titles.add(re.getTitle());
+        }
+
+        return titles;
+    }
+
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ReceiptEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);

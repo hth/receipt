@@ -8,14 +8,11 @@
 	<title><fmt:message key="receipt.admin.title" /></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 
-	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.css' />
-	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type='text/javascript' src="../jquery/fullcalendar/fullcalendar.min.js"></script>
 
 </head>
 <body>
@@ -32,13 +29,10 @@
 
     <h2>Search users to change profile settings</h2>
     <form:form method="post" modelAttribute="userSearchForm" action="landing.htm">
-        <table>
+        <table style="width: 220px" class="etable">
             <tr>
                 <th>Search Name: </th>
-                <td><form:input path="name" id="name"/></td>
-            </tr>
-            <tr>
-                <td colspan="2"><br /> </td>
+                <td><form:input path="name" /></td>
             </tr>
             <c:if test="${users.size() > 0}">
                 <table border="1" style="background-color:#c5c021;border:1px dotted black;width:250px;border-collapse:collapse;">

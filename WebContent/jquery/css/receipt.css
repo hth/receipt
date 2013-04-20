@@ -111,6 +111,32 @@ body{
 }
 /* End */
 
+/* Another one for receipt item table */
+/*
+* http://css-tricks.com/responsive-data-tables/
+* Generic Styling, for Desktops/Laptops
+*/
+.etable {
+    width: 100%;
+    border-collapse: collapse;
+}
+/* Zebra striping */
+.etable tr:nth-of-type(odd) {
+    background: #eee;
+}
+.etable th {
+    background: #333;
+    color: white;
+    font-weight: bold;
+}
+.etable td, th {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: right;
+}
+/* End */
+
+
 /* This is for div table */
 .leftAlign {
    	float: left;

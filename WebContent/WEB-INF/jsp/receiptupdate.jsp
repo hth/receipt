@@ -18,12 +18,13 @@
 	<script type='text/javascript' src="../jquery/fullcalendar/fullcalendar.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/raphael/raphael-min.js"></script>
 
-	<script type="text/javascript">
-		$("document").ready(function(){
-			$(".alternativeRow").btnAddRow({oddRowCSS:"oddRow",evenRowCSS:"evenRow"});
-			$(".delRow").btnDelRow();
-		});
-	</script>
+    <%--This makes the other JQuery fail--%>
+    <%--<script type="text/javascript">--%>
+		<%--$("document").ready(function(){--%>
+			<%--$(".alternativeRow").btnAddRow({oddRowCSS:"oddRow",evenRowCSS:"evenRow"});--%>
+			<%--$(".delRow").btnDelRow();--%>
+		<%--});--%>
+	<%--</script>--%>
 
 	<script>
 		/* add background color to holder in tr tag */
@@ -63,6 +64,23 @@
             // setTimeout(function () {R.safari();});
         };
 	</script>
+
+    <script type="text/javascript">
+        function split(val) {
+            return val.split(/,\s*/);
+        }
+        function extractLast(term) {
+            return split(term).pop();
+        }
+
+        $(document).ready(function() {
+            $( "#title" ).autocomplete({
+                source: "${pageContext. request. contextPath}/fetcher/find_company.htm"
+                //source : ["Alex,Agnes,Alan,Bjok,Bill,John,Jason,Maria,Man"]
+            });
+
+        });
+    </script>
 </head>
 <body>
     <div id="content" style='width:210px;'>
@@ -102,7 +120,7 @@
                             <form:hidden path="receipt.userProfileId"/>
                             <form:hidden path="receipt.receiptOCRTranslation"/>
                             <form:hidden path="receipt.version"/>
-                            <table border="0" style="width: 400px" class="atable">
+                            <table border="0" style="width: 400px" class="etable">
                                 <tr>
                                     <td colspan="4">
                                         <div class="leftAlign"><form:errors path="receipt.title" cssClass="error" /></div>
@@ -111,7 +129,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">
-                                        <div class="leftAlign">Title <form:input path="receipt.title" size="32"/></div>
+                                        <div class="leftAlign">Title <form:input path="receipt.title" id="title" size="32"/></div>
                                         <div class="rightAlign">Date <form:input path="receipt.receiptDate" size="32"/></div>
                                     </td>
                                 </tr>
@@ -164,7 +182,8 @@
 			<td width="6px">&nbsp;</td>
 			<td valign="top">
 			 	<div id="holder">
-			 	<img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}" width="700px" height="700px" id="receipt.image"/>
+			 	    <img src="${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}"
+                         width="700px" height="700px" id="receipt.image"/>
 			 	</div>
 			</td>
 		</tr>

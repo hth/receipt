@@ -25,4 +25,6 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
 	//public List<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId);
 	public Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId);
+
+    public List<String> findTitles(String title);
 }
