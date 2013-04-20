@@ -411,7 +411,7 @@
     </script>
     <style type="text/css">
         .googleMapContainer {width:700px; height:500px;}
-        .mapContainer {border:10px solid red;}
+        .mapContainer {border:1px solid red;}
     </style>
 
     <div class="googleMapContainer" id="map-canvas"></div>
