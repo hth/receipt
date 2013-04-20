@@ -156,13 +156,13 @@
                                     </tr>
                                 </c:forEach>
                                 <tr>
-                                    <td colspan="1" align="right">
+                                    <td colspan="1" style="text-align: right;">
                                         <span>Tax &nbsp;</span>
                                         <form:input path="receipt.tax" size="5"/>
                                         <span>&nbsp;&nbsp;Total &nbsp;</span>
                                     </td>
-                                    <td align="right">
-                                        <form:input path="receipt.total" size="5"/>
+                                    <td colspan="2">
+                                        <form:input path="receipt.total" size="16"/>
                                         <form:errors path="receipt.total" cssClass="error" />
                                     </td>
                                 </tr>

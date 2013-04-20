@@ -132,7 +132,7 @@ body{
 .etable td, th {
     padding: 10px;
     border: 1px solid #ccc;
-    text-align: right;
+    text-align: left;
 }
 /* End */
 
