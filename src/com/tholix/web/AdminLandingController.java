@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.UserProfileManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
@@ -44,9 +45,14 @@ public class AdminLandingController {
 
 	@RequestMapping(value = "/landing", method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
-		ModelAndView modelAndView = new ModelAndView(nextPage, "userSearchForm", UserSearchForm.newInstance());
-        modelAndView.addObject("userSession", userSession);
-		return modelAndView;
+        if(userSession.getLevel().getName().equals(UserLevelEnum.ADMIN)) {
+            ModelAndView modelAndView = new ModelAndView(nextPage, "userSearchForm", UserSearchForm.newInstance());
+            return modelAndView;
+        } else {
+            //Re-direct user to his home page because user tried accessing UN-Authorized page
+            log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
+            return new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
+        }
 	}
 
 	@RequestMapping(value = "/find_user", method = RequestMethod.GET)

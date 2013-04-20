@@ -16,6 +16,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.routes.MessageManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
@@ -37,15 +38,22 @@ public class EmpLandingController {
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
     public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("userSession", userSession);
+        ModelAndView modelAndView = null;
+        if(userSession.getLevel().getName().equals(UserLevelEnum.WORKER)) {
+            //Re-direct user to his home page because user tried accessing UN-Authorized page
+            log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
+            modelAndView = new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
+        } else {
+            modelAndView = new ModelAndView(nextPage);
+            modelAndView.addObject("userSession", userSession);
 
-        //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
-        List<MessageReceiptEntityOCR> pending = messageManager.findPending(userSession.getEmailId(), userSession.getUserProfileId());
-        modelAndView.addObject("pending", pending);
+            //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
+            List<MessageReceiptEntityOCR> pending = messageManager.findPending(userSession.getEmailId(), userSession.getUserProfileId());
+            modelAndView.addObject("pending", pending);
 
-        List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
-        modelAndView.addObject("queue", queue);
+            List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
+            modelAndView.addObject("queue", queue);
+        }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

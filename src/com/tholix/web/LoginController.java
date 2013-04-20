@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserProfileManager;
 import com.tholix.service.validator.UserLoginValidator;
@@ -84,30 +85,7 @@ public class LoginController {
 					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
 					redirectAttrs.addFlashAttribute("userSession", userSession);
 
-					String path = "redirect:/landing.htm";
-					switch(userProfile.getLevel()) {
-						case ADMIN:
-							path = "redirect:/admin/landing.htm";
-							break;
-						case USER_PAID:
-							//do nothing for now
-							break;
-						case USER:
-							//do nothing for now
-							break;
-						case EMPLOYER:
-							//do nothing for now
-							break;
-						case EMPLOYER_PAID:
-							//do nothing for now
-							break;
-						case WORKER:
-                            path = "redirect:/emp/landing.htm";
-							break;
-						case SUPERVISOR:
-							//do nothing for now
-							break;
-					}
+                    String path = landingHomePage(userProfile.getLevel());
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
 					return path;
 				} else {
@@ -127,8 +105,43 @@ public class LoginController {
 		}
 	}
 
+    /**
+     * Get the user landing page when they log in or try to access un-authorized page
+     * TODO may be drop the "redirect" and instead append the redirect to just the login controller
+     *
+     * @param level
+     * @return
+     */
+    protected static String landingHomePage(UserLevelEnum level) {
+        String path = "redirect:/landing.htm";
+        switch(level) {
+            case ADMIN:
+                path = "redirect:/admin/landing.htm";
+                break;
+            case USER_PAID:
+                //do nothing for now
+                break;
+            case USER:
+                //do nothing for now
+                break;
+            case EMPLOYER:
+                //do nothing for now
+                break;
+            case EMPLOYER_PAID:
+                //do nothing for now
+                break;
+            case WORKER:
+                path = "redirect:/emp/landing.htm";
+                break;
+            case SUPERVISOR:
+                //do nothing for now
+                break;
+        }
+        return path;
+    }
 
-	/**
+
+    /**
 	 * Setters below are used by JUnit
 	 */
 
