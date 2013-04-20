@@ -1,37 +1,35 @@
 /**
- * 
+ *
  */
 package com.tholix.domain.types;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Dec 27, 2012 1:22:39 PM
- *
  */
 public enum TaxEnum {
-	
-	TAXED("TAXED", "Taxed"), 
-	NOT_TAXED("NOT_TAXED", "Not Taxed")
-	;
-	
-	private final String description;
-	private final String name;
 
-	private TaxEnum(String name, String description) {
-		this.name = name;
-		this.description = description;
-	}
+    TAXED("TAXED",          "Taxed"),
+    NOT_TAXED("NOT_TAXED",  "Not Taxed");
 
-	public String getName() {
-		return name;
-	}
+    private final String description;
+    private final String name;
 
-	public String getDescription() {
-		return description;
-	}
+    private TaxEnum(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
-	@Override
-	public String toString() {
-		return getDescription();
-	}
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
+        return getDescription();
+    }
 }

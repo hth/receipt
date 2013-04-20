@@ -1,12 +1,11 @@
 /**
- * 
+ *
  */
 package com.tholix.domain.types;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 25, 2013 1:11:21 AM
- *
  */
 public enum UserLevelEnum {
 	USER("USER", "User",                            1, UserLevelEnum.DEFAULT_JMS_LEVEL),
@@ -20,41 +19,42 @@ public enum UserLevelEnum {
 
     //TODO to use JMS message setting in future. Currently message is picked based on level of the user.
     private static final int DEFAULT_JMS_LEVEL = 4;
-	
-	public final String description;
-	public final String name;
-	public final int value;
-	public final int messagePriorityJMS;
 
-	private UserLevelEnum(String name, String description, int value, int messagePriorityJMS) {
-		this.name = name;
-		this.description = description;
-		this.value = value;
-		this.messagePriorityJMS = messagePriorityJMS;
-	}
+    public final String description;
+    public final String name;
+    public final int value;
+    public final int messagePriorityJMS;
 
-	public String getName() {
-		return name;
-	}
+    private UserLevelEnum(String name, String description, int value, int messagePriorityJMS) {
+        this.name = name;
+        this.description = description;
+        this.value = value;
+        this.messagePriorityJMS = messagePriorityJMS;
+    }
 
-	public String getDescription() {
-		return description;
-	}
-	
-	/**
-	 * This gets you level value. More like the order of precedence.
-	 * @return
-	 */
-	public int getValue() {
-		return value;
-	}	
+    public String getName() {
+        return name;
+    }
 
-	public int getMessagePriorityJMS() {
-		return messagePriorityJMS;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public String toString() {
-		return getDescription();
-	}
+    /**
+     * This gets you level value. More like the order of precedence.
+     *
+     * @return
+     */
+    public int getValue() {
+        return value;
+    }
+
+    public int getMessagePriorityJMS() {
+        return messagePriorityJMS;
+    }
+
+    @Override
+    public String toString() {
+        return getDescription();
+    }
 }
