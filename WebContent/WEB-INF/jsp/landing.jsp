@@ -289,99 +289,131 @@
 		</div>
 	</div>
 
-    <meta name="viewport" content="initial-scale=10.0, user-scalable=no" />
-    <style type="text/css">
-        html { height: 50% }
-        body { height: 100%; margin: 10; padding: 10 }
-        #map-canvas { height: 50%; width: 50%}
-    </style>
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsVM5IGJXRnMEZvva3F3TW0tcbnbyW-Pw&sensor=false">
     </script>
     <script type="text/javascript">
-        function initialize() {
-            var myLatlng = new google.maps.LatLng(39.639538,-102.65625);
-            var mapOptions = {
-                center: myLatlng,
-                zoom: 4,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        $(document).ready(function () {
+            var us_center = new google.maps.LatLng(39.639538,-102.65625);
 
-            setMarkers(map, beaches);
-        }
+            var map;
+            var infowindow;
 
-        /**
-         * Data for the markers consisting of a name, a LatLng and a zIndex for
-         * the order in which these markers should display on top of each
-         * other.
-         */
-        var beaches = [
-            ['San Francisco', 37.77493,	-122.41942, 4],
-            ['Sunnyvale',   37.36886,	-122.03656, 5],
-            ['Los Angles',  34.05223,	-118.24368, 3],
-            ['Seattle',     47.60621,	-122.33207, 2],
-            ['New York',    40.71435,	-74.00597, 1]
-        ];
+            getGoogleMap('41.033245', '29.110191',
+                    '<div class="mapContainer">' +
+                    '<div class="mapContentLeft"><h1>Hotel Name <i>Information/Suggestion</i></h1>' +
+                    '<div>Hotel Image</div>' +
+                    '</div>' +
+                    '<div class="mapContentRight">' +
+                        '<div class="mapHotelStars">*****</div>' +
+                        '<div class="mapHotelAdress">Hotel Adress</div>' +
+                        '<div class="mapHotelPrice"> Currency + Integer </div>' +
+                        '</div>' +
+                    '</div>');
 
-        function setMarkers(map, locations) {
-            // Add markers to the map
+            function getGoogleMap(Altitude, Latitude, Address) {
+                var myOptions = {
+                    center: us_center,
+                    zoom: 4,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
 
-            // Marker sizes are expressed as a Size of X,Y
-            // where the origin of the image (0,0) is located
-            // in the top left of the image.
+                map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+                infowindow = new google.maps.InfoWindow();
 
-            // Origins, anchor positions and coordinates of the marker
-            // increase in the X direction to the right and in
-            // the Y direction down.
-            var image = {
-                url: 'images/beachflag.png',
-                // This marker is 20 pixels wide by 32 pixels tall.
-                size: new google.maps.Size(20, 32),
-                // The origin for this image is 0,0.
-                origin: new google.maps.Point(0,0),
-                // The anchor for this image is the base of the flagpole at 0,32.
-                anchor: new google.maps.Point(0, 32)
-            };
-            var shadow = {
-                url: 'images/beachflag_shadow.png',
-                // The shadow image is larger in the horizontal dimension
-                // while the position and offset are the same as for the main image.
-                size: new google.maps.Size(37, 32),
-                origin: new google.maps.Point(0,0),
-                anchor: new google.maps.Point(0, 32)
-            };
-            // Shapes define the clickable region of the icon.
-            // The type defines an HTML &lt;area&gt; element 'poly' which
-            // traces out a polygon as a series of X,Y points. The final
-            // coordinate closes the poly by connecting to the first
-            // coordinate.
-            var shape = {
-                coord: [1, 1, 1, 20, 18, 20, 18 , 1],
-                type: 'poly'
-            };
-            for (var i = 0; i < locations.length; i++) {
-                var beach = locations[i];
-                var myLatLng = new google.maps.LatLng(beach[1], beach[2]);
+                google.maps.event.addListener(map, 'click', function() {
+                    infowindow.close();
+                });
+
+                /**
+                 * Data for the markers consisting of a name, a LatLng and a zIndex for
+                 * the order in which these markers should display on top of each
+                 * other.
+                 */
+                var locations = [
+                    ['San Francisco', 37.77493,	-122.41942, 4],
+                    ['Sunnyvale',   37.36886,	-122.03656, 5],
+                    ['Los Angles',  34.05223,	-118.24368, 3],
+                    ['Seattle',     47.60621,	-122.33207, 2],
+                    ['New York',    40.71435,	-74.00597, 1]
+                ];
+
+                for (var i = 0; i < locations.length; i++) {
+                    var location    = locations[i];
+                    var title       = location[0];
+                    var latitude    = location[1];
+                    var longitude   = location[2];
+                    var xindex      = location[3];
+                    displayMarker(title, latitude, longitude, xindex);
+                }
+            }
+
+            function displayMarker(title, latitude, longitude, xindex) {
+                // Add markers to the map
+
+                // Marker sizes are expressed as a Size of X,Y
+                // where the origin of the image (0,0) is located
+                // in the top left of the image.
+
+                // Origins, anchor positions and coordinates of the marker
+                // increase in the X direction to the right and in
+                // the Y direction down.
+                var image = {
+                    url: 'images/beachflag.png',
+                    // This marker is 20 pixels wide by 32 pixels tall.
+                    size: new google.maps.Size(20, 32),
+                    // The origin for this image is 0,0.
+                    origin: new google.maps.Point(0,0),
+                    // The anchor for this image is the base of the flagpole at 0,32.
+                    anchor: new google.maps.Point(0, 32)
+                };
+                var shadow = {
+                    url: 'images/beachflag_shadow.png',
+                    // The shadow image is larger in the horizontal dimension
+                    // while the position and offset are the same as for the main image.
+                    size: new google.maps.Size(37, 32),
+                    origin: new google.maps.Point(0,0),
+                    anchor: new google.maps.Point(0, 32)
+                };
+                // Shapes define the clickable region of the icon.
+                // The type defines an HTML &lt;area&gt; element 'poly' which
+                // traces out a polygon as a series of X,Y points. The final
+                // coordinate closes the poly by connecting to the first
+                // coordinate.
+                var shape = {
+                    coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+                    type: 'poly'
+                };
+
+
+                var myLatLng = new google.maps.LatLng(latitude, longitude);
+
+                //Why re-center the US Map
+                //map.setCenter(myLatLng);
+
                 var marker = new google.maps.Marker({
                     position: myLatLng,
                     map: map,
                     shadow: shadow,
                     icon: image,
                     shape: shape,
-                    title: beach[0],
-                    zIndex: beach[3]
+                    title: title,
+                    zIndex: xindex
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(title);
+                    infowindow.open(map, marker);
                 });
             }
-
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.open(map,marker);
-            });
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
+            //http://stackoverflow.com/questions/5058258/google-map-v3-marker-click-function-problem-and-trigger-external-link?rq=1
+        });
     </script>
+    <style type="text/css">
+        .googleMapContainer {width:700px; height:500px;}
+        .mapContainer {border:10px solid red;}
+    </style>
 
-    <div id="map-canvas"/>
+    <div class="googleMapContainer" id="map-canvas"></div>
 </body>
 </html>
