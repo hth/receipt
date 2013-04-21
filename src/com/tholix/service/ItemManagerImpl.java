@@ -135,7 +135,7 @@ public class ItemManagerImpl implements ItemManager {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<String> findItems(String name) {
-        Criteria criteria = Criteria.where("name").regex(name, "/.*m.*/");
+        Criteria criteria = Criteria.where("name").regex(name, "i");
         Query query = new Query(criteria);
 
         //This makes just one of the field populated

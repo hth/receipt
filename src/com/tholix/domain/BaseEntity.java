@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -19,7 +19,7 @@ import com.tholix.utils.DateUtil;
 /**
  * @author hitender
  * @when Dec 23, 2012 2:02:10 AM
- * 
+ *
  */
 public abstract class BaseEntity implements Serializable {
 	private static final long serialVersionUID = -5848946567869042567L;
@@ -28,7 +28,7 @@ public abstract class BaseEntity implements Serializable {
 	protected String id;
 
 	@Version
-	private Long version;
+	private Integer version;
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date updated = DateUtil.nowTime();
@@ -48,11 +48,11 @@ public abstract class BaseEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Long getVersion() {
+	public Integer getVersion() {
 		return version;
 	}
 
-	public void setVersion(Long version) {
+	public void setVersion(Integer version) {
 		this.version = version;
 	}
 
@@ -75,9 +75,9 @@ public abstract class BaseEntity implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * http://thierrywasyl.wordpress.com/2011/05/12/get-annotations-fields-value-easily/
-	 * 
+	 *
 	 * @param classType
 	 * @param annotationType
 	 * @param attributeName

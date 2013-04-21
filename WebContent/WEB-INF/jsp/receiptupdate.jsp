@@ -129,14 +129,20 @@
                             <table border="0" style="width: 400px" class="etable">
                                 <tr>
                                     <td colspan="4">
-                                        <div class="leftAlign"><form:errors path="receipt.title" cssClass="error" /></div>
-                                        <div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
+                                        <div class="leftAlign">
+                                            <form:label for="receipt.title" path="receipt.title" cssErrorClass="error">Title</form:label>
+                                            <form:input path="receipt.title" id="title" size="32"/>
+                                        </div>
+                                        <div class="rightAlign">
+                                            <form:label for="receipt.receiptDate" path="receipt.receiptDate" cssErrorClass="error">Date</form:label>
+                                            <form:input path="receipt.receiptDate" size="32"/>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">
-                                        <div class="leftAlign">Title <form:input path="receipt.title" id="title" size="32"/></div>
-                                        <div class="rightAlign">Date <form:input path="receipt.receiptDate" size="32"/></div>
+                                        <div class="leftAlign"><form:errors path="receipt.title" cssClass="error" /></div>
+                                        <div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
                                     </td>
                                 </tr>
                                 <tr>
