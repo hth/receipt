@@ -3,6 +3,7 @@
  */
 package com.tholix.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -130,4 +131,22 @@ public class ItemManagerImpl implements ItemManager {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.remove(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
 	}
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
+    public List<String> findItems(String name) {
+        Criteria criteria = Criteria.where("name").regex(name, "/.*m.*/");
+        Query query = new Query(criteria);
+
+        //This makes just one of the field populated
+        query.fields().include("name");
+        List<ItemEntity> list = mongoTemplate.find(query, ItemEntity.class, TABLE);
+
+        List<String> names = new ArrayList<>();
+        for(ItemEntity re : list) {
+            names.add(re.getName());
+        }
+
+        return names;
+    }
 }

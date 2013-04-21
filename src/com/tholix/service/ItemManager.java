@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service;
 
@@ -16,7 +16,7 @@ import com.tholix.domain.ReceiptEntity;
 /**
  * @author hitender
  * @when Dec 26, 2012 3:10:11 PM
- * 
+ *
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {
 	public static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
@@ -26,8 +26,10 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 	public WriteResult updateObject(ItemEntity object);
 
 	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt);
-	
+
 	public List<ItemEntity> getAllObjectWithName(String name);
-	
+
 	public void deleteWhereReceipt(ReceiptEntity receipt);
+
+    public List<String> findItems(String name);
 }

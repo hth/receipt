@@ -76,7 +76,13 @@
         $(document).ready(function() {
             $( "#title" ).autocomplete({
                 source: "${pageContext. request. contextPath}/fetcher/find_company.htm"
-                //source : ["Alex,Agnes,Alan,Bjok,Bill,John,Jason,Maria,Man"]
+            });
+
+        });
+
+        $(document).ready(function() {
+            $( ".items" ).autocomplete({
+                source: "${pageContext. request. contextPath}/fetcher/find_item.htm"
             });
 
         });
@@ -141,7 +147,7 @@
                                 <c:forEach items="${receiptForm.items}" varStatus="status">
                                     <tr>
                                         <td align="left">
-                                            <form:input path="items[${status.index}].name" size="64"/>
+                                            <form:input path="items[${status.index}].name" class="items" size="64"/>
                                         </td>
                                         <td align="right">
                                             <form:input path="items[${status.index}].price" size="16"/>

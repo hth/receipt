@@ -44,18 +44,21 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	@Autowired private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<ReceiptEntity> getAllObjects() {
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
+    public List<ReceiptEntity> getAllObjects() {
 		return mongoTemplate.findAll(ReceiptEntity.class, TABLE);
 	}
 
 	@Override
-	public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
+    public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
 		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
 		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)).with(sort), ReceiptEntity.class, TABLE);
 	}
 
 	@Override
-	public Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId) {
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
+    public Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId) {
 //		String map = "function() {"
 //					  + " date = Date.UTC(this.receiptDate.getFullYear(), this.receiptDate.getMonth(), this.receiptDate.getDate());"
 //					  + " emit({date: date}, {total: 0});"
@@ -82,6 +85,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     //http://stackoverflow.com/questions/12949870/spring-mongotemplate-find-special-column
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<String> findTitles(String title) {
         Criteria criteria = Criteria.where("title").regex(title, "i");
         Query query = new Query(criteria);
@@ -116,7 +120,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	}
 
 	@Override
-	public ReceiptEntity findOne(String id) {
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
+    public ReceiptEntity findOne(String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
 
