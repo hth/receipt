@@ -5,6 +5,7 @@ package com.tholix.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
@@ -135,7 +136,7 @@ public class ItemManagerImpl implements ItemManager {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<String> findItems(String name) {
-        Criteria criteria = Criteria.where("name").regex(name, "i");
+        Criteria criteria = Criteria.where("name").regex(new StringTokenizer(name).nextToken(), "i");
         Query query = new Query(criteria);
 
         //This makes just one of the field populated
