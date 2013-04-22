@@ -90,6 +90,12 @@
 							<div class="rightAlign"><b><spring:eval expression="receipt.receiptDate" /></b></div>
 						</td>
 					</tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="leftAlign"><b>Location: ${receipt.business.address}</b></div>
+                            <div class="rightAlign"><b>Phone: ${receipt.business.phone}</b></div>
+                        </td>
+                    </tr>
 					<tr>
 						<th align="left">&nbsp;Name</th>
 						<th align="left">&nbsp;Price</th>

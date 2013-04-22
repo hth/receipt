@@ -294,7 +294,7 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
-            var us_center = new google.maps.LatLng(39.639538,-102.65625);
+            var us_center = new google.maps.LatLng(37.090240,-95.7128910);
 
             var map;
             var infowindow;
