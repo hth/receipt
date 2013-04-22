@@ -1,1 +1,1 @@
-{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "rm.RECEIPT", "name" : "_id_" }, { "v" : 1, "key" : { "receiptBlobId" : 1, "userProfileId" : 1 }, "ns" : "rm.RECEIPT", "name" : "user_receipt_idx", "dropDups" : false, "sparse" : false } ] }
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "rm.RECEIPT", "name" : "_id_" }, { "v" : 1, "key" : { "receiptBlobId" : 1, "userProfileId" : 1 }, "unique" : true, "ns" : "rm.RECEIPT", "name" : "user_receipt_idx", "dropDups" : false, "sparse" : false } ] }
