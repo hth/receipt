@@ -122,7 +122,7 @@ public class AdminLandingController {
 	 */
 	private List<String> findMatchingUsers(String name) {
         DateTime time = DateUtil.now();
-		List<String> users = new ArrayList<String>();
+		List<String> users = new ArrayList<>();
 		for(UserSearchForm userSearchForm : findAllUsers(name)) {
 			users.add(userSearchForm.getUserName());
 		}

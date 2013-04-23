@@ -33,7 +33,6 @@ public class FetcherController {
 
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ItemManager itemManager;
-
     @Autowired private BizNameManager bizNameManager;
 
     @RequestMapping(value = "/find_company", method = RequestMethod.GET)
