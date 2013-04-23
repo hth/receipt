@@ -36,6 +36,8 @@ public abstract class BaseEntity implements Serializable {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date created = DateUtil.nowTime();
 
+    private boolean active = true;
+
 	public BaseEntity() {
 		super();
 	}
@@ -48,7 +50,23 @@ public abstract class BaseEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getVersion() {
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void active() {
+        setActive(true);
+    }
+
+    public void inActive() {
+        setActive(false);
+    }
+
+    public Integer getVersion() {
 		return version;
 	}
 
