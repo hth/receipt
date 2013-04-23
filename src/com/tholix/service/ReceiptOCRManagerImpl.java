@@ -78,7 +78,7 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public ReceiptEntityOCR findOne(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntityOCR.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ReceiptEntityOCR.class, TABLE);
 
 	}
 
@@ -108,14 +108,14 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public long numberOfPendingReceipts(String userProfileId) {
-		return mongoTemplate.count(new Query(Criteria.where("userProfileId").is(userProfileId)
+		return mongoTemplate.count(Query.query(Criteria.where("userProfileId").is(userProfileId)
 				.andOperator(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED.name()))), TABLE);
 	}
 
 	@Override
 	public List<ReceiptEntityOCR> getAllObjects(String userProfileId) {
 		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
-		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)
+		return mongoTemplate.find(Query.query(Criteria.where("userProfileId").is(userProfileId)
 				.andOperator(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED.name())))
 				.with(sort), ReceiptEntityOCR.class, TABLE);
 	}

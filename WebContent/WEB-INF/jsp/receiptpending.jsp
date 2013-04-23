@@ -71,7 +71,7 @@
 					</td>
 					<td width="6px">&nbsp;</td>
 					<td>
-					 Image goes here
+					 Empty. This should be removed
 					</td>
 				</tr>
 			</table>

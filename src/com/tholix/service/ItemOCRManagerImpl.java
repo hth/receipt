@@ -73,7 +73,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public List<ItemEntityOCR> getWhereReceipt(ReceiptEntityOCR receipt) {
-		Query query = new Query(Criteria.where("receipt").is(receipt));
+		Query query = Query.query(Criteria.where("receipt").is(receipt));
 		Sort sort = new Sort(Direction.ASC, "sequence");
 		return mongoTemplate.find(query.with(sort), ItemEntityOCR.class, TABLE);
 	}
@@ -93,7 +93,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(ReceiptEntityOCR receipt) {
-		Query query = new Query(Criteria.where("receipt").is(receipt));
+		Query query = Query.query(Criteria.where("receipt").is(receipt));
 		mongoTemplate.remove(query, ItemEntityOCR.class);
 	}
 
@@ -112,7 +112,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntityOCR object) {
-		Query query = new Query(Criteria.where("id").is(object.getId()));
+		Query query = Query.query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}

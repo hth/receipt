@@ -53,7 +53,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
 		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
-		return mongoTemplate.find(new Query(Criteria.where("userProfileId").is(userProfileId)).with(sort), ReceiptEntity.class, TABLE);
+		return mongoTemplate.find(Query.query(Criteria.where("userProfileId").is(userProfileId)).with(sort), ReceiptEntity.class, TABLE);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 //		GroupBy groupBy = GroupBy.key("{'day' : 1, 'month' : 1}").initialDocument("{ total: 0 }").reduceFunction("function(obj, result) { result.total += obj.total; }");
 //		GroupByResults<ReceiptEntity> results = mongoTemplate.group(Criteria.where("userProfileId").is(userProfileId), TABLE, groupBy, ReceiptEntity.class);
 
-//		MapReduceResults<ReceiptGrouped> results = mongoTemplate.mapReduce(new Query(Criteria.where("userProfileId").is(userProfileId)), TABLE, map, reduce, ReceiptGrouped.class);
+//		MapReduceResults<ReceiptGrouped> results = mongoTemplate.mapReduce(Query.query(Criteria.where("userProfileId").is(userProfileId)), TABLE, map, reduce, ReceiptGrouped.class);
 
 		List<ReceiptEntity> receipts = getAllObjectsForUser(userProfileId);
 
@@ -88,7 +88,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<String> findTitles(String title) {
         Criteria criteria = Criteria.where("title").regex(title, "i");
-        Query query = new Query(criteria);
+        Query query = Query.query(criteria);
 
         //This makes just one of the field populated
         query.fields().include("title");
@@ -122,7 +122,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public ReceiptEntity findOne(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
 
 	@Override

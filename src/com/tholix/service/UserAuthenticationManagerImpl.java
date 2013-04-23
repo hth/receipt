@@ -54,13 +54,13 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 
 	@Override
 	public UserAuthenticationEntity findOne(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
-		return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(id)), Update.update("name", name), TABLE);
+		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), Update.update("name", name), TABLE);
 	}
 
 	@Override

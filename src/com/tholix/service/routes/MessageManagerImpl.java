@@ -45,7 +45,7 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageReceiptEntityOCR> findWithLimit(int limit) {
-        Query query = new Query(Criteria.where("recordLocked").is(false))
+        Query query = Query.query(Criteria.where("recordLocked").is(false))
                 .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED));
 
         List<Sort.Order> orders = new ArrayList<>();
@@ -106,7 +106,7 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageReceiptEntityOCR> findPending(String emailId, String profileId) {
-        Query query = new Query(Criteria.where("recordLocked").is(true))
+        Query query = Query.query(Criteria.where("recordLocked").is(true))
                 .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED))
                 .addCriteria(Criteria.where("emailId").is(emailId))
                 .addCriteria(Criteria.where("userProfileId").is(profileId));
@@ -122,7 +122,7 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageReceiptEntityOCR> findAllPending() {
-        Query query = new Query(Criteria.where("recordLocked").is(true))
+        Query query = Query.query(Criteria.where("recordLocked").is(true))
                 .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED));
 
         List<Sort.Order> orders = new ArrayList<>();
@@ -157,7 +157,7 @@ public class MessageManagerImpl implements MessageManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult updateObject(String id) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = new Query(Criteria.where("recordLocked").is(true))
+        Query query = Query.query(Criteria.where("recordLocked").is(true))
                 .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED))
                 .addCriteria(Criteria.where("idReceiptOCR").is(id));
         Update update = new Update().set("receiptStatus", ReceiptStatusEnum.TURK_PROCESSED);
@@ -169,7 +169,7 @@ public class MessageManagerImpl implements MessageManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult updateObject(String id, boolean value) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = new Query(Criteria.where("recordLocked").is(true))
+        Query query = Query.query(Criteria.where("recordLocked").is(true))
                 .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED))
                 .addCriteria(Criteria.where("idReceiptOCR").is(id));
         Update update = new Update().set("recordLocked", value).set("emailId","").set("profileId", "");

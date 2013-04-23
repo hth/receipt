@@ -57,24 +57,24 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object) {
-		return mongoTemplate.findOne(new Query(Criteria.where("userAuthentication").is(object)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("userAuthentication").is(object)), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
 	public UserProfileEntity getObjectUsingEmail(String emailId) {
-		return mongoTemplate.findOne(new Query(Criteria.where("emailId").is(emailId)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("emailId").is(emailId)), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
 	public UserProfileEntity findOne(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(new ObjectId(id))), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(new ObjectId(id))), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		// return mongoTemplate.updateFirst(
-		// new Query(Criteria.where("id").is(id)),
+		// Query.query(Criteria.where("id").is(id)),
 		// Update.update("level", name), TABLE);
 		throw new UnsupportedOperationException("Method not implemented");
 	}
@@ -82,7 +82,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, UserLevelEnum level) {
-		return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(new ObjectId(id))), Update.update("level", level), TABLE);
+		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(new ObjectId(id))), Update.update("level", level), TABLE);
 	}
 
 	@Override
@@ -113,13 +113,13 @@ public class UserProfileManagerImpl implements UserProfileManager {
 		//TODO this does not seems to be working query
 		Criteria a = Criteria.where("firstName").regex(name, "i");
 		//Criteria b = Criteria.where("lastName").regex(name, "i");
-		//return mongoTemplate.find(new Query(a.orOperator(b)), UserProfileEntity.class, TABLE);
-		return mongoTemplate.find(new Query(a), UserProfileEntity.class, TABLE);
+		//return mongoTemplate.find(Query.query(a.orOperator(b)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.find(Query.query(a), UserProfileEntity.class, TABLE);
 	}
 
     @Override
     public UserProfileEntity findOneByEmail(String emailId) {
         Criteria a = Criteria.where("emailId").is(emailId);
-        return mongoTemplate.findOne(new Query(a), UserProfileEntity.class, TABLE);
+        return mongoTemplate.findOne(Query.query(a), UserProfileEntity.class, TABLE);
     }
 }

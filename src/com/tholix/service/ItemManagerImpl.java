@@ -78,18 +78,18 @@ public class ItemManagerImpl implements ItemManager {
 	@Override
 	public ItemEntity findOne(String id) {
 		Sort sort = new Sort(Direction.ASC, "sequence");
-		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)).with(sort), ItemEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)).with(sort), ItemEntity.class, TABLE);
 	}
 
 	@Override
 	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt) {
 		Sort sort = new Sort(Direction.ASC, "sequence");
-		return mongoTemplate.find(new Query(Criteria.where("receipt").is(receipt)).with(sort), ItemEntity.class, TABLE);
+		return mongoTemplate.find(Query.query(Criteria.where("receipt").is(receipt)).with(sort), ItemEntity.class, TABLE);
 	}
 
 	@Override
 	public List<ItemEntity> getAllObjectWithName(String name) {
-		return mongoTemplate.find(new Query(Criteria.where("name").is(name)), ItemEntity.class, TABLE);
+		return mongoTemplate.find(Query.query(Criteria.where("name").is(name)), ItemEntity.class, TABLE);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class ItemManagerImpl implements ItemManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntity object) {
-		Query query = new Query(Criteria.where("id").is(object.getId()));
+		Query query = Query.query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}
@@ -130,14 +130,14 @@ public class ItemManagerImpl implements ItemManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(ReceiptEntity receipt) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-		mongoTemplate.remove(new Query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
+		mongoTemplate.remove(Query.query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
 	}
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<String> findItems(String name) {
         Criteria criteria = Criteria.where("name").regex(new StringTokenizer(name).nextToken(), "i");
-        Query query = new Query(criteria);
+        Query query = Query.query(criteria);
 
         //This makes just one of the field populated
         query.fields().include("name");
