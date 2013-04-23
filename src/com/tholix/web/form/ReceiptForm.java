@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web.form;
 
@@ -18,18 +18,18 @@ import com.tholix.utils.Formatter;
 /**
  * @author hitender
  * @when Jan 7, 2013 9:30:32 AM
- * 
- * This is a Form Backing Object (FBO) for showing the receipt and its items 
+ *
+ * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
 public class ReceiptForm {
 	ReceiptEntityOCR receipt;
-	List<ItemEntityOCR> items;	
-	
+	List<ItemEntityOCR> items;
+
 	/**
 	 * Need for bean instantiation in ReceiptUpdateForm
 	 */
 	private ReceiptForm() {
-		
+
 	}
 
 	private ReceiptForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
@@ -41,7 +41,7 @@ public class ReceiptForm {
 	public static ReceiptForm newInstance(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
 		return new ReceiptForm(receipt, items);
 	}
-	
+
 	public static ReceiptForm newInstance() {
 		return new ReceiptForm();
 	}
@@ -66,36 +66,36 @@ public class ReceiptForm {
 	public String toString() {
 		return "ReceiptForm [receipt=" + receipt + ", items=" + items + "]";
 	}
-	
+
 	public ReceiptEntity getReceiptEntity() throws NumberFormatException, Exception {
-		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(receipt.getTitle(), DateUtil.getDateFromString(receipt.getReceiptDate()), 
-										Formatter.getCurrencyFormatted(receipt.getTotal()), Formatter.getCurrencyFormatted(receipt.getTax()), 
-										receipt.getDescription(), ReceiptStatusEnum.TURK_PROCESSED, receipt.getReceiptBlobId(), 
+		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(DateUtil.getDateFromString(receipt.getReceiptDate()),
+										Formatter.getCurrencyFormatted(receipt.getTotal()), Formatter.getCurrencyFormatted(receipt.getTax()),
+										receipt.getDescription(), ReceiptStatusEnum.TURK_PROCESSED, receipt.getReceiptBlobId(),
 										receipt.getUserProfileId());
 		receiptEntity.setCreated(receipt.getCreated());
 		receiptEntity.setUpdated();
 		return receiptEntity;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param receipt - Required receipt with Id
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException {
 		List<ItemEntity> listOfItems = new ArrayList<ItemEntity>();
-		
+
 		for(ItemEntityOCR item : items) {
 			if(item.getName().length() != 0) {
 				ItemEntity ie = ItemEntity.newInstance(item.getName(), Formatter.getCurrencyFormatted(item.getPrice()), item.getTaxed(), item.getSequence(), receipt, receipt.getUserProfileId());
 				ie.setCreated(item.getCreated());
 				ie.setUpdated();
-				
+
 				listOfItems.add(ie);
 			}
 		}
-		
+
 		return listOfItems;
 	}
 }

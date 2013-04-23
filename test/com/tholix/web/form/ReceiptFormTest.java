@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web.form;
 
@@ -21,13 +21,13 @@ import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.TaxEnum;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 19, 2013 7:02:05 PM
  *
  */
 public class ReceiptFormTest {
 	private ReceiptEntityOCR receipt;
-	private List<ItemEntityOCR> items;	
+	private List<ItemEntityOCR> items;
 	private ReceiptForm receiptForm;
 	private ReceiptEntity receiptEntity;
 
@@ -36,13 +36,13 @@ public class ReceiptFormTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		receipt = ReceiptEntityOCR.newInstance(BaseTest.title, BaseTest.receiptDate, BaseTest.total, BaseTest.tax, 
-					BaseTest.description, BaseTest.receiptStatus, BaseTest.receiptBlobId, BaseTest.userProfileId); 
-		
+		receipt = ReceiptEntityOCR.newInstance(BaseTest.receiptDate, BaseTest.total, BaseTest.tax,
+					BaseTest.description, BaseTest.receiptStatus, BaseTest.receiptBlobId, BaseTest.userProfileId);
+
 		items = new ArrayList<ItemEntityOCR>();
-		items.add(ItemEntityOCR.newInstance("Item1", "80.00", TaxEnum.TAXED, 1, receipt, BaseTest.userProfileId));	
-		
-		receiptForm = ReceiptForm.newInstance(receipt, items);		
+		items.add(ItemEntityOCR.newInstance("Item1", "80.00", TaxEnum.TAXED, 1, receipt, BaseTest.userProfileId));
+
+		receiptForm = ReceiptForm.newInstance(receipt, items);
 		receiptEntity = receiptForm.getReceiptEntity();
 	}
 
@@ -136,7 +136,7 @@ public class ReceiptFormTest {
 		} catch (Exception e) {
 			assertNotSame("Encountered exception " + e.getLocalizedMessage(), e, null);
 			fail("Encountered exception " + e.getLocalizedMessage());
-		} 
+		}
 	}
 
 	/**

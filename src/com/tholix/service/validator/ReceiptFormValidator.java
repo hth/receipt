@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service.validator;
 
@@ -17,7 +17,7 @@ import com.tholix.utils.Formatter;
 import com.tholix.web.form.ReceiptForm;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Jan 10, 2013 10:00:24 PM
  *
  */
@@ -31,18 +31,18 @@ public class ReceiptFormValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		log.info("Executing validation for new receiptForm");	
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.title", "field.required", new Object[] { "Title" });
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.receiptDate", "field.required", new Object[] { "Date" });
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.total", "field.required", new Object[] { "Total" });
-		
-		ReceiptForm receiptForm = (ReceiptForm) obj;		
+		log.info("Executing validation for new receiptForm");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.bizName.name",   "field.required", new Object[] { "Name" });
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.receiptDate",    "field.required", new Object[] { "Date" });
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.total",          "field.required", new Object[] { "Total" });
+
+		ReceiptForm receiptForm = (ReceiptForm) obj;
 		try {
 			DateUtil.getDateFromString(receiptForm.getReceipt().getReceiptDate());
 		} catch(Exception exce) {
 			errors.rejectValue("receipt.receiptDate", "field.date", new Object[] { receiptForm.getReceipt().getReceiptDate() }, "Unsupported date format");
 		}
-		
+
 		int count = 0;
 		for(ItemEntityOCR item : receiptForm.getItems()) {
 			if(!item.getName().isEmpty()) {
@@ -54,7 +54,7 @@ public class ReceiptFormValidator implements Validator {
 				count++;
 			}
 		}
-		
+
 		if(!receiptForm.getReceipt().getTotal().isEmpty()) {
 			try {
 				Formatter.getCurrencyFormatted(receiptForm.getReceipt().getTotal());

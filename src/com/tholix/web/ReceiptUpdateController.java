@@ -82,14 +82,14 @@ public class ReceiptUpdateController {
 	@RequestMapping(value = "/receiptupdate", method = RequestMethod.POST)
 	public String post(@ModelAttribute("receiptForm") ReceiptForm receiptForm, BindingResult result) {
         DateTime time = DateUtil.now();
-        log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getTitle());
+        log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getBizName().getName());
 		receiptFormValidator.validate(receiptForm, result);
 		if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return nextPage;
 		} else {
 			ReceiptEntity receipt = null;
-			List<ItemEntity> items = null;
+			List<ItemEntity> items;
 			try {
 				receipt = receiptForm.getReceiptEntity();
 				receiptManager.save(receipt);

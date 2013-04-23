@@ -74,7 +74,7 @@
         }
 
         $(document).ready(function() {
-            $( "#title" ).autocomplete({
+            $( "#bizName" ).autocomplete({
                 source: "${pageContext. request. contextPath}/fetcher/find_company.htm"
             });
 
@@ -123,6 +123,7 @@
                         <form:form method="post" action="receiptupdate.htm" modelAttribute="receiptForm">
                             <form:hidden path="receipt.receiptBlobId"/>
                             <form:hidden path="receipt.id"/>
+                            <form:hidden path="receipt.description"/>
                             <form:hidden path="receipt.userProfileId"/>
                             <form:hidden path="receipt.receiptOCRTranslation"/>
                             <form:hidden path="receipt.version"/>
@@ -130,8 +131,8 @@
                                 <tr>
                                     <td colspan="4">
                                         <div class="leftAlign">
-                                            <form:label for="receipt.title" path="receipt.title" cssErrorClass="error">Title</form:label>
-                                            <form:input path="receipt.title" id="title" size="32"/>
+                                            <form:label for="receipt.bizName.name" path="receipt.bizName.name" cssErrorClass="error">Biz Name</form:label>
+                                            <form:input path="receipt.bizName.name" id="bizName" size="32"/>
                                         </div>
                                         <div class="rightAlign">
                                             <form:label for="receipt.receiptDate" path="receipt.receiptDate" cssErrorClass="error">Date</form:label>
@@ -141,8 +142,20 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">
-                                        <div class="leftAlign"><form:errors path="receipt.title" cssClass="error" /></div>
+                                        <div class="leftAlign"><form:errors path="receipt.bizName.name" cssClass="error" /></div>
                                         <div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="leftAlign">
+                                            <form:label for="receipt.bizStore.address" path="receipt.bizStore.address" cssErrorClass="error">Address : </form:label>
+                                            <form:input path="receipt.bizStore.address" id="address" size="60"/>
+                                        </div>
+                                        <div class="rightAlign">
+                                            <form:label for="receipt.bizStore.phone" path="receipt.bizStore.phone" cssErrorClass="error">Phone: </form:label>
+                                            <form:input path="receipt.bizStore.phone" id="phone" size="20"/>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

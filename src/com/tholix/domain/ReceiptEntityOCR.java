@@ -3,6 +3,8 @@
  */
 package com.tholix.domain;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,11 +30,6 @@ public class ReceiptEntityOCR extends BaseEntity {
 	 */
 	@Size(min = 0, max = 128)
 	private String description;
-
-    //TODO substitute with location.name
-	@NotNull
-	@Size(min = 1, max = 128)
-	private String title;
 
 	@NotNull
 	private ReceiptStatusEnum receiptStatus;
@@ -65,9 +62,8 @@ public class ReceiptEntityOCR extends BaseEntity {
 
 	}
 
-	private ReceiptEntityOCR(String title, String receiptDate, String total, String tax) {
+	private ReceiptEntityOCR(String receiptDate, String total, String tax) {
 		super();
-		this.title = title;
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
@@ -82,10 +78,9 @@ public class ReceiptEntityOCR extends BaseEntity {
 		this.receiptOCRTranslation = receiptOCRTranslation;
 	}
 
-	private ReceiptEntityOCR(String title, String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
+	private ReceiptEntityOCR(String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
 			String userProfileId) {
 		super();
-		this.title = title;
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
@@ -98,23 +93,22 @@ public class ReceiptEntityOCR extends BaseEntity {
 	/**
 	 * This method is used when the Entity is created for the first time.
 	 *
-	 * @param title
 	 * @param receiptDate
 	 * @param total
 	 * @param tax
 	 * @return
 	 */
-	public static ReceiptEntityOCR updateInstance(String title, String receiptDate, String total, String tax) {
-		return new ReceiptEntityOCR(title, receiptDate, total, tax);
+	public static ReceiptEntityOCR updateInstance(String receiptDate, String total, String tax) {
+		return new ReceiptEntityOCR(receiptDate, total, tax);
 	}
 
 	public static ReceiptEntityOCR newInstance(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
 		return new ReceiptEntityOCR(description, receiptStatus, receiptBlobId, userProfileId, receiptOCRTranslation);
 	}
 
-	public static ReceiptEntityOCR newInstance(String title, String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus,
+	public static ReceiptEntityOCR newInstance(String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus,
 			String receiptBlobId, String userProfileId) {
-		return new ReceiptEntityOCR(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		return new ReceiptEntityOCR(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
 	}
 
 	public static ReceiptEntityOCR newInstance() {
@@ -127,14 +121,6 @@ public class ReceiptEntityOCR extends BaseEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public ReceiptStatusEnum getReceiptStatus() {
@@ -210,10 +196,7 @@ public class ReceiptEntityOCR extends BaseEntity {
     }
 
     @Override
-	public String toString() {
-		return "ReceiptEntityOCR [description=" + description + ", title=" + title + ", receiptStatus=" + receiptStatus + ", receiptBlobId=" + receiptBlobId + ", receiptDate="
-				+ receiptDate + ", total=" + total + ", tax=" + tax + ", userProfileId=" + userProfileId + ", receiptOCRTranslation=" + receiptOCRTranslation + "]";
-	}
-
-
+    public String toString() {
+        return Objects.toString(this);
+    }
 }

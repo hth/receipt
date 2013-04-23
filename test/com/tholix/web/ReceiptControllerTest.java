@@ -98,7 +98,7 @@ public class ReceiptControllerTest {
 		InputStream inputStream = FileUtils.openInputStream(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/20130112_164807.jpg"));
 		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
 
-		ReceiptEntity receipt = ReceiptEntity.newInstance(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		ReceiptEntity receipt = ReceiptEntity.newInstance(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
 		receiptManager.save(receipt);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");
@@ -143,7 +143,7 @@ public class ReceiptControllerTest {
 		InputStream inputStream = FileUtils.openInputStream(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/20130112_164807.jpg"));
 		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
 
-		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
 		receiptManager.save(receiptEntity);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receiptEntity, "test@test.com");

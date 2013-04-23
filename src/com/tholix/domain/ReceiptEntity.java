@@ -4,6 +4,7 @@
 package com.tholix.domain;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,11 +37,6 @@ public class ReceiptEntity extends BaseEntity {
 	 */
 	@Size(min = 0, max = 128)
 	private String description;
-
-    //TODO substitute with location.name
-	@NotNull
-	@Size(min = 1, max = 128)
-	private String title;
 
 	@NotNull
 	private ReceiptStatusEnum receiptStatus;
@@ -81,9 +77,8 @@ public class ReceiptEntity extends BaseEntity {
 
 	}
 
-	private ReceiptEntity(String title, Date receiptDate, Double total, Double tax) {
+	private ReceiptEntity(Date receiptDate, Double total, Double tax) {
 		super();
-		this.title = title;
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
@@ -97,9 +92,8 @@ public class ReceiptEntity extends BaseEntity {
 		this.userProfileId = userProfileId;
 	}
 
-	private ReceiptEntity(String title, Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	private ReceiptEntity(Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
 		super();
-		this.title = title;
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
@@ -117,14 +111,13 @@ public class ReceiptEntity extends BaseEntity {
 	/**
 	 * This method is used when the Entity is created for the first time.
 	 *
-	 * @param title
 	 * @param receiptDate
 	 * @param total
 	 * @param tax
 	 * @return
 	 */
-	public static ReceiptEntity updateInstance(String title, Date receiptDate, Double total, Double tax) {
-		return new ReceiptEntity(title, receiptDate, total, tax);
+	public static ReceiptEntity updateInstance(Date receiptDate, Double total, Double tax) {
+		return new ReceiptEntity(receiptDate, total, tax);
 	}
 
 	public static ReceiptEntity newInstance(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
@@ -134,7 +127,6 @@ public class ReceiptEntity extends BaseEntity {
 	/**
 	 * Use this method to create the Entity for OCR Entity
 	 *
-	 * @param title
 	 * @param receiptDate
 	 * @param total
 	 * @param tax
@@ -144,9 +136,9 @@ public class ReceiptEntity extends BaseEntity {
 	 * @param userProfileId
 	 * @return
 	 */
-	public static ReceiptEntity newInstance(String title, Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
+	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
 			String userProfileId) {
-		return new ReceiptEntity(title, receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		return new ReceiptEntity(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
 	}
 
 	public static ReceiptEntity newInstance() {
@@ -159,14 +151,6 @@ public class ReceiptEntity extends BaseEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public ReceiptStatusEnum getReceiptStatus() {
@@ -248,11 +232,7 @@ public class ReceiptEntity extends BaseEntity {
     }
 
     @Override
-	public String toString() {
-		return "ReceiptEntity [title=" + title + ", receiptDate=" + receiptDate + ", year=" + year + ", month=" + month
-				+ ", day=" + day + ", total=" + total + ", tax=" + tax
-				+ "]";
-	}
-
-
+    public String toString() {
+        return Objects.toString(this);
+    }
 }

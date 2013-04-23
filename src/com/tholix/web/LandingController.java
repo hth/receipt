@@ -256,37 +256,37 @@ public class LandingController extends BaseController {
     private void populate(UserProfileEntity userProfile) {
 
 		try {
-			// Item from Barnes and Noble
-			ReceiptEntity receipt = ReceiptEntity.updateInstance("Barnes & Noble Booksellers #1944", DateUtil.getDateFromString("12/15/2012 02:13PM"), 8.13, 0.63);
-			receipt.setDescription("Item from Barnes and Noble");
-			receipt.setUserProfileId(userProfile.getId());
-			receipt.setReceiptBlobId("1");
-			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-			receiptManager.save(receipt);
-			log.info("Receipt Id: " + receipt.getId());
-
-			ItemEntity item1 = ItemEntity.newInstance("1 Marble Moc Macchia Tall", 3.75, TaxEnum.TAXED, 1, receipt, userProfile.getId());
-			itemManager.save(item1);
-			ItemEntity item2 = ItemEntity.newInstance("1 Car Brulee Latte Tall", 3.75, TaxEnum.TAXED, 2, receipt, userProfile.getId());
-			itemManager.save(item2);
-
-			// Item from Lucky
-			receipt = ReceiptEntity.updateInstance("Lucky", DateUtil.getDateFromString("12/25/12 16:54:57"), 14.61, .34);
-			receipt.setDescription("Item from Lucky");
-			receipt.setUserProfileId(userProfile.getId());
-			receipt.setReceiptBlobId("2");
-			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-			receiptManager.save(receipt);
-			log.info("Receipt Id: " + receipt.getId());
-
-			item1 = ItemEntity.newInstance("1 SANTA HT LEOPARD", 4.00, TaxEnum.TAXED, 1, receipt, userProfile.getId());
-			itemManager.save(item1);
-			item2 = ItemEntity.newInstance("1 CUPCAKES 6C UNICED", 2.99, TaxEnum.NOT_TAXED, 2, receipt, userProfile.getId());
-			itemManager.save(item2);
-			ItemEntity item3 = ItemEntity.newInstance("1 DBK CNMN STRSL SLC", 3.99, TaxEnum.NOT_TAXED, 3, receipt, userProfile.getId());
-			itemManager.save(item3);
-			ItemEntity item4 = ItemEntity.newInstance("1 GRACE WHL CLV GRLC", 3.29, TaxEnum.NOT_TAXED, 4, receipt, userProfile.getId());
-			itemManager.save(item4);
+//			// Item from Barnes and Noble
+//			ReceiptEntity receipt = ReceiptEntity.updateInstance("Barnes & Noble Booksellers #1944", DateUtil.getDateFromString("12/15/2012 02:13PM"), 8.13, 0.63);
+//			receipt.setDescription("Item from Barnes and Noble");
+//			receipt.setUserProfileId(userProfile.getId());
+//			receipt.setReceiptBlobId("1");
+//			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+//			receiptManager.save(receipt);
+//			log.info("Receipt Id: " + receipt.getId());
+//
+//			ItemEntity item1 = ItemEntity.newInstance("1 Marble Moc Macchia Tall", 3.75, TaxEnum.TAXED, 1, receipt, userProfile.getId());
+//			itemManager.save(item1);
+//			ItemEntity item2 = ItemEntity.newInstance("1 Car Brulee Latte Tall", 3.75, TaxEnum.TAXED, 2, receipt, userProfile.getId());
+//			itemManager.save(item2);
+//
+//			// Item from Lucky
+//			receipt = ReceiptEntity.updateInstance("Lucky", DateUtil.getDateFromString("12/25/12 16:54:57"), 14.61, .34);
+//			receipt.setDescription("Item from Lucky");
+//			receipt.setUserProfileId(userProfile.getId());
+//			receipt.setReceiptBlobId("2");
+//			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+//			receiptManager.save(receipt);
+//			log.info("Receipt Id: " + receipt.getId());
+//
+//			item1 = ItemEntity.newInstance("1 SANTA HT LEOPARD", 4.00, TaxEnum.TAXED, 1, receipt, userProfile.getId());
+//			itemManager.save(item1);
+//			item2 = ItemEntity.newInstance("1 CUPCAKES 6C UNICED", 2.99, TaxEnum.NOT_TAXED, 2, receipt, userProfile.getId());
+//			itemManager.save(item2);
+//			ItemEntity item3 = ItemEntity.newInstance("1 DBK CNMN STRSL SLC", 3.99, TaxEnum.NOT_TAXED, 3, receipt, userProfile.getId());
+//			itemManager.save(item3);
+//			ItemEntity item4 = ItemEntity.newInstance("1 GRACE WHL CLV GRLC", 3.29, TaxEnum.NOT_TAXED, 4, receipt, userProfile.getId());
+//			itemManager.save(item4);
 
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage());
