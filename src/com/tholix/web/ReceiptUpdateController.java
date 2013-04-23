@@ -23,6 +23,8 @@ import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.service.BizNameManager;
+import com.tholix.service.BizStoreManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
 import com.tholix.service.ReceiptManager;
@@ -51,6 +53,9 @@ public class ReceiptUpdateController {
 	@Autowired private ItemOCRManager itemOCRManager;
 	@Autowired private ReceiptFormValidator receiptFormValidator;
     @Autowired private MessageManager messageManager;
+    @Autowired private BizNameManager bizNameManager;
+    @Autowired private BizStoreManager bizStoreManager;
+    @Autowired private AdminLandingController adminLandingController;
 
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder) {
@@ -92,12 +97,14 @@ public class ReceiptUpdateController {
 			List<ItemEntity> items;
 			try {
 				receipt = receiptForm.getReceiptEntity();
+                adminLandingController.saveNewBusinessAndOrStore(receipt);
 				receiptManager.save(receipt);
 				items = receiptForm.getItemEntity(receipt);
 				itemManager.saveObjects(items);
 
 				ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
 				receiptEntityOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+                adminLandingController.saveNewBusinessAndOrStore(receiptEntityOCR);
 				receiptOCRManager.save(receiptEntityOCR);
 
                 try {

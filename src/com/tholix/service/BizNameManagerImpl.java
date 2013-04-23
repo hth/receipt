@@ -46,8 +46,8 @@ public class BizNameManagerImpl implements BizNameManager {
     }
 
     @Override
-    public BizNameEntity findOne(String columnName, String value) {
-        Criteria criteria = Criteria.where(columnName).is(value);
+    public BizNameEntity findOneByName(String name) {
+        Criteria criteria = Criteria.where("name").is(name);
         return mongoTemplate.findOne(Query.query(criteria), BizNameEntity.class, TABLE);
     }
 

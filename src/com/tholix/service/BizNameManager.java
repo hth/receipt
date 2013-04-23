@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.BizNameEntity;
-import com.tholix.domain.BusinessEntity;
 
 /**
  * User: hitender
@@ -21,11 +20,10 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     /**
      * Find one Biz Name for the supplied value for the column name
      *
-     * @param columnName
-     * @param value
+     * @param name
      * @return
      */
-    BizNameEntity findOne(String columnName, String value);
+    BizNameEntity findOneByName(String name);
 
     /**
      * Find all the Business with name

@@ -68,12 +68,16 @@ public class ReceiptForm {
 	}
 
 	public ReceiptEntity getReceiptEntity() throws NumberFormatException, Exception {
+        //TODO this code has to be redone as it just diffcult to understand after a while
 		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(DateUtil.getDateFromString(receipt.getReceiptDate()),
 										Formatter.getCurrencyFormatted(receipt.getTotal()), Formatter.getCurrencyFormatted(receipt.getTax()),
 										receipt.getDescription(), ReceiptStatusEnum.TURK_PROCESSED, receipt.getReceiptBlobId(),
 										receipt.getUserProfileId());
 		receiptEntity.setCreated(receipt.getCreated());
 		receiptEntity.setUpdated();
+
+        receiptEntity.setBizName(receipt.getBizName());
+        receiptEntity.setBizStore(receipt.getBizStore());
 		return receiptEntity;
 	}
 
@@ -92,6 +96,7 @@ public class ReceiptForm {
 				ie.setCreated(item.getCreated());
 				ie.setUpdated();
 
+                ie.setBizName(receipt.getBizName());
 				listOfItems.add(ie);
 			}
 		}

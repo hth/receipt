@@ -72,4 +72,11 @@ public class BizStoreManagerImpl implements BizStoreManager {
     public BizStoreEntity noStore() {
         return mongoTemplate.findOne(Query.query(Criteria.where("address").is("")), BizStoreEntity.class, TABLE);
     }
+
+    public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
+        Criteria criteriaA = Criteria.where("address").is(bizStoreEntity.getAddress());
+        Criteria criteriaB = Criteria.where("phone").is(bizStoreEntity.getPhone());
+
+        return mongoTemplate.findOne(Query.query(criteriaA).addCriteria(criteriaB), BizStoreEntity.class, TABLE);
+    }
 }

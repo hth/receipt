@@ -22,6 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.BizStoreEntity;
+import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
@@ -86,25 +89,13 @@ public class AdminLandingController {
     @RequestMapping(value = "/addBusiness", method = RequestMethod.POST)
     public ModelAndView addBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result) {
         DateTime time = DateUtil.now();
-        BizNameEntity bizName = bizNameManager.findOne("name", bizForm.getBizName().getName());
-        if(bizName == null) {
-            try {
-                bizNameManager.save(bizForm.getBizName());
-                bizForm.getBizStore().setBizName(bizForm.getBizName());
-                bizStoreManager.save(bizForm.getBizStore());
-            } catch (Exception e) {
-                //TODO add condition
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        } else {
-            bizForm.getBizStore().setBizName(bizName);
-            try {
-                bizStoreManager.save(bizForm.getBizStore());
-            } catch (Exception e) {
-                //TODO add condition
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
+        //TODO add validation logic
+
+        ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
+        receiptEntity.setBizName(bizForm.getBizName());
+        receiptEntity.setBizStore(bizForm.getBizStore());
+
+        saveNewBusinessAndOrStore(receiptEntity);
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
@@ -114,7 +105,83 @@ public class AdminLandingController {
         return modelAndView;
     }
 
-	/**
+    /**
+     * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
+     * @param receiptEntity
+     */
+    protected void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) {
+        BizNameEntity bizNameEntity = receiptEntity.getBizName();
+        BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
+
+        BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getName());
+        if(bizName == null) {
+            try {
+                bizNameManager.save(bizNameEntity);
+                bizStoreEntity.setBizName(bizNameEntity);
+                bizStoreManager.save(bizStoreEntity);
+            } catch (Exception e) {
+                //TODO add condition
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        } else {
+            BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
+            if(bizStore == null) {
+                try {
+                    bizStoreEntity.setBizName(bizName);
+                    bizStoreManager.save(bizStoreEntity);
+                } catch (Exception e) {
+                    //TODO add condition
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+
+
+            //This is used by Receipt update  process and not by Admin
+            receiptEntity.setBizName(bizName);
+            receiptEntity.setBizStore(bizStore);
+        }
+    }
+
+    /**
+     * //TODO merge receipt and receiptOCR. This will eliminate such duplicate code
+     *
+     * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
+     * @param receiptEntity
+     */
+    protected void saveNewBusinessAndOrStore(ReceiptEntityOCR receiptEntity) {
+        BizNameEntity bizNameEntity = receiptEntity.getBizName();
+        BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
+
+        BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getName());
+        if(bizName == null) {
+            try {
+                bizNameManager.save(bizNameEntity);
+                bizStoreEntity.setBizName(bizNameEntity);
+                bizStoreManager.save(bizStoreEntity);
+            } catch (Exception e) {
+                //TODO add condition
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        } else {
+            BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
+            if(bizStore == null) {
+                try {
+                    bizStoreEntity.setBizName(bizName);
+                    bizStoreManager.save(bizStoreEntity);
+                } catch (Exception e) {
+                    //TODO add condition
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+
+
+            //This is used by Receipt update  process and not by Admin
+            receiptEntity.setBizName(bizName);
+            receiptEntity.setBizStore(bizStore);
+        }
+    }
+
+    /**
 	 * This method is called from AJAX to get the matching list of users in the system
 	 *
 	 * @param name
