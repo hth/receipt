@@ -72,7 +72,10 @@ public class ReceiptEntity extends BaseEntity {
 	private String userProfileId;
 
     @DBRef
-    private Location location;
+    private BizNameEntity bizName;
+
+    @DBRef
+    private BizStoreEntity bizStore;
 
 	public ReceiptEntity() {
 
@@ -228,7 +231,23 @@ public class ReceiptEntity extends BaseEntity {
 		this.userProfileId = userProfileId;
 	}
 
-	@Override
+    public BizNameEntity getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(BizNameEntity bizName) {
+        this.bizName = bizName;
+    }
+
+    public BizStoreEntity getBizStore() {
+        return bizStore;
+    }
+
+    public void setBizStore(BizStoreEntity bizStore) {
+        this.bizStore = bizStore;
+    }
+
+    @Override
 	public String toString() {
 		return "ReceiptEntity [title=" + title + ", receiptDate=" + receiptDate + ", year=" + year + ", month=" + month
 				+ ", day=" + day + ", total=" + total + ", tax=" + tax

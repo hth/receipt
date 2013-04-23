@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import org.joda.time.DateTime;
 
+import com.tholix.service.BizNameManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.utils.DateUtil;
@@ -33,10 +34,12 @@ public class FetcherController {
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ItemManager itemManager;
 
+    @Autowired private BizNameManager bizNameManager;
+
     @RequestMapping(value = "/find_company", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> findBusinessTitle(@RequestParam("term") String name) {
-        return findTitles(name);
+    List<String> findBiz(@RequestParam("term") String bizName) {
+        return findBizName(bizName);
     }
 
     @RequestMapping(value = "/find_item", method = RequestMethod.GET)
@@ -48,13 +51,13 @@ public class FetcherController {
     /**
      * This method is called from AJAX to get the matching list of users in the system
      *
-     * @param title
+     * @param bizName
      * @return
      */
-    private List<String> findTitles(String title) {
+    private List<String> findBizName(String bizName) {
         DateTime time = DateUtil.now();
-        log.info("Search string for business name: " + title);
-        List<String> titles = receiptManager.findTitles(title);
+        log.info("Search string for business name: " + bizName);
+        List<String> titles = bizNameManager.findAllBizStr(bizName);
         log.info("found business.. total size " + titles.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return titles;

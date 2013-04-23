@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.utils;
 
@@ -19,11 +19,11 @@ import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.TaxEnum;
 
 /**
- * Parses the data from OCR 
- * 
+ * Parses the data from OCR
+ *
  * @author hitender
  * @when Jan 6, 2013 9:49:59 AM
- * 
+ *
  */
 public final class ReceiptParser {
 	private static final Logger log = Logger.getLogger(ReceiptParser.class);
@@ -57,7 +57,7 @@ public final class ReceiptParser {
 	private static ItemEntityOCR processItem(String itemString, int sequence, ReceiptEntityOCR receipt) {
 		String name = itemString.substring(0, itemString.lastIndexOf("\t") + 1);
 		p(name);
-		
+
 		//Used for global name. This is hidden from user.
 		//String globalName = name.replaceAll("[^A-Za-z ]", "").replaceAll("\\s+", " ");
 		//p("'" + globalName.trim() + "'");
@@ -66,6 +66,7 @@ public final class ReceiptParser {
 		p(price);
 
 		ItemEntityOCR item = ItemEntityOCR.newInstance(name.trim(), price.trim(), TaxEnum.NOT_TAXED, sequence, receipt, receipt.getUserProfileId());
+        item.setBizName(receipt.getBizName());
 		return item;
 	}
 

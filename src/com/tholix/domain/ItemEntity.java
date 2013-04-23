@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -17,10 +17,10 @@ import com.tholix.domain.types.TaxEnum;
 
 /**
  * Represents each individual item on a receipt.
- * 
+ *
  * @author hitender
  * @when Dec 25, 2012 11:43:10 PM
- * 
+ *
  */
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
 @Document(collection = "ITEM")
@@ -35,7 +35,7 @@ public class ItemEntity extends BaseEntity {
 	private Double price;
 
 	@NotNull
-	private TaxEnum taxed = TaxEnum.NOT_TAXED;	
+	private TaxEnum taxed = TaxEnum.NOT_TAXED;
 
 	@NotNull
 	private int sequence;
@@ -45,9 +45,12 @@ public class ItemEntity extends BaseEntity {
 
 	@NotNull
 	private String userProfileId;
-	
+
+    @DBRef
+    private BizNameEntity bizName;
+
 	public ItemEntity() {
-		
+
 	}
 
 	private ItemEntity(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
@@ -62,7 +65,7 @@ public class ItemEntity extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param quantity
 	 * @param name
 	 * @param price
@@ -123,7 +126,15 @@ public class ItemEntity extends BaseEntity {
 		this.userProfileId = userProfileId;
 	}
 
-	@Override
+    public BizNameEntity getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(BizNameEntity bizName) {
+        this.bizName = bizName;
+    }
+
+    @Override
 	public String toString() {
 		return "ItemEntity [name=" + name + ", price=" + price + ", taxed=" + taxed + "]";
 	}

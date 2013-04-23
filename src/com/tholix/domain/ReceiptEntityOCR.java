@@ -56,7 +56,10 @@ public class ReceiptEntityOCR extends BaseEntity {
 	private String receiptOCRTranslation;
 
     @DBRef
-    private Location location;
+    private BizNameEntity bizName;
+
+    @DBRef
+    private BizStoreEntity bizStore;
 
 	public ReceiptEntityOCR() {
 
@@ -190,7 +193,23 @@ public class ReceiptEntityOCR extends BaseEntity {
 		this.receiptOCRTranslation = receiptOCRTranslation;
 	}
 
-	@Override
+    public BizNameEntity getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(BizNameEntity bizName) {
+        this.bizName = bizName;
+    }
+
+    public BizStoreEntity getBizStore() {
+        return bizStore;
+    }
+
+    public void setBizStore(BizStoreEntity bizStore) {
+        this.bizStore = bizStore;
+    }
+
+    @Override
 	public String toString() {
 		return "ReceiptEntityOCR [description=" + description + ", title=" + title + ", receiptStatus=" + receiptStatus + ", receiptBlobId=" + receiptBlobId + ", receiptDate="
 				+ receiptDate + ", total=" + total + ", tax=" + tax + ", userProfileId=" + userProfileId + ", receiptOCRTranslation=" + receiptOCRTranslation + "]";

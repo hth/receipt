@@ -27,6 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -36,6 +38,8 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
+import com.tholix.service.BizNameManager;
+import com.tholix.service.BizStoreManager;
 import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
 import com.tholix.service.ReceiptManager;
@@ -74,6 +78,8 @@ public class LandingController extends BaseController {
 	@Autowired private ItemOCRManager itemOCRManager;
 	@Autowired private StorageManager storageManager;
 	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
+    @Autowired private BizNameManager bizNameManager;
+    @Autowired private BizStoreManager bizStoreManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage) {
@@ -160,7 +166,13 @@ public class LandingController extends BaseController {
 			receiptBlobId = storageManager.saveFile(uploadReceiptImage);
 			log.info("BolbId: " + receiptBlobId);
 
+            BizNameEntity bizName = bizNameManager.noName();
+            BizStoreEntity bizStore = bizStoreManager.noStore();
+
 			receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);
+            receiptOCR.setBizName(bizName);
+            receiptOCR.setBizStore(bizStore);
+
 			items = new LinkedList<>();
 			ReceiptParser.read(receiptOCRTranslation, receiptOCR, items);
 

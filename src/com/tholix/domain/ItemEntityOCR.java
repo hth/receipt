@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -18,7 +18,7 @@ import com.tholix.domain.types.TaxEnum;
 /**
  * @author hitender
  * @when Jan 6, 2013 1:17:12 PM
- * 
+ *
  */
 @Document(collection = "ITEM_OCR")
 @CompoundIndexes({ @CompoundIndex(name = "user_item_ocr_idx", def = "{'receipt': -1, 'userProfileId': 1}") })
@@ -33,7 +33,7 @@ public class ItemEntityOCR extends BaseEntity {
 
 	@NotNull
 	private TaxEnum taxed = TaxEnum.NOT_TAXED;
-	
+
 	@NotNull
 	private int sequence;
 
@@ -42,10 +42,13 @@ public class ItemEntityOCR extends BaseEntity {
 
 	@NotNull
 	private String userProfileId;
-	
+
+    @DBRef
+    private BizNameEntity bizName;
+
 	/** To keep spring happy in recreating the bean from form during submit action */
 	public ItemEntityOCR() {
-		
+
 	}
 
 	private ItemEntityOCR(String name, String price, TaxEnum taxed, int sequence, ReceiptEntityOCR receipt, String userProfileId) {
@@ -60,7 +63,7 @@ public class ItemEntityOCR extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param name
 	 * @param price
 	 * @param taxed
@@ -94,7 +97,7 @@ public class ItemEntityOCR extends BaseEntity {
 
 	public void setTaxed(TaxEnum taxed) {
 		this.taxed = taxed;
-	}	
+	}
 
 	public int getSequence() {
 		return sequence;
@@ -120,7 +123,15 @@ public class ItemEntityOCR extends BaseEntity {
 		this.userProfileId = userProfileId;
 	}
 
-	@Override
+    public BizNameEntity getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(BizNameEntity bizName) {
+        this.bizName = bizName;
+    }
+
+    @Override
 	public String toString() {
 		return "ItemEntity [name=" + name + ", price=" + price + ", taxed=" + taxed + "]";
 	}
