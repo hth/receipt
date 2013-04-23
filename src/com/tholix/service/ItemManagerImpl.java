@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
+import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 
@@ -40,6 +41,7 @@ public class ItemManagerImpl implements ItemManager {
 	private static final long serialVersionUID = 5734660649481504610L;
 
 	@Autowired private MongoTemplate mongoTemplate;
+    @Autowired private BizNameManager bizNameManager;
 
 	@Override
 	public List<ItemEntity> getAllObjects() {
@@ -135,9 +137,17 @@ public class ItemManagerImpl implements ItemManager {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
-    public List<String> findItems(String name) {
-        Criteria criteria = Criteria.where("name").regex(new StringTokenizer(name).nextToken(), "i");
-        Query query = Query.query(criteria);
+    public List<String> findItems(String name, String bizName) {
+        Criteria criteriaI = Criteria.where("name").regex(new StringTokenizer(name).nextToken(), "i");
+        Query query;
+
+        BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
+        if(bizNameEntity == null) {
+            query = Query.query(criteriaI);
+        } else {
+            Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
+            query = Query.query(criteriaI).addCriteria(criteriaB);
+        }
 
         //This makes just one of the field populated
         query.fields().include("name");

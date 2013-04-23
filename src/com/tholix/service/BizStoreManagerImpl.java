@@ -1,5 +1,6 @@
 package com.tholix.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
+import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.BizStoreEntity;
 
 /**
@@ -78,5 +80,31 @@ public class BizStoreManagerImpl implements BizStoreManager {
         Criteria criteriaB = Criteria.where("phone").is(bizStoreEntity.getPhone());
 
         return mongoTemplate.findOne(Query.query(criteriaA).addCriteria(criteriaB), BizStoreEntity.class, TABLE);
+    }
+
+    @Override
+    public List<BizStoreEntity> findAll(String bizAddress, BizNameEntity bizNameEntity) {
+        Criteria criteriaA = Criteria.where("address").regex(bizAddress, "i");
+        Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
+
+        List<BizStoreEntity> list = mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA), BizStoreEntity.class, TABLE);
+        return list;
+    }
+
+    @Override
+    public List<String> findAllAddress(String bizAddress, BizNameEntity bizNameEntity) {
+        Criteria criteriaA = Criteria.where("address").regex(bizAddress, "i");
+        Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
+
+        Query query = Query.query(criteriaB).addCriteria(criteriaA);
+        query.fields().include("address");
+        List<BizStoreEntity> list = mongoTemplate.find(query, BizStoreEntity.class, TABLE);
+
+        List<String> address = new ArrayList<>();
+        for(BizStoreEntity bizStoreEntity : list) {
+            address.add(bizStoreEntity.getAddress());
+        }
+
+        return address;
     }
 }

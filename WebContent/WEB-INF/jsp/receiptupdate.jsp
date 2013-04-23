@@ -66,13 +66,6 @@
 	</script>
 
     <script type="text/javascript">
-        function split(val) {
-            return val.split(/,\s*/);
-        }
-        function extractLast(term) {
-            return split(term).pop();
-        }
-
         $(document).ready(function() {
             $( "#bizName" ).autocomplete({
                 source: "${pageContext. request. contextPath}/fetcher/find_company.htm"
@@ -81,8 +74,39 @@
         });
 
         $(document).ready(function() {
+            $( "#address" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/fetcher/find_address.htm',
+                        data: {
+                            term: request.term,
+                            extraParam: $("#bizName").val()
+                        },
+                        success: function (data) {
+                            console.log('response=', data);
+                            response(data);
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).ready(function() {
             $( ".items" ).autocomplete({
-                source: "${pageContext. request. contextPath}/fetcher/find_item.htm"
+                source: function (request, response) {
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/fetcher/find_item.htm',
+                        data: {
+                            term: request.term,
+                            extraParam: $("#bizName").val()
+                        },
+                        success: function (data) {
+                            console.log('response=', data);
+                            response(data);
+                        }
+                    });
+                }
             });
 
         });
