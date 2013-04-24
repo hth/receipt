@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "rm.BIZ_STORE", "name" : "_id_" }, { "v" : 1, "key" : { "address" : 1, "phone" : 1 }, "unique" : true, "ns" : "rm.BIZ_STORE", "name" : "biz_store_idx", "dropDups" : false, "sparse" : false } ] }
