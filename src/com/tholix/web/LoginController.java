@@ -23,11 +23,11 @@ import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.UserLoginValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.utils.SHAHashing;
 import com.tholix.web.form.UserLoginForm;
+import com.tholix.web.validator.UserLoginValidator;
 
 /**
  * @author hitender

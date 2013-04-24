@@ -30,10 +30,10 @@ import com.tholix.service.ItemOCRManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.service.ReceiptOCRManager;
 import com.tholix.service.routes.MessageManager;
-import com.tholix.service.validator.ReceiptFormValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.ReceiptForm;
+import com.tholix.web.validator.ReceiptFormValidator;
 
 /**
  * @author hitender

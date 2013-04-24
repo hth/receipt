@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
@@ -19,24 +19,24 @@ import com.tholix.service.ItemManager;
 import com.tholix.service.ItemOCRManager;
 import com.tholix.service.ReceiptManager;
 import com.tholix.service.ReceiptOCRManager;
-import com.tholix.service.validator.ReceiptFormValidator;
+import com.tholix.web.validator.ReceiptFormValidator;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 24, 2013 10:08:19 PM
  *
  */
 public class ReceiptUpdateControllerTest {
-	
+
 	@Autowired private ReceiptManager receiptManager;
 	@Autowired private ItemManager itemManager;
-	@Autowired private ReceiptOCRManager receiptOCRManager;	
+	@Autowired private ReceiptOCRManager receiptOCRManager;
 	@Autowired private ItemOCRManager itemOCRManager;
 	@Autowired private ReceiptFormValidator receiptFormValidator;
-	
+
 	private ReceiptUpdateController controller;
 	private UserSession userSession;
-    
+
     @Mock private BindingResult result;
     @Mock RedirectAttributes redirectAttrs;
 
@@ -46,9 +46,9 @@ public class ReceiptUpdateControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		controller = new ReceiptUpdateController();
-		
+
 		MockitoAnnotations.initMocks(this);
-	    Mockito.when(result.hasErrors()).thenReturn(false);	
+	    Mockito.when(result.hasErrors()).thenReturn(false);
 	}
 
 	/**

@@ -29,8 +29,8 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.UserRegistrationValidator;
 import com.tholix.web.form.UserRegistrationForm;
+import com.tholix.web.validator.UserRegistrationValidator;
 
 /**
  * @author hitender

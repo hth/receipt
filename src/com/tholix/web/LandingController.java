@@ -29,7 +29,6 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.BizStoreEntity;
-import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
@@ -37,7 +36,6 @@ import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.domain.types.TaxEnum;
 import com.tholix.service.BizNameManager;
 import com.tholix.service.BizStoreManager;
 import com.tholix.service.ItemManager;
@@ -46,7 +44,6 @@ import com.tholix.service.ReceiptManager;
 import com.tholix.service.ReceiptOCRManager;
 import com.tholix.service.StorageManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.UploadReceiptImageValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
@@ -54,6 +51,7 @@ import com.tholix.utils.ReceiptParser;
 import com.tholix.web.rest.Base;
 import com.tholix.web.rest.Header;
 import com.tholix.web.rest.LandingView;
+import com.tholix.web.validator.UploadReceiptImageValidator;
 
 /**
  * @author hitender

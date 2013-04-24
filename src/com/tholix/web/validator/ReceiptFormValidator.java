@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tholix.service.validator;
+package com.tholix.web.validator;
 
 import java.text.ParseException;
 

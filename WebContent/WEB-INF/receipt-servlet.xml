@@ -53,9 +53,9 @@
 
     <bean id="userPreferenceManager" class="com.tholix.service.UserPreferenceManagerImpl" />
 
-    <bean id="userRegistrationValidator" class="com.tholix.service.validator.UserRegistrationValidator" />
+    <bean id="userRegistrationValidator" class="com.tholix.web.validator.UserRegistrationValidator" />
 
-    <bean id="userLoginValidator" class="com.tholix.service.validator.UserLoginValidator" />
+    <bean id="userLoginValidator" class="com.tholix.web.validator.UserLoginValidator" />
 
     <bean id="receiptManager" class="com.tholix.service.ReceiptManagerImpl" />
 
@@ -67,9 +67,9 @@
 
     <bean id="itemFeatureManager" class="com.tholix.service.ItemFeatureManagerImpl" />
 
-    <bean id="uploadReceiptImageValidator" class="com.tholix.service.validator.UploadReceiptImageValidator" />
+    <bean id="uploadReceiptImageValidator" class="com.tholix.web.validator.UploadReceiptImageValidator" />
 
-    <bean id="receiptFormValidator" class="com.tholix.service.validator.ReceiptFormValidator" />
+    <bean id="receiptFormValidator" class="com.tholix.web.validator.ReceiptFormValidator" />
 
     <bean id="messageManager" class="com.tholix.service.routes.MessageManagerImpl" />
     <!-- ===================================== -->

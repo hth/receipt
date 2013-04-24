@@ -25,11 +25,11 @@ import com.tholix.domain.UserSession;
 import com.tholix.service.UserAuthenticationManager;
 import com.tholix.service.UserPreferenceManager;
 import com.tholix.service.UserProfileManager;
-import com.tholix.service.validator.UserRegistrationValidator;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.UserRegistrationForm;
 import com.tholix.web.helper.AvailabilityStatus;
+import com.tholix.web.validator.UserRegistrationValidator;
 
 /**
  * @author hitender
