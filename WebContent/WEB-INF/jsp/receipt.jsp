@@ -86,14 +86,14 @@
 				<table border="1" style="width: 400px" class="atable">
 					<tr>
 						<td colspan="3">
-							<div class="leftAlign"><b>${receipt.title}</b></div>
+							<div class="leftAlign"><b>${receipt.bizName.name}</b></div>
 							<div class="rightAlign"><b><spring:eval expression="receipt.receiptDate" /></b></div>
 						</td>
 					</tr>
                     <tr>
                         <td colspan="3">
-                            <div class="leftAlign"><b>Location: ${receipt.business.address}</b></div>
-                            <div class="rightAlign"><b>Phone: ${receipt.business.phone}</b></div>
+                            <div class="leftAlign"><b>Location: ${receipt.bizStore.address}</b></div>
+                            <div class="rightAlign"><b>Phone: ${receipt.bizStore.phone}</b></div>
                         </td>
                     </tr>
 					<tr>

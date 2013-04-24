@@ -249,7 +249,7 @@
 						${status.count}
 					</td>
 					<td style="padding:3px;" title="${receipt.description}">
-						<spring:eval expression="receipt.title" />
+						<spring:eval expression="receipt.bizName.name" />
 					</td>
 					<td style="padding:3px;">
 						<spring:eval expression="receipt.receiptDate" />
