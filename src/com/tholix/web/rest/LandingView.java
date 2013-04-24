@@ -22,7 +22,7 @@ import com.tholix.domain.ReceiptEntity;
 @XmlRootElement(namespace="http://tholix.com/schema/receipt/v1", name="landingView")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
-@XmlType(propOrder = { "userId", "emailId", "pendingCount", "receipts" })
+@XmlType(name="home", propOrder = { "userId", "emailId", "pendingCount", "receipts" })
 public final class LandingView extends Base {
 
     @XmlElement(name = "userId", type = String.class, required = true)
