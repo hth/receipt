@@ -19,8 +19,7 @@ import org.joda.time.DateTime;
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
-import com.tholix.repository.UserPreferenceManager;
-import com.tholix.repository.UserProfileManager;
+import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 
@@ -37,20 +36,14 @@ public class UserProfilePreferenceController {
 
 	private static final String nextPage = "/userprofilepreference";
 
-	@Autowired private UserProfileManager userProfileManager;
-	@Autowired private UserPreferenceManager userPreferenceManager;
+    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userProfile") UserProfileEntity userProfile, @ModelAttribute("userPreference") UserPreferenceEntity userPreference, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
-		userProfile = userProfileManager.getObjectUsingEmail(userSession.getEmailId());
-		ModelAndView modelAndView = populateData(userProfile);
-//		userPreference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
-//
-//		ModelAndView modelAndView = new ModelAndView(nextPage);
-//		modelAndView.addObject("userProfile", userProfile);
-//		modelAndView.addObject("userPreference", userPreference);
+		userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
+        ModelAndView modelAndView = populateModel(userProfile);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
@@ -59,8 +52,9 @@ public class UserProfilePreferenceController {
 	@RequestMapping(value = "/their", method = RequestMethod.GET)
 	public ModelAndView getUser(@RequestParam("id") String id) {
         DateTime time = DateUtil.now();
-        UserProfileEntity userProfile = userProfileManager.findOne(id);
-		ModelAndView modelAndView = populateData(userProfile);
+
+        UserProfileEntity userProfile = userProfilePreferenceService.findById(id);
+        ModelAndView modelAndView = populateModel(userProfile);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
@@ -69,10 +63,9 @@ public class UserProfilePreferenceController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	public ModelAndView updateUser(@ModelAttribute("userProfile") UserProfileEntity userProfile) {
         DateTime time = DateUtil.now();
-        userProfileManager.updateObject(userProfile.getId(), userProfile.getLevel());
 
-		userProfile = userProfileManager.findOne(userProfile.getId());
-		ModelAndView modelAndView = populateData(userProfile);
+        userProfilePreferenceService.updateProfile(userProfile);
+		ModelAndView modelAndView = populateModel(userProfile);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
@@ -82,22 +75,15 @@ public class UserProfilePreferenceController {
 	 * @param userProfile
 	 * @return
 	 */
-	private ModelAndView populateData(UserProfileEntity userProfile) {
+	private ModelAndView populateModel(UserProfileEntity userProfile) {
         DateTime time = DateUtil.now();
-        UserPreferenceEntity userPreference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
 
+        UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfile);
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.addObject("userPreference", userPreference);
+
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
-	}
-
-	public void setUserProfileManager(UserProfileManager userProfileManager) {
-		this.userProfileManager = userProfileManager;
-	}
-
-	public void setUserPreferenceManager(UserPreferenceManager userPreferenceManager) {
-		this.userPreferenceManager = userPreferenceManager;
 	}
 }
