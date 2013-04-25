@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
 import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
-import com.tholix.service.routes.MessageManager;
+import com.tholix.repository.MessageManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 

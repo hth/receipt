@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.tholix.service;
+package com.tholix.repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,7 +22,7 @@ public interface RepositoryManager<T> extends Serializable {
 
 	/**
 	 * Saves a record.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void save(T object) throws Exception;

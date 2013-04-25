@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.tholix.service;
+package com.tholix.repository;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 31, 2013 2:24:33 AM
  * {@link http://static.springsource.org/spring-data/data-mongo/docs/1.2.0.RELEASE/reference/htmlsingle/}
  */

@@ -1,4 +1,4 @@
-package com.tholix.service;
+package com.tholix.repository;
 
 import java.util.List;
 

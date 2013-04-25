@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.tholix.service;
+package com.tholix.repository;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

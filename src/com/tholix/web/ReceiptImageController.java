@@ -28,7 +28,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.UserSession;
-import com.tholix.service.StorageManager;
+import com.tholix.repository.StorageManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 

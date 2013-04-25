@@ -1,4 +1,4 @@
-package com.tholix.service.routes;
+package com.tholix.repository;
 
 import java.util.ArrayList;
 import java.util.List;

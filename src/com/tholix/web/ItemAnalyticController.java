@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
@@ -17,13 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.ItemEntity;
-import com.tholix.service.ItemManager;
+import com.tholix.repository.ItemManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Jan 9, 2013 10:23:55 PM
  *
  */
@@ -34,20 +34,20 @@ public class ItemAnalyticController {
 	private static final String nextPage = "/itemanalytic";
 
 	@Autowired private ItemManager itemManager;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id) {
         DateTime time = DateUtil.now();
 		ItemEntity myItem = itemManager.findOne(id);
-		List<ItemEntity> items = itemManager.getAllObjectWithName(myItem.getName());		
-		
+		List<ItemEntity> items = itemManager.getAllObjectWithName(myItem.getName());
+
 		Double averagePrice = 0.00;
 		for(ItemEntity item : items) {
 			averagePrice = averagePrice + item.getPrice();
-		}		
+		}
 		averagePrice = averagePrice/items.size();
 		averagePrice = new Double(Formatter.df.format(averagePrice));
-		
+
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("item", myItem);
 		modelAndView.addObject("averagePrice", averagePrice);
@@ -59,6 +59,6 @@ public class ItemAnalyticController {
 	public void setItemManager(ItemManager itemManager) {
 		this.itemManager = itemManager;
 	}
-	
-	
+
+
 }

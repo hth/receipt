@@ -15,10 +15,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.tholix.domain.UserSession;
-import com.tholix.service.ItemManager;
-import com.tholix.service.ItemOCRManager;
-import com.tholix.service.ReceiptManager;
-import com.tholix.service.ReceiptOCRManager;
+import com.tholix.repository.ItemManager;
+import com.tholix.repository.ItemOCRManager;
+import com.tholix.repository.ReceiptManager;
+import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.web.validator.ReceiptFormValidator;
 
 /**

@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
-import com.tholix.service.UserAuthenticationManager;
-import com.tholix.service.UserProfileManager;
+import com.tholix.repository.UserAuthenticationManager;
+import com.tholix.repository.UserProfileManager;
 import com.tholix.utils.ValidateObjectID;
 import com.tholix.web.rest.Header;
 

@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserSession;
-import com.tholix.service.ReceiptOCRManager;
+import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 

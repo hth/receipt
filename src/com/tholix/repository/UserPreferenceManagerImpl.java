@@ -1,59 +1,67 @@
 /**
  *
  */
-package com.tholix.service;
+package com.tholix.repository;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
+import org.bson.types.ObjectId;
 
-import com.tholix.domain.ItemFeatureEntity;
+import com.tholix.domain.UserPreferenceEntity;
+import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 9:21:35 PM
+ * @when Dec 24, 2012 3:19:22 PM
  *
  */
 @Repository
 @Transactional(readOnly = true)
-public class ItemFeatureManagerImpl implements ItemFeatureManager {
-	private static final long serialVersionUID = -2211419786590573846L;
+public class UserPreferenceManagerImpl implements UserPreferenceManager {
+	private static final long serialVersionUID = -4805176857358849811L;
 
 	@Autowired private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<ItemFeatureEntity> getAllObjects() {
-		return mongoTemplate.findAll(ItemFeatureEntity.class, TABLE);
+	public List<UserPreferenceEntity> getAllObjects() {
+		return mongoTemplate.findAll(UserPreferenceEntity.class, TABLE);
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(ItemFeatureEntity object) throws Exception {
+	public void save(UserPreferenceEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.save(object, TABLE);
 	}
 
 	@Override
-	public ItemFeatureEntity findOne(String id) {
-		throw new UnsupportedOperationException("Method not implemented");
+	public UserPreferenceEntity findOne(String id) {
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(new ObjectId(id))), UserPreferenceEntity.class, TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile) {
+		return mongoTemplate.findOne(Query.query(Criteria.where("userProfile").is(userProfile)), UserPreferenceEntity.class, TABLE);
+	}
+
+	@Override
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(ItemFeatureEntity object) {
+	public void delete(UserPreferenceEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
@@ -69,7 +77,6 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);
 		}
-
 	}
 
 }

@@ -26,9 +26,9 @@ import org.mockito.MockitoAnnotations;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
-import com.tholix.service.UserAuthenticationManager;
-import com.tholix.service.UserPreferenceManager;
-import com.tholix.service.UserProfileManager;
+import com.tholix.repository.UserAuthenticationManager;
+import com.tholix.repository.UserPreferenceManager;
+import com.tholix.repository.UserProfileManager;
 import com.tholix.web.form.UserRegistrationForm;
 import com.tholix.web.validator.UserRegistrationValidator;
 

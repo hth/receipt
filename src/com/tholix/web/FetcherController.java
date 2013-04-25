@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.BizNameEntity;
-import com.tholix.service.BizNameManager;
-import com.tholix.service.BizStoreManager;
-import com.tholix.service.ItemManager;
+import com.tholix.repository.BizNameManager;
+import com.tholix.repository.BizStoreManager;
+import com.tholix.repository.ItemManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 

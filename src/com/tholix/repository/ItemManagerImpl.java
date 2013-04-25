@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tholix.service;
+package com.tholix.repository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service.routes;
 
@@ -8,14 +8,14 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.types.UserLevelEnum;
+import com.tholix.repository.MessageManager;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 30, 2013 11:46:45 AM
  *
  */
@@ -25,7 +25,7 @@ public class ReceiptListenerJMS {
 
     @Autowired
     MessageManager messageManager;
-	
+
 	public void receive(Map<String, Object> message) throws Exception {
 		String id = (String) message.get("id");
 		String description = (String) message.get("description");

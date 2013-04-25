@@ -21,8 +21,8 @@ import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
-import com.tholix.service.UserPreferenceManager;
-import com.tholix.service.UserProfileManager;
+import com.tholix.repository.UserPreferenceManager;
+import com.tholix.repository.UserProfileManager;
 
 /**
  * @author hitender

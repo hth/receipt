@@ -1,4 +1,4 @@
-package com.tholix.service.routes;
+package com.tholix.repository;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import com.mongodb.WriteResult;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.MessageReceiptEntityOCR;
-import com.tholix.service.RepositoryManager;
 
 /**
  * User: hitender

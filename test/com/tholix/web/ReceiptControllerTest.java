@@ -30,10 +30,10 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
-import com.tholix.service.ItemManager;
-import com.tholix.service.ReceiptManager;
-import com.tholix.service.StorageManager;
-import com.tholix.service.UserProfileManager;
+import com.tholix.repository.ItemManager;
+import com.tholix.repository.ReceiptManager;
+import com.tholix.repository.StorageManager;
+import com.tholix.repository.UserProfileManager;
 import com.tholix.utils.DateUtil;
 
 /**

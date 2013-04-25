@@ -33,8 +33,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.tholix.service.UserAuthenticationManager;
-import com.tholix.service.UserProfileManager;
+import com.tholix.repository.UserAuthenticationManager;
+import com.tholix.repository.UserProfileManager;
 import com.tholix.web.form.UserLoginForm;
 import com.tholix.web.validator.UserLoginValidator;
 
