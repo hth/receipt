@@ -145,12 +145,14 @@
                     <%--//TODO change from constant--%>
                     <c:when test="${userSession.level.value ge 5}">
                         <form:form method="post" action="receiptupdate.htm" modelAttribute="receiptForm">
+                            <form:errors path="receipt" cssClass="error" />
                             <form:hidden path="receipt.receiptBlobId"/>
                             <form:hidden path="receipt.id"/>
                             <form:hidden path="receipt.description"/>
                             <form:hidden path="receipt.userProfileId"/>
                             <form:hidden path="receipt.receiptOCRTranslation"/>
                             <form:hidden path="receipt.version"/>
+                            <form:hidden path="receipt.receiptStatus"/>
                             <table border="0" style="width: 400px" class="etable">
                                 <tr>
                                     <td colspan="4">

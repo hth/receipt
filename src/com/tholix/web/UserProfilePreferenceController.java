@@ -39,10 +39,10 @@ public class UserProfilePreferenceController {
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userProfile") UserProfileEntity userProfile, @ModelAttribute("userPreference") UserPreferenceEntity userPreference, @ModelAttribute("userSession") UserSession userSession) {
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
-		userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
+        UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
         ModelAndView modelAndView = populateModel(userProfile);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());

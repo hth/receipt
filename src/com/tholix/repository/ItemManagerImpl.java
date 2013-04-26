@@ -64,7 +64,7 @@ public class ItemManagerImpl implements ItemManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void saveObjects(List<ItemEntity> objects) throws Exception {
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			//TODO reflection error saving the list
 			//mongoTemplate.insert(objects, TABLE);

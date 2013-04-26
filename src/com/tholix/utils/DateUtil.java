@@ -22,6 +22,11 @@ import org.joda.time.format.DateTimeFormatter;
 public final class DateUtil {
 	private static final Logger log = Logger.getLogger(DateUtil.class);
 
+    public static final int SECOND = 1;
+    public static final int MINUTE = 60 * SECOND;
+    public static final int HOUR = MINUTE * MINUTE;
+    public static final int DAY = HOUR * 24;
+
 	private enum DateType {
 		FRM_1("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|AM)", 				"12/15/2012 02:13PM", 		"MM/dd/yyyy hh:mma"),
 		FRM_2("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}", 					"12/24/12 19:03", 			"MM/dd/yy kk:mm"),
@@ -115,5 +120,28 @@ public final class DateUtil {
     public static long duration(DateTime start, DateTime end) {
         Duration duration = new Duration(start.getMillis(), end.getMillis());
         return duration.getMillis();
+    }
+
+
+    /**
+     * Time in seconds, minutes, hours, days. Does not support precision.
+     *
+     * @param date
+     * @return
+     */
+    public static String getDurationStr(Date date) {
+        int time = (DateUtil.duration(new DateTime(date)).getSeconds());
+        if(time < DateUtil.MINUTE) {
+            return time + " Seconds";
+
+        } else if(time/DateUtil.MINUTE < DateUtil.MINUTE) {
+            return time/DateUtil.MINUTE + " Minutes";
+
+        } else if(time/DateUtil.HOUR < DateUtil.HOUR) {
+            return time/DateUtil.HOUR + " Hours";
+
+        } else {
+            return time/DateUtil.DAY + " Days";
+        }
     }
 }

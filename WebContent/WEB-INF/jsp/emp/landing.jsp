@@ -39,6 +39,7 @@
             <th style="padding:3px;">User Type</th>
             <th style="padding:3px;">Description</th>
             <th style="padding:3px;">Created</th>
+            <th style="padding:3px;">Pending Since</th>
             <th style="padding:3px;">Edit</th>
         </tr>
         </tbody>
@@ -55,6 +56,9 @@
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.created" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.since" />
                 </td>
                 <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
                     <a href="${pageContext.request.contextPath}/emp/receiptupdate.htm?id=${receipt.idReceiptOCR}">
@@ -75,6 +79,7 @@
             <th style="padding:3px;">User Type</th>
             <th style="padding:3px;">Description</th>
             <th style="padding:3px;">Created</th>
+            <th style="padding:3px;">Pending Since</th>
             <th style="padding:3px;">Edit</th>
         </tr>
         </tbody>
@@ -91,6 +96,9 @@
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.created" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.since" />
                 </td>
                 <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
                     <a href="${pageContext.request.contextPath}/emp/receiptupdate.htm?id=${receipt.idReceiptOCR}">

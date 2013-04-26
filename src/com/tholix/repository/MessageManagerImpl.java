@@ -160,6 +160,7 @@ public class MessageManagerImpl implements MessageManager {
         Query query = Query.query(Criteria.where("recordLocked").is(true))
                 .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED))
                 .addCriteria(Criteria.where("idReceiptOCR").is(id));
+
         Update update = new Update().set("receiptStatus", ReceiptStatusEnum.TURK_PROCESSED);
 
         return mongoTemplate.updateFirst(query, update, MessageReceiptEntityOCR.class);
@@ -167,12 +168,14 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public WriteResult updateObject(String id, boolean value) {
+    public WriteResult undoUpdateObject(String id, boolean value) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("recordLocked").is(true))
-                .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED))
+                .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.TURK_PROCESSED))
                 .addCriteria(Criteria.where("idReceiptOCR").is(id));
-        Update update = new Update().set("recordLocked", value).set("emailId","").set("profileId", "");
+
+        Update update = new Update().set("recordLocked", true)
+                .set("receiptStatus", ReceiptStatusEnum.OCR_PROCESSED);
 
         return mongoTemplate.updateFirst(query, update, MessageReceiptEntityOCR.class);
     }

@@ -109,7 +109,7 @@ public class AdminLandingController {
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
      * @param receiptEntity
      */
-    protected void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) {
+    public void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) {
         BizNameEntity bizNameEntity = receiptEntity.getBizName();
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 
@@ -148,7 +148,7 @@ public class AdminLandingController {
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
      * @param receiptEntity
      */
-    protected void saveNewBusinessAndOrStore(ReceiptEntityOCR receiptEntity) {
+    public void saveNewBusinessAndOrStore(ReceiptEntityOCR receiptEntity) {
         BizNameEntity bizNameEntity = receiptEntity.getBizName();
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 

@@ -40,7 +40,7 @@ public final class PerformanceProfiling {
      * @param <T>
      */
     public static <T> void log(Class<T> type, DateTime time, String... message) {
-        log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ms: " + DateUtil.duration(time));
+        log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ss: " + DateUtil.duration(time).getSeconds());
     }
 
     /**

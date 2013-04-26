@@ -32,5 +32,15 @@ public interface MessageManager extends RepositoryManager<MessageReceiptEntityOC
 
     WriteResult updateObject(String id);
 
-    WriteResult updateObject(String id, boolean value);
+    /**
+     * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.
+     * Note: User has to complete all the messages in their queue before logging out of their shift.
+     *
+     * TODO: May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
+     *
+     * @param id
+     * @param value
+     * @return
+     */
+    WriteResult undoUpdateObject(String id, boolean value);
 }

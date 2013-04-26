@@ -1,12 +1,10 @@
 package com.tholix.domain;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -42,6 +40,9 @@ public class MessageReceiptEntityOCR extends BaseEntity {
 
     @NotNull
     private ReceiptStatusEnum receiptStatus = ReceiptStatusEnum.OCR_PROCESSED;
+
+    @Transient
+    private String since;
 
     private MessageReceiptEntityOCR() {}
 
@@ -97,6 +98,10 @@ public class MessageReceiptEntityOCR extends BaseEntity {
 
     public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
         this.receiptStatus = receiptStatus;
+    }
+
+    public String getSince() {
+        return DateUtil.getDurationStr(getCreated());
     }
 
     @Override
