@@ -18,8 +18,13 @@ public class ReceiptPendingService {
 
     @Autowired private ReceiptOCRManager receiptOCRManager;
 
+    /**
+     * All pending receipt for a user
+     *
+     * @param userProfileId
+     * @return
+     */
     public List<ReceiptEntityOCR> getAllPending(String userProfileId) {
-        List<ReceiptEntityOCR> receipts = receiptOCRManager.getAllObjects(userProfileId);
-        return receipts;
+        return receiptOCRManager.getAllObjects(userProfileId);
     }
 }

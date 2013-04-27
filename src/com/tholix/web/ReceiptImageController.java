@@ -28,7 +28,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.UserSession;
-import com.tholix.repository.StorageManager;
+import com.tholix.service.ReceiptImageService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 
@@ -43,7 +43,7 @@ import com.tholix.utils.PerformanceProfiling;
 public class ReceiptImageController {
 	private static final Logger log = Logger.getLogger(ReceiptImageController.class);
 
-	@Autowired private StorageManager storageManager;
+	@Autowired private ReceiptImageService receiptImageService;
 
 	/**
 	 * This is used only to serve images of Receipt
@@ -53,11 +53,11 @@ public class ReceiptImageController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getReceipt(@RequestParam("id") String id, @ModelAttribute("userSession") UserSession userSession, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView getReceipt(@RequestParam("id") String imageId, @ModelAttribute("userSession") UserSession userSession, HttpServletRequest request, HttpServletResponse response) {
         DateTime time = DateUtil.now();
 
 		try {
-			GridFSDBFile gridFSDBFile = storageManager.get(id);
+			GridFSDBFile gridFSDBFile = receiptImageService.dbFile(imageId);
 			if(gridFSDBFile == null) {
 				response.setContentType("image/gif");
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
@@ -75,15 +75,9 @@ public class ReceiptImageController {
 			return null;
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage());
-			log.error("Image retrieval error occurred: " + id + " for user : " + userSession.getEmailId());
+			log.error("Image retrieval error occurred: " + imageId + " for user : " + userSession.getEmailId());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
 			return null;
 		}
 	}
-
-	public void setStorageManager(StorageManager storageManager) {
-		this.storageManager = storageManager;
-	}
-
-
 }
