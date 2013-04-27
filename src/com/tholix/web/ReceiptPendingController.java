@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserSession;
-import com.tholix.repository.ReceiptOCRManager;
+import com.tholix.service.ReceiptPendingService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 
@@ -34,17 +34,16 @@ import com.tholix.utils.PerformanceProfiling;
 public class ReceiptPendingController {
 	private static final Logger log = Logger.getLogger(ReceiptPendingController.class);
 
-	private String nextPage = "receiptpending";
+	private String RECEIPT_PENDING = "/receiptpending";
 
-	@Autowired private ReceiptOCRManager receiptOCRManager;
+	@Autowired private ReceiptPendingService receiptPendingService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
+		List<ReceiptEntityOCR> receipts = receiptPendingService.getAllPending(userSession.getUserProfileId());
 
-		List<ReceiptEntityOCR> receipts = receiptOCRManager.getAllObjects(userSession.getUserProfileId());
-
-		ModelAndView modelAndView = new ModelAndView(nextPage);
+		ModelAndView modelAndView = new ModelAndView(RECEIPT_PENDING);
 		modelAndView.addObject("receipts", receipts);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
