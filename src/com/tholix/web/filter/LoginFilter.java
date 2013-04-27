@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 //TODO fix for the app link instead of /rest/
 @WebFilter(urlPatterns={"/app/*"})
 public class LoginFilter implements Filter {
+
     @Override
     public void init(FilterConfig config) throws ServletException {
         // If you have any <init-param> in web.xml, then you could get them

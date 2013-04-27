@@ -36,9 +36,10 @@ import com.tholix.web.validator.UserLoginValidator;
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
-	private static final Logger log = Logger.getLogger(LoginController.class);
+    private static final Logger log = Logger.getLogger(LoginController.class);
+    public static final String LOGIN = "login";
 
-	@Autowired
+    @Autowired
 	@Qualifier("userAuthenticationManager")
 	private UserAuthenticationManager userAuthenticationManager;
 
@@ -64,7 +65,7 @@ public class LoginController {
         DateTime time = DateUtil.now();
 		log.info("LoginController login");
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-		return "login";
+		return LOGIN;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -73,7 +74,7 @@ public class LoginController {
 		userLoginValidator.validate(userLoginForm, result);
 		if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-			return "login";
+			return LOGIN;
 		} else {
 			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginForm.getEmailId());
 			if (userProfile != null) {
@@ -93,14 +94,14 @@ public class LoginController {
 					log.error("Password not matching for user : " + userLoginForm.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
-					return "login";
+					return LOGIN;
 				}
 			} else {
 				userLoginForm.setPassword("");
 				log.error("No Email Id found in record : " + userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
-				return "login";
+				return LOGIN;
 			}
 		}
 	}
