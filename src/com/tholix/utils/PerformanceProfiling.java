@@ -16,6 +16,8 @@ import org.joda.time.DateTime;
  */
 public final class PerformanceProfiling {
     private static final Logger log = Logger.getLogger(PerformanceProfiling.class);
+    private static final int QUARTER_SECOND = 250;
+    private static final int HALF_SECOND = 500;
 
     /**
      * Logs the start of the process
@@ -40,7 +42,12 @@ public final class PerformanceProfiling {
      * @param <T>
      */
     public static <T> void log(Class<T> type, DateTime time, String... message) {
-        log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ss: " + DateUtil.duration(time).getSeconds());
+        //log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ss: " + DateUtil.duration(time).getSeconds());
+        if(System.currentTimeMillis() - time.getMillis() > QUARTER_SECOND) {
+            log.warn(type.getName() + "  " + Arrays.asList(message).toString() + ", " + time + ", duration in ms: " + (System.currentTimeMillis() - time.getMillis()) + " ms");
+        } else {
+            log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ms: " + (System.currentTimeMillis() - time.getMillis()) + " ms");
+        }
     }
 
     /**

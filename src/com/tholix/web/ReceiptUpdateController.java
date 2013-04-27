@@ -36,11 +36,12 @@ import com.tholix.web.validator.ReceiptFormValidator;
 @Controller
 @RequestMapping(value = "/emp")
 public class ReceiptUpdateController {
-	private static final Logger log = Logger.getLogger(ReceiptUpdateController.class);
+    private static final Logger log = Logger.getLogger(ReceiptUpdateController.class);
 
 	private static final String nextPage = "receiptupdate";
+    public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
-	@Autowired private ReceiptFormValidator receiptFormValidator;
+    @Autowired private ReceiptFormValidator receiptFormValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
 
 	@RequestMapping(value = "/receiptupdate", method = RequestMethod.GET)
@@ -71,7 +72,7 @@ public class ReceiptUpdateController {
 				ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
                 receiptUpdateService.turkProcessReceipt(receipt, items, receiptEntityOCR);
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-                return "redirect:/emp/landing.htm";
+                return REDIRECT_EMP_LANDING_HTM;
 			} catch(Exception exce) {
 				log.error(exce.getLocalizedMessage());
 				result.rejectValue("receipt", exce.getLocalizedMessage(), exce.getLocalizedMessage());
