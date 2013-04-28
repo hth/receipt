@@ -22,4 +22,6 @@ public interface ReceiptOCRManager extends RepositoryManager<ReceiptEntityOCR> {
 	public long numberOfPendingReceipts(String userProfileId);
 
 	public List<ReceiptEntityOCR> getAllObjects(String userProfileId);
+
+    public long collectionSize();
 }

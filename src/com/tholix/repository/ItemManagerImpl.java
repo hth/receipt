@@ -160,4 +160,9 @@ public class ItemManagerImpl implements ItemManager {
 
         return names;
     }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

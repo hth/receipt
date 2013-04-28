@@ -32,4 +32,6 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 	public void deleteWhereReceipt(ReceiptEntity receipt);
 
     public List<String> findItems(String name, String bizName);
+
+    public long collectionSize();
 }

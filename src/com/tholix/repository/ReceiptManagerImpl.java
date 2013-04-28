@@ -150,4 +150,9 @@ public class ReceiptManagerImpl implements ReceiptManager {
 			mongoTemplate.dropCollection(TABLE);
 		}
 	}
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

@@ -119,4 +119,9 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 				.andOperator(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED.name())))
 				.with(sort), ReceiptEntityOCR.class, TABLE);
 	}
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

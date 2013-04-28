@@ -116,4 +116,9 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 		Update update = Update.update("name", object.getName());
 		return mongoTemplate.updateFirst(query, update, TABLE);
 	}
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }
