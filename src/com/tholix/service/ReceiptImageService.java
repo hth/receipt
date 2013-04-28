@@ -17,6 +17,12 @@ public class ReceiptImageService {
 
     @Autowired private StorageManager storageManager;
 
+    /**
+     * Load file from database
+     *
+     * @param fileId
+     * @return
+     */
     public GridFSDBFile dbFile(String fileId) {
         return storageManager.get(fileId);
     }

@@ -22,9 +22,7 @@ import org.joda.time.DateTime;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserProfileEntity;
-import com.tholix.repository.ItemManager;
-import com.tholix.repository.ReceiptManager;
-import com.tholix.repository.StorageManager;
+import com.tholix.service.ReceiptService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.rest.Header;
@@ -41,23 +39,23 @@ public class ReceiptController extends BaseController {
 
 	private static String nextPage = "/receipt";
 
-	@Autowired private ReceiptManager receiptManager;
-	@Autowired private StorageManager storageManager;
-	@Autowired private ItemManager itemManager;
+    @Autowired private ReceiptService receiptService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
+	public ModelAndView loadForm(@RequestParam("id") String receiptId, @ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
         DateTime time = DateUtil.now();
-        log.info("Loading Receipt Item with id: " + id);
+        log.info("Loading Receipt Item with id: " + receiptId);
 
-		ReceiptEntity receipt = receiptManager.findOne(id);
-		List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
+        ReceiptEntity receiptEntity = null;
+        List<ItemEntity> items = null;
+
+		receiptService.showReceipt(receiptId, receiptEntity, items);
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("items", items);
-		modelAndView.addObject("receipt", receipt);
+		modelAndView.addObject("receipt", receiptEntity);
 
-		receiptForm.setId(receipt.getId());
+		receiptForm.setId(receiptEntity.getId());
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
@@ -67,8 +65,12 @@ public class ReceiptController extends BaseController {
 	public String delete(@ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
         DateTime time = DateUtil.now();
         log.info("Delete receipt " + receiptForm.getId());
-        boolean task = delete(receiptForm.getId());
-        //TODO in case of failure to delete send message to USER
+
+        boolean task = receiptService.deleteReceipt(receiptForm.getId());
+        if(task == false) {
+            //TODO in case of failure to delete send message to USER
+        }
+
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), task);
 		return "redirect:/landing.htm";
 	}
@@ -76,20 +78,20 @@ public class ReceiptController extends BaseController {
     /**
      * Delete receipt through REST request
      *
-     * @param id        receipt id to delete
+     * @param receiptId receipt id to delete
      * @param profileId user id
      * @param authKey   auth key
      * @return Header
      */
     @RequestMapping(value = "/d/{id}/user/{profileId}/auth/{authKey}", method=RequestMethod.GET)
     public @ResponseBody
-    Header deleteRest(@PathVariable String id, @PathVariable String profileId, @PathVariable String authKey) {
+    Header deleteRest(@PathVariable String receiptId, @PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
-        log.info("Delete receipt " + id);
+        log.info("Delete receipt " + receiptId);
 
         UserProfileEntity userProfile = authenticate(profileId, authKey);
         if(userProfile != null) {
-            boolean task = delete(id);
+            boolean task = receiptService.deleteReceipt(receiptId);
             Header header = Header.newInstance(authKey);
             if(task) {
                 header.setStatus(Header.RESULT.SUCCESS);
@@ -108,32 +110,4 @@ public class ReceiptController extends BaseController {
             return header;
         }
     }
-
-    /**
-     * Delete a Receipt and its associated data
-     * @param id Receipt id to delete
-     */
-    private boolean delete(String id) {
-        ReceiptEntity receiptForm;
-        receiptForm = receiptManager.findOne(id);
-        if(receiptForm != null) {
-            itemManager.deleteWhereReceipt(receiptForm);
-            receiptManager.delete(receiptForm);
-            storageManager.deleteObject(receiptForm.getReceiptBlobId());
-            return true;
-        }
-        return false;
-    }
-
-	public void setReceiptManager(ReceiptManager receiptManager) {
-		this.receiptManager = receiptManager;
-	}
-
-	public void setStorageManager(StorageManager storageManager) {
-		this.storageManager = storageManager;
-	}
-
-	public void setItemManager(ItemManager itemManager) {
-		this.itemManager = itemManager;
-	}
 }

@@ -80,9 +80,9 @@ public class ReceiptControllerTest {
 
 	@Test
 	public void testLoadForm() throws Exception {
-		controller.setItemManager(itemManager);
-		controller.setReceiptManager(receiptManager);
-		controller.setStorageManager(storageManager);
+//		controller.setItemManager(itemManager);
+//		controller.setReceiptManager(receiptManager);
+//		controller.setStorageManager(storageManager);
 
 		UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail("test@test.com");
 		String userProfileId = userProfile.getId();
@@ -125,9 +125,9 @@ public class ReceiptControllerTest {
 
 	@Test
 	public void testDelete() throws Exception {
-		controller.setItemManager(itemManager);
-		controller.setReceiptManager(receiptManager);
-		controller.setStorageManager(storageManager);
+//		controller.setItemManager(itemManager);
+//		controller.setReceiptManager(receiptManager);
+//		controller.setStorageManager(storageManager);
 
 		UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail("test@test.com");
 		String userProfileId = userProfile.getId();
