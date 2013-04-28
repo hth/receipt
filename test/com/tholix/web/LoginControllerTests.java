@@ -135,7 +135,7 @@ public class LoginControllerTests {
 	@Test
 	public void testLoadForm() {
 		assertNotNull(controller);
-		assertEquals("login", controller.loadForm(model));
+		assertEquals("login", controller.loadForm());
 	}
 
 	/**
@@ -144,9 +144,9 @@ public class LoginControllerTests {
 	 */
 	@Test
 	public void testPost() {
-        controller.setUserAuthenticationManager(userAuthenticationManager);
-        controller.setUserLoginValidator(userLoginValidator);
-        controller.setUserProfileManager(userProfileManager);
+//        controller.setUserAuthenticationManager(userAuthenticationManager);
+//        controller.setUserLoginValidator(userLoginValidator);
+//        controller.setUserProfileManager(userProfileManager);
 
         /** Validation failure condition */
         userLoginForm = UserLoginForm.newInstance();

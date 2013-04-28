@@ -46,10 +46,8 @@ public class ReceiptController extends BaseController {
         DateTime time = DateUtil.now();
         log.info("Loading Receipt Item with id: " + receiptId);
 
-        ReceiptEntity receiptEntity = null;
-        List<ItemEntity> items = null;
-
-		receiptService.showReceipt(receiptId, receiptEntity, items);
+        ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId);
+        List<ItemEntity> items = receiptService.findItems(receiptEntity);
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("items", items);

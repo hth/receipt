@@ -24,17 +24,24 @@ public class ReceiptService {
     @Autowired private ItemManager itemManager;
 
     /**
-     * Show receipt and associated items
+     * Find receipt for the id
      *
      * @param receiptId
-     * @param receiptEntity
-     * @param items
+     * @return
      */
-    public void showReceipt(String receiptId, ReceiptEntity receiptEntity, List<ItemEntity> items) {
-        receiptEntity = receiptManager.findOne(receiptId);
-        items = itemManager.getWhereReceipt(receiptEntity);
+    public ReceiptEntity findReceipt(String receiptId) {
+        return receiptManager.findOne(receiptId);
     }
 
+    /**
+     * Find items for a receipt
+     *
+     * @param receiptEntity
+     * @return
+     */
+    public List<ItemEntity> findItems(ReceiptEntity receiptEntity) {
+        return itemManager.getWhereReceipt(receiptEntity);
+    }
 
     /**
      * Delete a Receipt and its associated data
