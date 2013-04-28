@@ -6,9 +6,7 @@ package com.tholix.web;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +19,8 @@ import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
-import com.tholix.repository.UserAuthenticationManager;
-import com.tholix.repository.UserProfileManager;
+import com.tholix.service.LoginService;
+import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.utils.SHAHashing;
@@ -37,14 +35,11 @@ import com.tholix.web.validator.UserLoginValidator;
 @RequestMapping(value = "/login")
 public class LoginController {
     private static final Logger log = Logger.getLogger(LoginController.class);
-    public static final String LOGIN = "login";
+    public static final String LOGIN_PAGE = "login";
 
-    @Autowired
-	@Qualifier("userAuthenticationManager")
-	private UserAuthenticationManager userAuthenticationManager;
-
-	@Autowired private UserProfileManager userProfileManager;
-	@Autowired private UserLoginValidator userLoginValidator;
+    @Autowired private UserLoginValidator userLoginValidator;
+    @Autowired private LoginService loginService;
+    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
 	// TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
@@ -60,26 +55,39 @@ public class LoginController {
 		return UserLoginForm.newInstance();
 	}
 
+    /**
+     * Loads initial form
+     *
+     * @return
+     */
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm(Model model) {
+	public String loadForm() {
         DateTime time = DateUtil.now();
 		log.info("LoginController login");
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-		return LOGIN;
+		return LOGIN_PAGE;
 	}
 
+    /**
+     * Performs login validation for the user
+     *
+     * @param userLoginForm
+     * @param result
+     * @param redirectAttrs
+     * @return
+     */
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("userLoginForm") UserLoginForm userLoginForm, BindingResult result, final RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
 		userLoginValidator.validate(userLoginForm, result);
 		if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-			return LOGIN;
+			return LOGIN_PAGE;
 		} else {
-			UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail(userLoginForm.getEmailId());
+			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userLoginForm.getEmailId());
 			if (userProfile != null) {
 				userLoginForm.setPassword(SHAHashing.hashCodeSHA512(userLoginForm.getPassword()));
-				UserAuthenticationEntity user = userAuthenticationManager.findOne(userProfile.getUserAuthentication().getId());
+				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
 				if (user.getPassword().equals(userLoginForm.getPassword())) {
 					log.info("Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
 
@@ -94,21 +102,20 @@ public class LoginController {
 					log.error("Password not matching for user : " + userLoginForm.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
-					return LOGIN;
+					return LOGIN_PAGE;
 				}
 			} else {
 				userLoginForm.setPassword("");
 				log.error("No Email Id found in record : " + userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
-				return LOGIN;
+				return LOGIN_PAGE;
 			}
 		}
 	}
 
     /**
      * Get the user landing page when they log in or try to access un-authorized page
-     * TODO may be drop the "redirect" and instead append the redirect to just the login controller
      *
      * @param level
      * @return
@@ -140,21 +147,4 @@ public class LoginController {
         }
         return path;
     }
-
-
-    /**
-	 * Setters below are used by JUnit
-	 */
-
-	public void setUserAuthenticationManager(UserAuthenticationManager userAuthenticationManager) {
-		this.userAuthenticationManager = userAuthenticationManager;
-	}
-
-	public void setUserProfileManager(UserProfileManager userProfileManager) {
-		this.userProfileManager = userProfileManager;
-	}
-
-	public void setUserLoginValidator(UserLoginValidator userLoginValidator) {
-		this.userLoginValidator = userLoginValidator;
-	}
 }
