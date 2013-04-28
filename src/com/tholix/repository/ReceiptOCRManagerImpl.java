@@ -22,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.service.routes.ReceiptSenderJMS;
 
 /**
  * @author hitender
@@ -38,8 +36,6 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
 
 	@Autowired private MongoTemplate mongoTemplate;
-	@Autowired private UserProfileManager userProfileManager;
-	@Autowired private ReceiptSenderJMS senderJMS;
 
 	@Override
 	public List<ReceiptEntityOCR> getAllObjects() {
@@ -52,23 +48,12 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	public void save(ReceiptEntityOCR object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
-			boolean sendToJMS = false;
-			if(object.getId() == null) {
-				//Once the ReceiptOCR has been saved and has a populate ID then send it across to WORKER via JMS
-				sendToJMS = true;
-			}
 			// Cannot use insert because insert does not perform update like save.
 			// Save will always try to update or create new record.
 			// mongoTemplate.insert(object, TABLE);
 
 			object.setUpdated();
 			mongoTemplate.save(object, TABLE);
-
-			if(sendToJMS) {
-				log.info("ReceiptEntityOCR @Id after save: " + object.getId());
-				UserProfileEntity userProfile = userProfileManager.findOne(object.getUserProfileId());
-				senderJMS.send(object, userProfile);
-			}
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntityOCR: " + e.getLocalizedMessage());
 			log.error("Duplicate record entry for ReceiptEntityOCR: " + object);

@@ -28,7 +28,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.UserSession;
-import com.tholix.service.ReceiptImageService;
+import com.tholix.service.FileDBService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 
@@ -43,7 +43,7 @@ import com.tholix.utils.PerformanceProfiling;
 public class ReceiptImageController {
 	private static final Logger log = Logger.getLogger(ReceiptImageController.class);
 
-	@Autowired private ReceiptImageService receiptImageService;
+	@Autowired private FileDBService fileDBService;
 
 	/**
 	 * This is used only to serve images of Receipt
@@ -57,7 +57,7 @@ public class ReceiptImageController {
         DateTime time = DateUtil.now();
 
 		try {
-			GridFSDBFile gridFSDBFile = receiptImageService.dbFile(imageId);
+			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
 			if(gridFSDBFile == null) {
 				response.setContentType("image/gif");
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);

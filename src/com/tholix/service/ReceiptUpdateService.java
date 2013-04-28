@@ -70,14 +70,14 @@ public class ReceiptUpdateService {
             log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptEntityOCR.getId());
 
             //For rollback
-            int sizeReceiptInitial = receiptManager.getAllObjects().size();
-            int sizeItemInitial = itemManager.getAllObjects().size();
-            if(receipt != null) {
-                receiptManager.delete(receipt);
-                itemManager.deleteWhereReceipt(receipt);
-            }
-            int sizeReceiptFinal = receiptManager.getAllObjects().size();
-            int sizeItemFinal = itemManager.getAllObjects().size();
+            long sizeReceiptInitial = receiptManager.collectionSize();
+            long sizeItemInitial = itemManager.collectionSize();
+
+            itemManager.deleteWhereReceipt(receipt);
+            receiptManager.delete(receipt);
+
+            long sizeReceiptFinal = receiptManager.collectionSize();
+            long sizeItemFinal = itemManager.collectionSize();
             if(sizeReceiptInitial != sizeReceiptFinal) {
                 log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Receipt: " + receipt.getId());
             } else {

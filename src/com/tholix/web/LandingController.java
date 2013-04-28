@@ -3,20 +3,16 @@
  */
 package com.tholix.web;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,27 +23,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.tholix.domain.BizNameEntity;
-import com.tholix.domain.BizStoreEntity;
-import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
-import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.repository.BizNameManager;
-import com.tholix.repository.BizStoreManager;
-import com.tholix.repository.ItemManager;
-import com.tholix.repository.ItemOCRManager;
-import com.tholix.repository.ReceiptManager;
-import com.tholix.repository.ReceiptOCRManager;
-import com.tholix.repository.StorageManager;
-import com.tholix.repository.UserProfileManager;
+import com.tholix.service.FileDBService;
+import com.tholix.service.LandingService;
 import com.tholix.utils.DateUtil;
-import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.utils.ReceiptParser;
 import com.tholix.web.rest.Base;
 import com.tholix.web.rest.Header;
 import com.tholix.web.rest.LandingView;
@@ -63,21 +46,15 @@ import com.tholix.web.validator.UploadReceiptImageValidator;
 public class LandingController extends BaseController {
 	private static final Logger log = Logger.getLogger(LandingController.class);
 
+    @Autowired LandingService landingService;
+    @Autowired FileDBService fileDBService;
+    @Autowired UploadReceiptImageValidator uploadReceiptImageValidator;
+
 	/**
 	 * Refers to landing.jsp
 	 */
 	private static final String NEXT_PAGE_IS_CALLED_LANDING = "/landing";
     private static final String RELOAD_PAGE = "redirect:/landing.htm";
-
-	@Autowired private UserProfileManager userProfileManager;
-	@Autowired private ReceiptManager receiptManager;
-	@Autowired private ReceiptOCRManager receiptOCRManager;
-	@Autowired private ItemManager itemManager;
-	@Autowired private ItemOCRManager itemOCRManager;
-	@Autowired private StorageManager storageManager;
-	@Autowired private UploadReceiptImageValidator uploadReceiptImageValidator;
-    @Autowired private BizNameManager bizNameManager;
-    @Autowired private BizStoreManager bizStoreManager;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage) {
@@ -85,41 +62,23 @@ public class LandingController extends BaseController {
         log.info("LandingController loadForm: " + userSession.getEmailId());
 
 		//TODO why pendingCount saved in session
-		long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
+		long pendingCount = landingService.pendingReceipt(userSession.getUserProfileId());
 		userSession.setPendingCount(pendingCount);
 
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
         modelAndView.addObject("userSession", userSession);
 
-		List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
+		List<ReceiptEntity> receipts = landingService.allReceipts(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 
-		getTotalExpense(receipts, modelAndView);
+        landingService.computeTotalExpense(receipts, modelAndView);
 
 		/** Receipt grouped by date */
-		Map<Date, BigDecimal> receiptGrouped = receiptManager.getAllObjectsGroupedByDate(userSession.getUserProfileId());
-		modelAndView.addObject("receiptGrouped", receiptGrouped);
+		Map<Date, BigDecimal> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
+        modelAndView.addObject("receiptGrouped", receiptGrouped);
 
-		log.debug("Logged in user name: " + (userProfileManager.findOne(userSession.getUserProfileId())).getName());
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
-	}
-
-	/**
-	 * @param receipts
-	 * @param modelAndView
-	 */
-	private void getTotalExpense(List<ReceiptEntity> receipts, ModelAndView modelAndView) {
-		double tax = 0.00;
-		double total = 0.00;
-		for(ReceiptEntity receipt : receipts) {
-			tax += receipt.getTax();
-			total += receipt.getTotal();
-		}
-
-		modelAndView.addObject("tax", Formatter.df.format(tax));
-		modelAndView.addObject("totalWithoutTax", Formatter.df.format(total - tax));
-		modelAndView.addObject("total", Formatter.df.format(total));
 	}
 
     //http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html
@@ -129,15 +88,9 @@ public class LandingController extends BaseController {
 	public ModelAndView create(@ModelAttribute UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, BindingResult result) {
         DateTime time = DateUtil.now();
 		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
-
-		/** Check if the uploaded file is of type image. */
 		if (result.hasErrors()) {
-			for (ObjectError error : result.getAllErrors()) {
-				log.error("Error: " + error.getCode() + " - " + error.getDefaultMessage());
-			}
-
 			ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
-			List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
+			List<ReceiptEntity> receipts = landingService.allReceipts(userSession.getUserProfileId());
 			modelAndView.addObject("receipts", receipts);
 			modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
 
@@ -145,77 +98,23 @@ public class LandingController extends BaseController {
             return modelAndView;
 		}
 
-		// Some type of file processing...
-		log.info("-------------------------------------------");
-		log.info("Test upload: " + uploadReceiptImage.getDescription());
-		log.info("Test upload: " + uploadReceiptImage.getFileData().getOriginalFilename());
-		log.info("Test upload: " + uploadReceiptImage.getFileData().getContentType());
-		log.info("-------------------------------------------");
+        try {
+            // Some type of file processing...
+            log.info("-------------------------------------------");
+            log.info("Test upload: " + uploadReceiptImage.getDescription());
+            log.info("Test upload: " + uploadReceiptImage.getFileData().getOriginalFilename());
+            log.info("Test upload: " + uploadReceiptImage.getFileData().getContentType());
+            log.info("-------------------------------------------");
 
-		String receiptBlobId = null;
-		ReceiptEntityOCR receiptOCR = null;
-		List<ItemEntityOCR> items = null;
-		try {
-			//String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
-			//TODO remove Temp Code
-			String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
-			log.info(receiptOCRTranslation);
+            landingService.uploadReceipt(userSession.getUserProfileId(), uploadReceiptImage);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        } catch (Exception exce) {
+            log.error(exce.getLocalizedMessage());
+            result.rejectValue("fileData", exce.getLocalizedMessage(), exce.getLocalizedMessage());
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+        }
 
-			receiptBlobId = storageManager.saveFile(uploadReceiptImage);
-			log.info("BolbId: " + receiptBlobId);
-
-            BizNameEntity bizName = bizNameManager.noName();
-            BizStoreEntity bizStore = bizStoreManager.noStore();
-
-			receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, userSession.getUserProfileId(), receiptOCRTranslation);
-            receiptOCR.setBizName(bizName);
-            receiptOCR.setBizStore(bizStore);
-
-			items = new LinkedList<>();
-			ReceiptParser.read(receiptOCRTranslation, receiptOCR, items);
-
-			receiptOCRManager.save(receiptOCR);
-			itemOCRManager.saveObjects(items);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success saved receipt");
-        } catch (Exception e) {
-			log.error("Exception occurred during saving receipt: " + e.getLocalizedMessage());
-			e.printStackTrace();
-
-			int sizeFSInitial = storageManager.getSize();
-			log.error("Undo all the saves");
-			if(receiptBlobId != null) {
-				storageManager.deleteObject(receiptBlobId);
-			}
-			int sizeFSFinal = storageManager.getSize();
-            log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
-
-			int sizeReceiptInitial = receiptOCRManager.getAllObjects().size();
-			if(receiptOCR != null) {
-				receiptOCRManager.delete(receiptOCR);
-				itemOCRManager.deleteWhereReceipt(receiptOCR);
-			}
-			int sizeReceiptFinal = receiptOCRManager.getAllObjects().size();
-            log.info("Initial size: " + sizeReceiptInitial + ", Final size: " + sizeReceiptFinal);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure saving receipt");
-            //TODO throw a message to let user know the upload has failed to process
-		}
-
-        //No need to reload the UserSession because the loading of the page has changed
-		//long pendingCount = receiptOCRManager.numberOfPendingReceipts(userSession.getUserProfileId());
-		//userSession.setPendingCount(pendingCount);
-
-        //No need to reload the UserSession because the loading of the page has changed
-        //This will force a reload of the page after upload a file. This should prevent upload on refresh.
-		ModelAndView modelAndView = new ModelAndView(RELOAD_PAGE);
-		//List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(userSession.getUserProfileId());
-		//modelAndView.addObject("receipts", receipts);
-		//modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
-		//modelAndView.addObject("userSession", userSession);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-        return modelAndView;
+        return new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
 	}
 
     /**
@@ -232,8 +131,8 @@ public class LandingController extends BaseController {
 
         UserProfileEntity userProfile = authenticate(profileId, authKey);
         if(userProfile != null) {
-            long pendingCount = receiptOCRManager.numberOfPendingReceipts(profileId);
-            List<ReceiptEntity> receipts = receiptManager.getAllObjectsForUser(profileId);
+            long pendingCount = landingService.pendingReceipt(profileId);
+            List<ReceiptEntity> receipts = landingService.allReceipts(profileId);
 
             LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId(), Header.newInstance(getAuth(profileId)));
             landingView.setPendingCount(pendingCount);

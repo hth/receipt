@@ -65,21 +65,21 @@ public class ReceiptUpdateController {
 		if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return nextPage;
-		} else {
-			try {
-                ReceiptEntity receipt = receiptForm.getReceiptEntity();
-                List<ItemEntity> items = receiptForm.getItemEntity(receipt);
-				ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
-                receiptUpdateService.turkProcessReceipt(receipt, items, receiptEntityOCR);
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-                return REDIRECT_EMP_LANDING_HTM;
-			} catch(Exception exce) {
-				log.error(exce.getLocalizedMessage());
-				result.rejectValue("receipt", exce.getLocalizedMessage(), exce.getLocalizedMessage());
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
-                return nextPage;
-			}
 		}
+
+        try {
+            ReceiptEntity receipt = receiptForm.getReceiptEntity();
+            List<ItemEntity> items = receiptForm.getItemEntity(receipt);
+            ReceiptEntityOCR receiptEntityOCR = receiptForm.getReceipt();
+            receiptUpdateService.turkProcessReceipt(receipt, items, receiptEntityOCR);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+            return REDIRECT_EMP_LANDING_HTM;
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
+            result.rejectValue("receipt", exce.getLocalizedMessage(), exce.getLocalizedMessage());
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+            return nextPage;
+        }
 	}
 
 }
