@@ -18,7 +18,6 @@ import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.MessageManager;
 import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
-import com.tholix.web.AdminLandingController;
 
 /**
  * User: hitender
@@ -35,7 +34,7 @@ public class ReceiptUpdateService {
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ItemManager itemManager;
     @Autowired private MessageManager messageManager;
-    @Autowired private AdminLandingController adminLandingController;
+    @Autowired private AdminLandingService adminLandingService;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -48,13 +47,13 @@ public class ReceiptUpdateService {
     @Transactional(rollbackFor={Exception.class})
     public void turkProcessReceipt(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptEntityOCR) throws Exception {
         try {
-            adminLandingController.saveNewBusinessAndOrStore(receipt);
+            adminLandingService.saveNewBusinessAndOrStore(receipt);
             receiptManager.save(receipt);
 
             populateItemsWithBizName(items, receipt);
             itemManager.saveObjects(items);
 
-            adminLandingController.saveNewBusinessAndOrStore(receiptEntityOCR);
+            adminLandingService.saveNewBusinessAndOrStore(receiptEntityOCR);
             receiptEntityOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
             receiptOCRManager.save(receiptEntityOCR);
 
