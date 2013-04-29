@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
 import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
-import com.tholix.repository.MessageManager;
+import com.tholix.service.EmpLandingService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 
@@ -33,7 +33,7 @@ public class EmpLandingController {
     private static final Logger log = Logger.getLogger(EmpLandingController.class);
     private static final String nextPage = "/emp/landing";
 
-    @Autowired private MessageManager messageManager;
+    @Autowired EmpLandingService empLandingService;
 
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
     public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
@@ -41,13 +41,12 @@ public class EmpLandingController {
         ModelAndView modelAndView;
         if(userSession.getLevel() == UserLevelEnum.WORKER) {
             modelAndView = new ModelAndView(nextPage);
-            modelAndView.addObject("userSession", userSession);
 
             //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
-            List<MessageReceiptEntityOCR> pending = messageManager.findPending(userSession.getEmailId(), userSession.getUserProfileId());
+            List<MessageReceiptEntityOCR> pending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId());
             modelAndView.addObject("pending", pending);
 
-            List<MessageReceiptEntityOCR> queue = messageManager.findUpdateWithLimit(userSession.getEmailId(), userSession.getUserProfileId());
+            List<MessageReceiptEntityOCR> queue = empLandingService.queuedReceipts(userSession.getEmailId(), userSession.getUserProfileId());
             modelAndView.addObject("queue", queue);
         }  else {
             //Re-direct user to his home page because user tried accessing UN-Authorized page

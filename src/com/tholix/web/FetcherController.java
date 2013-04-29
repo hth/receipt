@@ -12,14 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import org.joda.time.DateTime;
-
-import com.tholix.domain.BizNameEntity;
-import com.tholix.repository.BizNameManager;
-import com.tholix.repository.BizStoreManager;
-import com.tholix.repository.ItemManager;
-import com.tholix.utils.DateUtil;
-import com.tholix.utils.PerformanceProfiling;
+import com.tholix.service.FetcherService;
 
 /**
  * User: hitender
@@ -32,72 +25,23 @@ import com.tholix.utils.PerformanceProfiling;
 public class FetcherController {
     private static final Logger log = Logger.getLogger(FetcherController.class);
 
-    @Autowired private ItemManager itemManager;
-    @Autowired private BizNameManager bizNameManager;
-    @Autowired private BizStoreManager bizStoreManager;
+    @Autowired FetcherService fetcherService;
 
     @RequestMapping(value = "/find_company", method = RequestMethod.GET)
     public @ResponseBody
     List<String> searchBiz(@RequestParam("term") String bizName) {
-        return findBizName(bizName);
+        return fetcherService.findBizName(bizName);
     }
 
     @RequestMapping(value = "/find_address", method = RequestMethod.GET)
     public @ResponseBody
     List<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("extraParam") String bizName) {
-        return findBizAddress(bizAddress, bizName);
+        return fetcherService.findBizAddress(bizAddress, bizName);
     }
 
     @RequestMapping(value = "/find_item", method = RequestMethod.GET)
     public @ResponseBody
     List<String> searchItem(@RequestParam("term") String itemName, @RequestParam("extraParam") String bizName) {
-        return findItems(itemName, bizName);
-    }
-
-    /**
-     * This method is called from AJAX to get the matching list of users in the system
-     *
-     * @param bizName
-     * @return
-     */
-    private List<String> findBizName(String bizName) {
-        DateTime time = DateUtil.now();
-        log.info("Search for Biz Name: " + bizName);
-        List<String> titles = bizNameManager.findAllBizStr(bizName);
-        log.info("found business.. total size " + titles.size());
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return titles;
-    }
-
-    /**
-     *
-     * @param bizAddress
-     * @param bizName
-     * @return
-     */
-    private List<String> findBizAddress(String bizAddress, String bizName) {
-        DateTime time = DateUtil.now();
-        log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
-        BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        List<String> list = bizStoreManager.findAllAddress(bizAddress, bizNameEntity);
-        log.info("found item.. total size " + list.size());
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return list;
-    }
-
-    /**
-     * This method is called from AJAX to get the matching list of users in the system
-     *
-     * @param itemName
-     * @param bizName
-     * @return
-     */
-    private List<String> findItems(String itemName, String bizName) {
-        DateTime time = DateUtil.now();
-        log.info("Search for item name: " + itemName + ", within Biz Name: " + bizName);
-        List<String> items = itemManager.findItems(itemName, bizName);
-        log.info("found item.. total size " + items.size());
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return items;
+        return fetcherService.findItems(itemName, bizName);
     }
 }
