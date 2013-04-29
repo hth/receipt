@@ -3,8 +3,6 @@
  */
 package com.tholix.web;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.ItemEntity;
-import com.tholix.repository.ItemManager;
+import com.tholix.service.ItemAnalyticService;
 import com.tholix.utils.DateUtil;
-import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
 
 /**
@@ -33,20 +30,13 @@ public class ItemAnalyticController {
 	private static final Logger log = Logger.getLogger(ItemAnalyticController.class);
 	private static final String nextPage = "/itemanalytic";
 
-	@Autowired private ItemManager itemManager;
+	@Autowired private ItemAnalyticService itemAnalyticService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@RequestParam("id") String id) {
         DateTime time = DateUtil.now();
-		ItemEntity myItem = itemManager.findOne(id);
-		List<ItemEntity> items = itemManager.getAllObjectWithName(myItem.getName());
-
-		Double averagePrice = 0.00;
-		for(ItemEntity item : items) {
-			averagePrice = averagePrice + item.getPrice();
-		}
-		averagePrice = averagePrice/items.size();
-		averagePrice = new Double(Formatter.df.format(averagePrice));
+		ItemEntity myItem = itemAnalyticService.findItemById(id);
+        Double averagePrice = itemAnalyticService.calculateAveragePrice(myItem.getName());
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("item", myItem);
@@ -55,10 +45,5 @@ public class ItemAnalyticController {
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 	}
-
-	public void setItemManager(ItemManager itemManager) {
-		this.itemManager = itemManager;
-	}
-
 
 }

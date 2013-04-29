@@ -71,7 +71,7 @@ public class ItemAnalyticControllerTest {
 
 	@Test
 	public void testLoadForm() throws Exception {
-		controller.setItemManager(itemManager);
+		//controller.setItemManager(itemManager);
 
 		UserProfileEntity userProfile = userProfileManager.getObjectUsingEmail("test@test.com");
 		String userProfileId = userProfile.getId();
