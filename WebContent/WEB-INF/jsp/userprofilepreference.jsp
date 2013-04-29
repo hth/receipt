@@ -128,8 +128,11 @@
         </div>
     </div>
 
+    <br/>
+
 	<!-- Tabs -->
 	<h2 class="demoHeaders">Profile And Preferences</h2>
+
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-1">Profile</a></li>

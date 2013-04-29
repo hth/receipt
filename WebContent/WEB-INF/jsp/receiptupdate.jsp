@@ -135,8 +135,9 @@
         </div>
     </div>
 
+    <br/>
+
     <h2 class="demoHeaders">Pending receipt</h2>
-	<br/>
 
 	<table>
 		<tr>

@@ -1,7 +1,12 @@
 /* This for whole page setting */
 body{
 	font: 62.5% "Trebuchet MS", sans-serif;
-	margin: 50px;
+	margin: 10px 10px;
+
+    /*font: 62.5% 'Helvetica Neue',Helvetica,Verdana;*/
+    /*margin: 20px 10px;*/
+    /*background: #2a2b2b;*/
+    /*color: #d1d9e1;*/
 }
 .demoHeaders {
 	margin-top: 2em;
