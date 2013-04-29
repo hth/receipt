@@ -113,7 +113,7 @@ public class AccountControllerTests {
 	 */
 	@Test
 	public void testLoadForm() {
-		assertEquals("new", controller.loadForm(model));
+		assertEquals("new", controller.loadForm());
 	}
 
 	/**
@@ -121,10 +121,10 @@ public class AccountControllerTests {
 	 */
 	@Test
 	public void testPost() {
-		controller.setUserAuthenticationManager(userAuthenticationManager);
-        controller.setUserProfileManager(userProfileManager);
-        controller.setUserPreferenceManager(userPreferenceManager);
-        controller.setUserRegistrationValidator(userRegistrationValidator);
+//		controller.setUserAuthenticationManager(userAuthenticationManager);
+//        controller.setUserProfileManager(userProfileManager);
+//        controller.setUserPreferenceManager(userPreferenceManager);
+//        controller.setUserRegistrationValidator(userRegistrationValidator);
 
         userRegistrationForm = UserRegistrationForm.newInstance();
         userRegistrationForm.setFirstName("First");

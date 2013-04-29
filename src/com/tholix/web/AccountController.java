@@ -6,9 +6,7 @@ package com.tholix.web;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
-import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
-import com.tholix.repository.UserAuthenticationManager;
-import com.tholix.repository.UserPreferenceManager;
-import com.tholix.repository.UserProfileManager;
+import com.tholix.service.AccountService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.UserRegistrationForm;
@@ -42,12 +37,8 @@ public class AccountController {
 	private static final Logger log = Logger.getLogger(AccountController.class);
     private static final String NEW_ACCOUNT = "new";
 
-	@Autowired
-	@Qualifier("userAuthenticationManager")
-	private UserAuthenticationManager userAuthenticationManager;
-	@Autowired private UserProfileManager userProfileManager;
-	@Autowired private UserPreferenceManager userPreferenceManager;
-	@Autowired private UserRegistrationValidator userRegistrationValidator;
+    @Autowired private UserRegistrationValidator userRegistrationValidator;
+    @Autowired private AccountService accountService;
 
 	@ModelAttribute("userRegistrationForm")
 	public UserRegistrationForm getUserRegistrationForm() {
@@ -55,7 +46,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm(Model model) {
+	public String loadForm() {
 		log.debug("Loading New Account");
 		return NEW_ACCOUNT;
 	}
@@ -67,52 +58,30 @@ public class AccountController {
 		if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
             return NEW_ACCOUNT;
-		} else {
-            UserAuthenticationEntity userAuthentication;
-            UserProfileEntity userProfile = userProfileManager.findOneByEmail(userRegistrationForm.getEmailId());
-
-            if(userProfile != null) {
-                userRegistrationValidator.accountExists(userRegistrationForm, result);
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "account exists");
-                return NEW_ACCOUNT;
-            }
-
-			try {
-				userAuthentication = userRegistrationForm.newUserAuthenticationEntity();
-				userAuthenticationManager.save(userAuthentication);
-			} catch (Exception e) {
-				log.error("During saving UserAuthenticationEntity: " + e.getLocalizedMessage());
-				result.rejectValue("emailId", "field.emailId.duplicate");
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user authentication");
-                return NEW_ACCOUNT;
-			}
-
-			try {
-				userProfile = userRegistrationForm.newUserProfileEntity(userAuthentication);
-				userProfileManager.save(userProfile);
-			} catch (Exception e) {
-				log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user profile");
-                return NEW_ACCOUNT;
-			}
-
-			try {
-				userPreferenceManager.save(userRegistrationForm.newUserPreferenceEntity(userProfile));
-			} catch (Exception e) {
-				log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user preference");
-                return NEW_ACCOUNT;
-			}
-
-			log.info("Registered new Email Id: " + userProfile.getEmailId());
-
-			UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
-			redirectAttrs.addFlashAttribute("userSession", userSession);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-            /** This code to invoke the controller */
-			return "redirect:/landing.htm";
 		}
+
+        UserProfileEntity userProfile = accountService.findIfUserExists(userRegistrationForm.getEmailId());
+        if(userProfile != null) {
+            userRegistrationValidator.accountExists(userRegistrationForm, result);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "account exists");
+            return NEW_ACCOUNT;
+        }
+
+        try {
+            userProfile = accountService.createNewAccount(userRegistrationForm);
+            log.info("Registered new Email Id: " + userProfile.getEmailId());
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
+            return NEW_ACCOUNT;
+        }
+
+        UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
+        redirectAttrs.addFlashAttribute("userSession", userSession);
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        /** This code to invoke the controller */
+        return "redirect:/landing.htm";
 	}
 
     //TODO
@@ -127,7 +96,7 @@ public class AccountController {
     AvailabilityStatus getAvailability(@RequestParam String emailId) {
         DateTime time = DateUtil.now();
         log.info("Auto find if the emailId is present: " + emailId);
-        UserProfileEntity userProfileEntity = userProfileManager.findOneByEmail(emailId);
+        UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
         if(userProfileEntity != null) {
             if (userProfileEntity.getEmailId().equals(emailId)) {
                 log.info("Not Available: " + emailId);
@@ -139,24 +108,4 @@ public class AccountController {
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
         return AvailabilityStatus.available();
     }
-
-	/**
-	 * Setters below are used by JUnit
-	 */
-
-	public void setUserAuthenticationManager(UserAuthenticationManager userAuthenticationManager) {
-		this.userAuthenticationManager = userAuthenticationManager;
-	}
-
-	public void setUserProfileManager(UserProfileManager userProfileManager) {
-		this.userProfileManager = userProfileManager;
-	}
-
-	public void setUserPreferenceManager(UserPreferenceManager userPreferenceManager) {
-		this.userPreferenceManager = userPreferenceManager;
-	}
-
-	public void setUserRegistrationValidator(UserRegistrationValidator userRegistrationValidator) {
-		this.userRegistrationValidator = userRegistrationValidator;
-	}
 }

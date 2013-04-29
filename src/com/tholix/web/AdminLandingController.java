@@ -89,6 +89,7 @@ public class AdminLandingController {
 
         adminLandingService.saveNewBusinessAndOrStore(receiptEntity);
 
+        //TODO add success information of biz
         //bizForm.setBizError(exce.getLocalizedMessage());
         //result.rejectValue("bizError", exce.getLocalizedMessage(), exce.getLocalizedMessage());
 
