@@ -65,7 +65,6 @@ public class AdminLandingService {
                 }
             }
 
-
             //This is used by Receipt update  process and not by Admin
             receiptEntity.setBizName(bizName);
             receiptEntity.setBizStore(bizStore);
@@ -103,7 +102,6 @@ public class AdminLandingService {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             }
-
 
             //This is used by Receipt update  process and not by Admin
             receiptEntity.setBizName(bizName);

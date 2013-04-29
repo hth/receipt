@@ -68,6 +68,8 @@
 
     <h2>Add new Business or Stores to existing businesses</h2>
     <form:form method="post" modelAttribute="bizForm" action="addBusiness.htm">
+        <form:errors path="bizError" cssClass="error" />
+        <form:errors path="bizSuccess" cssClass="success" />
         <table style="width: 450px" class="etable">
             <tr>
                 <td colspan="2">

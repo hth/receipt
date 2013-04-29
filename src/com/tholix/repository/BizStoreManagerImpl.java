@@ -3,6 +3,8 @@ package com.tholix.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
@@ -76,10 +78,13 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
-        Criteria criteriaA = Criteria.where("address").is(bizStoreEntity.getAddress());
-        Criteria criteriaB = Criteria.where("phone").is(bizStoreEntity.getPhone());
+        Query query = Query.query(Criteria.where("address").is(bizStoreEntity.getAddress()));
 
-        return mongoTemplate.findOne(Query.query(criteriaA).addCriteria(criteriaB), BizStoreEntity.class, TABLE);
+        if(StringUtils.isNotEmpty(bizStoreEntity.getPhone())) {
+            query.addCriteria(Criteria.where("phone").is(bizStoreEntity.getPhone()));
+        }
+
+        return mongoTemplate.findOne(query, BizStoreEntity.class, TABLE);
     }
 
     @Override
@@ -87,8 +92,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
         Criteria criteriaA = Criteria.where("address").regex(bizAddress, "i");
         Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
 
-        List<BizStoreEntity> list = mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA), BizStoreEntity.class, TABLE);
-        return list;
+        return mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA), BizStoreEntity.class, TABLE);
     }
 
     @Override

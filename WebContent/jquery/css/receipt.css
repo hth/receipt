@@ -43,9 +43,12 @@ body{
 }
 /* End*/
 
-/* For error message */
+/* For error and success message */
 .error {
 	color: red;
+}
+.success {
+    color: darkblue;
 }
 /* End*/
 

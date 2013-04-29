@@ -89,9 +89,12 @@ public class AdminLandingController {
 
         adminLandingService.saveNewBusinessAndOrStore(receiptEntity);
 
+        //bizForm.setBizError(exce.getLocalizedMessage());
+        //result.rejectValue("bizError", exce.getLocalizedMessage(), exce.getLocalizedMessage());
+
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
-        modelAndView.addObject("bizForm", BizForm.newInstance());
+        modelAndView.addObject("bizForm", bizForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
