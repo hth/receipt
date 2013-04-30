@@ -9,6 +9,7 @@ import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -55,6 +56,9 @@ public class ReceiptEntity extends BaseEntity {
 
 	@NotNull
 	private int day;
+
+    @Transient
+    private Double subTotal = 0.00;
 
 	@NotNull
 	@NumberFormat(style = Style.CURRENCY)
@@ -203,7 +207,15 @@ public class ReceiptEntity extends BaseEntity {
 		return tax;
 	}
 
-	public void setTax(Double tax) {
+    public Double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(Double subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public void setTax(Double tax) {
 		this.tax = tax;
 	}
 

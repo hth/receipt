@@ -44,16 +44,33 @@ public class ReceiptFormValidator implements Validator {
 		}
 
 		int count = 0;
+        Double subTotal = 0.00;
 		for(ItemEntityOCR item : receiptForm.getItems()) {
 			if(!item.getName().isEmpty()) {
 				 try {
-					Formatter.getCurrencyFormatted(item.getPrice());
+					subTotal = subTotal + Formatter.getCurrencyFormatted(item.getPrice());
 				} catch (ParseException e) {
 					errors.rejectValue("items["+count+"].price", "field.currency", new Object[] { item.getPrice() }, "Unsupported currency format");
 				}
 				count++;
 			}
 		}
+
+        if(!receiptForm.getReceipt().getSubTotal().isEmpty()) {
+            try {
+                Double submittedSubTotal = Formatter.getCurrencyFormatted(receiptForm.getReceipt().getSubTotal());
+                int comparedValue = submittedSubTotal.compareTo(subTotal);
+                if (comparedValue > 0) {
+                    errors.rejectValue("receipt.subTotal", "field.currency.match.first", new Object[] { receiptForm.getReceipt().getSubTotal() }, "Summation not adding up");
+                    System.out.println("First is grater");
+                } else if (comparedValue < 0) {
+                    errors.rejectValue("receipt.subTotal", "field.currency.match.second", new Object[] { receiptForm.getReceipt().getSubTotal() }, "Summation not adding up");
+                    System.out.println("Second is grater");
+                }
+            } catch (ParseException e) {
+                errors.rejectValue("receipt.subTotal", "field.currency", new Object[] { receiptForm.getReceipt().getSubTotal() }, "Unsupported currency format");
+            }
+        }
 
 		if(!receiptForm.getReceipt().getTotal().isEmpty()) {
 			try {

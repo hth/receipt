@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.utils;
 
@@ -15,7 +15,7 @@ import com.abbyy.ocrsdk.Task;
 /**
  * @author hitender
  * @when Jan 5, 2013 11:03:36 AM
- * 
+ *
  */
 public class ABBYYCloudService {
 
@@ -25,8 +25,8 @@ public class ABBYYCloudService {
 	public static ABBYYCloudService instance() {
 		if (restClient == null) {
 			restClient = new Client();
-			restClient.applicationId = "JustRead";
-			restClient.password = "ONdWIM+cpXf75ZT/155dd+DZ";
+			restClient.applicationId = "SomeFirstProcess";
+			restClient.password = "xkOOTX65NRl5sdZ+h6k5g9lc";
 		}
 		if (cs == null) {
 			cs = new ABBYYCloudService();

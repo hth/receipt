@@ -75,6 +75,7 @@ public final class DateUtil {
 	 */
 	public static Date getDateFromString(String dateString) throws Exception {
 		dateString = StringUtils.trim(dateString.replaceAll("-", "/"));
+        dateString = dateString.replaceAll("[\\t\\n\\r]+", " ");
 		for (DateType dateType : DateType.values()) {
 			if (dateString.matches(dateType.getRegex())) {
 				return DateTime.parse(dateString, dateType.getFormatter()).toDate();

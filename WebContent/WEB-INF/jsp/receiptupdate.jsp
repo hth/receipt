@@ -154,12 +154,12 @@
                             <form:hidden path="receipt.receiptOCRTranslation"/>
                             <form:hidden path="receipt.version"/>
                             <form:hidden path="receipt.receiptStatus"/>
-                            <table border="0" style="width: 400px" class="etable">
+                            <table border="0" style="width: 550px" class="etable">
                                 <tr>
                                     <td colspan="4">
                                         <div class="leftAlign">
                                             <form:label for="receipt.bizName.name" path="receipt.bizName.name" cssErrorClass="error">Biz Name</form:label>
-                                            <form:input path="receipt.bizName.name" id="bizName" size="32"/>
+                                            <form:input path="receipt.bizName.name" id="bizName" size="52"/>
                                         </div>
                                         <div class="rightAlign">
                                             <form:label for="receipt.receiptDate" path="receipt.receiptDate" cssErrorClass="error">Date</form:label>
@@ -177,7 +177,7 @@
                                     <td colspan="4">
                                         <div class="leftAlign">
                                             <form:label for="receipt.bizStore.address" path="receipt.bizStore.address" cssErrorClass="error">Address : </form:label>
-                                            <form:input path="receipt.bizStore.address" id="address" size="60"/>
+                                            <form:input path="receipt.bizStore.address" id="address" size="70"/>
                                         </div>
                                         <div class="rightAlign">
                                             <form:label for="receipt.bizStore.phone" path="receipt.bizStore.phone" cssErrorClass="error">Phone: </form:label>
@@ -208,12 +208,25 @@
                                     </tr>
                                 </c:forEach>
                                 <tr>
-                                    <td colspan="1" style="text-align: right;">
-                                        <span>Tax &nbsp;</span>
-                                        <form:input path="receipt.tax" size="5"/>
-                                        <span>&nbsp;&nbsp;Total &nbsp;</span>
+                                    <td colspan="1" style="text-align: right; font-size: 12px; font-weight: bold">
+                                        <span>&nbsp;&nbsp;Tax &nbsp;</span>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="1" style="font-size: 12px; font-weight: bold">
+                                        <span class="leftAlign">&nbsp;&nbsp;Sub Total &nbsp;</span>
+                                    </td>
+                                    <td colspan="1" style="font-size: 12px; font-weight: bold">
+                                        <span class="leftAlign">&nbsp;&nbsp;Total &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" style="text-align: right;">
+                                        <form:input path="receipt.tax" size="5"/>
+                                    </td>
+                                    <td colspan="1">
+                                        <form:input path="receipt.subTotal" size="16"/>
+                                        <form:errors path="receipt.subTotal" cssClass="error" />
+                                    </td>
+                                    <td colspan="1">
                                         <form:input path="receipt.total" size="16"/>
                                         <form:errors path="receipt.total" cssClass="error" />
                                     </td>

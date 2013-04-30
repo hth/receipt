@@ -65,6 +65,7 @@ public class UserProfilePreferenceController {
         DateTime time = DateUtil.now();
 
         userProfilePreferenceService.updateProfile(userProfile);
+        userProfile = userProfilePreferenceService.findById(userProfile.getId());
 		ModelAndView modelAndView = populateModel(userProfile);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());

@@ -1,13 +1,11 @@
 package com.tholix.service;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,7 @@ import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.repository.UserProfileManager;
 import com.tholix.service.routes.ReceiptSenderJMS;
+import com.tholix.utils.ABBYYCloudService;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.ReceiptParser;
 
@@ -89,9 +88,9 @@ public class LandingService {
         ReceiptEntityOCR receiptOCR = null;
         List<ItemEntityOCR> items;
         try {
-            //String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
+            String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
             //TODO remove Temp Code
-            String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
+            //String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
             log.info("Translation: " + receiptOCRTranslation);
 
             receiptBlobId = fileDBService.saveFile(uploadReceiptImage);

@@ -8,6 +8,7 @@ import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -39,6 +40,9 @@ public class ReceiptEntityOCR extends BaseEntity {
 
 	@NotNull
 	private String receiptDate;
+
+    @Transient
+    private String subTotal;
 
 	@NotNull
 	private String total;
@@ -155,7 +159,15 @@ public class ReceiptEntityOCR extends BaseEntity {
 		this.total = total;
 	}
 
-	public String getTax() {
+    public String getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(String subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public String getTax() {
 		return tax;
 	}
 
