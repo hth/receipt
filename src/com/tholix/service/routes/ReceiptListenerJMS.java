@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tholix.domain.MessageReceiptEntityOCR;
+import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.repository.MessageManager;
 
@@ -30,9 +31,23 @@ public class ReceiptListenerJMS {
 		String id = (String) message.get("id");
 		String description = (String) message.get("description");
 		String level = (String) message.get("level");
+        int status = (Integer) message.get("status");
+        ReceiptStatusEnum receiptStatusEnum = ReceiptStatusEnum.OCR_PROCESSED;
+
+        switch(status) {
+            case 0:
+                receiptStatusEnum = ReceiptStatusEnum.OCR_PROCESSED;
+                break;
+            case 1:
+                receiptStatusEnum = ReceiptStatusEnum.TURK_PROCESSED;
+                break;
+            case 2:
+                receiptStatusEnum = ReceiptStatusEnum.TURK_REQUEST;
+                break;
+        }
 
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(level.toUpperCase());
-        MessageReceiptEntityOCR object = MessageReceiptEntityOCR.newInstance(id, description, levelEnum);
+        MessageReceiptEntityOCR object = MessageReceiptEntityOCR.newInstance(id, description, levelEnum, receiptStatusEnum);
         messageManager.save(object);
 
 		log.info("Message received: " + id + ", description: " + description + ", user level: " + level + ", and persisted with id: " + object.getId());

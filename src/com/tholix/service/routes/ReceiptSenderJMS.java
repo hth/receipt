@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.service.routes;
 
@@ -18,7 +18,7 @@ import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserProfileEntity;
 
 /**
- * @author hitender 
+ * @author hitender
  * @when Mar 30, 2013 2:42:21 AM
  *
  */
@@ -27,7 +27,7 @@ public class ReceiptSenderJMS {
 
 	@Autowired
     private JmsTemplate jmsSenderTemplate;
-	
+
 	public void send(final ReceiptEntityOCR receiptOCR, final UserProfileEntity userProfile){
         jmsSenderTemplate.send("orderQueue",
 				new MessageCreator() {
@@ -36,10 +36,11 @@ public class ReceiptSenderJMS {
 						mapMessage.setString("id", receiptOCR.getId());
 						mapMessage.setString("description", receiptOCR.getDescription());
 						mapMessage.setString("level", userProfile.getLevel().getDescription());
-						
+                        mapMessage.setInt("status", receiptOCR.getReceiptStatus().ordinal());
+
 						//This does not work since this values has to be set after sending the message. It will always default to 4.
 						mapMessage.setJMSPriority(userProfile.getLevel().getMessagePriorityJMS());
-						
+
 						mapMessage.setJMSTimestamp(receiptOCR.getUpdated().getTime());
 						return mapMessage;
 					}

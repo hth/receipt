@@ -52,8 +52,11 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
+        Criteria criteria = Criteria.where("userProfileId").is(userProfileId)
+                .andOperator(Criteria.where("active").is(true));
+
 		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
-		return mongoTemplate.find(Query.query(Criteria.where("userProfileId").is(userProfileId)).with(sort), ReceiptEntity.class, TABLE);
+		return mongoTemplate.find(Query.query(criteria).with(sort), ReceiptEntity.class, TABLE);
 	}
 
 	@Override

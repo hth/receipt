@@ -62,6 +62,8 @@ public class ReceiptEntityOCR extends BaseEntity {
     @DBRef
     private BizStoreEntity bizStore;
 
+    private String receiptId;
+
 	public ReceiptEntityOCR() {
 
 	}
@@ -205,6 +207,14 @@ public class ReceiptEntityOCR extends BaseEntity {
 
     public void setBizStore(BizStoreEntity bizStore) {
         this.bizStore = bizStore;
+    }
+
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
     }
 
     @Override

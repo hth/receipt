@@ -16,6 +16,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.EmpLandingService;
 import com.tholix.utils.DateUtil;
@@ -43,11 +44,17 @@ public class EmpLandingController {
             modelAndView = new ModelAndView(nextPage);
 
             //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
-            List<MessageReceiptEntityOCR> pending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId());
+            List<MessageReceiptEntityOCR> pending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.OCR_PROCESSED);
             modelAndView.addObject("pending", pending);
 
             List<MessageReceiptEntityOCR> queue = empLandingService.queuedReceipts(userSession.getEmailId(), userSession.getUserProfileId());
             modelAndView.addObject("queue", queue);
+
+            List<MessageReceiptEntityOCR> recheckPending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.TURK_REQUEST);
+            modelAndView.addObject("recheckPending", recheckPending);
+
+            List<MessageReceiptEntityOCR> recheck = empLandingService.recheck(userSession.getEmailId(), userSession.getUserProfileId());
+            modelAndView.addObject("recheck", recheck);
         }  else {
             //Re-direct user to his home page because user tried accessing UN-Authorized page
             log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());

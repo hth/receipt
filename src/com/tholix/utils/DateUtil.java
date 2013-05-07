@@ -27,7 +27,7 @@ public final class DateUtil {
     public static final int HOUR = MINUTE * MINUTE;
     public static final int DAY = HOUR * 24;
 
-	private enum DateType {
+	private static enum DateType {
 		FRM_1("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|AM)", 				"12/15/2012 02:13PM", 		"MM/dd/yyyy hh:mma"),
 		FRM_2("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}", 					"12/24/12 19:03", 			"MM/dd/yy kk:mm"),
 		FRM_3("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}", 				"12/25/12 16:54:57", 		"MM/dd/yy kk:mm:ss"),

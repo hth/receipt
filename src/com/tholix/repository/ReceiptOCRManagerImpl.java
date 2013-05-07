@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
  * @author hitender
@@ -93,15 +92,16 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public long numberOfPendingReceipts(String userProfileId) {
+        Criteria activeCriteria = Criteria.where("active").is(true);
 		return mongoTemplate.count(Query.query(Criteria.where("userProfileId").is(userProfileId)
-				.andOperator(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED.name()))), TABLE);
+				.andOperator(activeCriteria)), TABLE);
 	}
 
 	@Override
 	public List<ReceiptEntityOCR> getAllObjects(String userProfileId) {
 		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
 		return mongoTemplate.find(Query.query(Criteria.where("userProfileId").is(userProfileId)
-				.andOperator(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED.name())))
+				.andOperator(Criteria.where("active").is(true)))
 				.with(sort), ReceiptEntityOCR.class, TABLE);
 	}
 

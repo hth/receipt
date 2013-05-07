@@ -37,7 +37,6 @@ public class AccountService {
      * Create a new account
      *
      * @param userRegistrationForm
-     * @param userProfile
      * @return
      * @throws Exception
      */
@@ -59,6 +58,10 @@ public class AccountService {
             userProfileManager.save(userProfile);
         } catch (Exception e) {
             log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
+
+            //Roll back
+            userAuthenticationManager.delete(userAuthentication);
+
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user profile");
             throw new Exception("error saving user profile");
         }

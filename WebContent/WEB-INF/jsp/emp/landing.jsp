@@ -61,7 +61,7 @@
                     <spring:eval expression="receipt.since" />
                 </td>
                 <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
-                    <a href="${pageContext.request.contextPath}/emp/receiptupdate.htm?id=${receipt.idReceiptOCR}">
+                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.idReceiptOCR}">
                         Open
                     </a>
                 </td>
@@ -101,7 +101,87 @@
                     <spring:eval expression="receipt.since" />
                 </td>
                 <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
-                    <a href="${pageContext.request.contextPath}/emp/receiptupdate.htm?id=${receipt.idReceiptOCR}">
+                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.idReceiptOCR}">
+                        Open
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
+
+<h2>Re-Check Pending Receipt(s)</h2>
+<c:if test="${recheckPending.size() > 0}">
+    <table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+        <tbody>
+        <tr style="background-color:orange;color:white;">
+            <th style="padding:3px;"></th>
+            <th style="padding:3px;">User Type</th>
+            <th style="padding:3px;">Description</th>
+            <th style="padding:3px;">Created</th>
+            <th style="padding:3px;">Pending Since</th>
+            <th style="padding:3px;">Edit</th>
+        </tr>
+        </tbody>
+        <c:forEach var="receipt" items="${recheckPending}"  varStatus="status">
+            <tr>
+                <td style="padding:3px;" align="right">
+                        ${status.count}
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.level" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.description" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.created" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.since" />
+                </td>
+                <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
+                    <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.idReceiptOCR}">
+                        Open
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
+
+<h2>Re-Check Receipt(s)</h2>
+<c:if test="${recheck.size() > 0}">
+    <table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+        <tbody>
+        <tr style="background-color:orange;color:white;">
+            <th style="padding:3px;"></th>
+            <th style="padding:3px;">User Type</th>
+            <th style="padding:3px;">Description</th>
+            <th style="padding:3px;">Created</th>
+            <th style="padding:3px;">Pending Since</th>
+            <th style="padding:3px;">Edit</th>
+        </tr>
+        </tbody>
+        <c:forEach var="receipt" items="${recheck}"  varStatus="status">
+            <tr>
+                <td style="padding:3px;" align="right">
+                        ${status.count}
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.level" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.description" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.created" />
+                </td>
+                <td style="padding:3px;">
+                    <spring:eval expression="receipt.since" />
+                </td>
+                <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
+                    <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.idReceiptOCR}">
                         Open
                     </a>
                 </td>

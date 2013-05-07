@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -22,7 +24,7 @@ import com.tholix.utils.Formatter;
  * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
 public class ReceiptForm {
-	ReceiptEntityOCR receipt;
+	ReceiptEntityOCR receiptOCR;
 	List<ItemEntityOCR> items;
 
 	/**
@@ -34,7 +36,7 @@ public class ReceiptForm {
 
 	private ReceiptForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
 		super();
-		this.receipt = receipt;
+		this.receiptOCR = receipt;
 		this.items = items;
 	}
 
@@ -47,11 +49,11 @@ public class ReceiptForm {
 	}
 
 	public ReceiptEntityOCR getReceipt() {
-		return receipt;
+		return receiptOCR;
 	}
 
-	public void setReceipt(ReceiptEntityOCR receipt) {
-		this.receipt = receipt;
+	public void setReceipt(ReceiptEntityOCR receiptOCR) {
+		this.receiptOCR = receiptOCR;
 	}
 
 	public List<ItemEntityOCR> getItems() {
@@ -64,21 +66,26 @@ public class ReceiptForm {
 
 	@Override
 	public String toString() {
-		return "ReceiptForm [receipt=" + receipt + ", items=" + items + "]";
+		return "ReceiptForm [receiptOCR=" + receiptOCR + ", items=" + items + "]";
 	}
 
 	public ReceiptEntity getReceiptEntity() throws NumberFormatException, Exception {
-        //TODO this code has to be redone as it just diffcult to understand after a while
-		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(DateUtil.getDateFromString(receipt.getReceiptDate()),
-										Formatter.getCurrencyFormatted(receipt.getTotal()), Formatter.getCurrencyFormatted(receipt.getTax()),
-										receipt.getDescription(), ReceiptStatusEnum.TURK_PROCESSED, receipt.getReceiptBlobId(),
-										receipt.getUserProfileId());
-		receiptEntity.setCreated(receipt.getCreated());
-		receiptEntity.setUpdated();
+        //TODO this code has to be redone as it just difficult to understand after a while
+		ReceiptEntity receipt = ReceiptEntity.newInstance(DateUtil.getDateFromString(receiptOCR.getReceiptDate()),
+										Formatter.getCurrencyFormatted(receiptOCR.getTotal()), Formatter.getCurrencyFormatted(receiptOCR.getTax()),
+										receiptOCR.getDescription(), ReceiptStatusEnum.TURK_PROCESSED, receiptOCR.getReceiptBlobId(),
+										receiptOCR.getUserProfileId());
+		receipt.setCreated(receiptOCR.getCreated());
 
-        receiptEntity.setBizName(receipt.getBizName());
-        receiptEntity.setBizStore(receipt.getBizStore());
-		return receiptEntity;
+        receipt.setBizName(receiptOCR.getBizName());
+        receipt.setBizStore(receiptOCR.getBizStore());
+        receipt.setReceiptOCRId(receiptOCR.getId());
+
+        //This condition is mostly true for receipt recheck
+        if(StringUtils.isNotEmpty(receiptOCR.getReceiptId())) {
+            receipt.setId(receiptOCR.getReceiptId());
+        }
+		return receipt;
 	}
 
 	/**
@@ -88,7 +95,7 @@ public class ReceiptForm {
 	 * @throws ParseException
 	 */
 	public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException {
-		List<ItemEntity> listOfItems = new ArrayList<ItemEntity>();
+		List<ItemEntity> listOfItems = new ArrayList<>();
 
 		for(ItemEntityOCR item : items) {
 			if(item.getName().length() != 0) {

@@ -59,7 +59,7 @@ public class ReceiptController extends BaseController {
 		return modelAndView;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, params="Delete")
 	public String delete(@ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
         DateTime time = DateUtil.now();
         log.info("Delete receipt " + receiptForm.getId());
@@ -72,6 +72,17 @@ public class ReceiptController extends BaseController {
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), task);
 		return "redirect:/landing.htm";
 	}
+
+    @RequestMapping(method = RequestMethod.POST, params="Re-Check")
+    public String recheck(@ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
+        DateTime time = DateUtil.now();
+        log.info("Initiating re-check on receipt " + receiptForm.getId());
+
+        receiptService.reopen(receiptForm.getId());
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return "redirect:/landing.htm";
+    }
 
     /**
      * Delete receipt through REST request

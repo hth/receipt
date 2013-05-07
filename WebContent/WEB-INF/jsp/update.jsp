@@ -145,15 +145,16 @@
                 <c:choose>
                     <%--//TODO change from constant--%>
                     <c:when test="${userSession.level.value ge 5}">
-                        <form:form method="post" action="receiptupdate.htm" modelAttribute="receiptForm">
+                        <form:form method="post" action="update.htm" modelAttribute="receiptForm">
                             <form:errors path="receipt" cssClass="error" />
                             <form:hidden path="receipt.receiptBlobId"/>
                             <form:hidden path="receipt.id"/>
                             <form:hidden path="receipt.description"/>
                             <form:hidden path="receipt.userProfileId"/>
-                            <form:hidden path="receipt.receiptOCRTranslation"/>
                             <form:hidden path="receipt.version"/>
                             <form:hidden path="receipt.receiptStatus"/>
+                            <form:hidden path="receipt.receiptId"/>
+                            <form:hidden path="receipt.receiptOCRTranslation"/>
                             <table border="0" style="width: 550px" class="etable">
                                 <tr>
                                     <td colspan="4">
@@ -186,12 +187,16 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <th align="left">&nbsp;</th>
                                     <th align="left">&nbsp;Name</th>
                                     <th align="left">&nbsp;Price</th>
                                     <th align="left">&nbsp;</th>
                                 </tr>
                                 <c:forEach items="${receiptForm.items}" varStatus="status">
                                     <tr>
+                                        <td align="left">
+                                            ${status.index + 1}
+                                        </td>
                                         <td align="left">
                                             <form:input path="items[${status.index}].name" class="items" size="64"/>
                                         </td>
@@ -208,7 +213,7 @@
                                     </tr>
                                 </c:forEach>
                                 <tr>
-                                    <td colspan="1" style="text-align: right; font-size: 12px; font-weight: bold">
+                                    <td colspan="2" style="text-align: right; font-size: 12px; font-weight: bold">
                                         <span>&nbsp;&nbsp;Tax &nbsp;</span>
                                     </td>
                                     <td colspan="1" style="font-size: 12px; font-weight: bold">
@@ -219,7 +224,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="1" style="text-align: right;">
+                                    <td colspan="2" style="text-align: right;">
                                         <form:input path="receipt.tax" size="5"/>
                                     </td>
                                     <td colspan="1">
@@ -232,8 +237,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="1">&nbsp;</td>
-                                    <td colspan="2" align="left"><input type="submit" value="Receipt Update" name="receipt_update"/></td>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td colspan="2" align="left"><input type="submit" value="Receipt Update" name="update"/></td>
                                 </tr>
                             </table>
                         </form:form>

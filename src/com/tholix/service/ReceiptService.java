@@ -1,15 +1,27 @@
 package com.tholix.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tholix.domain.ItemEntity;
+import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.repository.ItemManager;
+import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.ReceiptManager;
+import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.repository.StorageManager;
+import com.tholix.repository.UserProfileManager;
+import com.tholix.service.routes.ReceiptSenderJMS;
 
 /**
  * User: hitender
@@ -18,10 +30,15 @@ import com.tholix.repository.StorageManager;
  */
 @Service
 public class ReceiptService {
+    private static Logger log = Logger.getLogger(ReceiptService.class);
 
     @Autowired private ReceiptManager receiptManager;
+    @Autowired private ReceiptOCRManager receiptOCRManager;
     @Autowired private StorageManager storageManager;
     @Autowired private ItemManager itemManager;
+    @Autowired private ItemOCRManager itemOCRManager;
+    @Autowired private UserProfileManager userProfileManager;
+    @Autowired private ReceiptSenderJMS senderJMS;
 
     /**
      * Find receipt for the id
@@ -48,14 +65,69 @@ public class ReceiptService {
      * @param receiptId - Receipt id to delete
      */
     public boolean deleteReceipt(String receiptId) {
-        ReceiptEntity receiptForm;
-        receiptForm = receiptManager.findOne(receiptId);
-        if(receiptForm != null) {
-            itemManager.deleteWhereReceipt(receiptForm);
-            receiptManager.delete(receiptForm);
-            storageManager.deleteObject(receiptForm.getReceiptBlobId());
+        ReceiptEntity receipt = receiptManager.findOne(receiptId);
+        if(receipt != null) {
+            itemManager.deleteWhereReceipt(receipt);
+            receiptManager.delete(receipt);
+            storageManager.deleteObject(receipt.getReceiptBlobId());
             return true;
         }
         return false;
+    }
+
+    /**
+     * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items. Then delete all the items.
+     * @param receiptId
+     */
+    public void reopen(String receiptId) {
+        try {
+            ReceiptEntity receipt = receiptManager.findOne(receiptId);
+            receipt.inActive();
+            receiptManager.save(receipt);
+            List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
+
+            ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
+            receiptOCR.active();
+            receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
+            receiptOCR.setReceiptId(receipt.getId());
+            receiptOCRManager.save(receiptOCR);
+            itemOCRManager.deleteWhereReceipt(receiptOCR);
+
+            List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
+            itemOCRManager.saveObjects(ocrItems);
+            itemManager.deleteWhereReceipt(receipt);
+
+            log.info("ReceiptEntityOCR @Id after save: " + receiptOCR.getId());
+            UserProfileEntity userProfile = userProfileManager.findOne(receiptOCR.getUserProfileId());
+            senderJMS.send(receiptOCR, userProfile);
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+
+
+    /**
+     * Used when data is read from Receipt and Item Entity during re-check process
+     *
+     * @param items
+     * @param receiptOCR
+     * @return
+     */
+    public List<ItemEntityOCR> getItemEntityFromItemEntityOCR(List<ItemEntity> items, ReceiptEntityOCR receiptOCR) {
+        List<ItemEntityOCR> listOfItems = new ArrayList<>();
+
+        for(ItemEntity item : items) {
+            if(StringUtils.isNotEmpty(item.getName())) {
+                ItemEntityOCR ie = ItemEntityOCR.newInstance(item.getName(), item.getPrice().toString(), item.getTaxed(), item.getSequence(), receiptOCR, receiptOCR.getUserProfileId());
+                ie.setCreated(item.getCreated());
+                ie.setUpdated();
+
+                ie.setBizName(receiptOCR.getBizName());
+                listOfItems.add(ie);
+            }
+        }
+
+        return listOfItems;
     }
 }

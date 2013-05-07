@@ -39,21 +39,22 @@ public class MessageReceiptEntityOCR extends BaseEntity {
     private boolean recordLocked = false;
 
     @NotNull
-    private ReceiptStatusEnum receiptStatus = ReceiptStatusEnum.OCR_PROCESSED;
+    private ReceiptStatusEnum receiptStatus;
 
     @Transient
     private String since;
 
     private MessageReceiptEntityOCR() {}
 
-    private MessageReceiptEntityOCR(String idReceiptOCR, String description, UserLevelEnum level) {
+    private MessageReceiptEntityOCR(String idReceiptOCR, String description, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
         this.idReceiptOCR = idReceiptOCR;
         this.description = description;
         this.level = level;
+        this.receiptStatus = receiptStatus;
     }
 
-    public static MessageReceiptEntityOCR newInstance(String idReceiptOCR, String description, UserLevelEnum level) {
-        return new MessageReceiptEntityOCR(idReceiptOCR, description, level);
+    public static MessageReceiptEntityOCR newInstance(String idReceiptOCR, String description, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
+        return new MessageReceiptEntityOCR(idReceiptOCR, description, level, receiptStatus);
     }
 
     public String getIdReceiptOCR() {

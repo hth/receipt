@@ -285,7 +285,7 @@
 	    	</fieldset>
 		</div>
 		<div id="tabs-3">
-
+            <div class="googleMapContainer" id="map-canvas"></div>
 		</div>
 	</div>
 
@@ -414,6 +414,6 @@
         .mapContainer {border:1px solid red;}
     </style>
 
-    <div class="googleMapContainer" id="map-canvas"></div>
+
 </body>
 </html>

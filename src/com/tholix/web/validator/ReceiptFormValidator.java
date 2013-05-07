@@ -35,6 +35,7 @@ public class ReceiptFormValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.bizName.name",   "field.required", new Object[] { "Name" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.receiptDate",    "field.required", new Object[] { "Date" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.total",          "field.required", new Object[] { "Total" });
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.subTotal",       "field.required", new Object[] { "Sub Total" });
 
 		ReceiptForm receiptForm = (ReceiptForm) obj;
 		try {

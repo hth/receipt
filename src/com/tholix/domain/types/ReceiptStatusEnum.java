@@ -9,9 +9,10 @@ package com.tholix.domain.types;
  */
 public enum ReceiptStatusEnum {
 
+    /** Note: Do not change the order. New ENUM should be appended at the bottom */
     OCR_PROCESSED("PROCESSED",          "OCR Processed"),
-    TURK_REQUEST("TURK_REQUEST",        "Turk Request"),
-    TURK_PROCESSED("TURK_PROCESSED",    "Turk Processed");
+    TURK_PROCESSED("TURK_PROCESSED",    "Turk Processed"),
+    TURK_REQUEST("TURK_REQUEST",        "Turk Request");
 
     private final String description;
     private final String name;

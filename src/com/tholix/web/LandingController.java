@@ -114,7 +114,7 @@ public class LandingController extends BaseController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
         }
 
-        return new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
+        return new ModelAndView(RELOAD_PAGE);
 	}
 
     /**

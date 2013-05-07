@@ -83,7 +83,7 @@
 	<table>
 		<tr>
 			<td valign="top">
-				<table border="1" style="width: 400px" class="atable">
+				<table border="1" style="width: 500px" class="atable">
 					<tr>
 						<td colspan="3">
 							<div class="leftAlign"><b>${receipt.bizName.name}</b></div>
@@ -92,8 +92,8 @@
 					</tr>
                     <tr>
                         <td colspan="3">
-                            <div class="leftAlign"><b>Location: ${receipt.bizStore.address}</b></div>
-                            <div class="rightAlign"><b>Phone: ${receipt.bizStore.phone}</b></div>
+                            <div class="leftAlign"><b>${receipt.bizStore.address}</b></div>
+                            <div class="rightAlign"><b>${receipt.bizStore.phone}</b></div>
                         </td>
                     </tr>
 					<tr>
@@ -136,8 +136,10 @@
 						<form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
 						<form:hidden path="id" />
 						<tr height="60em">
-							<td colspan="3">
-								<div class="rightAlign"><input type="submit" value="Receipt Delete" name="receipt_delete"/></div>
+                            <td colspan="3">
+                                <div class="rightAlign"><input type="submit" value="Re-Check" name="Re-Check"/></div>
+                                <div class="rightAlign">&nbsp;&nbsp;</div>
+								<div class="rightAlign"><input type="submit" value="Delete" name="Delete"/></div>
 							</td>
 						</tr>
 						</form:form>

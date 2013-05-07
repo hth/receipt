@@ -8,6 +8,7 @@ import com.mongodb.WriteResult;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.MessageReceiptEntityOCR;
+import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
  * User: hitender
@@ -18,19 +19,19 @@ public interface MessageManager extends RepositoryManager<MessageReceiptEntityOC
     static String TABLE = BaseEntity.getClassAnnotationValue(MessageReceiptEntityOCR.class, Document.class, "collection");
     static final int QUERY_LIMIT = 10;
 
-    List<MessageReceiptEntityOCR> findWithLimit();
+    List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status);
 
-    List<MessageReceiptEntityOCR> findWithLimit(int limit);
+    List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status, int limit);
 
-    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId);
+    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, ReceiptStatusEnum status);
 
-    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, int limit);
+    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, ReceiptStatusEnum status, int limit);
 
     List<MessageReceiptEntityOCR> findAllPending();
 
-    List<MessageReceiptEntityOCR> findPending(String emailId, String profileId);
+    List<MessageReceiptEntityOCR> findPending(String emailId, String profileId, ReceiptStatusEnum status);
 
-    WriteResult updateObject(String id);
+    WriteResult updateObject(String id, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
 
     /**
      * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.
@@ -42,5 +43,5 @@ public interface MessageManager extends RepositoryManager<MessageReceiptEntityOC
      * @param value
      * @return
      */
-    WriteResult undoUpdateObject(String id, boolean value);
+    WriteResult undoUpdateObject(String id, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
 }
