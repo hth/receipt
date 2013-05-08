@@ -132,7 +132,7 @@
 								<p>
                                     <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
                                     <span style="display:block; width:310px;">
-                                        Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/receiptpending.htm"><strong>${userSession.pendingCount}</strong></a>
+                                        Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${userSession.pendingCount}</strong></a>
                                     </span>
 								</p>
 							</div>

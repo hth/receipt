@@ -61,7 +61,7 @@
 										<INPUT type="button" value="Show Receipt" onClick="window.open('${pageContext.request.contextPath}/receiptimage.htm?id=${receipt.receiptBlobId}','mywindow','width=400,height=200')">
 									</FORM> --%>
 
-									<a href="${pageContext.request.contextPath}/emp/receiptupdate.htm?id=${receipt.id}">
+									<a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.id}">
 										Show Receipt
 									</a>
 								</td>

@@ -63,10 +63,8 @@ public class ReceiptFormValidator implements Validator {
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
                     errors.rejectValue("receipt.subTotal", "field.currency.match.first", new Object[] { receiptForm.getReceipt().getSubTotal() }, "Summation not adding up");
-                    System.out.println("First is grater");
                 } else if (comparedValue < 0) {
                     errors.rejectValue("receipt.subTotal", "field.currency.match.second", new Object[] { receiptForm.getReceipt().getSubTotal() }, "Summation not adding up");
-                    System.out.println("Second is grater");
                 }
             } catch (ParseException e) {
                 errors.rejectValue("receipt.subTotal", "field.currency", new Object[] { receiptForm.getReceipt().getSubTotal() }, "Unsupported currency format");

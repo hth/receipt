@@ -29,12 +29,12 @@ import com.tholix.utils.PerformanceProfiling;
  *
  */
 @Controller
-@RequestMapping(value = "/receiptpending")
+@RequestMapping(value = "/pending")
 @SessionAttributes({"userSession"})
 public class ReceiptPendingController {
 	private static final Logger log = Logger.getLogger(ReceiptPendingController.class);
 
-	private String RECEIPT_PENDING = "/receiptpending";
+	private String RECEIPT_PENDING = "/pending";
 
 	@Autowired private ReceiptPendingService receiptPendingService;
 
