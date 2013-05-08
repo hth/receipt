@@ -29,7 +29,7 @@ public final class PerformanceProfiling {
      */
     public static <T> Date log(Class<T> type, String... message) {
         Date time = DateUtil.nowTime();
-        log.info(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
+        log.debug(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
         return time;
     }
 
@@ -46,7 +46,7 @@ public final class PerformanceProfiling {
         if(System.currentTimeMillis() - time.getMillis() > QUARTER_SECOND) {
             log.warn(type.getName() + "  " + Arrays.asList(message).toString() + ", " + time + ", duration in ms: " + (System.currentTimeMillis() - time.getMillis()) + " ms");
         } else {
-            log.info(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ms: " + (System.currentTimeMillis() - time.getMillis()) + " ms");
+            log.debug(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ms: " + (System.currentTimeMillis() - time.getMillis()) + " ms");
         }
     }
 
