@@ -24,7 +24,7 @@ import com.tholix.domain.UserAuthenticationEntity;
 
 /**
  * @author hitender
- * @when Dec 16, 2012 1:20:53 PM
+ * @since Dec 16, 2012 1:20:53 PM
  */
 @Repository
 @Transactional(readOnly = true)

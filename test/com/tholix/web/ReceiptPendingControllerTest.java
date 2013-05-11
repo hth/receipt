@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web;
 
@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author hitender 
- * @when Mar 24, 2013 10:08:38 PM
+ * @author hitender
+ * @since Mar 24, 2013 10:08:38 PM
  *
  */
 public class ReceiptPendingControllerTest {

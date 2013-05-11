@@ -14,7 +14,7 @@ import com.abbyy.ocrsdk.Task;
 
 /**
  * @author hitender
- * @when Jan 5, 2013 11:03:36 AM
+ * @since Jan 5, 2013 11:03:36 AM
  *
  */
 public class ABBYYCloudService {

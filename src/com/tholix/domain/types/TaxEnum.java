@@ -5,7 +5,7 @@ package com.tholix.domain.types;
 
 /**
  * @author hitender
- * @when Dec 27, 2012 1:22:39 PM
+ * @since Dec 27, 2012 1:22:39 PM
  */
 public enum TaxEnum {
 

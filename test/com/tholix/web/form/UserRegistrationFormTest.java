@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web.form;
 
@@ -17,8 +17,8 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.AccountTypeEnum;
 
 /**
- * @author hitender 
- * @when Mar 20, 2013 12:03:27 AM
+ * @author hitender
+ * @since Mar 20, 2013 12:03:27 AM
  *
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -29,8 +29,8 @@ public class UserRegistrationFormTest {
 	private String emailId;
 	private String password;
 	private AccountTypeEnum accountType;
-	private UserAuthenticationEntity userAuthentication; 
-	
+	private UserAuthenticationEntity userAuthentication;
+
 	//@Mock
 	private UserProfileEntity userProfile;
 	private UserPreferenceEntity userPreference;
@@ -40,7 +40,7 @@ public class UserRegistrationFormTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		userRegistration = UserRegistrationForm.newInstance();	
+		userRegistration = UserRegistrationForm.newInstance();
 		firstName = "FirstName";
 		lastName = "LastName";
 		emailId = "test@tholix.com";
@@ -164,7 +164,7 @@ public class UserRegistrationFormTest {
 		userRegistration.setAccountType(AccountTypeEnum.PERSONAL);
 		assertEquals(AccountTypeEnum.PERSONAL, userRegistration.getAccountType());
 	}
-	
+
 	/**
 	 * Test method for {@link com.tholix.web.form.UserRegistrationForm#toString()}.
 	 */

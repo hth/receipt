@@ -12,7 +12,7 @@ import com.tholix.domain.UploadReceiptImage;
 
 /**
  * @author hitender
- * @when Jan 9, 2013 8:48:41 PM
+ * @since Jan 9, 2013 8:48:41 PM
  *
  */
 public class UploadReceiptImageValidator implements Validator {

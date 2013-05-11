@@ -30,7 +30,7 @@ import com.tholix.web.validator.ReceiptFormValidator;
 
 /**
  * @author hitender
- * @when Jan 7, 2013 2:13:22 AM
+ * @since Jan 7, 2013 2:13:22 AM
  *
  */
 @Controller
@@ -77,7 +77,7 @@ public class ReceiptUpdateController {
             return REDIRECT_EMP_LANDING_HTM;
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
-            result.rejectValue("receipt", exce.getLocalizedMessage(), exce.getLocalizedMessage());
+            result.rejectValue("receipt", "", exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
             return nextPage;
         }
@@ -110,7 +110,7 @@ public class ReceiptUpdateController {
             return REDIRECT_EMP_LANDING_HTM;
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
-            result.rejectValue("receipt", exce.getLocalizedMessage(), exce.getLocalizedMessage());
+            result.rejectValue("receipt", "", exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
             return nextPageRecheck;
         }

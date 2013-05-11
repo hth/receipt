@@ -19,7 +19,7 @@ import com.tholix.utils.Formatter;
 
 /**
  * @author hitender
- * @when Jan 7, 2013 9:30:32 AM
+ * @since Jan 7, 2013 9:30:32 AM
  *
  * This is a Form Backing Object (FBO) for showing the receipt and its items
  */

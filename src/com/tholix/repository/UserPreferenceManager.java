@@ -11,7 +11,7 @@ import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender
- * @when Dec 24, 2012 3:19:07 PM
+ * @since Dec 24, 2012 3:19:07 PM
  *
  */
 public interface UserPreferenceManager extends RepositoryManager<UserPreferenceEntity> {

@@ -26,7 +26,7 @@ import com.tholix.repository.UserProfileManager;
 
 /**
  * @author hitender
- * @when Mar 23, 2013 11:04:26 PM
+ * @since Mar 23, 2013 11:04:26 PM
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)

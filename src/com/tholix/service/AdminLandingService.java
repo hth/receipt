@@ -3,9 +3,11 @@ package com.tholix.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import org.joda.time.DateTime;
@@ -34,12 +36,13 @@ public class AdminLandingService {
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;
+    @Autowired private ExternalService externalService;
 
     /**
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
      * @param receiptEntity
      */
-    public void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) {
+    public void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) throws Exception {
         BizNameEntity bizNameEntity = receiptEntity.getBizName();
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 
@@ -47,27 +50,41 @@ public class AdminLandingService {
         if(bizName == null) {
             try {
                 bizNameManager.save(bizNameEntity);
+
                 bizStoreEntity.setBizName(bizNameEntity);
+                externalService.decodeAddress(bizStoreEntity);
                 bizStoreManager.save(bizStoreEntity);
-            } catch (Exception e) {
-                //TODO add condition
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+                receiptEntity.setBizName(bizNameEntity);
+                receiptEntity.setBizStore(bizStoreEntity);
+            } catch (DuplicateKeyException e) {
+                log.error(e.getLocalizedMessage());
+
+                if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
+                    bizNameManager.delete(bizNameEntity);
+                }
+                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
             if(bizStore == null) {
                 try {
                     bizStoreEntity.setBizName(bizName);
+                    externalService.decodeAddress(bizStoreEntity);
                     bizStoreManager.save(bizStoreEntity);
-                } catch (Exception e) {
-                    //TODO add condition
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-            }
 
-            //This is used by Receipt update  process and not by Admin
-            receiptEntity.setBizName(bizName);
-            receiptEntity.setBizStore(bizStore);
+                    receiptEntity.setBizName(bizName);
+                    receiptEntity.setBizStore(bizStoreEntity);
+                } catch (DuplicateKeyException e) {
+                    log.error(e.getLocalizedMessage());
+                    BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                    throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
+                }
+            } else {
+                receiptEntity.setBizName(bizName);
+                receiptEntity.setBizStore(bizStore);
+            }
         }
     }
 
@@ -77,7 +94,7 @@ public class AdminLandingService {
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
      * @param receiptEntity
      */
-    public void saveNewBusinessAndOrStore(ReceiptEntityOCR receiptEntity) {
+    public void saveNewBusinessAndOrStore(ReceiptEntityOCR receiptEntity) throws Exception {
         BizNameEntity bizNameEntity = receiptEntity.getBizName();
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 
@@ -85,27 +102,41 @@ public class AdminLandingService {
         if(bizName == null) {
             try {
                 bizNameManager.save(bizNameEntity);
+
                 bizStoreEntity.setBizName(bizNameEntity);
+                externalService.decodeAddress(bizStoreEntity);
                 bizStoreManager.save(bizStoreEntity);
-            } catch (Exception e) {
-                //TODO add condition
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+                receiptEntity.setBizName(bizNameEntity);
+                receiptEntity.setBizStore(bizStoreEntity);
+            } catch (DuplicateKeyException e) {
+                log.error(e.getLocalizedMessage());
+
+                if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
+                    bizNameManager.delete(bizNameEntity);
+                }
+                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
             if(bizStore == null) {
                 try {
                     bizStoreEntity.setBizName(bizName);
+                    externalService.decodeAddress(bizStoreEntity);
                     bizStoreManager.save(bizStoreEntity);
-                } catch (Exception e) {
-                    //TODO add condition
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-            }
 
-            //This is used by Receipt update  process and not by Admin
-            receiptEntity.setBizName(bizName);
-            receiptEntity.setBizStore(bizStore);
+                    receiptEntity.setBizName(bizName);
+                    receiptEntity.setBizStore(bizStoreEntity);
+                } catch (DuplicateKeyException e) {
+                    log.error(e.getLocalizedMessage());
+                    BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                    throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
+                }
+            } else {
+                receiptEntity.setBizName(bizName);
+                receiptEntity.setBizStore(bizStore);
+            }
         }
     }
 
@@ -143,5 +174,15 @@ public class AdminLandingService {
         log.info("found users.. total size " + userList.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return userList;
+    }
+
+    /**
+     * Find last ten business stores for business name
+     *
+     * @param receiptEntity
+     * @return
+     */
+    public List<BizStoreEntity> getAllStoresForBusinessName(ReceiptEntity receiptEntity) {
+        return bizStoreManager.findAllAddress(receiptEntity.getBizName(), 10);
     }
 }

@@ -19,7 +19,7 @@ import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender
- * @when Mar 30, 2013 2:42:21 AM
+ * @since Mar 30, 2013 2:42:21 AM
  *
  */
 public class ReceiptSenderJMS {

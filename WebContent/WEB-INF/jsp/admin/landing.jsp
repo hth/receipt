@@ -66,21 +66,23 @@
     <br/>
     <br/>
 
-    <h2>Add new Business or Stores to existing businesses</h2>
+    <h2>Add new Business or Stores to existing business</h2>
     <form:form method="post" modelAttribute="bizForm" action="addBusiness.htm">
         <form:errors path="bizError" cssClass="error" />
         <form:errors path="bizSuccess" cssClass="success" />
-        <table style="width: 450px" class="etable">
+        <table style="width: 650px" class="etable">
             <tr>
                 <td colspan="2">
                     <form:label for="bizName.name" path="bizName.name" cssErrorClass="error">Biz Name: </form:label>
-                    <form:input path="bizName.name" id="name" size="32"/>
+                    <form:input path="bizName.name" id="name" size="52"/>
+                    <form:errors path="bizName.name" cssClass="error" />
                 </td>
             </tr>
             <tr>
                 <td>
                     <form:label for="bizStore.address" path="bizStore.address" cssErrorClass="error">Address: </form:label>
-                    <form:input path="bizStore.address" id="name" size="40"/>
+                    <form:input path="bizStore.address" id="name" size="70"/>
+                    <form:errors path="bizStore.address" cssClass="error" />
                 </td>
                 <td>
                     <form:label for="bizStore.phone" path="bizStore.phone" cssErrorClass="error">Phone: </form:label>
@@ -95,6 +97,73 @@
         </table>
     </form:form>
 
+    <c:if test="${bizStore != null}">
+    <br/>
+    Added...
+    <table style="width: 650px" class="etable">
+        <tbody>
+        <tr>
+            <th style="padding:3px;">Store Name</th>
+            <th style="padding:3px;">Address</th>
+            <th style="padding:3px;">Lat, Lng</th>
+            <th style="padding:3px;">Phone</th>
+            <th style="padding:3px;">Created</th>
+        </tr>
+        </tbody>
+        <tr>
+            <td style="padding:3px;" align="center">
+                <spring:eval expression="bizStore.bizName.name" />
+            </td>
+            <td style="padding:3px;" align="center">
+                <spring:eval expression="bizStore.address" />
+            </td>
+            <td style="padding:3px;" align="center">
+                <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
+            </td>
+            <td style="padding:3px;" align="left">
+                <spring:eval expression="bizStore.phone" />
+            </td>
+            <td style="padding:3px;" align="left">
+                ${bizStore.created}
+            </td>
+        </tr>
+    </table>
+    </c:if>
+
+    <c:if test="${last10BizStore != null}">
+    <br/>
+    Last 10 records for same business
+    <table style="width: 650px" class="etable">
+        <tbody>
+        <tr>
+            <th style="padding:3px;">Store Name</th>
+            <th style="padding:3px;">Address</th>
+            <th style="padding:3px;">Lat, Lng</th>
+            <th style="padding:3px;">Phone</th>
+            <th style="padding:3px;">Created</th>
+        </tr>
+        </tbody>
+        <c:forEach var="bizStore" items="${last10BizStore}"  varStatus="status">
+        <tr>
+            <td style="padding:3px;" align="center">
+                <spring:eval expression="bizStore.bizName.name" />
+            </td>
+            <td style="padding:3px;" align="center">
+                <spring:eval expression="bizStore.address" />
+            </td>
+            <td style="padding:3px;" align="center">
+                <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
+            </td>
+            <td style="padding:3px;" align="left">
+                <spring:eval expression="bizStore.phone" />
+            </td>
+            <td style="padding:3px;" align="left">
+                 ${bizStore.created}
+            </td>
+        </tr>
+        </c:forEach>
+    </table>
+    </c:if>
 
     <script type="text/javascript">
         function split(val) {

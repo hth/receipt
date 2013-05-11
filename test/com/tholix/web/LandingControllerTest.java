@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author hitender 
- * @when Mar 23, 2013 1:00:26 PM
+ * @author hitender
+ * @since Mar 23, 2013 1:00:26 PM
  *
  */
 public class LandingControllerTest {

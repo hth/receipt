@@ -28,7 +28,7 @@ import com.tholix.web.validator.UserRegistrationValidator;
 
 /**
  * @author hitender
- * @when Dec 24, 2012 3:13:26 PM
+ * @since Dec 24, 2012 3:13:26 PM
  *
  */
 @Controller

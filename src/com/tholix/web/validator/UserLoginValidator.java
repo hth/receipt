@@ -13,7 +13,7 @@ import com.tholix.web.form.UserLoginForm;
 
 /**
  * @author hitender
- * @when Dec 16, 2012 6:52:46 PM
+ * @since Dec 16, 2012 6:52:46 PM
  */
 public class UserLoginValidator implements Validator {
 	private static final Logger log = Logger.getLogger(UserLoginValidator.class);

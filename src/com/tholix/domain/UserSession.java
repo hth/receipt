@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -11,8 +11,8 @@ import com.tholix.domain.types.UserLevelEnum;
 
 /**
  * @author hitender
- * @when Jan 4, 2013 4:58:58 PM
- * 
+ * @since Jan 4, 2013 4:58:58 PM
+ *
  *       Used in session
  */
 public class UserSession implements Serializable {
@@ -23,10 +23,10 @@ public class UserSession implements Serializable {
 	String userProfileId;
 	long pendingCount;
 	private UserLevelEnum level;
-	
+
 	/** To make bean happy */
 	private UserSession() {
-		
+
 	}
 
 	private UserSession(String emailId, String userProfileId, UserLevelEnum level) {
@@ -54,7 +54,7 @@ public class UserSession implements Serializable {
         }
 		return userProfileId;
 	}
-	
+
 	public UserLevelEnum getLevel() {
 		return this.level;
 	}
@@ -66,7 +66,7 @@ public class UserSession implements Serializable {
 	public void setPendingCount(long pendingCount) {
 		this.pendingCount = pendingCount;
 	}
-	
+
 	public boolean isEmpty() {
 		if(emailId == null || userProfileId == null) {
 			return true;

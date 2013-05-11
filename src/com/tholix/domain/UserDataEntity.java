@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -12,8 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author hitender
- * @when Dec 23, 2012 2:48:01 PM
- * 
+ * @since Dec 23, 2012 2:48:01 PM
+ *
  */
 @Document(collection = "USER_DATA")
 @CompoundIndexes({ @CompoundIndex(name = "user_data_idx", def = "{'userAuthentication': 1, 'clientName': -1}") })
@@ -37,7 +37,7 @@ public class UserDataEntity extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param clientName
 	 * @param userAuthentication
 	 * @return

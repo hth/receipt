@@ -16,25 +16,26 @@ import org.joda.time.format.DateTimeFormatter;
 
 /**
  * @author hitender
- * @when Dec 27, 2012 2:53:16 PM
+ * @since Dec 27, 2012 2:53:16 PM
  *
  */
 public final class DateUtil {
 	private static final Logger log = Logger.getLogger(DateUtil.class);
 
-    public static final int SECOND = 1;
-    public static final int MINUTE = 60 * SECOND;
-    public static final int HOUR = MINUTE * MINUTE;
-    public static final int DAY = HOUR * 24;
+    public static final int MINUTE_IN_SECONDS   = 60;
+    public static final int HOUR_IN_SECONDS     = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
+    public static final int HOURS               = 24;
+    public static final int DAY_IN_SECONDS      = HOUR_IN_SECONDS * 24;
 
 	private static enum DateType {
 		FRM_1("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|AM)", 				"12/15/2012 02:13PM", 		"MM/dd/yyyy hh:mma"),
 		FRM_2("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}", 					"12/24/12 19:03", 			"MM/dd/yy kk:mm"),
-		FRM_3("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}", 				"12/25/12 16:54:57", 		"MM/dd/yy kk:mm:ss"),
-		FRM_4("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}", 				"12/15/2012 16:46:53", 		"MM/dd/yyyy kk:mm:ss"),
-		FRM_5("\\d{1,2}/\\d{1,2}/\\d{4}\\s(PM|AM)\\s\\d{1,2}:\\d{2}:\\d{2}", 	"12/15/2012 PM 04:49:45", 	"MM/dd/yyyy a hh:mm:ss"),
-		FRM_6("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}\\s(PM|AM)", 			"08/29/2012 03:07 PM", 		"MM/dd/yyyy hh:mm a"),
-		FRM_7("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|AM)",	"12/26/2012 5:29:44 PM", 	"MM/dd/yyyy hh:mm:ss a"),
+        FRM_3("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}", 					"12/24/2012 19:03", 		"MM/dd/yyyy kk:mm"),
+        FRM_4("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}", 				"12/25/12 16:54:57", 		"MM/dd/yy kk:mm:ss"),
+		FRM_5("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}", 				"12/15/2012 16:46:53", 		"MM/dd/yyyy kk:mm:ss"),
+		FRM_6("\\d{1,2}/\\d{1,2}/\\d{4}\\s(PM|AM)\\s\\d{1,2}:\\d{2}:\\d{2}", 	"12/15/2012 PM 04:49:45", 	"MM/dd/yyyy a hh:mm:ss"),
+		FRM_7("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}\\s(PM|AM)", 			"08/29/2012 03:07 PM", 		"MM/dd/yyyy hh:mm a"),
+		FRM_8("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|AM)",	"12/26/2012 5:29:44 PM", 	"MM/dd/yyyy hh:mm:ss a"),
 		;
 
 		private final String regex;
@@ -132,17 +133,17 @@ public final class DateUtil {
      */
     public static String getDurationStr(Date date) {
         int time = (DateUtil.duration(new DateTime(date)).getSeconds());
-        if(time < DateUtil.MINUTE) {
+        if(time < DateUtil.MINUTE_IN_SECONDS) {
             return time + " Seconds";
 
-        } else if(time/DateUtil.MINUTE < DateUtil.MINUTE) {
-            return time/DateUtil.MINUTE + " Minutes";
+        } else if(time/DateUtil.MINUTE_IN_SECONDS < DateUtil.MINUTE_IN_SECONDS) {
+            return time/DateUtil.MINUTE_IN_SECONDS + " Minutes";
 
-        } else if(time/DateUtil.HOUR < DateUtil.HOUR) {
-            return time/DateUtil.HOUR + " Hours";
+        } else if(time/DateUtil.HOUR_IN_SECONDS < HOURS) {
+            return time/DateUtil.HOUR_IN_SECONDS + " Hours";
 
         } else {
-            return time/DateUtil.DAY + " Days";
+            return time/DateUtil.DAY_IN_SECONDS + " Days";
         }
     }
 }

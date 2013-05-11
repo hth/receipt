@@ -15,7 +15,7 @@ import com.tholix.domain.ReceiptEntity;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 3:10:11 PM
+ * @since Dec 26, 2012 3:10:11 PM
  *
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {

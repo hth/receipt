@@ -14,7 +14,7 @@ import com.tholix.utils.SHAHashing;
 
 /**
  * @author hitender
- * @when Dec 25, 2012 12:01:53 PM
+ * @since Dec 25, 2012 12:01:53 PM
  *
  */
 public class UserRegistrationForm {

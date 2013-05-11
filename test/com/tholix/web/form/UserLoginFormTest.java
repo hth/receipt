@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.web.form;
 
@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author hitender 
- * @when Mar 19, 2013 11:47:13 PM
+ * @author hitender
+ * @since Mar 19, 2013 11:47:13 PM
  *
  */
 public class UserLoginFormTest {
@@ -40,7 +40,7 @@ public class UserLoginFormTest {
 	@Test
 	public final void testNewInstance() {
 		UserLoginForm userLogin = UserLoginForm.newInstance();
-		assertNotNull(userLogin);		
+		assertNotNull(userLogin);
 	}
 
 	/**

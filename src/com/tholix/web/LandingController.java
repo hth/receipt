@@ -38,7 +38,7 @@ import com.tholix.web.validator.UploadReceiptImageValidator;
 
 /**
  * @author hitender
- * @when Dec 17, 2012 3:19:01 PM
+ * @since Dec 17, 2012 3:19:01 PM
  */
 @Controller
 @RequestMapping(value = "/landing")
@@ -110,7 +110,7 @@ public class LandingController extends BaseController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
         } catch (Exception exce) {
             log.error(exce.getLocalizedMessage());
-            result.rejectValue("fileData", exce.getLocalizedMessage(), exce.getLocalizedMessage());
+            result.rejectValue("fileData", "", exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
         }
 

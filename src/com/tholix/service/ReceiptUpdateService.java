@@ -71,33 +71,35 @@ public class ReceiptUpdateService {
             log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptOCR.getId());
 
             //For rollback
-            long sizeReceiptInitial = receiptManager.collectionSize();
-            long sizeItemInitial = itemManager.collectionSize();
+            if(StringUtils.isNotEmpty(receipt.getId())) {
+                long sizeReceiptInitial = receiptManager.collectionSize();
+                long sizeItemInitial = itemManager.collectionSize();
 
-            itemManager.deleteWhereReceipt(receipt);
-            receiptManager.delete(receipt);
+                itemManager.deleteWhereReceipt(receipt);
+                receiptManager.delete(receipt);
 
-            long sizeReceiptFinal = receiptManager.collectionSize();
-            long sizeItemFinal = itemManager.collectionSize();
-            if(sizeReceiptInitial != sizeReceiptFinal) {
-                log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Receipt: " + receipt.getId());
-            } else {
-                log.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
+                long sizeReceiptFinal = receiptManager.collectionSize();
+                long sizeItemFinal = itemManager.collectionSize();
+                if(sizeReceiptInitial != sizeReceiptFinal) {
+                    log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Receipt: " + receipt.getId());
+                } else {
+                    log.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
+                }
+
+                if(sizeItemInitial != sizeItemFinal) {
+                    log.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
+                } else {
+                    log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
+                }
+
+                receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+                receiptOCRManager.save(receiptOCR);
+
+                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.OCR_PROCESSED);
+                //End of roll back
+
+                log.info("Complete with rollback: throwing exception");
             }
-
-            if(sizeItemInitial != sizeItemFinal) {
-                log.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
-            } else {
-                log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
-            }
-
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
-            receiptOCRManager.save(receiptOCR);
-
-            messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.OCR_PROCESSED);
-            //End of roll back
-
-            log.info("Complete with rollback: throwing exception");
             throw new Exception(exce.getLocalizedMessage());
         }
     }
@@ -134,33 +136,35 @@ public class ReceiptUpdateService {
             log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptOCR.getId());
 
             //For rollback
-            long sizeReceiptInitial = receiptManager.collectionSize();
-            long sizeItemInitial = itemManager.collectionSize();
+            if(StringUtils.isNotEmpty(receipt.getId())) {
+                long sizeReceiptInitial = receiptManager.collectionSize();
+                long sizeItemInitial = itemManager.collectionSize();
 
-            itemManager.deleteWhereReceipt(receipt);
-            receiptManager.delete(receipt);
+                itemManager.deleteWhereReceipt(receipt);
+                receiptManager.delete(receipt);
 
-            long sizeReceiptFinal = receiptManager.collectionSize();
-            long sizeItemFinal = itemManager.collectionSize();
-            if(sizeReceiptInitial != sizeReceiptFinal) {
-                log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Receipt: " + receipt.getId());
-            } else {
-                log.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
+                long sizeReceiptFinal = receiptManager.collectionSize();
+                long sizeItemFinal = itemManager.collectionSize();
+                if(sizeReceiptInitial != sizeReceiptFinal) {
+                    log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Receipt: " + receipt.getId());
+                } else {
+                    log.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
+                }
+
+                if(sizeItemInitial != sizeItemFinal) {
+                    log.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
+                } else {
+                    log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
+                }
+
+                receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+                receiptOCRManager.save(receiptOCR);
+
+                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.TURK_REQUEST);
+                //End of roll back
+
+                log.info("Complete with rollback: throwing exception");
             }
-
-            if(sizeItemInitial != sizeItemFinal) {
-                log.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
-            } else {
-                log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
-            }
-
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
-            receiptOCRManager.save(receiptOCR);
-
-            messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.TURK_REQUEST);
-            //End of roll back
-
-            log.info("Complete with rollback: throwing exception");
             throw new Exception(exce.getLocalizedMessage());
         }
     }

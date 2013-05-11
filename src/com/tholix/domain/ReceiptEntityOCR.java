@@ -18,7 +18,7 @@ import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
  * @author hitender
- * @when Jan 6, 2013 1:04:43 PM
+ * @since Jan 6, 2013 1:04:43 PM
  *
  */
 @Document(collection = "RECEIPT_OCR")

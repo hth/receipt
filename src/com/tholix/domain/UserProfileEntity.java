@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -20,8 +20,8 @@ import com.tholix.domain.types.UserLevelEnum;
 
 /**
  * @author hitender
- * @when Dec 23, 2012 1:48:09 AM
- * 
+ * @since Dec 23, 2012 1:48:09 AM
+ *
  */
 @Document(collection = "USER_PROFILE")
 public class UserProfileEntity extends BaseEntity {
@@ -47,13 +47,13 @@ public class UserProfileEntity extends BaseEntity {
 
 	@DBRef
 	private UserAuthenticationEntity userAuthentication;
-	
+
 	@NotNull
 	private UserLevelEnum level = UserLevelEnum.USER;
-	
+
 	/** To make bean happy */
 	private UserProfileEntity() {
-		
+
 	}
 
 	private UserProfileEntity(String emailId, String firstName, String lastName, Date registration, UserAuthenticationEntity userAuthentication) {
@@ -67,7 +67,7 @@ public class UserProfileEntity extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param firstName
 	 * @param lastName
 	 * @param registration
@@ -136,7 +136,7 @@ public class UserProfileEntity extends BaseEntity {
 
 	/**
 	 * Method appends first and last name
-	 * 
+	 *
 	 * @return Name
 	 */
 	public String getName() {

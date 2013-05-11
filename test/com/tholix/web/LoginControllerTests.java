@@ -40,7 +40,7 @@ import com.tholix.web.validator.UserLoginValidator;
 
 /**
  * @author hitender
- * @when Dec 27, 2012 6:27:18 PM
+ * @since Dec 27, 2012 6:27:18 PM
  *
  * {@link http://rstoyanchev.github.com/spring-31-and-mvc-test/#100}
  * {@link http://svn.code.sf.net/p/akura/code/trunk/akura/akura-web/test/src/com/virtusa/akura/staff/controller/StaffDetailsControllerTest.java}

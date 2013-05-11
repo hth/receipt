@@ -12,7 +12,7 @@ import com.tholix.domain.ReceiptEntityOCR;
 
 /**
  * @author hitender
- * @when Jan 6, 2013 1:29:22 PM
+ * @since Jan 6, 2013 1:29:22 PM
  *
  */
 public interface ReceiptOCRManager extends RepositoryManager<ReceiptEntityOCR> {

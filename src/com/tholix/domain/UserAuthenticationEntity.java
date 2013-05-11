@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author hitender
- * @when Dec 15, 2012 8:11:45 PM
- * 
+ * @since Dec 15, 2012 8:11:45 PM
+ *
  * The link below is for field annotation settings
  * {@link http://www.jpalace.org/docs/tutorials/spring/mvc_21.html}
  */
@@ -20,7 +20,7 @@ public class UserAuthenticationEntity extends BaseEntity {
 
 	@NotNull
 	private String password;
-	
+
 	@NotNull
 	private String auth;
 
@@ -30,10 +30,10 @@ public class UserAuthenticationEntity extends BaseEntity {
 	private UserAuthenticationEntity() { }
 
 	/**
-	 * 
+	 *
 	 * @param password
 	 */
-	// @PersistenceConstructor	
+	// @PersistenceConstructor
 	private UserAuthenticationEntity(String password, String auth) {
 		this.password = password;
 		this.auth = auth;
@@ -41,7 +41,7 @@ public class UserAuthenticationEntity extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param password
 	 * @param auth - (password + time stamp) to HashCode this needs to go to OAuth
 	 * @return
@@ -58,7 +58,7 @@ public class UserAuthenticationEntity extends BaseEntity {
 		this.password = password;
 	}
 
-	//TODO implement OAuth 
+	//TODO implement OAuth
 	public String getAuth() {
 		return auth;
 	}

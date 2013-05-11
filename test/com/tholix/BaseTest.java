@@ -15,7 +15,7 @@ import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
  * @author hitender
- * @when Dec 29, 2012 2:24:02 PM
+ * @since Dec 29, 2012 2:24:02 PM
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)

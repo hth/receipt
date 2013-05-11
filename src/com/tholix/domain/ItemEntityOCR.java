@@ -17,7 +17,7 @@ import com.tholix.domain.types.TaxEnum;
 
 /**
  * @author hitender
- * @when Jan 6, 2013 1:17:12 PM
+ * @since Jan 6, 2013 1:17:12 PM
  *
  */
 @Document(collection = "ITEM_OCR")

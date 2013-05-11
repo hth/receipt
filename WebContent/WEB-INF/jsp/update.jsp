@@ -69,6 +69,7 @@
         $(document).ready(function() {
             $( "#bizName" ).autocomplete({
                 source: "${pageContext. request. contextPath}/fetcher/find_company.htm"
+                //source : ["Alex,Agnes,Alan,Bjok,Bill,John,Jason,Maria,Man"]
             });
 
         });

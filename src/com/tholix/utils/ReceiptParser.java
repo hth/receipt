@@ -22,7 +22,7 @@ import com.tholix.domain.types.TaxEnum;
  * Parses the data from OCR
  *
  * @author hitender
- * @when Jan 6, 2013 9:49:59 AM
+ * @since Jan 6, 2013 9:49:59 AM
  *
  */
 public final class ReceiptParser {

@@ -13,7 +13,7 @@ import com.tholix.web.form.UserRegistrationForm;
 
 /**
  * @author hitender
- * @when Dec 25, 2012 12:17:57 PM
+ * @since Dec 25, 2012 12:17:57 PM
  *
  */
 public class UserRegistrationValidator implements Validator {

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -10,10 +10,10 @@ import com.tholix.domain.types.FeaturesOnItemEnum;
 
 /**
  * Add various features to an existing Item. It could be like price check for next thirty days. Or add a return reminder on an item.
- * 
+ *
  * @author hitender
- * @when Dec 26, 2012 1:47:36 PM
- * 
+ * @since Dec 26, 2012 1:47:36 PM
+ *
  */
 @Document(collection = "ITEM_FEATURE")
 public class ItemFeatureEntity extends BaseEntity {
@@ -32,7 +32,7 @@ public class ItemFeatureEntity extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param featureOnItem
 	 * @param itemEntity
 	 * @return

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -13,8 +13,8 @@ import com.tholix.domain.types.AccountTypeEnum;
 
 /**
  * @author hitender
- * @when Dec 23, 2012 1:48:36 AM
- * 
+ * @since Dec 23, 2012 1:48:36 AM
+ *
  */
 @Document(collection = "USER_PREFERENCE")
 public class UserPreferenceEntity extends BaseEntity {
@@ -27,10 +27,10 @@ public class UserPreferenceEntity extends BaseEntity {
 
 	@NotNull
 	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
-	
+
 	/** To make bean happy */
 	private UserPreferenceEntity() {
-		
+
 	}
 
 	// @PersistenceConstructor
@@ -42,7 +42,7 @@ public class UserPreferenceEntity extends BaseEntity {
 
 	/**
 	 * This method is used when the Entity is created for the first time.
-	 * 
+	 *
 	 * @param accountType
 	 * @param userProfile
 	 * @return

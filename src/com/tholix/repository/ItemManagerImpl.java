@@ -30,7 +30,7 @@ import com.tholix.domain.ReceiptEntity;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 9:16:44 PM
+ * @since Dec 26, 2012 9:16:44 PM
  *
  */
 @Repository

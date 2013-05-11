@@ -22,7 +22,7 @@ import com.tholix.domain.UserProfileEntity;
 
 /**
  * @author hitender
- * @when Dec 24, 2012 3:19:22 PM
+ * @since Dec 24, 2012 3:19:22 PM
  *
  */
 @Repository

@@ -18,7 +18,7 @@ import com.tholix.domain.ItemFeatureEntity;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 9:21:35 PM
+ * @since Dec 26, 2012 9:21:35 PM
  *
  */
 @Repository

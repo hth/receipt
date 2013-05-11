@@ -18,7 +18,7 @@ import com.tholix.web.form.ReceiptForm;
 
 /**
  * @author hitender
- * @when Jan 10, 2013 10:00:24 PM
+ * @since Jan 10, 2013 10:00:24 PM
  *
  */
 public class ReceiptFormValidator implements Validator {

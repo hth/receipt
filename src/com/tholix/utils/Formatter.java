@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 /**
  * @author hitender
- * @when Jan 9, 2013 11:13:30 PM
+ * @since Jan 9, 2013 11:13:30 PM
  *
  */
 public final class Formatter {

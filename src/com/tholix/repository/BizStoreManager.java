@@ -30,4 +30,13 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @return
      */
     List<String> findAllAddress(String bizAddress, BizNameEntity bizNameEntity);
+
+    /**
+     * BizStore sorted on create date and limited to latest records
+     *
+     * @param bizNameEntity
+     * @param limit
+     * @return
+     */
+    List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit);
 }

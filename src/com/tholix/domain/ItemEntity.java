@@ -19,7 +19,7 @@ import com.tholix.domain.types.TaxEnum;
  * Represents each individual item on a receipt.
  *
  * @author hitender
- * @when Dec 25, 2012 11:43:10 PM
+ * @since Dec 25, 2012 11:43:10 PM
  *
  */
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);

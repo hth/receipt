@@ -26,7 +26,7 @@ import com.tholix.domain.UploadReceiptImage;
 
 /**
  * @author hitender
- * @when Jan 3, 2013 3:09:08 AM
+ * @since Jan 3, 2013 3:09:08 AM
  *
  */
 @Transactional(readOnly = true)

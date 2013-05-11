@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.tholix.domain;
 
@@ -7,10 +7,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * @author hitender
- * @when Jan 3, 2013 12:56:16 AM
- * 
+ * @since Jan 3, 2013 12:56:16 AM
+ *
  * @see http://www.ioncannon.net/programming/975/spring-3-file-upload-example/
- * 
+ *
  *      For GridFsTemplate
  * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
  */

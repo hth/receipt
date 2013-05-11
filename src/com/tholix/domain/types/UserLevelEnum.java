@@ -5,7 +5,7 @@ package com.tholix.domain.types;
 
 /**
  * @author hitender
- * @when Mar 25, 2013 1:11:21 AM
+ * @since Mar 25, 2013 1:11:21 AM
  */
 public enum UserLevelEnum {
 	USER("USER", "User",                            1, UserLevelEnum.DEFAULT_JMS_LEVEL),

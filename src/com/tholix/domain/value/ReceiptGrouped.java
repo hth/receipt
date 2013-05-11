@@ -17,7 +17,7 @@ import com.tholix.utils.Maths;
 
 /**
  * @author hitender
- * @when Jan 12, 2013 6:25:15 PM
+ * @since Jan 12, 2013 6:25:15 PM
  *
  */
 public class ReceiptGrouped implements Serializable {

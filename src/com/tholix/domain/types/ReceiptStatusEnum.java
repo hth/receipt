@@ -5,7 +5,7 @@ package com.tholix.domain.types;
 
 /**
  * @author hitender
- * @when Jan 5, 2013 7:37:02 PM
+ * @since Jan 5, 2013 7:37:02 PM
  */
 public enum ReceiptStatusEnum {
 

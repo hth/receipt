@@ -27,7 +27,7 @@ import com.tholix.domain.ReceiptEntityOCR;
 
 /**
  * @author hitender
- * @when Jan 6, 2013 1:35:47 PM
+ * @since Jan 6, 2013 1:35:47 PM
  *
  */
 @Repository

@@ -36,7 +36,7 @@ import com.tholix.utils.DateUtil;
 
 /**
  * @author hitender
- * @when Mar 22, 2013 8:14:26 PM
+ * @since Mar 22, 2013 8:14:26 PM
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)

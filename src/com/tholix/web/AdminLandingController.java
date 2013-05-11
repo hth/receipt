@@ -20,18 +20,22 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
+import com.tholix.repository.BizStoreManager;
 import com.tholix.service.AdminLandingService;
+import com.tholix.service.ExternalService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.BizForm;
 import com.tholix.web.form.UserSearchForm;
+import com.tholix.web.validator.BizFormValidator;
 
 /**
  * @author hitender
- * @when Mar 26, 2013 1:14:24 AM
+ * @since Mar 26, 2013 1:14:24 AM
  * {@link http://viralpatel.net/blogs/spring-3-mvc-autocomplete-json-tutorial/}
  */
 @Controller
@@ -42,6 +46,9 @@ public class AdminLandingController {
 	private static final String nextPage = "/admin/landing";
 
     @Autowired private AdminLandingService adminLandingService;
+    @Autowired private ExternalService externalService;
+    @Autowired private BizFormValidator bizFormValidator;
+    @Autowired private BizStoreManager bizStoreManager;
 
 	@RequestMapping(value = "/landing", method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
@@ -81,23 +88,43 @@ public class AdminLandingController {
     @RequestMapping(value = "/addBusiness", method = RequestMethod.POST)
     public ModelAndView addBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result) {
         DateTime time = DateUtil.now();
-        //TODO add validation logic
-
-        ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
-        receiptEntity.setBizName(bizForm.getBizName());
-        receiptEntity.setBizStore(bizForm.getBizStore());
-
-        adminLandingService.saveNewBusinessAndOrStore(receiptEntity);
-
-        //TODO add success information of biz
-        //bizForm.setBizError(exce.getLocalizedMessage());
-        //result.rejectValue("bizError", exce.getLocalizedMessage(), exce.getLocalizedMessage());
-
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
         modelAndView.addObject("bizForm", bizForm);
 
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return modelAndView;
+        bizFormValidator.validate(bizForm, result);
+        if (result.hasErrors()) {
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+            return modelAndView;
+        } else {
+            ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
+            BizStoreEntity bizStoreEntity = bizForm.getBizStore();
+            try {
+                externalService.decodeAddress(bizStoreEntity);
+            } catch (Exception e) {
+                log.error("For Address: " + bizStoreEntity.getAddress() + ", " + e.getLocalizedMessage());
+                result.rejectValue("bizError", "", e.getLocalizedMessage());
+                return modelAndView;
+            }
+
+            receiptEntity.setBizStore(bizStoreEntity);
+            receiptEntity.setBizName(bizForm.getBizName());
+            try {
+                adminLandingService.saveNewBusinessAndOrStore(receiptEntity);
+            } catch(Exception e) {
+                result.rejectValue("bizError", "", e.getLocalizedMessage());
+                return modelAndView;
+            }
+
+            if(receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
+                modelAndView.addObject("bizStore", receiptEntity.getBizStore());
+                modelAndView.addObject("last10BizStore", adminLandingService.getAllStoresForBusinessName(receiptEntity));
+            } else {
+                result.rejectValue("bizError", "", "Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getName());
+            }
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+            return modelAndView;
+        }
     }
 }

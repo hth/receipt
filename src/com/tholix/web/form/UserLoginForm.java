@@ -1,12 +1,12 @@
 /**
- * 
+ *
  */
 package com.tholix.web.form;
 
 /**
  * @author hitender
- * @when Jan 4, 2013 4:41:01 PM
- * 
+ * @since Jan 4, 2013 4:41:01 PM
+ *
  */
 public class UserLoginForm {
 	private String emailId;

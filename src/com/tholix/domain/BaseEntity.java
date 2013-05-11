@@ -18,7 +18,7 @@ import com.tholix.utils.DateUtil;
 
 /**
  * @author hitender
- * @when Dec 23, 2012 2:02:10 AM
+ * @since Dec 23, 2012 2:02:10 AM
  *
  */
 public abstract class BaseEntity implements Serializable {

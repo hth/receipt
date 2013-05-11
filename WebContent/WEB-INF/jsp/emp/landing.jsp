@@ -55,7 +55,7 @@
                     <spring:eval expression="receipt.description" />
                 </td>
                 <td style="padding:3px;">
-                    <spring:eval expression="receipt.created" />
+                    ${receipt.created}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.since" />
@@ -85,8 +85,8 @@
         </tbody>
         <c:forEach var="receipt" items="${queue}"  varStatus="status">
             <tr>
-                <td style="padding:3px;" align="right">
-                        ${status.count}
+                <td style="padding:3px;">
+                    ${status.count}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.level" />
@@ -95,7 +95,7 @@
                     <spring:eval expression="receipt.description" />
                 </td>
                 <td style="padding:3px;">
-                    <spring:eval expression="receipt.created" />
+                    ${receipt.created}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.since" />
@@ -125,8 +125,8 @@
         </tbody>
         <c:forEach var="receipt" items="${recheckPending}"  varStatus="status">
             <tr>
-                <td style="padding:3px;" align="right">
-                        ${status.count}
+                <td style="padding:3px;">
+                    ${status.count}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.level" />
@@ -135,7 +135,7 @@
                     <spring:eval expression="receipt.description" />
                 </td>
                 <td style="padding:3px;">
-                    <spring:eval expression="receipt.created" />
+                    ${receipt.created}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.since" />
@@ -165,8 +165,8 @@
         </tbody>
         <c:forEach var="receipt" items="${recheck}"  varStatus="status">
             <tr>
-                <td style="padding:3px;" align="right">
-                        ${status.count}
+                <td style="padding:3px;">
+                    ${status.count}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.level" />
@@ -175,7 +175,7 @@
                     <spring:eval expression="receipt.description" />
                 </td>
                 <td style="padding:3px;">
-                    <spring:eval expression="receipt.created" />
+                    ${receipt.created}
                 </td>
                 <td style="padding:3px;">
                     <spring:eval expression="receipt.since" />

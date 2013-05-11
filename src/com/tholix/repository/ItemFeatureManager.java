@@ -10,7 +10,7 @@ import com.tholix.domain.ItemFeatureEntity;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 9:20:40 PM
+ * @since Dec 26, 2012 9:20:40 PM
  *
  */
 public interface ItemFeatureManager extends RepositoryManager<ItemFeatureEntity> {

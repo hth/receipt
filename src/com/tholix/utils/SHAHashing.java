@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 
 /**
  * @author hitender
- * @when Dec 22, 2012 11:52:04 PM
+ * @since Dec 22, 2012 11:52:04 PM
  *
  */
 public final class SHAHashing {

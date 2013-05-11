@@ -5,7 +5,7 @@ package com.tholix.domain.types;
 
 /**
  * @author hitender
- * @when Dec 23, 2012 11:06:13 AM
+ * @since Dec 23, 2012 11:06:13 AM
  */
 public enum AccountTypeEnum {
 

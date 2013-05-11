@@ -23,7 +23,7 @@ import com.tholix.web.validator.ReceiptFormValidator;
 
 /**
  * @author hitender
- * @when Mar 24, 2013 10:08:19 PM
+ * @since Mar 24, 2013 10:08:19 PM
  *
  */
 public class ReceiptUpdateControllerTest {

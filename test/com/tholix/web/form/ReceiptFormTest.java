@@ -22,7 +22,7 @@ import com.tholix.domain.types.TaxEnum;
 
 /**
  * @author hitender
- * @when Mar 19, 2013 7:02:05 PM
+ * @since Mar 19, 2013 7:02:05 PM
  *
  */
 public class ReceiptFormTest {

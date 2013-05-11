@@ -8,7 +8,7 @@ import com.tholix.domain.types.UserLevelEnum;
 
 /**
  * @author hitender
- * @when Mar 26, 2013 3:52:26 PM
+ * @since Mar 26, 2013 3:52:26 PM
  *
  */
 public class UserSearchForm {

@@ -16,7 +16,7 @@ import com.tholix.domain.types.UserLevelEnum;
 
 /**
  * @author hitender
- * @when Dec 23, 2012 3:45:26 AM
+ * @since Dec 23, 2012 3:45:26 AM
  *
  */
 public interface UserProfileManager extends RepositoryManager<UserProfileEntity> {

@@ -5,7 +5,7 @@ package com.tholix.domain.types;
 
 /**
  * @author hitender
- * @when Dec 26, 2012 1:58:20 PM
+ * @since Dec 26, 2012 1:58:20 PM
  */
 public enum FeaturesOnItemEnum {
 

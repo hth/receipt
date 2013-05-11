@@ -12,7 +12,7 @@ import com.tholix.domain.UploadReceiptImage;
 
 /**
  * @author hitender
- * @when Jan 3, 2013 3:08:12 AM
+ * @since Jan 3, 2013 3:08:12 AM
  *
  * For GridFsTemplate. Because of the GridFsTemplate the mongo content has been moved to receipt-servlet.xml
  * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/

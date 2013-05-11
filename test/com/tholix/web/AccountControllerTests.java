@@ -34,7 +34,7 @@ import com.tholix.web.validator.UserRegistrationValidator;
 
 /**
  * @author hitender
- * @when Dec 27, 2012 5:48:20 PM
+ * @since Dec 27, 2012 5:48:20 PM
  * @link http://hamletdarcy.blogspot.com/2008/12/autowired-junit-tests-with-spring-25.html
  * @link http://giannisapi.wordpress.com/2011/09/30/spring-3-testing-with-junit-4-using-contextconfiguration-and-abstracttransactionaljunit4springcontexttests/
  * @link http://www.springbyexample.org/examples/intro-to-ioc-unit-test-beans-from-application-context.html
