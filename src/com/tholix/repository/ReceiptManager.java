@@ -19,14 +19,25 @@ import com.tholix.domain.ReceiptEntity;
  *
  */
 public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
-	public static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
+	static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
 
-	public List<ReceiptEntity> getAllObjectsForUser(String userProfileId);
+	List<ReceiptEntity> getAllObjectsForUser(String userProfileId);
+
+    /**
+     * Get receipts associated with year, month, day
+     *
+     * @param year
+     * @param month
+     * @param day
+     * @param userProfileId
+     * @return
+     */
+    List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String userProfileId);
 
 	//public List<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId);
-	public Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId);
+	Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId);
 
-    public List<String> findTitles(String title);
+    List<String> findTitles(String title);
 
-    public long collectionSize();
+    long collectionSize();
 }

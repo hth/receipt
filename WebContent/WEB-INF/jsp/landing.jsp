@@ -208,7 +208,7 @@
 									title : '<%= receiptGrouped.get(date) %>',
 									start : '<%= date %>',
 									end   : '<%= date %>',
-									url   : '${pageContext.request.contextPath}/dayreceipt?date=<%= date.toString() %>',
+									url   : '${pageContext.request.contextPath}/day.htm?date=<%= date.getTime() %>',
 								} ,
 								<% } %>
 								<% } %>

@@ -158,4 +158,16 @@ public class ReceiptManagerImpl implements ReceiptManager {
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
     }
+
+    @Override
+    public List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String userProfileId) {
+        Criteria criteria = Criteria.where("userProfileId").is(userProfileId)
+                .andOperator(Criteria.where("year").is(year),
+                        Criteria.where("month").is(month),
+                        Criteria.where("day").is(day),
+                        Criteria.where("active").is(true));
+
+        Sort sort = new Sort(Direction.DESC, "receiptDate");
+        return mongoTemplate.find(Query.query(criteria).with(sort), ReceiptEntity.class, TABLE);
+    }
 }

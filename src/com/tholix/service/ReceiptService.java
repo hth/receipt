@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -48,6 +50,20 @@ public class ReceiptService {
      */
     public ReceiptEntity findReceipt(String receiptId) {
         return receiptManager.findOne(receiptId);
+    }
+
+    /**
+     *
+     * @param dateTime
+     * @param userProfileId
+     * @return
+     */
+    public List<ReceiptEntity> findReceipt(DateTime dateTime, String userProfileId) {
+        int year    = dateTime.getYear();
+        int month   = dateTime.getMonthOfYear();
+        int day     = dateTime.getDayOfMonth();
+
+        return receiptManager.findThisDayReceipts(year, month, day, userProfileId);
     }
 
     /**
