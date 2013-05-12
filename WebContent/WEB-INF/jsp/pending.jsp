@@ -38,7 +38,7 @@
 			<table>
 				<tr>
 					<td valign="top">
-						<table border="1" style="width: 400px" class="atable">
+						<table style="width: 400px" class="etable">
 							<tr>
 								<th align="left">&nbsp;</th>
 								<th align="left">&nbsp;Description</th>

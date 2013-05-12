@@ -35,7 +35,7 @@
                 <td><form:input path="userName" /></td>
             </tr>
             <c:if test="${users.size() > 0}">
-                <table border="1" style="background-color:#c5c021;border:1px dotted black;width:250px;border-collapse:collapse;">
+                <table style="width: 250px" class="etable">
                     <tbody>
                         <tr style="background-color:orange;color:white;">
                             <th style="padding:3px;"></th>

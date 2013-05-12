@@ -83,7 +83,7 @@
 	<table>
 		<tr>
 			<td valign="top">
-				<table border="1" style="width: 500px" class="atable">
+				<table style="width: 500px" class="etable">
 					<tr>
 						<td colspan="3">
 							<div class="leftAlign"><b>${receipt.bizName.name}</b></div>

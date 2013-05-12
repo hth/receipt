@@ -233,7 +233,7 @@
 		</ul>
 		<div id="tabs-1">
 			<c:if test="${receipts.size() > 0}">
-			<table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+			<table style="width: 450px" class="etable">
 				<tbody>
 					<tr style="background-color:orange;color:white;">
 						<th style="padding:3px;"></th>
