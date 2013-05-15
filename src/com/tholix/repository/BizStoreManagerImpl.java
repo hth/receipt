@@ -29,8 +29,7 @@ import com.tholix.domain.BizStoreEntity;
 @Transactional(readOnly = true)
 public class BizStoreManagerImpl implements BizStoreManager {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    @Autowired private MongoTemplate mongoTemplate;
 
     @Override
     public List<BizStoreEntity> getAllObjects() {

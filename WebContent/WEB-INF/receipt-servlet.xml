@@ -56,12 +56,14 @@
     <bean id="itemOCRManager"               class="com.tholix.repository.ItemOCRManagerImpl" />
     <bean id="itemFeatureManager"           class="com.tholix.repository.ItemFeatureManagerImpl" />
     <bean id="messageManager"               class="com.tholix.repository.MessageManagerImpl" />
+    <bean id="expenseManager"               class="com.tholix.repository.ExpenseTypeManagerImpl" />
 
     <bean id="userRegistrationValidator"    class="com.tholix.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.tholix.web.validator.UserLoginValidator" />
     <bean id="uploadReceiptImageValidator"  class="com.tholix.web.validator.UploadReceiptImageValidator" />
     <bean id="receiptFormValidator"         class="com.tholix.web.validator.ReceiptFormValidator" />
     <bean id="bizFormValidator"             class="com.tholix.web.validator.BizFormValidator" />
+    <bean id="expenseTypeValidator"         class="com.tholix.web.validator.ExpenseTypeValidator" />
     <!-- ===================================== -->
     <!-- JMS configuration                     -->
     <!-- ===================================== -->

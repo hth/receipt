@@ -9,23 +9,17 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 
-	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.css' />
-	<link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type='text/javascript' src="../jquery/fullcalendar/fullcalendar.min.js"></script>
 
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
 
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
 
 	<!-- For tabs -->
 	<script>
@@ -115,6 +109,16 @@
 			);
 		});
 	</script>
+
+    <script>
+        <c:if test="${showTab != null}">
+            $(function() {
+                <c:if test="${showTab == '#tabs-2'}">
+                    $( "#tabs" ).tabs({ active: 1 });
+                </c:if>
+            });
+        </c:if>
+    </script>
 </head>
 <body>
     <div id="content" style='width:210px;'>
@@ -170,7 +174,7 @@
 			</form:form>
 		</div>
 		<div id="tabs-2">
-			<form:form modelAttribute="userPreference" method="post" enctype="multipart/form-data">
+			<form:form modelAttribute="userPreference">
 				<div class="divTable">
 					<div class="divRow">
 						<div class="divOfCell400">Account Type: ${userPreference.accountType.description}</div>
@@ -180,6 +184,84 @@
 					</div>
 			   	</div>
 			</form:form>
+
+            <br/>
+
+            <form:form modelAttribute="expenseType" method="post" action="addExpenseType.htm">
+                <form:errors path="expName" cssClass="error" />
+                <form:hidden path="forYear" />
+                <table border="0" style="width: 200px" class="etable">
+                    <tr>
+                        <td style="padding:3px;">&nbsp;Expense Name: </td>
+                        <td style="padding:3px;"><form:input path="expName" size="12" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding:3px; text-align: right;">
+                            <input type="submit" value="Add" name="Add"/>
+                        </td>
+                    </tr>
+                </table>
+            </form:form>
+
+            <c:if test="${expenseTypes.size() > 0}">
+            <br/>
+
+            <c:choose>
+                <c:when test="${visibleExpenseTypes == 1}">
+                    ${visibleExpenseTypes} - Expense Type visible
+                </c:when>
+                <c:when test="${visibleExpenseTypes > 1}">
+                    ${visibleExpenseTypes} - Expense Types visible
+                </c:when>
+                <c:otherwise>
+                    No Expense Type visible
+                </c:otherwise>
+            </c:choose>
+            <table style="width: 200px" class="etable">
+                <tr>
+                    <th style="padding:3px;">Visible</th>
+                    <th style="padding:3px;">Expense Type</th>
+                    <th style="padding:3px;">Since</th>
+                </tr>
+                <c:forEach var="expenseType" items="${expenseTypes}" varStatus="status">
+                <tr>
+                    <td style="padding:3px;">
+                        <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?uid=${sessionScope['userSession'].userProfileId}&id=${expenseType.id}&status=${expenseType.active}">
+                        <c:choose>
+                            <c:when test="${expenseType.active == true}">
+                                Hide
+                            </c:when>
+                            <c:otherwise>
+                                Visible
+                            </c:otherwise>
+                        </c:choose>
+                        </a>
+                    </td>
+                    <td style="padding:3px;">
+                        <c:choose>
+                            <c:when test="${expenseType.active == true}">
+                                <spring:eval expression="expenseType.expName" />
+                            </c:when>
+                            <c:otherwise>
+                                <del><spring:eval expression="expenseType.expName" /></del>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td style="padding:3px;">
+                        <c:choose>
+                            <c:when test="${expenseType.active == true}">
+                                <spring:eval expression="expenseType.forYear" />
+                            </c:when>
+                            <c:otherwise>
+                                <del><spring:eval expression="expenseType.forYear" /></del>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+                </c:forEach>
+            </table>
+            </c:if>
+
 		</div>
 	</div>
 </body>

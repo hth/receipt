@@ -35,7 +35,6 @@ public class ReceiptForm {
 	}
 
 	private ReceiptForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
-		super();
 		this.receiptOCR = receipt;
 		this.items = items;
 	}

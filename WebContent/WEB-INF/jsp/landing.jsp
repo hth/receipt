@@ -114,7 +114,7 @@
  	<div class="divTable">
 		<div class="divRow">
 			<div class="divOfCell200"><h3><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${sessionScope['userSession'].emailId}</a></h3></div>
-		    <div class="divOfCell200"><h3>Total Expense: <a href="${pageContext.request.contextPath}/landing.htm#tabs-2"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
+		    <div class="divOfCell200" id="active-tab-2"><h3>Total Expense: <a href="#"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
    	</div>
 
@@ -234,15 +234,13 @@
 		<div id="tabs-1">
 			<c:if test="${receipts.size() > 0}">
 			<table style="width: 450px" class="etable">
-				<tbody>
-					<tr style="background-color:orange;color:white;">
-						<th style="padding:3px;"></th>
-						<th style="padding:3px;">Title</th>
-						<th style="padding:3px;">Receipt Date</th>
-						<th style="padding:3px;">Tax</th>
-						<th style="padding:3px;">Total</th>
-					</tr>
-				</tbody>
+                <tr>
+                    <th style="padding:3px;"></th>
+                    <th style="padding:3px;">Title</th>
+                    <th style="padding:3px;">Receipt Date</th>
+                    <th style="padding:3px;">Tax</th>
+                    <th style="padding:3px;">Total</th>
+                </tr>
 				<c:forEach var="receipt" items="${receipts}"  varStatus="status">
 				<tr>
 					<td style="padding:3px;" align="right">
@@ -414,6 +412,10 @@
         .mapContainer {border:1px solid red;}
     </style>
 
-
+    <script>
+        $("#active-tab-2").click(function() {
+            $( "#tabs" ).tabs({ active: 1 });
+        });
+    </script>
 </body>
 </html>

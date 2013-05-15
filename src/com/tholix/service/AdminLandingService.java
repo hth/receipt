@@ -166,7 +166,7 @@ public class AdminLandingService {
     public List<UserSearchForm> findAllUsers(String name) {
         DateTime time = DateUtil.now();
         log.info("Search string for user name: " + name);
-        List<UserSearchForm> userList = new ArrayList<UserSearchForm>();
+        List<UserSearchForm> userList = new ArrayList<>();
         for(UserProfileEntity user : userProfileManager.searchAllByName(name)) {
             UserSearchForm userForm = UserSearchForm.newInstance(user);
             userList.add(userForm);

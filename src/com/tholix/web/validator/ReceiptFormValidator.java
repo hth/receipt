@@ -5,6 +5,7 @@ package com.tholix.web.validator;
 
 import java.text.ParseException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.validation.Errors;
@@ -47,7 +48,7 @@ public class ReceiptFormValidator implements Validator {
 		int count = 0;
         Double subTotal = 0.00;
 		for(ItemEntityOCR item : receiptForm.getItems()) {
-			if(!item.getName().isEmpty()) {
+			if(StringUtils.isNotEmpty(item.getName()) && StringUtils.isNotEmpty(item.getPrice())) {
 				 try {
 					subTotal = subTotal + Formatter.getCurrencyFormatted(item.getPrice());
 				} catch (ParseException e) {
@@ -57,7 +58,7 @@ public class ReceiptFormValidator implements Validator {
 			}
 		}
 
-        if(!receiptForm.getReceipt().getSubTotal().isEmpty()) {
+        if(StringUtils.isNotEmpty(receiptForm.getReceipt().getSubTotal())) {
             try {
                 Double submittedSubTotal = Formatter.getCurrencyFormatted(receiptForm.getReceipt().getSubTotal());
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
@@ -71,7 +72,7 @@ public class ReceiptFormValidator implements Validator {
             }
         }
 
-		if(!receiptForm.getReceipt().getTotal().isEmpty()) {
+		if(StringUtils.isNotEmpty(receiptForm.getReceipt().getTotal())) {
 			try {
 				Formatter.getCurrencyFormatted(receiptForm.getReceipt().getTotal());
 			} catch (ParseException e) {
