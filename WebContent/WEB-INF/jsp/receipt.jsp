@@ -117,23 +117,24 @@
 					</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="2" align="right">
-							Sub Total &nbsp;&nbsp;&nbsp; <fmt:formatNumber value="${receipt.total - receipt.tax}" type="currency" currencySymbol="$" />
+						<td style="text-align: right;">
+							Sub Total &nbsp;&nbsp;&nbsp;
 						</td>
+                        <td><fmt:formatNumber value="${receipt.total - receipt.tax}" type="currency" currencySymbol="$" /></td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
-						<td colspan="1" align="right">
+						<td style="text-align: right;">
 							<span>Tax &nbsp;</span>
 							<b><spring:eval expression="receipt.tax" /></b>
 							<span>&nbsp;&nbsp;Total &nbsp;</span>
 						</td>
-						<td align="right">
+						<td style="text-align: left;">
 							<b><spring:eval expression="receipt.total" /></b>
 						</td>
 					</tr>
 					<tr>
-						<form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
+						<form:form method="post" action="receipt.htm" modelAttribute="receipt">
 						<form:hidden path="id" />
 						<tr height="60em">
                             <td colspan="3">

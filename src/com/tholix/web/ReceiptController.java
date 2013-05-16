@@ -60,13 +60,18 @@ public class ReceiptController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params="Delete")
-	public String delete(@ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
+	public String delete(@ModelAttribute("receipt") ReceiptEntity receipt) {
         DateTime time = DateUtil.now();
-        log.info("Delete receipt " + receiptForm.getId());
+        log.info("Delete receipt " + receipt.getId());
 
-        boolean task = receiptService.deleteReceipt(receiptForm.getId());
-        if(task == false) {
-            //TODO in case of failure to delete send message to USER
+        boolean task = false;
+        try {
+            task = receiptService.deleteReceipt(receipt.getId());
+            if(task == false) {
+                //TODO in case of failure to delete send message to USER
+            }
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), task);
@@ -74,11 +79,15 @@ public class ReceiptController extends BaseController {
 	}
 
     @RequestMapping(method = RequestMethod.POST, params="Re-Check")
-    public String recheck(@ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
+    public String recheck(@ModelAttribute("receipt") ReceiptEntity receipt) {
         DateTime time = DateUtil.now();
-        log.info("Initiating re-check on receipt " + receiptForm.getId());
+        log.info("Initiating re-check on receipt " + receipt.getId());
 
-        receiptService.reopen(receiptForm.getId());
+        try {
+            receiptService.reopen(receipt.getId());
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
+        }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return "redirect:/landing.htm";
@@ -99,22 +108,29 @@ public class ReceiptController extends BaseController {
         log.info("Delete receipt " + receiptId);
 
         UserProfileEntity userProfile = authenticate(profileId, authKey);
+        Header header = Header.newInstance(authKey);
         if(userProfile != null) {
-            boolean task = receiptService.deleteReceipt(receiptId);
-            Header header = Header.newInstance(authKey);
-            if(task) {
-                header.setStatus(Header.RESULT.SUCCESS);
-                header.setMessage("Deleted receipt successfully");
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
-                return header;
-            } else {
+            try {
+                boolean task = receiptService.deleteReceipt(receiptId);
+                if(task) {
+                    header.setStatus(Header.RESULT.SUCCESS);
+                    header.setMessage("Deleted receipt successfully");
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+                    return header;
+                } else {
+                    header.setStatus(Header.RESULT.FAILURE);
+                    header.setMessage("Delete receipt un-successful");
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+                    return header;
+                }
+            } catch (Exception exce) {
                 header.setStatus(Header.RESULT.FAILURE);
                 header.setMessage("Delete receipt un-successful");
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 return header;
             }
         } else {
-            Header header = getHeaderForProfileOrAuthFailure();
+            header = getHeaderForProfileOrAuthFailure();
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return header;
         }

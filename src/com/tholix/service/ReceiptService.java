@@ -80,13 +80,18 @@ public class ReceiptService {
      * Delete a Receipt and its associated data
      * @param receiptId - Receipt id to delete
      */
-    public boolean deleteReceipt(String receiptId) {
+    public boolean deleteReceipt(String receiptId) throws Exception {
         ReceiptEntity receipt = receiptManager.findOne(receiptId);
         if(receipt != null) {
-            itemManager.deleteWhereReceipt(receipt);
-            receiptManager.delete(receipt);
-            storageManager.deleteObject(receipt.getReceiptBlobId());
-            return true;
+            if(receipt.isActive()) {
+                itemManager.deleteWhereReceipt(receipt);
+                receiptManager.delete(receipt);
+                storageManager.deleteObject(receipt.getReceiptBlobId());
+                return true;
+            } else {
+                log.error("Attempt to delete inactive Receipt: " + receipt.getId() + ", Browser Back Action performed");
+                throw new Exception("Receipt no longer exists");
+            }
         }
         return false;
     }
@@ -95,29 +100,35 @@ public class ReceiptService {
      * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items. Then delete all the items.
      * @param receiptId
      */
-    public void reopen(String receiptId) {
+    public void reopen(String receiptId) throws Exception {
         try {
             ReceiptEntity receipt = receiptManager.findOne(receiptId);
-            receipt.inActive();
-            receiptManager.save(receipt);
-            List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
+            if(receipt.isActive()) {
+                receipt.inActive();
+                receiptManager.save(receipt);
+                List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
 
-            ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
-            receiptOCR.active();
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
-            receiptOCR.setReceiptId(receipt.getId());
-            receiptOCRManager.save(receiptOCR);
-            itemOCRManager.deleteWhereReceipt(receiptOCR);
+                ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
+                receiptOCR.active();
+                receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
+                receiptOCR.setReceiptId(receipt.getId());
+                receiptOCRManager.save(receiptOCR);
+                itemOCRManager.deleteWhereReceipt(receiptOCR);
 
-            List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
-            itemOCRManager.saveObjects(ocrItems);
-            itemManager.deleteWhereReceipt(receipt);
+                List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
+                itemOCRManager.saveObjects(ocrItems);
+                itemManager.deleteWhereReceipt(receipt);
 
-            log.info("ReceiptEntityOCR @Id after save: " + receiptOCR.getId());
-            UserProfileEntity userProfile = userProfileManager.findOne(receiptOCR.getUserProfileId());
-            senderJMS.send(receiptOCR, userProfile);
+                log.info("ReceiptEntityOCR @Id after save: " + receiptOCR.getId());
+                UserProfileEntity userProfile = userProfileManager.findOne(receiptOCR.getUserProfileId());
+                senderJMS.send(receiptOCR, userProfile);
+            } else {
+                log.error("Attempt to invoke re-check on Receipt: " + receipt.getId() + ", Browser Back Action performed");
+                throw new Exception("Receipt no longer exists");
+            }
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            log.error("Exception during customer requesting receipt recheck operation: " + e.getLocalizedMessage());
+            throw e;
         }
     }
 
