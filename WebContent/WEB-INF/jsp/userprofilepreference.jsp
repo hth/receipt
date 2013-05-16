@@ -192,12 +192,11 @@
                 <form:hidden path="forYear" />
                 <table border="0" style="width: 200px" class="etable">
                     <tr>
-                        <td style="padding:3px;">&nbsp;Expense Name: </td>
-                        <td style="padding:3px;"><form:input path="expName" size="12" /></td>
+                        <td style="padding:3px;">&nbsp;Expense Type <form:input path="expName" size="12" /></td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="padding:3px; text-align: right;">
-                            <input type="submit" value="Add" name="Add"/>
+                        <td style="padding:3px; text-align: right;">
+                            <input type="submit" value="Add" name="Add"/>&nbsp;&nbsp;
                         </td>
                     </tr>
                 </table>
@@ -208,13 +207,13 @@
 
             <c:choose>
                 <c:when test="${visibleExpenseTypes == 1}">
-                    ${visibleExpenseTypes} - Expense Type visible
+                    <p>${visibleExpenseTypes} - Expense Type visible</p>
                 </c:when>
                 <c:when test="${visibleExpenseTypes > 1}">
-                    ${visibleExpenseTypes} - Expense Types visible
+                    <p>${visibleExpenseTypes} - Expense Types visible</p>
                 </c:when>
                 <c:otherwise>
-                    No Expense Type visible
+                    <p>No Expense Type visible</p>
                 </c:otherwise>
             </c:choose>
             <table style="width: 200px" class="etable">
