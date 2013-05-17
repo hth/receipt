@@ -34,7 +34,7 @@
             document.getElementById("holder").innerHTML = "";
             var R = Raphael("holder", 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
-            var img = R.image('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}', 80, 20, 750, 750);
+            var img = R.image('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptOCRForm.receipt.receiptBlobId}', 80, 20, 750, 750);
             var butt1 = R.set(),
                 butt2 = R.set();
             butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
@@ -146,7 +146,7 @@
                 <c:choose>
                     <%--//TODO change from constant--%>
                     <c:when test="${userSession.level.value ge 5}">
-                        <form:form method="post" action="update.htm" modelAttribute="receiptForm">
+                        <form:form method="post" action="update.htm" modelAttribute="receiptOCRForm">
                             <form:errors path="receipt" cssClass="error" />
                             <form:hidden path="receipt.receiptBlobId"/>
                             <form:hidden path="receipt.id"/>
@@ -193,7 +193,7 @@
                                     <th align="left">&nbsp;Price</th>
                                     <th align="left">&nbsp;</th>
                                 </tr>
-                                <c:forEach items="${receiptForm.items}" varStatus="status">
+                                <c:forEach items="${receiptOCRForm.items}" varStatus="status">
                                     <tr>
                                         <td align="left">
                                             ${status.index + 1}

@@ -25,10 +25,10 @@ import com.tholix.domain.types.TaxEnum;
  * @since Mar 19, 2013 7:02:05 PM
  *
  */
-public class ReceiptFormTest {
+public class ReceiptOCRFormTest {
 	private ReceiptEntityOCR receipt;
 	private List<ItemEntityOCR> items;
-	private ReceiptForm receiptForm;
+	private ReceiptOCRForm receiptOCRForm;
 	private ReceiptEntity receiptEntity;
 
 	/**
@@ -42,8 +42,8 @@ public class ReceiptFormTest {
 		items = new ArrayList<ItemEntityOCR>();
 		items.add(ItemEntityOCR.newInstance("Item1", "80.00", TaxEnum.TAXED, 1, receipt, BaseTest.userProfileId));
 
-		receiptForm = ReceiptForm.newInstance(receipt, items);
-		receiptEntity = receiptForm.getReceiptEntity();
+		receiptOCRForm = ReceiptOCRForm.newInstance(receipt, items);
+		receiptEntity = receiptOCRForm.getReceiptEntity();
 	}
 
 	/**
@@ -54,80 +54,80 @@ public class ReceiptFormTest {
 		items.clear();
 		items = null;
 		receipt = null;
-		receiptForm = null;
+		receiptOCRForm = null;
 		receiptEntity = null;
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#newInstance(com.tholix.domain.ReceiptEntityOCR, java.util.List)}.
+	 * Test method for {@link ReceiptOCRForm#newInstance(com.tholix.domain.ReceiptEntityOCR, java.util.List)}.
 	 */
 	@Test
 	public void testNewInstanceReceiptEntityOCRListOfItemEntityOCR() {
-		assertNotNull(ReceiptForm.newInstance(null, null));
+		assertNotNull(ReceiptOCRForm.newInstance(null, null));
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#newInstance()}.
+	 * Test method for {@link ReceiptOCRForm#newInstance()}.
 	 */
 	@Test
 	public void testNewInstance() {
-		assertNotNull(ReceiptForm.newInstance());
+		assertNotNull(ReceiptOCRForm.newInstance());
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#getReceipt()}.
+	 * Test method for {@link ReceiptOCRForm#getReceipt()}.
 	 */
 	@Test
 	public void testGetReceipt() {
-		assertNotNull(receiptForm.getReceipt());
+		assertNotNull(receiptOCRForm.getReceipt());
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#setReceipt(com.tholix.domain.ReceiptEntityOCR)}.
+	 * Test method for {@link ReceiptOCRForm#setReceipt(com.tholix.domain.ReceiptEntityOCR)}.
 	 */
 	@Test
 	public void testSetReceipt() {
-		ReceiptForm form = ReceiptForm.newInstance(null, null);
+		ReceiptOCRForm form = ReceiptOCRForm.newInstance(null, null);
 		assertNull(form.getReceipt());
 		form.setReceipt(receipt);
 		assertNotNull(form.getReceipt());
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#getItems()}.
+	 * Test method for {@link ReceiptOCRForm#getItems()}.
 	 */
 	@Test
 	public void testGetItems() {
-		assertNotNull(receiptForm.getItems());
+		assertNotNull(receiptOCRForm.getItems());
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#setItems(java.util.List)}.
+	 * Test method for {@link ReceiptOCRForm#setItems(java.util.List)}.
 	 */
 	@Test
 	public void testSetItems() {
-		ReceiptForm form = ReceiptForm.newInstance(null, null);
+		ReceiptOCRForm form = ReceiptOCRForm.newInstance(null, null);
 		assertNull(form.getItems());
 		form.setItems(items);
 		assertNotNull(form.getItems());
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#toString()}.
+	 * Test method for {@link ReceiptOCRForm#toString()}.
 	 */
 	@Test
 	public void testToString() {
-		String expected = "ReceiptForm [receipt=ReceiptEntityOCR [description=Test Description, title=Receipt Title, receiptStatus=Turk Processed, receiptBlobId=507f1f77bcf86cd799439011, receiptDate=01/01/13 12:01, total=80.00, tax=20.00, userProfileId=test@test.com, receiptOCRTranslation=null], items=[ItemEntity [name=Item1, price=80.00, taxed=Taxed]]]";
-		assertEquals(expected, receiptForm.toString());
+		String expected = "ReceiptOCRForm [receipt=ReceiptEntityOCR [description=Test Description, title=Receipt Title, receiptStatus=Turk Processed, receiptBlobId=507f1f77bcf86cd799439011, receiptDate=01/01/13 12:01, total=80.00, tax=20.00, userProfileId=test@test.com, receiptOCRTranslation=null], items=[ItemEntity [name=Item1, price=80.00, taxed=Taxed]]]";
+		assertEquals(expected, receiptOCRForm.toString());
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#getReceiptEntity()}.
+	 * Test method for {@link ReceiptOCRForm#getReceiptEntity()}.
 	 */
 	@Test
 	public void testGetReceiptEntity() {
 		try {
-			ReceiptEntity receiptEntity = receiptForm.getReceiptEntity();
+			ReceiptEntity receiptEntity = receiptOCRForm.getReceiptEntity();
 			assertNotNull(receiptEntity);
 			assertEquals(this.receiptEntity.toString(), receiptEntity.toString());
 		} catch (NumberFormatException e) {
@@ -140,12 +140,12 @@ public class ReceiptFormTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.form.ReceiptForm#getItemEntity(com.tholix.domain.ReceiptEntity)}.
+	 * Test method for {@link ReceiptOCRForm#getItemEntity(com.tholix.domain.ReceiptEntity)}.
 	 */
 	@Test
 	public void testGetItemEntity() {
 		try {
-			List<ItemEntity> listOfItems = receiptForm.getItemEntity(receiptEntity);
+			List<ItemEntity> listOfItems = receiptOCRForm.getItemEntity(receiptEntity);
 			assertNotNull(listOfItems);
 			assertEquals(items.size(), listOfItems.size());
 			assertEquals(items.iterator().next().getName(), listOfItems.iterator().next().getName());

@@ -19,7 +19,7 @@ import com.tholix.repository.ItemManager;
 import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
-import com.tholix.web.validator.ReceiptFormValidator;
+import com.tholix.web.validator.ReceiptOCRFormValidator;
 
 /**
  * @author hitender
@@ -32,7 +32,7 @@ public class ReceiptUpdateControllerTest {
 	@Autowired private ItemManager itemManager;
 	@Autowired private ReceiptOCRManager receiptOCRManager;
 	@Autowired private ItemOCRManager itemOCRManager;
-	@Autowired private ReceiptFormValidator receiptFormValidator;
+	@Autowired private ReceiptOCRFormValidator receiptOCRFormValidator;
 
 	private ReceiptUpdateController controller;
 	private UserSession userSession;
@@ -59,19 +59,19 @@ public class ReceiptUpdateControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptUpdateController#loadForm(java.lang.String, com.tholix.web.form.ReceiptForm)}.
+	 * Test method for {@link com.tholix.web.ReceiptUpdateController#loadForm(java.lang.String, com.tholix.web.form.ReceiptOCRForm)}.
 	 */
 	@Test
 	public void testLoadForm() {
-		//controller.loadForm(id, receiptForm);
+		//controller.loadForm(id, receiptOCRForm);
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptUpdateController#post(com.tholix.web.form.ReceiptForm, javax.servlet.http.HttpSession, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.ReceiptUpdateController#post(com.tholix.web.form.ReceiptOCRForm, javax.servlet.http.HttpSession, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 */
 	@Test
 	public void testPost() {
-		//controller.post(receiptForm, session, result, redirectAttrs);
+		//controller.post(receiptOCRForm, session, result, redirectAttrs);
 	}
 
 }

@@ -23,28 +23,28 @@ import com.tholix.utils.Formatter;
  *
  * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
-public class ReceiptForm {
+public class ReceiptOCRForm {
 	ReceiptEntityOCR receiptOCR;
 	List<ItemEntityOCR> items;
 
 	/**
 	 * Need for bean instantiation in ReceiptUpdateForm
 	 */
-	private ReceiptForm() {
+	private ReceiptOCRForm() {
 
 	}
 
-	private ReceiptForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
+	private ReceiptOCRForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
 		this.receiptOCR = receipt;
 		this.items = items;
 	}
 
-	public static ReceiptForm newInstance(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
-		return new ReceiptForm(receipt, items);
+	public static ReceiptOCRForm newInstance(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
+		return new ReceiptOCRForm(receipt, items);
 	}
 
-	public static ReceiptForm newInstance() {
-		return new ReceiptForm();
+	public static ReceiptOCRForm newInstance() {
+		return new ReceiptOCRForm();
 	}
 
 	public ReceiptEntityOCR getReceipt() {
@@ -65,7 +65,7 @@ public class ReceiptForm {
 
 	@Override
 	public String toString() {
-		return "ReceiptForm [receiptOCR=" + receiptOCR + ", items=" + items + "]";
+		return "ReceiptOCRForm [receiptOCR=" + receiptOCR + ", items=" + items + "]";
 	}
 
 	public ReceiptEntity getReceiptEntity() throws NumberFormatException, Exception {

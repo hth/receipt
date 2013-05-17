@@ -25,8 +25,8 @@ import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.service.ReceiptUpdateService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.web.form.ReceiptForm;
-import com.tholix.web.validator.ReceiptFormValidator;
+import com.tholix.web.form.ReceiptOCRForm;
+import com.tholix.web.validator.ReceiptOCRFormValidator;
 
 /**
  * @author hitender
@@ -42,36 +42,36 @@ public class ReceiptUpdateController {
     private static final String nextPageRecheck = "recheck";
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
-    @Autowired private ReceiptFormValidator receiptFormValidator;
+    @Autowired private ReceiptOCRFormValidator receiptOCRFormValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
 
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public ModelAndView update(@RequestParam("id") String receiptOCRId, @ModelAttribute("receiptForm") ReceiptForm receiptForm) {
+	public ModelAndView update(@RequestParam("id") String receiptOCRId, @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
         ReceiptEntityOCR receipt = receiptUpdateService.loadReceiptOCRById(receiptOCRId);
-		receiptForm.setReceipt(receipt);
+		receiptOCRForm.setReceipt(receipt);
 
 		List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
-		receiptForm.setItems(items);
+		receiptOCRForm.setItems(items);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return new ModelAndView(nextPage);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(@ModelAttribute("receiptForm") ReceiptForm receiptForm, BindingResult result) {
+	public String update(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
-        log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getBizName().getName());
-		receiptFormValidator.validate(receiptForm, result);
+        log.info("Turk processing a receipt " + receiptOCRForm.getReceipt().getId() + " ; Title : " + receiptOCRForm.getReceipt().getBizName().getName());
+		receiptOCRFormValidator.validate(receiptOCRForm, result);
 		if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return nextPage;
 		}
 
         try {
-            ReceiptEntity receipt = receiptForm.getReceiptEntity();
-            List<ItemEntity> items = receiptForm.getItemEntity(receipt);
-            ReceiptEntityOCR receiptOCR = receiptForm.getReceipt();
+            ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
+            List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);
+            ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceipt();
             receiptUpdateService.turkReceipt(receipt, items, receiptOCR);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return REDIRECT_EMP_LANDING_HTM;
@@ -84,27 +84,27 @@ public class ReceiptUpdateController {
 	}
 
     @RequestMapping(value = "/recheck", method = RequestMethod.GET)
-    public ModelAndView recheck(@RequestParam("id") String receiptOCRId, @ModelAttribute("receiptForm") ReceiptForm receiptForm) {
+    public ModelAndView recheck(@RequestParam("id") String receiptOCRId, @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
-        update(receiptOCRId, receiptForm);
+        update(receiptOCRId, receiptOCRForm);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return new ModelAndView(nextPageRecheck);
     }
 
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
-    public String recheck(@ModelAttribute("receiptForm") ReceiptForm receiptForm, BindingResult result) {
+    public String recheck(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
-        log.info("Turk processing a receipt " + receiptForm.getReceipt().getId() + " ; Title : " + receiptForm.getReceipt().getBizName().getName());
-        receiptFormValidator.validate(receiptForm, result);
+        log.info("Turk processing a receipt " + receiptOCRForm.getReceipt().getId() + " ; Title : " + receiptOCRForm.getReceipt().getBizName().getName());
+        receiptOCRFormValidator.validate(receiptOCRForm, result);
         if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return nextPageRecheck;
         }
 
         try {
-            ReceiptEntity receipt = receiptForm.getReceiptEntity();
-            List<ItemEntity> items = receiptForm.getItemEntity(receipt);
-            ReceiptEntityOCR receiptOCR = receiptForm.getReceipt();
+            ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
+            List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);
+            ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceipt();
             receiptUpdateService.turkReceiptReCheck(receipt, items, receiptOCR);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return REDIRECT_EMP_LANDING_HTM;
