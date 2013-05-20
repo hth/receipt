@@ -157,4 +157,8 @@ public class ReceiptService {
 
         return listOfItems;
     }
+
+    public void updateItemExpenseType(ItemEntity item) {
+        itemManager.updateItemExpenseType(item);
+    }
 }

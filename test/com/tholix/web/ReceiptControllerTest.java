@@ -35,6 +35,7 @@ import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.StorageManager;
 import com.tholix.repository.UserProfileManager;
 import com.tholix.utils.DateUtil;
+import com.tholix.web.form.ReceiptForm;
 
 /**
  * @author hitender
@@ -104,7 +105,7 @@ public class ReceiptControllerTest {
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");
 		itemManager.save(item);
 
-		ModelAndView modelAndView = controller.loadForm(receipt.getId(), ReceiptEntity.newInstance());
+		ModelAndView modelAndView = controller.loadForm(receipt.getId(), ReceiptForm.newInstance(null, null, null), null);
 		assertNotNull(modelAndView);
 
 		ReceiptEntity receiptActual = (ReceiptEntity) modelAndView.getModelMap().get("receipt");

@@ -8,14 +8,11 @@
 	<title><fmt:message key="receipt.title" /></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
 
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
 	<script type="text/javascript" src="jquery/js/raphael/raphael-min.js"></script>
 
 	<style type="text/css">
@@ -27,7 +24,7 @@
 		}
 	</style>
 
-	<script>
+    <script>
 		/* add background color to holder in tr tag */
         window.onload = function () {
             var src = document.getElementById("receipt.image").src,
@@ -35,7 +32,7 @@
             document.getElementById("holder").innerHTML = "";
             var R = Raphael("holder", 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
-            var img = R.image('${pageContext.request.contextPath}/receiptimage.htm?id=${receipt.receiptBlobId}', 80, 20, 750, 750);
+            var img = R.image('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}', 80, 20, 750, 750);
             var butt1 = R.set(),
                 butt2 = R.set();
             butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
@@ -83,79 +80,91 @@
 	<table>
 		<tr>
 			<td valign="top">
-				<table style="width: 500px" class="etable">
-					<tr>
-						<td colspan="3">
-							<div class="leftAlign"><b>${receipt.bizName.name}</b></div>
-							<div class="rightAlign"><b><spring:eval expression="receipt.receiptDate" /></b></div>
-						</td>
-					</tr>
-                    <tr>
-                        <td colspan="3">
-                            <div class="leftAlign"><b>${receipt.bizStore.address}</b></div>
-                            <div class="rightAlign"><b>${receipt.bizStore.phone}</b></div>
-                        </td>
-                    </tr>
-					<tr>
-						<th align="left">&nbsp;Name</th>
-						<th align="left">&nbsp;Price</th>
-						<th align="left">&nbsp;</th>
-					</tr>
-					<c:forEach items="${items}" var="item" varStatus="status">
-					<tr>
-						<td align="left">
-							<a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-				    		${item.name}
-				    		</a>
-						</td>
-						<td align="right">
-				    		<spring:eval expression="item.price" />
-						</td>
-						<td>
-							${item.taxed.description}
-						</td>
-					</tr>
-					</c:forEach>
-					<tr>
-						<td style="text-align: right;">
-							Sub Total &nbsp;&nbsp;&nbsp;
-						</td>
-                        <td><fmt:formatNumber value="${receipt.total - receipt.tax}" type="currency" currencySymbol="$" /></td>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td style="text-align: right;">
-							<span>Tax &nbsp;</span>
-							<b><spring:eval expression="receipt.tax" /></b>
-							<span>&nbsp;&nbsp;Total &nbsp;</span>
-						</td>
-						<td style="text-align: left;">
-							<b><spring:eval expression="receipt.total" /></b>
-						</td>
-					</tr>
-					<tr>
-						<form:form method="post" action="receipt.htm" modelAttribute="receipt">
-						<form:hidden path="id" />
-						<tr height="60em">
+                <form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
+                    <form:hidden path="receipt.id" />
+                    <table style="width: 600px" class="etable">
+                        <tr>
                             <td colspan="3">
-                                <div class="rightAlign"><input type="submit" value="Re-Check" name="Re-Check"/></div>
-                                <div class="rightAlign">&nbsp;&nbsp;</div>
-								<div class="rightAlign"><input type="submit" value="Delete" name="Delete"/></div>
-							</td>
-						</tr>
-						</form:form>
-					</tr>
-				</table>
+                                <div class="leftAlign"><b><spring:eval expression="receiptForm.receipt.bizName.name" /></b></div>
+                                <div class="rightAlign"><b><spring:eval expression="receiptForm.receipt.receiptDate" /></b></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="leftAlign"><b><spring:eval expression="receiptForm.receipt.bizStore.address"/></b></div>
+                                <div class="rightAlign"><b><spring:eval expression="receiptForm.receipt.bizStore.phone"/></b></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;Name</th>
+                            <th>&nbsp;Price</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;Expense Type</th>
+                        </tr>
+                        <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
+                        <form:hidden path="items[${status.index}].id"/>
+                        <tr>
+                            <td>
+                                <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                                ${item.name}
+                                </a>
+                            </td>
+                            <td style="text-align: right;">
+                                <spring:eval expression="item.price" />
+                            </td>
+                            <td style="text-align: left;">
+                                ${item.taxed.description}
+                            </td>
+                            <td style="text-align: left;">
+                                <form:select path="items[${status.index}].expenseType.id">
+                                    <form:option value="NONE" label="--- Select ---" />
+                                    <form:options items="${receiptForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                                </form:select>
+                            </td>
+                        </tr>
+                        </c:forEach>
+                        <tr>
+                            <td style="text-align: right;">
+                                Sub Total
+                            </td>
+                            <td style="text-align: right;"><fmt:formatNumber value="${receiptForm.receipt.total - receiptForm.receipt.tax}" type="currency" currencySymbol="$" /></td>
+                            <td style="text-align: right;">&nbsp;</td>
+                            <td style="text-align: right;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;">
+                                <span>Tax &nbsp;</span>
+                                <b><spring:eval expression="receiptForm.receipt.tax" /></b>
+                                <span>&nbsp;&nbsp;Total</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <b><spring:eval expression="receiptForm.receipt.total" /></b>
+                            </td>
+                            <td style="text-align: right;">&nbsp;</td>
+                            <td style="text-align: right;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <tr height="60em">
+                                <td colspan="3">
+                                    <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check"/></div>
+                                    <div class="rightAlign">&nbsp;&nbsp;</div>
+                                    <div class="rightAlign"><input type="submit" value="Delete" name="delete"/></div>
+                                </td>
+                                <td>
+                                    <div class="leftAlign"><input type="submit" value="Update Expense Type" name="update-expense-type"/></div>
+                                </td>
+                            </tr>
+                        </tr>
+                    </table>
+                </form:form>
 			</td>
 			<td width="6px">&nbsp;</td>
 			<td valign="top">
 				<div id="holder">
-		 		    <div src="" width="700px" height="700px" id="receipt.image"/>
+		 		    <div src="" width="700px" height="700px" id="receipt.image"></div>
 		 		</div>
 			</td>
 		</tr>
 	</table>
-
-
 </body>
 </html>

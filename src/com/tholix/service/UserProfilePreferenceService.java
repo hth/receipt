@@ -40,8 +40,28 @@ public class UserProfilePreferenceService {
         return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
     }
 
+    /**
+     * Lists all the expenseTypes
+     *
+     * @param userProfileId
+     * @return
+     */
     public List<ExpenseTypeEntity> allExpenseTypes(String userProfileId) {
         return expenseTypeManager.allExpenseTypes(userProfileId);
+    }
+
+    /**
+     * Lists all the active expense types
+     *
+     * @param userProfileId
+     * @return
+     */
+    public List<ExpenseTypeEntity> activeExpenseTypes(String userProfileId) {
+        return expenseTypeManager.activeExpenseTypes(userProfileId);
+    }
+
+    public ExpenseTypeEntity getExpenseType(String expenseTypeId) {
+        return expenseTypeManager.findOne(expenseTypeId);
     }
 
     public void addExpenseType(ExpenseTypeEntity expenseType) throws Exception {

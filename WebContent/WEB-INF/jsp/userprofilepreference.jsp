@@ -187,12 +187,12 @@
 
             <br/>
 
-            <form:form modelAttribute="expenseType" method="post" action="addExpenseType.htm">
+            <form:form modelAttribute="expenseTypeForm" method="post" action="addExpenseType.htm">
                 <form:errors path="expName" cssClass="error" />
                 <form:hidden path="forYear" />
-                <table border="0" style="width: 200px" class="etable">
+                <table border="0" style="width: 230px" class="etable">
                     <tr>
-                        <td style="padding:3px;">&nbsp;Expense Type <form:input path="expName" size="12" /></td>
+                        <td style="padding:3px;">&nbsp;New Expense Type <form:input path="expName" size="12" /></td>
                     </tr>
                     <tr>
                         <td style="padding:3px; text-align: right;">
@@ -207,34 +207,52 @@
 
             <c:choose>
                 <c:when test="${visibleExpenseTypes == 1}">
-                    <p>${visibleExpenseTypes} - Expense Type visible</p>
+                    <p>${visibleExpenseTypes} - Expense Type is available in selection </p>
                 </c:when>
                 <c:when test="${visibleExpenseTypes > 1}">
-                    <p>${visibleExpenseTypes} - Expense Types visible</p>
+                    <p>${visibleExpenseTypes} - Expense Types are available in selection</p>
                 </c:when>
                 <c:otherwise>
                     <p>No Expense Type visible</p>
                 </c:otherwise>
             </c:choose>
-            <table style="width: 200px" class="etable">
+            <table style="width: 275px" class="etable">
                 <tr>
-                    <th style="padding:3px;">Visible</th>
+                    <th style="padding:3px;"># Used</th>
+                    <th style="padding:3px;">Show</th>
                     <th style="padding:3px;">Expense Type</th>
                     <th style="padding:3px;">Since</th>
                 </tr>
                 <c:forEach var="expenseType" items="${expenseTypes}" varStatus="status">
                 <tr>
                     <td style="padding:3px;">
-                        <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?uid=${sessionScope['userSession'].userProfileId}&id=${expenseType.id}&status=${expenseType.active}">
                         <c:choose>
                             <c:when test="${expenseType.active == true}">
-                                Hide
+                                <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
                             </c:when>
                             <c:otherwise>
-                                Visible
+                                <del><spring:eval expression="expenseTypeCount.get(expenseType.expName)" /></del>
                             </c:otherwise>
                         </c:choose>
-                        </a>
+                    </td>
+                    <td style="padding:3px;">
+                        <c:choose>
+                        <c:when test="${expenseTypeCount.get(expenseType.expName) == 0}">
+                            <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?uid=${sessionScope['userSession'].userProfileId}&id=${expenseType.id}&status=${expenseType.active}">
+                            <c:choose>
+                                <c:when test="${expenseType.active == true}">
+                                    Hide
+                                </c:when>
+                                <c:otherwise>
+                                    Show
+                                </c:otherwise>
+                            </c:choose>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            Always Shown
+                        </c:otherwise>
+                        </c:choose>
                     </td>
                     <td style="padding:3px;">
                         <c:choose>

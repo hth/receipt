@@ -15,16 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.UserSession;
 import com.tholix.service.ReceiptService;
+import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
+import com.tholix.web.form.ReceiptForm;
 import com.tholix.web.rest.Header;
 
 /**
@@ -34,39 +39,43 @@ import com.tholix.web.rest.Header;
  */
 @Controller
 @RequestMapping(value = "/receipt")
+@SessionAttributes({"userSession"})
 public class ReceiptController extends BaseController {
 	private static final Logger log = Logger.getLogger(ReceiptController.class);
 
 	private static String nextPage = "/receipt";
 
     @Autowired private ReceiptService receiptService;
+    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@RequestParam("id") String receiptId, @ModelAttribute("receiptForm") ReceiptEntity receiptForm) {
+	public ModelAndView loadForm(@RequestParam("id") String receiptId, @ModelAttribute("receiptForm") ReceiptForm receiptForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
         log.info("Loading Receipt Item with id: " + receiptId);
 
         ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId);
         List<ItemEntity> items = receiptService.findItems(receiptEntity);
+        List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(userSession.getUserProfileId());
 
-		ModelAndView modelAndView = new ModelAndView(nextPage);
-		modelAndView.addObject("items", items);
-		modelAndView.addObject("receipt", receiptEntity);
+        receiptForm.setReceipt(receiptEntity);
+        receiptForm.setItems(items);
+        receiptForm.setExpenseTypes(expenseTypes);
 
-		receiptForm.setId(receiptEntity.getId());
+        ModelAndView modelAndView = new ModelAndView(nextPage);
+        modelAndView.addObject("receiptForm", receiptForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, params="Delete")
-	public String delete(@ModelAttribute("receipt") ReceiptEntity receipt) {
+	@RequestMapping(method = RequestMethod.POST, params="delete")
+	public String delete(@ModelAttribute("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();
-        log.info("Delete receipt " + receipt.getId());
+        log.info("Delete receipt " + receiptForm.getReceipt().getId());
 
         boolean task = false;
         try {
-            task = receiptService.deleteReceipt(receipt.getId());
+            task = receiptService.deleteReceipt(receiptForm.getReceipt().getId());
             if(task == false) {
                 //TODO in case of failure to delete send message to USER
             }
@@ -78,15 +87,30 @@ public class ReceiptController extends BaseController {
 		return "redirect:/landing.htm";
 	}
 
-    @RequestMapping(method = RequestMethod.POST, params="Re-Check")
-    public String recheck(@ModelAttribute("receipt") ReceiptEntity receipt) {
+    @RequestMapping(method = RequestMethod.POST, params="re-check")
+    public String recheck(@ModelAttribute("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();
-        log.info("Initiating re-check on receipt " + receipt.getId());
+        log.info("Initiating re-check on receipt " + receiptForm.getReceipt().getId());
 
         try {
-            receiptService.reopen(receipt.getId());
+            receiptService.reopen(receiptForm.getReceipt().getId());
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
+        }
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return "redirect:/landing.htm";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params="update-expense-type")
+    public String expenseUpdate(@ModelAttribute("receiptForm") ReceiptForm receiptForm) {
+        DateTime time = DateUtil.now();
+        log.info("Initiating Expense Type update on receipt " + receiptForm.getReceipt().getId());
+
+        for(ItemEntity item : receiptForm.getItems()) {
+            ExpenseTypeEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseType().getId());
+            item.setExpenseType(expenseType);
+            receiptService.updateItemExpenseType(item);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());

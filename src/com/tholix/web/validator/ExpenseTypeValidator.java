@@ -28,6 +28,7 @@ public class ExpenseTypeValidator implements Validator {
 
         ExpenseTypeEntity expenseType = (ExpenseTypeEntity) obj;
         if(expenseType.getExpName() !=null && expenseType.getExpName().length() > 12) {
+            log.error("Size of the Expense Type larger than 12 : " + expenseType.getExpName());
             errors.rejectValue("expName", "expenseType.expName", new Object[] { expenseType.getExpName() }, "Expense Name cannot extend 12 characters ");
         }
     }

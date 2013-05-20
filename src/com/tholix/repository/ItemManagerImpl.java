@@ -165,4 +165,17 @@ public class ItemManagerImpl implements ItemManager {
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
     }
+
+    @Override
+    public void updateItemExpenseType(ItemEntity item) {
+        Query query = Query.query(Criteria.where("id").is(item.getId()));
+        Update update = Update.update("expenseType", item.getExpenseType());
+        mongoTemplate.updateFirst(query, update, ItemEntity.class);
+    }
+
+    @Override
+    public long countItemsUsingExpenseType(String expenseTypeId) {
+        Query query = Query.query(Criteria.where("expenseType.id").is(expenseTypeId));
+        return mongoTemplate.count(query, ItemEntity.class);
+    }
 }

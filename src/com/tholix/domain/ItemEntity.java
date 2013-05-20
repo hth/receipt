@@ -49,6 +49,9 @@ public class ItemEntity extends BaseEntity {
     @DBRef
     private BizNameEntity bizName;
 
+    @DBRef
+    private ExpenseTypeEntity expenseType;
+
 	public ItemEntity() {
 
 	}
@@ -63,17 +66,17 @@ public class ItemEntity extends BaseEntity {
 		this.sequence = sequence;
 	}
 
-	/**
-	 * This method is used when the Entity is created for the first time.
-	 *
-	 * @param quantity
-	 * @param name
-	 * @param price
-	 * @param taxed
-	 * @param receipt
-	 * @param user
-	 * @return
-	 */
+    /**
+     * This method is used when the Entity is created for the first time.
+     *
+     * @param name
+     * @param price
+     * @param taxed
+     * @param sequence
+     * @param receipt
+     * @param userProfileId
+     * @return
+     */
 	public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
 		return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
 	}
@@ -132,6 +135,14 @@ public class ItemEntity extends BaseEntity {
 
     public void setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
+    }
+
+    public ExpenseTypeEntity getExpenseType() {
+        return expenseType;
+    }
+
+    public void setExpenseType(ExpenseTypeEntity expenseType) {
+        this.expenseType = expenseType;
     }
 
     @Override

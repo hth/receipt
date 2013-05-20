@@ -3,7 +3,9 @@
  */
 package com.tholix.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -23,6 +25,7 @@ import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.service.ItemService;
 import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
@@ -42,6 +45,7 @@ public class UserProfilePreferenceController {
 	private static final String nextPage = "/userprofilepreference";
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    @Autowired private ItemService itemService;
     @Autowired private ExpenseTypeValidator expenseTypeValidator;
 
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
@@ -111,10 +115,14 @@ public class UserProfilePreferenceController {
 
     @RequestMapping(value="/expenseTypeVisible", method = RequestMethod.GET)
     public ModelAndView changeExpenseTypeVisibleStatus(@RequestParam(value="uid") String profileId,
-                                                       @RequestParam(value="id") String expenseTypId,
+                                                       @RequestParam(value="id") String expenseTypeId,
                                                        @RequestParam(value="status") String changeStatTo) {
         DateTime time = DateUtil.now();
-        userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTypId, changeStatTo);
+
+        //Secondary check. In case some one tries to be smart by passing parameters in URL :)
+        if(itemService.countItemsUsingExpenseType(expenseTypeId) == 0) {
+            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTypeId, changeStatTo);
+        }
         UserProfileEntity userProfile = userProfilePreferenceService.findById(profileId);
 
         ModelAndView modelAndView = populateModel(nextPage, userProfile);
@@ -138,18 +146,21 @@ public class UserProfilePreferenceController {
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.addObject("userPreference", userPreference);
-        modelAndView.addObject("expenseType", ExpenseTypeEntity.newInstance("", userProfile.getId()));
-
+        modelAndView.addObject("expenseTypeForm", ExpenseTypeEntity.newInstance("", userProfile.getId()));
 
         List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfile.getId());
         modelAndView.addObject("expenseTypes", expenseTypes);
 
+        Map<String, Long> expenseTypeCount = new HashMap<>();
         int count = 0;
-        for(ExpenseTypeEntity expenseTypeEntity : expenseTypes) {
-            if(expenseTypeEntity.isActive()) {
+        for(ExpenseTypeEntity expenseType : expenseTypes) {
+            if(expenseType.isActive()) {
                 count++;
             }
+
+            expenseTypeCount.put(expenseType.getExpName(), itemService.countItemsUsingExpenseType(expenseType));
         }
+        modelAndView.addObject("expenseTypeCount", expenseTypeCount);
         modelAndView.addObject("visibleExpenseTypes", count);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());

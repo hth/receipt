@@ -19,19 +19,23 @@ import com.tholix.domain.ReceiptEntity;
  *
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {
-	public static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
+	static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
 
-	public void saveObjects(List<ItemEntity> objects) throws Exception;
+	void saveObjects(List<ItemEntity> objects) throws Exception;
 
-	public WriteResult updateObject(ItemEntity object);
+	WriteResult updateObject(ItemEntity object);
 
-	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt);
+	List<ItemEntity> getWhereReceipt(ReceiptEntity receipt);
 
-	public List<ItemEntity> getAllObjectWithName(String name);
+	List<ItemEntity> getAllObjectWithName(String name);
 
-	public void deleteWhereReceipt(ReceiptEntity receipt);
+	void deleteWhereReceipt(ReceiptEntity receipt);
 
-    public List<String> findItems(String name, String bizName);
+    List<String> findItems(String name, String bizName);
 
-    public long collectionSize();
+    void updateItemExpenseType(ItemEntity item);
+
+    long countItemsUsingExpenseType(String expenseTypeId);
+
+    long collectionSize();
 }

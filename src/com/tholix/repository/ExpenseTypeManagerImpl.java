@@ -43,7 +43,7 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public ExpenseTypeEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
+        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ExpenseTypeEntity.class, TABLE);
     }
 
     @Override
@@ -66,10 +66,17 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
-
     @Override
     public List<ExpenseTypeEntity> allExpenseTypes(String userProfileId) {
         Query query = Query.query(Criteria.where("userProfileId").is(userProfileId));
+        Sort sort = new Sort(Sort.Direction.ASC, "expName");
+
+        return mongoTemplate.find(query.with(sort), ExpenseTypeEntity.class, TABLE);
+    }
+
+    @Override
+    public List<ExpenseTypeEntity> activeExpenseTypes(String userProfileId) {
+        Query query = Query.query(Criteria.where("userProfileId").is(userProfileId).andOperator(Criteria.where("active").is(true)));
         Sort sort = new Sort(Sort.Direction.ASC, "expName");
 
         return mongoTemplate.find(query.with(sort), ExpenseTypeEntity.class, TABLE);
