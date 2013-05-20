@@ -96,14 +96,15 @@ public class ReceiptOCRForm {
 	public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException {
 		List<ItemEntity> listOfItems = new ArrayList<>();
 
-		for(ItemEntityOCR item : items) {
-			if(item.getName().length() != 0) {
-				ItemEntity ie = ItemEntity.newInstance(item.getName(), Formatter.getCurrencyFormatted(item.getPrice()), item.getTaxed(), item.getSequence(), receipt, receipt.getUserProfileId());
-				ie.setCreated(item.getCreated());
-				ie.setUpdated();
+		for(ItemEntityOCR itemOCR : items) {
+			if(itemOCR.getName().length() != 0) {
+				ItemEntity item = ItemEntity.newInstance(itemOCR.getName(), Formatter.getCurrencyFormatted(itemOCR.getPrice()), itemOCR.getTaxed(), itemOCR.getSequence(), receipt, receipt.getUserProfileId());
+				item.setExpenseType(itemOCR.getExpenseType());
+                item.setCreated(itemOCR.getCreated());
+				item.setUpdated();
 
-                ie.setBizName(receipt.getBizName());
-				listOfItems.add(ie);
+                item.setBizName(receipt.getBizName());
+				listOfItems.add(item);
 			}
 		}
 

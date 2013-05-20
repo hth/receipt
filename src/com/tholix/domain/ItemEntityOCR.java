@@ -46,6 +46,9 @@ public class ItemEntityOCR extends BaseEntity {
     @DBRef
     private BizNameEntity bizName;
 
+    @DBRef
+    private ExpenseTypeEntity expenseType;
+
 	/** To keep spring happy in recreating the bean from form during submit action */
 	public ItemEntityOCR() {
 
@@ -129,6 +132,14 @@ public class ItemEntityOCR extends BaseEntity {
 
     public void setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
+    }
+
+    public ExpenseTypeEntity getExpenseType() {
+        return expenseType;
+    }
+
+    public void setExpenseType(ExpenseTypeEntity expenseType) {
+        this.expenseType = expenseType;
     }
 
     @Override

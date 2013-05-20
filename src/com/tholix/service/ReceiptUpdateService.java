@@ -178,6 +178,9 @@ public class ReceiptUpdateService {
     private void populateItemsWithBizName(List<ItemEntity> items, ReceiptEntity receiptEntity) {
         for(ItemEntity item : items) {
             item.setBizName(receiptEntity.getBizName());
+
+            //Why fetch when its working with just Id?
+            //item.setExpenseType(userProfilePreferenceService.getExpenseType(item.getExpenseType().getId()));
         }
     }
 }

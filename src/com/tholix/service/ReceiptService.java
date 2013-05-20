@@ -146,12 +146,13 @@ public class ReceiptService {
 
         for(ItemEntity item : items) {
             if(StringUtils.isNotEmpty(item.getName())) {
-                ItemEntityOCR ie = ItemEntityOCR.newInstance(item.getName(), item.getPrice().toString(), item.getTaxed(), item.getSequence(), receiptOCR, receiptOCR.getUserProfileId());
-                ie.setCreated(item.getCreated());
-                ie.setUpdated();
+                ItemEntityOCR itemOCR = ItemEntityOCR.newInstance(item.getName(), item.getPrice().toString(), item.getTaxed(), item.getSequence(), receiptOCR, receiptOCR.getUserProfileId());
+                itemOCR.setExpenseType(item.getExpenseType());
+                itemOCR.setCreated(item.getCreated());
+                itemOCR.setUpdated();
 
-                ie.setBizName(receiptOCR.getBizName());
-                listOfItems.add(ie);
+                itemOCR.setBizName(receiptOCR.getBizName());
+                listOfItems.add(itemOCR);
             }
         }
 

@@ -194,24 +194,24 @@
                                     <th align="left">&nbsp;</th>
                                 </tr>
                                 <c:forEach items="${receiptOCRForm.items}" varStatus="status">
-                                    <tr>
-                                        <td align="left">
-                                            ${status.index + 1}
-                                        </td>
-                                        <td align="left">
-                                            <form:input path="items[${status.index}].name" class="items" size="64"/>
-                                        </td>
-                                        <td align="right">
-                                            <form:input path="items[${status.index}].price" size="16"/>
-                                            <form:errors path="items[${status.index}].price" cssClass="error" />
-                                        </td>
-                                        <td>
-                                            <form:select path="items[${status.index}].taxed">
-                                                <form:option value="NONE" label="--- Select ---"/>
-                                                <form:options itemValue="name" itemLabel="description" />
-                                            </form:select>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td align="left">
+                                        ${status.index + 1}
+                                    </td>
+                                    <td align="left">
+                                        <form:input path="items[${status.index}].name" class="items" size="64"/>
+                                    </td>
+                                    <td align="right">
+                                        <form:input path="items[${status.index}].price" size="16"/>
+                                        <form:errors path="items[${status.index}].price" cssClass="error" />
+                                    </td>
+                                    <td>
+                                        <form:select path="items[${status.index}].taxed">
+                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:options itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                    </td>
+                                </tr>
                                 </c:forEach>
                                 <tr>
                                     <td colspan="2" style="text-align: right; font-size: 12px; font-weight: bold">
