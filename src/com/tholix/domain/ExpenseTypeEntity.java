@@ -33,7 +33,7 @@ public class ExpenseTypeEntity extends BaseEntity {
     private String userProfileId;
 
     /** To make bean happy */
-    private ExpenseTypeEntity() {
+    public ExpenseTypeEntity() {
 
     }
 
