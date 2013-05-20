@@ -19,6 +19,7 @@
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
+    <script type='text/javascript' src="jquery/js/highcharts.js"></script>
 
 	<!-- For tabs -->
 	<script>
@@ -281,6 +282,8 @@
 					</div>
 		    	</div>
 	    	</fieldset>
+
+            <div id="container" style="width:100%; height:400px;"></div>
 		</div>
 		<div id="tabs-3">
             <div class="googleMapContainer" id="map-canvas"></div>
@@ -415,6 +418,57 @@
     <script>
         $("#active-tab-2").click(function() {
             $( "#tabs" ).tabs({ active: 1 });
+        });
+    </script>
+
+    <%--TODO remove Temp--%>
+    <script>
+        $(function () {
+            $('#container').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Browser market shares at a specific website, 2010'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+                    percentageDecimals: 1
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            formatter: function() {
+                                return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Browser share',
+                    data: [
+                        ['Firefox',   45.0],
+                        ['IE',       26.8],
+                        {
+                            name: 'Chrome',
+                            y: 12.8,
+                            sliced: true,
+                            selected: true
+                        },
+                        ['Safari',    8.5],
+                        ['Opera',     6.2],
+                        ['Others',   0.7]
+                    ]
+                }]
+            });
         });
     </script>
 </body>
