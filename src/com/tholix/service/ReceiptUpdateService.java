@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -36,6 +37,7 @@ public class ReceiptUpdateService {
     @Autowired private ItemManager itemManager;
     @Autowired private MessageManager messageManager;
     @Autowired private AdminLandingService adminLandingService;
+    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -178,9 +180,21 @@ public class ReceiptUpdateService {
     private void populateItemsWithBizName(List<ItemEntity> items, ReceiptEntity receiptEntity) {
         for(ItemEntity item : items) {
             item.setBizName(receiptEntity.getBizName());
+            populateWithExpenseType(item);
+        }
+    }
 
-            //Why fetch when its working with just Id?
-            //item.setExpenseType(userProfilePreferenceService.getExpenseType(item.getExpenseType().getId()));
+    /**
+     * when Items are populated with just an Id of the expenseType. This normally happens during Re-Check condition.
+     * The following code makes sures objects are populated with just not id but with complete object instead
+     * //TODO in future keep an eye on this object as during save of an ItemEntity the @DBRef expenseType is saved as Id instead of an object. As of now it is saved and updated
+     *
+     * @param item
+     */
+    private void populateWithExpenseType(ItemEntity item) {
+        if(item.getExpenseType() != null && item.getExpenseType().getId() != null) {
+            ExpenseTypeEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseType().getId());
+            item.setExpenseType(expenseType);
         }
     }
 }

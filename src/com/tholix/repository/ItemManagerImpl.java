@@ -70,6 +70,13 @@ public class ItemManagerImpl implements ItemManager {
 			//mongoTemplate.insert(objects, TABLE);
 			for(ItemEntity object : objects) {
 				save(object);
+
+                // This has to be done to make the reference object available otherwise only id is available
+                // which can cause an issue during query. As with just id we will have to query twice. This
+                // saves us second query but forces us to do double update
+                if(object.getExpenseType() != null && object.getExpenseType().getId() != null) {
+                    updateItemExpenseType(object);
+                }
 			}
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
