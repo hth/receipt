@@ -267,7 +267,7 @@
 			</c:if>
 		</div>
 		<div id="tabs-2">
-            <table style="width: 600px">
+            <table style="width: 20%">
                 <tr>
                     <td style="vertical-align: top">
                         <fieldset style="width:315px;">
@@ -287,7 +287,7 @@
                         </fieldset>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="container" style="width:100%; height:300px;"></div>
+                        <div id="container" style="height:250px;"></div>
                     </td>
                 </tr>
             </table>
@@ -442,8 +442,9 @@
                     text: 'Expense Share, 2013'
                 },
                 tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
-                    percentageDecimals: 1
+                    formatter: function () {
+                        return this.point.name + ': <b>' + Highcharts.numberFormat(this.percentage, 1) + '%</b>';
+                    }
                 },
                 plotOptions: {
                     pie: {
