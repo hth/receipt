@@ -21,7 +21,7 @@ import com.tholix.utils.DateUtil;
 public class ExpenseTypeEntity extends BaseEntity {
 
     @NotNull
-    @Size(min = 0, max = 30)
+    @Size(min = 0, max = 12)
     private String expName;
 
     @NotNull
