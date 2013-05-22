@@ -18,11 +18,10 @@ import com.tholix.utils.DateUtil;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "expense_type_idx",    def = "{'userProfileId': 1, 'expName': 1}",  unique=true),
 } )
-
 public class ExpenseTypeEntity extends BaseEntity {
 
     @NotNull
-    @Size(min = 0, max = 12)
+    @Size(min = 0, max = 30)
     private String expName;
 
     @NotNull

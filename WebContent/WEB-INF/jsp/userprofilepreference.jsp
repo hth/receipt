@@ -190,13 +190,13 @@
             <form:form modelAttribute="expenseTypeForm" method="post" action="addExpenseType.htm">
                 <form:errors path="expName" cssClass="error" />
                 <form:hidden path="forYear" />
-                <table border="0" style="width: 230px" class="etable">
+                <table border="0" style="width: 350px" class="etable">
                     <tr>
-                        <td style="padding:3px;">&nbsp;New Expense Type <form:input path="expName" size="12" /></td>
+                        <td style="padding:3px;">New Expense Type <form:input path="expName" size="34" /></td>
                     </tr>
                     <tr>
                         <td style="padding:3px; text-align: right;">
-                            <input type="submit" value="Add" name="Add"/>&nbsp;&nbsp;
+                            <input type="submit" value="Add" name="Add"/>
                         </td>
                     </tr>
                 </table>
@@ -216,7 +216,7 @@
                     <p>No Expense Type visible</p>
                 </c:otherwise>
             </c:choose>
-            <table style="width: 275px" class="etable">
+            <table style="width: 400px" class="etable">
                 <tr>
                     <th style="padding:3px;"># Used</th>
                     <th style="padding:3px;">Show</th>
@@ -254,7 +254,7 @@
                         </c:otherwise>
                         </c:choose>
                     </td>
-                    <td style="padding:3px;">
+                    <td style="padding:3px; width: 30px">
                         <c:choose>
                             <c:when test="${expenseType.active == true}">
                                 <spring:eval expression="expenseType.expName" />
@@ -277,6 +277,11 @@
                 </tr>
                 </c:forEach>
             </table>
+            <br/>
+            Show - &nbsp;To un-hide the Expense Type click on Show <br/>
+            Hide - &nbsp;&nbsp;&nbsp;To hide the Expense Type click on Hide <br/>
+            Always Shown - This will be shown when the Expense Type is being used by at least one item
+
             </c:if>
 
 		</div>
