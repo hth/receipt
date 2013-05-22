@@ -3,6 +3,7 @@
  */
 package com.tholix.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -210,12 +211,19 @@ public class ReceiptEntity extends BaseEntity {
 		return tax;
 	}
 
-    public Double getSubTotal() {
-        return subTotal;
+    /**
+     * Round at fourth decimal
+     *
+     * @return
+     */
+    public BigDecimal getTaxInPercentage() {
+        BigDecimal  tax = new BigDecimal(getTotal().toString()).subtract(new BigDecimal(getSubTotal().toString()));
+                    tax= tax.divide(new BigDecimal(getSubTotal().toString()), 4, BigDecimal.ROUND_HALF_DOWN);
+        return tax.add(new BigDecimal("1.00"));
     }
 
-    public void setSubTotal(Double subTotal) {
-        this.subTotal = subTotal;
+    public Double getSubTotal() {
+        return getTotal() - getTax();
     }
 
     public void setTax(Double tax) {

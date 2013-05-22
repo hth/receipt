@@ -3,7 +3,9 @@
  */
 package com.tholix.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -38,4 +40,12 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     long countItemsUsingExpenseType(String expenseTypeId);
 
     long collectionSize();
+
+    /**
+     * Calculate percentage values of the Expense Items
+     *
+     * @param profileId
+     * @return
+     */
+    Map<String, BigDecimal> getAllItemExpense(String profileId);
 }

@@ -71,6 +71,9 @@ public class LandingController extends BaseController {
 		List<ReceiptEntity> receipts = landingService.allReceipts(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 
+        Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpense(userSession.getUserProfileId());
+        modelAndView.addObject("itemExpenses", itemExpenses);
+
         landingService.computeTotalExpense(receipts, modelAndView);
 
 		/** Receipt grouped by date */

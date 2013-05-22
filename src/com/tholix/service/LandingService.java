@@ -20,6 +20,7 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.repository.BizNameManager;
 import com.tholix.repository.BizStoreManager;
+import com.tholix.repository.ItemManager;
 import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
@@ -46,6 +47,7 @@ public class LandingService {
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private FileDBService fileDBService;
     @Autowired private ReceiptSenderJMS senderJMS;
+    @Autowired private ItemManager itemManager;
 
     public long pendingReceipt(String profileId) {
         return receiptOCRManager.numberOfPendingReceipts(profileId);
@@ -57,6 +59,10 @@ public class LandingService {
 
     public Map<Date, BigDecimal> getReceiptGroupedByDate(String profileId) {
         return receiptManager.getAllObjectsGroupedByDate(profileId);
+    }
+
+    public Map<String, BigDecimal> getAllItemExpense(String profileId) {
+        return itemManager.getAllItemExpense(profileId);
     }
 
     /**

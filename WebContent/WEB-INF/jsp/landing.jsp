@@ -267,23 +267,30 @@
 			</c:if>
 		</div>
 		<div id="tabs-2">
-		    <fieldset style="width:315px;">
-			    <legend>Total Expense</legend>
-				<div class="divTable">
-					<div class="headRow">
-					   <div class="divCell">Total</div>
-					   <div class="divCell">Tax</div>
-					   <div class="divCell">Total without Tax</div>
-					</div>
-					<div class="divRow">
-						<div class="divCell">${total}</div>
-					    <div class="divCell">${tax}</div>
-					    <div class="divCell">${totalWithoutTax}</div>
-					</div>
-		    	</div>
-	    	</fieldset>
-
-            <div id="container" style="width:100%; height:400px;"></div>
+            <table style="width: 600px">
+                <tr>
+                    <td style="vertical-align: top">
+                        <fieldset style="width:315px;">
+                            <legend>Total Expense</legend>
+                            <div class="divTable">
+                                <div class="headRow">
+                                    <div class="divCell">Total</div>
+                                    <div class="divCell">Tax</div>
+                                    <div class="divCell">Total without Tax</div>
+                                </div>
+                                <div class="divRow">
+                                    <div class="divCell">${total}</div>
+                                    <div class="divCell">${tax}</div>
+                                    <div class="divCell">${totalWithoutTax}</div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </td>
+                    <td style="vertical-align: top">
+                        <div id="container" style="width:100%; height:300px;"></div>
+                    </td>
+                </tr>
+            </table>
 		</div>
 		<div id="tabs-3">
             <div class="googleMapContainer" id="map-canvas"></div>
@@ -422,6 +429,7 @@
     </script>
 
     <%--TODO remove Temp--%>
+    <c:if test="${itemExpenses.size() > 0}">
     <script>
         $(function () {
             $('#container').highcharts({
@@ -431,7 +439,7 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Browser market shares at a specific website, 2010'
+                    text: 'Expense Share, 2013'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage}%</b>',
@@ -446,30 +454,47 @@
                             color: '#000000',
                             connectorColor: '#000000',
                             formatter: function() {
-                                return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                                return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
                             }
                         }
                     }
                 },
                 series: [{
                     type: 'pie',
-                    name: 'Browser share',
+                    name: 'Expense share',
                     data: [
-                        ['Firefox',   45.0],
-                        ['IE',       26.8],
-                        {
-                            name: 'Chrome',
-                            y: 12.8,
-                            sliced: true,
-                            selected: true
-                        },
-                        ['Safari',    8.5],
-                        ['Opera',     6.2],
-                        ['Others',   0.7]
+
+                        <c:choose>
+                            <c:when test="${itemExpenses.size() > 1}">
+                                <c:set var="first" value="false"/>
+                                <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
+                                <c:choose>
+                                    <c:when test="${first == false}">
+                                        {
+                                            name: '${item.key}',
+                                            y: ${item.value},
+                                            sliced: true,
+                                            selected: true
+                                        },
+                                        <c:set var="first" value="true"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        ['${item.key}', ${item.value}],
+                                    </c:otherwise>
+                                </c:choose>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
+                                ['${item.key}', ${item.value}],
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     ]
                 }]
             });
         });
     </script>
+    </c:if>
 </body>
 </html>

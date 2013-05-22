@@ -3,8 +3,11 @@
  */
 package com.tholix.repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -25,8 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.types.TaxEnum;
 
 /**
  * @author hitender
@@ -42,6 +47,7 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Autowired private MongoTemplate mongoTemplate;
     @Autowired private BizNameManager bizNameManager;
+    @Autowired private ExpenseTypeManager expenseTypeManager;
 
 	@Override
 	public List<ItemEntity> getAllObjects() {
@@ -184,5 +190,39 @@ public class ItemManagerImpl implements ItemManager {
     public long countItemsUsingExpenseType(String expenseTypeId) {
         Query query = Query.query(Criteria.where("expenseType.id").is(expenseTypeId));
         return mongoTemplate.count(query, ItemEntity.class);
+    }
+
+    @Override
+    public Map<String, BigDecimal> getAllItemExpense(String profileId) {
+        Map<String, BigDecimal> expenseItems = new HashMap<>();
+        BigDecimal netSum = new BigDecimal("0.00");
+
+        //Find sum of all items for particular expense
+        List<ExpenseTypeEntity> expenseTypeEntities = expenseTypeManager.activeExpenseTypes(profileId);
+        for(ExpenseTypeEntity expenseTypeEntity : expenseTypeEntities) {
+
+            BigDecimal sum = new BigDecimal("0.00");
+            List<ItemEntity> items = mongoTemplate.find(Query.query(Criteria.where("expenseType.id").is(expenseTypeEntity.getId())), ItemEntity.class);
+            for(ItemEntity item : items) {
+                String receiptId = item.getReceipt().getId();
+                ReceiptEntity receiptEntity = mongoTemplate.findOne(Query.query(Criteria.where("id").is(receiptId)), ReceiptEntity.class);
+                if(item.getTaxed() == TaxEnum.TAXED) {
+                    sum = sum.add(new BigDecimal(item.getPrice().toString()).multiply(receiptEntity.getTaxInPercentage()));
+                } else {
+                    sum = sum.add(new BigDecimal(item.getPrice().toString()));
+                }
+            }
+            netSum = netSum.add(sum);
+            expenseItems.put(expenseTypeEntity.getExpName(), sum);
+        }
+
+        // Calculate percentage
+        for(String key : expenseItems.keySet()) {
+            BigDecimal percent = (expenseItems.get(key).multiply(new BigDecimal("100.00")).divide(netSum, 2, BigDecimal.ROUND_HALF_UP)).stripTrailingZeros();
+            percent = percent.setScale(1, BigDecimal.ROUND_FLOOR);
+            expenseItems.put(key, percent);
+        }
+
+        return expenseItems;
     }
 }
