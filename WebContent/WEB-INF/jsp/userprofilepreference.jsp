@@ -15,12 +15,6 @@
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
-	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
-
-	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-
 	<!-- For tabs -->
 	<script>
 		$(function() {
@@ -124,7 +118,7 @@
     <div id="content" style='width:210px;'>
         <div id="leftcolumn" style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
             <a href="${pageContext.request.contextPath}/landing.htm" style="text-decoration:none;">
-                <img src="images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
+                <img src="../images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
             </a>
         </div>
         <div id="rightcolumn" style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
