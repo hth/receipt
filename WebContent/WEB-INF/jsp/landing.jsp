@@ -287,7 +287,7 @@
                         </fieldset>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="container" style="height:250px;"></div>
+                        <div id="allExpenseTypes" style="height:250px;"></div>
                     </td>
                 </tr>
             </table>
@@ -428,11 +428,10 @@
         });
     </script>
 
-    <%--TODO remove Temp--%>
     <c:if test="${itemExpenses.size() > 0}">
     <script>
         $(function () {
-            $('#container').highcharts({
+            $('#allExpenseTypes').highcharts({
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,

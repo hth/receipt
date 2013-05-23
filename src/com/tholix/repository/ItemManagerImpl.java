@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,18 +204,13 @@ public class ItemManagerImpl implements ItemManager {
 
             BigDecimal sum = new BigDecimal("0.00");
             List<ItemEntity> items = mongoTemplate.find(Query.query(Criteria.where("expenseType.id").is(expenseTypeEntity.getId())), ItemEntity.class);
-            for(ItemEntity item : items) {
-                String receiptId = item.getReceipt().getId();
-                ReceiptEntity receiptEntity = mongoTemplate.findOne(Query.query(Criteria.where("id").is(receiptId)), ReceiptEntity.class);
-                if(item.getTaxed() == TaxEnum.TAXED) {
-                    sum = sum.add(new BigDecimal(item.getPrice().toString()).multiply(receiptEntity.getTaxInPercentage()));
-                } else {
-                    sum = sum.add(new BigDecimal(item.getPrice().toString()));
-                }
-            }
+            sum = calculateSum(sum, items);
             netSum = netSum.add(sum);
             expenseItems.put(expenseTypeEntity.getExpName(), sum);
         }
+
+
+        netSum = populateWithUnAssignedItems(expenseItems, netSum);
 
         // Calculate percentage
         for(String key : expenseItems.keySet()) {
@@ -224,5 +220,42 @@ public class ItemManagerImpl implements ItemManager {
         }
 
         return expenseItems;
+    }
+
+    /**
+     * Finds all the un-assigned items for the user
+     *
+     * @param expenseItems
+     * @param netSum
+     * @return
+     */
+    private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum) {
+        List<ItemEntity> unassignedItems = mongoTemplate.find(Query.query(Criteria.where("expenseType").is(StringUtils.trimToNull(null))), ItemEntity.class);
+        if(unassignedItems.size() > 0) {
+            BigDecimal sum = calculateSum(new BigDecimal("0.00"), unassignedItems);
+            netSum = netSum.add(sum);
+            expenseItems.put("Un-Assigned", sum);
+        }
+        return netSum;
+    }
+
+    /**
+     * Calculate sum for all the items
+     *
+     * @param sum
+     * @param items
+     * @return
+     */
+    private BigDecimal calculateSum(BigDecimal sum, List<ItemEntity> items) {
+        for(ItemEntity item : items) {
+            String receiptId = item.getReceipt().getId();
+            ReceiptEntity receiptEntity = mongoTemplate.findOne(Query.query(Criteria.where("id").is(receiptId)), ReceiptEntity.class);
+            if(item.getTaxed() == TaxEnum.TAXED) {
+                sum = sum.add(new BigDecimal(item.getPrice().toString()).multiply(receiptEntity.getTaxInPercentage()));
+            } else {
+                sum = sum.add(new BigDecimal(item.getPrice().toString()));
+            }
+        }
+        return sum;
     }
 }
