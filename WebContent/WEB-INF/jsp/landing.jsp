@@ -438,11 +438,14 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Expense Share, 2013'
+                    text: 'Expense Share'
+                },
+                subtitle: {
+                    text: 'For 2013'
                 },
                 tooltip: {
                     formatter: function () {
-                        return this.point.name + ': <b>' + Highcharts.numberFormat(this.percentage, 1) + '%</b>';
+                        return this.point.name + ': <b>' + Highcharts.numberFormat(this.percentage, 2) + '%</b>';
                     }
                 },
                 plotOptions: {
@@ -462,6 +465,14 @@
                 series: [{
                     type: 'pie',
                     name: 'Expense share',
+                    point: {
+                        events: {
+                            click: function(e) {
+                                location.href = e.point.url;
+                                e.preventDefault();
+                            }
+                        }
+                    },
                     data: [
 
                         <c:choose>
@@ -473,20 +484,21 @@
                                         {
                                             name: '${item.key}',
                                             y: ${item.value},
-                                            sliced: true,
-                                            selected: true
+                                            sliced: false,
+                                            selected: false,
+                                            url: 'http://www.google.com'
                                         },
                                         <c:set var="first" value="true"/>
                                     </c:when>
                                     <c:otherwise>
-                                        ['${item.key}', ${item.value}],
+                                        { name: '${item.key}', y: ${item.value}, url: 'http://www.google.com'},
                                     </c:otherwise>
                                 </c:choose>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
-                                ['${item.key}', ${item.value}],
+                                    {name: '${item.key}', y: ${item.value}, url: 'http://www.google.com'},
                                 </c:forEach>
                             </c:otherwise>
                         </c:choose>
