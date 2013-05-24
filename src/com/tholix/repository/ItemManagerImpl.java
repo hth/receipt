@@ -203,14 +203,14 @@ public class ItemManagerImpl implements ItemManager {
         for(ExpenseTypeEntity expenseTypeEntity : expenseTypeEntities) {
 
             BigDecimal sum = new BigDecimal("0.00");
-            List<ItemEntity> items = mongoTemplate.find(Query.query(Criteria.where("expenseType.id").is(expenseTypeEntity.getId())), ItemEntity.class);
+            List<ItemEntity> items = getItemEntitiesForSpecificExpenseType(expenseTypeEntity);
             sum = calculateSum(sum, items);
             netSum = netSum.add(sum);
             expenseItems.put(expenseTypeEntity.getExpName(), sum);
         }
 
 
-        netSum = populateWithUnAssignedItems(expenseItems, netSum);
+        netSum = populateWithUnAssignedItems(expenseItems, netSum, profileId);
 
         // Calculate percentage
         for(String key : expenseItems.keySet()) {
@@ -222,6 +222,16 @@ public class ItemManagerImpl implements ItemManager {
         return expenseItems;
     }
 
+    @Override
+    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseTypeEntity) {
+        return getItemEntitiesForSpecificExpenseType(expenseTypeEntity.getId());
+    }
+
+    @Override
+    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(String expenseTypeId) {
+        return mongoTemplate.find(Query.query(Criteria.where("expenseType.id").is(expenseTypeId)), ItemEntity.class);
+    }
+
     /**
      * Finds all the un-assigned items for the user
      *
@@ -229,8 +239,8 @@ public class ItemManagerImpl implements ItemManager {
      * @param netSum
      * @return
      */
-    private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum) {
-        List<ItemEntity> unassignedItems = mongoTemplate.find(Query.query(Criteria.where("expenseType").is(StringUtils.trimToNull(null))), ItemEntity.class);
+    private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String profileId) {
+        List<ItemEntity> unassignedItems = getItemEntitiesForUnAssignedExpenseType(profileId);
         if(unassignedItems.size() > 0) {
             BigDecimal sum = calculateSum(new BigDecimal("0.00"), unassignedItems);
             netSum = netSum.add(sum);
@@ -257,5 +267,10 @@ public class ItemManagerImpl implements ItemManager {
             }
         }
         return sum;
+    }
+
+    @Override
+    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
+        return mongoTemplate.find(Query.query(Criteria.where("expenseType").is(StringUtils.trimToNull(null)).and("userProfileId").is(userProfileId)), ItemEntity.class);
     }
 }

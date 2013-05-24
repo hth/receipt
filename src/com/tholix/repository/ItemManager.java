@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.BaseEntity;
+import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 
@@ -37,6 +38,12 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
     void updateItemExpenseType(ItemEntity item);
 
+    /**
+     * Count how many Items are using a particular Expense Type
+     *
+     * @param expenseTypeId
+     * @return
+     */
     long countItemsUsingExpenseType(String expenseTypeId);
 
     long collectionSize();
@@ -48,4 +55,10 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      * @return
      */
     Map<String, BigDecimal> getAllItemExpense(String profileId);
+
+    List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseTypeEntity);
+
+    List<ItemEntity> getItemEntitiesForSpecificExpenseType(String expenseTypeId);
+
+    List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId);
 }

@@ -96,10 +96,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>&nbsp;Name</th>
-                            <th>&nbsp;Price</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;Expense Type</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th></th>
+                            <th>Expense Type</th>
                         </tr>
                         <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
                         <form:hidden path="items[${status.index}].id"/>

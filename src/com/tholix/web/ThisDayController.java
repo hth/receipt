@@ -33,7 +33,7 @@ public class ThisDayController {
     private static final Logger log = Logger.getLogger(ThisDayController.class);
     private static final String nextPage = "/day";
 
-    @Autowired ReceiptService receiptService;
+    @Autowired private ReceiptService receiptService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getThisDay(@ModelAttribute("userSession") UserSession userSession, @RequestParam("date") String date) {

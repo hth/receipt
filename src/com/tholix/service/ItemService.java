@@ -1,9 +1,12 @@
 package com.tholix.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tholix.domain.ExpenseTypeEntity;
+import com.tholix.domain.ItemEntity;
 import com.tholix.repository.ItemManager;
 
 /**
@@ -22,5 +25,13 @@ public class ItemService {
 
     public long countItemsUsingExpenseType(String expenseTypeId) {
         return itemManager.countItemsUsingExpenseType(expenseTypeId);
+    }
+
+    public List<ItemEntity> itemsForExpenseType(ExpenseTypeEntity expenseTypeEntity) {
+        return itemManager.getItemEntitiesForSpecificExpenseType(expenseTypeEntity);
+    }
+
+    public List<ItemEntity> itemsForUnAssignedExpenseType(String userProfileId) {
+        return itemManager.getItemEntitiesForUnAssignedExpenseType(userProfileId);
     }
 }

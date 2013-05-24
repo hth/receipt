@@ -484,21 +484,33 @@
                                         {
                                             name: '${item.key}',
                                             y: ${item.value},
-                                            sliced: false,
-                                            selected: false,
-                                            url: 'http://www.google.com'
+                                            sliced: true,
+                                            selected: true,
+                                            url: '${pageContext.request.contextPath}/expenses.htm?type=${item.key}'
                                         },
                                         <c:set var="first" value="true"/>
                                     </c:when>
                                     <c:otherwise>
-                                        { name: '${item.key}', y: ${item.value}, url: 'http://www.google.com'},
+                                        {
+                                            name: '${item.key}',
+                                            y: ${item.value},
+                                            sliced: true,
+                                            selected: true,
+                                            url: '${pageContext.request.contextPath}/expenses.htm?type=${item.key}'
+                                        },
                                     </c:otherwise>
                                 </c:choose>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
-                                    {name: '${item.key}', y: ${item.value}, url: 'http://www.google.com'},
+                                    {
+                                        name: '${item.key}',
+                                        y: ${item.value},
+                                        sliced: true,
+                                        selected: true,
+                                        url: '${pageContext.request.contextPath}/expenses.htm?type=${item.key}'
+                                    },
                                 </c:forEach>
                             </c:otherwise>
                         </c:choose>
