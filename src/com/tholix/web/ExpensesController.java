@@ -41,7 +41,7 @@ public class ExpensesController {
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView getThisDay(@RequestParam("type") String expenseType, @ModelAttribute("expenseForm") ExpenseForm expenseForm, @ModelAttribute("userSession") UserSession userSession) {
+    public ModelAndView forExpenseType(@RequestParam("type") String expenseType, @ModelAttribute("expenseForm") ExpenseForm expenseForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
         List<ExpenseTypeEntity> expenseTypes = expensesService.activeExpenseTypes(userSession.getUserProfileId());
@@ -58,6 +58,7 @@ public class ExpensesController {
             items = itemService.itemsForUnAssignedExpenseType(userSession.getUserProfileId());
         }
 
+        expenseForm.setName(expenseType);
         expenseForm.setExpenseTypes(expenseTypes);
         expenseForm.setItems(items);
 

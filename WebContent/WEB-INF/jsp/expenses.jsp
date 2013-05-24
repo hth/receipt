@@ -29,44 +29,48 @@
 
 <br/>
 
-
-<c:if test="${expenseForm.items.size() > 0}">
-    <table style="width: 450px" class="etable">
-        <tbody>
-        <tr style="background-color:orange;color:white;">
-            <th></th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Tax</th>
-            <th>Expense Type</th>
-        </tr>
-        </tbody>
-        <form:form method="post" action="expenses.htm" modelAttribute="expenseForm">
-        <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
-        <tr>
-            <td style="padding:3px;" align="right">
-                ${status.count}
-            </td>
-            <td>
-                <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                    ${item.name}
-                </a>
-            </td>
-            <td style="text-align: right;">
-                <spring:eval expression="item.price" />
-            </td>
-            <td style="text-align: left;">
-                    ${item.taxed.description}
-            </td>
-            <td style="text-align: left;">
-                <form:select path="items[${status.index}].expenseType.id">
-                    <form:option value="NONE" label="--- Select ---" />
-                    <form:options items="${expenseForm.expenseTypes}" itemValue="id" itemLabel="expName" />
-                </form:select>
-            </td>
-        </tr>
-        </c:forEach>
-        </form:form>
-    </table>
-</c:if>
+<c:choose>
+    <c:when test="${expenseForm.items.size() > 0}">
+        <table style="width: 450px" class="etable">
+            <tbody>
+            <tr style="background-color:orange;color:white;">
+                <th></th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Tax</th>
+                <th>Expense Type</th>
+            </tr>
+            </tbody>
+            <form:form method="post" action="expenses.htm" modelAttribute="expenseForm">
+                <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
+                    <tr>
+                        <td style="padding:3px;" align="right">
+                                ${status.count}
+                        </td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                                    ${item.name}
+                            </a>
+                        </td>
+                        <td style="text-align: right;">
+                            <spring:eval expression="item.price" />
+                        </td>
+                        <td style="text-align: left;">
+                                ${item.taxed.description}
+                        </td>
+                        <td style="text-align: left;">
+                            <form:select path="items[${status.index}].expenseType.id">
+                                <form:option value="NONE" label="--- Select ---" />
+                                <form:options items="${expenseForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                            </form:select>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </form:form>
+        </table>
+    </c:when>
+    <c:otherwise>
+        No data available for selected expense type: ${expenseForm.name}
+    </c:otherwise>
+</c:choose>
 </body>

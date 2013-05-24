@@ -222,10 +222,16 @@
                     <td style="padding:3px;">
                         <c:choose>
                             <c:when test="${expenseType.active == true}">
-                                <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
+                                    <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                </a>
                             </c:when>
                             <c:otherwise>
-                                <del><spring:eval expression="expenseTypeCount.get(expenseType.expName)" /></del>
+                                <del>
+                                <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
+                                    <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                </a>
+                                </del>
                             </c:otherwise>
                         </c:choose>
                     </td>

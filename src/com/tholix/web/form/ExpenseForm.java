@@ -13,6 +13,15 @@ import com.tholix.domain.ItemEntity;
 public class ExpenseForm {
     List<ExpenseTypeEntity> expenseTypes;
     List<ItemEntity> items;
+    String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public List<ExpenseTypeEntity> getExpenseTypes() {
         return expenseTypes;
