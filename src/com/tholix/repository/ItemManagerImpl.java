@@ -196,6 +196,11 @@ public class ItemManagerImpl implements ItemManager {
     }
 
     @Override
+    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
+        return mongoTemplate.find(Query.query(Criteria.where("expenseType").is(StringUtils.trimToNull(null)).and("userProfileId").is(userProfileId)), ItemEntity.class);
+    }
+
+    @Override
     public Map<String, BigDecimal> getAllItemExpense(String profileId) {
         Map<String, BigDecimal> expenseItems = new HashMap<>();
         BigDecimal netSum = new BigDecimal("0.00");
@@ -258,10 +263,5 @@ public class ItemManagerImpl implements ItemManager {
             }
         }
         return sum;
-    }
-
-    @Override
-    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
-        return mongoTemplate.find(Query.query(Criteria.where("expenseType").is(StringUtils.trimToNull(null)).and("userProfileId").is(userProfileId)), ItemEntity.class);
     }
 }
