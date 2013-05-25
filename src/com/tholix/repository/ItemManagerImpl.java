@@ -3,10 +3,7 @@
  */
 package com.tholix.repository;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +28,7 @@ import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.types.TaxEnum;
+import com.tholix.service.ItemService;
 
 /**
  * @author hitender
@@ -47,7 +44,6 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Autowired private MongoTemplate mongoTemplate;
     @Autowired private BizNameManager bizNameManager;
-    @Autowired private ExpenseTypeManager expenseTypeManager;
 
 	@Override
 	public List<ItemEntity> getAllObjects() {
@@ -198,70 +194,5 @@ public class ItemManagerImpl implements ItemManager {
     @Override
     public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
         return mongoTemplate.find(Query.query(Criteria.where("expenseType").is(StringUtils.trimToNull(null)).and("userProfileId").is(userProfileId)), ItemEntity.class);
-    }
-
-    @Override
-    public Map<String, BigDecimal> getAllItemExpense(String profileId) {
-        Map<String, BigDecimal> expenseItems = new HashMap<>();
-        BigDecimal netSum = new BigDecimal("0.00");
-
-        //Find sum of all items for particular expense
-        List<ExpenseTypeEntity> expenseTypeEntities = expenseTypeManager.activeExpenseTypes(profileId);
-        for(ExpenseTypeEntity expenseTypeEntity : expenseTypeEntities) {
-
-            BigDecimal sum = new BigDecimal("0.00");
-            List<ItemEntity> items = getItemEntitiesForSpecificExpenseType(expenseTypeEntity);
-            sum = calculateSum(sum, items);
-            netSum = netSum.add(sum);
-            expenseItems.put(expenseTypeEntity.getExpName(), sum);
-        }
-
-        netSum = populateWithUnAssignedItems(expenseItems, netSum, profileId);
-
-        // Calculate percentage
-        for(String key : expenseItems.keySet()) {
-            BigDecimal percent = (expenseItems.get(key).multiply(new BigDecimal("100.00")).divide(netSum, 2, BigDecimal.ROUND_HALF_UP)).stripTrailingZeros();
-            percent = percent.setScale(1, BigDecimal.ROUND_FLOOR);
-            expenseItems.put(key, percent);
-        }
-
-        return expenseItems;
-    }
-
-    /**
-     * Finds all the un-assigned items for the user
-     *
-     * @param expenseItems
-     * @param netSum
-     * @return
-     */
-    private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String profileId) {
-        List<ItemEntity> unassignedItems = getItemEntitiesForUnAssignedExpenseType(profileId);
-        if(unassignedItems.size() > 0) {
-            BigDecimal sum = calculateSum(new BigDecimal("0.00"), unassignedItems);
-            netSum = netSum.add(sum);
-            expenseItems.put("Un-Assigned", sum);
-        }
-        return netSum;
-    }
-
-    /**
-     * Calculate sum for all the items
-     *
-     * @param sum
-     * @param items
-     * @return
-     */
-    private BigDecimal calculateSum(BigDecimal sum, List<ItemEntity> items) {
-        for(ItemEntity item : items) {
-            String receiptId = item.getReceipt().getId();
-            ReceiptEntity receiptEntity = mongoTemplate.findOne(Query.query(Criteria.where("id").is(receiptId)), ReceiptEntity.class);
-            if(item.getTaxed() == TaxEnum.TAXED) {
-                sum = sum.add(new BigDecimal(item.getPrice().toString()).multiply(receiptEntity.getTaxInPercentage()));
-            } else {
-                sum = sum.add(new BigDecimal(item.getPrice().toString()));
-            }
-        }
-        return sum;
     }
 }

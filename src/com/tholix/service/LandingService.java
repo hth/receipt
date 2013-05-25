@@ -2,6 +2,7 @@ package com.tholix.service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
@@ -48,6 +51,7 @@ public class LandingService {
     @Autowired private FileDBService fileDBService;
     @Autowired private ReceiptSenderJMS senderJMS;
     @Autowired private ItemManager itemManager;
+    @Autowired private ItemService itemService;
 
     public long pendingReceipt(String profileId) {
         return receiptOCRManager.numberOfPendingReceipts(profileId);
@@ -62,7 +66,7 @@ public class LandingService {
     }
 
     public Map<String, BigDecimal> getAllItemExpense(String profileId) {
-        return itemManager.getAllItemExpense(profileId);
+        return itemService.getAllItemExpense(profileId);
     }
 
     /**

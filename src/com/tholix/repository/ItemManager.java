@@ -55,14 +55,6 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
     long collectionSize();
 
-    /**
-     * Calculate percentage values of the Expense Items
-     *
-     * @param profileId
-     * @return
-     */
-    Map<String, BigDecimal> getAllItemExpense(String profileId);
-
     List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseTypeEntity);
 
     List<ItemEntity> getItemEntitiesForSpecificExpenseType(String expenseTypeId);
