@@ -1,6 +1,5 @@
 package com.tholix.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,27 +88,31 @@ public class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> findAll(String bizAddress, BizNameEntity bizNameEntity) {
-        Criteria criteriaA = Criteria.where("address").regex(bizAddress, "i");
+        Criteria criteriaA = Criteria.where("address").regex("^" + bizAddress, "i");
         Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
 
         return mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA), BizStoreEntity.class, TABLE);
     }
 
     @Override
-    public List<String> findAllAddress(String bizAddress, BizNameEntity bizNameEntity) {
-        Criteria criteriaA = Criteria.where("address").regex(bizAddress, "i");
+    public List<BizStoreEntity> getAllWithJustSpecificField(String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
+        Criteria criteriaA = Criteria.where("address").regex("^" + bizAddress, "i");
         Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
 
         Query query = Query.query(criteriaB).addCriteria(criteriaA);
-        query.fields().include("address");
-        List<BizStoreEntity> list = mongoTemplate.find(query, BizStoreEntity.class, TABLE);
+        query.fields().include(fieldName);
+        return mongoTemplate.find(query, BizStoreEntity.class, TABLE);
+    }
 
-        List<String> address = new ArrayList<>();
-        for(BizStoreEntity bizStoreEntity : list) {
-            address.add(bizStoreEntity.getAddress());
-        }
+    @Override
+    public List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
+        Criteria criteriaA = Criteria.where("phone").regex("^" + bizPhone, "i");
+        Criteria criteriaB = Criteria.where("address").is(bizAddress);
+        Criteria criteriaC = Criteria.where("bizName").is(bizNameEntity);
 
-        return address;
+        Query query = Query.query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
+        query.fields().include(fieldName);
+        return mongoTemplate.find(query, BizStoreEntity.class, TABLE);
     }
 
     @Override

@@ -34,7 +34,14 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
 	void deleteWhereReceipt(ReceiptEntity receipt);
 
-    List<String> findItems(String name, String bizName);
+    /**
+     * Populate with just 'name' field based on first token. Used in AJAX call.
+     *
+     * @param name
+     * @param bizName
+     * @return
+     */
+    List<ItemEntity> findItems(String name, String bizName);
 
     void updateItemExpenseType(ItemEntity item);
 

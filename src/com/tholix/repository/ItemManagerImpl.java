@@ -4,7 +4,6 @@
 package com.tholix.repository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,8 +150,8 @@ public class ItemManagerImpl implements ItemManager {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
-    public List<String> findItems(String name, String bizName) {
-        Criteria criteriaI = Criteria.where("name").regex(new StringTokenizer(name).nextToken(), "i");
+    public List<ItemEntity> findItems(String name, String bizName) {
+        Criteria criteriaI = Criteria.where("name").regex(new StringTokenizer("^" + name).nextToken(), "i");
         Query query;
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
@@ -165,14 +164,7 @@ public class ItemManagerImpl implements ItemManager {
 
         //This makes just one of the field populated
         query.fields().include("name");
-        List<ItemEntity> list = mongoTemplate.find(query, ItemEntity.class, TABLE);
-
-        List<String> names = new ArrayList<>();
-        for(ItemEntity re : list) {
-            names.add(re.getName());
-        }
-
-        return names;
+        return mongoTemplate.find(query, ItemEntity.class, TABLE);
     }
 
     @Override

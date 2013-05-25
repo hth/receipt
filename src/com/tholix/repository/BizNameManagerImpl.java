@@ -83,7 +83,7 @@ public class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public List<BizNameEntity> findAllBiz(String bizName) {
-        return mongoTemplate.find(Query.query(Criteria.where("name").regex(bizName, "i")), BizNameEntity.class, TABLE);
+        return mongoTemplate.find(Query.query(Criteria.where("name").regex("^" + bizName, "i")), BizNameEntity.class, TABLE);
     }
 
     public List<String> findAllBizStr(String bizName) {

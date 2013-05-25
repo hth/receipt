@@ -1,5 +1,6 @@
 package com.tholix.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.BizStoreEntity;
+import com.tholix.domain.ItemEntity;
 import com.tholix.repository.BizNameManager;
 import com.tholix.repository.BizStoreManager;
 import com.tholix.repository.ItemManager;
@@ -54,14 +57,43 @@ public class FetcherService {
         DateTime time = DateUtil.now();
         log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        List<String> list = bizStoreManager.findAllAddress(bizAddress, bizNameEntity);
+        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizAddress, bizNameEntity, "address");
+
+        List<String> address = new ArrayList<>();
+        for(BizStoreEntity bizStoreEntity : list) {
+            address.add(bizStoreEntity.getAddress());
+        }
+
         log.info("found item.. total size " + list.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return list;
+        return address;
     }
 
     /**
-     * This method is called from AJAX to get the matching list of users in the system
+     *
+     * @param bizAddress
+     * @param bizName
+     * @return
+     */
+    public List<String> findBizPhone(String bizPhone, String bizAddress, String bizName) {
+        DateTime time = DateUtil.now();
+        log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
+        BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
+        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, "phone");
+
+        List<String> phone = new ArrayList<>();
+        for(BizStoreEntity bizStoreEntity : list) {
+            phone.add(bizStoreEntity.getPhone());
+        }
+
+        log.info("found item.. total size " + list.size());
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return phone;
+    }
+
+    /**
+     * This method is called from AJAX to get the matching list of items in the system.
+     * Populates with just the 'name' of the item
      *
      * @param itemName
      * @param bizName
@@ -70,9 +102,15 @@ public class FetcherService {
     public List<String> findItems(String itemName, String bizName) {
         DateTime time = DateUtil.now();
         log.info("Search for item name: " + itemName + ", within Biz Name: " + bizName);
-        List<String> items = itemManager.findItems(itemName, bizName);
+        List<ItemEntity> items = itemManager.findItems(itemName, bizName);
+
+        List<String> names = new ArrayList<>();
+        for(ItemEntity re : items) {
+            names.add(re.getName());
+        }
+
         log.info("found item.. total size " + items.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return items;
+        return names;
     }
 }

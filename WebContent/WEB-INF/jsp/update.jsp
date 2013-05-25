@@ -81,7 +81,27 @@
                         url: '${pageContext. request. contextPath}/fetcher/find_address.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#bizName").val()
+                            nameParam: $("#bizName").val()
+                        },
+                        success: function (data) {
+                            console.log('response=', data);
+                            response(data);
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).ready(function() {
+            $( "#phone" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/fetcher/find_phone.htm',
+                        data: {
+                            term: request.term,
+                            nameParam: $("#bizName").val(),
+                            addressParam: $("#address").val()
                         },
                         success: function (data) {
                             console.log('response=', data);
@@ -100,7 +120,7 @@
                         url: '${pageContext. request. contextPath}/fetcher/find_item.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#bizName").val()
+                            nameParam: $("#bizName").val()
                         },
                         success: function (data) {
                             console.log('response=', data);
@@ -165,7 +185,7 @@
                                         </div>
                                         <div class="rightAlign">
                                             <form:label for="receipt.receiptDate" path="receipt.receiptDate" cssErrorClass="error">Date</form:label>
-                                            <form:input path="receipt.receiptDate" size="32"/>
+                                            <form:input path="receipt.receiptDate" id="date" size="32"/>
                                         </div>
                                     </td>
                                 </tr>

@@ -35,13 +35,19 @@ public class FetcherController {
 
     @RequestMapping(value = "/find_address", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("extraParam") String bizName) {
+    List<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String bizName) {
         return fetcherService.findBizAddress(bizAddress, bizName);
+    }
+
+    @RequestMapping(value = "/find_phone", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String bizName, @RequestParam("addressParam") String bizAddress) {
+        return fetcherService.findBizPhone(bizPhone, bizAddress, bizName);
     }
 
     @RequestMapping(value = "/find_item", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> searchItem(@RequestParam("term") String itemName, @RequestParam("extraParam") String bizName) {
+    List<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String bizName) {
         return fetcherService.findItems(itemName, bizName);
     }
 }
