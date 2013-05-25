@@ -186,6 +186,16 @@ public class ItemManagerImpl implements ItemManager {
     }
 
     @Override
+    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseTypeEntity) {
+        return getItemEntitiesForSpecificExpenseType(expenseTypeEntity.getId());
+    }
+
+    @Override
+    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(String expenseTypeId) {
+        return mongoTemplate.find(Query.query(Criteria.where("expenseType.id").is(expenseTypeId)), ItemEntity.class);
+    }
+
+    @Override
     public Map<String, BigDecimal> getAllItemExpense(String profileId) {
         Map<String, BigDecimal> expenseItems = new HashMap<>();
         BigDecimal netSum = new BigDecimal("0.00");
@@ -201,7 +211,6 @@ public class ItemManagerImpl implements ItemManager {
             expenseItems.put(expenseTypeEntity.getExpName(), sum);
         }
 
-
         netSum = populateWithUnAssignedItems(expenseItems, netSum, profileId);
 
         // Calculate percentage
@@ -212,16 +221,6 @@ public class ItemManagerImpl implements ItemManager {
         }
 
         return expenseItems;
-    }
-
-    @Override
-    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseTypeEntity) {
-        return getItemEntitiesForSpecificExpenseType(expenseTypeEntity.getId());
-    }
-
-    @Override
-    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(String expenseTypeId) {
-        return mongoTemplate.find(Query.query(Criteria.where("expenseType.id").is(expenseTypeId)), ItemEntity.class);
     }
 
     /**
