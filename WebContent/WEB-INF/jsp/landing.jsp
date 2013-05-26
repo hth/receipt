@@ -269,7 +269,7 @@
                             </table>
                         </td>
                         <td style="vertical-align: top">
-                            <div id="container" style="height:250px;"></div>
+                            <div id="container" style="min-width: 385px; height: 275px; margin: 0 auto"></div>
                         </td>
                     </tr>
                 </table>
@@ -296,7 +296,7 @@
                         </fieldset>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="allExpenseTypes" style="height:250px;"></div>
+                        <div id="allExpenseTypes" style="min-width: 385px; height: 275px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>
