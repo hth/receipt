@@ -14,7 +14,6 @@ import org.springframework.format.annotation.NumberFormat;
  * Date: 4/22/13
  * Time: 10:16 PM
  */
-
 @Document(collection = "BIZ_STORE")
 @CompoundIndexes(value = {
         @CompoundIndex(name = "biz_store_idx", def = "{'address': 1, 'phone': 1}", unique=true),

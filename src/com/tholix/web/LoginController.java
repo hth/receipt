@@ -3,6 +3,9 @@
  */
 package com.tholix.web;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import net.sf.uadetector.UserAgent;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.UserAuthenticationEntity;
@@ -24,6 +28,7 @@ import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.utils.SHAHashing;
+import com.tholix.web.cache.CachedUserAgentStringParser;
 import com.tholix.web.form.UserLoginForm;
 import com.tholix.web.validator.UserLoginValidator;
 
@@ -61,9 +66,25 @@ public class LoginController {
      * @return
      */
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm() {
+	public String loadForm(HttpServletRequest request) {
         DateTime time = DateUtil.now();
 		log.info("LoginController login");
+
+        //TODO check if CachedUserAgentStringParser has to be singleton and thread safe?
+        // Get an UserAgentStringParser and analyze the requesting client
+        //UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser()
+        CachedUserAgentStringParser parser = CachedUserAgentStringParser.newInstance();
+        UserAgent agent = parser.parse(request.getHeader("User-Agent"));
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null && cookies.length > 0) {
+            Cookie cookie = cookies[0];
+            String cookieId = cookie.getValue();
+            String ip = request.getRemoteAddr();
+
+            log.info(cookieId + ", " + ip + ", " + agent);
+            loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString());
+        }
+
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return LOGIN_PAGE;
 	}

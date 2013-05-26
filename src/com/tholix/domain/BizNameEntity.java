@@ -12,10 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Date: 4/22/13
  * Time: 10:16 PM
  */
-
 @Document(collection = "BIZ_NAME")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_name_idx",    def = "{'name': 1}",  unique=true),
+        @CompoundIndex(name = "biz_name_idx", def = "{'name': 1}",  unique=true),
 } )
 public class BizNameEntity extends BaseEntity {
 
