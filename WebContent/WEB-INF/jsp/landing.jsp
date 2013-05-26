@@ -234,36 +234,45 @@
 		</ul>
 		<div id="tabs-1">
 			<c:if test="${receipts.size() > 0}">
-			<table style="width: 450px" class="etable">
-                <tr>
-                    <th style="padding:3px;"></th>
-                    <th style="padding:3px;">Title</th>
-                    <th style="padding:3px;">Receipt Date</th>
-                    <th style="padding:3px;">Tax</th>
-                    <th style="padding:3px;">Total</th>
-                </tr>
-				<c:forEach var="receipt" items="${receipts}"  varStatus="status">
-				<tr>
-					<td style="padding:3px;" align="right">
-						${status.count}
-					</td>
-					<td style="padding:3px;" title="${receipt.description}">
-						<spring:eval expression="receipt.bizName.name" />
-					</td>
-					<td style="padding:3px;">
-						<spring:eval expression="receipt.receiptDate" />
-					</td>
-					<td style="padding:3px;" align="right">
-						<spring:eval expression="receipt.tax" />
-					</td>
-					<td style="padding:3px;" align="right">
-						<a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
-							<spring:eval expression="receipt.total" />
-						</a>
-					</td>
-				</tr>
-				</c:forEach>
-			</table>
+                <table style="width: 20%">
+                    <tr>
+                        <td style="vertical-align: top">
+                            <table style="width: 450px" class="etable">
+                                <tr>
+                                    <th style="padding:3px;"></th>
+                                    <th style="padding:3px;">Title</th>
+                                    <th style="padding:3px;">Receipt Date</th>
+                                    <th style="padding:3px;">Tax</th>
+                                    <th style="padding:3px;">Total</th>
+                                </tr>
+                                <c:forEach var="receipt" items="${receipts}"  varStatus="status">
+                                <tr>
+                                    <td style="padding:3px;" align="right">
+                                        ${status.count}
+                                    </td>
+                                    <td style="padding:3px;" title="${receipt.description}">
+                                        <spring:eval expression="receipt.bizName.name" />
+                                    </td>
+                                    <td style="padding:3px;">
+                                        <spring:eval expression="receipt.receiptDate" />
+                                    </td>
+                                    <td style="padding:3px;" align="right">
+                                        <spring:eval expression="receipt.tax" />
+                                    </td>
+                                    <td style="padding:3px;" align="right">
+                                        <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
+                                            <spring:eval expression="receipt.total" />
+                                        </a>
+                                    </td>
+                                </tr>
+                                </c:forEach>
+                            </table>
+                        </td>
+                        <td style="vertical-align: top">
+                            <div id="container" style="height:250px;"></div>
+                        </td>
+                    </tr>
+                </table>
 			</c:if>
 		</div>
 		<div id="tabs-2">
@@ -516,6 +525,108 @@
                         </c:choose>
                     ]
                 }]
+            });
+        });
+    </script>
+    </c:if>
+
+    <c:if test="${bizByExpenseTypes.size() > 0}">
+    <script>
+        $(function () {
+
+            var colors = Highcharts.getOptions().colors,
+                    categories = [${bizNames}],
+                    name = 'Receipt Expenses',
+                    data = [
+                        <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
+                        {
+                            y: ${item.total},
+                            color: colors[${status.count-1}],
+                            drilldown: {
+                                name: '${item.bizName}',
+                                categories: [${item.expenseTypes}],
+                                data: [${item.expenseValues}],
+                                color: colors[${status.count-1}]
+                            }
+                        },
+                        </c:forEach>
+                    ];
+
+
+            // Build the data arrays
+            var bizNames = [];
+            var expenseTypes = [];
+            for (var i = 0; i < data.length; i++) {
+
+                // add browser data
+                bizNames.push({
+                    name: categories[i],
+                    y: data[i].y,
+                    color: data[i].color
+                });
+
+                // add version data
+                for (var j = 0; j < data[i].drilldown.data.length; j++) {
+                    var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
+                    expenseTypes.push({
+                        name: data[i].drilldown.categories[j],
+                        y: data[i].drilldown.data[j],
+                        color: Highcharts.Color(data[i].color).brighten(brightness).get()
+                    });
+                }
+            }
+
+            // Create the chart
+            $('#container').highcharts({
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Receipt By Expense Type, ?Month?, ?2013?'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total expense'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        shadow: false,
+                        center: ['50%', '50%']
+                    }
+                },
+                tooltip: {
+                    valueSuffix: '$',
+                    formatter: function() {
+                        return this.point.name + ": " + this.point.y + "$";
+                    }
+                },
+                series: [
+                    {
+                        name: 'Total',
+                        data: bizNames,
+                        size: '60%',
+                        dataLabels: {
+                            formatter: function () {
+                                return this.y > 5 ? this.point.name : null;
+                            },
+                            color: 'white',
+                            distance: -30
+                        }
+                    },
+                    {
+                        name: 'Total',
+                        data: expenseTypes,
+                        size: '80%',
+                        innerSize: '60%',
+                        dataLabels: {
+                            formatter: function () {
+                                // display only if larger than 1
+                                return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + this.y + '$' : null;
+                            }
+                        }
+                    }
+                ]
             });
         });
     </script>

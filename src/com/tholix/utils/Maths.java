@@ -39,7 +39,7 @@ public final class Maths {
         throw new ArithmeticException("Value is not a number: ' " + a + " ', ' " + b + " '");
     }
 
-    private static BigDecimal add(BigDecimal a, String b) {
+    public static BigDecimal add(BigDecimal a, String b) {
         return add(a, new BigDecimal(b));
     }
 
@@ -52,6 +52,57 @@ public final class Maths {
         } catch(Exception exce) {
             throw new ArithmeticException(exce.getLocalizedMessage());
         }
+    }
+
+    /**
+     *
+     * @param from - Higher than value
+     * @param value - Lower than from
+     * @return
+     */
+    public static BigDecimal subtract(BigDecimal from, BigDecimal value) {
+        BigDecimal sub = from.subtract(value);
+        log.debug("subtract: " + from + " - " + value + " = " + sub);
+        return sub;
+    }
+
+    public static BigDecimal subtract(Double from, Double value) {
+        return subtract(new BigDecimal(from.toString()), new BigDecimal(value.toString()));
+    }
+
+    /**
+     *
+     * @param divide - Value to be divided
+     * @param by - Divide by this
+     * @return
+     */
+    public static BigDecimal divide(BigDecimal divide, BigDecimal by) {
+        BigDecimal division = divide.divide(by, 2, BigDecimal.ROUND_HALF_DOWN).stripTrailingZeros();
+        log.debug("divide: " + divide + " / " + by + " = " + division);
+        return division;
+    }
+
+    public static BigDecimal divide(BigDecimal divide, Double by) {
+        return divide(divide, new BigDecimal(by.toString()));
+    }
+
+    public static BigDecimal multiply(BigDecimal value, BigDecimal withThis) {
+        BigDecimal multiplication = value.multiply(withThis);
+        multiplication = multiplication.setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        log.debug("multiply: " + value + " * " + withThis + " = " + multiplication);
+        return multiplication;
+    }
+
+    public static BigDecimal multiply(BigDecimal value, String withThis) {
+        return multiply(value, new BigDecimal(withThis));
+    }
+
+    public static BigDecimal multiply(BigDecimal value, Double withThis) {
+        return multiply(value, new BigDecimal(withThis.toString()));
+    }
+
+    public static BigDecimal percent(BigDecimal value) {
+        return multiply(value, Maths.multiply(BigDecimal.TEN, BigDecimal.TEN));
     }
 
     public static boolean isNumeric(String str) {

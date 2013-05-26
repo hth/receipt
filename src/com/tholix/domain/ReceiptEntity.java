@@ -23,6 +23,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.utils.Maths;
 
 /**
  * @author hitender
@@ -217,9 +218,10 @@ public class ReceiptEntity extends BaseEntity {
      * @return
      */
     public BigDecimal getTaxInPercentage() {
-        BigDecimal  tax = new BigDecimal(getTotal().toString()).subtract(new BigDecimal(getSubTotal().toString()));
-                    tax= tax.divide(new BigDecimal(getSubTotal().toString()), 4, BigDecimal.ROUND_HALF_DOWN);
-        return tax.add(new BigDecimal("1.00"));
+        BigDecimal  tax = Maths.subtract(getTotal(), getSubTotal());
+                    tax = Maths.divide(tax, getSubTotal());
+                    tax = Maths.add(tax, BigDecimal.ONE);
+        return tax;
     }
 
     public Double getSubTotal() {

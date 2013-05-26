@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.tholix.domain.ExpenseTypeEntity;
@@ -17,6 +15,7 @@ import com.tholix.domain.types.TaxEnum;
 import com.tholix.repository.ExpenseTypeManager;
 import com.tholix.repository.ItemManager;
 import com.tholix.repository.ReceiptManager;
+import com.tholix.utils.Maths;
 
 /**
  * User: hitender
@@ -54,16 +53,16 @@ public class ItemService {
      */
     public Map<String, BigDecimal> getAllItemExpense(String profileId) {
         Map<String, BigDecimal> expenseItems = new HashMap<>();
-        BigDecimal netSum = new BigDecimal("0.00");
+        BigDecimal netSum = BigDecimal.ZERO;
 
         //Find sum of all items for particular expense
         List<ExpenseTypeEntity> expenseTypeEntities = expenseTypeManager.activeExpenseTypes(profileId);
         for(ExpenseTypeEntity expenseTypeEntity : expenseTypeEntities) {
 
-            BigDecimal sum = new BigDecimal("0.00");
+            BigDecimal sum = BigDecimal.ZERO;
             List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseType(expenseTypeEntity);
             sum = calculateSum(sum, items);
-            netSum = netSum.add(sum);
+            netSum = Maths.add(netSum, sum);
             expenseItems.put(expenseTypeEntity.getExpName(), sum);
         }
 
@@ -71,8 +70,8 @@ public class ItemService {
 
         // Calculate percentage
         for(String key : expenseItems.keySet()) {
-            BigDecimal percent = (expenseItems.get(key).multiply(new BigDecimal("100.00")).divide(netSum, 2, BigDecimal.ROUND_HALF_UP)).stripTrailingZeros();
-            percent = percent.setScale(1, BigDecimal.ROUND_FLOOR);
+            BigDecimal percent = Maths.percent(expenseItems.get(key));
+            percent = Maths.divide(percent, netSum);
             expenseItems.put(key, percent);
         }
 
@@ -105,18 +104,26 @@ public class ItemService {
     private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String profileId) {
         List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseType(profileId);
         if(unassignedItems.size() > 0) {
-            BigDecimal sum = calculateSum(new BigDecimal("0.00"), unassignedItems);
-            netSum = netSum.add(sum);
+            BigDecimal sum = calculateSum(BigDecimal.ZERO, unassignedItems);
+            netSum = Maths.add(netSum, sum);
             expenseItems.put("Un-Assigned", sum);
         }
         return netSum;
     }
 
-    private BigDecimal calculateTotalCost(BigDecimal sum, ItemEntity item, ReceiptEntity receiptEntity) {
+    /**
+     * Calculate total cost of the item
+     *
+     * @param sum
+     * @param item
+     * @param receiptEntity
+     * @return
+     */
+    public BigDecimal calculateTotalCost(BigDecimal sum, ItemEntity item, ReceiptEntity receiptEntity) {
         if(item.getTaxed() == TaxEnum.TAXED) {
-            sum = sum.add(new BigDecimal(item.getPrice().toString()).multiply(receiptEntity.getTaxInPercentage()));
+            sum = Maths.add(sum, Maths.multiply(receiptEntity.getTaxInPercentage(), item.getPrice()));
         } else {
-            sum = sum.add(new BigDecimal(item.getPrice().toString()));
+            sum = Maths.add(sum, item.getPrice());
         }
         return sum;
     }

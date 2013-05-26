@@ -30,7 +30,7 @@ import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.repository.UserProfileManager;
 import com.tholix.service.routes.ReceiptSenderJMS;
 import com.tholix.utils.ABBYYCloudService;
-import com.tholix.utils.Formatter;
+import com.tholix.utils.Maths;
 import com.tholix.utils.ReceiptParser;
 
 /**
@@ -70,20 +70,78 @@ public class LandingService {
     }
 
     /**
+     * For donut pie chart
+     *
+     * @param receipts
+     * @return
+     */
+    public Map<String, Map<String, BigDecimal>> allBusinessByExpenseType(List<ReceiptEntity> receipts) {
+        Map<String, Map<String, BigDecimal>> maps = new HashMap<>();
+
+        for(ReceiptEntity receipt : receipts) {
+            BizNameEntity bizNameEntity = receipt.getBizName();
+            bizNameEntity = bizNameManager.findOne(bizNameEntity.getId());
+
+            List<ItemEntity> itemEntities = itemManager.getWhereReceipt(receipt);
+            if(itemEntities.size() > 0) {
+                Map<String, BigDecimal> itemMaps = new HashMap<>();
+
+                for(ItemEntity itemEntity : itemEntities) {
+                    BigDecimal sum = BigDecimal.ZERO;
+                    sum = itemService.calculateTotalCost(sum, itemEntity, receipt);
+                    if(itemEntity.getExpenseType() != null) {
+                        if(itemMaps.containsKey(itemEntity.getExpenseType().getExpName())) {
+                            BigDecimal out = itemMaps.get(itemEntity.getExpenseType().getExpName());
+                            itemMaps.put(itemEntity.getExpenseType().getExpName(), Maths.add(out, sum));
+                        } else {
+                            itemMaps.put(itemEntity.getExpenseType().getExpName(), sum);
+                        }
+                    } else {
+                        if(itemMaps.containsKey("Un-Assigned")) {
+                            BigDecimal out = itemMaps.get("Un-Assigned");
+                            itemMaps.put("Un-Assigned", Maths.add(out, sum));
+                        } else {
+                            itemMaps.put("Un-Assigned", sum);
+                        }
+                    }
+                }
+
+                if(maps.containsKey(bizNameEntity.getName())) {
+                    Map<String, BigDecimal> mapData = maps.get(bizNameEntity.getName());
+                    for(String key : itemMaps.keySet()) {
+                        if(mapData.containsKey(key)) {
+                            BigDecimal value = mapData.get(key);
+                            BigDecimal existingSum = itemMaps.get(key);
+                            mapData.put(key, Maths.add(existingSum, value));
+                        } else {
+                            mapData.put(key, itemMaps.get(key));
+                        }
+                    }
+                    maps.put(bizNameEntity.getName(), mapData);
+                } else {
+                    maps.put(bizNameEntity.getName(), itemMaps);
+                }
+            }
+        }
+
+        return maps;
+    }
+
+    /**
      * @param receipts
      * @param modelAndView
      */
     public void computeTotalExpense(List<ReceiptEntity> receipts, ModelAndView modelAndView) {
-        double tax = 0.00;
-        double total = 0.00;
+        BigDecimal tax = BigDecimal.ZERO;
+        BigDecimal total = BigDecimal.ZERO;
         for(ReceiptEntity receipt : receipts) {
-            tax += receipt.getTax();
-            total += receipt.getTotal();
+            tax = Maths.add(tax, receipt.getTax());
+            total = Maths.add(total, receipt.getTotal());
         }
 
-        modelAndView.addObject("tax", Formatter.df.format(tax));
-        modelAndView.addObject("totalWithoutTax", Formatter.df.format(total - tax));
-        modelAndView.addObject("total", Formatter.df.format(total));
+        modelAndView.addObject("tax", tax);
+        modelAndView.addObject("totalWithoutTax", Maths.subtract(total, tax));
+        modelAndView.addObject("total", total);
     }
 
     /**

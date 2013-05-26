@@ -4,6 +4,7 @@
 package com.tholix.web;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,9 @@ import com.tholix.domain.UserSession;
 import com.tholix.service.FileDBService;
 import com.tholix.service.LandingService;
 import com.tholix.utils.DateUtil;
+import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
+import com.tholix.web.form.LandingDonutChart;
 import com.tholix.web.rest.Base;
 import com.tholix.web.rest.Header;
 import com.tholix.web.rest.LandingView;
@@ -71,18 +74,59 @@ public class LandingController extends BaseController {
 		List<ReceiptEntity> receipts = landingService.allReceipts(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 
+        /** Receipt grouped by date */
+        Map<Date, BigDecimal> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
+        modelAndView.addObject("receiptGrouped", receiptGrouped);
+
+        /** Used for charting in Expense tab */
         Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpense(userSession.getUserProfileId());
         modelAndView.addObject("itemExpenses", itemExpenses);
 
-        landingService.computeTotalExpense(receipts, modelAndView);
+        /** Used for donut chart of each receipts with respect to expense types */
+        populateReceiptExpenseDonutChartDetails(modelAndView, receipts);
 
-		/** Receipt grouped by date */
-		Map<Date, BigDecimal> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
-        modelAndView.addObject("receiptGrouped", receiptGrouped);
+        landingService.computeTotalExpense(receipts, modelAndView);
 
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 	}
+
+    /**
+     * Populate Receipt expense donut chart
+     *
+     * @param modelAndView
+     * @param receipts
+     */
+    private void populateReceiptExpenseDonutChartDetails(ModelAndView modelAndView, List<ReceiptEntity> receipts) {
+        List<LandingDonutChart> bizByExpenseTypes = new ArrayList<>();
+        StringBuilder bizNames = new StringBuilder();
+        Map<String, Map<String, BigDecimal>> bizByExpenseType = landingService.allBusinessByExpenseType(receipts);
+        for(String key : bizByExpenseType.keySet()) {
+            bizNames.append("'").append(key).append("',");
+
+            LandingDonutChart landingDonutChart = LandingDonutChart.newInstance(key);
+
+            BigDecimal sum = BigDecimal.ZERO;
+            Map<String, BigDecimal> map = bizByExpenseType.get(key);
+            for(BigDecimal value : map.values()) {
+                sum = Maths.add(sum, value);
+            }
+            landingDonutChart.setTotal(sum);
+
+            StringBuilder expenseTypes = new StringBuilder();
+            StringBuilder expenseValues = new StringBuilder();
+            for(String name : map.keySet()) {
+                expenseTypes.append("'").append(name).append("',");
+                expenseValues.append(map.get(name)).append(",");
+            }
+            landingDonutChart.setExpenseTypes(expenseTypes.toString().substring(0, expenseTypes.toString().length() - 1));
+            landingDonutChart.setExpenseValues(expenseValues.toString().substring(0, expenseValues.toString().length() - 1));
+
+            bizByExpenseTypes.add(landingDonutChart);
+        }
+        modelAndView.addObject("bizNames", bizNames.toString().substring(0, bizNames.toString().length() - 1));
+        modelAndView.addObject("bizByExpenseTypes", bizByExpenseTypes);
+    }
 
     //http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html
     //16.3.3.16 Support for the 'Last-Modified' Response Header To Facilitate Content Caching
