@@ -446,6 +446,9 @@
                     plotBorderWidth: null,
                     plotShadow: false
                 },
+                credits: {
+                    enabled: false
+                },
                 title: {
                     text: 'Expense Share'
                 },
@@ -580,6 +583,9 @@
             $('#container').highcharts({
                 chart: {
                     type: 'pie'
+                },
+                credits: {
+                    enabled: false
                 },
                 title: {
                     text: 'Receipt By Expense Type, ?Month?, ?2013?'
