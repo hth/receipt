@@ -86,6 +86,17 @@ public final class Maths {
         return divide(divide, new BigDecimal(by.toString()));
     }
 
+    public static BigDecimal divide(BigDecimal divide, int by) {
+        return divide(divide, new BigDecimal(by));
+    }
+
+    /**
+     * Plain multiplication of two numbers
+     *
+     * @param value
+     * @param withThis
+     * @return
+     */
     public static BigDecimal multiply(BigDecimal value, BigDecimal withThis) {
         BigDecimal multiplication = value.multiply(withThis);
         multiplication = multiplication.setScale(2, BigDecimal.ROUND_HALF_DOWN);

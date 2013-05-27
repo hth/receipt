@@ -33,6 +33,7 @@ import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.StorageManager;
 import com.tholix.repository.UserProfileManager;
 import com.tholix.utils.DateUtil;
+import com.tholix.web.form.ItemAnalyticForm;
 
 /**
  * @author hitender
@@ -96,7 +97,7 @@ public class ItemAnalyticControllerTest {
 		ItemEntity item2 = ItemEntity.newInstance("Item-Test1", 40.00, TaxEnum.TAXED, 1, receipt, "test@test.com");
 		itemManager.save(item2);
 
-		ModelAndView modelAndView = controller.loadForm(item1.getId());
+		ModelAndView modelAndView = controller.loadForm(item1.getId(), new ItemAnalyticForm());
 		assertEquals("/itemanalytic", modelAndView.getViewName());
 		assertEquals(60.00, modelAndView.getModel().get("averagePrice"));
 

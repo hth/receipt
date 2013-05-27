@@ -1,5 +1,6 @@
 package com.tholix.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.tholix.domain.ItemEntity;
 import com.tholix.repository.ItemManager;
-import com.tholix.utils.Formatter;
+import com.tholix.utils.Maths;
 
 /**
  * User: hitender
@@ -23,18 +24,29 @@ public class ItemAnalyticService {
         return itemManager.findOne(itemId);
     }
 
-    public Double calculateAveragePrice(String itemName) {
+    /**
+     * Calculates average price paid for the similar item by others
+     *
+     * @param itemName
+     * @return
+     */
+    public BigDecimal calculateAveragePrice(String itemName) {
         List<ItemEntity> items = findAllByName(itemName);
-        Double averagePrice = 0.00;
+        BigDecimal averagePrice = BigDecimal.ZERO;
         for(ItemEntity item : items) {
-            averagePrice = averagePrice + item.getPrice();
+            averagePrice = Maths.add(averagePrice, item.getPrice());
         }
-        averagePrice = averagePrice/items.size();
-        averagePrice = new Double(Formatter.df.format(averagePrice));
+        averagePrice = Maths.divide(averagePrice, items.size());
         return averagePrice;
     }
 
-    private List<ItemEntity> findAllByName(String itemName) {
+    /**
+     * Get all the items with similar name
+     *
+     * @param itemName
+     * @return
+     */
+    public List<ItemEntity> findAllByName(String itemName) {
         return itemManager.getAllObjectWithName(itemName);
     }
 }

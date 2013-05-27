@@ -1,5 +1,6 @@
 package com.tholix.web.form;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.tholix.domain.ExpenseTypeEntity;
@@ -7,20 +8,30 @@ import com.tholix.domain.ItemEntity;
 
 /**
  * User: hitender
- * Date: 5/24/13
- * Time: 1:20 AM
+ * Date: 5/27/13
+ * Time: 12:59 AM
  */
-public class ExpenseForm {
-    String name;
+public class ItemAnalyticForm {
+
+    ItemEntity item;
+    BigDecimal averagePrice;
     List<ExpenseTypeEntity> expenseTypes;
     List<ItemEntity> items;
 
-    public String getName() {
-        return name;
+    public ItemEntity getItem() {
+        return item;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItem(ItemEntity item) {
+        this.item = item;
+    }
+
+    public BigDecimal getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(BigDecimal averagePrice) {
+        this.averagePrice = averagePrice;
     }
 
     public List<ExpenseTypeEntity> getExpenseTypes() {

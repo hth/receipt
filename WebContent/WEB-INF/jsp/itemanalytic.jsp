@@ -32,28 +32,77 @@
 
 	<br/>
 
-	<table style="width: 450px" class="etable">
+	<table style="width: 550px" class="etable">
 		<tbody>
-			<tr style="background-color:orange;color:white;">
-				<th style="padding:3px;">Name</th>
-				<th style="padding:3px;">Price</th>
-				<th style="padding:3px;">Average Price</th>
+			<tr>
+				<th>Name</th>
+				<th>Price</th>
+				<th>Average Price Paid By Other(s)</th>
 			</tr>
 		</tbody>
 		<tr>
 			<td align="left">
-	    		${item.name}
+	    		${itemAnalyticForm.item.name}
 			</td>
 			<td align="right">
-	    		<spring:eval expression="item.price" />
-	    		&nbsp;
+	    		<spring:eval expression="itemAnalyticForm.item.price" />
 			</td>
 			<td align="right">
-				<spring:eval expression="averagePrice"/>
-				&nbsp;
+				<spring:eval expression="itemAnalyticForm.averagePrice"/>
 			</td>
 		</tr>
 	</table>
+
+    <h2 class="demoHeaders">Historical Purchases of similar Item(s)</h2>
+    <c:if test="${itemAnalyticForm.items.size() > 0}">
+        <table style="width: 650px" class="etable">
+            <tbody>
+            <tr>
+                <th></th>
+                <th>Business</th>
+                <th>Transaction Date</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Tax</th>
+                <th>Expense Type</th>
+            </tr>
+            </tbody>
+            <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
+                <c:forEach items="${itemAnalyticForm.items}" var="item" varStatus="status">
+                    <tr>
+                        <td style="padding:3px;" align="right">
+                            ${status.count}
+                        </td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
+                                ${item.receipt.bizName.name}
+                            </a>
+                        </td>
+                        <td>
+                            <spring:eval expression="item.receipt.receiptDate" />
+                        </td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                                ${item.name}
+                            </a>
+                        </td>
+                        <td style="text-align: right;">
+                            <spring:eval expression="item.price" />
+                        </td>
+                        <td style="text-align: left;">
+                            ${item.taxed.description}
+                        </td>
+                        <td style="text-align: left;">
+                            <form:select path="items[${status.index}].expenseType.id">
+                                <form:option value="NONE" label="--- Select ---" />
+                                <form:options items="${itemAnalyticForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                            </form:select>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </form:form>
+        </table>
+    </c:if>
 
 </body>
 </html>

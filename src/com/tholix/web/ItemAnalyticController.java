@@ -3,10 +3,14 @@
  */
 package com.tholix.web;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,9 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.ItemEntity;
+import com.tholix.service.ExpensesService;
 import com.tholix.service.ItemAnalyticService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
+import com.tholix.web.form.ItemAnalyticForm;
 
 /**
  * @author hitender
@@ -31,16 +37,23 @@ public class ItemAnalyticController {
 	private static final String nextPage = "/itemanalytic";
 
 	@Autowired private ItemAnalyticService itemAnalyticService;
+    @Autowired private ExpensesService expensesService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@RequestParam("id") String id) {
+	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm) {
         DateTime time = DateUtil.now();
-		ItemEntity myItem = itemAnalyticService.findItemById(id);
-        Double averagePrice = itemAnalyticService.calculateAveragePrice(myItem.getName());
 
-		ModelAndView modelAndView = new ModelAndView(nextPage);
-		modelAndView.addObject("item", myItem);
-		modelAndView.addObject("averagePrice", averagePrice);
+		ItemEntity item = itemAnalyticService.findItemById(id);
+        BigDecimal averagePrice = itemAnalyticService.calculateAveragePrice(item.getName());
+        List<ItemEntity> items = itemAnalyticService.findAllByName(item.getName());
+
+        itemAnalyticForm.setItem(item);
+        itemAnalyticForm.setAveragePrice(averagePrice);
+        itemAnalyticForm.setItems(items);
+        itemAnalyticForm.setExpenseTypes(expensesService.activeExpenseTypes(item.getUserProfileId()));
+
+        ModelAndView modelAndView = new ModelAndView(nextPage);
+        modelAndView.addObject("itemAnalyticForm", itemAnalyticForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
