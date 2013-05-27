@@ -31,10 +31,12 @@
 
 <c:choose>
     <c:when test="${expenseForm.items.size() > 0}">
-        <table style="width: 450px" class="etable">
+        <table style="width: 650px" class="etable">
             <tbody>
             <tr style="background-color:orange;color:white;">
                 <th></th>
+                <th>Business</th>
+                <th>Transaction Date</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Tax</th>
@@ -45,18 +47,26 @@
                 <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
                     <tr>
                         <td style="padding:3px;" align="right">
-                                ${status.count}
+                            ${status.count}
+                        </td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
+                                ${item.receipt.bizName.name}
+                            </a>
+                        </td>
+                        <td>
+                            <spring:eval expression="item.receipt.receiptDate" />
                         </td>
                         <td>
                             <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                                    ${item.name}
+                                ${item.name}
                             </a>
                         </td>
                         <td style="text-align: right;">
                             <spring:eval expression="item.price" />
                         </td>
                         <td style="text-align: left;">
-                                ${item.taxed.description}
+                            ${item.taxed.description}
                         </td>
                         <td style="text-align: left;">
                             <form:select path="items[${status.index}].expenseType.id">
