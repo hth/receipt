@@ -32,15 +32,29 @@
 
 	<br/>
 
-	<table style="width: 550px" class="etable">
+	<table style="width: 650px" class="etable">
 		<tbody>
 			<tr>
+                <th>Business</th>
+                <th>Location</th>
+                <th>Transaction Date</th>
 				<th>Item</th>
 				<th>Price</th>
 				<th>Average Price in last 90 days</th>
 			</tr>
 		</tbody>
 		<tr>
+            <td>
+                <a href="${pageContext.request.contextPath}/receipt.htm?id=${itemAnalyticForm.item.receipt.id}">
+                ${itemAnalyticForm.item.receipt.bizName.name}
+                </a>
+            </td>
+            <td>
+                ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
+            </td>
+            <td>
+                <spring:eval expression="itemAnalyticForm.item.receipt.receiptDate" />
+            </td>
 			<td align="left">
 	    		${itemAnalyticForm.item.name}
 			</td>
@@ -55,11 +69,12 @@
 
     <h2 class="demoHeaders">Historical Purchases of similar Item(s)</h2>
     <c:if test="${itemAnalyticForm.items.size() > 0}">
-        <table style="width: 650px" class="etable">
+        <table style="width: 700px" class="etable">
             <tbody>
             <tr>
                 <th></th>
                 <th>Business</th>
+                <th>Location</th>
                 <th>Transaction Date</th>
                 <th>Item</th>
                 <th>Price</th>
@@ -77,6 +92,9 @@
                             <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
                             ${item.receipt.bizName.name}
                             </a>
+                        </td>
+                        <td>
+                            ${item.receipt.bizStore.addressWrapped}
                         </td>
                         <td>
                             <spring:eval expression="item.receipt.receiptDate" />

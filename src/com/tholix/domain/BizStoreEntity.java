@@ -3,6 +3,7 @@ package com.tholix.domain;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -44,6 +45,16 @@ public class BizStoreEntity extends BaseEntity {
 
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
+    }
+
+    /**
+     * For web display of the address
+     *
+     * @return
+     */
+    @Transient
+    public String getAddressWrapped() {
+        return address.replaceFirst(",", "<br/>");
     }
 
     public String getAddress() {
