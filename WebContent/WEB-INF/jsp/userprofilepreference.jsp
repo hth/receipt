@@ -184,13 +184,15 @@
             <form:form modelAttribute="expenseTypeForm" method="post" action="addExpenseType.htm">
                 <form:errors path="expName" cssClass="error" />
                 <form:hidden path="forYear" />
-                <table border="0" style="width: 230px" class="etable">
+                <table border="0" style="width: 195px" class="etable">
                     <tr>
-                        <td style="padding:3px;">&nbsp;New Expense Type <form:input path="expName" size="12" /></td>
+                        <td style="padding:3px;">
+                            &nbsp;New Expense Type <form:input path="expName" size="6" /> <sup>*</sup>
+                        </td>
                     </tr>
                     <tr>
-                        <td style="padding:3px; text-align: right;">
-                            <input type="submit" value="Add" name="Add"/>&nbsp;&nbsp;
+                        <td style="padding:3px; text-align: left;">
+                            <sup>*</sup>(Max of 6 characters) <input type="submit" value="Add" name="Add" style="text-align: right;"/>&nbsp;&nbsp;
                         </td>
                     </tr>
                 </table>

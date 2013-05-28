@@ -1,13 +1,12 @@
 package com.tholix.domain;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.tholix.utils.DateUtil;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.tholix.utils.DateUtil;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * User: hitender
@@ -21,7 +20,7 @@ import com.tholix.utils.DateUtil;
 public class ExpenseTypeEntity extends BaseEntity {
 
     @NotNull
-    @Size(min = 0, max = 12)
+    @Size(min = 0, max = 6)
     private String expName;
 
     @NotNull
