@@ -3,6 +3,7 @@
  */
 package com.tholix.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -160,7 +161,8 @@ public class ItemManagerImpl implements ItemManager {
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if(bizNameEntity == null) {
-            query = Query.query(criteriaI);
+            //query = Query.query(criteriaI);
+            return new ArrayList<>();
         } else {
             Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
             query = Query.query(criteriaI).addCriteria(criteriaB);
