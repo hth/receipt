@@ -112,8 +112,13 @@ public class ReceiptUpdateService {
             adminLandingService.saveNewBusinessAndOrStore(receipt);
             if(StringUtils.isNotEmpty(receipt.getId())) {
                 ReceiptEntity fetchedReceipt = receiptManager.findOne(receipt.getId());
-                receipt.setVersion(fetchedReceipt.getVersion());
-                receipt.setCreated(fetchedReceipt.getCreated());
+                if(fetchedReceipt == null) {
+                    // By creating new receipt with old id, we move the pending receipt from the list back to users account
+                    log.warn("Something had gone wrong with original receipt id: " + receipt.getId() + ", so creating another with old receipt id");
+                } else {
+                    receipt.setVersion(fetchedReceipt.getVersion());
+                    receipt.setCreated(fetchedReceipt.getCreated());
+                }
             }
             receiptManager.save(receipt);
 
