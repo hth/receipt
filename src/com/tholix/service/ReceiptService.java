@@ -159,7 +159,11 @@ public class ReceiptService {
         return listOfItems;
     }
 
+    /**
+     * //TODO why append. better to write query for look up
+     * @param item
+     */
     public void updateItemExpenseType(ItemEntity item) {
-        itemManager.updateItemExpenseType(item);
+        itemManager.appendExpenseType(item);
     }
 }

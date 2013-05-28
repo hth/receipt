@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.ItemEntity;
 import com.tholix.repository.ItemManager;
 import com.tholix.utils.Maths;
@@ -27,11 +29,10 @@ public class ItemAnalyticService {
     /**
      * Calculates average price paid for the similar item by others
      *
-     * @param itemName
+     * @param items
      * @return
      */
-    public BigDecimal calculateAveragePrice(String itemName) {
-        List<ItemEntity> items = findAllByName(itemName);
+    public BigDecimal calculateAveragePrice(List<ItemEntity> items) {
         BigDecimal averagePrice = BigDecimal.ZERO;
         for(ItemEntity item : items) {
             averagePrice = Maths.add(averagePrice, item.getPrice());
@@ -46,7 +47,7 @@ public class ItemAnalyticService {
      * @param itemName
      * @return
      */
-    public List<ItemEntity> findAllByName(String itemName) {
-        return itemManager.getAllObjectWithName(itemName);
+    public List<ItemEntity> findAllByNameLimitByDays(String itemName, DateTime untilThisDay) {
+        return itemManager.findAllByNameLimitByDays(itemName, untilThisDay);
     }
 }

@@ -3,6 +3,7 @@
  */
 package com.tholix.web.validator;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.validation.Validator;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
+import com.tholix.utils.Maths;
 import com.tholix.web.form.ReceiptOCRForm;
 
 /**
@@ -46,11 +48,11 @@ public class ReceiptOCRFormValidator implements Validator {
 		}
 
 		int count = 0;
-        Double subTotal = 0.00;
+        BigDecimal subTotal = BigDecimal.ZERO;
 		for(ItemEntityOCR item : receiptOCRForm.getItems()) {
 			if(StringUtils.isNotEmpty(item.getName()) && StringUtils.isNotEmpty(item.getPrice())) {
 				 try {
-					subTotal = subTotal + Formatter.getCurrencyFormatted(item.getPrice());
+					subTotal = Maths.add(subTotal, Formatter.getCurrencyFormatted(item.getPrice()));
 				} catch (ParseException e) {
 					errors.rejectValue("items["+count+"].price", "field.currency", new Object[] { item.getPrice() }, "Unsupported currency format");
 				}
@@ -60,7 +62,7 @@ public class ReceiptOCRFormValidator implements Validator {
 
         if(StringUtils.isNotEmpty(receiptOCRForm.getReceipt().getSubTotal())) {
             try {
-                Double submittedSubTotal = Formatter.getCurrencyFormatted(receiptOCRForm.getReceipt().getSubTotal());
+                BigDecimal submittedSubTotal = Formatter.getCurrencyFormatted(receiptOCRForm.getReceipt().getSubTotal());
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
                     errors.rejectValue("receipt.subTotal", "field.currency.match.first", new Object[] { receiptOCRForm.getReceipt().getSubTotal() }, "Summation not adding up");

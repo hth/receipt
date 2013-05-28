@@ -23,12 +23,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
+import org.joda.time.DateTime;
 
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.service.ItemService;
 
 /**
  * @author hitender
@@ -77,7 +77,7 @@ public class ItemManagerImpl implements ItemManager {
                 // which can cause an issue during query. As with just id we will have to query twice. This
                 // saves us second query but forces us to do double update
                 if(object.getExpenseType() != null && object.getExpenseType().getId() != null) {
-                    updateItemExpenseType(object);
+                    appendExpenseType(object);
                 }
 			}
 		} catch (DataIntegrityViolationException e) {
@@ -99,8 +99,16 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-	public List<ItemEntity> getAllObjectWithName(String name) {
-		return mongoTemplate.find(Query.query(Criteria.where("name").is(name)), ItemEntity.class, TABLE);
+	public List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay) {
+        // Can choose Item create date but if like to be more accurate then find receipts for these items and filter receipts by date provided.
+        // Not sure how much benefit would it be other than more data crunching.
+
+        Criteria criteriaA = Criteria.where("name").is(name);
+        Criteria criteriaB = Criteria.where("created").gte(untilThisDay.toDate());
+        Sort sort = new Sort(Direction.DESC, "created");
+        Query query = Query.query(criteriaA).addCriteria(criteriaB).with(sort);
+
+		return mongoTemplate.find(query, ItemEntity.class, TABLE);
 	}
 
 	@Override
@@ -169,7 +177,7 @@ public class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public void updateItemExpenseType(ItemEntity item) {
+    public void appendExpenseType(ItemEntity item) {
         Query query = Query.query(Criteria.where("id").is(item.getId()));
         Update update = Update.update("expenseType", item.getExpenseType());
         mongoTemplate.updateFirst(query, update, ItemEntity.class);

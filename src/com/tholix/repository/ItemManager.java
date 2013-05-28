@@ -3,13 +3,12 @@
  */
 package com.tholix.repository;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.WriteResult;
+import org.joda.time.DateTime;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.ExpenseTypeEntity;
@@ -30,7 +29,14 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
 	List<ItemEntity> getWhereReceipt(ReceiptEntity receipt);
 
-	List<ItemEntity> getAllObjectWithName(String name);
+    /**
+     * Gets items with specified name until the specified date
+     *
+     * @param name
+     * @param untilThisDay
+     * @return
+     */
+	List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay);
 
 	void deleteWhereReceipt(ReceiptEntity receipt);
 
@@ -43,7 +49,11 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      */
     List<ItemEntity> findItems(String name, String bizName);
 
-    void updateItemExpenseType(ItemEntity item);
+    /**
+     * Only way to append a expense type object to Item otherwise it only appends expense type Id
+     * @param item
+     */
+    void appendExpenseType(ItemEntity item);
 
     /**
      * Count how many Items are using a particular Expense Type

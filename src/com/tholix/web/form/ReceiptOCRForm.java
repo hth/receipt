@@ -71,7 +71,8 @@ public class ReceiptOCRForm {
 	public ReceiptEntity getReceiptEntity() throws NumberFormatException, Exception {
         //TODO this code has to be redone as it just difficult to understand after a while
 		ReceiptEntity receipt = ReceiptEntity.newInstance(DateUtil.getDateFromString(receiptOCR.getReceiptDate()),
-										Formatter.getCurrencyFormatted(receiptOCR.getTotal()), Formatter.getCurrencyFormatted(receiptOCR.getTax()),
+										Formatter.getCurrencyFormatted(receiptOCR.getTotal()).doubleValue(),
+                                        Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue(),
 										receiptOCR.getDescription(), ReceiptStatusEnum.TURK_PROCESSED, receiptOCR.getReceiptBlobId(),
 										receiptOCR.getUserProfileId());
 		receipt.setCreated(receiptOCR.getCreated());
@@ -84,6 +85,7 @@ public class ReceiptOCRForm {
         if(StringUtils.isNotEmpty(receiptOCR.getReceiptId())) {
             receipt.setId(receiptOCR.getReceiptId());
         }
+
 		return receipt;
 	}
 
@@ -98,7 +100,10 @@ public class ReceiptOCRForm {
 
 		for(ItemEntityOCR itemOCR : items) {
 			if(itemOCR.getName().length() != 0) {
-				ItemEntity item = ItemEntity.newInstance(itemOCR.getName(), Formatter.getCurrencyFormatted(itemOCR.getPrice()), itemOCR.getTaxed(), itemOCR.getSequence(), receipt, receipt.getUserProfileId());
+				ItemEntity item = ItemEntity.newInstance(
+                        itemOCR.getName(), Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue(),
+                        itemOCR.getTaxed(), itemOCR.getSequence(), receipt, receipt.getUserProfileId());
+
 				item.setExpenseType(itemOCR.getExpenseType());
                 item.setCreated(itemOCR.getCreated());
 				item.setUpdated();

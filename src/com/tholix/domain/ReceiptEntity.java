@@ -215,17 +215,14 @@ public class ReceiptEntity extends BaseEntity {
     /**
      * Round at fourth decimal
      *
-     * @return
+     * @return tax value that needs to be multiplied with price of the item to find the actual price paid for the item
      */
     public BigDecimal getTaxInPercentage() {
-        BigDecimal  tax = Maths.subtract(getTotal(), getSubTotal());
-                    tax = Maths.divide(tax, getSubTotal());
-                    tax = Maths.add(tax, BigDecimal.ONE);
-        return tax;
+        return Maths.divide(getTotal(), getSubTotal(), 4);
     }
 
     public Double getSubTotal() {
-        return getTotal() - getTax();
+        return Maths.subtract(getTotal(), getTax()).doubleValue();
     }
 
     public void setTax(Double tax) {

@@ -62,6 +62,7 @@ public final class Maths {
      */
     public static BigDecimal subtract(BigDecimal from, BigDecimal value) {
         BigDecimal sub = from.subtract(value);
+        sub = sub.setScale(2, BigDecimal.ROUND_HALF_UP);
         log.debug("subtract: " + from + " - " + value + " = " + sub);
         return sub;
     }
@@ -77,7 +78,8 @@ public final class Maths {
      * @return
      */
     public static BigDecimal divide(BigDecimal divide, BigDecimal by) {
-        BigDecimal division = divide.divide(by, 2, BigDecimal.ROUND_HALF_DOWN).stripTrailingZeros();
+        BigDecimal division = divide.divide(by, 2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
+        division = division.setScale(2, BigDecimal.ROUND_HALF_UP);
         log.debug("divide: " + divide + " / " + by + " = " + division);
         return division;
     }
@@ -91,6 +93,22 @@ public final class Maths {
     }
 
     /**
+     * Should be used in percentage calculation with default scale of 4 everywhere.
+     * Can be made private for receipt entity.
+     *
+     * @param divide
+     * @param by
+     * @param scale
+     * @return
+     */
+    public static BigDecimal divide(Double divide, Double by, int scale) {
+        BigDecimal total = new BigDecimal(divide.toString());
+        BigDecimal subTotal = new BigDecimal(by.toString());
+        BigDecimal outcome = total.divide(subTotal, scale, BigDecimal.ROUND_HALF_UP);
+        return outcome;
+    }
+
+    /**
      * Plain multiplication of two numbers
      *
      * @param value
@@ -99,7 +117,7 @@ public final class Maths {
      */
     public static BigDecimal multiply(BigDecimal value, BigDecimal withThis) {
         BigDecimal multiplication = value.multiply(withThis);
-        multiplication = multiplication.setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        multiplication = multiplication.setScale(2, BigDecimal.ROUND_HALF_UP);
         log.debug("multiply: " + value + " * " + withThis + " = " + multiplication);
         return multiplication;
     }

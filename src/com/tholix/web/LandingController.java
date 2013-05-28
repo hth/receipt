@@ -75,14 +75,17 @@ public class LandingController extends BaseController {
 		modelAndView.addObject("receipts", receipts);
 
         /** Receipt grouped by date */
+        log.info("Calculating calendar grouped expense");
         Map<Date, BigDecimal> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
         modelAndView.addObject("receiptGrouped", receiptGrouped);
 
         /** Used for charting in Expense tab */
+        log.info("Calculating Pie chart - item expense");
         Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpense(userSession.getUserProfileId());
         modelAndView.addObject("itemExpenses", itemExpenses);
 
         /** Used for donut chart of each receipts with respect to expense types */
+        log.info("Calculating Donut chart - receipt expense");
         populateReceiptExpenseDonutChartDetails(modelAndView, receipts);
 
         landingService.computeTotalExpense(receipts, modelAndView);
@@ -99,15 +102,15 @@ public class LandingController extends BaseController {
      */
     private void populateReceiptExpenseDonutChartDetails(ModelAndView modelAndView, List<ReceiptEntity> receipts) {
         List<LandingDonutChart> bizByExpenseTypes = new ArrayList<>();
-        StringBuilder bizNames = new StringBuilder();
-        Map<String, Map<String, BigDecimal>> bizByExpenseType = landingService.allBusinessByExpenseType(receipts);
-        for(String key : bizByExpenseType.keySet()) {
-            bizNames.append("'").append(key).append("',");
+        StringBuilder bizNames_sb = new StringBuilder();
+        Map<String, Map<String, BigDecimal>> bizByExpenseTypeMap = landingService.allBusinessByExpenseType(receipts);
+        for(String bizName : bizByExpenseTypeMap.keySet()) {
+            bizNames_sb.append("'").append(bizName).append("',");
 
-            LandingDonutChart landingDonutChart = LandingDonutChart.newInstance(key);
+            LandingDonutChart landingDonutChart = LandingDonutChart.newInstance(bizName);
 
             BigDecimal sum = BigDecimal.ZERO;
-            Map<String, BigDecimal> map = bizByExpenseType.get(key);
+            Map<String, BigDecimal> map = bizByExpenseTypeMap.get(bizName);
             for(BigDecimal value : map.values()) {
                 sum = Maths.add(sum, value);
             }
@@ -124,7 +127,8 @@ public class LandingController extends BaseController {
 
             bizByExpenseTypes.add(landingDonutChart);
         }
-        modelAndView.addObject("bizNames", bizNames.toString().substring(0, bizNames.toString().length() - 1));
+
+        modelAndView.addObject("bizNames", bizNames_sb.toString().substring(0, bizNames_sb.toString().length() > 0 ? (bizNames_sb.toString().length() - 1) : 0));
         modelAndView.addObject("bizByExpenseTypes", bizByExpenseTypes);
     }
 

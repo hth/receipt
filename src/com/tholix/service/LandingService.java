@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,8 +107,9 @@ public class LandingService {
                     }
                 }
 
-                if(maps.containsKey(bizNameEntity.getName())) {
-                    Map<String, BigDecimal> mapData = maps.get(bizNameEntity.getName());
+                String bizName = StringEscapeUtils.escapeEcmaScript(bizNameEntity.getName());
+                if(maps.containsKey(bizName)) {
+                    Map<String, BigDecimal> mapData = maps.get(bizName);
                     for(String key : itemMaps.keySet()) {
                         if(mapData.containsKey(key)) {
                             BigDecimal value = mapData.get(key);
@@ -117,9 +119,9 @@ public class LandingService {
                             mapData.put(key, itemMaps.get(key));
                         }
                     }
-                    maps.put(bizNameEntity.getName(), mapData);
+                    maps.put(bizName, mapData);
                 } else {
-                    maps.put(bizNameEntity.getName(), itemMaps);
+                    maps.put(bizName, itemMaps);
                 }
             }
         }

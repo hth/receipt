@@ -36,6 +36,8 @@ public class ItemAnalyticController {
 	private static final Logger log = Logger.getLogger(ItemAnalyticController.class);
 	private static final String nextPage = "/itemanalytic";
 
+    private static final int NINETY_DAYS = 90;
+
 	@Autowired private ItemAnalyticService itemAnalyticService;
     @Autowired private ExpensesService expensesService;
 
@@ -44,8 +46,10 @@ public class ItemAnalyticController {
         DateTime time = DateUtil.now();
 
 		ItemEntity item = itemAnalyticService.findItemById(id);
-        BigDecimal averagePrice = itemAnalyticService.calculateAveragePrice(item.getName());
-        List<ItemEntity> items = itemAnalyticService.findAllByName(item.getName());
+
+        DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
+        List<ItemEntity> items = itemAnalyticService.findAllByNameLimitByDays(item.getName(), untilThisDay);
+        BigDecimal averagePrice = itemAnalyticService.calculateAveragePrice(items);
 
         itemAnalyticForm.setItem(item);
         itemAnalyticForm.setAveragePrice(averagePrice);

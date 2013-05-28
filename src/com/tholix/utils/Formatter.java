@@ -3,6 +3,7 @@
  */
 package com.tholix.utils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -22,13 +23,13 @@ public final class Formatter {
 
 	public static NumberFormat defaultFormat = NumberFormat.getCurrencyInstance();
 
-	public static Double getCurrencyFormatted(String value) throws ParseException {
-		Double d;
+	public static BigDecimal getCurrencyFormatted(String value) throws ParseException {
+		BigDecimal d;
 		if(value.startsWith("$")) {
 			Number number = defaultFormat.parse(value);
-			d = number.doubleValue();
+			d = new BigDecimal(number.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP);
 		} else {
-			d = Double.valueOf(value);
+			d = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP);
 		}
 
 		return d;

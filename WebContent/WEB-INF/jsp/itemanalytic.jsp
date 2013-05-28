@@ -35,9 +35,9 @@
 	<table style="width: 550px" class="etable">
 		<tbody>
 			<tr>
-				<th>Name</th>
+				<th>Item</th>
 				<th>Price</th>
-				<th>Average Price Paid By Other(s)</th>
+				<th>Average Price in last 90 days</th>
 			</tr>
 		</tbody>
 		<tr>
@@ -48,7 +48,7 @@
 	    		<spring:eval expression="itemAnalyticForm.item.price" />
 			</td>
 			<td align="right">
-				<spring:eval expression="itemAnalyticForm.averagePrice"/>
+                <fmt:formatNumber value="${itemAnalyticForm.averagePrice}" type="currency" currencySymbol="$" />
 			</td>
 		</tr>
 	</table>
@@ -61,7 +61,7 @@
                 <th></th>
                 <th>Business</th>
                 <th>Transaction Date</th>
-                <th>Name</th>
+                <th>Item</th>
                 <th>Price</th>
                 <th>Tax</th>
                 <th>Expense Type</th>
@@ -75,7 +75,7 @@
                         </td>
                         <td>
                             <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
-                                ${item.receipt.bizName.name}
+                            ${item.receipt.bizName.name}
                             </a>
                         </td>
                         <td>
@@ -83,7 +83,7 @@
                         </td>
                         <td>
                             <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                                ${item.name}
+                            ${item.name}
                             </a>
                         </td>
                         <td style="text-align: right;">
