@@ -1,13 +1,5 @@
 package com.tholix.service;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
@@ -16,6 +8,13 @@ import com.tholix.repository.ExpenseTypeManager;
 import com.tholix.repository.ItemManager;
 import com.tholix.repository.ReceiptManager;
 import com.tholix.utils.Maths;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -121,7 +120,7 @@ public class ItemService {
      */
     public BigDecimal calculateTotalCost(BigDecimal sum, ItemEntity item, ReceiptEntity receiptEntity) {
         if(item.getTaxed() == TaxEnum.TAXED) {
-            sum = Maths.add(sum, Maths.multiply(receiptEntity.getTaxInPercentage(), item.getPrice()));
+            sum = Maths.add(sum, Maths.multiply(receiptEntity.calculateItemPriceWithTax(), item.getPrice()));
         } else {
             sum = Maths.add(sum, item.getPrice());
         }

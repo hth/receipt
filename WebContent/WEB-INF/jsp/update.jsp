@@ -246,14 +246,14 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" style="text-align: right;">
-                                        <form:input path="receipt.tax" size="5"/>
+                                        <b><label id="expectedTax" name="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp; <form:input path="receipt.tax" id="tax" size="5"/>
                                     </td>
                                     <td colspan="1">
-                                        <form:input path="receipt.subTotal" size="16"/>
+                                        <form:input path="receipt.subTotal" id="subTotal" size="16"/>
                                         <form:errors path="receipt.subTotal" cssClass="error" />
                                     </td>
                                     <td colspan="1">
-                                        <form:input path="receipt.total" size="16"/>
+                                        <form:input path="receipt.total" id="total" size="16"/>
                                         <form:errors path="receipt.total" cssClass="error" />
                                     </td>
                                 </tr>
@@ -278,5 +278,24 @@
 			</td>
 		</tr>
 	</table>
+
+    <script>
+        $('#subTotal').change(function() {
+            var subTotalValue = $('#subTotal').val();
+            var totalValue = $('#total').val();
+
+            if(subTotalValue != '' && subTotalValue > 0 && totalValue != '' && totalValue > 0) {
+                $('#expectedTax').text('( Calculated Tax : ' + (totalValue/subTotalValue -1).toFixed(4) + ' % )');
+            }
+        });
+        $('#total').change(function() {
+            var subTotalValue = $('#subTotal').val();
+            var totalValue = $('#total').val();
+
+            if(subTotalValue != '' && subTotalValue > 0 && totalValue != '' && totalValue > 0) {
+                $('#expectedTax').text('( Calculated Tax : ' + (totalValue/subTotalValue -1).toFixed(4) + ' % )');
+            }
+        });
+    </script>
 </body>
 </html>

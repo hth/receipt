@@ -1,12 +1,12 @@
 package com.tholix.utils;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * User: hitender
@@ -62,7 +62,8 @@ public final class Maths {
      */
     public static BigDecimal subtract(BigDecimal from, BigDecimal value) {
         BigDecimal sub = from.subtract(value);
-        sub = sub.setScale(2, BigDecimal.ROUND_HALF_UP);
+        //This was messing the tax percentage calculation by rounding to 2. Why round subtraction?
+        //sub = sub.setScale(2, BigDecimal.ROUND_HALF_UP);
         log.debug("subtract: " + from + " - " + value + " = " + sub);
         return sub;
     }
@@ -78,10 +79,20 @@ public final class Maths {
      * @return
      */
     public static BigDecimal divide(BigDecimal divide, BigDecimal by) {
-        BigDecimal division = divide.divide(by, 2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
-        division = division.setScale(2, BigDecimal.ROUND_HALF_UP);
-        log.debug("divide: " + divide + " / " + by + " = " + division);
-        return division;
+          // This should not happen so commenting if condition and instead catching an exception
+//        if(divide == BigDecimal.ZERO || by == BigDecimal.ZERO) {
+//            return BigDecimal.ZERO;
+//        }
+        try {
+            BigDecimal division = divide.divide(by, 2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
+            division = division.setScale(2, BigDecimal.ROUND_HALF_UP);
+            log.debug("divide: " + divide + " / " + by + " = " + division);
+            return division;
+        } catch (ArithmeticException exception) {
+            // This should never occur. If this occur the problem is likely to be in code than receipt data.
+            log.error("Divide: " + divide + ", by: " + by + ". Message: " + exception.getLocalizedMessage());
+            return BigDecimal.ZERO;
+        }
     }
 
     public static BigDecimal divide(BigDecimal divide, Double by) {
@@ -101,10 +112,9 @@ public final class Maths {
      * @param scale
      * @return
      */
-    public static BigDecimal divide(Double divide, Double by, int scale) {
+    public static BigDecimal divide(Double divide, BigDecimal by, int scale) {
         BigDecimal total = new BigDecimal(divide.toString());
-        BigDecimal subTotal = new BigDecimal(by.toString());
-        BigDecimal outcome = total.divide(subTotal, scale, BigDecimal.ROUND_HALF_UP);
+        BigDecimal outcome = total.divide(by, scale, BigDecimal.ROUND_HALF_UP);
         return outcome;
     }
 

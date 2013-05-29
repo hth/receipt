@@ -133,6 +133,9 @@
                         </tr>
                         <tr>
                             <td style="text-align: right;">
+                                <label style="font-size: 11px">
+                                    { Calculated Tax : <b><spring:eval expression="receiptForm.receipt.calculateTax()" /> %</b> }
+                                </label>&nbsp;&nbsp;&nbsp;
                                 <span>Tax &nbsp;</span>
                                 <b><spring:eval expression="receiptForm.receipt.tax" /></b>
                                 <span>&nbsp;&nbsp;Total</span>

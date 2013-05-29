@@ -3,13 +3,9 @@
  */
 package com.tholix.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.utils.Maths;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -20,10 +16,11 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import org.joda.time.DateTime;
-
-import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.utils.Maths;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author hitender
@@ -58,9 +55,6 @@ public class ReceiptEntity extends BaseEntity {
 
 	@NotNull
 	private int day;
-
-    @Transient
-    private Double subTotal = 0.00;
 
 	@NotNull
 	@NumberFormat(style = Style.CURRENCY)
@@ -212,22 +206,31 @@ public class ReceiptEntity extends BaseEntity {
 		return tax;
 	}
 
+    public void setTax(Double tax) {
+		this.tax = tax;
+	}
+
     /**
      * Round at fourth decimal
      *
      * @return tax value that needs to be multiplied with price of the item to find the actual price paid for the item
      */
-    public BigDecimal getTaxInPercentage() {
+    @Transient
+    public BigDecimal calculateItemPriceWithTax() {
         return Maths.divide(getTotal(), getSubTotal(), 4);
     }
 
-    public Double getSubTotal() {
-        return Maths.subtract(getTotal(), getTax()).doubleValue();
+    @Transient
+    public BigDecimal getSubTotal() {
+        return Maths.subtract(getTotal(), getTax());
     }
 
-    public void setTax(Double tax) {
-		this.tax = tax;
-	}
+    @Transient
+    public BigDecimal calculateTax() {
+        BigDecimal taxPercent = Maths.subtract(calculateItemPriceWithTax(), BigDecimal.ONE);
+        return taxPercent;
+
+    }
 
 	public String getUserProfileId() {
 		return userProfileId;
