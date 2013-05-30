@@ -3,11 +3,10 @@
  */
 package com.tholix.domain;
 
-import java.io.Serializable;
-
+import com.tholix.domain.types.UserLevelEnum;
 import org.apache.log4j.Logger;
 
-import com.tholix.domain.types.UserLevelEnum;
+import java.io.Serializable;
 
 /**
  * @author hitender
@@ -40,18 +39,10 @@ public class UserSession implements Serializable {
 	}
 
 	public String getEmailId() {
-        if(emailId == null) {
-            log.error("Email Id is NUll");
-            return "";
-        }
 		return emailId;
 	}
 
 	public String getUserProfileId() {
-        if(userProfileId == null) {
-            log.error("User profile Id is NULL");
-            return "";
-        }
 		return userProfileId;
 	}
 
@@ -65,12 +56,5 @@ public class UserSession implements Serializable {
 
 	public void setPendingCount(long pendingCount) {
 		this.pendingCount = pendingCount;
-	}
-
-	public boolean isEmpty() {
-		if(emailId == null || userProfileId == null) {
-			return true;
-		}
-		return false;
 	}
 }

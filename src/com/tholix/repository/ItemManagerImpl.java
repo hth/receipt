@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -73,13 +74,6 @@ public class ItemManagerImpl implements ItemManager {
 			//mongoTemplate.insert(objects, TABLE);
 			for(ItemEntity object : objects) {
 				save(object);
-
-                // This has to be done to make the reference object available otherwise only id is available
-                // which can cause an issue during query. As with just id we will have to query twice. This
-                // saves us second query but forces us to do double update
-                if(object.getExpenseType() != null && object.getExpenseType().getId() != null) {
-                    appendExpenseType(object);
-                }
 			}
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
@@ -179,10 +173,15 @@ public class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public void appendExpenseType(ItemEntity item) {
-        Query query = Query.query(Criteria.where("id").is(item.getId()));
-        Update update = Update.update("expenseType", item.getExpenseType());
-        mongoTemplate.updateFirst(query, update, ItemEntity.class);
+    public void updateItemWithExpenseType(ItemEntity item) throws Exception {
+        ItemEntity foundItem = findOne(item.getId());
+        if(foundItem != null) {
+            foundItem.setExpenseType(item.getExpenseType());
+            save(foundItem);
+        } else {
+            log.error("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
+            throw new Exception("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
+        }
     }
 
     @Override
@@ -191,14 +190,17 @@ public class ItemManagerImpl implements ItemManager {
         return mongoTemplate.count(query, ItemEntity.class);
     }
 
+    /**
+     * Example to fetch Entity based on DBRef
+     *      db.ITEM.find( {'expenseType.$id':  ObjectId('51a6d366036487b899cc31fc')} )
+     *
+     * @param expenseType
+     * @return
+     */
     @Override
-    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseTypeEntity) {
-        return getItemEntitiesForSpecificExpenseType(expenseTypeEntity.getId());
-    }
-
-    @Override
-    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(String expenseTypeId) {
-        return mongoTemplate.find(Query.query(Criteria.where("expenseType.id").is(expenseTypeId)), ItemEntity.class);
+    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseType) {
+        Query query = Query.query(Criteria.where("expenseType.$id").is(new ObjectId(expenseType.getId())));
+        return mongoTemplate.find(query, ItemEntity.class);
     }
 
     @Override

@@ -160,10 +160,11 @@ public class ReceiptService {
     }
 
     /**
-     * //TODO why append. better to write query for look up
+     * Updates the ItemEntity with changed ExpenseType
+     *
      * @param item
      */
-    public void updateItemExpenseType(ItemEntity item) {
-        itemManager.appendExpenseType(item);
+    public void updateItemWithExpenseType(ItemEntity item) throws Exception {
+        itemManager.updateItemWithExpenseType(item);
     }
 }

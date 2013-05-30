@@ -50,10 +50,11 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     List<ItemEntity> findItems(String name, String bizName);
 
     /**
-     * Only way to append a expense type object to Item otherwise it only appends expense type Id
+     * Get the Item from DB and then update with changed ExpenseType before persisting Item
+     *
      * @param item
      */
-    void appendExpenseType(ItemEntity item);
+    void updateItemWithExpenseType(ItemEntity item) throws Exception;
 
     /**
      * Count how many Items are using a particular Expense Type
@@ -65,9 +66,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
     long collectionSize();
 
-    List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseTypeEntity);
-
-    List<ItemEntity> getItemEntitiesForSpecificExpenseType(String expenseTypeId);
+    List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseType);
 
     List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId);
 }

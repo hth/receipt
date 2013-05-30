@@ -110,7 +110,14 @@ public class ReceiptController extends BaseController {
         for(ItemEntity item : receiptForm.getItems()) {
             ExpenseTypeEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseType().getId());
             item.setExpenseType(expenseType);
-            receiptService.updateItemExpenseType(item);
+            try {
+                receiptService.updateItemWithExpenseType(item);
+            } catch (Exception e) {
+                log.error("Error updating ExpenseType '" + item.getExpenseType().getId() + "', " +
+                        "for ItemEntity '" + item.getId() + "'. Error Message: " + e.getLocalizedMessage());
+
+                //TODO send error message back saying update unsuccessful.
+            }
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
