@@ -3,12 +3,9 @@
  */
 package com.tholix.repository;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapreduce.GroupBy;
+import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -61,29 +60,18 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
-    public Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId) {
-//		String map = "function() {"
-//					  + " date = Date.UTC(this.receiptDate.getFullYear(), this.receiptDate.getMonth(), this.receiptDate.getDate());"
-//					  + " emit({date: date}, {total: 0});"
-//					  + "}"
-//					  ;
-//
-//		String reduce = "function(obj, result) { result.total += obj.total; } return {total: result.total};";
-//
-//		GroupBy groupBy = GroupBy.key("{'day' : 1, 'month' : 1}").initialDocument("{ total: 0 }").reduceFunction("function(obj, result) { result.total += obj.total; }");
-//		GroupByResults<ReceiptEntity> results = mongoTemplate.group(Criteria.where("userProfileId").is(userProfileId), TABLE, groupBy, ReceiptEntity.class);
+    public Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId) {
+        GroupBy groupBy = GroupBy.key("day", "month", "year")
+                .initialDocument("{ total: 0 }")
+                .reduceFunction("function(obj, result) { " +
+                        "  result.day = obj.day; " +
+                        "  result.month = obj.month; " +
+                        "  result.year = obj.year; " +
+                        "  result.total += obj.total; " +
+                        "}");
 
-//		MapReduceResults<ReceiptGrouped> results = mongoTemplate.mapReduce(Query.query(Criteria.where("userProfileId").is(userProfileId)), TABLE, map, reduce, ReceiptGrouped.class);
-
-		List<ReceiptEntity> receipts = getAllObjectsForUser(userProfileId);
-
-		Map<Date, BigDecimal> receiptGroupedMap = new HashMap<>();
-		for(ReceiptEntity receipt : receipts) {
-			ReceiptGrouped.getGroupedReceiptTotal(receipt, receiptGroupedMap);
-		}
-
-		//return Lists.<ReceiptGrouped>newArrayList(results);
-		return receiptGroupedMap;
+        GroupByResults<ReceiptGrouped> results = mongoTemplate.group(Criteria.where("userProfileId").is(userProfileId), TABLE, groupBy, ReceiptGrouped.class);
+        return results.iterator();
 	}
 
     //http://stackoverflow.com/questions/12949870/spring-mongotemplate-find-special-column

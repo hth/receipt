@@ -3,15 +3,14 @@
  */
 package com.tholix.repository;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.value.ReceiptGrouped;
 
 /**
  * @author hitender
@@ -34,8 +33,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      */
     List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String userProfileId);
 
-	//public List<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId);
-	Map<Date, BigDecimal> getAllObjectsGroupedByDate(String userProfileId);
+    Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId);
 
     List<String> findTitles(String title);
 

@@ -5,7 +5,7 @@ package com.tholix.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +28,7 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.service.FileDBService;
 import com.tholix.service.LandingService;
 import com.tholix.utils.DateUtil;
@@ -76,7 +77,7 @@ public class LandingController extends BaseController {
 
         /** Receipt grouped by date */
         log.info("Calculating calendar grouped expense");
-        Map<Date, BigDecimal> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
+        Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
         modelAndView.addObject("receiptGrouped", receiptGrouped);
 
         /** Used for charting in Expense tab */

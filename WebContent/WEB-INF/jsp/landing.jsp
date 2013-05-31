@@ -1,7 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="java.math.BigDecimal, java.util.Date" %>
-<%@ page import="java.util.Map" %>
+<%@ page import="java.util.Iterator, com.tholix.domain.value.ReceiptGrouped" %>
 
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html>
@@ -202,16 +201,15 @@
 								},
 								editable : false,
 								events : [
-								<% @SuppressWarnings("unchecked") Map<Date, BigDecimal> receiptGrouped = (Map<Date, BigDecimal>) request.getAttribute("receiptGrouped"); %>
-								<% if(receiptGrouped != null && receiptGrouped.size() > 0) { %>
-								<% for(Date date : receiptGrouped.keySet()) { %>
+								<% Iterator<ReceiptGrouped> receiptGroupedIterator = (Iterator<ReceiptGrouped>) request.getAttribute("receiptGrouped"); %>
+								<% while(receiptGroupedIterator.hasNext()) { %>
 								{
-									title : '<%= receiptGrouped.get(date) %>',
-									start : '<%= date %>',
-									end   : '<%= date %>',
-									url   : '${pageContext.request.contextPath}/day.htm?date=<%= date.getTime() %>',
+                                    <% ReceiptGrouped receiptGrouped = receiptGroupedIterator.next(); %>
+									title : '<%= receiptGrouped.getTotal() %>',
+									start : '<%= receiptGrouped.getDate() %>',
+									end   : '<%= receiptGrouped.getDate() %>',
+									url   : '${pageContext.request.contextPath}/day.htm?date=<%= receiptGrouped.getDate().getTime() %>',
 								} ,
-								<% } %>
 								<% } %>
 								]
 							});
@@ -361,7 +359,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Receipt By Expense Type, ?Month?, ?2013?'
+                    text: 'Business By Expense, ?Month?, ?2013?'
                 },
                 yAxis: {
                     title: {

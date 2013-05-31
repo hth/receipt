@@ -1,8 +1,8 @@
 package com.tholix.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +22,7 @@ import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.repository.BizNameManager;
 import com.tholix.repository.BizStoreManager;
 import com.tholix.repository.ItemManager;
@@ -62,7 +63,7 @@ public class LandingService {
         return receiptManager.getAllObjectsForUser(profileId);
     }
 
-    public Map<Date, BigDecimal> getReceiptGroupedByDate(String profileId) {
+    public Iterator<ReceiptGrouped> getReceiptGroupedByDate(String profileId) {
         return receiptManager.getAllObjectsGroupedByDate(profileId);
     }
 
