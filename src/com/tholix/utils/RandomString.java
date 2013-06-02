@@ -12,7 +12,7 @@ import java.util.Random;
  *
  * You can tweak the "symbols" if you want to use more characters.
  */
-public class RandomString {
+public final class RandomString {
 
     private static int CHAR_SIZE = 32;
     private static final char[] symbols = new char[36];

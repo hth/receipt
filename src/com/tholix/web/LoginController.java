@@ -5,6 +5,8 @@ package com.tholix.web;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.log4j.Logger;
 
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.sf.uadetector.UserAgent;
+import net.sf.uadetector.UserAgentStringParser;
+import net.sf.uadetector.service.UADetectorServiceFactory;
+
 import org.joda.time.DateTime;
 
 import com.tholix.domain.UserAuthenticationEntity;
@@ -42,6 +47,9 @@ public class LoginController {
     private static final Logger log = Logger.getLogger(LoginController.class);
     public static final String LOGIN_PAGE = "login";
 
+    //private UserAgentStringParser parser;
+    private CachedUserAgentStringParser parser;
+
     @Autowired private UserLoginValidator userLoginValidator;
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
@@ -60,6 +68,22 @@ public class LoginController {
 		return UserLoginForm.newInstance();
 	}
 
+    @PostConstruct
+    public void init() {
+        log.info("Init of login controller");
+        // TODO check if CachedUserAgentStringParser has to be singleton and thread safe?
+        // Get an UserAgentStringParser and analyze the requesting client
+
+        //parser = UADetectorServiceFactory.getResourceModuleParser();
+        parser = CachedUserAgentStringParser.newInstance();
+    }
+
+    @PreDestroy
+    public void cleanUp() {
+        log.info("Cleanup of login controller");
+        parser = null;
+    }
+
     /**
      * Loads initial form
      *
@@ -70,10 +94,6 @@ public class LoginController {
         DateTime time = DateUtil.now();
 		log.info("LoginController login");
 
-        //TODO check if CachedUserAgentStringParser has to be singleton and thread safe?
-        // Get an UserAgentStringParser and analyze the requesting client
-        //UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser()
-        CachedUserAgentStringParser parser = CachedUserAgentStringParser.newInstance();
         UserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();
         if(cookies != null && cookies.length > 0) {
