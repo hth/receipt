@@ -9,6 +9,8 @@
 	<title><fmt:message key="title" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />

@@ -6,16 +6,16 @@
 <html>
 <head>
     <title><fmt:message key="receipt.admin.title" /></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 
-    <link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.css' />
-    <link rel='stylesheet' type='text/css' href='../jquery/fullcalendar/fullcalendar.print.css' media='print' />
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+
     <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
     <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
     <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type='text/javascript' src="../jquery/fullcalendar/fullcalendar.min.js"></script>
 
 </head>
 <body>
@@ -35,11 +35,13 @@
         </div>
     </div>
 
-    <h2>Pending Receipt(s)</h2>
+    <p>&nbsp;</p>
+
+    <h2 class="demoHeaders">Pending Receipt(s)</h2>
     <c:if test="${pending.size() > 0}">
-        <table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+        <table style="width: 600px" class="etable">
             <tbody>
-            <tr style="background-color:orange;color:white;">
+            <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
                 <th style="padding:3px;">Description</th>
@@ -75,11 +77,11 @@
         </table>
     </c:if>
 
-    <h2>Queued Receipt(s)</h2>
+    <h2 class="demoHeaders">Queued Receipt(s)</h2>
     <c:if test="${queue.size() > 0}">
-        <table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+        <table style="width: 600px" class="etable">
             <tbody>
-            <tr style="background-color:orange;color:white;">
+            <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
                 <th style="padding:3px;">Description</th>
@@ -115,11 +117,11 @@
         </table>
     </c:if>
 
-    <h2>Re-Check Pending Receipt(s)</h2>
+    <h2 class="demoHeaders">Re-Check Pending Receipt(s)</h2>
     <c:if test="${recheckPending.size() > 0}">
-        <table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+        <table style="width: 600px" class="etable">
             <tbody>
-            <tr style="background-color:orange;color:white;">
+            <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
                 <th style="padding:3px;">Description</th>
@@ -155,11 +157,11 @@
         </table>
     </c:if>
 
-    <h2>Re-Check Receipt(s)</h2>
+    <h2 class="demoHeaders">Re-Check Receipt(s)</h2>
     <c:if test="${recheck.size() > 0}">
-        <table border="1" style="background-color:#c5c021;border:1px dotted black;width:450px;border-collapse:collapse;">
+        <table style="width: 600px" class="etable">
             <tbody>
-            <tr style="background-color:orange;color:white;">
+            <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
                 <th style="padding:3px;">Description</th>

@@ -6,7 +6,10 @@
 <html>
 <head>
 	<title><fmt:message key="receipt.admin.title" /></title>
+
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
 
 	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>

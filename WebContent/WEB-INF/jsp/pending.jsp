@@ -6,16 +6,17 @@
 <html>
 <head>
 	<title><fmt:message key="receipt.title" /></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
+	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
 
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
+
 </head>
 <body>
 <div class="wrapper">
@@ -34,7 +35,7 @@
         </div>
     </div>
 
-    <br/>
+    <p>&nbsp;</p>
 
     <c:choose>
         <c:when test="${receipts.size() gt 0}">
