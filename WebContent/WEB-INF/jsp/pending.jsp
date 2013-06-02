@@ -54,7 +54,7 @@
 						    		${receipt.description}
 								</td>
 								<td align="left">
-									${receipt.created}
+                                    <fmt:formatDate value="${receipt.created}" type="both"/>
 								</td>
 								<td>
 									<%-- <FORM>

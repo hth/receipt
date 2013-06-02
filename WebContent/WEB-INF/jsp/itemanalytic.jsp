@@ -37,10 +37,10 @@
 			<tr>
                 <th>Business</th>
                 <th>Location</th>
-                <th>Transaction Date</th>
+                <th>Date</th>
 				<th>Item</th>
 				<th>Price</th>
-				<th>Average Price in last 90 days</th>
+				<th>90 day Average</th>
 			</tr>
 		</tbody>
 		<tr>
@@ -53,7 +53,7 @@
                 ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
             </td>
             <td>
-                <spring:eval expression="itemAnalyticForm.item.receipt.receiptDate" />
+                <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
             </td>
 			<td align="left">
 	    		${itemAnalyticForm.item.name}
@@ -75,7 +75,7 @@
                 <th></th>
                 <th>Business</th>
                 <th>Location</th>
-                <th>Transaction Date</th>
+                <th>Date</th>
                 <th>Item</th>
                 <th>Price</th>
                 <th>Tax</th>
@@ -97,7 +97,7 @@
                             ${item.receipt.bizStore.addressWrapped}
                         </td>
                         <td>
-                            <spring:eval expression="item.receipt.receiptDate" />
+                            <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
                         </td>
                         <td>
                             <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">

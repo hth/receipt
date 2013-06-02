@@ -55,7 +55,7 @@
                                 </a>
                             </td>
                             <td>
-                                <spring:eval expression="item.receipt.receiptDate" />
+                                <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
                             </td>
                             <td>
                                 <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">

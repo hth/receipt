@@ -252,7 +252,7 @@
                                         <spring:eval expression="receipt.bizName.name" />
                                     </td>
                                     <td style="padding:3px;">
-                                        <spring:eval expression="receipt.receiptDate" />
+                                        <fmt:formatDate value="${receipt.receiptDate}" type="date"/>
                                     </td>
                                     <td style="padding:3px;" align="right">
                                         <spring:eval expression="receipt.tax" />

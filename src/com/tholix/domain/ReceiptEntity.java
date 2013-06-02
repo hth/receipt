@@ -32,9 +32,6 @@ import java.util.Objects;
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
-	/**
-	 * Description is provided by the user. This can be empty.
-	 */
 	@Size(min = 0, max = 128)
 	private String description;
 
@@ -45,6 +42,7 @@ public class ReceiptEntity extends BaseEntity {
 	private String receiptBlobId;
 
 	@NotNull
+    @DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date receiptDate;
 
 	@NotNull
@@ -172,12 +170,10 @@ public class ReceiptEntity extends BaseEntity {
 		this.receiptBlobId = receiptBlobId;
 	}
 
-	@DateTimeFormat(iso = ISO.NONE)
 	public Date getReceiptDate() {
 		return receiptDate;
 	}
 
-	@DateTimeFormat(iso = ISO.DATE_TIME)
 	public void setReceiptDate(Date receiptDate) {
 		this.receiptDate = receiptDate;
 	}

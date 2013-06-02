@@ -86,7 +86,7 @@
                         <tr>
                             <td colspan="3">
                                 <div class="leftAlign"><b><spring:eval expression="receiptForm.receipt.bizName.name" /></b></div>
-                                <div class="rightAlign"><b><spring:eval expression="receiptForm.receipt.receiptDate" /></b></div>
+                                <div class="rightAlign"><b><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="both"/></b></div>
                             </td>
                         </tr>
                         <tr>
