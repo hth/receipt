@@ -31,6 +31,16 @@
         <servlet-name>receipt</servlet-name>
     </filter-mapping>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500.html</location>
+    </error-page>
+
     <!--<filter>-->
         <!--<filter-name>session</filter-name>-->
         <!--<filter-class>org.eclipse.jetty.continuation.ContinuationFilter</filter-class>-->
