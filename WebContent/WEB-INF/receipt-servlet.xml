@@ -6,6 +6,9 @@
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xmlns:jms="http://www.springframework.org/schema/jms"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
 		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		  http://www.springframework.org/schema/context
@@ -16,14 +19,22 @@
           http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
           http://www.springframework.org/schema/util
           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+          http://www.springframework.org/schema/cache
+          http://www.springframework.org/schema/cache/spring-cache.xsd
           http://www.springframework.org/schema/jms
           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
 	<context:component-scan base-package="com.tholix" />
 
+    <!-- Currently not being used -->
+    <context:property-placeholder location="WEB-INF/classes/redis.properties" order="1" ignore-unresolvable="true" />
+
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
+
+    <!-- turn on declarative caching -->
+    <cache:annotation-driven />
 
 	<!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
 
@@ -64,6 +75,7 @@
     <bean id="receiptOCRFormValidator"      class="com.tholix.web.validator.ReceiptOCRFormValidator" />
     <bean id="bizFormValidator"             class="com.tholix.web.validator.BizFormValidator" />
     <bean id="expenseTypeValidator"         class="com.tholix.web.validator.ExpenseTypeValidator" />
+    <bean id="accountRecoverFormValidator"  class="com.tholix.web.validator.AccountRecoverFormValidator" />
     <!-- ===================================== -->
     <!-- JMS configuration                     -->
     <!-- ===================================== -->
@@ -157,7 +169,7 @@
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
         <property name="writeConcern">
             <!--http://jonathan-whywecanthavenicethings.blogspot.com/2011/11/wheres-my-exceptions-spring-data.html-->
-            <util:constant static-field="com.mongodb.WriteConcern.SAFE" ></util:constant>
+            <util:constant static-field="com.mongodb.WriteConcern.SAFE" />
         </property>
 	</bean>
 
@@ -170,6 +182,32 @@
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
     <!-- ===================================== -->
     <!-- Mongo Configuration Ends              -->
+    <!-- ===================================== -->
+
+    <!-- ===================================== -->
+    <!-- Jedis/Redis Configuration NOT USED    -->
+    <!-- ===================================== -->
+    <!-- Jedis ConnectionFactory -->
+    <bean
+            id="jedisConnectionFactory"
+            class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+            p:hostName="localhost"
+            p:port="6379"
+            p:usePool="true"/>
+
+    <!-- redis template definition -->
+    <bean
+            id="redisTemplate"
+            class="org.springframework.data.redis.core.RedisTemplate"
+            p:connectionFactory-ref="jedisConnectionFactory"/>
+
+    <!-- declare Redis Cache Manager -->
+    <bean
+            id="cacheManager"
+            class="org.springframework.data.redis.cache.RedisCacheManager"
+            c:template-ref="redisTemplate"/>
+    <!-- ===================================== -->
+    <!-- Jedis/Redis Configuration Ends        -->
     <!-- ===================================== -->
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
