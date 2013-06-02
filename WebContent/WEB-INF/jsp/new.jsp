@@ -20,6 +20,9 @@
     <script type='text/javascript' src="jquery/js/json.min.js"></script>
 </head>
 <body>
+<div class="wrapper">
+    <img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px">
+    <p>&nbsp;</p>
 	<h2>
 		<fmt:message key="signup.heading" />
 	</h2>
@@ -72,48 +75,58 @@
 
 	<br/>
 	Please note: A verification email will be sent to your email address.
+</div>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // check name availability on focus lost
-            $('#emailId').blur(function() {
-                if ($('#emailId').val()) {
-                    checkAvailability();
-                } else {
-                    $("#recoverId").css({'display': 'none'});
-                }
-            });
-        });
+<div class="footer">
+    <p>
+        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
+        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
+    </p>
+    <p>Copyright &copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+</div>
 
-        function checkAvailability() {
-            $.getJSON("${pageContext. request. contextPath}/new/availability.htm", { emailId: $('#emailId').val() }, function(availability) {
-                if (availability.available) {
-                    fieldValidated("emailId", { valid : true });
-                } else {
-                    fieldValidated("emailId", { valid : false, message : $('#emailId').val() + " is already registered. " + availability.suggestions });
-                }
-            });
-        }
-
-        function fieldValidated(field, result) {
-            if (result.valid) {
-                $("#" + field + "Label").removeClass("error");
-                $("#" + field + "\\.errors").remove();
-                $("#recoverId").css({'display': 'none'});
-                //$("#signupId").removeAttr('disable', 'disable');
+<script type="text/javascript">
+    $(document).ready(function() {
+        // check name availability on focus lost
+        $('#emailId').blur(function() {
+            if ($('#emailId').val()) {
+                checkAvailability();
             } else {
-                $("#" + field + "Label").addClass("error");
-                if ($("#" + field + "\\.errors").length == 0) {
-                    $("#" + field).after("<span id='" + field + ".errors'>" + result.message + "</span>");
+                $("#recoverId").css({'display': 'none'});
+            }
+        });
+    });
 
-                    //Add the button for recovery and hide button for SignUp
-                    $("#recoverId").css({'display': 'inline'});
-                    //$("#signupId").attr('disable', 'disable');
-                } else {
-                    $("#" + field + "\\.errors").html("<span id='" + field + ".errors'>" + result.message + "</span>");
-                }
+    function checkAvailability() {
+        $.getJSON("${pageContext. request. contextPath}/new/availability.htm", { emailId: $('#emailId').val() }, function(availability) {
+            if (availability.available) {
+                fieldValidated("emailId", { valid : true });
+            } else {
+                fieldValidated("emailId", { valid : false, message : $('#emailId').val() + " is already registered. " + availability.suggestions });
+            }
+        });
+    }
+
+    function fieldValidated(field, result) {
+        if (result.valid) {
+            $("#" + field + "Label").removeClass("error");
+            $("#" + field + "\\.errors").remove();
+            $("#recoverId").css({'display': 'none'});
+            //$("#signupId").removeAttr('disable', 'disable');
+        } else {
+            $("#" + field + "Label").addClass("error");
+            if ($("#" + field + "\\.errors").length == 0) {
+                $("#" + field).after("<span id='" + field + ".errors'>" + result.message + "</span>");
+
+                //Add the button for recovery and hide button for SignUp
+                $("#recoverId").css({'display': 'inline'});
+                //$("#signupId").attr('disable', 'disable');
+            } else {
+                $("#" + field + "\\.errors").html("<span id='" + field + ".errors'>" + result.message + "</span>");
             }
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>

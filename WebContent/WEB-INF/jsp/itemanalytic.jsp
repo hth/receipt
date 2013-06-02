@@ -19,31 +19,35 @@
 	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
 </head>
 <body>
-    <div id="content" style='width:210px;'>
-        <div id="leftcolumn" style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+<div class="wrapper">
+    <div style='width:231px;'>
+        <div style='width:14px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+            <img src="images/circle-leaf.jpg" alt="receipt-o-fi logo" height="12px" width="12px">&nbsp;&nbsp;&nbsp;
+        </div>
+        <div style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
             <a href="${pageContext.request.contextPath}/landing.htm" style="text-decoration:none;">
                 <img src="images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
             </a>
         </div>
-        <div id="rightcolumn" style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
+        <div style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
             <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm" style="text-decoration:none;">${sessionScope['userSession'].emailId}</a>
         </div>
     </div>
 
-	<br/>
+    <br/>
 
-	<table style="width: 650px" class="etable">
-		<tbody>
-			<tr>
+    <table style="width: 650px" class="etable">
+        <tbody>
+            <tr>
                 <th>Business</th>
                 <th>Location</th>
                 <th>Date</th>
-				<th>Item</th>
-				<th>Price</th>
-				<th>90 day Average</th>
-			</tr>
-		</tbody>
-		<tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>90 day Average</th>
+            </tr>
+        </tbody>
+        <tr>
             <td>
                 <a href="${pageContext.request.contextPath}/receipt.htm?id=${itemAnalyticForm.item.receipt.id}">
                 ${itemAnalyticForm.item.receipt.bizName.name}
@@ -55,17 +59,17 @@
             <td>
                 <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
             </td>
-			<td align="left">
-	    		${itemAnalyticForm.item.name}
-			</td>
-			<td align="right">
-	    		<spring:eval expression="itemAnalyticForm.item.price" />
-			</td>
-			<td align="right">
-                <fmt:formatNumber value="${itemAnalyticForm.averagePrice}" type="currency" currencySymbol="$" />
-			</td>
-		</tr>
-	</table>
+            <td align="left">
+                ${itemAnalyticForm.item.name}
+            </td>
+            <td align="right">
+                <spring:eval expression="itemAnalyticForm.item.price" />
+            </td>
+            <td align="right">
+                <fmt:formatNumber value="${itemAnalyticForm.averagePrice}" type="currency" />
+            </td>
+        </tr>
+    </table>
 
     <h2 class="demoHeaders">Historical Purchases of similar Item(s)</h2>
     <c:if test="${itemAnalyticForm.items.size() > 0}">
@@ -121,6 +125,15 @@
             </form:form>
         </table>
     </c:if>
+</div>
+
+<div class="footer">
+    <p>
+        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
+        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
+    </p>
+    <p>Copyright &copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+</div>
 
 </body>
 </html>

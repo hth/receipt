@@ -110,9 +110,10 @@
 	</script>
 </head>
 <body>
-
+<div class="wrapper">
  	<div class="divTable">
 		<div class="divRow">
+            <div class="divOfCell200"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="27.5px"></div>
 			<div class="divOfCell200"><h3><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${sessionScope['userSession'].emailId}</a></h3></div>
 		    <div class="divOfCell200" id="active-tab-2"><h3>Total Expense: <a href="#"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
@@ -303,6 +304,15 @@
             <div class="googleMapContainer" id="map-canvas"></div>
 		</div>
 	</div>
+</div>
+
+<div class="footer">
+    <p>
+        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
+        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
+    </p>
+    <p>Copyright &copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+</div>
 
     <c:if test="${bizByExpenseTypes.size() > 0}">
     <script>

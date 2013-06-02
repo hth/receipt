@@ -1,13 +1,25 @@
 /* This for whole page setting */
-body{
-	font: 62.5% "Trebuchet MS", sans-serif;
-	margin: 10px 10px;
+/** {*/
+    /*margin: 0; Do not turn this on*/
+/*}*/
+html, body {
+    height: 100%;
+    font: 70.5% "Trebuchet MS", sans-serif;
+    margin: 10px 10px;
     background: #e6e6e6;
 
     /*font: 62.5% 'Helvetica Neue',Helvetica,Verdana;*/
     /*margin: 20px 10px;*/
     /*background: #2a2b2b;*/
     /*color: #d1d9e1;*/
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    margin: 0 auto -142px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+    height: 142px; /* .push must be the same height as .footer */
 }
 .demoHeaders {
 	margin-top: 2em;

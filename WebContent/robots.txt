@@ -1,0 +1,8 @@
+User-Agent: *
+Disallow: /index.jsp
+Disallow: /400.html
+Disallow: /500.html
+Disallow: /*?*
+Disallow: /receipt/
+Disallow: /app/
+Disallow: /receiptofi/*
