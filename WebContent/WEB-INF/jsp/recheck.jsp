@@ -114,7 +114,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div style='width:228px;'>
+    <div style='width:229px;'>
         <div style='width:19.25px; height: 19.25px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .05em;'>
             <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="19px" width="19px">
         </div>
