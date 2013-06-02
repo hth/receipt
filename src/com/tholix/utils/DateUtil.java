@@ -36,6 +36,8 @@ public final class DateUtil {
 		FRM_6("\\d{1,2}/\\d{1,2}/\\d{4}\\s(PM|AM)\\s\\d{1,2}:\\d{2}:\\d{2}", 	"12/15/2012 PM 04:49:45", 	"MM/dd/yyyy a hh:mm:ss"),
 		FRM_7("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}\\s(PM|AM)", 			"08/29/2012 03:07 PM", 		"MM/dd/yyyy hh:mm a"),
 		FRM_8("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|AM)",	"12/26/2012 5:29:44 PM", 	"MM/dd/yyyy hh:mm:ss a"),
+        FRM_9("\\d{1,2}/\\d{1,2}/\\d{4}",	                                    "12/26/2012",            	"MM/dd/yyyy"),
+        FRM_10("\\d{1,2}/\\d{1,2}/\\d{2}",	                                    "12/26/12",            	    "MM/dd/yy"),
 		;
 
 		private final String regex;
