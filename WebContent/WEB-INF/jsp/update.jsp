@@ -159,14 +159,16 @@
         </div>
     </div>
 
-    <br/>
+    <p>&nbsp;</p>
 
     <h2 class="demoHeaders">Pending receipt</h2>
 
-    <form:form method="post" action="delete.htm">
-        <form:hidden path="" id="" />
-        <form:button id="" name="" value=""/>
-    </form:form>
+    <c:if test="${userSession.level.value lt 5}">
+        <form:form method="post" action="delete.htm" modelAttribute="receiptOCRForm">
+            <form:hidden path="receipt.id"/>
+            <input id="deleteId" type="submit" value="Delete" name="delete"/>
+        </form:form>
+    </c:if>
 
     <table>
         <tr>
@@ -174,6 +176,11 @@
                 <c:choose>
                     <%--//TODO change from constant--%>
                     <c:when test="${userSession.level.value ge 5}">
+                        <c:choose>
+                        <c:when test="${receiptOCRForm.receipt == null}">
+                            Oops! Seems like user has deleted this receipt recently.
+                        </c:when>
+                        <c:otherwise>
                         <form:form method="post" action="update.htm" modelAttribute="receiptOCRForm">
                             <form:errors path="receipt" cssClass="error" />
                             <form:hidden path="receipt.receiptBlobId"/>
@@ -272,6 +279,9 @@
                                 </tr>
                             </table>
                         </form:form>
+
+                        </c:otherwise>
+                        </c:choose>
                     </c:when>
                     <c:otherwise>
                         &nbsp;
@@ -282,7 +292,14 @@
             <td>&nbsp;</td>
             <td>
                 <div id="holder">
-                    <div src="" width="700px" height="700px" id="receipt.image"></div>
+                    <c:choose>
+                    <c:when test="${receiptOCRForm.receipt == null}">
+                        &nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <div src="" width="700px" height="700px" id="receipt.image"></div>
+                    </c:otherwise>
+                    </c:choose>
                 </div>
             </td>
         </tr>

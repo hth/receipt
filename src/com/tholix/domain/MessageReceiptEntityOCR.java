@@ -20,7 +20,6 @@ import com.tholix.utils.DateUtil;
 @Document(collection = "MESSAGE_RECEIPT_OCR")
 public class MessageReceiptEntityOCR extends BaseEntity {
 
-
     @NotNull
     private String idReceiptOCR;
 

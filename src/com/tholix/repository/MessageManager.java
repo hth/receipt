@@ -39,9 +39,17 @@ public interface MessageManager extends RepositoryManager<MessageReceiptEntityOC
      *
      * TODO: May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
      *
-     * @param id
+     * @param receiptOCRId
      * @param value
      * @return
      */
-    WriteResult undoUpdateObject(String id, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
+    WriteResult undoUpdateObject(String receiptOCRId, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
+
+    /**
+     * Delete all the messages that are associated with ReceiptEntityOCR.
+     * Process will include current and previous re-check request messages for the receipt
+     *
+     * @param receiptOCRId
+     */
+    void deleteAllForReceiptOCR(String receiptOCRId);
 }

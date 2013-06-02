@@ -116,6 +116,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
 		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
 
+    @Override
+    public ReceiptEntity findWithReceiptOCR(String receiptOCRId) {
+        Query query = Query.query(Criteria.where("receiptOCRId").is(receiptOCRId));
+        return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
+    }
+
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {

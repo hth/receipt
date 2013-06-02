@@ -115,4 +115,10 @@ public class ReceiptUpdateController {
             return nextPageRecheck;
         }
     }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
+        receiptUpdateService.deletePendingReceiptOCR(receiptOCRForm.getReceipt());
+        return "redirect:/pending.htm";
+    }
 }

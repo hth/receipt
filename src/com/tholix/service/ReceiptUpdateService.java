@@ -38,6 +38,7 @@ public class ReceiptUpdateService {
     @Autowired private MessageManager messageManager;
     @Autowired private AdminLandingService adminLandingService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    @Autowired private ReceiptService receiptService;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -173,6 +174,33 @@ public class ReceiptUpdateService {
                 log.info("Complete with rollback: throwing exception");
             }
             throw new Exception(exce.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Delete all the associated data with Receipt OCR like Item OCR, and
+     * Message Receipt Entity OCR including deletion of with Receipt OCR
+     *
+     * @param receiptOCR
+     */
+    public void deletePendingReceiptOCR(ReceiptEntityOCR receiptOCR) {
+        receiptOCRManager.delete(receiptOCR);
+        itemOCRManager.deleteWhereReceipt(receiptOCR);
+        messageManager.deleteAllForReceiptOCR(receiptOCR.getId());
+
+        ReceiptEntity receiptEntity = receiptManager.findWithReceiptOCR(receiptOCR.getId());
+        if(receiptEntity != null) {
+            //At this point ReceiptEntity is inactive because it already exists in the Collection
+            if(receiptEntity.isActive()) {
+                //Should never go here as it has to be inactive in this process, but any how
+                log.error("Invalid condition reached when user tried deleting a pending receipt: " +
+                        "Receipt OCR Id: " + receiptOCR.getId() + ", Receipt Id: " + receiptEntity.getId());
+            } else {
+                log.info("ReceiptOCR has been processed by technician. Delete operation performed after its processed.");
+                receiptManager.delete(receiptEntity);
+            }
+        } else {
+            log.info("ReceiptOCR has NOT been processed by technician. Delete operation performed before it could be processed.");
         }
     }
 

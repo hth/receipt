@@ -170,12 +170,12 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public WriteResult undoUpdateObject(String id, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet) {
+    public WriteResult undoUpdateObject(String receiptOCRId, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("recordLocked").is(true))
                 .addCriteria(Criteria.where("receiptStatus").is(statusFind))
                 .addCriteria(Criteria.where("active").is(false))
-                .addCriteria(Criteria.where("idReceiptOCR").is(id));
+                .addCriteria(Criteria.where("idReceiptOCR").is(receiptOCRId));
 
         Update update = new Update()
                 .set("recordLocked", false)
@@ -189,6 +189,12 @@ public class MessageManagerImpl implements MessageManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(MessageReceiptEntityOCR object) {
         mongoTemplate.remove(object, TABLE);
+    }
+
+    @Override
+    public void deleteAllForReceiptOCR(String receiptOCRId) {
+        Query query = Query.query(Criteria.where("idReceiptOCR").is(receiptOCRId));
+        mongoTemplate.remove(query, MessageReceiptEntityOCR.class);
     }
 
     @Override

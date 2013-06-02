@@ -149,6 +149,11 @@
                 <c:choose>
                     <%--//TODO change from constant--%>
                     <c:when test="${userSession.level.value ge 5}">
+                        <c:choose>
+                        <c:when test="${receiptOCRForm.receipt == null}">
+                            Oops! Seems like user has deleted this receipt recently.
+                        </c:when>
+                        <c:otherwise>
                         <form:form method="post" action="recheck.htm" modelAttribute="receiptOCRForm">
                             <form:errors path="receipt" cssClass="error" />
                             <form:hidden path="receipt.receiptBlobId"/>
@@ -198,25 +203,25 @@
                                     <th align="left">&nbsp;</th>
                                 </tr>
                                 <c:forEach items="${receiptOCRForm.items}" varStatus="status">
-                                <form:hidden path="items[${status.index}].expenseType.id"/>
-                                <tr>
-                                    <td align="left">
-                                            ${status.index + 1}
-                                    </td>
-                                    <td align="left">
-                                        <form:input path="items[${status.index}].name" class="items" size="64"/>
-                                    </td>
-                                    <td align="right">
-                                        <form:input path="items[${status.index}].price" size="16"/>
-                                        <form:errors path="items[${status.index}].price" cssClass="error" />
-                                    </td>
-                                    <td>
-                                        <form:select path="items[${status.index}].taxed">
-                                            <form:option value="NONE" label="--- Select ---"/>
-                                            <form:options itemValue="name" itemLabel="description" />
-                                        </form:select>
-                                    </td>
-                                </tr>
+                                    <form:hidden path="items[${status.index}].expenseType.id"/>
+                                    <tr>
+                                        <td align="left">
+                                                ${status.index + 1}
+                                        </td>
+                                        <td align="left">
+                                            <form:input path="items[${status.index}].name" class="items" size="64"/>
+                                        </td>
+                                        <td align="right">
+                                            <form:input path="items[${status.index}].price" size="16"/>
+                                            <form:errors path="items[${status.index}].price" cssClass="error" />
+                                        </td>
+                                        <td>
+                                            <form:select path="items[${status.index}].taxed">
+                                                <form:option value="NONE" label="--- Select ---"/>
+                                                <form:options itemValue="name" itemLabel="description" />
+                                            </form:select>
+                                        </td>
+                                    </tr>
                                 </c:forEach>
                                 <tr>
                                     <td colspan="2" style="text-align: right; font-size: 12px; font-weight: bold">
@@ -249,6 +254,9 @@
                                 </tr>
                             </table>
                         </form:form>
+
+                        </c:otherwise>
+                        </c:choose>
                     </c:when>
                     <c:otherwise>
                         &nbsp;
@@ -259,7 +267,14 @@
             <td>&nbsp;</td>
             <td>
                 <div id="holder">
-                    <div src="" width="700px" height="700px" id="receipt.image"></div>
+                    <c:choose>
+                    <c:when test="${receiptOCRForm.receipt == null}">
+                        &nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <div src="" width="700px" height="700px" id="receipt.image"></div>
+                    </c:otherwise>
+                    </c:choose>
                 </div>
             </td>
         </tr>
