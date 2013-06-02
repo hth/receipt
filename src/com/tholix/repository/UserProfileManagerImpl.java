@@ -72,7 +72,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity findOne(String id) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(new ObjectId(id))), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, UserLevelEnum level) {
-		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(new ObjectId(id))), Update.update("level", level), TABLE);
+		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), Update.update("level", level), UserProfileEntity.class);
 	}
 
 	@Override
