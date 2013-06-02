@@ -134,8 +134,12 @@
 </head>
 <body>
 <div class="wrapper">
-    <div id="content" style='width:210px;'>
-        <div id="leftcolumn" style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+    <div style='width:228px;'>
+        <div style='width:19.25px; height: 19.25px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .05em;'>
+            <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="19px" width="19px">
+        </div>
+        <div style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+            &nbsp;&nbsp;&nbsp;
             <c:choose>
             <%--//TODO change from constant--%>
             <c:when test="${userSession.level.value ge 5}">
@@ -149,9 +153,8 @@
                 </a>
             </c:otherwise>
             </c:choose>
-
         </div>
-        <div id="rightcolumn" style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
+        <div style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
             <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm" style="text-decoration:none;">${sessionScope['userSession'].emailId}</a>
         </div>
     </div>

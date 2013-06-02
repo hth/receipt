@@ -19,11 +19,12 @@
 </head>
 <body>
 <div id="wrapper">
-    <div style='width:231px;'>
-        <div style='width:14px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
-            <img src="images/circle-leaf.jpg" alt="receipt-o-fi logo" height="12px" width="12px">&nbsp;&nbsp;&nbsp;
+    <div style='width:228px;'>
+        <div style='width:19.25px; height: 19.25px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .05em;'>
+            <img src="images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="19px" width="19px">
         </div>
         <div style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+            &nbsp;&nbsp;&nbsp;
             <a href="${pageContext.request.contextPath}/landing.htm" style="text-decoration:none;">
                 <img src="images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
             </a>
