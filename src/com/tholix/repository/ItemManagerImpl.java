@@ -4,6 +4,8 @@
 package com.tholix.repository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ExpenseTypeEntity;
@@ -95,16 +98,40 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Override
 	public List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay) {
-        // Can choose Item create date but if like to be more accurate then find receipts for these items and filter receipts by date provided.
-        // Not sure how much benefit would it be other than more data crunching.
+        // Can choose Item create date but if needs accuracy then find receipts for these items and filter receipts by date provided.
+        // Not sure how much beneficial it would be other than more data crunching.
 
         Criteria criteriaA = Criteria.where("name").is(name);
-        Criteria criteriaB = Criteria.where("created").gte(untilThisDay.toDate());
+        Criteria criteriaB = Criteria.where("created").gte(ISODateTimeFormat.dateTime().print(untilThisDay));
         Sort sort = new Sort(Direction.DESC, "created");
         Query query = Query.query(criteriaA).addCriteria(criteriaB).with(sort);
 
 		return mongoTemplate.find(query, ItemEntity.class, TABLE);
 	}
+
+    @Override
+    public List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId) {
+        if(itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
+            Criteria criteriaA = Criteria.where("name").is(itemEntity.getName());
+            //Criteria criteriaB = Criteria.where("receipt.userProfileId").is(itemEntity.getReceipt().getUserProfileId());
+
+            Sort sort = new Sort(Direction.DESC, "created");
+            Query query = Query.query(criteriaA).with(sort);
+
+            List<ItemEntity> orderedList = new LinkedList<>();
+            Iterator<ItemEntity> allItems = mongoTemplate.find(query, ItemEntity.class, TABLE).iterator();
+            while(allItems.hasNext()) {
+                ItemEntity item = allItems.next();
+                if(itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
+                    orderedList.add(item);
+                }
+            }
+            return orderedList;
+        } else {
+            log.error("One of the query is trying to get items for different User Profile Id: " + userProfileId + ", Item Id: " + itemEntity.getId());
+            return new LinkedList<>();
+        }
+    }
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

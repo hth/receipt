@@ -100,8 +100,12 @@ public class ReceiptOCRForm {
 
 		for(ItemEntityOCR itemOCR : items) {
 			if(itemOCR.getName().length() != 0) {
+                String name = itemOCR.getName().trim();
+                name = StringUtils.replace(name, "\t", " ");
+                name = name.replaceAll("\\s+", " ");
+
 				ItemEntity item = ItemEntity.newInstance(
-                        itemOCR.getName(), Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue(),
+                        name, Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue(),
                         itemOCR.getTaxed(), itemOCR.getSequence(), receipt, receipt.getUserProfileId());
 
 				item.setExpenseType(itemOCR.getExpenseType());

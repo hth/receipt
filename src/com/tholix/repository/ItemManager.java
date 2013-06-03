@@ -38,6 +38,15 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      */
 	List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay);
 
+    /**
+     * Should be used only for listing historical data of the items for a particular user
+     *
+     * @param itemEntity
+     * @param userProfileId
+     * @return
+     */
+    List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId);
+
 	void deleteWhereReceipt(ReceiptEntity receipt);
 
     /**

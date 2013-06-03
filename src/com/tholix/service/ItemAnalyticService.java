@@ -50,4 +50,18 @@ public class ItemAnalyticService {
     public List<ItemEntity> findAllByNameLimitByDays(String itemName, DateTime untilThisDay) {
         return itemManager.findAllByNameLimitByDays(itemName, untilThisDay);
     }
+
+    /**
+     * Get all the historical items for a user.
+     *
+     * Note: Providing a user profile id is redundant but its critical to make sure only the user of
+     * that session is requesting its own list of items. Otherwise there could be privacy issues.
+     *
+     * @param item
+     * @param userProfileId
+     * @return
+     */
+    public List<ItemEntity> findAllByName(ItemEntity item, String userProfileId) {
+        return itemManager.findAllByName(item, userProfileId);
+    }
 }

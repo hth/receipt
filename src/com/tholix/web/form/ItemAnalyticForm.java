@@ -13,10 +13,11 @@ import com.tholix.domain.ItemEntity;
  */
 public class ItemAnalyticForm {
 
-    ItemEntity item;
-    BigDecimal averagePrice;
-    List<ExpenseTypeEntity> expenseTypes;
-    List<ItemEntity> items;
+    private ItemEntity item;
+    private BigDecimal averagePrice;
+    private List<ExpenseTypeEntity> expenseTypes;
+    private List<ItemEntity> items;
+    private int days;
 
     public ItemEntity getItem() {
         return item;
@@ -48,5 +49,13 @@ public class ItemAnalyticForm {
 
     public void setItems(List<ItemEntity> items) {
         this.items = items;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
     }
 }

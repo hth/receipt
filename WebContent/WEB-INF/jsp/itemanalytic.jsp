@@ -35,87 +35,87 @@
         </div>
     </div>
 
-    <br/>
+    <p>&nbsp;</p>
 
     <table style="width: 650px" class="etable">
         <tbody>
             <tr>
-                <th>Business</th>
-                <th>Location</th>
-                <th>Date</th>
-                <th>Item</th>
-                <th>Price</th>
-                <th>90 day Average</th>
+                <th style="padding:3px;">Business</th>
+                <th style="padding:3px;">Location</th>
+                <th style="padding:3px;">Date</th>
+                <th style="padding:3px;">Item</th>
+                <th style="padding:3px;">Price</th>
+                <th style="padding:3px;">${itemAnalyticForm.days} day Average</th>
             </tr>
         </tbody>
         <tr>
-            <td>
+            <td style="padding:3px;">
                 <a href="${pageContext.request.contextPath}/receipt.htm?id=${itemAnalyticForm.item.receipt.id}">
                 ${itemAnalyticForm.item.receipt.bizName.name}
                 </a>
             </td>
-            <td>
+            <td style="padding:3px;">
                 ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
             </td>
-            <td>
+            <td style="padding:3px;">
                 <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
             </td>
-            <td align="left">
+            <td align="left" style="padding:3px;">
                 ${itemAnalyticForm.item.name}
             </td>
-            <td align="right">
+            <td align="right" style="padding:3px;">
                 <spring:eval expression="itemAnalyticForm.item.price" />
             </td>
-            <td align="right">
+            <td align="right" style="padding:3px;">
                 <fmt:formatNumber value="${itemAnalyticForm.averagePrice}" type="currency" />
             </td>
         </tr>
     </table>
 
-    <h2 class="demoHeaders">Historical Purchases of similar Item(s)</h2>
+    <h2 class="demoHeaders">Your historical purchases of similar Item(s)</h2>
     <c:if test="${itemAnalyticForm.items.size() > 0}">
         <table style="width: 700px" class="etable">
             <tbody>
             <tr>
-                <th></th>
-                <th>Business</th>
-                <th>Location</th>
-                <th>Date</th>
-                <th>Item</th>
-                <th>Price</th>
-                <th>Tax</th>
-                <th>Expense Type</th>
+                <th style="padding:3px;"></th>
+                <th style="padding:3px;">Business</th>
+                <th style="padding:3px;">Location</th>
+                <th style="padding:3px;">Date</th>
+                <th style="padding:3px;">Item</th>
+                <th style="padding:3px;">Price</th>
+                <th style="padding:3px;">Tax</th>
+                <th style="padding:3px;">Expense Type</th>
             </tr>
             </tbody>
             <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
                 <c:forEach items="${itemAnalyticForm.items}" var="item" varStatus="status">
                     <tr>
-                        <td style="padding:3px;" align="right">
+                        <td align="right" style="padding:3px;">
                             ${status.count}
                         </td>
-                        <td>
+                        <td style="padding:3px;">
                             <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
                             ${item.receipt.bizName.name}
                             </a>
                         </td>
-                        <td>
+                        <td style="padding:3px;">
                             ${item.receipt.bizStore.addressWrapped}
                         </td>
-                        <td>
+                        <td style="padding:3px;">
                             <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
                         </td>
-                        <td>
+                        <td style="padding:3px;">
                             <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
                             ${item.name}
                             </a>
                         </td>
-                        <td style="text-align: right;">
+                        <td style="text-align: right;" style="padding:3px;">
                             <spring:eval expression="item.price" />
                         </td>
-                        <td style="text-align: left;">
+                        <td style="text-align: left;" style="padding:3px;">
                             ${item.taxed.description}
                         </td>
-                        <td style="text-align: left;">
+                        <td style="text-align: left;" style="padding:3px;">
                             <form:select path="items[${status.index}].expenseType.id">
                                 <form:option value="NONE" label="--- Select ---" />
                                 <form:options items="${itemAnalyticForm.expenseTypes}" itemValue="id" itemLabel="expName" />

@@ -97,7 +97,7 @@ public class ItemAnalyticControllerTest {
 		ItemEntity item2 = ItemEntity.newInstance("Item-Test1", 40.00, TaxEnum.TAXED, 1, receipt, "test@test.com");
 		itemManager.save(item2);
 
-		ModelAndView modelAndView = controller.loadForm(item1.getId(), new ItemAnalyticForm());
+		ModelAndView modelAndView = controller.loadForm(item1.getId(), new ItemAnalyticForm(), null);
 		assertEquals("/itemanalytic", modelAndView.getViewName());
 		assertEquals(60.00, modelAndView.getModel().get("averagePrice"));
 
