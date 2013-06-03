@@ -3,8 +3,9 @@
  */
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -12,7 +13,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -26,9 +26,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mongodb.WriteResult;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+
+import com.mongodb.WriteResult;
 
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ExpenseTypeEntity;
@@ -96,6 +97,13 @@ public class ItemManagerImpl implements ItemManager {
 		return mongoTemplate.find(Query.query(Criteria.where("receipt").is(receipt)).with(sort), ItemEntity.class, TABLE);
 	}
 
+    /**
+     * db.ITEM.find( {"name" : "509906212284 Podium Bottle 24 oz" , "created" : ISODate("2013-06-03T03:38:44.818Z")} )
+     *
+     * @param name - Name of the item
+     * @param untilThisDay - Show result from this day onwards
+     * @return
+     */
 	@Override
 	public List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay) {
         // Can choose Item create date but if needs accuracy then find receipts for these items and filter receipts by date provided.
@@ -119,10 +127,8 @@ public class ItemManagerImpl implements ItemManager {
             Query query = Query.query(criteriaA).with(sort);
 
             List<ItemEntity> orderedList = new LinkedList<>();
-            Iterator<ItemEntity> allItems = mongoTemplate.find(query, ItemEntity.class, TABLE).iterator();
-            while(allItems.hasNext()) {
-                ItemEntity item = allItems.next();
-                if(itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
+            for (ItemEntity item : mongoTemplate.find(query, ItemEntity.class, TABLE)) {
+                if (itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
                     orderedList.add(item);
                 }
             }

@@ -7,8 +7,9 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mongodb.WriteResult;
 import org.joda.time.DateTime;
+
+import com.mongodb.WriteResult;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.ExpenseTypeEntity;
@@ -32,8 +33,8 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     /**
      * Gets items with specified name until the specified date
      *
-     * @param name
-     * @param untilThisDay
+     * @param name - Name of the item
+     * @param untilThisDay - Show result from this day onwards
      * @return
      */
 	List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay);
