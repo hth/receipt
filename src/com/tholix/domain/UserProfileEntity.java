@@ -3,18 +3,18 @@
  */
 package com.tholix.domain;
 
-import java.util.Date;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-
-import org.hibernate.validator.constraints.Email;
 
 import com.tholix.domain.types.UserLevelEnum;
 
@@ -32,11 +32,13 @@ public class UserProfileEntity extends BaseEntity {
 	@Email
 	private String emailId;
 
-	@Size(min = 1, max = 128)
-	private String firstName;
+	@Size(min = 1, max = 64)
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "First Name must be alphabetic with no spaces")
+    private String firstName;
 
-	@Size(min = 1, max = 128)
-	private String lastName;
+	@Size(min = 1, max = 64)
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Last Name must be alphabetic with no spaces")
+    private String lastName;
 
 	@DateTimeFormat(iso = ISO.DATE)
 	private Date registration;

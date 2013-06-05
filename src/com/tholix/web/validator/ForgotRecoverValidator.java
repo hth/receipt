@@ -28,9 +28,9 @@ public class ForgotRecoverValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"EmailId"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "captchaConfirm", "field.required", new Object[]{"Captcha"});
 
-        ForgotRecoverForm arf = (ForgotRecoverForm) obj;
-        if(!arf.isCaptchaEqual()) {
-            errors.rejectValue("captchaConfirm", "field.unmatched", new Object[] { arf.getCaptchaConfirm() }, "Entered value does not match");
+        ForgotRecoverForm frf = (ForgotRecoverForm) obj;
+        if(!frf.isCaptchaEqual()) {
+            errors.rejectValue("captchaConfirm", "field.unmatched", new Object[] { "" }, "Entered value does not match");
         }
     }
 }
