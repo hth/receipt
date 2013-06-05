@@ -34,8 +34,10 @@ import com.tholix.web.validator.UserRegistrationValidator;
 @Controller
 @RequestMapping(value = "/new")
 public class AccountController {
-	private static final Logger log = Logger.getLogger(AccountController.class);
-    private static final String NEW_ACCOUNT = "new";
+    private static final Logger log = Logger.getLogger(AccountController.class);
+
+    private static final String NEW_ACCOUNT             = "new";
+    private static final String FORGOT_RECOVER_ACCOUNT  = "forgot/recover";
 
     @Autowired private UserRegistrationValidator userRegistrationValidator;
     @Autowired private AccountService accountService;
@@ -51,11 +53,11 @@ public class AccountController {
 		return NEW_ACCOUNT;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, params = {"Signup"})
+	@RequestMapping(method = RequestMethod.POST, params = {"signup"})
 	public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
         userRegistrationValidator.validate(userRegistrationForm, result);
-		if (result.hasErrors()) {
+		if(result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
             return NEW_ACCOUNT;
 		}
@@ -84,13 +86,26 @@ public class AccountController {
         return "redirect:/landing.htm";
 	}
 
-    //TODO
-    @RequestMapping(method = RequestMethod.POST, params = {"Recover"})
-    public String post() {
-        log.warn("Recover method clicked. To be implemented");
-        return NEW_ACCOUNT;
+    /**
+     * Starts the account recovery process
+     *
+     * @param userRegistrationForm
+     * @param result
+     * @return
+     */
+    @SuppressWarnings("unused")
+    @RequestMapping(method = RequestMethod.POST, params = {"recover"})
+    public String recover(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
+        redirectAttrs.addFlashAttribute("userRegistrationForm", userRegistrationForm);
+        return "redirect:" + FORGOT_RECOVER_ACCOUNT + ".htm";
     }
 
+    /**
+     * Ajax call to check if the account is available to register
+     *
+     * @param emailId
+     * @return
+     */
     @RequestMapping(value="/availability", method=RequestMethod.GET)
     public @ResponseBody
     AvailabilityStatus getAvailability(@RequestParam String emailId) {

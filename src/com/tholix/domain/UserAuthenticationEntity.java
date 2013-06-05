@@ -33,7 +33,6 @@ public class UserAuthenticationEntity extends BaseEntity {
 	 *
 	 * @param password
 	 */
-	// @PersistenceConstructor
 	private UserAuthenticationEntity(String password, String auth) {
 		this.password = password;
 		this.auth = auth;
@@ -52,10 +51,6 @@ public class UserAuthenticationEntity extends BaseEntity {
 
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	//TODO implement OAuth

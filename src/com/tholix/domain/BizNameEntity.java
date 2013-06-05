@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "BIZ_NAME")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_name_idx", def = "{'name': 1}",  unique=true),
+        @CompoundIndex(name = "biz_name_idx", def = "{'name': 1}",  unique = true),
 } )
 public class BizNameEntity extends BaseEntity {
 

@@ -26,6 +26,7 @@ public class UploadReceiptImageValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors errors) {
 		log.info("Executing validation for new uploadReceiptImageValidator");
+
 		UploadReceiptImage uploadReceiptImage = (UploadReceiptImage) obj;
 		if(uploadReceiptImage.getFileData().getSize() == 0) {
 			errors.rejectValue("fileData", "file.length.empty", new Object[] { "" }, "There seems to be no file or a file of empty size found");

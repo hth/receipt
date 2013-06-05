@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.ForgotRecoverEntity;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
+import com.tholix.repository.ForgotRecoverManager;
 import com.tholix.repository.UserAuthenticationManager;
 import com.tholix.repository.UserPreferenceManager;
 import com.tholix.repository.UserProfileManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
+import com.tholix.utils.RandomString;
+import com.tholix.utils.SHAHashing;
 import com.tholix.web.form.UserRegistrationForm;
 
 /**
@@ -28,6 +32,7 @@ public class AccountService {
     @Autowired private UserAuthenticationManager userAuthenticationManager;
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private UserPreferenceManager userPreferenceManager;
+    @Autowired private ForgotRecoverManager forgotRecoverManager;
 
     public UserProfileEntity findIfUserExists(String emailId) {
         return userProfileManager.findOneByEmail(emailId);
@@ -75,5 +80,35 @@ public class AccountService {
         }
 
         return userProfile;
+    }
+
+    /**
+     * Used in for sending authentication link to recover account in case of the lost password
+     *
+     * @param userProfileEntity
+     * @return
+     */
+    public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) {
+        String authenticationKey = SHAHashing.hashCodeSHA512(RandomString.newInstance().nextString());
+
+        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(userProfileEntity.getId(), authenticationKey);
+        try {
+            forgotRecoverManager.save(forgotRecoverEntity);
+        } catch (Exception e) {
+            log.error("Eat exception generated during password recovery action: " + e.getLocalizedMessage());
+        }
+        return forgotRecoverEntity;
+    }
+
+    public void invalidateAllPreviousEntries(ForgotRecoverEntity forgotRecoverEntity) {
+        forgotRecoverManager.invalidateAllPreviousEntries(forgotRecoverEntity);
+    }
+
+    public ForgotRecoverEntity findAccountAuthenticationForKey(String key) {
+        return forgotRecoverManager.findByAuthenticationKey(key);
+    }
+
+    public void updateAuthentication(UserAuthenticationEntity userAuthenticationEntity) throws Exception {
+        userAuthenticationManager.save(userAuthenticationEntity);
     }
 }

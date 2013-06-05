@@ -55,6 +55,32 @@
     	<property name="maxUploadSize" value="10485760"/>
 	</bean>
 
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.bizmail.yahoo.com"/>
+        <property name="port" value="465"/>
+        <property name="username" value="admin@tholix.com"/>
+        <property name="password" value="yahoo6045"/>
+        <property name="javaMailProperties">
+            <props>
+                <!-- Use SMTP transport protocol -->
+                <prop key="mail.transport.protocol">smtp</prop>
+                <!-- Use SMTP-AUTH to authenticate to SMTP server -->
+                <prop key="mail.smtp.auth">true</prop>
+                <!-- Use TLS to encrypt communication with SMTP server, May be just for GMAIL-->
+                <!--<prop key="mail.smtp.starttls.enable">true</prop>-->
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.port">465</prop>
+                <prop key="mail.smtp.socketFactory.port">465</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- this is a template message that we can pre-load with default state -->
+    <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="admin@tholix.com"/>
+    </bean>
+
 	<!-- refer this for session scope -->
 	<!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
 	<!-- an HTTP Session-scoped bean exposed as a proxy -->
@@ -75,7 +101,8 @@
     <bean id="receiptOCRFormValidator"      class="com.tholix.web.validator.ReceiptOCRFormValidator" />
     <bean id="bizFormValidator"             class="com.tholix.web.validator.BizFormValidator" />
     <bean id="expenseTypeValidator"         class="com.tholix.web.validator.ExpenseTypeValidator" />
-    <bean id="accountRecoverFormValidator"  class="com.tholix.web.validator.AccountRecoverFormValidator" />
+    <bean id="forgotRecoverValidator"       class="com.tholix.web.validator.ForgotRecoverValidator" />
+    <bean id="forgotAuthenticateValidator"  class="com.tholix.web.validator.ForgotAuthenticateValidator" />
     <!-- ===================================== -->
     <!-- JMS configuration                     -->
     <!-- ===================================== -->
@@ -210,10 +237,14 @@
     <!-- Jedis/Redis Configuration Ends        -->
     <!-- ===================================== -->
 
+    <bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
+    </bean>
+
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
-		<property name="prefix" value="/WEB-INF/jsp/"></property>
-		<property name="suffix" value=".jsp"></property>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
         <property name="cache"  value="true" />
         <property name="order"  value="1" />
     </bean>
