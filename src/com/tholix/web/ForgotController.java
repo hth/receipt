@@ -59,6 +59,8 @@ public class ForgotController {
     private static final String FORGOT_RECOVER_AUTH         = "/forgot/authenticate";
     private static final String FORGOT_RECOVER_AUTH_CONFIRM = "/forgot/authenticateConfirm";
 
+    private static final String SUBJECT = "How to reset your Receipt-O-Fi ID password.";
+
     @Autowired private AccountService accountService;
     @Autowired private MailSender mailSender;
     @Autowired private SimpleMailMessage simpleMailMessage;
@@ -102,7 +104,7 @@ public class ForgotController {
     public ModelAndView post(@ModelAttribute("accountRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
         DateTime time = DateUtil.now();
         if(StringUtils.isEmpty(forgotRecoverForm.getEmailId())) {
-            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Cannot access recover directly");
+            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden to access this page directly");
             return null;
         }
 
@@ -126,15 +128,15 @@ public class ForgotController {
                 try {
                     //TODO change this to real user id instead
                     simpleMailMessage.setTo("admin@tholix.com");
-                    simpleMailMessage.setSubject("How to reset your Receipt-O-Fi ID password.");
+                    simpleMailMessage.setSubject(SUBJECT);
                     simpleMailMessage.setText(text);
 
                     mailSender.send(simpleMailMessage);
-                } catch(MailException ex) {
-                    log.error(ex.getLocalizedMessage());
+                } catch(MailException exception) {
+                    log.error("Eat exception during sending and formulating email: " + exception.getLocalizedMessage());
                 }
-            } catch (IOException | TemplateException ioException) {
-                ioException.printStackTrace();
+            } catch (IOException | TemplateException exception) {
+                log.error("Eat exception during sending and formulating email: " + exception.getLocalizedMessage());
             }
         }
 

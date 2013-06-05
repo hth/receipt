@@ -30,7 +30,7 @@
     <div class="error_page">
         <img alt="receipt-o-fi logo" src="../images/receipt-o-fi.logo.jpg" height="45px" />
         <h1>Invalid Link</h1>
-        <p>We apologize, but we are unable to verify the link you used to access this page.</p>
+        <p>We apologize, but we are unable to verify the link you used to access this page. <sup>(404)</sup></p>
         <p>&nbsp;</p>
         <p></p>Please <a href="../login.htm">click here</a> to return to the main page and start over.</p>
     </div>
