@@ -52,7 +52,7 @@
 				<td align="right" width="10%"><form:label for="accountType" path="accountType" cssErrorClass="error">Account Type:</form:label></td>
 				<td width="30%">
 					<form:select path="accountType" >
-						<form:option value="0" label="Chose Account Type" />
+						<form:option value="0" label="Select Account Type" />
 						<form:options itemValue="name" itemLabel="description" />
 					</form:select>
 				</td>
@@ -66,8 +66,8 @@
 			<tr>
 				<td>&nbsp;</td>
 				<td>
-                    <input id="signupId" type="submit" value="Signup" name="Signup"/>
-                    <input id="recoverId" type="submit" value="Recover" name="Recover" style="display: none;"/>
+                    <input id="signupId" type="submit" value="Signup" name="signup"/>
+                    <input id="recoverId" type="submit" value="Recover" name="recover" style="display: none;"/>
                 </td>
 			</tr>
 		</table>

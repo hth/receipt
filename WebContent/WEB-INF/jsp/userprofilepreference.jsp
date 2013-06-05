@@ -158,7 +158,7 @@
 						<div class="divOfCell400">Level:
 
 						<form:select path="level" >
-							<form:option value="0" label="Chose Account Type" />
+							<form:option value="0" label="Select Account Type" />
 							<form:options itemValue="name" itemLabel="description" />
 						</form:select>
 						</div>

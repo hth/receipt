@@ -150,7 +150,7 @@
                     <%--//TODO change from constant--%>
                     <c:when test="${userSession.level.value ge 5}">
                         <c:choose>
-                        <c:when test="${receiptOCRForm.receipt == null}">
+                        <c:when test="${empty receiptOCRForm.receipt}">
                             Oops! Seems like user has deleted this receipt recently.
                         </c:when>
                         <c:otherwise>
@@ -268,7 +268,7 @@
             <td>
                 <div id="holder">
                     <c:choose>
-                    <c:when test="${receiptOCRForm.receipt == null}">
+                    <c:when test="${empty receiptOCRForm.receipt}">
                         &nbsp;
                     </c:when>
                     <c:otherwise>
