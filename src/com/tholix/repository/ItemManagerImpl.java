@@ -76,8 +76,11 @@ public class ItemManagerImpl implements ItemManager {
 		try {
 			//TODO reflection error saving the list
 			//mongoTemplate.insert(objects, TABLE);
+            int sequence = 1;
 			for(ItemEntity object : objects) {
+                object.setSequence(sequence);
 				save(object);
+                sequence ++;
 			}
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
