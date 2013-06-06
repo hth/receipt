@@ -62,7 +62,13 @@ public class ForgotController {
     private static final String FORGOT_RECOVER_AUTH         = "/forgot/authenticate";
     private static final String FORGOT_RECOVER_AUTH_CONFIRM = "/forgot/authenticateConfirm";
 
-    private static final String SUBJECT = "How to reset your Receipt-O-Fi ID password.";
+    private static final String SUBJECT         = "How to reset your Receipt-O-Fi ID password.";
+
+    /** Used in session */
+    private static final String SUCCESS_EMAIL   = "success_email";
+
+    /** Used in JSP page /forgot/authenticateConfirm */
+    private static final String SUCCESS         = "success";
 
     @Autowired private AccountService accountService;
     @Autowired private MailSender mailSender;
@@ -146,7 +152,7 @@ public class ForgotController {
         // Check the mantra section
         // http://www.theserverside.com/news/1365146/Redirect-After-Post
         // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
-        httpServletRequest.getSession().setAttribute("success_email", true);
+        httpServletRequest.getSession().setAttribute(SUCCESS_EMAIL, true);
         return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
     }
 
@@ -163,8 +169,8 @@ public class ForgotController {
         Enumeration<String> attributes = httpServletRequest.getSession().getAttributeNames();
         while(attributes.hasMoreElements()) {
             String attributeName = attributes.nextElement();
-            if(attributeName.equals("success_email")) {
-                boolean condition = (boolean) httpServletRequest.getSession().getAttribute("success_email");
+            if(attributeName.equals(SUCCESS_EMAIL)) {
+                boolean condition = (boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EMAIL);
                 if(condition) {
                     //important to invalidate at the end
                     httpServletRequest.getSession().invalidate();
@@ -216,16 +222,16 @@ public class ForgotController {
                 try {
                     accountService.updateAuthentication(userAuthenticationEntity);
                     accountService.invalidateAllPreviousEntries(forgotRecoverEntity);
-                    modelAndView.addObject("success", true);
+                    modelAndView.addObject(SUCCESS, true);
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
                 } catch (Exception e) {
                     log.error("Error during updating of the old authentication keys: " + e.getLocalizedMessage());
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-                    modelAndView.addObject("success", false);
+                    modelAndView.addObject(SUCCESS, false);
                 }
             } else {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-                modelAndView.addObject("success", false);
+                modelAndView.addObject(SUCCESS, false);
             }
             return modelAndView;
         }
