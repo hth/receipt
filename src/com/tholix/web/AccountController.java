@@ -93,9 +93,9 @@ public class AccountController {
      * @param result
      * @return
      */
-    @SuppressWarnings("unused")
     @RequestMapping(method = RequestMethod.POST, params = {"recover"})
-    public String recover(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
+    public String recover(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm,
+                          @SuppressWarnings("unused") BindingResult result, final RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("userRegistrationForm", userRegistrationForm);
         return "redirect:" + FORGOT_RECOVER_ACCOUNT + ".htm";
     }

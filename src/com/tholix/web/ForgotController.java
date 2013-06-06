@@ -101,7 +101,7 @@ public class ForgotController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "recover", params = {"recover_account"})
-    public ModelAndView post(@ModelAttribute("accountRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
+    public ModelAndView post(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
         DateTime time = DateUtil.now();
         if(StringUtils.isEmpty(forgotRecoverForm.getEmailId())) {
             httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden to access this page directly");
