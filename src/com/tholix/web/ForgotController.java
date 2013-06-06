@@ -140,7 +140,15 @@ public class ForgotController {
             }
         }
 
-        return new ModelAndView(FORGOT_RECOVER_CONFIRM);
+        // Check the mantra section
+        // http://www.theserverside.com/news/1365146/Redirect-After-Post
+        // Fix for form re-submission is by re-directing to a GET request from POST request
+        return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "recoverConfirm")
+    public String recoverConfirm() {
+        return FORGOT_RECOVER_CONFIRM;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "authenticate")
