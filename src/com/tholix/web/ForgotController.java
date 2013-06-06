@@ -4,11 +4,14 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
 import org.apache.commons.lang3.StringUtils;
@@ -82,7 +85,7 @@ public class ForgotController {
     public ModelAndView loadForm(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, HttpServletResponse httpServletResponse) throws IOException {
         log.info("Recover password process initiated for user: " + userRegistrationForm.getEmailId());
         if(StringUtils.isEmpty(userRegistrationForm.getEmailId())) {
-            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Cannot access recover directly");
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
             return null;
         }
 
@@ -101,10 +104,10 @@ public class ForgotController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "recover", params = {"recover_account"})
-    public ModelAndView post(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
+    public ModelAndView post(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
         DateTime time = DateUtil.now();
         if(StringUtils.isEmpty(forgotRecoverForm.getEmailId())) {
-            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden to access this page directly");
+            httpServletResponse.sendError(SC_FORBIDDEN, "Forbidden to access this page directly");
             return null;
         }
 
@@ -142,13 +145,35 @@ public class ForgotController {
 
         // Check the mantra section
         // http://www.theserverside.com/news/1365146/Redirect-After-Post
-        // Fix for form re-submission is by re-directing to a GET request from POST request
+        // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
+        httpServletRequest.getSession().setAttribute("success_email", true);
         return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
     }
 
+    /**
+     * Add this gymnastic to make sure the page does not process when refreshed again or bookmarked.
+     *
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "recoverConfirm")
-    public String recoverConfirm() {
-        return FORGOT_RECOVER_CONFIRM;
+    public String recoverConfirm(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+        Enumeration<String> attributes = httpServletRequest.getSession().getAttributeNames();
+        while(attributes.hasMoreElements()) {
+            String attributeName = attributes.nextElement();
+            if(attributeName.equals("success_email")) {
+                boolean condition = (boolean) httpServletRequest.getSession().getAttribute("success_email");
+                if(condition) {
+                    //important to invalidate at the end
+                    httpServletRequest.getSession().invalidate();
+                    return FORGOT_RECOVER_CONFIRM;
+                }
+            }
+        }
+        httpServletResponse.sendError(SC_FORBIDDEN, "Forbidden to access this page directly");
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "authenticate")

@@ -8,6 +8,9 @@
     <title><fmt:message key="account.recover.title" /></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <meta HTTP-EQUIV="Pragma" content="no-cache">
+    <meta HTTP-EQUIV="Expires" content="-1">
+
     <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
 
