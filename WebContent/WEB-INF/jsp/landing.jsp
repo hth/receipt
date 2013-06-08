@@ -157,9 +157,9 @@
 
 					    <p>
 					        <form:label for="description" path="description">
-					        Description
+					        Description:
 					        </form:label>
-					        <form:input path="description" size="32"/>
+					        <form:input path="description" size="30"/>
 					    </p>
 					    <p>
 					    	<form:errors path="description" cssClass="error" />
@@ -167,7 +167,7 @@
 
 					    <p>
 					        <form:label for="fileData" path="fileData">
-					        Upload Receipt
+					        Receipt:
 					        </form:label>
 					        <form:input path="fileData" type="file"/>
 					    </p>
