@@ -73,8 +73,7 @@
 		</table>
 	</form:form>
 
-	<br/>
-	Please note: A verification email will be sent to your email address.
+	<p>Please note: A verification email will be sent to your email address.</p>
 
     <p><a href="<c:url value="login.htm"/>">Login</a></p>
 </div>
@@ -84,7 +83,7 @@
         <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
         <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
     </p>
-    <p>Copyright &copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+    <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
 <script type="text/javascript">

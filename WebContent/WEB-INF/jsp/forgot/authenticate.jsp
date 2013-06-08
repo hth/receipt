@@ -70,6 +70,8 @@
             </tr>
         </table>
         </form:form>
+
+        <p><b>* Please update Receipt-O-Fi Mobile App with new Authorization Code found on 'Profile And Preferences' page</b></p>
     </c:if>
 </div>
 
@@ -78,7 +80,7 @@
         <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
         <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
     </p>
-    <p>Copyright &copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+    <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
 </body>

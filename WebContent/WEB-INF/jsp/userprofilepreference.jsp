@@ -148,7 +148,10 @@
 				<form:hidden path="id"/>
 				<div class="divTable">
 					<div class="divRow">
-						<div class="divOfCell600">Name: <b>${userProfile.firstName}  ${userProfile.lastName}</b></div>
+						<div class="divOfCell600">
+                            Name:
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b>${userProfile.firstName}  ${userProfile.lastName}</b></div>
 					</div>
 					<div class="divRow">
 					    <div class="divOfCell600">Registration: <b>${userProfile.registration}</b></div>
@@ -158,8 +161,15 @@
                     </div>
                     <div class="divRow">
                         <div class="divOfCell600">
-                            Mobile App Auth Code: <b>${userProfile.userAuthentication.auth}</b>
+                            Mobile App Auth Code:
+                            <b>${userProfile.userAuthentication.auth}</b>
                         </div>
+                    </div>
+                    <div class="divRow">
+                        <div class="divOfCell600">
+                            Last changed:
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b><fmt:formatDate value="${userProfile.userAuthentication.updated}" type="both" /></b></div>
                     </div>
 					<c:if test="${userSession.level.value > 5}">
 					<div class="divRow">
@@ -307,7 +317,7 @@
         <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
         <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
     </p>
-    <p>Copyright &copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+    <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
 </body>

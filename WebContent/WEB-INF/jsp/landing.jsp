@@ -124,64 +124,71 @@
 	<table>
 		<tr>
 			<td valign="top">
-				<form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
-					<fieldset style="width:310px;">
-					    <legend>Upload Receipt</legend>
+				<table>
+                    <tr>
+                        <form:form modelAttribute="uploadReceiptImage" method="post" enctype="multipart/form-data">
+                            <fieldset style="width:310px;">
+                                <legend>Upload Receipt</legend>
 
-                        <c:choose>
-                        <c:when test="${userSession.pendingCount gt 0}">
-						<div class="ui-widget">
-							<div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
-								<p>
-                                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
+                                <c:choose>
+                                    <c:when test="${userSession.pendingCount gt 0}">
+                                        <div class="ui-widget">
+                                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+                                                <p>
+                                                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
                                     <span style="display:block; width:310px;">
                                         Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${userSession.pendingCount}</strong></a>
                                     </span>
-								</p>
-							</div>
-						</div>
-                        </c:when>
-                        <c:otherwise>
-                        <div class="ui-widget">
-                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
-                                <p>
-                                    <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="ui-widget">
+                                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+                                                <p>
+                                                    <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
                                     <span style="display:block; width:310px;">
                                         No pending receipt
                                     </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <p>
+                                    <form:label for="description" path="description">
+                                        Description:
+                                    </form:label>
+                                    <form:input path="description" size="30"/>
                                 </p>
-                            </div>
-                        </div>
-                        </c:otherwise>
-                        </c:choose>
+                                <p>
+                                    <form:errors path="description" cssClass="error" />
+                                </p>
 
-					    <p>
-					        <form:label for="description" path="description">
-					        Description:
-					        </form:label>
-					        <form:input path="description" size="30"/>
-					    </p>
-					    <p>
-					    	<form:errors path="description" cssClass="error" />
-					    </p>
+                                <p>
+                                    <form:label for="fileData" path="fileData">
+                                        Receipt:
+                                    </form:label>
+                                    <form:input path="fileData" type="file"/>
+                                </p>
 
-					    <p>
-					        <form:label for="fileData" path="fileData">
-					        Receipt:
-					        </form:label>
-					        <form:input path="fileData" type="file"/>
-					    </p>
+                                <p>
+                                    <form:errors path="fileData" cssClass="error" />
+                                </p>
 
-					    <p>
-					    	<form:errors path="fileData" cssClass="error" />
-					    </p>
+                                <p align="center">
+                                    <input type="submit" value="Upload My Receipt"/>
+                                </p>
 
-					    <p align="center">
-					        <input type="submit" value="Upload My Receipt"/>
-					    </p>
-
-					</fieldset>
-			    </form:form>
+                            </fieldset>
+                        </form:form>
+                    </tr>
+                    <tr>
+                        hello
+                    </tr>
+				</table>
 			</td>
 			<td>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -317,7 +324,7 @@
         <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
         <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
     </p>
-    <p>Copyright &copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+    <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
     <c:if test="${bizByExpenseTypes.size() > 0}">
