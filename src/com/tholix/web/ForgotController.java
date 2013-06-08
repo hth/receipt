@@ -57,6 +57,7 @@ import com.tholix.web.validator.ForgotRecoverValidator;
 public class ForgotController {
     private static final Logger log = Logger.getLogger(ForgotController.class);
 
+    private static final String FORGOT_PASSWORD             = "/forgot/password";
     private static final String FORGOT_RECOVER_ACCOUNT      = "/forgot/recover";
     private static final String FORGOT_RECOVER_CONFIRM      = "/forgot/recoverConfirm";
     private static final String FORGOT_RECOVER_AUTH         = "/forgot/authenticate";
@@ -79,6 +80,34 @@ public class ForgotController {
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+
+    @RequestMapping(method = RequestMethod.GET, value = "password")
+    public ModelAndView password(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
+        log.info("Load password recovery page");
+        return new ModelAndView(FORGOT_PASSWORD, "forgotRecoverForm", forgotRecoverForm);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "password", params = {"forgot_password"})
+    public ModelAndView postPassword(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
+        DateTime time = DateUtil.now();
+        forgotRecoverValidator.validate(forgotRecoverForm, result);
+        if(result.hasErrors()) {
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
+
+            ModelAndView modelAndView = new ModelAndView(FORGOT_PASSWORD);
+            modelAndView.addObject("forgotRecoverForm", forgotRecoverForm);
+
+            return modelAndView;
+        }
+
+        mailRecoverLink(forgotRecoverForm);
+
+        // Check the mantra section
+        // http://www.theserverside.com/news/1365146/Redirect-After-Post
+        // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
+        httpServletRequest.getSession().setAttribute(SUCCESS_EMAIL, true);
+        return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
+    }
 
     /**
      * Method just for changing the URL, hence have to use re-direct.
@@ -109,7 +138,7 @@ public class ForgotController {
      * @param result
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, value = "recover", params = {"recover_account"})
+    @RequestMapping(method = RequestMethod.POST, value = "recover", params = {"forgot_recover"})
     public ModelAndView post(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
         DateTime time = DateUtil.now();
         if(StringUtils.isEmpty(forgotRecoverForm.getEmailId())) {
@@ -127,6 +156,16 @@ public class ForgotController {
             return modelAndView;
         }
 
+        mailRecoverLink(forgotRecoverForm);
+
+        // Check the mantra section
+        // http://www.theserverside.com/news/1365146/Redirect-After-Post
+        // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
+        httpServletRequest.getSession().setAttribute(SUCCESS_EMAIL, true);
+        return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
+    }
+
+    private void mailRecoverLink(ForgotRecoverForm forgotRecoverForm) {
         UserProfileEntity userProfileEntity =  accountService.findIfUserExists(forgotRecoverForm.getEmailId());
         if(userProfileEntity != null) {
             try {
@@ -148,12 +187,6 @@ public class ForgotController {
                 log.error("Eat exception during sending and formulating email: " + exception.getLocalizedMessage());
             }
         }
-
-        // Check the mantra section
-        // http://www.theserverside.com/news/1365146/Redirect-After-Post
-        // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
-        httpServletRequest.getSession().setAttribute(SUCCESS_EMAIL, true);
-        return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
     }
 
     /**

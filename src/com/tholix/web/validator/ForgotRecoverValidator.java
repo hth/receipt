@@ -1,5 +1,6 @@
 package com.tholix.web.validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.validation.Errors;
@@ -25,12 +26,11 @@ public class ForgotRecoverValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         log.info("Executing validation for new bizForm");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"EmailId"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "captchaConfirm", "field.required", new Object[]{"Captcha"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email Id"});
 
         ForgotRecoverForm frf = (ForgotRecoverForm) obj;
-        if(!frf.isCaptchaEqual()) {
-            errors.rejectValue("captchaConfirm", "field.unmatched", new Object[] { "" }, "Entered value does not match");
+        if(!StringUtils.isEmpty(frf.getCaptcha())) {
+            errors.rejectValue("captcha", "field.unmatched", new Object[] { "" }, "Entered value does not match");
         }
     }
 }

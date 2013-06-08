@@ -6,10 +6,8 @@ package com.tholix.web.form;
  * Time: 1:19 AM
  */
 public class ForgotRecoverForm {
-
     private String emailId;
     private String captcha;
-    private String captchaConfirm;
 
     public static ForgotRecoverForm newInstance() {
         return new ForgotRecoverForm();
@@ -29,20 +27,5 @@ public class ForgotRecoverForm {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
-    }
-
-    public String getCaptchaConfirm() {
-        return captchaConfirm;
-    }
-
-    public void setCaptchaConfirm(String captchaConfirm) {
-        this.captchaConfirm = captchaConfirm;
-    }
-
-    public boolean isCaptchaEqual() {
-        if(getCaptchaConfirm().equals(getCaptcha())) {
-            return true;
-        }
-        return false;
     }
 }

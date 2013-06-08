@@ -75,6 +75,8 @@
 
 	<br/>
 	Please note: A verification email will be sent to your email address.
+
+    <p><a href="<c:url value="login.htm"/>">Login</a></p>
 </div>
 
 <div class="footer">

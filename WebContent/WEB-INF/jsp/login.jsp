@@ -49,9 +49,11 @@
 		</table>
 	</form:form>
 
-
-	<br>
-	<a href="<c:url value="new.htm"/>">New Account Sign In</a>
+	<p>
+        <a href="<c:url value="new.htm"/>">Register Now</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="forgot/password.htm">Forgot your password ?</a>
+    </p>
 </div>
 
 <div class="footer">
