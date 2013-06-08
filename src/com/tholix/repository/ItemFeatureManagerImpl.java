@@ -69,7 +69,10 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 		if (mongoTemplate.collectionExists(TABLE)) {
 			mongoTemplate.dropCollection(TABLE);
 		}
-
 	}
 
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

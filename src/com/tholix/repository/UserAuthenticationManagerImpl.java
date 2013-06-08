@@ -85,4 +85,9 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 			mongoTemplate.dropCollection(TABLE);
 		}
 	}
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

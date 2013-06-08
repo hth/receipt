@@ -3,6 +3,8 @@
  */
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ import com.mongodb.WriteResult;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
-import org.bson.types.ObjectId;
 
 import com.tholix.domain.UploadReceiptImage;
 
@@ -127,4 +128,9 @@ public class StorageManagerImpl implements StorageManager {
 	public GridFSDBFile getByFilename(String filename) {
 		return gridFs.findOne(filename);
 	}
+
+    @Override
+    public long collectionSize() {
+        return getSize();
+    }
 }

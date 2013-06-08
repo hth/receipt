@@ -56,4 +56,9 @@ public class BrowserManagerImpl implements BrowserManager {
     public void dropCollection() {
         throw new UnsupportedOperationException("Method not implemented");
     }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

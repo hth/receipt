@@ -120,4 +120,9 @@ public class BizStoreManagerImpl implements BizStoreManager {
         Sort sort = new Sort(Sort.Direction.DESC, "created");
         return mongoTemplate.find(Query.query(Criteria.where("bizName").is(bizNameEntity)).with(sort).limit(limit), BizStoreEntity.class, TABLE);
     }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

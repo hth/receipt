@@ -93,4 +93,9 @@ public class BizNameManagerImpl implements BizNameManager {
         }
         return list;
     }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

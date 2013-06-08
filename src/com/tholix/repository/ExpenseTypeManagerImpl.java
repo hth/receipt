@@ -91,4 +91,9 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
         mongoTemplate.updateFirst(query, update, ExpenseTypeEntity.class);
     }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

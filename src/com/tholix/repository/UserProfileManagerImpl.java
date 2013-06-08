@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
-import org.bson.types.ObjectId;
 
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
@@ -126,5 +125,10 @@ public class UserProfileManagerImpl implements UserProfileManager {
     public UserProfileEntity findOneByEmail(String emailId) {
         Criteria a = Criteria.where("emailId").is(emailId);
         return mongoTemplate.findOne(Query.query(a), UserProfileEntity.class, TABLE);
+    }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
     }
 }

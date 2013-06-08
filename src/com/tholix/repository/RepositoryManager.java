@@ -51,4 +51,9 @@ public interface RepositoryManager<T> extends Serializable {
 	 * Drops the collection if the collection does already exists.
 	 */
 	public void dropCollection();
+
+    /**
+     * Collection size
+     */
+    public long collectionSize();
 }

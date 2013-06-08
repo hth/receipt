@@ -38,6 +38,4 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     List<String> findTitles(String title);
 
     ReceiptEntity findWithReceiptOCR(String receiptOCRId);
-
-    long collectionSize();
 }

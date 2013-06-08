@@ -208,4 +208,9 @@ public class MessageManagerImpl implements MessageManager {
     public void dropCollection() {
         throw new UnsupportedOperationException("Method not implemented");
     }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }
