@@ -115,7 +115,7 @@
 <div class="wrapper">
  	<div class="divTable">
 		<div class="divRow">
-            <div class="divOfCell300"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="41px"></div>
+            <div class="divOfCell300"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"></div>
 			<div class="divOfCell200"><h3><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${sessionScope['userSession'].emailId}</a></h3></div>
 		    <div class="divOfCell200" id="active-tab-2"><h3>Total Expense: <a href="#"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
@@ -157,7 +157,7 @@
 
 					    <p>
 					        <form:label for="description" path="description">
-					        &nbsp;&nbsp;&nbsp;&nbsp;Description:&nbsp;
+					        Description
 					        </form:label>
 					        <form:input path="description" size="32"/>
 					    </p>
@@ -167,7 +167,7 @@
 
 					    <p>
 					        <form:label for="fileData" path="fileData">
-					        Receipt Image:&nbsp;
+					        Upload Receipt
 					        </form:label>
 					        <form:input path="fileData" type="file"/>
 					    </p>
@@ -280,18 +280,22 @@
             <table>
                 <tr>
                     <td style="vertical-align: top">
-                        <fieldset style="width:335px;">
+                        <fieldset style="width:295px;">
                             <legend>Total Expense</legend>
                             <div class="divTable">
                                 <div class="headRow">
-                                    <div class="divCell">Total</div>
-                                    <div class="divCell">Tax</div>
-                                    <div class="divOfCell125">Total without Tax</div>
+                                    <div class="divCell">Sub Total</div>
+                                    <div class="divOfCell75">
+                                        &nbsp;&nbsp;&nbsp;Tax
+                                    </div>
+                                    <div class="divOfCell110">
+                                        &nbsp;&nbsp;&nbsp;Total
+                                    </div>
                                 </div>
                                 <div class="divRow">
                                     <div class="divCell">${total}</div>
-                                    <div class="divCell">${tax}</div>
-                                    <div class="divOfCell125">${totalWithoutTax}</div>
+                                    <div class="divOfCell75">+ ${tax}</div>
+                                    <div class="divOfCell110">= ${totalWithoutTax}</div>
                                 </div>
                             </div>
                         </fieldset>

@@ -118,17 +118,17 @@
 </head>
 <body>
 <div class="wrapper">
-    <div style='width:229px;'>
-        <div style='width:19.25px; height: 19.25px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .05em;'>
+    <div style='width:243px;'>
+        <div style='width:20.25px; height: 20.25px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 0em .0em; padding: .14em;'>
             <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="19px" width="19px">
         </div>
-        <div style='width:60px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 1em .0em; padding: .5em;'>
+        <div style='width:65px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em .0em .0em; padding: .5em;'>
             &nbsp;&nbsp;&nbsp;
             <a href="${pageContext.request.contextPath}/landing.htm" style="text-decoration:none;">
                 <img src="../images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
             </a>
         </div>
-        <div style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 1em .0em; padding: .5em;'>
+        <div style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 0em .0em; padding: .5em;'>
             <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm" style="text-decoration:none;">${sessionScope['userSession'].emailId}</a>
         </div>
     </div>
@@ -148,14 +148,22 @@
 				<form:hidden path="id"/>
 				<div class="divTable">
 					<div class="divRow">
-						<div class="divOfCell400">Name: ${userProfile.firstName}  ${userProfile.lastName}</div>
+						<div class="divOfCell600">Name: <b>${userProfile.firstName}  ${userProfile.lastName}</b></div>
 					</div>
 					<div class="divRow">
-					    <div class="divOfCell400">Registration: ${userProfile.registration}</div>
+					    <div class="divOfCell600">Registration: <b>${userProfile.registration}</b></div>
 					</div>
+                    <div class="divRow">
+                        <div class="divOfCell600">&nbsp;</div>
+                    </div>
+                    <div class="divRow">
+                        <div class="divOfCell600">
+                            Mobile App Auth Code: <b>${userProfile.userAuthentication.auth}</b>
+                        </div>
+                    </div>
 					<c:if test="${userSession.level.value > 5}">
 					<div class="divRow">
-						<div class="divOfCell400">Level:
+						<div class="divOfCell600">Level:
 
 						<form:select path="level" >
 							<form:option value="0" label="Select Account Type" />
@@ -169,7 +177,7 @@
 
 			   	<c:if test="${userSession.level.value > 5}">
 			   	<div class="divRow">
-					<div class="divOfCell400"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
+					<div class="divOfCell600"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
 				</div>
 				</c:if>
 			</form:form>
@@ -178,23 +186,20 @@
 			<form:form modelAttribute="userPreference">
 				<div class="divTable">
 					<div class="divRow">
-						<div class="divOfCell400">Account Type: ${userPreference.accountType.description}</div>
-					</div>
-					<div class="divRow">
-					    <div class="divOfCell400"></div>
+						<div class="divOfCell600">Account Type: <b>${userPreference.accountType.description}</b></div>
 					</div>
 			   	</div>
 			</form:form>
 
-            <br/>
+            <p/>
 
             <form:form modelAttribute="expenseTypeForm" method="post" action="addExpenseType.htm">
                 <form:errors path="expName" cssClass="error" />
                 <form:hidden path="forYear" />
-                <table border="0" style="width: 195px" class="etable">
+                <table border="0" style="width: 225px" class="etable">
                     <tr>
                         <td style="padding:3px;">
-                            &nbsp;New Expense Type <form:input path="expName" size="6" /> <sup>*</sup>
+                            &nbsp;Add Expense Type <form:input path="expName" size="6" /> <sup>*</sup>
                         </td>
                     </tr>
                     <tr>
