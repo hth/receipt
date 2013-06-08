@@ -150,30 +150,37 @@
 					<div class="divRow">
 						<div class="divOfCell600">
                             Name:
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <b>${userProfile.firstName}  ${userProfile.lastName}</b></div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b>${userProfile.firstName}  ${userProfile.lastName}</b>
+                        </div>
 					</div>
 					<div class="divRow">
-					    <div class="divOfCell600">Registration: <b>${userProfile.registration}</b></div>
+					    <div class="divOfCell600">
+                        Registration:
+                        &nbsp;
+                        <b>${userProfile.registration}</b></div>
 					</div>
                     <div class="divRow">
                         <div class="divOfCell600">&nbsp;</div>
                     </div>
                     <div class="divRow">
                         <div class="divOfCell600">
-                            Mobile App Auth Code:
+                            Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;
                             <b>${userProfile.userAuthentication.auth}</b>
                         </div>
                     </div>
                     <div class="divRow">
                         <div class="divOfCell600">
                             Last changed:
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <b><fmt:formatDate value="${userProfile.userAuthentication.updated}" type="both" /></b></div>
                     </div>
 					<c:if test="${userSession.level.value > 5}">
+                    <div class="divRow">
+                        <div class="divOfCell600">&nbsp;</div>
+                    </div>
 					<div class="divRow">
-						<div class="divOfCell600">Level:
+						<div class="divOfCell600">
+                        Level:
 
 						<form:select path="level" >
 							<form:option value="0" label="Select Account Type" />
