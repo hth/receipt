@@ -88,6 +88,18 @@ html, body {
      width:100px;
      background-color:#FFFFFF;
 }
+.divOfCell125 {
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:125px;
+    background-color:#FFFFFF;
+}
+.divOfCell150 {
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:150px;
+    background-color:#FFFFFF;
+}
 .divOfCell200 {
      float:left;/*fix for  buggy browsers*/
      display:table-column;
@@ -101,9 +113,21 @@ html, body {
      background-color:#FFFFFF;
 }
 .divOfCell400 {
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:400px;
+    background-color:#FFFFFF;
+}
+.divOfCell500 {
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:500px;
+    background-color:#FFFFFF;
+}
+.divOfCell600 {
      float:left;/*fix for  buggy browsers*/
      display:table-column;
-     width:400px;
+     width:600px;
      background-color:#FFFFFF;
 }
 /* End*/

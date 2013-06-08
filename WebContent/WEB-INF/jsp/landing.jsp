@@ -12,7 +12,7 @@
     <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
+    <link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
@@ -115,7 +115,7 @@
 <div class="wrapper">
  	<div class="divTable">
 		<div class="divRow">
-            <div class="divOfCell200"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="27.5px"></div>
+            <div class="divOfCell300"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="41px"></div>
 			<div class="divOfCell200"><h3><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${sessionScope['userSession'].emailId}</a></h3></div>
 		    <div class="divOfCell200" id="active-tab-2"><h3>Total Expense: <a href="#"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
@@ -235,13 +235,13 @@
 		</ul>
 		<div id="tabs-1">
 			<c:if test="${receipts.size() > 0}">
-                <table style="width: 20%">
+                <table>
                     <tr>
                         <td style="vertical-align: top">
-                            <table style="width: 450px" class="etable">
+                            <table style="width: 470px" class="etable">
                                 <tr>
                                     <th style="padding:3px;"></th>
-                                    <th style="padding:3px;">Title</th>
+                                    <th style="padding:3px;">Business</th>
                                     <th style="padding:3px;">Receipt Date</th>
                                     <th style="padding:3px;">Tax</th>
                                     <th style="padding:3px;">Total</th>
@@ -277,21 +277,21 @@
 			</c:if>
 		</div>
 		<div id="tabs-2">
-            <table style="width: 20%">
+            <table>
                 <tr>
                     <td style="vertical-align: top">
-                        <fieldset style="width:315px;">
+                        <fieldset style="width:335px;">
                             <legend>Total Expense</legend>
                             <div class="divTable">
                                 <div class="headRow">
                                     <div class="divCell">Total</div>
                                     <div class="divCell">Tax</div>
-                                    <div class="divCell">Total without Tax</div>
+                                    <div class="divOfCell125">Total without Tax</div>
                                 </div>
                                 <div class="divRow">
                                     <div class="divCell">${total}</div>
                                     <div class="divCell">${tax}</div>
-                                    <div class="divCell">${totalWithoutTax}</div>
+                                    <div class="divOfCell125">${totalWithoutTax}</div>
                                 </div>
                             </div>
                         </fieldset>
