@@ -33,7 +33,7 @@ public final class AvailabilityStatus {
     }
 
     public static AvailabilityStatus notAvailable(String name) {
-        String[] suggestions = new String[] {"Try password <a href\"=www.google.com\">recovery.</a>"};
+        String[] suggestions = new String[] {"Try password <a href\"/receipt/forgot/password.htm\">Message Status: OK</a>"};
         return new AvailabilityStatus(false, suggestions);
     }
 

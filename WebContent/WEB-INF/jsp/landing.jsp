@@ -186,12 +186,19 @@
                         </form:form>
                     </tr>
                     <tr>
-                        hello
+                        <p>
+                        Friend's <input id="inviteEmailId" type="text"
+                                               onfocus="this.value=''; setInviteBackGroundColor('white');"
+                                               onblur="setInviteBackGroundColor('#fefefe')"
+                                               value="  Email address here ..."
+                                               size="30" />
+                        <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" size="5">
+                        </p>
                     </tr>
 				</table>
 			</td>
 			<td>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
 			<td valign="top">
 				<div>
@@ -233,7 +240,6 @@
 	</table>
 
 	<!-- Tabs -->
-	<h2 class="demoHeaders">Dashboard</h2>
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-1">Receipts</a></li>
@@ -658,5 +664,22 @@
         });
     </script>
     </c:if>
+<script>
+    function setInviteBackGroundColor(color) {
+        document.getElementById("inviteEmailId").style.background=color
+    }
+
+    function submitInvitationForm() {
+        var inviteEmailId = jQuery("#inviteEmailId").val();
+        var object = {emailId: inviteEmailId};
+
+        jQuery.ajax("${pageContext. request. contextPath}/landing/invite.htm",
+                {
+                    type: "POST",
+                    data: object
+                });
+    }
+</script>
+
 </body>
 </html>

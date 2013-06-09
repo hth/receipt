@@ -3,7 +3,11 @@
  */
 package com.tholix.web;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
+
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.log4j.Logger;
 
@@ -36,7 +40,6 @@ import com.tholix.web.validator.BizFormValidator;
 /**
  * @author hitender
  * @since Mar 26, 2013 1:14:24 AM
- * {@link http://viralpatel.net/blogs/spring-3-mvc-autocomplete-json-tutorial/}
  */
 @Controller
 @RequestMapping(value = "/admin")
@@ -65,10 +68,32 @@ public class AdminLandingController {
         return new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
 	}
 
+    /**
+     * Note: UserSession parameter is to make sure no outside get requests are made.
+     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
+     *        method fails on invalid request without User Session and user sees 500 error message.
+     *
+     * @param name Search for user name
+     * @param userSession
+     * @param httpServletResponse
+     * @return
+     */
 	@RequestMapping(value = "/find_user", method = RequestMethod.GET)
 	public @ResponseBody
-    List<String> findUser(@RequestParam("term") String name) {
-		return adminLandingService.findMatchingUsers(name);
+    List<String> findUser(@RequestParam("term") String name, @ModelAttribute("userSession") UserSession userSession,
+                          HttpServletResponse httpServletResponse) throws IOException {
+
+        if(userSession != null) {
+            if(userSession.getLevel() == UserLevelEnum.ADMIN) {
+		        return adminLandingService.findMatchingUsers(name);
+            } else {
+                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+                return null;
+            }
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return null;
+        }
 	}
 
 	@RequestMapping(value = "/landing", method = RequestMethod.POST)

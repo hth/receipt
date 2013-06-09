@@ -39,15 +39,15 @@
 
     <h2>Search users to change profile settings</h2>
     <form:form method="post" modelAttribute="userSearchForm" action="landing.htm">
-        <table style="width: 220px" class="etable">
+        <table style="width: 275px" class="etable">
             <tr>
                 <th>Search Name: </th>
                 <td><form:input path="userName" /></td>
             </tr>
             <c:if test="${users.size() > 0}">
-                <table style="width: 250px" class="etable">
+                <table style="width: 275px" class="etable">
                     <tbody>
-                        <tr style="background-color:orange;color:white;">
+                        <tr>
                             <th style="padding:3px;"></th>
                             <th style="padding:3px;">Level</th>
                             <th style="padding:3px;">Name</th>
@@ -79,7 +79,7 @@
     <form:form method="post" modelAttribute="bizForm" action="addBusiness.htm">
         <form:errors path="bizError" cssClass="error" />
         <form:errors path="bizSuccess" cssClass="success" />
-        <table style="width: 650px" class="etable">
+        <table style="width: 700px" class="etable">
             <tr>
                 <td colspan="2">
                     <form:label for="bizName.name" path="bizName.name" cssErrorClass="error">Biz Name: </form:label>

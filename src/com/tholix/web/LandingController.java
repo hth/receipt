@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -170,12 +171,13 @@ public class LandingController extends BaseController {
 	}
 
     /**
-     * Provides user information of home page through a web service URL
+     * Provides user information of home page through a REST URL
      *
      * @param profileId
+     * @param authKey
      * @return
      */
-    @RequestMapping(value = "/user/{profileId}/auth/{authKey}", method=RequestMethod.GET)
+    @RequestMapping(value = "/user/{profileId}/auth/{authKey}", method = RequestMethod.GET)
     public @ResponseBody
     Base loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
@@ -200,6 +202,12 @@ public class LandingController extends BaseController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return header;
         }
+    }
+
+    /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */
+    @RequestMapping(value = "/invite", method = RequestMethod.POST)
+    public void invite(@RequestParam(value="emailId") String emailId) {
+        log.info("Invitation sent to: " + emailId);
     }
 
     private void populate(UserProfileEntity userProfile) {

@@ -101,7 +101,12 @@ public class AccountController {
     }
 
     /**
-     * Ajax call to check if the account is available to register
+     * Ajax call to check if the account is available to register.
+     *
+     * Note: This code can be accessed from outside without any checking. Mostly will provide information about user is
+     *        registered in the system or not.
+     *
+     *  TODO: Change it. This is currently a threat.
      *
      * @param emailId
      * @return

@@ -125,7 +125,7 @@ public class ReceiptController extends BaseController {
     }
 
     /**
-     * Delete receipt through REST request
+     * Delete receipt through REST URL
      *
      * @param receiptId receipt id to delete
      * @param profileId user id
