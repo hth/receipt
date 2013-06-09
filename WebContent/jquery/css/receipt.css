@@ -208,7 +208,9 @@ html, body {
 }
 /* End */
 
+/** This is set for input text field size */
 input { font-size: 13px; }
+/** End of input text field size */
 
 /* This is for userId and home on the top of the page */
 a img, a span { vertical-align: middle; }
