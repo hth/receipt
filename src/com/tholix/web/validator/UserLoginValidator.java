@@ -16,6 +16,7 @@ import com.tholix.web.form.UserLoginForm;
  * @since Dec 16, 2012 6:52:46 PM
  */
 public class UserLoginValidator implements Validator {
+    @SuppressWarnings("unused")
 	private static final Logger log = Logger.getLogger(UserLoginValidator.class);
 
 	@Override
@@ -30,7 +31,7 @@ public class UserLoginValidator implements Validator {
 
 		UserLoginForm userLoginForm = (UserLoginForm) obj;
 		if (!userLoginForm.getEmailId().matches(UserRegistrationValidator.EMAIL_REGEX)) {
-			errors.rejectValue("emailId", "email.notValid", new Object[] { userLoginForm.getEmailId() }, "Not a valid email");
+			errors.rejectValue("emailId", "field.email.address.not.valid", new Object[] { userLoginForm.getEmailId() }, "Email Address provided is not valid");
 		}
 
 		if (userLoginForm.getPassword().length() < 4) {

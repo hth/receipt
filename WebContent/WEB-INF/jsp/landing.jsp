@@ -131,35 +131,35 @@
                                 <legend>Upload Receipt</legend>
 
                                 <c:choose>
-                                    <c:when test="${userSession.pendingCount gt 0}">
-                                        <div class="ui-widget">
-                                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
-                                                <p>
-                                                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-                                    <span style="display:block; width:310px;">
-                                        Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${userSession.pendingCount}</strong></a>
-                                    </span>
-                                                </p>
-                                            </div>
+                                <c:when test="${userSession.pendingCount gt 0}">
+                                    <div class="ui-widget">
+                                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+                                            <p>
+                                                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
+                                                <span style="display:block; width:310px;">
+                                                    Pending receipt(s) to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${userSession.pendingCount}</strong></a>
+                                                </span>
+                                            </p>
                                         </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="ui-widget">
-                                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
-                                                <p>
-                                                    <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
-                                    <span style="display:block; width:310px;">
-                                        No pending receipt
-                                    </span>
-                                                </p>
-                                            </div>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="ui-widget">
+                                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+                                            <p>
+                                                <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
+                                                <span style="display:block; width:310px;">
+                                                    No pending receipt
+                                                </span>
+                                            </p>
                                         </div>
-                                    </c:otherwise>
+                                    </div>
+                                </c:otherwise>
                                 </c:choose>
 
                                 <p>
                                     <form:label for="description" path="description">
-                                        Description:
+                                    Description:
                                     </form:label>
                                     <form:input path="description" size="30"/>
                                 </p>
@@ -169,16 +169,16 @@
 
                                 <p>
                                     <form:label for="fileData" path="fileData">
-                                        Receipt:
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Receipt:
                                     </form:label>
-                                    <form:input path="fileData" type="file"/>
+                                    <form:input path="fileData" type="file" size="17"/>
                                 </p>
 
                                 <p>
                                     <form:errors path="fileData" cssClass="error" />
                                 </p>
 
-                                <p align="center">
+                                <p style="text-align: center">
                                     <input type="submit" value="Upload My Receipt"/>
                                 </p>
 
@@ -190,10 +190,11 @@
                         Friend's <input id="inviteEmailId" type="text"
                                                onfocus="this.value=''; setInviteBackGroundColor('white');"
                                                onblur="setInviteBackGroundColor('#fefefe')"
-                                               value="  Email address here ..."
+                                               value=" Email address here ..."
                                                size="30" />
                         <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" size="5">
                         </p>
+                        <div id="info" style="color: green;"></div>
                     </tr>
 				</table>
 			</td>
@@ -673,11 +674,25 @@
         var inviteEmailId = jQuery("#inviteEmailId").val();
         var object = {emailId: inviteEmailId};
 
-        jQuery.ajax("${pageContext. request. contextPath}/landing/invite.htm",
-                {
-                    type: "POST",
-                    data: object
-                });
+        $.ajax({
+            type: "POST",
+            url: "${pageContext. request. contextPath}/landing/invite.htm",
+            data: object,
+            success: function(response) {
+                $('#info').html(response);
+                $('#inviteEmailId').val(' Email address here ...');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        });
+
+        <%--jQuery.ajax("${pageContext. request. contextPath}/landing/invite.htm",--%>
+                <%--{--%>
+                    <%--type: "POST",--%>
+                    <%--data: object--%>
+                <%--});--%>
     }
 </script>
 

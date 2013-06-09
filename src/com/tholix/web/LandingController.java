@@ -206,8 +206,10 @@ public class LandingController extends BaseController {
 
     /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
-    public void invite(@RequestParam(value="emailId") String emailId) {
+    public @ResponseBody
+    String invite(@RequestParam(value="emailId") String emailId) {
         log.info("Invitation sent to: " + emailId);
+        return "Invitation Email Sent to: " + emailId;
     }
 
     private void populate(UserProfileEntity userProfile) {

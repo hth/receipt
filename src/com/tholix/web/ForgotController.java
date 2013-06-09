@@ -1,28 +1,17 @@
 package com.tholix.web;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +25,7 @@ import com.tholix.domain.ForgotRecoverEntity;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.service.AccountService;
+import com.tholix.service.MailService;
 import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
@@ -63,8 +53,6 @@ public class ForgotController {
     private static final String FORGOT_RECOVER_AUTH         = "/forgot/authenticate";
     private static final String FORGOT_RECOVER_AUTH_CONFIRM = "/forgot/authenticateConfirm";
 
-    private static final String SUBJECT         = "How to reset your Receipt-O-Fi ID password.";
-
     /** Used in session */
     private static final String SUCCESS_EMAIL   = "success_email";
 
@@ -72,14 +60,10 @@ public class ForgotController {
     private static final String SUCCESS         = "success";
 
     @Autowired private AccountService accountService;
-    @Autowired private MailSender mailSender;
-    @Autowired private SimpleMailMessage simpleMailMessage;
     @Autowired private ForgotRecoverValidator forgotRecoverValidator;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private ForgotAuthenticateValidator forgotAuthenticateValidator;
-
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+    @Autowired private MailService mailService;
 
     @RequestMapping(method = RequestMethod.GET, value = "password")
     public ModelAndView password(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
@@ -100,7 +84,7 @@ public class ForgotController {
             return modelAndView;
         }
 
-        mailRecoverLink(forgotRecoverForm);
+        mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
 
         // Check the mantra section
         // http://www.theserverside.com/news/1365146/Redirect-After-Post
@@ -156,37 +140,13 @@ public class ForgotController {
             return modelAndView;
         }
 
-        mailRecoverLink(forgotRecoverForm);
+        mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
 
         // Check the mantra section
         // http://www.theserverside.com/news/1365146/Redirect-After-Post
         // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
         httpServletRequest.getSession().setAttribute(SUCCESS_EMAIL, true);
         return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
-    }
-
-    private void mailRecoverLink(ForgotRecoverForm forgotRecoverForm) {
-        UserProfileEntity userProfileEntity =  accountService.findIfUserExists(forgotRecoverForm.getEmailId());
-        if(userProfileEntity != null) {
-            try {
-                Configuration cfg = freemarkerConfiguration.createConfiguration();
-                Template template = cfg.getTemplate("text-account-recover.ftl");
-                final String text = processPasswordRest(template, userProfileEntity);
-
-                try {
-                    //TODO change this to real user id instead
-                    simpleMailMessage.setTo("admin@tholix.com");
-                    simpleMailMessage.setSubject(SUBJECT);
-                    simpleMailMessage.setText(text);
-
-                    mailSender.send(simpleMailMessage);
-                } catch(MailException exception) {
-                    log.error("Eat exception during sending and formulating email: " + exception.getLocalizedMessage());
-                }
-            } catch (IOException | TemplateException exception) {
-                log.error("Eat exception during sending and formulating email: " + exception.getLocalizedMessage());
-            }
-        }
     }
 
     /**
@@ -268,14 +228,5 @@ public class ForgotController {
             }
             return modelAndView;
         }
-    }
-
-    private String processPasswordRest(Template template, UserProfileEntity userProfileEntity) throws IOException, TemplateException {
-        ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity);
-
-        Map<String, String> rootMap = new HashMap<>();
-        rootMap.put("to", userProfileEntity.getName());
-        rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
-        return processTemplateIntoString(template, rootMap);
     }
 }

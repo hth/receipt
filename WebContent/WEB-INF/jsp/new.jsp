@@ -27,36 +27,36 @@
 		<fmt:message key="signup.heading" />
 	</h2>
 	<form:form method="post" modelAttribute="userRegistrationForm" action="new.htm">
-		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="800px">
+		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="600px">
 			<tr>
-				<td align="right" width="10%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
+				<td align="right" width="19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
 				<td width="30%"><form:input path="firstName" /></td>
-				<td width="60%"><form:errors path="firstName" cssClass="error" /></td>
+				<td width="51%"><form:errors path="firstName" cssClass="error" /></td>
 			</tr>
 			<tr>
-				<td align="right" width="10%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
+				<td align="right" width="19%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
 				<td width="30%"><form:input path="lastName" /></td>
-				<td width="60%"><form:errors path="lastName" cssClass="error" /></td>
+				<td width="51%"><form:errors path="lastName" cssClass="error" /></td>
 			</tr>
 			<tr>
-				<td align="right" width="10%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email ID:</form:label></td>
+				<td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
 				<td width="30%"><form:input path="emailId" /></td>
-				<td width="60%"><form:errors path="emailId" cssClass="error" id="emailId.errors"/></td>
+				<td width="51%"><form:errors path="emailId" cssClass="error" id="emailId.errors"/></td>
 			</tr>
 			<tr>
-				<td align="right" width="10%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
+				<td align="right" width="19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
 				<td width="30%"><form:input path="password" /></td>
-				<td width="60%"><form:errors path="password" cssClass="error" /></td>
+				<td width="51%"><form:errors path="password" cssClass="error" /></td>
 			</tr>
 			<tr>
-				<td align="right" width="10%"><form:label for="accountType" path="accountType" cssErrorClass="error">Account Type:</form:label></td>
+				<td align="right" width="19%"><form:label for="accountType" path="accountType" cssErrorClass="error">Account Type:</form:label></td>
 				<td width="30%">
 					<form:select path="accountType" >
 						<form:option value="0" label="Select Account Type" />
 						<form:options itemValue="name" itemLabel="description" />
 					</form:select>
 				</td>
-				<td width="60%"><form:errors path="accountType" cssClass="error" /></td>
+				<td width="51%"><form:errors path="accountType" cssClass="error" /></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>

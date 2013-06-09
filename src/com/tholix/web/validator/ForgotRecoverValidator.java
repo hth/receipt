@@ -1,6 +1,7 @@
 package com.tholix.web.validator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 
 import org.springframework.validation.Errors;
@@ -31,6 +32,11 @@ public class ForgotRecoverValidator implements Validator {
         ForgotRecoverForm frf = (ForgotRecoverForm) obj;
         if(!StringUtils.isEmpty(frf.getCaptcha())) {
             errors.rejectValue("captcha", "field.unmatched", new Object[] { "" }, "Entered value does not match");
+        }
+
+        EmailValidator emailValidator = EmailValidator.getInstance();
+        if(!emailValidator.isValid(frf.getEmailId())) {
+            errors.rejectValue("emailId", "field.email.address.not.valid", new Object[] { frf.getEmailId() }, "Email Address provided is not valid");
         }
     }
 }

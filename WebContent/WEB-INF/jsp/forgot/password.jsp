@@ -25,16 +25,16 @@
         <fmt:message key="account.recover.title" />
     </h2>
     <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
-        <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="800px">
+        <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="600px">
             <span style="display:none;visibility:hidden;">
                 <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
                 <form:input path="captcha" />
                 <form:errors path="captcha" cssClass="error" />
             </span>
             <tr>
-                <td align="right" width="10%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email ID:</form:label></td>
-                <td width="20%"><form:input path="emailId" /></td>
-                <td width="70%"><form:errors path="emailId" cssClass="error" /></td>
+                <td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
+                <td width="30%"><form:input path="emailId" /></td>
+                <td width="51%"><form:errors path="emailId" cssClass="error" /></td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
@@ -45,6 +45,8 @@
             </tr>
         </table>
     </form:form>
+
+    <p><a href="<c:url value="../login.htm"/>">Login</a></p>
 </div>
 
 <div class="footer">

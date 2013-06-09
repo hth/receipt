@@ -51,9 +51,9 @@ public class UserRegistrationValidator implements Validator {
 
 		if (userRegistration.getEmailId() != null && !userRegistration.getEmailId().matches(EMAIL_REGEX)) {
 			errors.rejectValue("emailId",
-                    "email.notValid",
+                    "field.email.address.not.valid",
                     new Object[] { userRegistration.getEmailId() },
-                    "Not a valid Email Address");
+                    "Email Address provided is not valid");
 		}
 
 		if (userRegistration.getPassword() != null && userRegistration.getPassword().length() < 4) {
