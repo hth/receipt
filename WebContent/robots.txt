@@ -1,6 +1,11 @@
-User-Agent: *
+User-agent: *
+Disallow: /
 Disallow: /index.jsp
 Disallow: /400.html
+Disallow: /403.html
+Disallow: /404.html
+Disallow: /405.html
+Disallow: /414.html
 Disallow: /500.html
 Disallow: /*?*
 Disallow: /receipt/
