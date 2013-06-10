@@ -14,13 +14,26 @@
 
     <link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
-	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
+	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
+	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
+    <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
 
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
     <script type='text/javascript' src="jquery/js/highcharts.js"></script>
+
+
+    <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#jquery-wrapped-fine-uploader').fineUploader({
+                request: {
+                    endpoint: 'server/handleUploads'
+                }
+            });
+        });
+    </script>
 
 	<!-- For tabs -->
 	<script>
@@ -178,9 +191,12 @@
                                     <form:errors path="fileData" cssClass="error" />
                                 </p>
 
-                                <p style="text-align: center">
-                                    <input type="submit" value="Upload My Receipt"/>
-                                </p>
+                                <%--<p style="text-align: center">--%>
+                                    <%--<input type="submit" value="Upload My Receipt"/>--%>
+                                <%--</p>--%>
+
+                                <%--http://stackoverflow.com/questions/7246041/spring-mvc-with-ajax-file-upload-and-multipartfile--%>
+                                <div id="jquery-wrapped-fine-uploader"></div>
 
                             </fieldset>
                         </form:form>
@@ -223,6 +239,7 @@
 								editable : false,
 								events : [
 								<% Iterator<ReceiptGrouped> receiptGroupedIterator = (Iterator<ReceiptGrouped>) request.getAttribute("receiptGrouped"); %>
+                                <c:if test="${!empty receiptGroupedIterator}">
 								<% while(receiptGroupedIterator.hasNext()) { %>
 								{
                                     <% ReceiptGrouped receiptGrouped = receiptGroupedIterator.next(); %>
@@ -232,6 +249,7 @@
 									url   : '${pageContext.request.contextPath}/day.htm?date=<%= receiptGrouped.getDate().getTime() %>',
 								} ,
 								<% } %>
+                                </c:if>
 								]
 							});
 
