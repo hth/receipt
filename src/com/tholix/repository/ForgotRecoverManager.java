@@ -26,5 +26,5 @@ public interface ForgotRecoverManager extends RepositoryManager<ForgotRecoverEnt
      *
      * @param object
      */
-    void invalidateAllPreviousEntries(ForgotRecoverEntity object);
+    void invalidateAllEntries(ForgotRecoverEntity object);
 }

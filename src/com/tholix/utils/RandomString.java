@@ -38,6 +38,10 @@ public final class RandomString {
         return new RandomString(CHAR_SIZE);
     }
 
+    public static RandomString newInstance(int sizeOfString) {
+        return new RandomString(sizeOfString);
+    }
+
     public String nextString() {
         for (int idx = 0; idx < buf.length; ++idx) {
             buf[idx] = symbols[random.nextInt(symbols.length)];

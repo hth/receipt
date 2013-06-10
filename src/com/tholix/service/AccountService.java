@@ -88,20 +88,21 @@ public class AccountService {
      * @param userProfileEntity
      * @return
      */
-    public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) {
+    public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) throws Exception {
         String authenticationKey = SHAHashing.hashCodeSHA512(RandomString.newInstance().nextString());
 
         ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(userProfileEntity.getId(), authenticationKey);
         try {
             forgotRecoverManager.save(forgotRecoverEntity);
-        } catch (Exception e) {
-            log.error("Eat exception generated during password recovery action: " + e.getLocalizedMessage());
+            return forgotRecoverEntity;
+        } catch (Exception exception) {
+            log.error("Exception generated during password recovery action: " + exception.getLocalizedMessage());
+            throw exception;
         }
-        return forgotRecoverEntity;
     }
 
-    public void invalidateAllPreviousEntries(ForgotRecoverEntity forgotRecoverEntity) {
-        forgotRecoverManager.invalidateAllPreviousEntries(forgotRecoverEntity);
+    public void invalidateAllEntries(ForgotRecoverEntity forgotRecoverEntity) {
+        forgotRecoverManager.invalidateAllEntries(forgotRecoverEntity);
     }
 
     public ForgotRecoverEntity findAccountAuthenticationForKey(String key) {

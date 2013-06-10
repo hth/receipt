@@ -71,6 +71,16 @@ public class ForgotController {
         return new ModelAndView(FORGOT_PASSWORD, "forgotRecoverForm", forgotRecoverForm);
     }
 
+    /**
+     * User can submit an email address to recover their account
+     *
+     * @param forgotRecoverForm
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param result
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(method = RequestMethod.POST, value = "password", params = {"forgot_password"})
     public ModelAndView postPassword(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
         DateTime time = DateUtil.now();
@@ -84,7 +94,10 @@ public class ForgotController {
             return modelAndView;
         }
 
-        mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
+        boolean status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
+        if(!status) {
+            log.error("Failed to send recovery email");
+        }
 
         // Check the mantra section
         // http://www.theserverside.com/news/1365146/Redirect-After-Post
@@ -140,7 +153,10 @@ public class ForgotController {
             return modelAndView;
         }
 
-        mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
+        boolean status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
+        if(!status) {
+            log.error("Failed to send recovery email");
+        }
 
         // Check the mantra section
         // http://www.theserverside.com/news/1365146/Redirect-After-Post
@@ -214,7 +230,7 @@ public class ForgotController {
                 userAuthenticationEntity.setUpdated();
                 try {
                     accountService.updateAuthentication(userAuthenticationEntity);
-                    accountService.invalidateAllPreviousEntries(forgotRecoverEntity);
+                    accountService.invalidateAllEntries(forgotRecoverEntity);
                     modelAndView.addObject(SUCCESS, true);
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
                 } catch (Exception e) {

@@ -104,6 +104,7 @@
     <bean id="expenseTypeValidator"         class="com.tholix.web.validator.ExpenseTypeValidator" />
     <bean id="forgotRecoverValidator"       class="com.tholix.web.validator.ForgotRecoverValidator" />
     <bean id="forgotAuthenticateValidator"  class="com.tholix.web.validator.ForgotAuthenticateValidator" />
+    <bean id="InviteAuthenticateValidator"  class="com.tholix.web.validator.InviteAuthenticateValidator" />
     <!-- ===================================== -->
     <!-- JMS configuration                     -->
     <!-- ===================================== -->

@@ -85,10 +85,7 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     @Override
     public void changeVisibility(String expenseTypeId, boolean changeTo) {
         Query query = Query.query(Criteria.where("id").is(expenseTypeId));
-
-        Update update = new Update()
-                .set("active", changeTo);
-
+        Update update = Update.update("active", changeTo);
         mongoTemplate.updateFirst(query, update, ExpenseTypeEntity.class);
     }
 

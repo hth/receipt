@@ -47,12 +47,14 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	public void save(UserProfileEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
-            if(getObjectUsingEmail(object.getEmailId()) == null)
-			    mongoTemplate.save(object, TABLE);
-            else {
-                log.error("User seems to be already registered: " + object.getEmailId());
-                throw new Exception("User already registered with email: " + object.getEmailId());
-            }
+//            if(getObjectUsingEmail(object.getEmailId()) == null)
+//			    mongoTemplate.save(object, TABLE);
+//            else {
+//                log.error("User seems to be already registered: " + object.getEmailId());
+//                throw new Exception("User already registered with email: " + object.getEmailId());
+//            }
+            object.setUpdated();
+            mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for UserProfileEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());

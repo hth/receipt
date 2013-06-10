@@ -12,44 +12,44 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
-import com.tholix.domain.ForgotRecoverEntity;
+import com.tholix.domain.InviteEntity;
 
 /**
  * User: hitender
- * Date: 6/4/13
- * Time: 12:10 AM
+ * Date: 6/9/13
+ * Time: 2:15 PM
  */
 @Repository
 @Transactional(readOnly = true)
-public class ForgotRecoverManagerImpl implements ForgotRecoverManager {
+public class InviteManagerImpl implements InviteManager {
 
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<ForgotRecoverEntity> getAllObjects() {
+    public InviteEntity findByAuthenticationKey(String key) {
+        Criteria criteria = Criteria.where("authenticationKey").is(key).andOperator(Criteria.where("active").is(true));
+        return mongoTemplate.findOne(Query.query(criteria), InviteEntity.class, TABLE);
+    }
+
+    @Override
+    public void invalidateAllEntries(InviteEntity object) {
+        Criteria criteria = Criteria.where("newInvitedUser").is(object.getNewInvitedUser());
+        mongoTemplate.updateMulti(Query.query(criteria), Update.update("active", false), InviteEntity.class);
+    }
+
+    @Override
+    public List<InviteEntity> getAllObjects() {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
-    public void save(ForgotRecoverEntity object) throws Exception {
+    public void save(InviteEntity object) throws Exception {
         mongoTemplate.save(object);
     }
 
     @Override
-    public void invalidateAllEntries(ForgotRecoverEntity object) {
-        Criteria criteria = Criteria.where("userProfileId").is(object.getUserProfileId());
-        mongoTemplate.updateMulti(Query.query(criteria), Update.update("active", false), ForgotRecoverEntity.class);
-    }
-
-    @Override
-    public ForgotRecoverEntity findOne(String id) {
+    public InviteEntity findOne(String id) {
         throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public ForgotRecoverEntity findByAuthenticationKey(String key) {
-        Criteria criteria = Criteria.where("authenticationKey").is(key).andOperator(Criteria.where("active").is(true));
-        return mongoTemplate.findOne(Query.query(criteria), ForgotRecoverEntity.class, TABLE);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     }
 
     @Override
-    public void delete(ForgotRecoverEntity object) {
+    public void delete(InviteEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 

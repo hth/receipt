@@ -188,13 +188,16 @@
                     <tr>
                         <p>
                         Friend's <input id="inviteEmailId" type="text"
-                                               onfocus="this.value=''; setInviteBackGroundColor('white');"
+                                               onfocus="this.value='';
+                                                        setInviteBackGroundColor('white');
+                                                        $('#info').html('* Invitation sent with your name and email address');
+                                                        "
                                                onblur="setInviteBackGroundColor('#fefefe')"
                                                value=" Email address here ..."
                                                size="30" />
                         <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" size="5">
                         </p>
-                        <div id="info" style="color: green;"></div>
+                        <div id="info" style="color: black;">* Invitation sent with your name and email address</div>
                     </tr>
 				</table>
 			</td>

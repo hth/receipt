@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,10 @@ import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.value.ReceiptGrouped;
+import com.tholix.service.AccountService;
 import com.tholix.service.FileDBService;
 import com.tholix.service.LandingService;
+import com.tholix.service.MailService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
@@ -54,6 +57,8 @@ public class LandingController extends BaseController {
     @Autowired LandingService landingService;
     @Autowired FileDBService fileDBService;
     @Autowired UploadReceiptImageValidator uploadReceiptImageValidator;
+    @Autowired MailService mailService;
+    @Autowired AccountService accountService;
 
 	/**
 	 * Refers to landing.jsp
@@ -207,9 +212,27 @@ public class LandingController extends BaseController {
     /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     public @ResponseBody
-    String invite(@RequestParam(value="emailId") String emailId) {
+    String invite(@RequestParam(value="emailId") String emailId, @ModelAttribute UserSession userSession) {
         log.info("Invitation sent to: " + emailId);
-        return "Invitation Email Sent to: " + emailId;
+
+        boolean isValid = EmailValidator.getInstance().isValid(emailId);
+        if(isValid) {
+            UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
+            if(userProfileEntity == null) {
+                boolean status = mailService.sendInvitation(emailId, userSession.getEmailId());
+                if(status) {
+                    return "Invitation Sent to: " + emailId;
+                } else {
+                    return "Unsuccessful in sending invitation: " + emailId;
+                }
+            } else {
+                // TODO can put a condition to check or if user is still in invitation mode or has completed registration
+                // TODO Based on either condition we can let user recover password or re-send invitation
+                return emailId + ", already registered or invited";
+            }
+        } else {
+            return "Invalid Email: " + emailId;
+        }
     }
 
     private void populate(UserProfileEntity userProfile) {

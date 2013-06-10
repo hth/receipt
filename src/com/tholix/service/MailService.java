@@ -13,13 +13,13 @@ import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processT
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import com.tholix.domain.ForgotRecoverEntity;
+import com.tholix.domain.InviteEntity;
 import com.tholix.domain.UserProfileEntity;
 
 /**
@@ -31,9 +31,11 @@ import com.tholix.domain.UserProfileEntity;
 public class MailService {
     private static Logger log = Logger.getLogger(MailService.class);
 
-    private static final String MAIL_RECOVER_SUBJECT = "How to reset your Receipt-O-Fi ID password.";
+    private static final String MAIL_RECOVER_SUBJECT = "How to reset your Receipt-O-Fi ID password";
+    private static final String MAIL_INVITE_SUBJECT = "Receipt-O-Fi invites you on behalf of";
 
     @Autowired private AccountService accountService;
+    @Autowired private InviteService inviteService;
     @Autowired private MailSender mailSender;
     @Autowired private SimpleMailMessage simpleMailMessage;
 
@@ -45,36 +47,75 @@ public class MailService {
      *
      * @param emailId
      */
-    public void mailRecoverLink(String emailId) {
+    public boolean mailRecoverLink(String emailId) {
         UserProfileEntity userProfileEntity =  accountService.findIfUserExists(emailId);
         if(userProfileEntity != null) {
             try {
-                Configuration cfg = freemarkerConfiguration.createConfiguration();
-                Template template = cfg.getTemplate("text-account-recover.ftl");
-                final String text = processPasswordRest(template, userProfileEntity);
+                ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity);
+
+                Map<String, String> rootMap = new HashMap<>();
+                rootMap.put("to", userProfileEntity.getName());
+                rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
 
                 try {
-                    //TODO change this to real user id instead
+                    Configuration cfg = freemarkerConfiguration.createConfiguration();
+                    Template template = cfg.getTemplate("text-account-recover.ftl");
+                    final String text = processTemplateIntoString(template, rootMap);
+
+                    //TODO change this to email id to whom recovery is to be sent
                     simpleMailMessage.setTo("admin@tholix.com");
                     simpleMailMessage.setSubject(MAIL_RECOVER_SUBJECT);
                     simpleMailMessage.setText(text);
 
                     mailSender.send(simpleMailMessage);
-                } catch(MailException exception) {
-                    log.error("Eat exception during sending and formulating email: " + exception.getLocalizedMessage());
+                } catch (IOException | TemplateException exception) {
+                    log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
+                    return false;
                 }
-            } catch (IOException | TemplateException exception) {
-                log.error("Eat exception during sending and formulating email: " + exception.getLocalizedMessage());
+            } catch(Exception exception) {
+                log.error("Exception occurred during persisting ForgotRecoverEntity: " + exception.getLocalizedMessage());
+                return false;
             }
         }
+        return true;
     }
 
-    private String processPasswordRest(Template template, UserProfileEntity userProfileEntity) throws IOException, TemplateException {
-        ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity);
+    public boolean sendInvitation(String emailId, String userProfileEmailId) {
+        UserProfileEntity userProfileEntity =  accountService.findIfUserExists(userProfileEmailId);
+        if(userProfileEntity != null) {
+            try {
+                InviteEntity inviteEntity = inviteService.initiateInvite(emailId, userProfileEntity);
 
-        Map<String, String> rootMap = new HashMap<>();
-        rootMap.put("to", userProfileEntity.getName());
-        rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
-        return processTemplateIntoString(template, rootMap);
+                Map<String, String> rootMap = new HashMap<>();
+                rootMap.put("from", userProfileEntity.getName());
+                rootMap.put("fromEmail", userProfileEntity.getEmailId());
+                rootMap.put("to", emailId);
+                rootMap.put("link", inviteEntity.getAuthenticationKey());
+
+                try {
+                    Configuration cfg = freemarkerConfiguration.createConfiguration();
+                    Template template = cfg.getTemplate("text-invite.ftl");
+                    final String text = processTemplateIntoString(template, rootMap);
+
+                    //TODO change this to email id of Invite
+                    simpleMailMessage.setTo("admin@tholix.com");
+
+                    //Can override from email address like below
+                    //simpleMailMessage.setFrom("hitender@tholix.com");
+
+                    simpleMailMessage.setSubject(MAIL_INVITE_SUBJECT + " - " + userProfileEntity.getName());
+                    simpleMailMessage.setText(text);
+
+                    mailSender.send(simpleMailMessage);
+                } catch(TemplateException | IOException exception) {
+                    log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
+                    return false;
+                }
+            } catch (Exception exception) {
+                log.error("Exception occurred during persisting InviteEntity: " + exception.getLocalizedMessage());
+                return false;
+            }
+        }
+        return true;
     }
 }
