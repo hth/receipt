@@ -41,7 +41,7 @@ public class UploadReceiptImageValidator implements Validator {
 		}
 
 		if(!uploadReceiptImage.getFileData().getContentType().startsWith("image/")) {
-			errors.rejectValue("fileData", "file.data", new Object[] { uploadReceiptImage.getFileName() }, "File not seems to be of image type");
+			errors.rejectValue("fileData", "file.data", new Object[] { uploadReceiptImage.getFileName() }, ", is not supported. Supported format .JPEG, .JPG, .PNG");
 		}
 	}
 
