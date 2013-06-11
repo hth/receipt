@@ -7,6 +7,7 @@ package com.tholix.web.form;
  */
 public class InviteAuthenticateForm {
 
+    private String emailId;
     private String firstName;
     private String lastName;
     private ForgotAuthenticateForm forgotAuthenticateForm;
@@ -17,6 +18,14 @@ public class InviteAuthenticateForm {
 
     public static InviteAuthenticateForm newInstance() {
         return new InviteAuthenticateForm();
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
     public String getFirstName() {

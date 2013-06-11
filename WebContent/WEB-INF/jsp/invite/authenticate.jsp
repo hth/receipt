@@ -45,26 +45,35 @@
         <form:form method="post" action="authenticate.htm" modelAttribute="inviteAuthenticateForm">
             <form:hidden path="forgotAuthenticateForm.userProfileId" />
             <form:hidden path="forgotAuthenticateForm.authenticationKey" />
-            <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="600px">
+            <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
                 <tr>
-                    <td align="right" width="19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
-                    <td width="30%"><form:input path="firstName" /></td>
-                    <td width="51%"><form:errors path="firstName" cssClass="error" /></td>
+                    <td style="text-align: right; width: 19%">Email Address:</td>
+                    <td style="width: 30%">${inviteAuthenticateForm.emailId}</td>
+                    <td style="width: 51%">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="right" width="19%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
-                    <td width="30%"><form:input path="lastName" /></td>
-                    <td width="51%"><form:errors path="lastName" cssClass="error" /></td>
+                    <td style="text-align: right; width: 19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
+                    <td style="width: 30%"><form:input path="firstName" /></td>
+                    <td style="width: 51%"><form:errors path="firstName" cssClass="error" /></td>
                 </tr>
                 <tr>
-                    <td align="right" width="19%"><form:label for="forgotAuthenticateForm.password" path="forgotAuthenticateForm.password" cssErrorClass="error">Password:</form:label></td>
-                    <td width="30%"><form:input path="forgotAuthenticateForm.password" /></td>
-                    <td width="51%"><form:errors path="forgotAuthenticateForm.password" cssClass="error" /></td>
+                    <td style="text-align: right; width: 19%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
+                    <td style="width: 30%"><form:input path="lastName" /></td>
+                    <td style="width: 51%"><form:errors path="lastName" cssClass="error" /></td>
                 </tr>
                 <tr>
-                    <td align="right" width="19%"><form:label for="forgotAuthenticateForm.passwordSecond" path="forgotAuthenticateForm.passwordSecond" cssErrorClass="error">Retype Password</form:label></td>
-                    <td width="30%"><form:input path="forgotAuthenticateForm.passwordSecond" /></td>
-                    <td width="51%"><form:errors path="forgotAuthenticateForm.passwordSecond" cssClass="error" /></td>
+                    <td style="text-align: right; width: 19%">
+                        <form:label for="forgotAuthenticateForm.password" path="forgotAuthenticateForm.password" cssErrorClass="error">Password:</form:label>
+                    </td>
+                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.password" /></td>
+                    <td style="width: 51%"><form:errors path="forgotAuthenticateForm.password" cssClass="error" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right; width: 19%">
+                        <form:label for="forgotAuthenticateForm.passwordSecond" path="forgotAuthenticateForm.passwordSecond" cssErrorClass="error">Retype Password</form:label>
+                    </td>
+                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.passwordSecond" /></td>
+                    <td style="width: 51%"><form:errors path="forgotAuthenticateForm.passwordSecond" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>

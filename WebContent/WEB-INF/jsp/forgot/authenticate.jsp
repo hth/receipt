@@ -32,7 +32,7 @@
         <h1>Invalid Link</h1>
         <p>We apologize, but we are unable to verify the link you used to access this page. <sup>(404)</sup></p>
         <p>&nbsp;</p>
-        <p></p>Please <a href="../login.htm">click here</a> to return to the main page and start over.</p>
+        <p>Please <a href="../login.htm">click here</a> to return to the main page and start over.</p>
     </div>
     </c:if>
 
@@ -45,16 +45,16 @@
     <form:form method="post" action="authenticate.htm" modelAttribute="forgotAuthenticateForm">
         <form:hidden path="userProfileId" />
         <form:hidden path="authenticationKey" />
-        <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="600px">
+        <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
             <tr>
-                <td align="right" width="19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-                <td width="30%"><form:input path="password" /></td>
-                <td width="51%"><form:errors path="password" cssClass="error" /></td>
+                <td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
+                <td style="width: 30%"><form:input path="password" /></td>
+                <td style="width: 51%"><form:errors path="password" cssClass="error" /></td>
             </tr>
             <tr>
-                <td align="right" width="19%"><form:label for="passwordSecond" path="passwordSecond" cssErrorClass="error">Retype Password</form:label></td>
-                <td width="30%"><form:input path="passwordSecond" /></td>
-                <td width="51%"><form:errors path="passwordSecond" cssClass="error" /></td>
+                <td style="text-align: right; width: 19%"><form:label for="passwordSecond" path="passwordSecond" cssErrorClass="error">Retype Password</form:label></td>
+                <td style="width: 30%"><form:input path="passwordSecond" /></td>
+                <td style="width: 51%"><form:errors path="passwordSecond" cssClass="error" /></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>

@@ -32,11 +32,11 @@
         </span>
 
         <form:hidden path="emailId" />
-        <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="800px">
+        <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
             <tr>
-                <td align="right" width="10%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email ID:</form:label></td>
-                <td width="20%"><b>${forgotRecoverForm.emailId}</b></td>
-                <td width="70%"><form:errors path="emailId" cssClass="error" /></td>
+                <td style="text-align: right; width: 19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email ID:</form:label></td>
+                <td style="width: 30%"><b>${forgotRecoverForm.emailId}</b></td>
+                <td style="width: 51%"><form:errors path="emailId" cssClass="error" /></td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>

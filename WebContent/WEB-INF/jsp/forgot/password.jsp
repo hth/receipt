@@ -25,16 +25,16 @@
         <fmt:message key="account.recover.title" />
     </h2>
     <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
-        <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="600px">
-            <span style="display:none;visibility:hidden;">
+        <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
+            <p style="display:none;visibility:hidden;">
                 <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
                 <form:input path="captcha" />
                 <form:errors path="captcha" cssClass="error" />
-            </span>
+            </p>
             <tr>
-                <td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
-                <td width="30%"><form:input path="emailId" /></td>
-                <td width="51%"><form:errors path="emailId" cssClass="error" /></td>
+                <td style="text-align: right; width: 19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
+                <td style="width: 30%"><form:input path="emailId" /></td>
+                <td style="width: 51%"><form:errors path="emailId" cssClass="error" /></td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>

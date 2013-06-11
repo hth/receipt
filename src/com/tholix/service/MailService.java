@@ -64,6 +64,10 @@ public class MailService {
 
                     //TODO change this to email id to whom recovery is to be sent
                     simpleMailMessage.setTo("admin@tholix.com");
+
+                    //Can override from email address like below
+                    simpleMailMessage.setFrom("do-not-reply@tholix.com");
+
                     simpleMailMessage.setSubject(MAIL_RECOVER_SUBJECT);
                     simpleMailMessage.setText(text);
 
@@ -99,9 +103,10 @@ public class MailService {
 
                     //TODO change this to email id of Invite
                     simpleMailMessage.setTo("admin@tholix.com");
+                    //simpleMailMessage.setTo(emailId);
 
                     //Can override from email address like below
-                    //simpleMailMessage.setFrom("hitender@tholix.com");
+                    simpleMailMessage.setFrom("invite@tholix.com");
 
                     simpleMailMessage.setSubject(MAIL_INVITE_SUBJECT + " - " + userProfileEntity.getName());
                     simpleMailMessage.setText(text);
