@@ -238,18 +238,15 @@
 								},
 								editable : false,
 								events : [
-								<% Iterator<ReceiptGrouped> receiptGroupedIterator = (Iterator<ReceiptGrouped>) request.getAttribute("receiptGrouped"); %>
-                                <c:if test="${receiptGroupedIterator.size() != 0}">
-								<% while(receiptGroupedIterator.hasNext()) { %>
+                                <c:set var="receiptGroupedIterator" value="${requestScope.receiptGrouped}" />
+                                <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
 								{
-                                    <% ReceiptGrouped receiptGrouped = receiptGroupedIterator.next(); %>
-									title : '<%= receiptGrouped.getTotal() %>',
-									start : '<%= receiptGrouped.getDate() %>',
-									end   : '<%= receiptGrouped.getDate() %>',
-									url   : '${pageContext.request.contextPath}/day.htm?date=<%= receiptGrouped.getDate().getTime() %>',
+									title : '${receiptGrouped.getTotal()}',
+									start : '${receiptGrouped.getDate()}',
+									end   : '${receiptGrouped.getDate()}',
+									url   : '${pageContext.request.contextPath}/day.htm?date=${receiptGrouped.getDate().getTime()}',
 								} ,
-								<% } %>
-                                </c:if>
+                                </c:forEach>
 								]
 							});
 
