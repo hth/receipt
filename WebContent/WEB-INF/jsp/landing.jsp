@@ -239,7 +239,7 @@
 								editable : false,
 								events : [
 								<% Iterator<ReceiptGrouped> receiptGroupedIterator = (Iterator<ReceiptGrouped>) request.getAttribute("receiptGrouped"); %>
-                                <c:if test="${!empty receiptGroupedIterator}">
+                                <c:if test="${receiptGroupedIterator.size() != 0}">
 								<% while(receiptGroupedIterator.hasNext()) { %>
 								{
                                     <% ReceiptGrouped receiptGrouped = receiptGroupedIterator.next(); %>
