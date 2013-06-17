@@ -5,7 +5,7 @@ package com.tholix.web.form;
  * Date: 6/9/13
  * Time: 5:04 PM
  */
-public class InviteAuthenticateForm {
+public final class InviteAuthenticateForm {
 
     private String emailId;
     private String firstName;

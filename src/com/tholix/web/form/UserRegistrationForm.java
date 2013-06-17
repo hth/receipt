@@ -17,13 +17,15 @@ import com.tholix.utils.SHAHashing;
  * @since Dec 25, 2012 12:01:53 PM
  *
  */
-public class UserRegistrationForm {
+public final class UserRegistrationForm {
 
 	private String firstName;
 	private String lastName;
 	private String emailId;
 	private String password;
 	private AccountTypeEnum accountType;
+
+    private UserRegistrationForm() {}
 
 	public static UserRegistrationForm newInstance() {
 		return new UserRegistrationForm();

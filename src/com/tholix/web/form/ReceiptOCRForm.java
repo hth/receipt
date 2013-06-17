@@ -23,16 +23,15 @@ import com.tholix.utils.Formatter;
  *
  * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
-public class ReceiptOCRForm {
+public final class ReceiptOCRForm {
+
 	ReceiptEntityOCR receiptOCR;
 	List<ItemEntityOCR> items;
 
 	/**
 	 * Need for bean instantiation in ReceiptUpdateForm
 	 */
-	private ReceiptOCRForm() {
-
-	}
+	private ReceiptOCRForm() {}
 
 	private ReceiptOCRForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
 		this.receiptOCR = receipt;

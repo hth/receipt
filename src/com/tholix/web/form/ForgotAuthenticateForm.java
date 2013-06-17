@@ -5,7 +5,7 @@ package com.tholix.web.form;
  * Date: 6/4/13
  * Time: 1:48 AM
  */
-public class ForgotAuthenticateForm {
+public final class ForgotAuthenticateForm {
 
     private String password;
     private String passwordSecond;

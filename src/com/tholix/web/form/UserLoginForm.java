@@ -8,9 +8,12 @@ package com.tholix.web.form;
  * @since Jan 4, 2013 4:41:01 PM
  *
  */
-public class UserLoginForm {
+public final class UserLoginForm {
+
 	private String emailId;
 	private String password;
+
+    private UserLoginForm() {}
 
 	public static UserLoginForm newInstance() {
 		return new UserLoginForm();

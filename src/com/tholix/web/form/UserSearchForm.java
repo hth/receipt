@@ -13,7 +13,7 @@ import com.tholix.domain.types.UserLevelEnum;
  * @since Mar 26, 2013 3:52:26 PM
  *
  */
-public class UserSearchForm {
+public final class UserSearchForm {
 
 	private String id;
 	private String userName = "";

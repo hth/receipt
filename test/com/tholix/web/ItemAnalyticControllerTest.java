@@ -25,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tholix.BaseTest;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
@@ -99,7 +98,7 @@ public class ItemAnalyticControllerTest {
 		ItemEntity item2 = ItemEntity.newInstance("Item-Test1", 40.00, TaxEnum.TAXED, 1, receipt, "test@test.com");
 		itemManager.save(item2);
 
-		ModelAndView modelAndView = controller.loadForm(item1.getId(), new ItemAnalyticForm(), null);
+		ModelAndView modelAndView = controller.loadForm(item1.getId(), ItemAnalyticForm.newInstance(), null);
 		assertEquals("/itemanalytic", modelAndView.getViewName());
 		assertEquals(60.00, modelAndView.getModel().get("averagePrice"));
 

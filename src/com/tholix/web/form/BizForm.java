@@ -8,7 +8,7 @@ import com.tholix.domain.BizStoreEntity;
  * Date: 4/22/13
  * Time: 11:52 PM
  */
-public class BizForm {
+public final class BizForm {
 
     private BizNameEntity bizName;
     private BizStoreEntity bizStore;

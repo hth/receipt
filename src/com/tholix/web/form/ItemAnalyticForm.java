@@ -11,13 +11,19 @@ import com.tholix.domain.ItemEntity;
  * Date: 5/27/13
  * Time: 12:59 AM
  */
-public class ItemAnalyticForm {
+public final class ItemAnalyticForm {
 
     private ItemEntity item;
     private BigDecimal averagePrice;
     private List<ExpenseTypeEntity> expenseTypes;
     private List<ItemEntity> items;
     private int days;
+
+    private ItemAnalyticForm() {}
+
+    public static ItemAnalyticForm newInstance() {
+        return new ItemAnalyticForm();
+    }
 
     public ItemEntity getItem() {
         return item;

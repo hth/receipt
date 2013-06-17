@@ -7,12 +7,13 @@ import com.tholix.domain.ReceiptEntityOCR;
  * Date: 6/15/13
  * Time: 11:15 PM
  */
-public class PendingReceiptForm {
+public final class PendingReceiptForm {
+
     private String fileName;
     private long fileSize;
     private ReceiptEntityOCR receiptEntityOCR;
 
-    public PendingReceiptForm() { }
+    private PendingReceiptForm() {}
 
     public static PendingReceiptForm newInstance(String fileName, long fileSize, ReceiptEntityOCR receiptEntityOCR) {
         PendingReceiptForm pendingReceiptForm = new PendingReceiptForm();

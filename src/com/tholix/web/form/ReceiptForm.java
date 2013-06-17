@@ -11,7 +11,8 @@ import com.tholix.domain.ReceiptEntity;
  * Date: 5/16/13
  * Time: 10:02 PM
  */
-public class ReceiptForm {
+public final class ReceiptForm {
+
     ReceiptEntity receipt;
     List<ItemEntity> items;
     List<ExpenseTypeEntity> expenseTypes;
@@ -19,18 +20,14 @@ public class ReceiptForm {
     /**
      * Need for bean instantiation
      */
-    private ReceiptForm() {
-
-    }
-
-    private ReceiptForm(ReceiptEntity receipt, List<ItemEntity> items, List<ExpenseTypeEntity> expenseTypes) {
-        this.receipt = receipt;
-        this.items = items;
-        this.expenseTypes = expenseTypes;
-    }
+    private ReceiptForm() {}
 
     public static ReceiptForm newInstance(ReceiptEntity receipt, List<ItemEntity> items, List<ExpenseTypeEntity> expenseTypes) {
-        return new ReceiptForm(receipt, items, expenseTypes);
+        ReceiptForm receiptForm = new ReceiptForm();
+        receiptForm.setReceipt(receipt);
+        receiptForm.setItems(items);
+        receiptForm.setExpenseTypes(expenseTypes);
+        return receiptForm;
     }
 
     public ReceiptEntity getReceipt() {

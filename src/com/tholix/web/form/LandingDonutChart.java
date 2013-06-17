@@ -7,13 +7,14 @@ import java.math.BigDecimal;
  * Date: 5/25/13
  * Time: 11:17 AM
  */
-public class LandingDonutChart {
+public final class LandingDonutChart {
 
     private String bizName;
     private BigDecimal total;
     private String expenseTypes;
     private String expenseValues;
 
+    @SuppressWarnings("unused")
     private LandingDonutChart() {}
 
     private LandingDonutChart(String bizName) {

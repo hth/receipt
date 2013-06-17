@@ -10,7 +10,8 @@ import com.tholix.domain.ItemEntity;
  * Date: 5/24/13
  * Time: 1:20 AM
  */
-public class ExpenseForm {
+public final class ExpenseForm {
+
     String name;
     List<ExpenseTypeEntity> expenseTypes;
     List<ItemEntity> items;

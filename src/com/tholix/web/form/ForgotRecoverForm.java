@@ -5,9 +5,12 @@ package com.tholix.web.form;
  * Date: 5/31/13
  * Time: 1:19 AM
  */
-public class ForgotRecoverForm {
+public final class ForgotRecoverForm {
+
     private String emailId;
     private String captcha;
+
+    private ForgotRecoverForm() {}
 
     public static ForgotRecoverForm newInstance() {
         return new ForgotRecoverForm();
