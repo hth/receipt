@@ -44,12 +44,11 @@
             <table>
                 <tr>
                     <td valign="top">
-                        <table style="width: 500px" class="etable">
+                        <table style="width: 400px" class="etable">
                             <tr>
                                 <th style="padding: 3px;" align="left">&nbsp;</th>
                                 <th style="padding: 3px;" align="left">&nbsp;Upload Date</th>
                                 <th style="padding: 3px;" align="left">&nbsp;File Name</th>
-                                <th style="padding: 3px;" align="left">&nbsp;</th>
                             </tr>
                             <c:forEach items="${pendingReceipts}" var="pendingReceiptForm" varStatus="status">
                             <tr>
@@ -60,11 +59,8 @@
                                     <fmt:formatDate value="${pendingReceiptForm.receiptEntityOCR.created}" type="both"/>
                                 </td>
                                 <td style="padding: 3px;">
-                                    ${pendingReceiptForm.fileName}
-                                </td>
-                                <td style="padding: 3px;">
                                     <a href="${pageContext.request.contextPath}/emp/update.htm?id=${pendingReceiptForm.receiptEntityOCR.id}">
-                                        View Receipt
+                                        ${pendingReceiptForm.fileName}
                                     </a>
                                 </td>
                             </tr>
