@@ -34,7 +34,6 @@ public class ReceiptSenderJMS {
 					public Message createMessage(Session session) throws JMSException {
 						MapMessage mapMessage = session.createMapMessage();
 						mapMessage.setString("id", receiptOCR.getId());
-						mapMessage.setString("description", receiptOCR.getDescription());
 						mapMessage.setString("level", userProfile.getLevel().getDescription());
                         mapMessage.setInt("status", receiptOCR.getReceiptStatus().ordinal());
 

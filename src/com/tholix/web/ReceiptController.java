@@ -93,7 +93,7 @@ public class ReceiptController extends BaseController {
         log.info("Initiating re-check on receipt " + receiptForm.getReceipt().getId());
 
         try {
-            receiptService.reopen(receiptForm.getReceipt().getId());
+            receiptService.reopen(receiptForm);
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
         }

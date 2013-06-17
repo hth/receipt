@@ -22,6 +22,7 @@ import com.tholix.domain.UserSession;
 import com.tholix.service.ReceiptPendingService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
+import com.tholix.web.form.PendingReceiptForm;
 
 /**
  * @author hitender
@@ -41,10 +42,10 @@ public class ReceiptPendingController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
-		List<ReceiptEntityOCR> receipts = receiptPendingService.getAllPending(userSession.getUserProfileId());
+		List<PendingReceiptForm> pendingReceiptFormList = receiptPendingService.getAllPending(userSession.getUserProfileId());
 
 		ModelAndView modelAndView = new ModelAndView(RECEIPT_PENDING);
-		modelAndView.addObject("receipts", receipts);
+		modelAndView.addObject("pendingReceipts", pendingReceiptFormList);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;

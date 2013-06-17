@@ -99,10 +99,9 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public List<ReceiptEntityOCR> getAllObjects(String userProfileId) {
-		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
-		return mongoTemplate.find(Query.query(Criteria.where("userProfileId").is(userProfileId)
-				.andOperator(Criteria.where("active").is(true)))
-				.with(sort), ReceiptEntityOCR.class, TABLE);
+        Query query = Query.query(Criteria.where("userProfileId").is(userProfileId).andOperator(Criteria.where("active").is(true)));
+        Sort sort = new Sort(Direction.ASC, "created");
+		return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
 	}
 
     @Override

@@ -3,15 +3,15 @@
  */
 package com.tholix.web.form;
 
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import com.tholix.BaseTest;
 import com.tholix.domain.ItemEntity;
@@ -37,7 +37,7 @@ public class ReceiptOCRFormTest {
 	@Before
 	public void setUp() throws Exception {
 		receipt = ReceiptEntityOCR.newInstance(BaseTest.receiptDate, BaseTest.total, BaseTest.tax,
-					BaseTest.description, BaseTest.receiptStatus, BaseTest.receiptBlobId, BaseTest.userProfileId);
+					BaseTest.receiptStatus, BaseTest.receiptBlobId, BaseTest.userProfileId);
 
 		items = new ArrayList<ItemEntityOCR>();
 		items.add(ItemEntityOCR.newInstance("Item1", "80.00", TaxEnum.TAXED, 1, receipt, BaseTest.userProfileId));

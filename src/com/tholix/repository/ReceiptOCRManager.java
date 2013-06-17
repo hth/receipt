@@ -17,9 +17,15 @@ import com.tholix.domain.ReceiptEntityOCR;
  */
 public interface ReceiptOCRManager extends RepositoryManager<ReceiptEntityOCR> {
 
-	public static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntityOCR.class, Document.class, "collection");
+	static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntityOCR.class, Document.class, "collection");
 
-	public long numberOfPendingReceipts(String userProfileId);
+	long numberOfPendingReceipts(String userProfileId);
 
-	public List<ReceiptEntityOCR> getAllObjects(String userProfileId);
+    /**
+     * Get all the pending receipts
+     *
+     * @param userProfileId
+     * @return
+     */
+	List<ReceiptEntityOCR> getAllObjects(String userProfileId);
 }

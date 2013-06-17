@@ -167,7 +167,7 @@ public class LandingService {
             receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
             log.info("File Id: " + receiptBlobId);
 
-            receiptOCR = ReceiptEntityOCR.newInstance(uploadReceiptImage.getDescription(), ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, profileId, receiptOCRTranslation);
+            receiptOCR = ReceiptEntityOCR.newInstance(ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, profileId, receiptOCRTranslation);
             setEmptyBiz(receiptOCR);
 
             items = new LinkedList<>();

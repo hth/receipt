@@ -26,7 +26,7 @@ public final class Maths {
     }
 
     public static BigDecimal add(BigDecimal a, BigDecimal b) {
-        log.debug("addition: " + a + " + " + b + " = " + a.add(b));
+        //log.debug("addition: " + a + " + " + b + " = " + a.add(b));
         return a.add(b);
     }
 
@@ -64,7 +64,7 @@ public final class Maths {
         BigDecimal sub = from.subtract(value);
         //This was messing the tax percentage calculation by rounding to 2. Why round subtraction?
         //sub = sub.setScale(2, BigDecimal.ROUND_HALF_UP);
-        log.debug("subtract: " + from + " - " + value + " = " + sub);
+        //log.debug("subtract: " + from + " - " + value + " = " + sub);
         return sub;
     }
 
@@ -79,14 +79,10 @@ public final class Maths {
      * @return
      */
     public static BigDecimal divide(BigDecimal divide, BigDecimal by) {
-          // This should not happen so commenting if condition and instead catching an exception
-//        if(divide == BigDecimal.ZERO || by == BigDecimal.ZERO) {
-//            return BigDecimal.ZERO;
-//        }
         try {
             BigDecimal division = divide.divide(by, 2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
             division = division.setScale(2, BigDecimal.ROUND_HALF_UP);
-            log.debug("divide: " + divide + " / " + by + " = " + division);
+            //log.debug("divide: " + divide + " / " + by + " = " + division);
             return division;
         } catch (ArithmeticException exception) {
             // This should never occur. If this occur the problem is likely to be in code than receipt data.
@@ -128,7 +124,7 @@ public final class Maths {
     public static BigDecimal multiply(BigDecimal value, BigDecimal withThis) {
         BigDecimal multiplication = value.multiply(withThis);
         multiplication = multiplication.setScale(2, BigDecimal.ROUND_HALF_UP);
-        log.debug("multiply: " + value + " * " + withThis + " = " + multiplication);
+        //log.debug("multiply: " + value + " * " + withThis + " = " + multiplication);
         return multiplication;
     }
 

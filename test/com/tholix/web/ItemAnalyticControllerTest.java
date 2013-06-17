@@ -1,10 +1,18 @@
 package com.tholix.web;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.io.FileUtils;
 
@@ -14,17 +22,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import com.tholix.BaseTest;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.TaxEnum;
@@ -86,9 +87,10 @@ public class ItemAnalyticControllerTest {
 
 		/** Save the image */
 		InputStream inputStream = FileUtils.openInputStream(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/20130112_164807.jpg"));
-		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
+//		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
+        String receiptBlobId = "98769879786";
 
-		ReceiptEntity receipt = ReceiptEntity.newInstance(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		ReceiptEntity receipt = ReceiptEntity.newInstance(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 		receiptManager.save(receipt);
 
 		ItemEntity item1 = ItemEntity.newInstance("Item-Test1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");

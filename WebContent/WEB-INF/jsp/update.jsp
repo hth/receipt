@@ -185,7 +185,6 @@
                             <form:errors path="receipt" cssClass="error" />
                             <form:hidden path="receipt.receiptBlobId"/>
                             <form:hidden path="receipt.id"/>
-                            <form:hidden path="receipt.description"/>
                             <form:hidden path="receipt.userProfileId"/>
                             <form:hidden path="receipt.version"/>
                             <form:hidden path="receipt.receiptStatus"/>

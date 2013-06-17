@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -60,13 +61,13 @@ public class StorageManagerImpl implements StorageManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UploadReceiptImage object) throws Exception {
-		save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
+		persist(object);
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveFile(UploadReceiptImage object) throws IOException {
-		return save(object.getFileData().getInputStream(), object.getFileData().getContentType(), object.getFileName());
+		return persist(object);
 	}
 
 	@Override
@@ -104,12 +105,16 @@ public class StorageManagerImpl implements StorageManager {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
-	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public String save(InputStream inputStream, String contentType, String filename) {
+	private String persist(UploadReceiptImage uploadReceiptImage) throws IOException {
 		boolean closeStreamOnPersist = true;
-		GridFSInputFile receiptBlob = gridFs.createFile(inputStream, filename, closeStreamOnPersist);
-		receiptBlob.setContentType(contentType);
+		GridFSInputFile receiptBlob = gridFs.createFile(uploadReceiptImage.getFileData().getInputStream(),
+                uploadReceiptImage.getFileName(),
+                closeStreamOnPersist);
+
+		receiptBlob.setContentType(uploadReceiptImage.getFileData().getContentType());
+        receiptBlob.setMetaData(uploadReceiptImage.getMetaData());
+
 		receiptBlob.save();
 		return receiptBlob.getId().toString();
 	}

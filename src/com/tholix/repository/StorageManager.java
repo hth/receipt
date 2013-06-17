@@ -29,15 +29,6 @@ public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
 	 */
 	public String saveFile(UploadReceiptImage object) throws IOException;
 
-	/**
-	 *
-	 * @param inputStream
-	 * @param contentType - text/html, image/bmp, image/jpeg, video/mpeg, image/png, image/pict, image/x-quicktime, text/rtf, text/richtext
-	 * @param filename
-	 * @return
-	 */
-	public String save(InputStream inputStream, String contentType, String filename);
-
 	public GridFSDBFile get(String id);
 
 	public GridFSDBFile getByFilename(String filename);

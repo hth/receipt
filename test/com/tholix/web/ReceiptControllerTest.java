@@ -1,11 +1,19 @@
 package com.tholix.web;
 
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 import org.apache.commons.io.FileUtils;
 
@@ -15,14 +23,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import com.tholix.BaseTest;
 import com.tholix.domain.ItemEntity;
@@ -97,9 +97,10 @@ public class ReceiptControllerTest {
 
 		/** Save the image */
 		InputStream inputStream = FileUtils.openInputStream(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/20130112_164807.jpg"));
-		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
+//		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
+        String receiptBlobId = "45745745764457";
 
-		ReceiptEntity receipt = ReceiptEntity.newInstance(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		ReceiptEntity receipt = ReceiptEntity.newInstance(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 		receiptManager.save(receipt);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");
@@ -142,9 +143,10 @@ public class ReceiptControllerTest {
 
 		/** Save the image */
 		InputStream inputStream = FileUtils.openInputStream(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/20130112_164807.jpg"));
-		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
+//		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
+        String receiptBlobId = "4534755675476";
 
-		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 		receiptManager.save(receiptEntity);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receiptEntity, "test@test.com");

@@ -73,9 +73,12 @@ public class ReceiptOCRForm {
 		ReceiptEntity receipt = ReceiptEntity.newInstance(DateUtil.getDateFromString(receiptOCR.getReceiptDate()),
 										Formatter.getCurrencyFormatted(receiptOCR.getTotal()).doubleValue(),
                                         Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue(),
-										receiptOCR.getDescription(), ReceiptStatusEnum.TURK_PROCESSED, receiptOCR.getReceiptBlobId(),
+										ReceiptStatusEnum.TURK_PROCESSED, receiptOCR.getReceiptBlobId(),
 										receiptOCR.getUserProfileId());
 		receipt.setCreated(receiptOCR.getCreated());
+        if(receiptOCR.getComment() != null && !StringUtils.isEmpty(receiptOCR.getComment().getComment())) {
+            receipt.setComment(receiptOCR.getComment());
+        }
 
         receipt.setBizName(receiptOCR.getBizName());
         receipt.setBizStore(receiptOCR.getBizStore());

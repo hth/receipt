@@ -17,6 +17,7 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.repository.CommentManager;
 import com.tholix.repository.ItemManager;
 import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.ReceiptManager;
@@ -24,6 +25,7 @@ import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.repository.StorageManager;
 import com.tholix.repository.UserProfileManager;
 import com.tholix.service.routes.ReceiptSenderJMS;
+import com.tholix.web.form.ReceiptForm;
 
 /**
  * User: hitender
@@ -41,6 +43,7 @@ public class ReceiptService {
     @Autowired private ItemOCRManager itemOCRManager;
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private ReceiptSenderJMS senderJMS;
+    @Autowired private CommentManager commentManager;
 
     /**
      * Find receipt for the id
@@ -98,12 +101,16 @@ public class ReceiptService {
 
     /**
      * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items. Then delete all the items.
-     * @param receiptId
+     * @param receiptForm
      */
-    public void reopen(String receiptId) throws Exception {
+    public void reopen(ReceiptForm receiptForm) throws Exception {
         try {
-            ReceiptEntity receipt = receiptManager.findOne(receiptId);
+            ReceiptEntity receipt = receiptManager.findOne(receiptForm.getReceipt().getId());
             if(receipt.isActive()) {
+                if(!StringUtils.isEmpty(receiptForm.getReceipt().getComment().getComment())) {
+                    commentManager.save(receiptForm.getReceipt().getComment());
+                    receipt.setComment(receiptForm.getReceipt().getComment());
+                }
                 receipt.inActive();
                 receiptManager.save(receipt);
                 List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
@@ -112,6 +119,7 @@ public class ReceiptService {
                 receiptOCR.active();
                 receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
                 receiptOCR.setReceiptId(receipt.getId());
+                receiptOCR.setComment(receipt.getComment());
                 receiptOCRManager.save(receiptOCR);
                 itemOCRManager.deleteWhereReceipt(receiptOCR);
 

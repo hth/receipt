@@ -158,11 +158,12 @@
                             <form:errors path="receipt" cssClass="error" />
                             <form:hidden path="receipt.receiptBlobId"/>
                             <form:hidden path="receipt.id"/>
-                            <form:hidden path="receipt.description"/>
                             <form:hidden path="receipt.userProfileId"/>
                             <form:hidden path="receipt.version"/>
                             <form:hidden path="receipt.receiptStatus"/>
                             <form:hidden path="receipt.receiptId"/>
+                            <form:hidden path="receipt.comment.id"/>
+                            <form:hidden path="receipt.comment.version"/>
 
                             <form:hidden path="receipt.receiptOCRTranslation"/>
                             <table border="0" style="width: 550px" class="etable">
@@ -251,6 +252,23 @@
                                 <tr>
                                     <td colspan="2">&nbsp;</td>
                                     <td colspan="2" align="left"><input type="submit" value="Receipt Re-Check" name="recheck"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <form:label for="receipt.comment.comment" path="receipt.comment.comment" cssErrorClass="error">
+                                            Comment: (do not add or modify)
+                                        </form:label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <form:textarea path="receipt.comment.comment" id="comment" size="300" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <form:errors path="receipt.comment.comment" cssClass="error" />
+                                    </td>
                                 </tr>
                             </table>
                         </form:form>

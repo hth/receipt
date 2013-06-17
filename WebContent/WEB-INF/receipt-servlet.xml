@@ -98,7 +98,6 @@
 
     <bean id="userRegistrationValidator"    class="com.tholix.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.tholix.web.validator.UserLoginValidator" />
-    <bean id="uploadReceiptImageValidator"  class="com.tholix.web.validator.UploadReceiptImageValidator" />
     <bean id="receiptOCRFormValidator"      class="com.tholix.web.validator.ReceiptOCRFormValidator" />
     <bean id="bizFormValidator"             class="com.tholix.web.validator.BizFormValidator" />
     <bean id="expenseTypeValidator"         class="com.tholix.web.validator.ExpenseTypeValidator" />

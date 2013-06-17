@@ -38,37 +38,33 @@
     <p>&nbsp;</p>
 
     <c:choose>
-        <c:when test="${receipts.size() gt 0}">
-            <h2 class="demoHeaders">Pending receipt</h2>
+        <c:when test="${pendingReceipts.size() gt 0}">
+            <h2 class="demoHeaders">Pending receipt<c:if test="${pendingReceipts.size() gt 1}">s</c:if></h2>
 
             <table>
                 <tr>
                     <td valign="top">
-                        <table style="width: 400px" class="etable">
+                        <table style="width: 500px" class="etable">
                             <tr>
-                                <th align="left">&nbsp;</th>
-                                <th align="left">&nbsp;Description</th>
-                                <th align="left">&nbsp;Upload Date</th>
-                                <th align="left">&nbsp;</th>
+                                <th style="padding: 3px;" align="left">&nbsp;</th>
+                                <th style="padding: 3px;" align="left">&nbsp;Upload Date</th>
+                                <th style="padding: 3px;" align="left">&nbsp;File Name</th>
+                                <th style="padding: 3px;" align="left">&nbsp;</th>
                             </tr>
-                            <c:forEach items="${receipts}" var="receipt" varStatus="status">
+                            <c:forEach items="${pendingReceipts}" var="pendingReceiptForm" varStatus="status">
                             <tr>
-                                <td align="right">
+                                <td style="padding: 3px;" align="right">
                                     ${status.count}
                                 </td>
-                                <td align="left">
-                                    ${receipt.description}
+                                <td style="padding: 3px;" align="left">
+                                    <fmt:formatDate value="${pendingReceiptForm.receiptEntityOCR.created}" type="both"/>
                                 </td>
-                                <td align="left">
-                                    <fmt:formatDate value="${receipt.created}" type="both"/>
+                                <td style="padding: 3px;">
+                                    ${pendingReceiptForm.fileName}
                                 </td>
-                                <td>
-                                    <%-- <FORM>
-                                        <INPUT type="button" value="Show Receipt" onClick="window.open('${pageContext.request.contextPath}/receiptimage.htm?id=${receipt.receiptBlobId}','mywindow','width=400,height=200')">
-                                    </FORM> --%>
-
-                                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.id}">
-                                        Show Receipt
+                                <td style="padding: 3px;">
+                                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${pendingReceiptForm.receiptEntityOCR.id}">
+                                        View Receipt
                                     </a>
                                 </td>
                             </tr>

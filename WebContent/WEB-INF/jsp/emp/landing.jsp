@@ -39,12 +39,11 @@
 
     <h2 class="demoHeaders">Pending Receipt(s)</h2>
     <c:if test="${pending.size() > 0}">
-        <table style="width: 600px" class="etable">
+        <table style="width: 400px" class="etable">
             <tbody>
             <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Description</th>
                 <th style="padding:3px;">Created</th>
                 <th style="padding:3px;">Pending Since</th>
                 <th style="padding:3px;">Edit</th>
@@ -57,9 +56,6 @@
                     </td>
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.description" />
                     </td>
                     <td style="padding:3px;">
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
@@ -79,12 +75,11 @@
 
     <h2 class="demoHeaders">Queued Receipt(s)</h2>
     <c:if test="${queue.size() > 0}">
-        <table style="width: 600px" class="etable">
+        <table style="width: 400px" class="etable">
             <tbody>
             <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Description</th>
                 <th style="padding:3px;">Created</th>
                 <th style="padding:3px;">Pending Since</th>
                 <th style="padding:3px;">Edit</th>
@@ -97,9 +92,6 @@
                     </td>
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.description" />
                     </td>
                     <td style="padding:3px;">
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
@@ -119,12 +111,11 @@
 
     <h2 class="demoHeaders">Re-Check Pending Receipt(s)</h2>
     <c:if test="${recheckPending.size() > 0}">
-        <table style="width: 600px" class="etable">
+        <table style="width: 400px" class="etable">
             <tbody>
             <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Description</th>
                 <th style="padding:3px;">Created</th>
                 <th style="padding:3px;">Pending Since</th>
                 <th style="padding:3px;">Edit</th>
@@ -137,9 +128,6 @@
                     </td>
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.description" />
                     </td>
                     <td style="padding:3px;">
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
@@ -159,12 +147,11 @@
 
     <h2 class="demoHeaders">Re-Check Receipt(s)</h2>
     <c:if test="${recheck.size() > 0}">
-        <table style="width: 600px" class="etable">
+        <table style="width: 400px" class="etable">
             <tbody>
             <tr>
                 <th style="padding:3px;"></th>
                 <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Description</th>
                 <th style="padding:3px;">Created</th>
                 <th style="padding:3px;">Pending Since</th>
                 <th style="padding:3px;">Edit</th>
@@ -177,9 +164,6 @@
                     </td>
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.description" />
                     </td>
                     <td style="padding:3px;">
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />

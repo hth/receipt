@@ -3,17 +3,22 @@
  */
 package com.tholix.web;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
@@ -42,7 +50,6 @@ import com.tholix.web.form.LandingDonutChart;
 import com.tholix.web.rest.Base;
 import com.tholix.web.rest.Header;
 import com.tholix.web.rest.LandingView;
-import com.tholix.web.validator.UploadReceiptImageValidator;
 
 /**
  * @author hitender
@@ -56,15 +63,16 @@ public class LandingController extends BaseController {
 
     @Autowired LandingService landingService;
     @Autowired FileDBService fileDBService;
-    @Autowired UploadReceiptImageValidator uploadReceiptImageValidator;
     @Autowired MailService mailService;
     @Autowired AccountService accountService;
+
+    private static final String FILE_UPLOAD_FAILURE = "{\"success\" : false}";
+    private static final String FILE_UPLOAD_SUCCESS = "{\"success\" : true}";
 
 	/**
 	 * Refers to landing.jsp
 	 */
 	private static final String NEXT_PAGE_IS_CALLED_LANDING = "/landing";
-    private static final String RELOAD_PAGE = "redirect:/landing.htm";
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage) {
@@ -139,41 +147,60 @@ public class LandingController extends BaseController {
         modelAndView.addObject("bizByExpenseTypes", bizByExpenseTypes);
     }
 
-    //http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html
-    //16.3.3.16 Support for the 'Last-Modified' Response Header To Facilitate Content Caching
-    //TODO make sure hitting refresh should not load the receipt again
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create(@ModelAttribute UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage, BindingResult result) {
+    /**
+     * For uploading Receipts
+     *
+     * @param userSession
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "upload")
+    public @ResponseBody
+    String upload(@ModelAttribute UserSession userSession, HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
-		uploadReceiptImageValidator.validate(uploadReceiptImage, result);
-		if (result.hasErrors()) {
-			ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
-			List<ReceiptEntity> receipts = landingService.allReceipts(userSession.getUserProfileId());
-			modelAndView.addObject("receipts", receipts);
-			modelAndView.addObject("uploadItem", UploadReceiptImage.newInstance());
+        log.info("Upload a receipt");
+        String outcome = FILE_UPLOAD_FAILURE;
 
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result check");
-            return modelAndView;
-		}
+        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+        if(isMultipart) {
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+            final List<MultipartFile> files = multipartHttpServletRequest.getFiles("qqfile");
+            Assert.state(files.size() > 0, "0 files exist");
 
-        try {
-            // Some type of file processing...
-            log.info("-------------------------------------------");
-            log.info("Test upload: " + uploadReceiptImage.getDescription());
-            log.info("Test upload: " + uploadReceiptImage.getFileData().getOriginalFilename());
-            log.info("Test upload: " + uploadReceiptImage.getFileData().getContentType());
-            log.info("-------------------------------------------");
+            /*
+             * process files
+             */
+            for (MultipartFile file : files) {
+                UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
+                CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) file;
+                uploadReceiptImage.setFileData(commonsMultipartFile);
+                uploadReceiptImage.setEmailId(userSession.getEmailId());
+                uploadReceiptImage.setUserProfileId(userSession.getUserProfileId());
+                try {
+                    // Some type of file processing...
+                    log.info("-------------------------------------------");
+                    log.info("Test upload: " + uploadReceiptImage.getFileData().getOriginalFilename());
+                    log.info("Test upload: " + uploadReceiptImage.getFileData().getContentType());
+                    log.info("-------------------------------------------");
 
-            landingService.uploadReceipt(userSession.getUserProfileId(), uploadReceiptImage);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-        } catch (Exception exce) {
-            log.error(exce.getLocalizedMessage());
-            result.rejectValue("fileData", "", exce.getLocalizedMessage());
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+                    landingService.uploadReceipt(userSession.getUserProfileId(), uploadReceiptImage);
+                    outcome = FILE_UPLOAD_SUCCESS;
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+                } catch (Exception exce) {
+                    outcome = "{\"success\" : false, \"error\" : \"" + exce.getLocalizedMessage() + "\"}";
+                    log.error("Receipt upload exception: " + exce.getLocalizedMessage() + ", for user: " + userSession.getUserProfileId());
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+                }
+            }
+        } else {
+            //TODO test with IE
+            //http://skillshared.blogspot.com/2012/08/java-class-for-valums-ajax-file.html
+            log.warn("Look like IE file upload");
+            String filename = httpServletRequest.getHeader("X-File-Name");
+            InputStream is = httpServletRequest.getInputStream();
         }
-
-        return new ModelAndView(RELOAD_PAGE);
-	}
+        return outcome;
+    }
 
     /**
      * Provides user information of home page through a REST URL
@@ -234,45 +261,4 @@ public class LandingController extends BaseController {
             return "Invalid Email: " + emailId;
         }
     }
-
-    private void populate(UserProfileEntity userProfile) {
-
-		try {
-//			// Item from Barnes and Noble
-//			ReceiptEntity receipt = ReceiptEntity.updateInstance("Barnes & Noble Booksellers #1944", DateUtil.getDateFromString("12/15/2012 02:13PM"), 8.13, 0.63);
-//			receipt.setDescription("Item from Barnes and Noble");
-//			receipt.setUserProfileId(userProfile.getId());
-//			receipt.setReceiptBlobId("1");
-//			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-//			receiptManager.save(receipt);
-//			log.info("Receipt Id: " + receipt.getId());
-//
-//			ItemEntity item1 = ItemEntity.newInstance("1 Marble Moc Macchia Tall", 3.75, TaxEnum.TAXED, 1, receipt, userProfile.getId());
-//			itemManager.save(item1);
-//			ItemEntity item2 = ItemEntity.newInstance("1 Car Brulee Latte Tall", 3.75, TaxEnum.TAXED, 2, receipt, userProfile.getId());
-//			itemManager.save(item2);
-//
-//			// Item from Lucky
-//			receipt = ReceiptEntity.updateInstance("Lucky", DateUtil.getDateFromString("12/25/12 16:54:57"), 14.61, .34);
-//			receipt.setDescription("Item from Lucky");
-//			receipt.setUserProfileId(userProfile.getId());
-//			receipt.setReceiptBlobId("2");
-//			receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-//			receiptManager.save(receipt);
-//			log.info("Receipt Id: " + receipt.getId());
-//
-//			item1 = ItemEntity.newInstance("1 SANTA HT LEOPARD", 4.00, TaxEnum.TAXED, 1, receipt, userProfile.getId());
-//			itemManager.save(item1);
-//			item2 = ItemEntity.newInstance("1 CUPCAKES 6C UNICED", 2.99, TaxEnum.NOT_TAXED, 2, receipt, userProfile.getId());
-//			itemManager.save(item2);
-//			ItemEntity item3 = ItemEntity.newInstance("1 DBK CNMN STRSL SLC", 3.99, TaxEnum.NOT_TAXED, 3, receipt, userProfile.getId());
-//			itemManager.save(item3);
-//			ItemEntity item4 = ItemEntity.newInstance("1 GRACE WHL CLV GRLC", 3.29, TaxEnum.NOT_TAXED, 4, receipt, userProfile.getId());
-//			itemManager.save(item4);
-
-		} catch (Exception e) {
-			log.error(e.getLocalizedMessage());
-		}
-
-	}
 }

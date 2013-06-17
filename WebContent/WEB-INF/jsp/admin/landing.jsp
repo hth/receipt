@@ -39,32 +39,36 @@
 
     <h2>Search users to change profile settings</h2>
     <form:form method="post" modelAttribute="userSearchForm" action="landing.htm">
-        <table style="width: 275px" class="etable">
+        <table style="width: 325px" class="etable">
             <tr>
-                <th>Search Name: </th>
-                <td><form:input path="userName" /></td>
+                <th style="padding: 3px;">Search Name: </th>
+                <td style="padding: 3px;">&nbsp;<form:input path="userName" size="27" /></td>
             </tr>
             <c:if test="${users.size() > 0}">
-                <table style="width: 275px" class="etable">
+                <table style="width: 325px" class="etable">
                     <tbody>
                         <tr>
-                            <th style="padding:3px;"></th>
-                            <th style="padding:3px;">Level</th>
-                            <th style="padding:3px;">Name</th>
+                            <th style="padding: 3px;"></th>
+                            <th style="padding: 3px;">Level</th>
+                            <th style="padding: 3px;">Last, First Name</th>
+                            <th style="padding: 3px">Mail Id</th>
                         </tr>
                     </tbody>
                     <c:forEach var="user" items="${users}"  varStatus="status">
                     <tr>
-                        <td style="padding:3px;" align="center">
+                        <td style="padding: 3px;" align="center">
                             ${status.count}
                         </td>
-                        <td style="padding:3px;" align="center" title="${user.level}">
+                        <td style="padding: 3px;" align="center" title="${user.level}">
                             <spring:eval expression="user.level.description" />
                         </td>
-                        <td style="padding:3px;" align="left" title="${user.userName}">
+                        <td style="padding: 3px;" align="left" title="${user.userName}">
                             <a href="${pageContext.request.contextPath}/userprofilepreference/their.htm?id=${user.id}">
                                 <spring:eval expression="user.userName" />
                             </a>
+                        </td>
+                        <td style="padding: 3px;">
+                            ${user.emailId}
                         </td>
                     </tr>
                     </c:forEach>
@@ -81,25 +85,25 @@
         <form:errors path="bizSuccess" cssClass="success" />
         <table style="width: 700px" class="etable">
             <tr>
-                <td colspan="2">
+                <td style="padding: 3px;" colspan="2">
                     <form:label for="bizName.name" path="bizName.name" cssErrorClass="error">Biz Name: </form:label>
                     <form:input path="bizName.name" id="name" size="52"/>
                     <form:errors path="bizName.name" cssClass="error" />
                 </td>
             </tr>
             <tr>
-                <td>
-                    <form:label for="bizStore.address" path="bizStore.address" cssErrorClass="error">Address: </form:label>
-                    <form:input path="bizStore.address" id="name" size="70"/>
+                <td style="padding: 3px;">
+                    <form:label for="bizStore.address" path="bizStore.address" cssErrorClass="error">Address: &nbsp;</form:label>
+                    <form:input path="bizStore.address" id="name" size="65"/>
                     <form:errors path="bizStore.address" cssClass="error" />
                 </td>
-                <td>
+                <td style="padding: 3px;">
                     <form:label for="bizStore.phone" path="bizStore.phone" cssErrorClass="error">Phone: </form:label>
-                    <form:input path="bizStore.phone" id="name" size="20"/>
+                    <form:input path="bizStore.phone" id="name" size="18"/>
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td style="padding: 3px;" colspan="2">
                     <input type="submit" value="Add Store or New Business" name="add"/>
                 </td>
             </tr>

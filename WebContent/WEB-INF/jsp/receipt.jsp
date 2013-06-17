@@ -154,17 +154,30 @@
                             <td style="text-align: right;">&nbsp;</td>
                             <td style="text-align: right;">&nbsp;</td>
                         </tr>
+                        <tr height="60em">
+                            <td colspan="3">
+                                <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check"/></div>
+                                <div class="rightAlign">&nbsp;&nbsp;</div>
+                                <div class="rightAlign"><input type="submit" value="Delete" name="delete"/></div>
+                            </td>
+                            <td>
+                                <div class="leftAlign"><input type="submit" value="Update Expense Type" name="update-expense-type"/></div>
+                            </td>
+                        </tr>
                         <tr>
-                            <tr height="60em">
-                                <td colspan="3">
-                                    <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check"/></div>
-                                    <div class="rightAlign">&nbsp;&nbsp;</div>
-                                    <div class="rightAlign"><input type="submit" value="Delete" name="delete"/></div>
-                                </td>
-                                <td>
-                                    <div class="leftAlign"><input type="submit" value="Update Expense Type" name="update-expense-type"/></div>
-                                </td>
-                            </tr>
+                            <td colspan="4">
+                                <form:label for="receipt.comment.comment" path="receipt.comment.comment" cssErrorClass="error">Comment:</form:label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <form:textarea path="receipt.comment.comment" id="comment" size="300" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <form:errors path="receipt.comment.comment" cssClass="error" />
+                            </td>
                         </tr>
                     </table>
                 </form:form>

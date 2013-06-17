@@ -3,10 +3,8 @@
  */
 package com.tholix.domain;
 
-import java.util.Objects;
-
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.Objects;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -25,12 +23,6 @@ import com.tholix.domain.types.ReceiptStatusEnum;
 @CompoundIndexes({ @CompoundIndex(name = "user_receipt_ocr_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
 public class ReceiptEntityOCR extends BaseEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
-
-	/**
-	 * Description is provided by the user. Description can be empty.
-	 */
-	@Size(min = 0, max = 128)
-	private String description;
 
 	@NotNull
 	private ReceiptStatusEnum receiptStatus;
@@ -64,6 +56,9 @@ public class ReceiptEntityOCR extends BaseEntity {
 
     private String receiptId;
 
+    @DBRef
+    private CommentEntity comment;
+
 	public ReceiptEntityOCR() {
 
 	}
@@ -75,22 +70,20 @@ public class ReceiptEntityOCR extends BaseEntity {
 		this.tax = tax;
 	}
 
-	private ReceiptEntityOCR(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
+	private ReceiptEntityOCR(ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
 		super();
-		this.description = description;
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
 		this.receiptOCRTranslation = receiptOCRTranslation;
 	}
 
-	private ReceiptEntityOCR(String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
+	private ReceiptEntityOCR(String receiptDate, String total, String tax, ReceiptStatusEnum receiptStatus, String receiptBlobId,
 			String userProfileId) {
 		super();
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
-		this.description = description;
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
@@ -108,25 +101,17 @@ public class ReceiptEntityOCR extends BaseEntity {
 		return new ReceiptEntityOCR(receiptDate, total, tax);
 	}
 
-	public static ReceiptEntityOCR newInstance(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
-		return new ReceiptEntityOCR(description, receiptStatus, receiptBlobId, userProfileId, receiptOCRTranslation);
+	public static ReceiptEntityOCR newInstance(ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
+		return new ReceiptEntityOCR(receiptStatus, receiptBlobId, userProfileId, receiptOCRTranslation);
 	}
 
-	public static ReceiptEntityOCR newInstance(String receiptDate, String total, String tax, String description, ReceiptStatusEnum receiptStatus,
+	public static ReceiptEntityOCR newInstance(String receiptDate, String total, String tax, ReceiptStatusEnum receiptStatus,
 			String receiptBlobId, String userProfileId) {
-		return new ReceiptEntityOCR(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		return new ReceiptEntityOCR(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 	}
 
 	public static ReceiptEntityOCR newInstance() {
 		return new ReceiptEntityOCR();
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public ReceiptStatusEnum getReceiptStatus() {
@@ -215,6 +200,14 @@ public class ReceiptEntityOCR extends BaseEntity {
 
     public void setReceiptId(String receiptId) {
         this.receiptId = receiptId;
+    }
+
+    public CommentEntity getComment() {
+        return comment;
+    }
+
+    public void setComment(CommentEntity comment) {
+        this.comment = comment;
     }
 
     @Override

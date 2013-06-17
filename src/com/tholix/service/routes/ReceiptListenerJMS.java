@@ -29,7 +29,6 @@ public class ReceiptListenerJMS {
 
 	public void receive(Map<String, Object> message) throws Exception {
 		String id = (String) message.get("id");
-		String description = (String) message.get("description");
 		String level = (String) message.get("level");
         int status = (Integer) message.get("status");
         ReceiptStatusEnum receiptStatusEnum = ReceiptStatusEnum.OCR_PROCESSED;
@@ -47,9 +46,9 @@ public class ReceiptListenerJMS {
         }
 
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(level.toUpperCase());
-        MessageReceiptEntityOCR object = MessageReceiptEntityOCR.newInstance(id, description, levelEnum, receiptStatusEnum);
+        MessageReceiptEntityOCR object = MessageReceiptEntityOCR.newInstance(id, levelEnum, receiptStatusEnum);
         messageManager.save(object);
 
-		log.info("Message received: " + id + ", description: " + description + ", user level: " + level + ", and persisted with id: " + object.getId());
+		log.info("Message received: " + id + ", user level: " + level + ", and persisted with id: " + object.getId());
 	}
 }

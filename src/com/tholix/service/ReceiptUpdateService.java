@@ -130,6 +130,9 @@ public class ReceiptUpdateService {
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
             receiptOCR.setReceiptId(receipt.getId());
             receiptOCR.inActive();
+            if(StringUtils.isEmpty(receiptOCR.getComment().getComment())) {
+                receiptOCR.setComment(null);
+            }
             receiptOCRManager.save(receiptOCR);
 
             try {

@@ -3,9 +3,11 @@
  */
 package com.tholix.domain;
 
-import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.utils.Maths;
-import org.joda.time.DateTime;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Objects;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -16,11 +18,10 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
+import org.joda.time.DateTime;
+
+import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.utils.Maths;
 
 /**
  * @author hitender
@@ -31,9 +32,6 @@ import java.util.Objects;
 @CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
-
-	@Size(min = 0, max = 128)
-	private String description;
 
 	@NotNull
 	private ReceiptStatusEnum receiptStatus;
@@ -74,6 +72,9 @@ public class ReceiptEntity extends BaseEntity {
     @NotNull
     private String receiptOCRId;
 
+    @DBRef
+    private CommentEntity comment;
+
 	public ReceiptEntity() {
 
 	}
@@ -87,18 +88,16 @@ public class ReceiptEntity extends BaseEntity {
 
 	private ReceiptEntity(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
 		super();
-		this.description = description;
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
 	}
 
-	private ReceiptEntity(Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	private ReceiptEntity(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
 		super();
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
-		this.description = description;
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
@@ -131,27 +130,18 @@ public class ReceiptEntity extends BaseEntity {
 	 * @param receiptDate
 	 * @param total
 	 * @param tax
-	 * @param description
 	 * @param receiptStatus
 	 * @param receiptBlobId
 	 * @param userProfileId
 	 * @return
 	 */
-	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, String description, ReceiptStatusEnum receiptStatus, String receiptBlobId,
+	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId,
 			String userProfileId) {
-		return new ReceiptEntity(receiptDate, total, tax, description, receiptStatus, receiptBlobId, userProfileId);
+		return new ReceiptEntity(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 	}
 
 	public static ReceiptEntity newInstance() {
 		return new ReceiptEntity();
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public ReceiptStatusEnum getReceiptStatus() {
@@ -258,6 +248,14 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setReceiptOCRId(String receiptOCRId) {
         this.receiptOCRId = receiptOCRId;
+    }
+
+    public CommentEntity getComment() {
+        return comment;
+    }
+
+    public void setComment(CommentEntity comment) {
+        this.comment = comment;
     }
 
     @Override

@@ -3,6 +3,8 @@
  */
 package com.tholix.web.form;
 
+import com.google.common.base.Objects;
+
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.UserLevelEnum;
 
@@ -18,28 +20,25 @@ public class UserSearchForm {
 	private String firstName = "";
 	private String lastName = "";
 	private UserLevelEnum level;
+    private String emailId;
 
 	/** To make bean happy */
 	private UserSearchForm() {}
 
-	private UserSearchForm(String id, String firstName, String lastName, UserLevelEnum level) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.level = level;
-		this.userName = lastName + ", " + firstName;
-	}
-
-	public static UserSearchForm newInstance() {
-		return new UserSearchForm();
-	}
-
-	public static UserSearchForm newInstance(String id, String firstName, String lastName, UserLevelEnum level) {
-		return new UserSearchForm(id, firstName, lastName, level);
-	}
+    public static UserSearchForm newInstance() {
+        return new UserSearchForm();
+    }
 
 	public static UserSearchForm newInstance(UserProfileEntity userProfile) {
-		return new UserSearchForm(userProfile.getId(), userProfile.getFirstName(), userProfile.getLastName(), userProfile.getLevel());
+		UserSearchForm userSearchForm = new UserSearchForm();
+
+        userSearchForm.setId(userProfile.getId());
+        userSearchForm.setFirstName(userProfile.getFirstName());
+        userSearchForm.setLastName(userProfile.getLastName());
+        userSearchForm.setUserName(userProfile.getLastName() + ", " + userProfile.getFirstName());
+        userSearchForm.setLevel(userProfile.getLevel());
+        userSearchForm.setEmailId(userProfile.getEmailId());
+        return userSearchForm;
 	}
 
 	public String getId() {
@@ -85,10 +84,22 @@ public class UserSearchForm {
 		this.level = level;
 	}
 
-	@Override
-	public String toString() {
-		return "UserSearchForm [id=" + id + ", userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName + "]";
-	}
+    public String getEmailId() {
+        return emailId;
+    }
 
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("id", id)
+                .add("firstName", firstName)
+                .add("lastName", lastName)
+                .add("level", level)
+                .add("emailId", emailId)
+                .toString();
+    }
 }
