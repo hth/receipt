@@ -21,14 +21,36 @@
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
     <script type='text/javascript' src="jquery/js/highcharts.js"></script>
-
-
     <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+
     <script>
-        $(document).ready(function () {
-            $('#jquery-wrapped-fine-uploader').fineUploader({
+        $(document).ready(function() {
+            var errorHandler = function (event, id, fileName, reason) {
+                qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
+            };
+
+            <%-- TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html --%>
+            var restricteduploader = new qq.FineUploader({
+                element: $('#restricted-fine-uploader')[0],
+                callbacks: {
+                    onError: errorHandler,
+                    onComplete: function(id, fileName, responseJSON) {
+                        if (responseJSON.success == true) {
+                            $(this.getItemByFileId(id)).hide('slow');
+                        }
+                    }
+                },
                 request: {
-                    endpoint: 'server/handleUploads'
+                    endpoint: '${pageContext. request. contextPath}/landing/upload.htm',
+                    customHeaders: { Accept: 'multipart/form-data' }
+                },
+                multiple: true,
+                validation: {
+                    allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+                    sizeLimit: 10485760 // 10 MB in bytes
+                },
+                text: {
+                    uploadButton: '&uarr; &nbsp; Click or Drop to upload Receipt(s)'
                 }
             });
         });
@@ -271,7 +293,7 @@
                             </table>
                         </td>
                         <td style="vertical-align: top">
-                            <div id="container" style="min-width: 575px; height: 375px; margin: 0 auto"></div>
+                            <div id="container" style="min-width: 425px; height: 275px; margin: 0 auto"></div>
                         </td>
                     </tr>
                 </table>
@@ -302,7 +324,7 @@
                         </fieldset>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="allExpenseTypes" style="min-width: 575px; height: 375px; margin: 0 auto"></div>
+                        <div id="allExpenseTypes" style="min-width: 425px; height: 275px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>
@@ -320,39 +342,6 @@
     </p>
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
-
-<script>
-    $(document).ready(function() {
-        var errorHandler = function (event, id, fileName, reason) {
-            qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
-        };
-
-        <%-- TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html --%>
-        var restricteduploader = new qq.FineUploader({
-            element: $('#restricted-fine-uploader')[0],
-            callbacks: {
-                onError: errorHandler,
-                onComplete: function(id, fileName, responseJSON) {
-                    if (responseJSON.success == true) {
-                        $(this.getItemByFileId(id)).hide('slow');
-                    }
-                }
-            },
-            request: {
-                endpoint: '${pageContext. request. contextPath}/landing/upload.htm',
-                customHeaders: { Accept: 'multipart/form-data' }
-            },
-            multiple: true,
-            validation: {
-                allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
-                sizeLimit: 10485760 // 10 MB in bytes
-            },
-            text: {
-                uploadButton: '&uarr; &nbsp; Click or Drop to upload Receipt(s)'
-            }
-        });
-    });
-</script>
 
 <c:if test="${bizByExpenseTypes.size() > 0}">
 <script>
