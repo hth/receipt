@@ -51,6 +51,9 @@
                 },
                 text: {
                     uploadButton: '&uarr; &nbsp; Click or Drop to upload Receipt(s)'
+                },
+                showMessage: function(message) {
+                    $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
                 }
             });
         });

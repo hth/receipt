@@ -125,12 +125,16 @@
     color: #D60000;
 }
 .qq-upload-list li.qq-upload-success {
-    background-color: #5DA30C;
-    color: #FFFFFF;
+    color: #468847;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    /*background-color: #5DA30C;*/
+    /*color: #FFFFFF;*/
 }
 .qq-upload-list li.qq-upload-fail {
-    background-color: #e6e6e6;
-    color: #D60000;
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
 }
 .qq-progress-bar {
     background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6+ */

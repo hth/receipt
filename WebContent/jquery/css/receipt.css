@@ -215,3 +215,23 @@ input { font-size: 13px; }
 /* This is for userId and home on the top of the page */
 a img, a span { vertical-align: middle; }
 /* End */
+
+/* Alert error */
+.alert-error {
+    margin: 0;
+    padding: 4px;
+    line-height: 12px;
+    font-size: 13px;
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+.alert-success {
+    margin: 0;
+    padding: 4px;
+    line-height: 12px;
+    font-size: 13px;
+    color: #468847;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
