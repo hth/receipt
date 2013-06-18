@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.FetcherService;
+import com.tholix.service.LandingService;
 
 /**
  * User: hitender
@@ -33,6 +34,7 @@ public class FetcherController {
     private static final Logger log = Logger.getLogger(FetcherController.class);
 
     @Autowired FetcherService fetcherService;
+    @Autowired LandingService landingService;
 
     /**
      * Note: UserSession parameter is to make sure no outside get requests are processed.
@@ -48,7 +50,8 @@ public class FetcherController {
     public @ResponseBody
     List<String> searchBiz(@RequestParam("term") String bizName,
                            @ModelAttribute("userSession") UserSession userSession,
-                           @SuppressWarnings("unused")HttpServletResponse httpServletResponse) throws IOException {
+                           HttpServletResponse httpServletResponse) throws IOException {
+
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
                 return fetcherService.findBizName(bizName);
@@ -77,7 +80,8 @@ public class FetcherController {
     public @ResponseBody
     List<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String bizName,
                            @ModelAttribute("userSession") UserSession userSession,
-                           @SuppressWarnings("unused")HttpServletResponse httpServletResponse) throws IOException {
+                           HttpServletResponse httpServletResponse) throws IOException {
+
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
                 return fetcherService.findBizAddress(bizAddress, bizName);
@@ -107,7 +111,8 @@ public class FetcherController {
     public @ResponseBody
     List<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String bizName, @RequestParam("addressParam") String bizAddress,
                              @ModelAttribute("userSession") UserSession userSession,
-                             @SuppressWarnings("unused")HttpServletResponse httpServletResponse) throws IOException {
+                             HttpServletResponse httpServletResponse) throws IOException {
+
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
                 return fetcherService.findBizPhone(bizPhone, bizAddress, bizName);
@@ -136,7 +141,8 @@ public class FetcherController {
     public @ResponseBody
     List<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String bizName,
                             @ModelAttribute("userSession") UserSession userSession,
-                            @SuppressWarnings("unused")HttpServletResponse httpServletResponse) throws IOException {
+                            HttpServletResponse httpServletResponse) throws IOException {
+
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
                 return fetcherService.findItems(itemName, bizName);
@@ -147,6 +153,19 @@ public class FetcherController {
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return null;
+        }
+    }
+
+    @RequestMapping(value = "/pending", method = RequestMethod.POST)
+    public @ResponseBody
+    long pendingReceipts(@ModelAttribute("userSession") UserSession userSession, HttpServletResponse httpServletResponse)
+            throws IOException {
+
+        if(userSession != null) {
+            return landingService.pendingReceipt(userSession.getUserProfileId());
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return -1;
         }
     }
 }

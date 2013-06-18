@@ -47,21 +47,21 @@
                         <table style="width: 400px" class="etable">
                             <tr>
                                 <th style="padding: 3px;" align="left">&nbsp;</th>
-                                <th style="padding: 3px;" align="left">&nbsp;Upload Date</th>
                                 <th style="padding: 3px;" align="left">&nbsp;File Name</th>
+                                <th style="padding: 3px;" align="left">&nbsp;Upload Date</th>
                             </tr>
                             <c:forEach items="${pendingReceipts}" var="pendingReceiptForm" varStatus="status">
                             <tr>
                                 <td style="padding: 3px;" align="right">
                                     ${status.count}
                                 </td>
-                                <td style="padding: 3px;" align="left">
-                                    <fmt:formatDate value="${pendingReceiptForm.receiptEntityOCR.created}" type="both"/>
-                                </td>
                                 <td style="padding: 3px;">
                                     <a href="${pageContext.request.contextPath}/emp/update.htm?id=${pendingReceiptForm.receiptEntityOCR.id}">
                                         ${pendingReceiptForm.fileName}
                                     </a>
+                                </td>
+                                <td style="padding: 3px;" align="left">
+                                    <fmt:formatDate value="${pendingReceiptForm.receiptEntityOCR.created}" type="both"/>
                                 </td>
                             </tr>
                             </c:forEach>

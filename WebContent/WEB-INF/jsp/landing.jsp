@@ -37,6 +37,32 @@
                     onComplete: function(id, fileName, responseJSON) {
                         if (responseJSON.success == true) {
                             $(this.getItemByFileId(id)).hide('slow');
+
+                            $.ajax({
+                                type: 'POST',
+                                url:  '${pageContext. request. contextPath}/fetcher/pending.htm',
+                                success: function(response) {
+                                    if(response > 0) {
+                                        var html = '';
+                                        html = html +   "<div class='ui-widget'>" +
+                                                            "<div class='ui-state-highlight ui-corner-all' style='margin-top: 0px; padding: 0 .7em;'>" +
+                                                                "<p>" +
+                                                                    "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
+                                                                    "<span style='display:block; width:310px;'>";
+                                        if(response == 1) {
+                                            html = html + "Pending receipt to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong>" + response + "</strong></a>";
+                                        } else {
+                                            html = html + "Pending receipts to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong>" + response + "</strong></a>";
+                                        }
+                                        html = html +               "</span>" +
+                                                                "</p>" +
+                                                            "</div>" +
+                                                        "</div>";
+                                        $('#pendingCountInitial').hide();
+                                        $('#pendingCountId').html(html);
+                                    }
+                                }
+                            });
                         }
                     }
                 },
@@ -161,19 +187,20 @@
 	<table>
 		<tr>
 			<td valign="top">
+                <div id="pendingCountInitial">
                 <c:choose>
-                    <c:when test="${userSession.pendingCount gt 0}">
+                    <c:when test="${pendingCount gt 0}">
                         <div class="ui-widget">
-                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                                 <p>
                                     <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
                                     <span style="display:block; width:310px;">
                                         <c:choose>
-                                            <c:when test="${userSession.pendingCount} == 1">
-                                                Pending receipt to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${userSession.pendingCount}</strong></a>
+                                            <c:when test="${pendingCount} == 1">
+                                                Pending receipt to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${pendingCount}</strong></a>
                                             </c:when>
                                             <c:otherwise>
-                                                Pending receipts to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${userSession.pendingCount}</strong></a>
+                                                Pending receipts to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${pendingCount}</strong></a>
                                             </c:otherwise>
                                         </c:choose>
                                     </span>
@@ -183,7 +210,7 @@
                     </c:when>
                     <c:otherwise>
                         <div class="ui-widget">
-                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 5px; padding: 0 .7em;">
+                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                                 <p>
                                     <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
                                     <span style="display:block; width:310px;">
@@ -194,6 +221,8 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
+                </div>
+                <div id="pendingCountId"></div>
                 &nbsp;&nbsp;&nbsp;
                 <fieldset style="width: 310px; margin-bottom: 10px;">
                     <legend>Upload Receipt</legend>

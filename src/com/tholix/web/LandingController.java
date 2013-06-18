@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,15 +78,14 @@ public class LandingController extends BaseController {
         DateTime time = DateUtil.now();
         log.info("LandingController loadForm: " + userSession.getEmailId());
 
-		//TODO why pendingCount saved in session
-		long pendingCount = landingService.pendingReceipt(userSession.getUserProfileId());
-		userSession.setPendingCount(pendingCount);
-
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
         modelAndView.addObject("userSession", userSession);
 
 		List<ReceiptEntity> receipts = landingService.allReceipts(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
+
+        long pendingCount = landingService.pendingReceipt(userSession.getUserProfileId());
+        modelAndView.addObject("pendingCount", pendingCount);
 
         /** Receipt grouped by date */
         log.info("Calculating calendar grouped expense");
@@ -177,12 +175,6 @@ public class LandingController extends BaseController {
                 uploadReceiptImage.setEmailId(userSession.getEmailId());
                 uploadReceiptImage.setUserProfileId(userSession.getUserProfileId());
                 try {
-                    // Some type of file processing...
-                    log.info("-------------------------------------------");
-                    log.info("Test upload: " + uploadReceiptImage.getFileData().getOriginalFilename());
-                    log.info("Test upload: " + uploadReceiptImage.getFileData().getContentType());
-                    log.info("-------------------------------------------");
-
                     landingService.uploadReceipt(userSession.getUserProfileId(), uploadReceiptImage);
                     outcome = FILE_UPLOAD_SUCCESS;
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");

@@ -3,10 +3,9 @@
  */
 package com.tholix.domain;
 
-import com.tholix.domain.types.UserLevelEnum;
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
+
+import com.tholix.domain.types.UserLevelEnum;
 
 /**
  * @author hitender
@@ -14,19 +13,16 @@ import java.io.Serializable;
  *
  *       Used in session
  */
-public class UserSession implements Serializable {
+public final class UserSession implements Serializable {
 	private static final long serialVersionUID = 7575677662361932482L;
-    private static volatile Logger log = Logger.getLogger(UserSession.class);
 
 	String emailId;
 	String userProfileId;
-	long pendingCount;
 	private UserLevelEnum level;
 
 	/** To make bean happy */
-	private UserSession() {
-
-	}
+    @SuppressWarnings("unused")
+	private UserSession() {}
 
 	private UserSession(String emailId, String userProfileId, UserLevelEnum level) {
 		this.emailId = emailId;
@@ -48,13 +44,5 @@ public class UserSession implements Serializable {
 
 	public UserLevelEnum getLevel() {
 		return this.level;
-	}
-
-	public long getPendingCount() {
-		return pendingCount;
-	}
-
-	public void setPendingCount(long pendingCount) {
-		this.pendingCount = pendingCount;
 	}
 }
