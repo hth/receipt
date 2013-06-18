@@ -45,14 +45,14 @@
                                     if(response > 0) {
                                         var html = '';
                                         html = html +   "<div class='ui-widget'>" +
-                                                            "<div class='ui-state-highlight ui-corner-all' style='margin-top: 0px; padding: 0 .7em;'>" +
+                                                            "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
                                                                 "<p>" +
                                                                     "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
                                                                     "<span style='display:block; width:310px;'>";
                                         if(response == 1) {
-                                            html = html + "Pending receipt to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong>" + response + "</strong></a>";
+                                            html = html + "Pending receipt to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: green;'>" + response + "</strong></a>";
                                         } else {
-                                            html = html + "Pending receipts to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong>" + response + "</strong></a>";
+                                            html = html + "Pending receipts to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: green;'>" + response + "</strong></a>";
                                         }
                                         html = html +               "</span>" +
                                                                 "</p>" +
