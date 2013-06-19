@@ -349,7 +349,16 @@
                 </table>
                 </c:when>
                 <c:otherwise>
-                No receipt(s) submitted or transformed for this month
+                <div class="ui-widget">
+                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                        <p>
+                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                            <span style="display:block; width:410px;">
+                                No receipt(s) submitted or transformed for this month
+                            </span>
+                        </p>
+                    </div>
+                </div>
                 </c:otherwise>
             </c:choose>
 		</div>
