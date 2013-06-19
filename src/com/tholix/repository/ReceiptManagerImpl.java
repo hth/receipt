@@ -23,10 +23,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.joda.time.DateTime;
+
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
+import com.tholix.utils.DateUtil;
 
 /**
  * @author hitender
@@ -50,13 +53,27 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
-    public List<ReceiptEntity> getAllObjectsForUser(String userProfileId) {
+    public List<ReceiptEntity> getAllReceipts(String userProfileId) {
         Criteria criteria = Criteria.where("userProfileId").is(userProfileId)
                 .andOperator(Criteria.where("active").is(true));
 
 		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
 		return mongoTemplate.find(Query.query(criteria).with(sort), ReceiptEntity.class, TABLE);
 	}
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
+    public List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId) {
+        DateTime dateTime = DateUtil.now();
+        Criteria criteria = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria1 = Criteria.where("month").is(dateTime.getMonthOfYear());
+        Criteria criteria2 = Criteria.where("year").is(dateTime.getYear());
+        Criteria criteria3 = Criteria.where("active").is(true);
+
+        Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
+        Query query = Query.query(criteria).addCriteria(criteria1).addCriteria(criteria2).addCriteria(criteria3);
+        return mongoTemplate.find(query.with(sort), ReceiptEntity.class, TABLE);
+    }
 
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)

@@ -20,7 +20,21 @@ import com.tholix.domain.value.ReceiptGrouped;
 public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 	static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
 
-	List<ReceiptEntity> getAllObjectsForUser(String userProfileId);
+    /**
+     * Gets all the user receipts
+     *
+     * @param userProfileId
+     * @return
+     */
+	List<ReceiptEntity> getAllReceipts(String userProfileId);
+
+    /**
+     * Gets user receipts for current month
+     *
+     * @param userProfileId
+     * @return
+     */
+    List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId);
 
     /**
      * Get receipts associated with year, month, day

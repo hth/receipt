@@ -81,7 +81,7 @@ public class LandingController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
         modelAndView.addObject("userSession", userSession);
 
-		List<ReceiptEntity> receipts = landingService.allReceipts(userSession.getUserProfileId());
+		List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId());
 		modelAndView.addObject("receipts", receipts);
 
         long pendingCount = landingService.pendingReceipt(userSession.getUserProfileId());
@@ -210,7 +210,7 @@ public class LandingController extends BaseController {
         UserProfileEntity userProfile = authenticate(profileId, authKey);
         if(userProfile != null) {
             long pendingCount = landingService.pendingReceipt(profileId);
-            List<ReceiptEntity> receipts = landingService.allReceipts(profileId);
+            List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(profileId);
 
             LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId(), Header.newInstance(getAuth(profileId)));
             landingView.setPendingCount(pendingCount);

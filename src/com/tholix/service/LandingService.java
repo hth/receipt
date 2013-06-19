@@ -59,8 +59,13 @@ public class LandingService {
         return receiptOCRManager.numberOfPendingReceipts(profileId);
     }
 
-    public List<ReceiptEntity> allReceipts(String profileId) {
-        return receiptManager.getAllObjectsForUser(profileId);
+    @SuppressWarnings("unused")
+    public List<ReceiptEntity> getAllReceipts(String profileId) {
+        return receiptManager.getAllReceipts(profileId);
+    }
+
+    public List<ReceiptEntity> getAllReceiptsForThisMonth(String profileId) {
+        return receiptManager.getAllReceiptsForThisMonth(profileId);
     }
 
     public Iterator<ReceiptGrouped> getReceiptGroupedByDate(String profileId) {

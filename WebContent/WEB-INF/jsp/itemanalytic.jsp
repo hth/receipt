@@ -37,7 +37,7 @@
 
     <p>&nbsp;</p>
 
-    <table style="width: 650px" class="etable">
+    <table style="width: 850px" class="etable">
         <tbody>
             <tr>
                 <th style="padding:3px;">Business</th>
@@ -74,7 +74,7 @@
 
     <h2 class="demoHeaders">Your historical purchases of similar Item(s)</h2>
     <c:if test="${itemAnalyticForm.items.size() > 0}">
-        <table style="width: 700px" class="etable">
+        <table style="width: 900px" class="etable">
             <tbody>
             <tr>
                 <th style="padding:3px;"></th>
