@@ -306,7 +306,8 @@
 			<li><a href="#tabs-3">More</a></li>
 		</ul>
 		<div id="tabs-1">
-			<c:if test="${receipts.size() > 0}">
+            <c:choose>
+                <c:when test="${!empty receipts}">
                 <table>
                     <tr>
                         <td style="vertical-align: top">
@@ -346,7 +347,11 @@
                         </td>
                     </tr>
                 </table>
-			</c:if>
+                </c:when>
+                <c:otherwise>
+                No receipt(s) submitted or transformed for this month
+                </c:otherwise>
+            </c:choose>
 		</div>
 		<div id="tabs-2">
             <table>
