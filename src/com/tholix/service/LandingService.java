@@ -136,10 +136,11 @@ public class LandingService {
     }
 
     /**
-     * @param receipts
+     * @param userProfileId
      * @param modelAndView
      */
-    public void computeTotalExpense(List<ReceiptEntity> receipts, ModelAndView modelAndView) {
+    public void computeTotalExpense(String userProfileId, ModelAndView modelAndView) {
+        List<ReceiptEntity> receipts = getAllReceipts(userProfileId);
         BigDecimal tax = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
         for(ReceiptEntity receipt : receipts) {

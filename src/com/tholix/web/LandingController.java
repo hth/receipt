@@ -81,8 +81,8 @@ public class LandingController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
         modelAndView.addObject("userSession", userSession);
 
-		List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId());
-		modelAndView.addObject("receipts", receipts);
+		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId());
+		modelAndView.addObject("receipts", allReceiptsForThisMonth);
 
         long pendingCount = landingService.pendingReceipt(userSession.getUserProfileId());
         modelAndView.addObject("pendingCount", pendingCount);
@@ -99,9 +99,9 @@ public class LandingController extends BaseController {
 
         /** Used for donut chart of each receipts with respect to expense types */
         log.info("Calculating Donut chart - receipt expense");
-        populateReceiptExpenseDonutChartDetails(modelAndView, receipts);
+        populateReceiptExpenseDonutChartDetails(modelAndView, allReceiptsForThisMonth);
 
-        landingService.computeTotalExpense(receipts, modelAndView);
+        landingService.computeTotalExpense(userSession.getUserProfileId(), modelAndView);
 
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
