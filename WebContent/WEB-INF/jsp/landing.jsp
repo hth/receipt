@@ -24,6 +24,21 @@
     <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
 
     <script>
+        function runCounter(max) {
+            var runTill = max;
+            incCounter();
+
+            function incCounter() {
+                var currCount = parseInt($('#pendingCountValue').html());
+                $('#pendingCountValue').text(currCount+1);
+                if (currCount+1 != runTill) {
+                    setTimeout(incCounter,50);
+                }
+            }
+        }
+    </script>
+
+    <script>
         $(document).ready(function() {
             var errorHandler = function (event, id, fileName, reason) {
                 qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
@@ -50,16 +65,18 @@
                                                                     "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
                                                                     "<span style='display:block; width:310px;'>";
                                         if(response == 1) {
-                                            html = html + "Pending receipt to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: green;'>" + response + "</strong></a>";
+                                            html = html +               "Pending receipt to be processed: ";
                                         } else {
-                                            html = html + "Pending receipts to be processed: <a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: green;'>" + response + "</strong></a>";
+                                            html = html +               "Pending receipts to be processed: ";
                                         }
+                                        html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: green;' class='timer' id='pendingCountValue'>" + 0 + "</strong></a>";
                                         html = html +               "</span>" +
                                                                 "</p>" +
                                                             "</div>" +
                                                         "</div>";
                                         $('#pendingCountInitial').hide();
                                         $('#pendingCountId').html(html);
+                                        $(runCounter(response));
                                     }
                                 }
                             });
