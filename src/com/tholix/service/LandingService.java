@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
+
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
@@ -74,6 +78,19 @@ public class LandingService {
 
     public Map<String, BigDecimal> getAllItemExpense(String profileId) {
         return itemService.getAllItemExpense(profileId);
+    }
+
+    public List<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
+        Iterator<ReceiptGrouped> groupedIterator = receiptManager.getAllObjectsGroupedByMonth(userProfileId);
+
+        List<ReceiptGrouped> receiptGroupedList = Lists.newArrayList(groupedIterator);
+        Ordering<ReceiptGrouped> ascendingOrder = new Ordering<ReceiptGrouped>() {
+            public int compare(ReceiptGrouped left, ReceiptGrouped right) {
+                return Ints.compare(left.sumOfYearMonthDay(), right.sumOfYearMonthDay());
+            }
+        };
+
+        return ascendingOrder.sortedCopy(receiptGroupedList);
     }
 
     /**

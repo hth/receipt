@@ -366,6 +366,8 @@
             <table>
                 <tr>
                     <td style="vertical-align: top">
+                        <div id="monthly" style="min-width: 525px; height: 275px; margin: 0 auto"></div>
+
                         <fieldset style="width:295px;">
                             <legend>Total Expense</legend>
                             <div class="divTable">
@@ -406,7 +408,7 @@
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
-<c:if test="${bizByExpenseTypes.size() > 0}">
+<c:if test="${!empty bizByExpenseTypes}">
 <script>
     $(function () {
 
@@ -528,6 +530,80 @@
                     cursor: 'pointer'
                 }
             ]
+        });
+    });
+</script>
+</c:if>
+
+<c:if test="${!empty months}">
+<script>
+    $(function () {
+        $('#monthly').highcharts({
+            chart: {
+                type: 'column',
+                margin: [ 50, 50, 100, 40]
+            },
+            title: {
+                text: 'Monthly Expenses ${months.get(0).year - 1} - ${months.get(0).year}'
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                categories: [
+                    <c:forEach var="month" items="${months}"  varStatus="status">
+                    '${month.monthName}',
+                    </c:forEach>
+                ],
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Expenses in Dollar($)'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.x +'</b><br/>'+
+                            'Expense in ${months.get(0).year}: '+ Highcharts.numberFormat(this.y, 1) +
+                            '$';
+                }
+            },
+            series: [{
+                name: 'Population',
+                data: [
+                    <c:forEach var="month" items="${months}"  varStatus="status">
+                    ${month.total},
+                    </c:forEach>
+                ],
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    x: 4,
+                    y: 10,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    },
+                    formatter:function(){
+                        if(this.y > 0)
+                            return this.y;
+                    }
+                }
+            }]
         });
     });
 </script>

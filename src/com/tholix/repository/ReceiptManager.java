@@ -47,7 +47,21 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      */
     List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String userProfileId);
 
+    /**
+     * Receipt grouped by day
+     *
+     * @param userProfileId
+     * @return
+     */
     Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId);
+
+    /**
+     * Receipt grouped by month for last 13 months
+     *
+     * @param userProfileId
+     * @return
+     */
+    Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId);
 
     List<String> findTitles(String title);
 

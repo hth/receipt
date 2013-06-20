@@ -37,7 +37,32 @@ public final class ReceiptGrouped implements Serializable {
 		return new DateTime(year, month, day, 0, 0).toDate();
 	}
 
-	@Override
+    private DateTime getDateTime() {
+        DateTime date = new DateTime(year, month, 1, 0, 0);
+        return date;
+    }
+
+    public String getMonthName() {
+        return getDateTime().toString("MMM");
+    }
+
+    public int getYear() {
+        return this.year;
+    }
+
+    public int getMonth() {
+        return this.month;
+    }
+
+    public int getDay() {
+        return this.day;
+    }
+
+    public int sumOfYearMonthDay() {
+        return this.year + this.month + this.day;
+    }
+
+    @Override
 	public String toString() {
 		return new StringBuilder().append("ReceiptGrouped [total=")
                 .append(total).append(", year=")

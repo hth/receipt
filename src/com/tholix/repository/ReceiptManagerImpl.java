@@ -91,6 +91,24 @@ public class ReceiptManagerImpl implements ReceiptManager {
         return results.iterator();
 	}
 
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
+    public Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
+        GroupBy groupBy = GroupBy.key("month", "year")
+                .initialDocument("{ total: 0 }")
+                .reduceFunction("function(obj, result) { " +
+                        "  result.month = obj.month; " +
+                        "  result.year = obj.year; " +
+                        "  result.total += obj.total; " +
+                        "}");
+
+        DateTime date = DateUtil.now().minusMonths(13);
+        DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
+        Criteria criteria = Criteria.where("userProfileId").is(userProfileId).andOperator(Criteria.where("receiptDate").gte(since.toDate()));
+        GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
+        return results.iterator();
+    }
+
     //http://stackoverflow.com/questions/12949870/spring-mongotemplate-find-special-column
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)

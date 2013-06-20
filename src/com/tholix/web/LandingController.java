@@ -92,6 +92,9 @@ public class LandingController extends BaseController {
         Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
         modelAndView.addObject("receiptGrouped", receiptGrouped);
 
+        List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(userSession.getUserProfileId());
+        modelAndView.addObject("months", receiptGroupedByMonth);
+
         /** Used for charting in Expense tab */
         log.info("Calculating Pie chart - item expense");
         Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpense(userSession.getUserProfileId());
