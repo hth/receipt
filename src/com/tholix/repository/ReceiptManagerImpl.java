@@ -87,7 +87,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
                         "  result.total += obj.total; " +
                         "}");
 
-        GroupByResults<ReceiptGrouped> results = mongoTemplate.group(Criteria.where("userProfileId").is(userProfileId), TABLE, groupBy, ReceiptGrouped.class);
+        Criteria criteria = Criteria.where("userProfileId").is(userProfileId).andOperator(Criteria.where("active").is(true));
+        GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
         return results.iterator();
 	}
 
@@ -104,7 +105,9 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
         DateTime date = DateUtil.now().minusMonths(13);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
-        Criteria criteria = Criteria.where("userProfileId").is(userProfileId).andOperator(Criteria.where("receiptDate").gte(since.toDate()));
+        Criteria criteria = Criteria.where("userProfileId").is(userProfileId)
+                .andOperator(Criteria.where("receiptDate").gte(since.toDate())
+                        .andOperator(Criteria.where("active").is(true)));
         GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
         return results.iterator();
     }
