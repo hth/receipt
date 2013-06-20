@@ -28,7 +28,9 @@
 	<context:component-scan base-package="com.tholix" />
 
     <!-- Currently not being used -->
-    <context:property-placeholder location="WEB-INF/classes/redis.properties" order="1" ignore-unresolvable="true" />
+    <context:property-placeholder location="WEB-INF/classes/redis.properties"  order="1" ignore-unresolvable="true" />
+    <context:property-placeholder location="WEB-INF/classes/config.properties" order="2" ignore-unresolvable="true" />
+    <context:property-placeholder location="WEB-INF/classes/pass.properties"   order="3" ignore-unresolvable="true" />
 
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
@@ -56,22 +58,22 @@
 	</bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host"               value="smtp.bizmail.yahoo.com"/>
-        <property name="port"               value="465"/>
-        <property name="defaultEncoding"    value="UTF-8"/>
-        <property name="username"           value="admin@tholix.com"/>
-        <property name="password"           value="yahoo6045"/>
+        <property name="host"               value="${yahooMailHost}"/>
+        <property name="port"               value="${yahooMailPort}"/>
+        <property name="defaultEncoding"    value="${yahooEncoding}"/>
+        <property name="username"           value="${yahooUsername}"/>
+        <property name="password"           value="${yahoo}"/>
         <property name="javaMailProperties">
             <props>
                 <!-- Use SMTP transport protocol -->
-                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.transport.protocol">${yahooProtocol}</prop>
                 <!-- Use SMTP-AUTH to authenticate to SMTP server -->
                 <prop key="mail.smtp.auth">true</prop>
                 <!-- Use TLS to encrypt communication with SMTP server, May be just for GMAIL-->
                 <!--<prop key="mail.smtp.starttls.enable">true</prop>-->
                 <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
-                <prop key="mail.smtp.port">465</prop>
-                <prop key="mail.smtp.socketFactory.port">465</prop>
+                <prop key="mail.smtp.port">${yahooMailPort}</prop>
+                <prop key="mail.smtp.socketFactory.port">${yahooMailPort}</prop>
                 <prop key="mail.debug">true</prop>
             </props>
         </property>
@@ -79,7 +81,7 @@
 
     <!-- this is a template message that we can pre-load with default state -->
     <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
-        <property name="from" value="admin@tholix.com"/>
+        <property name="from" value="${yahooUsername}"/>
     </bean>
 
 	<!-- refer this for session scope -->
