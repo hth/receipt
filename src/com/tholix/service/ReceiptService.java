@@ -46,13 +46,13 @@ public class ReceiptService {
     @Autowired private CommentManager commentManager;
 
     /**
-     * Find receipt for the id
+     * Find receipt for a receipt id for a specific user profile id
      *
      * @param receiptId
      * @return
      */
-    public ReceiptEntity findReceipt(String receiptId) {
-        return receiptManager.findOne(receiptId);
+    public ReceiptEntity findReceipt(String receiptId, String userProfileId) {
+        return receiptManager.findReceipt(receiptId, userProfileId);
     }
 
     /**
@@ -82,6 +82,8 @@ public class ReceiptService {
     /**
      * Delete a Receipt and its associated data
      * @param receiptId - Receipt id to delete
+     *
+     * TODO make sure delete request comes with a user profile id. Check if the user is deleting its own receipt.
      */
     public boolean deleteReceipt(String receiptId) throws Exception {
         ReceiptEntity receipt = receiptManager.findOne(receiptId);

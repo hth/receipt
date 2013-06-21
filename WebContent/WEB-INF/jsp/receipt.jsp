@@ -85,12 +85,14 @@
 
     <p>&nbsp;</p>
 
+    <c:choose>
+    <c:when test="${!empty receiptForm.receipt}">
     <table>
         <tr>
             <td valign="top">
                 <form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
                     <form:hidden path="receipt.id" />
-                    <table style="width: 600px" class="etable">
+                    <table style="width: 700px" class="etable">
                         <tr>
                             <td colspan="3">
                                 <div class="leftAlign"><b><spring:eval expression="receiptForm.receipt.bizName.name" /></b></div>
@@ -110,26 +112,26 @@
                             <th>Expense Type</th>
                         </tr>
                         <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
-                        <form:hidden path="items[${status.index}].id"/>
-                        <tr>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                                ${item.name}
-                                </a>
-                            </td>
-                            <td style="text-align: right;">
-                                <spring:eval expression="item.price" />
-                            </td>
-                            <td style="text-align: left;">
-                                ${item.taxed.description}
-                            </td>
-                            <td style="text-align: left;">
-                                <form:select path="items[${status.index}].expenseType.id">
-                                    <form:option value="NONE" label="--- Select ---" />
-                                    <form:options items="${receiptForm.expenseTypes}" itemValue="id" itemLabel="expName" />
-                                </form:select>
-                            </td>
-                        </tr>
+                            <form:hidden path="items[${status.index}].id"/>
+                            <tr>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                                            ${item.name}
+                                    </a>
+                                </td>
+                                <td style="text-align: right;">
+                                    <spring:eval expression="item.price" />
+                                </td>
+                                <td style="text-align: left;">
+                                        ${item.taxed.description}
+                                </td>
+                                <td style="text-align: left;">
+                                    <form:select path="items[${status.index}].expenseType.id">
+                                        <form:option value="NONE" label="--- Select ---" />
+                                        <form:options items="${receiptForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                                    </form:select>
+                                </td>
+                            </tr>
                         </c:forEach>
                         <tr>
                             <td style="text-align: right;">
@@ -190,6 +192,21 @@
             </td>
         </tr>
     </table>
+    </c:when>
+    <c:otherwise>
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+            <p>
+                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                <span style="display:block; width:700px;">
+                    No receipt found!! Please hit back button and submit a valid request
+                </span>
+            </p>
+        </div>
+    </div>
+    </c:otherwise>
+    </c:choose>
+
 </div>
 
 <div class="footer">

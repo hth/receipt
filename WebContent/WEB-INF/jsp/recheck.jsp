@@ -147,138 +147,138 @@
         <tr>
             <td valign="top">
                 <c:choose>
-                    <%--//TODO change from constant--%>
-                    <c:when test="${userSession.level.value ge 5}">
-                        <c:choose>
-                        <c:when test="${empty receiptOCRForm.receipt}">
-                            Oops! Seems like user has deleted this receipt recently.
-                        </c:when>
-                        <c:otherwise>
-                        <form:form method="post" action="recheck.htm" modelAttribute="receiptOCRForm">
-                            <form:errors path="receipt" cssClass="error" />
-                            <form:hidden path="receipt.receiptBlobId"/>
-                            <form:hidden path="receipt.id"/>
-                            <form:hidden path="receipt.userProfileId"/>
-                            <form:hidden path="receipt.version"/>
-                            <form:hidden path="receipt.receiptStatus"/>
-                            <form:hidden path="receipt.receiptId"/>
-                            <form:hidden path="receipt.comment.id"/>
-                            <form:hidden path="receipt.comment.version"/>
-
-                            <form:hidden path="receipt.receiptOCRTranslation"/>
-                            <table border="0" style="width: 550px" class="etable">
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="leftAlign">
-                                            <form:label for="receipt.bizName.name" path="receipt.bizName.name" cssErrorClass="error">Biz Name</form:label>
-                                            <form:input path="receipt.bizName.name" id="bizName" size="52"/>
-                                        </div>
-                                        <div class="rightAlign">
-                                            <form:label for="receipt.receiptDate" path="receipt.receiptDate" cssErrorClass="error">Date</form:label>
-                                            <form:input path="receipt.receiptDate" size="32"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="leftAlign"><form:errors path="receipt.bizName.name" cssClass="error" /></div>
-                                        <div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="leftAlign">
-                                            <form:label for="receipt.bizStore.address" path="receipt.bizStore.address" cssErrorClass="error">Address : </form:label>
-                                            <form:input path="receipt.bizStore.address" id="address" size="70"/>
-                                        </div>
-                                        <div class="rightAlign">
-                                            <form:label for="receipt.bizStore.phone" path="receipt.bizStore.phone" cssErrorClass="error">Phone: </form:label>
-                                            <form:input path="receipt.bizStore.phone" id="phone" size="20"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th align="left">&nbsp;</th>
-                                    <th align="left">&nbsp;Name</th>
-                                    <th align="left">&nbsp;Price</th>
-                                    <th align="left">&nbsp;</th>
-                                </tr>
-                                <c:forEach items="${receiptOCRForm.items}" varStatus="status">
-                                    <form:hidden path="items[${status.index}].expenseType.id"/>
-                                    <tr>
-                                        <td align="left">
-                                                ${status.index + 1}
-                                        </td>
-                                        <td align="left">
-                                            <form:input path="items[${status.index}].name" class="items" size="64"/>
-                                        </td>
-                                        <td align="right">
-                                            <form:input path="items[${status.index}].price" size="16"/>
-                                            <form:errors path="items[${status.index}].price" cssClass="error" />
-                                        </td>
-                                        <td>
-                                            <form:select path="items[${status.index}].taxed">
-                                                <form:option value="NONE" label="--- Select ---"/>
-                                                <form:options itemValue="name" itemLabel="description" />
-                                            </form:select>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                <tr>
-                                    <td colspan="2" style="text-align: right; font-size: 12px; font-weight: bold">
-                                        <span>&nbsp;&nbsp;Tax &nbsp;</span>
-                                    </td>
-                                    <td colspan="1" style="font-size: 12px; font-weight: bold">
-                                        <span class="leftAlign">&nbsp;&nbsp;Sub Total &nbsp;</span>
-                                    </td>
-                                    <td colspan="1" style="font-size: 12px; font-weight: bold">
-                                        <span class="leftAlign">&nbsp;&nbsp;Total &nbsp;</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: right;">
-                                        <b><label id="expectedTax" name="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
-                                        <form:input path="receipt.tax" id="tax" size="5"/>
-                                    </td>
-                                    <td colspan="1">
-                                        <form:input path="receipt.subTotal" id="subTotal" size="16"/>
-                                        <form:errors path="receipt.subTotal" cssClass="error" />
-                                    </td>
-                                    <td colspan="1">
-                                        <form:input path="receipt.total" id="total" size="16"/>
-                                        <form:errors path="receipt.total" cssClass="error" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">&nbsp;</td>
-                                    <td colspan="2" align="left"><input type="submit" value="Receipt Re-Check" name="recheck"/></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <form:label for="receipt.comment.comment" path="receipt.comment.comment" cssErrorClass="error">
-                                            Comment: (do not add or modify)
-                                        </form:label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <form:textarea path="receipt.comment.comment" id="comment" size="300" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <form:errors path="receipt.comment.comment" cssClass="error" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </form:form>
-
-                        </c:otherwise>
-                        </c:choose>
+                <%--//TODO change from constant--%>
+                <c:when test="${userSession.level.value ge 5}">
+                    <c:choose>
+                    <c:when test="${empty receiptOCRForm.receipt}">
+                        Oops! Seems like user has deleted this receipt recently.
                     </c:when>
                     <c:otherwise>
-                        &nbsp;
+                    <form:form method="post" action="recheck.htm" modelAttribute="receiptOCRForm">
+                        <form:errors path="receipt" cssClass="error" />
+                        <form:hidden path="receipt.receiptBlobId"/>
+                        <form:hidden path="receipt.id"/>
+                        <form:hidden path="receipt.userProfileId"/>
+                        <form:hidden path="receipt.version"/>
+                        <form:hidden path="receipt.receiptStatus"/>
+                        <form:hidden path="receipt.receiptId"/>
+                        <form:hidden path="receipt.comment.id"/>
+                        <form:hidden path="receipt.comment.version"/>
+
+                        <form:hidden path="receipt.receiptOCRTranslation"/>
+                        <table border="0" style="width: 550px" class="etable">
+                            <tr>
+                                <td colspan="4">
+                                    <div class="leftAlign">
+                                        <form:label for="receipt.bizName.name" path="receipt.bizName.name" cssErrorClass="error">Biz Name</form:label>
+                                        <form:input path="receipt.bizName.name" id="bizName" size="52"/>
+                                    </div>
+                                    <div class="rightAlign">
+                                        <form:label for="receipt.receiptDate" path="receipt.receiptDate" cssErrorClass="error">Date</form:label>
+                                        <form:input path="receipt.receiptDate" size="32"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="leftAlign"><form:errors path="receipt.bizName.name" cssClass="error" /></div>
+                                    <div class="rightAlign"><form:errors path="receipt.receiptDate" cssClass="error" /></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="leftAlign">
+                                        <form:label for="receipt.bizStore.address" path="receipt.bizStore.address" cssErrorClass="error">Address : </form:label>
+                                        <form:input path="receipt.bizStore.address" id="address" size="70"/>
+                                    </div>
+                                    <div class="rightAlign">
+                                        <form:label for="receipt.bizStore.phone" path="receipt.bizStore.phone" cssErrorClass="error">Phone: </form:label>
+                                        <form:input path="receipt.bizStore.phone" id="phone" size="20"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">&nbsp;</th>
+                                <th align="left">&nbsp;Name</th>
+                                <th align="left">&nbsp;Price</th>
+                                <th align="left">&nbsp;</th>
+                            </tr>
+                            <c:forEach items="${receiptOCRForm.items}" varStatus="status">
+                                <form:hidden path="items[${status.index}].expenseType.id"/>
+                                <tr>
+                                    <td align="left">
+                                            ${status.index + 1}
+                                    </td>
+                                    <td align="left">
+                                        <form:input path="items[${status.index}].name" class="items" size="64"/>
+                                    </td>
+                                    <td align="right">
+                                        <form:input path="items[${status.index}].price" size="16"/>
+                                        <form:errors path="items[${status.index}].price" cssClass="error" />
+                                    </td>
+                                    <td>
+                                        <form:select path="items[${status.index}].taxed">
+                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:options itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <tr>
+                                <td colspan="2" style="text-align: right; font-size: 12px; font-weight: bold">
+                                    <span>&nbsp;&nbsp;Tax &nbsp;</span>
+                                </td>
+                                <td colspan="1" style="font-size: 12px; font-weight: bold">
+                                    <span class="leftAlign">&nbsp;&nbsp;Sub Total &nbsp;</span>
+                                </td>
+                                <td colspan="1" style="font-size: 12px; font-weight: bold">
+                                    <span class="leftAlign">&nbsp;&nbsp;Total &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: right;">
+                                    <b><label id="expectedTax" name="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
+                                    <form:input path="receipt.tax" id="tax" size="5"/>
+                                </td>
+                                <td colspan="1">
+                                    <form:input path="receipt.subTotal" id="subTotal" size="16"/>
+                                    <form:errors path="receipt.subTotal" cssClass="error" />
+                                </td>
+                                <td colspan="1">
+                                    <form:input path="receipt.total" id="total" size="16"/>
+                                    <form:errors path="receipt.total" cssClass="error" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">&nbsp;</td>
+                                <td colspan="2" align="left"><input type="submit" value="Receipt Re-Check" name="recheck"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <form:label for="receipt.comment.comment" path="receipt.comment.comment" cssErrorClass="error">
+                                        Comment: (do not add or modify as data will not be persisted)
+                                    </form:label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <form:textarea path="receipt.comment.comment" id="comment" size="300" disabled="true"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <form:errors path="receipt.comment.comment" cssClass="error" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form:form>
+
                     </c:otherwise>
+                    </c:choose>
+                </c:when>
+                <c:otherwise>
+                    &nbsp;
+                </c:otherwise>
                 </c:choose>
 
             </td>

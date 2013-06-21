@@ -21,6 +21,14 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 	static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
 
     /**
+     *
+     * @param receiptId
+     * @param userProfileId
+     * @return
+     */
+    ReceiptEntity findReceipt(String receiptId, String userProfileId);
+
+    /**
      * Gets all the user receipts
      *
      * @param userProfileId

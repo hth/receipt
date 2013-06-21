@@ -43,7 +43,7 @@ import com.tholix.web.rest.Header;
 public class ReceiptController extends BaseController {
 	private static final Logger log = Logger.getLogger(ReceiptController.class);
 
-	private static String nextPage = "/receipt";
+	private static String NEXT_PAGE = "/receipt";
 
     @Autowired private ReceiptService receiptService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
@@ -53,19 +53,25 @@ public class ReceiptController extends BaseController {
         DateTime time = DateUtil.now();
         log.info("Loading Receipt Item with id: " + receiptId);
 
-        ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId);
-        List<ItemEntity> items = receiptService.findItems(receiptEntity);
-        List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(userSession.getUserProfileId());
+        ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, userSession.getUserProfileId());
+        if(receiptEntity != null) {
+            List<ItemEntity> items = receiptService.findItems(receiptEntity);
+            List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(userSession.getUserProfileId());
 
-        receiptForm.setReceipt(receiptEntity);
-        receiptForm.setItems(items);
-        receiptForm.setExpenseTypes(expenseTypes);
+            receiptForm.setReceipt(receiptEntity);
+            receiptForm.setItems(items);
+            receiptForm.setExpenseTypes(expenseTypes);
+        } else {
+            //TODO check all get methods that can result in dsiplay sensitive data of other users to someone else fishing
+            //Possible condition of bookmark or trying to gain access to some unknown receipt
+            log.warn("User " + userSession.getUserProfileId() + ", tried submitting an invalid receipt id: " + receiptId);
+        }
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
+        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
         modelAndView.addObject("receiptForm", receiptForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-		return modelAndView;
+        return modelAndView;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params="delete")

@@ -39,7 +39,7 @@
 
     <c:choose>
     <c:when test="${!empty receipts}">
-    <table style="width: 450px" class="etable">
+    <table style="width: 650px" class="etable">
         <tbody>
         <tr style="background-color:orange;color:white;">
             <th style="padding:3px;"></th>

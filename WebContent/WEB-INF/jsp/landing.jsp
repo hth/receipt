@@ -584,11 +584,11 @@
                 name: 'Population',
                 data: [
                     <c:forEach var="month" items="${months}"  varStatus="status">
-                    ${month.total},
+                    {y: ${month.total}, color: 'darkgreen'},
                     </c:forEach>
                 ],
                 dataLabels: {
-                    enabled: true,
+                    enabled: false,
                     rotation: -90,
                     color: '#FFFFFF',
                     align: 'right',
