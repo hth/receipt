@@ -164,6 +164,7 @@
                         <form:hidden path="receipt.receiptId"/>
                         <form:hidden path="receipt.comment.id"/>
                         <form:hidden path="receipt.comment.version"/>
+                        <form:hidden path="receipt.comment.comment" />
 
                         <form:hidden path="receipt.receiptOCRTranslation"/>
                         <table border="0" style="width: 550px" class="etable">

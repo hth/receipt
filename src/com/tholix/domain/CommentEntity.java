@@ -13,10 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "COMMENT")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "comment_idx", def = "{'id': 1}", unique=true),
+        @CompoundIndex(name = "comment_idx", def = "{'id': 1}"),
 } )
 public class CommentEntity extends BaseEntity {
 
+    //TODO change this to text
     @Size(min = 0, max  = 256)
     private String comment;
 
