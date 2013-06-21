@@ -3,10 +3,10 @@
  */
 package com.tholix.web;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import net.sf.uadetector.UserAgent;
-import net.sf.uadetector.UserAgentStringParser;
-import net.sf.uadetector.service.UADetectorServiceFactory;
-
 import org.joda.time.DateTime;
+
+import net.sf.uadetector.ReadableUserAgent;
 
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
@@ -71,11 +69,9 @@ public class LoginController {
     @PostConstruct
     public void init() {
         log.info("Init of login controller");
-        // TODO check if CachedUserAgentStringParser has to be singleton and thread safe?
-        // Get an UserAgentStringParser and analyze the requesting client
-
+        //Get an UserAgentStringParser and analyze the requesting client
         //parser = UADetectorServiceFactory.getResourceModuleParser();
-        parser = CachedUserAgentStringParser.newInstance();
+        parser = CachedUserAgentStringParser.getInstance();
     }
 
     @PreDestroy
@@ -94,7 +90,7 @@ public class LoginController {
         DateTime time = DateUtil.now();
 		log.info("LoginController login");
 
-        UserAgent agent = parser.parse(request.getHeader("User-Agent"));
+        ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();
         if(cookies != null && cookies.length > 0) {
             Cookie cookie = cookies[0];

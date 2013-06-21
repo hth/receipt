@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import net.sf.uadetector.UserAgent;
+import net.sf.uadetector.ReadableUserAgent;
 import net.sf.uadetector.UserAgentStringParser;
 import net.sf.uadetector.service.UADetectorServiceFactory;
 
@@ -22,20 +22,25 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
     private static final Logger log = Logger.getLogger(CachedUserAgentStringParser.class);
 
     private static UserAgentStringParser parser = UADetectorServiceFactory.getCachingAndUpdatingParser();
-    private static CachedUserAgentStringParser instance;
 
     //Set cache parameters
-    private final Cache<String, UserAgent> cache = CacheBuilder.newBuilder()
+    private final Cache<String, ReadableUserAgent> cache = CacheBuilder.newBuilder()
             .maximumSize(100)
             .expireAfterWrite(2, TimeUnit.HOURS)
             .build();
 
-    public static CachedUserAgentStringParser newInstance() {
-        if(instance == null) {
-            instance = new CachedUserAgentStringParser();
-            parser = UADetectorServiceFactory.getCachingAndUpdatingParser();
-        }
-        return instance;
+    private CachedUserAgentStringParser() {}
+
+    /**
+     * SingletonHolder is loaded on the first execution of Singleton.getInstance()
+     * or the first access to SingletonHolder.INSTANCE, not before.
+     */
+    private static class SingletonHolder {
+        public static final CachedUserAgentStringParser INSTANCE = new CachedUserAgentStringParser();
+    }
+
+    public static CachedUserAgentStringParser getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override
@@ -44,8 +49,8 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
     }
 
     @Override
-    public UserAgent parse(final String userAgentString) {
-        UserAgent result = cache.getIfPresent(userAgentString);
+    public ReadableUserAgent parse(final String userAgentString) {
+        ReadableUserAgent result = cache.getIfPresent(userAgentString);
         if (result == null) {
             log.info("Cache : No : UserAgentString: " + userAgentString);
             result = parser.parse(userAgentString);
