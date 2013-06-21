@@ -27,7 +27,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <c:if test="${success == false}">
+    <c:if test="${success eq false}">
         <div class="error_page">
             <img alt="receipt-o-fi logo" src="../images/receipt-o-fi.logo.jpg" height="45px" />
             <h1>Password update failed</h1>
@@ -37,7 +37,7 @@
         </div>
     </c:if>
 
-    <c:if test="${success == true}">
+    <c:if test="${success eq true}">
         <div class="error_page">
             <img alt="receipt-o-fi logo" src="../images/receipt-o-fi.logo.jpg" height="45px" />
             <h1>Password successfully changed</h1>

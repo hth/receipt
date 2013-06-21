@@ -38,7 +38,7 @@
     <p>&nbsp;</p>
 
     <h2 class="demoHeaders">Pending Receipt(s)</h2>
-    <c:if test="${pending.size() > 0}">
+    <c:if test="${!empty pending}">
         <table style="width: 400px" class="etable">
             <tbody>
             <tr>
@@ -74,7 +74,7 @@
     </c:if>
 
     <h2 class="demoHeaders">Queued Receipt(s)</h2>
-    <c:if test="${queue.size() > 0}">
+    <c:if test="${!empty queue}">
         <table style="width: 400px" class="etable">
             <tbody>
             <tr>
@@ -110,7 +110,7 @@
     </c:if>
 
     <h2 class="demoHeaders">Re-Check Pending Receipt(s)</h2>
-    <c:if test="${recheckPending.size() > 0}">
+    <c:if test="${!empty recheckPending}">
         <table style="width: 400px" class="etable">
             <tbody>
             <tr>
@@ -146,7 +146,7 @@
     </c:if>
 
     <h2 class="demoHeaders">Re-Check Receipt(s)</h2>
-    <c:if test="${recheck.size() > 0}">
+    <c:if test="${!empty recheck}">
         <table style="width: 400px" class="etable">
             <tbody>
             <tr>

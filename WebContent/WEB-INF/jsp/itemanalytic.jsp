@@ -73,7 +73,7 @@
     </table>
 
     <h2 class="demoHeaders">Your historical purchases of similar Item(s)</h2>
-    <c:if test="${itemAnalyticForm.items.size() > 0}">
+    <c:if test="${!empty itemAnalyticForm.items}">
         <table style="width: 900px" class="etable">
             <tbody>
             <tr>

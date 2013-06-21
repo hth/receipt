@@ -44,7 +44,7 @@
                 <th style="padding: 3px;">Search Name: </th>
                 <td style="padding: 3px;">&nbsp;<form:input path="userName" size="27" /></td>
             </tr>
-            <c:if test="${users.size() > 0}">
+            <c:if test="${!empty users}">
                 <table style="width: 325px" class="etable">
                     <tbody>
                         <tr>
@@ -110,7 +110,7 @@
         </table>
     </form:form>
 
-    <c:if test="${bizStore != null}">
+    <c:if test="${!empty bizStore}">
     <br/>
     Added...
     <table style="width: 650px" class="etable">
@@ -143,7 +143,7 @@
     </table>
     </c:if>
 
-    <c:if test="${last10BizStore != null}">
+    <c:if test="${!empty last10BizStore}">
     <br/>
     Last 10 records for same business
     <table style="width: 650px" class="etable">

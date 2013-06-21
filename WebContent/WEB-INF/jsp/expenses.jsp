@@ -38,7 +38,7 @@
     <p>&nbsp;</p>
 
     <c:choose>
-        <c:when test="${expenseForm.items.size() > 0}">
+        <c:when test="${!empty expenseForm.items}">
             <table style="width: 650px" class="etable">
                 <tbody>
                 <tr>

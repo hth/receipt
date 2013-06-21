@@ -213,7 +213,7 @@
                                     <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
                                     <span style="display:block; width:310px;">
                                         <c:choose>
-                                            <c:when test="${pendingCount} == 1">
+                                            <c:when test="${pendingCount} eq 1">
                                                 Pending receipt to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${pendingCount}</strong></a>
                                             </c:when>
                                             <c:otherwise>
@@ -740,7 +740,7 @@
     });
 </script>
 
-<c:if test="${itemExpenses.size() > 0}">
+<c:if test="${!empty itemExpenses}">
 <script>
     $(function () {
         $('#allExpenseTypes').highcharts({
@@ -791,11 +791,11 @@
                 data: [
 
                     <c:choose>
-                        <c:when test="${itemExpenses.size() > 1}">
+                        <c:when test="${!empty itemExpenses}">
                             <c:set var="first" value="false"/>
                             <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
                             <c:choose>
-                                <c:when test="${first == false}">
+                                <c:when test="${first eq false}">
                                     {
                                         name: '${item.key}',
                                         y: ${item.value},

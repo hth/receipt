@@ -107,9 +107,9 @@
 	</script>
 
     <script>
-        <c:if test="${showTab != null}">
+        <c:if test="${!empty showTab}">
             $(function() {
-                <c:if test="${showTab == '#tabs-2'}">
+                <c:if test="${showTab eq '#tabs-2'}">
                     $( "#tabs" ).tabs({ active: 1 });
                 </c:if>
             });
@@ -227,14 +227,14 @@
                 </table>
             </form:form>
 
-            <c:if test="${expenseTypes.size() > 0}">
+            <c:if test="${!empty expenseTypes}">
             <br/>
 
             <c:choose>
-                <c:when test="${visibleExpenseTypes == 1}">
+                <c:when test="${visibleExpenseTypes eq 1}">
                     <p>${visibleExpenseTypes} - Expense Type is available in selection </p>
                 </c:when>
-                <c:when test="${visibleExpenseTypes > 1}">
+                <c:when test="${visibleExpenseTypes gt 1}">
                     <p>${visibleExpenseTypes} - Expense Types are available in selection</p>
                 </c:when>
                 <c:otherwise>
@@ -252,7 +252,7 @@
                 <tr>
                     <td style="padding:3px;">
                         <c:choose>
-                            <c:when test="${expenseType.active == true}">
+                            <c:when test="${expenseType.active eq true}">
                                 <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
                                     <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
                                 </a>
@@ -268,10 +268,10 @@
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
-                        <c:when test="${expenseTypeCount.get(expenseType.expName) == 0}">
+                        <c:when test="${expenseTypeCount.get(expenseType.expName) eq 0}">
                             <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?uid=${sessionScope['userSession'].userProfileId}&id=${expenseType.id}&status=${expenseType.active}">
                             <c:choose>
-                                <c:when test="${expenseType.active == true}">
+                                <c:when test="${expenseType.active eq true}">
                                     Hide
                                 </c:when>
                                 <c:otherwise>
@@ -287,7 +287,7 @@
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
-                            <c:when test="${expenseType.active == true}">
+                            <c:when test="${expenseType.active eq true}">
                                 <spring:eval expression="expenseType.expName" />
                             </c:when>
                             <c:otherwise>
@@ -297,7 +297,7 @@
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
-                            <c:when test="${expenseType.active == true}">
+                            <c:when test="${expenseType.active eq true}">
                                 <spring:eval expression="expenseType.forYear" />
                             </c:when>
                             <c:otherwise>
