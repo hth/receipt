@@ -281,10 +281,10 @@
                                 <c:set var="receiptGroupedIterator" value="${requestScope.receiptGrouped}" />
                                 <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
 								{
-									title : '${receiptGrouped.getStringTotal()}',
-									start : '${receiptGrouped.getDate()}',
-									end   : '${receiptGrouped.getDate()}',
-									url   : '${pageContext.request.contextPath}/day.htm?date=${receiptGrouped.getDate().getTime()}'
+									title : '${receiptGrouped.stringTotal}',
+									start : '${receiptGrouped.date}',
+									end   : '${receiptGrouped.date}',
+									url   : '${pageContext.request.contextPath}/day.htm?date=${receiptGrouped.date.time}'
 								} ,
                                 </c:forEach>
 								]
@@ -584,7 +584,7 @@
                 name: 'Population',
                 data: [
                     <c:forEach var="month" items="${months}"  varStatus="status">
-                    {y: ${month.total}, color: 'darkgreen'},
+                    {y: ${month.stringTotal}, color: 'darkgreen'},
                     </c:forEach>
                 ],
                 dataLabels: {
