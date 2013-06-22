@@ -34,13 +34,14 @@ public class ReceiptOCRFormValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		log.info("Executing validation for new receiptOCRForm");
+        ReceiptOCRForm receiptOCRForm = (ReceiptOCRForm) obj;
+		log.info("Executing validation for new receiptOCRForm: " + receiptOCRForm.getReceipt().getId());
+
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.bizName.name",   "field.required", new Object[] { "Name" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.receiptDate",    "field.required", new Object[] { "Date" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.total",          "field.required", new Object[] { "Total" });
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receipt.subTotal",       "field.required", new Object[] { "Sub Total" });
 
-		ReceiptOCRForm receiptOCRForm = (ReceiptOCRForm) obj;
 		try {
 			DateUtil.getDateFromString(receiptOCRForm.getReceipt().getReceiptDate());
 		} catch(Exception exce) {
