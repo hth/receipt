@@ -307,59 +307,59 @@
 		</ul>
 		<div id="tabs-1">
             <c:choose>
-                <c:when test="${!empty receipts}">
-                <table>
-                    <tr>
-                        <td style="vertical-align: top">
-                            <table style="width: 470px" class="etable">
-                                <tr>
-                                    <th style="padding: 3px;"></th>
-                                    <th style="padding: 3px;">Business</th>
-                                    <th style="padding: 3px;">Receipt Date</th>
-                                    <th style="padding: 3px;">Tax</th>
-                                    <th style="padding: 3px;">Total</th>
-                                </tr>
-                                <c:forEach var="receipt" items="${receipts}"  varStatus="status">
-                                <tr>
-                                    <td style="padding: 3px;" align="right">
-                                        ${status.count}
-                                    </td>
-                                    <td style="padding: 3px;">
-                                        <spring:eval expression="receipt.bizName.name" />
-                                    </td>
-                                    <td style="padding: 3px;">
-                                        <fmt:formatDate value="${receipt.receiptDate}" type="date"/>
-                                    </td>
-                                    <td style="padding: 3px;" align="right">
-                                        <spring:eval expression="receipt.tax" />
-                                    </td>
-                                    <td style="padding: 3px;" align="right">
-                                        <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
-                                            <spring:eval expression="receipt.total" />
-                                        </a>
-                                    </td>
-                                </tr>
-                                </c:forEach>
-                            </table>
-                        </td>
-                        <td style="vertical-align: top">
-                            <div id="container" style="min-width: 525px; height: 275px; margin: 0 auto"></div>
-                        </td>
-                    </tr>
-                </table>
-                </c:when>
-                <c:otherwise>
-                <div class="ui-widget">
-                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                        <p>
-                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                            <span style="display:block; width:410px;">
-                                No receipt(s) submitted or transformed for this month
-                            </span>
-                        </p>
-                    </div>
+            <c:when test="${!empty receipts}">
+            <table>
+                <tr>
+                    <td style="vertical-align: top">
+                        <table style="width: 470px" class="etable">
+                            <tr>
+                                <th style="padding: 3px;"></th>
+                                <th style="padding: 3px;">Business</th>
+                                <th style="padding: 3px;">Receipt Date</th>
+                                <th style="padding: 3px;">Tax</th>
+                                <th style="padding: 3px;">Total</th>
+                            </tr>
+                            <c:forEach var="receipt" items="${receipts}"  varStatus="status">
+                            <tr>
+                                <td style="padding: 3px;" align="right">
+                                    ${status.count}
+                                </td>
+                                <td style="padding: 3px;">
+                                    <spring:eval expression="receipt.bizName.name" />
+                                </td>
+                                <td style="padding: 3px;">
+                                    <fmt:formatDate value="${receipt.receiptDate}" type="date"/>
+                                </td>
+                                <td style="padding: 3px;" align="right">
+                                    <spring:eval expression="receipt.tax" />
+                                </td>
+                                <td style="padding: 3px;" align="right">
+                                    <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
+                                        <spring:eval expression="receipt.total" />
+                                    </a>
+                                </td>
+                            </tr>
+                            </c:forEach>
+                        </table>
+                    </td>
+                    <td style="vertical-align: top">
+                        <div id="container" style="min-width: 525px; height: 275px; margin: 0 auto"></div>
+                    </td>
+                </tr>
+            </table>
+            </c:when>
+            <c:otherwise>
+            <div class="ui-widget">
+                <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                    <p>
+                        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                        <span style="display:block; width:410px;">
+                            No receipt(s) submitted or transformed for this month
+                        </span>
+                    </p>
                 </div>
-                </c:otherwise>
+            </div>
+            </c:otherwise>
             </c:choose>
 		</div>
 		<div id="tabs-2">

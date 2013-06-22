@@ -135,8 +135,8 @@ public class ReceiptEntity extends BaseEntity {
 	 * @param userProfileId
 	 * @return
 	 */
-	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId,
-			String userProfileId) {
+    @Deprecated
+	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
 		return new ReceiptEntity(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 	}
 
@@ -215,7 +215,6 @@ public class ReceiptEntity extends BaseEntity {
     public BigDecimal calculateTax() {
         BigDecimal taxPercent = Maths.subtract(calculateItemPriceWithTax(), BigDecimal.ONE);
         return taxPercent;
-
     }
 
 	public String getUserProfileId() {

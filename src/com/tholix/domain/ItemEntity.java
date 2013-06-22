@@ -52,9 +52,11 @@ public class ItemEntity extends BaseEntity {
     @DBRef
     private ExpenseTypeEntity expenseType;
 
-	public ItemEntity() {
+	public ItemEntity() {}
 
-	}
+    public static ItemEntity newInstance() {
+        return new ItemEntity();
+    }
 
 	private ItemEntity(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
 		super();
@@ -77,6 +79,7 @@ public class ItemEntity extends BaseEntity {
      * @param userProfileId
      * @return
      */
+    @Deprecated
 	public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
 		return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
 	}

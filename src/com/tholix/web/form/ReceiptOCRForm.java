@@ -67,23 +67,23 @@ public final class ReceiptOCRForm {
 		return "ReceiptOCRForm [receiptOCR=" + receiptOCR + ", items=" + items + "]";
 	}
 
-	public ReceiptEntity getReceiptEntity() throws NumberFormatException, Exception {
-        //TODO this code has to be redone as it just difficult to understand after a while
-		ReceiptEntity receipt = ReceiptEntity.newInstance(DateUtil.getDateFromString(receiptOCR.getReceiptDate()),
-										Formatter.getCurrencyFormatted(receiptOCR.getTotal()).doubleValue(),
-                                        Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue(),
-										ReceiptStatusEnum.TURK_PROCESSED, receiptOCR.getReceiptBlobId(),
-										receiptOCR.getUserProfileId());
+	public ReceiptEntity getReceiptEntity() throws NumberFormatException, ParseException {
+        ReceiptEntity receipt = ReceiptEntity.newInstance();
+        receipt.setReceiptDate(DateUtil.getDateFromString(receiptOCR.getReceiptDate()));
+        receipt.setTotal(Formatter.getCurrencyFormatted(receiptOCR.getTotal()).doubleValue());
+        receipt.setTax(Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue());
+        receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+        receipt.setReceiptBlobId(receiptOCR.getReceiptBlobId());
+        receipt.setUserProfileId(receiptOCR.getUserProfileId());
 		receipt.setCreated(receiptOCR.getCreated());
+        receipt.setBizName(receiptOCR.getBizName());
+        receipt.setBizStore(receiptOCR.getBizStore());
+
         if(receiptOCR.getComment() != null && !StringUtils.isEmpty(receiptOCR.getComment().getComment())) {
             receipt.setComment(receiptOCR.getComment());
         }
 
-        receipt.setBizName(receiptOCR.getBizName());
-        receipt.setBizStore(receiptOCR.getBizStore());
-        receipt.setReceiptOCRId(receiptOCR.getId());
-
-        //This condition is mostly true for receipt recheck
+        //This condition is mostly true for receipt when re-checked
         if(StringUtils.isNotEmpty(receiptOCR.getReceiptId())) {
             receipt.setId(receiptOCR.getReceiptId());
         }
@@ -106,10 +106,13 @@ public final class ReceiptOCRForm {
                 name = StringUtils.replace(name, "\t", " ");
                 name = name.replaceAll("\\s+", " ");
 
-				ItemEntity item = ItemEntity.newInstance(
-                        name, Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue(),
-                        itemOCR.getTaxed(), itemOCR.getSequence(), receipt, receipt.getUserProfileId());
-
+                ItemEntity item = ItemEntity.newInstance();
+                item.setName(name);
+                item.setPrice(Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue());
+                item.setTaxed(itemOCR.getTaxed());
+                item.setSequence(itemOCR.getSequence());
+                item.setReceipt(receipt);
+                item.setUserProfileId(receipt.getUserProfileId());
 				item.setExpenseType(itemOCR.getExpenseType());
                 item.setCreated(itemOCR.getCreated());
 				item.setUpdated();

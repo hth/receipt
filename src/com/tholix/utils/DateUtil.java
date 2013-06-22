@@ -76,7 +76,7 @@ public final class DateUtil {
 	 * @param dateString
 	 * @return
 	 */
-	public static Date getDateFromString(String dateString) throws Exception {
+	public static Date getDateFromString(String dateString) {
 		dateString = StringUtils.trim(dateString.replaceAll("-", "/"));
         dateString = dateString.replaceAll("[\\t\\n\\r]+", " ");
 		for (DateType dateType : DateType.values()) {
@@ -86,7 +86,7 @@ public final class DateUtil {
 		}
 
 		log.error("Unsupported date condition reached: Not supported date string : " + dateString);
-		throw new Exception("Unsupported date condition reached: Not supported date string : " + dateString);
+		throw new IllegalArgumentException("Unsupported date condition reached: Not supported date string : " + dateString);
 	}
 
     /**
