@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import org.joda.time.DateTime;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Longs;
+
 import com.tholix.domain.ItemEntity;
 import com.tholix.repository.ItemManager;
 import com.tholix.utils.Maths;
@@ -22,8 +27,8 @@ public class ItemAnalyticService {
 
     @Autowired private ItemManager itemManager;
 
-    public ItemEntity findItemById(String itemId) {
-        return itemManager.findOne(itemId);
+    public ItemEntity findItemById(String itemId, String userProfileId) {
+        return itemManager.findItem(itemId, userProfileId);
     }
 
     /**
@@ -32,27 +37,45 @@ public class ItemAnalyticService {
      * @param items
      * @return
      */
-    public BigDecimal calculateAveragePrice(List<ItemEntity> items) {
+    public BigDecimal calculateAveragePrice(Iterable<ItemEntity> items) {
+        int count = 0;
         BigDecimal averagePrice = BigDecimal.ZERO;
         for(ItemEntity item : items) {
             averagePrice = Maths.add(averagePrice, item.getPrice());
+            count ++;
         }
-        averagePrice = Maths.divide(averagePrice, items.size());
+        if(count == 0) {
+            return BigDecimal.ZERO;
+        }
+        averagePrice = Maths.divide(averagePrice, count);
         return averagePrice;
     }
 
     /**
-     * Get all the items with similar name
+     * Get all the items with similar name after the specified date.
+     * Example: If Item date is March 31 then find all the items with same name after Jan 1. The range is between
+     * Jan 1 and March 31
      *
      * @param itemName
+     * @param untilThisDay - limiting factor for selecting items
      * @return
      */
-    public List<ItemEntity> findAllByNameLimitByDays(String itemName, DateTime untilThisDay) {
-        return itemManager.findAllByNameLimitByDays(itemName, untilThisDay);
+    public Iterable<ItemEntity> findAllByNameLimitByDays(String itemName, final DateTime untilThisDay) {
+        List<ItemEntity> items = itemManager.findAllByNameLimitByDays(itemName, untilThisDay);
+
+        Iterable<ItemEntity> filtered = Iterables.filter(items, new Predicate<ItemEntity>() {
+            @Override
+            public boolean apply(ItemEntity item) {
+                boolean condition = item.getReceipt().getReceiptDate().after(untilThisDay.toDate());
+                return condition;
+            }
+        });
+
+        return filtered;
     }
 
     /**
-     * Get all the historical items for a user.
+     * Get all matching items and then sort descending based on receipt date and limit up to 15 (0,14)
      *
      * Note: Providing a user profile id is redundant but its critical to make sure only the user of
      * that session is requesting its own list of items. Otherwise there could be privacy issues.
@@ -62,6 +85,18 @@ public class ItemAnalyticService {
      * @return
      */
     public List<ItemEntity> findAllByName(ItemEntity item, String userProfileId) {
-        return itemManager.findAllByName(item, userProfileId);
+        List<ItemEntity> items = itemManager.findAllByName(item, userProfileId);
+
+        Ordering<ItemEntity> descendingOrder = new Ordering<ItemEntity>() {
+            public int compare(ItemEntity left, ItemEntity right) {
+                return Longs.compare(right.getReceipt().getReceiptDate().getTime(), left.getReceipt().getReceiptDate().getTime());
+            }
+        };
+
+        if(items.size() > 15) {
+            return descendingOrder.sortedCopy(items).subList(0, 15);
+        } else {
+            return descendingOrder.sortedCopy(items);
+        }
     }
 }

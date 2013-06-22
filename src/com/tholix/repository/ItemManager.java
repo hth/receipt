@@ -31,6 +31,15 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 	List<ItemEntity> getWhereReceipt(ReceiptEntity receipt);
 
     /**
+     * Finds users item as the session supplies userProfileId
+     *
+     * @param itemId
+     * @param userProfileId
+     * @return
+     */
+    ItemEntity findItem(String itemId, String userProfileId);
+
+    /**
      * Gets items with specified name until the specified date
      *
      * @param name - Name of the item

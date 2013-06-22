@@ -4,7 +4,6 @@
 package com.tholix.web;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -48,19 +47,20 @@ public class ItemAnalyticController {
 	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
-		ItemEntity item = itemAnalyticService.findItemById(id);
+		ItemEntity item = itemAnalyticService.findItemById(id, userSession.getUserProfileId());
+        if(item != null) {
+            DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
+            Iterable<ItemEntity> items = itemAnalyticService.findAllByNameLimitByDays(item.getName(), untilThisDay);
+            BigDecimal averagePrice = itemAnalyticService.calculateAveragePrice(items);
 
-        DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
-        List<ItemEntity> items = itemAnalyticService.findAllByNameLimitByDays(item.getName(), untilThisDay);
-        BigDecimal averagePrice = itemAnalyticService.calculateAveragePrice(items);
+            itemAnalyticForm.setDays(NINETY_DAYS);
+            itemAnalyticForm.setItem(item);
+            itemAnalyticForm.setAveragePrice(averagePrice);
+            itemAnalyticForm.setExpenseTypes(expensesService.activeExpenseTypes(item.getUserProfileId()));
 
-        itemAnalyticForm.setDays(NINETY_DAYS);
-        itemAnalyticForm.setItem(item);
-        itemAnalyticForm.setAveragePrice(averagePrice);
-        itemAnalyticForm.setExpenseTypes(expensesService.activeExpenseTypes(item.getUserProfileId()));
-
-        items = itemAnalyticService.findAllByName(item, userSession.getUserProfileId());
-        itemAnalyticForm.setItems(items);
+            items = itemAnalyticService.findAllByName(item, userSession.getUserProfileId());
+            itemAnalyticForm.setItems(items);
+        }
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("itemAnalyticForm", itemAnalyticForm);

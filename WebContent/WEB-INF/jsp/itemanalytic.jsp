@@ -37,31 +37,33 @@
 
     <p>&nbsp;</p>
 
+    <c:choose>
+    <c:when test="${!empty itemAnalyticForm.items}">
     <table style="width: 850px" class="etable">
         <tbody>
-            <tr>
-                <th style="padding:3px;">Business</th>
-                <th style="padding:3px;">Location</th>
-                <th style="padding:3px;">Date</th>
-                <th style="padding:3px;">Item</th>
-                <th style="padding:3px;">Price</th>
-                <th style="padding:3px;">${itemAnalyticForm.days} day Average</th>
-            </tr>
+        <tr>
+            <th style="padding:3px;">Business</th>
+            <th style="padding:3px;">Location</th>
+            <th style="padding:3px;">Date</th>
+            <th style="padding:3px;">Item</th>
+            <th style="padding:3px;">Price</th>
+            <th style="padding:3px;">${itemAnalyticForm.days} day Average</th>
+        </tr>
         </tbody>
         <tr>
             <td style="padding:3px;">
                 <a href="${pageContext.request.contextPath}/receipt.htm?id=${itemAnalyticForm.item.receipt.id}">
-                ${itemAnalyticForm.item.receipt.bizName.name}
+                        ${itemAnalyticForm.item.receipt.bizName.name}
                 </a>
             </td>
             <td style="padding:3px;">
-                ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
+                    ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
             </td>
             <td style="padding:3px;">
                 <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
             </td>
             <td align="left" style="padding:3px;">
-                ${itemAnalyticForm.item.name}
+                    ${itemAnalyticForm.item.name}
             </td>
             <td align="right" style="padding:3px;">
                 <spring:eval expression="itemAnalyticForm.item.price" />
@@ -73,7 +75,7 @@
     </table>
 
     <h2 class="demoHeaders">Your historical purchases of similar Item(s)</h2>
-    <c:if test="${!empty itemAnalyticForm.items}">
+    <c:if test="${!empty itemAnalyticForm.item}">
         <table style="width: 900px" class="etable">
             <tbody>
             <tr>
@@ -126,6 +128,21 @@
             </form:form>
         </table>
     </c:if>
+    </c:when>
+    <c:otherwise>
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+            <p>
+            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+            <span style="display:block; width:700px;">
+                No item found. Please hit back button and submit a valid request.
+            </span>
+            </p>
+        </div>
+    </div>
+    </c:otherwise>
+    </c:choose>
+
 </div>
 
 <div class="footer">

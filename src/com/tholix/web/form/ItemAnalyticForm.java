@@ -16,7 +16,7 @@ public final class ItemAnalyticForm {
     private ItemEntity item;
     private BigDecimal averagePrice;
     private List<ExpenseTypeEntity> expenseTypes;
-    private List<ItemEntity> items;
+    private Iterable<ItemEntity> items;
     private int days;
 
     private ItemAnalyticForm() {}
@@ -49,11 +49,11 @@ public final class ItemAnalyticForm {
         this.expenseTypes = expenseTypes;
     }
 
-    public List<ItemEntity> getItems() {
+    public Iterable<ItemEntity> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemEntity> items) {
+    public void setItems(Iterable<ItemEntity> items) {
         this.items = items;
     }
 

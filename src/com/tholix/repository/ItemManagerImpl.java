@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 
 import com.mongodb.WriteResult;
 
@@ -88,11 +87,31 @@ public class ItemManagerImpl implements ItemManager {
 		}
 	}
 
+    /**
+     * User findItem instead of findOne as this is not a secure call without user profile id
+     *
+     * @param id
+     * @return
+     */
+    @Deprecated
 	@Override
 	public ItemEntity findOne(String id) {
 		Sort sort = new Sort(Direction.ASC, "sequence");
 		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)).with(sort), ItemEntity.class, TABLE);
 	}
+
+    /**
+     * Use this method instead of findOne
+     *
+     * @param itemId
+     * @param userProfileId
+     * @return
+     */
+    @Override
+    public ItemEntity findItem(String itemId, String userProfileId) {
+        Query query = Query.query(Criteria.where("id").is(itemId).andOperator(Criteria.where("userProfileId").is(userProfileId)));
+        return mongoTemplate.findOne(query, ItemEntity.class, TABLE);
+    }
 
 	@Override
 	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt) {
@@ -101,6 +120,9 @@ public class ItemManagerImpl implements ItemManager {
 	}
 
     /**
+     * This method in future could be very memory extensive when there would be tons of similar items. To fix it, add
+     * receipt date to items
+     *
      * db.ITEM.find( {"name" : "509906212284 Podium Bottle 24 oz" , "created" : ISODate("2013-06-03T03:38:44.818Z")} )
      *
      * @param name - Name of the item
@@ -111,31 +133,27 @@ public class ItemManagerImpl implements ItemManager {
 	public List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay) {
         // Can choose Item create date but if needs accuracy then find receipts for these items and filter receipts by date provided.
         // Not sure how much beneficial it would be other than more data crunching.
-
         Criteria criteriaA = Criteria.where("name").is(name);
-        Criteria criteriaB = Criteria.where("created").gte(ISODateTimeFormat.dateTime().print(untilThisDay));
-        Sort sort = new Sort(Direction.DESC, "created");
-        Query query = Query.query(criteriaA).addCriteria(criteriaB).with(sort);
-
+        Query query = Query.query(criteriaA);
 		return mongoTemplate.find(query, ItemEntity.class, TABLE);
 	}
 
+    /**
+     * This method in future could be very memory extensive when there would be tons of similar items. To fix it, add
+     * receipt date to items
+     *
+     * @param itemEntity
+     * @param userProfileId
+     * @return
+     */
     @Override
     public List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId) {
         if(itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
             Criteria criteriaA = Criteria.where("name").is(itemEntity.getName());
-            //Criteria criteriaB = Criteria.where("receipt.userProfileId").is(itemEntity.getReceipt().getUserProfileId());
+            Criteria criteriaB = Criteria.where("userProfileId").is(userProfileId);
 
-            Sort sort = new Sort(Direction.DESC, "created");
-            Query query = Query.query(criteriaA).with(sort);
-
-            List<ItemEntity> orderedList = new LinkedList<>();
-            for (ItemEntity item : mongoTemplate.find(query, ItemEntity.class, TABLE)) {
-                if (itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
-                    orderedList.add(item);
-                }
-            }
-            return orderedList;
+            Query query = Query.query(criteriaA.andOperator(criteriaB));
+            return mongoTemplate.find(query, ItemEntity.class, TABLE);
         } else {
             log.error("One of the query is trying to get items for different User Profile Id: " + userProfileId + ", Item Id: " + itemEntity.getId());
             return new LinkedList<>();

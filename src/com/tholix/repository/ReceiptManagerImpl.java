@@ -148,12 +148,26 @@ public class ReceiptManagerImpl implements ReceiptManager {
 		}
 	}
 
+    /**
+     * Use findReceipt method instead of findOne
+     *
+     * @param id
+     * @return
+     */
+    @Deprecated
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public ReceiptEntity findOne(String id) {
 		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
 
+    /**
+     * Use this method instead of findOne
+     *
+     * @param receiptId
+     * @param userProfileId
+     * @return
+     */
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public ReceiptEntity findReceipt(String receiptId, String userProfileId) {
