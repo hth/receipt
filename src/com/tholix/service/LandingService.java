@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ItemEntity;
@@ -84,13 +84,13 @@ public class LandingService {
         Iterator<ReceiptGrouped> groupedIterator = receiptManager.getAllObjectsGroupedByMonth(userProfileId);
 
         List<ReceiptGrouped> receiptGroupedList = Lists.newArrayList(groupedIterator);
-        Ordering<ReceiptGrouped> ascendingOrder = new Ordering<ReceiptGrouped>() {
+        Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
             public int compare(ReceiptGrouped left, ReceiptGrouped right) {
-                return Ints.compare(left.sumOfYearMonthDay(), right.sumOfYearMonthDay());
+                return Longs.compare(left.dateInMillisForSorting(), right.dateInMillisForSorting());
             }
         };
 
-        return ascendingOrder.sortedCopy(receiptGroupedList);
+        return descendingOrder.sortedCopy(receiptGroupedList);
     }
 
     /**

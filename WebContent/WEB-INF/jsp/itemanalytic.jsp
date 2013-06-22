@@ -39,7 +39,7 @@
 
     <c:choose>
     <c:when test="${!empty itemAnalyticForm.items}">
-    <table style="width: 850px" class="etable">
+    <table style="width: 900px" class="etable">
         <tbody>
         <tr>
             <th style="padding:3px;">Business</th>
@@ -53,22 +53,22 @@
         <tr>
             <td style="padding:3px;">
                 <a href="${pageContext.request.contextPath}/receipt.htm?id=${itemAnalyticForm.item.receipt.id}">
-                        ${itemAnalyticForm.item.receipt.bizName.name}
+                ${itemAnalyticForm.item.receipt.bizName.name}
                 </a>
             </td>
             <td style="padding:3px;">
-                    ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
+                ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
             </td>
             <td style="padding:3px;">
                 <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
             </td>
-            <td align="left" style="padding:3px;">
-                    ${itemAnalyticForm.item.name}
+            <td style="padding:3px; text-align: left;">
+                ${itemAnalyticForm.item.name}
             </td>
-            <td align="right" style="padding:3px;">
+            <td style="padding:3px; text-align: right;">
                 <spring:eval expression="itemAnalyticForm.item.price" />
             </td>
-            <td align="right" style="padding:3px;">
+            <td style="padding:3px; text-align: right;">
                 <fmt:formatNumber value="${itemAnalyticForm.averagePrice}" type="currency" />
             </td>
         </tr>
@@ -92,7 +92,7 @@
             <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
                 <c:forEach items="${itemAnalyticForm.items}" var="item" varStatus="status">
                     <tr>
-                        <td align="right" style="padding:3px;">
+                        <td style="padding:3px; text-align: right;">
                             ${status.count}
                         </td>
                         <td style="padding:3px;">
@@ -103,7 +103,7 @@
                         <td style="padding:3px;">
                             ${item.receipt.bizStore.addressWrapped}
                         </td>
-                        <td style="padding:3px;">
+                        <td style="padding:3px; width: 75px;">
                             <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
                         </td>
                         <td style="padding:3px;">
@@ -111,13 +111,13 @@
                             ${item.name}
                             </a>
                         </td>
-                        <td style="text-align: right;" style="padding:3px;">
+                        <td style="padding:3px; text-align: right; width: 80px;">
                             <spring:eval expression="item.price" />
                         </td>
-                        <td style="text-align: left;" style="padding:3px;">
+                        <td style="padding:3px; text-align: right; width: 70px;">
                             ${item.taxed.description}
                         </td>
-                        <td style="text-align: left;" style="padding:3px;">
+                        <td style="padding:3px; text-align: left; width: 100px">
                             <form:select path="items[${status.index}].expenseType.id">
                                 <form:option value="NONE" label="--- Select ---" />
                                 <form:options items="${itemAnalyticForm.expenseTypes}" itemValue="id" itemLabel="expName" />

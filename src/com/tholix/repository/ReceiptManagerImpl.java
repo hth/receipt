@@ -92,6 +92,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
         return results.iterator();
 	}
 
+    //TODO find a way to format the total in group by
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
@@ -105,9 +106,11 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
         DateTime date = DateUtil.now().minusMonths(13);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
-        Criteria criteria = Criteria.where("userProfileId").is(userProfileId)
-                .andOperator(Criteria.where("receiptDate").gte(since.toDate())
-                        .andOperator(Criteria.where("active").is(true)));
+        Criteria criteriaA = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteriaB = Criteria.where("receiptDate").gte(since.toDate());
+        Criteria criteriaC = Criteria.where("active").is(true);
+        Criteria criteria = criteriaA.andOperator(criteriaB.andOperator(criteriaC));
+
         GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
         return results.iterator();
     }

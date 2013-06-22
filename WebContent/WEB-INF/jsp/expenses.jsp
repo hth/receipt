@@ -39,56 +39,56 @@
 
     <c:choose>
         <c:when test="${!empty expenseForm.items}">
-            <table style="width: 650px" class="etable">
-                <tbody>
-                <tr>
-                    <th></th>
-                    <th>Business</th>
-                    <th>Transaction Date</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Tax</th>
-                    <th>Expense Type</th>
-                </tr>
-                </tbody>
-                <form:form method="post" action="expenses.htm" modelAttribute="expenseForm">
-                    <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
-                        <tr>
-                            <td style="padding:3px;" align="right">
-                                ${status.count}
-                            </td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
-                                    ${item.receipt.bizName.name}
-                                </a>
-                            </td>
-                            <td>
-                                <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
-                            </td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                                    ${item.name}
-                                </a>
-                            </td>
-                            <td style="text-align: right;">
-                                <spring:eval expression="item.price" />
-                            </td>
-                            <td style="text-align: left;">
-                                ${item.taxed.description}
-                            </td>
-                            <td style="text-align: left;">
-                                <form:select path="items[${status.index}].expenseType.id">
-                                    <form:option value="NONE" label="--- Select ---" />
-                                    <form:options items="${expenseForm.expenseTypes}" itemValue="id" itemLabel="expName" />
-                                </form:select>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </form:form>
-            </table>
+        <table style="width: 750px" class="etable">
+            <tbody>
+            <tr>
+                <th style="padding: 3px;"></th>
+                <th style="padding: 3px;">Business</th>
+                <th style="padding: 3px;">Transaction Date</th>
+                <th style="padding: 3px;">Name</th>
+                <th style="padding: 3px;">Price</th>
+                <th style="padding: 3px;">Tax</th>
+                <th style="padding: 3px;">Expense Type</th>
+            </tr>
+            </tbody>
+            <form:form method="post" action="expenses.htm" modelAttribute="expenseForm">
+                <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
+                    <tr>
+                        <td style="padding:3px;" align="right">
+                            ${status.count}
+                        </td>
+                        <td style="padding: 3px;">
+                            <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
+                                ${item.receipt.bizName.name}
+                            </a>
+                        </td>
+                        <td style="padding: 3px;">
+                            <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
+                        </td>
+                        <td style="padding: 3px;">
+                            <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                                ${item.name}
+                            </a>
+                        </td>
+                        <td style="padding: 3px; text-align: right;">
+                            <spring:eval expression="item.price" />
+                        </td>
+                        <td style="padding: 3px; text-align: left;">
+                            ${item.taxed.description}
+                        </td>
+                        <td style="padding: 3px; text-align: left;">
+                            <form:select path="items[${status.index}].expenseType.id">
+                                <form:option value="NONE" label="--- Select ---" />
+                                <form:options items="${expenseForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                            </form:select>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </form:form>
+        </table>
         </c:when>
         <c:otherwise>
-            No data available for selected expense type: ${expenseForm.name}
+        No data available for selected expense type: ${expenseForm.name}
         </c:otherwise>
     </c:choose>
 </div>

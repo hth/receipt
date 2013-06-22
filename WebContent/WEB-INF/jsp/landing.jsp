@@ -281,7 +281,7 @@
                                 <c:set var="receiptGroupedIterator" value="${requestScope.receiptGrouped}" />
                                 <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
 								{
-									title : '${receiptGrouped.getTotal()}',
+									title : '${receiptGrouped.getStringTotal()}',
 									start : '${receiptGrouped.getDate()}',
 									end   : '${receiptGrouped.getDate()}',
 									url   : '${pageContext.request.contextPath}/day.htm?date=${receiptGrouped.getDate().getTime()}'
@@ -366,7 +366,7 @@
             <table>
                 <tr>
                     <td style="vertical-align: top">
-                        <div id="monthly" style="min-width: 525px; height: 275px; margin: 0 auto"></div>
+                        <div id="monthly" style="min-width: 525px; height: 375px; margin: 0 auto"></div>
 
                         <fieldset style="width:295px;">
                             <legend>Total Expense</legend>
@@ -389,7 +389,7 @@
                         </fieldset>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="allExpenseTypes" style="min-width: 525px; height: 275px; margin: 0 auto"></div>
+                        <div id="allExpenseTypes" style="min-width: 525px; height: 375px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>
