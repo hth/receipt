@@ -23,7 +23,7 @@ public final class Formatter {
 
 	public static NumberFormat defaultFormat = NumberFormat.getCurrencyInstance();
 
-	public static BigDecimal getCurrencyFormatted(String value) throws ParseException {
+	public static BigDecimal getCurrencyFormatted(String value) throws ParseException, NumberFormatException {
 		BigDecimal d;
 		if(value.startsWith("$")) {
 			Number number = defaultFormat.parse(value);

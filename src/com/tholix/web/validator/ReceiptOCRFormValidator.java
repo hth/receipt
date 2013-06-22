@@ -53,7 +53,8 @@ public class ReceiptOCRFormValidator implements Validator {
 			if(StringUtils.isNotEmpty(item.getName()) && StringUtils.isNotEmpty(item.getPrice())) {
 				 try {
 					subTotal = Maths.add(subTotal, Formatter.getCurrencyFormatted(item.getPrice()));
-				} catch (ParseException e) {
+				} catch (ParseException | NumberFormatException exception) {
+                     log.error("Exception during update of receipt: " + receiptOCRForm.getReceipt().getId() + ", with error message: " + exception.getLocalizedMessage());
 					errors.rejectValue("items["+count+"].price", "field.currency", new Object[] { item.getPrice() }, "Unsupported currency format");
 				}
 				count++;
