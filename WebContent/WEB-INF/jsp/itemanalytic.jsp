@@ -48,8 +48,8 @@
             <th style="padding:3px;">Date</th>
             <th style="padding:3px;">Item</th>
             <th style="padding:3px;">Price</th>
-            <th style="padding:3px;">${itemAnalyticForm.days} days Your Average</th>
-            <th style="padding:3px;">Compared with ${itemAnalyticForm.days} days Site Average</th>
+            <th style="padding:3px;">Your ${itemAnalyticForm.days} days <br> Average</th>
+            <th style="padding:3px;">Compared with Site's <br> ${itemAnalyticForm.days} days Average</th>
         </tr>
         </tbody>
         <tr>
@@ -171,7 +171,7 @@
                 enabled: false
             },
             title: {
-                text: 'Site ${itemAnalyticForm.days} days vs. Historical for ${userSession.emailId}'
+                text: 'Site ${itemAnalyticForm.days} days vs. Historical ${itemAnalyticForm.days} days for ${userSession.emailId}'
             },
             xAxis: {
                 type: 'datetime',
