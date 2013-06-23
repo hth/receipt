@@ -4,6 +4,7 @@
 package com.tholix.web;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.service.ExpensesService;
@@ -49,17 +51,32 @@ public class ItemAnalyticController {
 
 		ItemEntity item = itemAnalyticService.findItemById(id, userSession.getUserProfileId());
         if(item != null) {
-            DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
-            Iterable<ItemEntity> items = itemAnalyticService.findAllByNameLimitByDays(item.getName(), untilThisDay);
-            BigDecimal averagePrice = itemAnalyticService.calculateAveragePrice(items);
-
-            itemAnalyticForm.setDays(NINETY_DAYS);
             itemAnalyticForm.setItem(item);
-            itemAnalyticForm.setAveragePrice(averagePrice);
-            itemAnalyticForm.setExpenseTypes(expensesService.activeExpenseTypes(item.getUserProfileId()));
+            itemAnalyticForm.setDays(NINETY_DAYS);
 
-            items = itemAnalyticService.findAllByName(item, userSession.getUserProfileId());
-            itemAnalyticForm.setItems(items);
+            DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
+
+            /** Gets site average */
+            List<ItemEntity> siteAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), untilThisDay);
+            itemAnalyticForm.setSiteAverageItems(siteAverageItems);
+
+            BigDecimal siteAveragePrice = itemAnalyticService.calculateAveragePrice(siteAverageItems);
+            itemAnalyticForm.setSiteAveragePrice(siteAveragePrice);
+
+            /** Users historical items */
+            List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, userSession.getUserProfileId());
+            itemAnalyticForm.setYourHistoricalItems(yourItems);
+
+            /** Your average */
+            List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), userSession.getUserProfileId(), untilThisDay);
+            itemAnalyticForm.setYourAverageItems(yourAverageItems);
+
+            BigDecimal yourAveragePrice = itemAnalyticService.calculateAveragePrice(yourAverageItems);
+            itemAnalyticForm.setYourAveragePrice(yourAveragePrice);
+
+            /** Loads expense types */
+            List<ExpenseTypeEntity> expenseTypes = expensesService.activeExpenseTypes(item.getUserProfileId());
+            itemAnalyticForm.setExpenseTypes(expenseTypes);
         }
 
         ModelAndView modelAndView = new ModelAndView(nextPage);

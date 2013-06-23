@@ -14,9 +14,12 @@ import com.tholix.domain.ItemEntity;
 public final class ItemAnalyticForm {
 
     private ItemEntity item;
-    private BigDecimal averagePrice;
+    private BigDecimal yourAveragePrice;
+    private BigDecimal siteAveragePrice;
     private List<ExpenseTypeEntity> expenseTypes;
-    private Iterable<ItemEntity> items;
+    private List<ItemEntity> siteAverageItems;
+    private List<ItemEntity> yourAverageItems;
+    private List<ItemEntity> yourHistoricalItems;
     private int days;
 
     private ItemAnalyticForm() {}
@@ -33,12 +36,20 @@ public final class ItemAnalyticForm {
         this.item = item;
     }
 
-    public BigDecimal getAveragePrice() {
-        return averagePrice;
+    public BigDecimal getSiteAveragePrice() {
+        return siteAveragePrice;
     }
 
-    public void setAveragePrice(BigDecimal averagePrice) {
-        this.averagePrice = averagePrice;
+    public void setSiteAveragePrice(BigDecimal siteAveragePrice) {
+        this.siteAveragePrice = siteAveragePrice;
+    }
+
+    public BigDecimal getYourAveragePrice() {
+        return yourAveragePrice;
+    }
+
+    public void setYourAveragePrice(BigDecimal yourAveragePrice) {
+        this.yourAveragePrice = yourAveragePrice;
     }
 
     public List<ExpenseTypeEntity> getExpenseTypes() {
@@ -49,12 +60,43 @@ public final class ItemAnalyticForm {
         this.expenseTypes = expenseTypes;
     }
 
-    public Iterable<ItemEntity> getItems() {
-        return items;
+    public Iterable<ItemEntity> getSiteAverageItems() {
+        return siteAverageItems;
     }
 
-    public void setItems(Iterable<ItemEntity> items) {
-        this.items = items;
+    /**
+     * Site average
+     *
+     * @param siteAverageItems
+     */
+    public void setSiteAverageItems(List<ItemEntity> siteAverageItems) {
+        this.siteAverageItems = siteAverageItems;
+    }
+
+    public Iterable<ItemEntity> getYourAverageItems() {
+        return yourAverageItems;
+    }
+
+    /**
+     * Your average
+     *
+     * @param yourAverageItems
+     */
+    public void setYourAverageItems(List<ItemEntity> yourAverageItems) {
+        this.yourAverageItems = yourAverageItems;
+    }
+
+    public List<ItemEntity> getYourHistoricalItems() {
+        return yourHistoricalItems;
+    }
+
+    /**
+     * Users historical purchases
+     *
+     * @param yourHistoricalItems
+     */
+    public void setYourHistoricalItems(List<ItemEntity> yourHistoricalItems) {
+        this.yourHistoricalItems = yourHistoricalItems;
     }
 
     public int getDays() {

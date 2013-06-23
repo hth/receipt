@@ -3,14 +3,13 @@
  */
 package com.tholix.web;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -24,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mongodb.gridfs.GridFSDBFile;
 import org.joda.time.DateTime;
+
+import com.mongodb.gridfs.GridFSDBFile;
 
 import com.tholix.domain.UserSession;
 import com.tholix.service.FileDBService;
@@ -74,7 +74,7 @@ public class ReceiptImageController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
 			return null;
 		} catch (IOException e) {
-			log.error(e.getLocalizedMessage());
+			log.error("Exception occurred during image retrieval" + e.getLocalizedMessage());
 			log.error("Image retrieval error occurred: " + imageId + " for user : " + userSession.getEmailId());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
 			return null;

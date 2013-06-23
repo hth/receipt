@@ -131,12 +131,34 @@ public class ItemManagerImpl implements ItemManager {
      */
 	@Override
 	public List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay) {
+        return findAllByNameLimitByDays(name, null, untilThisDay);
+	}
+
+    /**
+     * This method in future could be very memory extensive when there would be tons of similar items. To fix it, add
+     * receipt date to items
+     *
+     * db.ITEM.find( {"name" : "509906212284 Podium Bottle 24 oz" , "created" : ISODate("2013-06-03T03:38:44.818Z")} )
+     *
+     * @param name - Name of the item
+     * @param untilThisDay - Show result from this day onwards
+     * @return
+     */
+    @Override
+    public List<ItemEntity> findAllByNameLimitByDays(String name, String userProfileId, DateTime untilThisDay) {
         // Can choose Item create date but if needs accuracy then find receipts for these items and filter receipts by date provided.
         // Not sure how much beneficial it would be other than more data crunching.
         Criteria criteriaA = Criteria.where("name").is(name);
         Query query = Query.query(criteriaA);
-		return mongoTemplate.find(query, ItemEntity.class, TABLE);
-	}
+
+        Criteria criteriaB;
+        if(userProfileId != null) {
+            criteriaB = Criteria.where("userProfileId").is(userProfileId);
+            query = Query.query(criteriaA.andOperator(criteriaB));
+        }
+
+        return mongoTemplate.find(query, ItemEntity.class, TABLE);
+    }
 
     /**
      * This method in future could be very memory extensive when there would be tons of similar items. To fix it, add

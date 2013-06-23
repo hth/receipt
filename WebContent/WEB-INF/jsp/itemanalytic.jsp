@@ -16,6 +16,7 @@
 
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type='text/javascript' src="jquery/js/highcharts.js"></script>
 
 </head>
 <body>
@@ -38,7 +39,7 @@
     <p>&nbsp;</p>
 
     <c:choose>
-    <c:when test="${!empty itemAnalyticForm.items}">
+    <c:when test="${!empty itemAnalyticForm.yourHistoricalItems}">
     <table style="width: 900px" class="etable">
         <tbody>
         <tr>
@@ -47,7 +48,8 @@
             <th style="padding:3px;">Date</th>
             <th style="padding:3px;">Item</th>
             <th style="padding:3px;">Price</th>
-            <th style="padding:3px;">${itemAnalyticForm.days} day Average</th>
+            <th style="padding:3px;">${itemAnalyticForm.days} days Your Average</th>
+            <th style="padding:3px;">Compared with ${itemAnalyticForm.days} days Site Average</th>
         </tr>
         </tbody>
         <tr>
@@ -69,64 +71,69 @@
                 <spring:eval expression="itemAnalyticForm.item.price" />
             </td>
             <td style="padding:3px; text-align: right;">
-                <fmt:formatNumber value="${itemAnalyticForm.averagePrice}" type="currency" />
+                <fmt:formatNumber value="${itemAnalyticForm.yourAveragePrice}" type="currency" />
+            </td>
+            <td style="padding:3px; text-align: right;">
+                <fmt:formatNumber value="${itemAnalyticForm.siteAveragePrice}" type="currency" />
             </td>
         </tr>
     </table>
 
+    <div id="container" style="min-width: 525px; height: 275px; margin: 25px auto;"></div>
+
     <h2 class="demoHeaders">Your historical purchases of similar Item(s)</h2>
-    <c:if test="${!empty itemAnalyticForm.item}">
-        <table style="width: 900px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;"></th>
-                <th style="padding:3px;">Business</th>
-                <th style="padding:3px;">Location</th>
-                <th style="padding:3px;">Date</th>
-                <th style="padding:3px;">Item</th>
-                <th style="padding:3px;">Price</th>
-                <th style="padding:3px;">Tax</th>
-                <th style="padding:3px;">Expense Type</th>
-            </tr>
-            </tbody>
-            <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
-                <c:forEach items="${itemAnalyticForm.items}" var="item" varStatus="status">
-                    <tr>
-                        <td style="padding:3px; text-align: right;">
-                            ${status.count}
-                        </td>
-                        <td style="padding:3px;">
-                            <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
-                            ${item.receipt.bizName.name}
-                            </a>
-                        </td>
-                        <td style="padding:3px;">
-                            ${item.receipt.bizStore.addressWrapped}
-                        </td>
-                        <td style="padding:3px; width: 75px;">
-                            <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
-                        </td>
-                        <td style="padding:3px;">
-                            <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                            ${item.name}
-                            </a>
-                        </td>
-                        <td style="padding:3px; text-align: right; width: 80px;">
-                            <spring:eval expression="item.price" />
-                        </td>
-                        <td style="padding:3px; text-align: right; width: 70px;">
-                            ${item.taxed.description}
-                        </td>
-                        <td style="padding:3px; text-align: left; width: 100px">
-                            <form:select path="items[${status.index}].expenseType.id">
-                                <form:option value="NONE" label="--- Select ---" />
-                                <form:options items="${itemAnalyticForm.expenseTypes}" itemValue="id" itemLabel="expName" />
-                            </form:select>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </form:form>
-        </table>
+    <c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">
+    <table style="width: 900px" class="etable">
+        <tbody>
+        <tr>
+            <th style="padding:3px;"></th>
+            <th style="padding:3px;">Business</th>
+            <th style="padding:3px;">Location</th>
+            <th style="padding:3px;">Date</th>
+            <th style="padding:3px;">Item</th>
+            <th style="padding:3px;">Price</th>
+            <th style="padding:3px;">Tax</th>
+            <th style="padding:3px;">Expense Type</th>
+        </tr>
+        </tbody>
+        <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
+            <c:forEach items="${itemAnalyticForm.yourHistoricalItems}" var="item" varStatus="status">
+                <tr>
+                    <td style="padding:3px; text-align: right;">
+                        ${status.count}
+                    </td>
+                    <td style="padding:3px;">
+                        <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
+                        ${item.receipt.bizName.name}
+                        </a>
+                    </td>
+                    <td style="padding:3px;">
+                        ${item.receipt.bizStore.addressWrapped}
+                    </td>
+                    <td style="padding:3px; width: 75px;">
+                        <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
+                    </td>
+                    <td style="padding:3px;">
+                        <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                        ${item.name}
+                        </a>
+                    </td>
+                    <td style="padding:3px; text-align: right; width: 80px;">
+                        <spring:eval expression="item.price" />
+                    </td>
+                    <td style="padding:3px; text-align: right; width: 70px;">
+                        ${item.taxed.description}
+                    </td>
+                    <td style="padding:3px; text-align: left; width: 100px">
+                        <form:select path="yourHistoricalItems[${status.index}].expenseType.id">
+                            <form:option value="NONE" label="--- Select ---" />
+                            <form:options items="${itemAnalyticForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                        </form:select>
+                    </td>
+                </tr>
+            </c:forEach>
+        </form:form>
+    </table>
     </c:if>
     </c:when>
     <c:otherwise>
@@ -152,6 +159,56 @@
     </p>
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
+
+<c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">
+<script>
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'spline'
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: 'Site ${itemAnalyticForm.days} days vs. Historical for ${userSession.emailId}'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Price'
+                },
+                min: 0
+            },
+
+            series: [{
+                name: 'Site ${itemAnalyticForm.days} days',
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: [
+                    <c:forEach items="${itemAnalyticForm.siteAverageItems}" var="item" varStatus="status">
+                    [Date.UTC(${item.receipt.year},  ${item.receipt.month - 1}, ${item.receipt.day}), ${item.price} ],
+                    </c:forEach>
+                ]
+            }, {
+                name: 'Historical for ${userSession.emailId}',
+                data: [
+                    <c:forEach items="${itemAnalyticForm.yourAverageItems}" var="item" varStatus="status">
+                    [Date.UTC(${item.receipt.year},  ${item.receipt.month - 1}, ${item.receipt.day}), ${item.price} ],
+                    </c:forEach>
+                ]
+            }]
+        });
+    });
+</script>
+</c:if>
 
 </body>
 </html>

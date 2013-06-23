@@ -49,6 +49,17 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 	List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay);
 
     /**
+     * Gets items with specified name until the specified date
+     *
+     * @param name - Name of the item
+     * @param userProfileId
+     * @param untilThisDay - Show result from this day onwards
+     * @return
+     */
+    List<ItemEntity> findAllByNameLimitByDays(String name, String userProfileId, DateTime untilThisDay);
+
+
+    /**
      * Should be used only for listing historical data of the items for a particular user
      *
      * @param itemEntity
