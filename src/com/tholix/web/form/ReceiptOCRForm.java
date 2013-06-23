@@ -28,6 +28,9 @@ public final class ReceiptOCRForm {
 	ReceiptEntityOCR receiptOCR;
 	List<ItemEntityOCR> items;
 
+    /** Used for showing error messages to user when the request action fails to execute */
+    String errorMessage;
+
 	/**
 	 * Need for bean instantiation in ReceiptUpdateForm
 	 */
@@ -62,6 +65,14 @@ public final class ReceiptOCRForm {
 		this.items = items;
 	}
 
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getErrorMessage() {
+        return this.errorMessage;
+    }
+
 	@Override
 	public String toString() {
 		return "ReceiptOCRForm [receiptOCR=" + receiptOCR + ", items=" + items + "]";
@@ -78,6 +89,10 @@ public final class ReceiptOCRForm {
 		receipt.setCreated(receiptOCR.getCreated());
         receipt.setBizName(receiptOCR.getBizName());
         receipt.setBizStore(receiptOCR.getBizStore());
+
+        //If this is not set then user cannot reopen the a receipt for re-check.
+        //TODO When deleting historical receiptOCR make sure to remove this id from receipt referencing receipt OCR
+        receipt.setReceiptOCRId(receiptOCR.getId());
 
         if(receiptOCR.getComment() != null && !StringUtils.isEmpty(receiptOCR.getComment().getComment())) {
             receipt.setComment(receiptOCR.getComment());
