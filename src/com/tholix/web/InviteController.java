@@ -79,7 +79,7 @@ public class InviteController {
                 UserProfileEntity userProfileEntity = inviteEntity.getNewInvitedUser();
                 userProfileEntity.setFirstName(inviteAuthenticateForm.getFirstName());
                 userProfileEntity.setLastName(inviteAuthenticateForm.getLastName());
-                userProfileEntity.setActive(true);
+                userProfileEntity.active();
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
                         SHAHashing.hashCodeSHA512(inviteAuthenticateForm.getForgotAuthenticateForm().getPassword()),

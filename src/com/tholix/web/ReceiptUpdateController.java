@@ -91,7 +91,7 @@ public class ReceiptUpdateController {
      * @param result
      * @return
      */
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/update", method = RequestMethod.POST, params="update")
 	public String update(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptOCRForm.getReceiptOCR().getId() + " ; Title : " + receiptOCRForm.getReceiptOCR().getBizName().getName());
@@ -118,6 +118,31 @@ public class ReceiptUpdateController {
 	}
 
     /**
+     * Reject receipt since it can't be processed or its not a receipt
+     *
+     * @param receiptOCRForm
+     * @return
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST, params="reject")
+    public ModelAndView reject(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
+        DateTime time = DateUtil.now();
+        log.info("Rejecting Receipt OCR: " + receiptOCRForm.getReceiptOCR().getId());
+        try {
+            ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
+            receiptUpdateService.turkReject(receiptOCR);
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt reject");
+
+            receiptOCRForm.setErrorMessage("Receipt could not be processed for Reject. Contact administrator with Receipt OCR # " + receiptOCRForm.getReceiptOCR().getId());
+            return new ModelAndView(nextPage);
+        }
+    }
+
+    /**
      * Loads receipt for recheck for technician
      *
      * @param userSession
@@ -128,7 +153,7 @@ public class ReceiptUpdateController {
     @RequestMapping(value = "/recheck", method = RequestMethod.GET)
     public ModelAndView recheck(@ModelAttribute("userSession") UserSession userSession, @RequestParam("id") String receiptOCRId, @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
-        update(userSession, receiptOCRId, receiptOCRForm);
+        this.update(userSession, receiptOCRId, receiptOCRForm);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return new ModelAndView(nextPageRecheck);
     }
@@ -151,6 +176,7 @@ public class ReceiptUpdateController {
         }
 
         try {
+            //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
             ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
             List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);
             ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
@@ -160,11 +186,17 @@ public class ReceiptUpdateController {
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
             result.rejectValue("receipt", "", exce.getLocalizedMessage());
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt recheck save");
             return nextPageRecheck;
         }
     }
 
+    /**
+     * Delete operation can only be performed by user and not technician
+     *
+     * @param receiptOCRForm
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         receiptUpdateService.deletePendingReceiptOCR(receiptOCRForm.getReceiptOCR());

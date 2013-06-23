@@ -120,7 +120,8 @@ public class ReceiptService {
                     ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
                     receiptOCR.active();
                     receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
-                    receiptOCR.setReceiptId(receipt.getId());
+                    //No need for this as this is being set already during first time save
+                    //receiptOCR.setReceiptId(receipt.getId());
                     receiptOCR.setComment(receipt.getComment());
 
                     /** All activity at the end is better because you never know what could go wrong during populating other data */
@@ -141,7 +142,7 @@ public class ReceiptService {
                 }
             } else {
                 log.error("No receiptOCR id found in Receipt: " + receipt.getId() + ", aborting the reopen process");
-                throw new Exception("Receipt could not be requested for re-check. Contact administrator with Receipt # " + receipt.getId());
+                throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId());
             }
         } catch (Exception e) {
             log.error("Exception during customer requesting receipt recheck operation: " + e.getLocalizedMessage());

@@ -12,10 +12,11 @@ import org.apache.log4j.Logger;
 
 import org.springframework.stereotype.Service;
 
+import org.joda.time.DateTime;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import org.joda.time.DateTime;
 
 import com.tholix.domain.BizStoreEntity;
 import com.tholix.utils.DateUtil;
@@ -38,7 +39,7 @@ public class ExternalService {
      * @param bizStoreEntity
      * @throws Exception
      */
-    public void decodeAddress(BizStoreEntity bizStoreEntity) throws Exception {
+    public void decodeAddress(BizStoreEntity bizStoreEntity) throws IOException {
         DateTime time = DateUtil.now();
         URL url = null;
         try {
@@ -59,11 +60,11 @@ public class ExternalService {
             String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " +  bizStoreEntity.getAddress();
             log.error("URL: " + result + ", " + e.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-            throw new Exception("URL: " + result + ", " + e.getLocalizedMessage());
+            throw new MalformedURLException("URL: " + result + ", " + e.getLocalizedMessage());
         } catch (IOException e) {
             String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " +  bizStoreEntity.getAddress();
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-            throw new Exception("URL: " + result + ", " + e.getLocalizedMessage());
+            throw new IOException("URL: " + result + ", " + e.getLocalizedMessage());
         }
     }
 

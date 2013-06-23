@@ -62,7 +62,7 @@ public class ReceiptController extends BaseController {
             receiptForm.setItems(items);
             receiptForm.setExpenseTypes(expenseTypes);
         } else {
-            //TODO check all get methods that can result in dsiplay sensitive data of other users to someone else fishing
+            //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
             //Possible condition of bookmark or trying to gain access to some unknown receipt
             log.warn("User " + userSession.getUserProfileId() + ", tried submitting an invalid receipt id: " + receiptId);
         }
@@ -103,6 +103,7 @@ public class ReceiptController extends BaseController {
         } catch(Exception exce) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             log.error(exce.getLocalizedMessage() + ", Receipt: " + receiptForm.getReceipt().getId());
+
             receiptForm.setErrorMessage(exce.getLocalizedMessage());
             return loadForm(receiptForm.getReceipt().getId(), receiptForm, userSession);
         }

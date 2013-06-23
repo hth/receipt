@@ -10,9 +10,12 @@ package com.tholix.domain.types;
 public enum ReceiptStatusEnum {
 
     /** Note: Do not change the order. New ENUM should be appended at the bottom */
-    OCR_PROCESSED("PROCESSED",          "OCR Processed"),
-    TURK_PROCESSED("TURK_PROCESSED",    "Turk Processed"),
-    TURK_REQUEST("TURK_REQUEST",        "Turk Request");
+    OCR_PROCESSED("PROCESSED",                      "OCR Processed"),
+    TURK_PROCESSED("TURK_PROCESSED",                "Turk Processed"),
+    TURK_REQUEST("TURK_REQUEST",                    "Turk Request"),
+
+    /** Reject condition when its hard to process a receipts because of the image quality or invalid image */
+    TURK_RECEIPT_REJECT("TURK_RECEIPT_REJECT",      "Turk Receipt Reject");
 
     private final String description;
     private final String name;

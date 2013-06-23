@@ -172,6 +172,19 @@
         </form:form>
     </c:if>
 
+    <c:if test="${!empty receiptOCRForm.errorMessage}">
+        <div class="ui-widget">
+            <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                    <span style="display:block; width: auto">
+                        ${receiptOCRForm.errorMessage}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </c:if>
+
     <table>
         <tr>
             <td valign="top">

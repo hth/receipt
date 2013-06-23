@@ -1,5 +1,6 @@
 package com.tholix.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class AdminLandingService {
 
     /**
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
+     *
      * @param receiptEntity
      */
     public void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) throws Exception {
@@ -57,7 +59,7 @@ public class AdminLandingService {
 
                 receiptEntity.setBizName(bizNameEntity);
                 receiptEntity.setBizStore(bizStoreEntity);
-            } catch (DuplicateKeyException e) {
+            } catch (DuplicateKeyException | IOException e) {
                 log.error(e.getLocalizedMessage());
 
                 if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
@@ -76,7 +78,7 @@ public class AdminLandingService {
 
                     receiptEntity.setBizName(bizName);
                     receiptEntity.setBizStore(bizStoreEntity);
-                } catch (DuplicateKeyException e) {
+                } catch (DuplicateKeyException | IOException e) {
                     log.error(e.getLocalizedMessage());
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
@@ -89,9 +91,8 @@ public class AdminLandingService {
     }
 
     /**
-     * //TODO merge receipt and receiptOCR. This will eliminate such duplicate code
-     *
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
+     *
      * @param receiptEntity
      */
     public void saveNewBusinessAndOrStore(ReceiptEntityOCR receiptEntity) throws Exception {

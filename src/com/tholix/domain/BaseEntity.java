@@ -54,7 +54,7 @@ public abstract class BaseEntity implements Serializable {
         return active;
     }
 
-    public void setActive(boolean active) {
+    private void setActive(boolean active) {
         this.active = active;
     }
 

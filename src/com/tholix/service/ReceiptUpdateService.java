@@ -48,6 +48,14 @@ public class ReceiptUpdateService {
         return itemOCRManager.getWhereReceipt(receiptEntity);
     }
 
+    /**
+     * This method is used when technician saves the processed receipt for the first time
+     *
+     * @param receipt
+     * @param items
+     * @param receiptOCR
+     * @throws Exception
+     */
     @Transactional(rollbackFor={Exception.class})
     public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         try {
@@ -59,7 +67,8 @@ public class ReceiptUpdateService {
 
             adminLandingService.saveNewBusinessAndOrStore(receiptOCR);
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-            receiptOCR.setActive(false);
+            receiptOCR.setReceiptId(receipt.getId());
+            receiptOCR.inActive();
             receiptOCRManager.save(receiptOCR);
 
             try {
@@ -97,6 +106,7 @@ public class ReceiptUpdateService {
 
                 receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
                 receiptOCRManager.save(receiptOCR);
+                //log.error("Failed to rollback Receipt OCR: " + receiptOCR.getId() + ", error message: " + e.getLocalizedMessage());
 
                 messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.OCR_PROCESSED);
                 //End of roll back
@@ -107,6 +117,14 @@ public class ReceiptUpdateService {
         }
     }
 
+    /**
+     * This method is executed when Technician is re-checking the receipt
+     *
+     * @param receipt
+     * @param items
+     * @param receiptOCR
+     * @throws Exception
+     */
     @Transactional(rollbackFor={Exception.class})
     public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         try {
@@ -128,7 +146,8 @@ public class ReceiptUpdateService {
 
             adminLandingService.saveNewBusinessAndOrStore(receiptOCR);
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-            receiptOCR.setReceiptId(receipt.getId());
+            //Why set again when this is already set the first time
+            //receiptOCR.setReceiptId(receipt.getId());
             receiptOCR.inActive();
             if(StringUtils.isEmpty(receiptOCR.getComment().getComment())) {
                 receiptOCR.setComment(null);
@@ -170,6 +189,7 @@ public class ReceiptUpdateService {
 
                 receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
                 receiptOCRManager.save(receiptOCR);
+                //log.error("Failed to rollback Receipt OCR: " + receiptOCR.getId() + ", error message: " + e.getLocalizedMessage());
 
                 messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.TURK_REQUEST);
                 //End of roll back
@@ -177,6 +197,44 @@ public class ReceiptUpdateService {
                 log.info("Complete with rollback: throwing exception");
             }
             throw new Exception(exce.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Reject receipt when invalid or un-readable
+     *
+     * @param receiptOCR
+     * @throws Exception
+     */
+    @Transactional(rollbackFor={Exception.class})
+    public void turkReject(ReceiptEntityOCR receiptOCR) throws Exception {
+        try {
+            receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_RECEIPT_REJECT);
+            receiptOCR.setBizName(null);
+            receiptOCR.setBizStore(null);
+            receiptOCR.inActive();
+            receiptOCRManager.save(receiptOCR);
+
+            try {
+                messageManager.updateObject(receiptOCR.getId(), ReceiptStatusEnum.OCR_PROCESSED, ReceiptStatusEnum.TURK_RECEIPT_REJECT);
+            } catch(Exception exce) {
+                log.error(exce.getLocalizedMessage());
+                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_RECEIPT_REJECT, ReceiptStatusEnum.OCR_PROCESSED);
+                throw exce;
+            }
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
+            log.warn("Revert all the transaction for ReceiptOCR: " + receiptOCR.getId());
+
+            receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+            receiptOCR.active();
+            receiptOCRManager.save(receiptOCR);
+            //log.error("Failed to rollback Receipt OCR: " + receiptOCR.getId() + ", error message: " + e.getLocalizedMessage());
+
+            messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_RECEIPT_REJECT, ReceiptStatusEnum.OCR_PROCESSED);
+            //End of roll back
+
+            log.info("Complete with rollback: throwing exception");
         }
     }
 
