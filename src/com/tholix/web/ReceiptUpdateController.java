@@ -32,9 +32,11 @@ import com.tholix.web.form.ReceiptOCRForm;
 import com.tholix.web.validator.ReceiptOCRFormValidator;
 
 /**
+ * Class manages first processing of a receipt. That includes loading of a receipts by technician.
+ * Updating of a receipt by technician. Same is true for recheck of receipt by technician.
+ *
  * @author hitender
  * @since Jan 7, 2013 2:13:22 AM
- *
  */
 @Controller
 @RequestMapping(value = "/emp")
@@ -49,6 +51,16 @@ public class ReceiptUpdateController {
     @Autowired private ReceiptOCRFormValidator receiptOCRFormValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
 
+    /**
+     * Loads the receipts for technician.
+     *
+     * Added logic to make sure only the user of the receipt or technician can see the receipt.
+     *
+     * @param userSession
+     * @param receiptOCRId
+     * @param receiptOCRForm
+     * @return
+     */
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public ModelAndView update(@ModelAttribute("userSession") UserSession userSession, @RequestParam("id") String receiptOCRId, @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
@@ -72,6 +84,13 @@ public class ReceiptUpdateController {
         return new ModelAndView(nextPage);
 	}
 
+    /**
+     * Process receipt after submitted by technician
+     *
+     * @param receiptOCRForm
+     * @param result
+     * @return
+     */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
@@ -98,6 +117,14 @@ public class ReceiptUpdateController {
         }
 	}
 
+    /**
+     * Loads receipt for recheck for technician
+     *
+     * @param userSession
+     * @param receiptOCRId
+     * @param receiptOCRForm
+     * @return
+     */
     @RequestMapping(value = "/recheck", method = RequestMethod.GET)
     public ModelAndView recheck(@ModelAttribute("userSession") UserSession userSession, @RequestParam("id") String receiptOCRId, @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
@@ -106,6 +133,13 @@ public class ReceiptUpdateController {
         return new ModelAndView(nextPageRecheck);
     }
 
+    /**
+     * Process receipt for after recheck by technician
+     *
+     * @param receiptOCRForm
+     * @param result
+     * @return
+     */
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     public String recheck(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
