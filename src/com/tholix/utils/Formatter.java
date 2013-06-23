@@ -23,15 +23,20 @@ public final class Formatter {
 
 	public static NumberFormat defaultFormat = NumberFormat.getCurrencyInstance();
 
-	public static BigDecimal getCurrencyFormatted(String value) throws ParseException, NumberFormatException {
+	public static BigDecimal getCurrencyFormatted(String value) throws ParseException {
 		BigDecimal d;
-		if(value.startsWith("$")) {
-			Number number = defaultFormat.parse(value);
-			d = new BigDecimal(number.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP);
-		} else {
-			d = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP);
-		}
+        try {
+            if(value.startsWith("$")) {
+                Number number = defaultFormat.parse(value);
+                d = new BigDecimal(number.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP);
+            } else {
+                d = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP);
+            }
 
-		return d;
+            return d;
+        } catch(NumberFormatException nfe) {
+            log.error("Error parsing number value: " + value + ", exception: " + nfe);
+            throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + nfe);
+        }
 	}
 }

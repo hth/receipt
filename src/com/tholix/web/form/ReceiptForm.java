@@ -17,6 +17,9 @@ public final class ReceiptForm {
     List<ItemEntity> items;
     List<ExpenseTypeEntity> expenseTypes;
 
+    /** Used for showing error messages to user when the request action fails to execute */
+    String errorMessage;
+
     /**
      * Need for bean instantiation
      */
@@ -52,5 +55,13 @@ public final class ReceiptForm {
 
     public void setExpenseTypes(List<ExpenseTypeEntity> expenseTypes) {
         this.expenseTypes = expenseTypes;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getErrorMessage() {
+        return this.errorMessage;
     }
 }

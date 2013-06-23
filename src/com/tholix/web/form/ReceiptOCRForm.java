@@ -46,11 +46,11 @@ public final class ReceiptOCRForm {
 		return new ReceiptOCRForm();
 	}
 
-	public ReceiptEntityOCR getReceipt() {
+	public ReceiptEntityOCR getReceiptOCR() {
 		return receiptOCR;
 	}
 
-	public void setReceipt(ReceiptEntityOCR receiptOCR) {
+	public void setReceiptOCR(ReceiptEntityOCR receiptOCR) {
 		this.receiptOCR = receiptOCR;
 	}
 

@@ -13,6 +13,8 @@ import org.joda.time.DateTime;
 
 import com.google.common.base.Objects;
 
+import com.tholix.utils.DateUtil;
+
 /**
  * @author hitender
  * @since Jan 12, 2013 6:25:15 PM
@@ -39,10 +41,20 @@ public final class ReceiptGrouped implements Serializable {
     }
 
 	public Date getDate() {
+        if(year == 0 || month == 0 || day == 0) {
+            //This should never happen. Add validation in receipt during save.
+            log.error("Setting now time as --> Year or month or day should not be zero. Year " + year + ", month: " + month + ", day: " + day);
+            return DateUtil.now().toDate();
+        }
 		return new DateTime(year, month, day, 0, 0).toDate();
 	}
 
     private DateTime getDateTime() {
+        if(year == 0 || month == 0 ) {
+            ////This should never happen. Add validation in receipt during save.
+            log.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
+            return DateUtil.now();
+        }
         DateTime date = new DateTime(year, month, 1, 0, 0);
         return date;
     }
@@ -64,6 +76,11 @@ public final class ReceiptGrouped implements Serializable {
     }
 
     public long dateInMillisForSorting() {
+        if(year == 0 || month == 0) {
+            //This should never happen. Add validation in receipt during save.
+            log.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
+            return DateUtil.now().getMillis();
+        }
         return new DateTime(year, month, 1, 0, 0).getMillis();
     }
 

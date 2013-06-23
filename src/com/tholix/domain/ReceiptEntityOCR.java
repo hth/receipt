@@ -59,9 +59,8 @@ public class ReceiptEntityOCR extends BaseEntity {
     @DBRef
     private CommentEntity comment;
 
-	public ReceiptEntityOCR() {
-
-	}
+    /** To keep bean happy */
+	public ReceiptEntityOCR() {}
 
 	private ReceiptEntityOCR(String receiptDate, String total, String tax) {
 		super();

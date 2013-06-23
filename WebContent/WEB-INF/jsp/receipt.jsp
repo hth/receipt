@@ -87,6 +87,18 @@
 
     <c:choose>
     <c:when test="${!empty receiptForm.receipt}">
+    <c:if test="${!empty receiptForm.errorMessage}">
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+            <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+            <span style="display:block; width: auto">
+            ${receiptForm.errorMessage}
+            </span>
+            </p>
+        </div>
+    </div>
+    </c:if>
     <table>
         <tr>
             <td valign="top">
@@ -199,7 +211,7 @@
             <p>
                 <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                 <span style="display:block; width:700px;">
-                    No receipt found!! Please hit back button and submit a valid request
+                No receipt found!! Please hit back button and submit a valid request
                 </span>
             </p>
         </div>

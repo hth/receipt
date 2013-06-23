@@ -108,33 +108,40 @@ public class ReceiptService {
     public void reopen(ReceiptForm receiptForm) throws Exception {
         try {
             ReceiptEntity receipt = receiptManager.findOne(receiptForm.getReceipt().getId());
-            if(receipt.isActive()) {
-                if(!StringUtils.isEmpty(receiptForm.getReceipt().getComment().getComment())) {
-                    commentManager.save(receiptForm.getReceipt().getComment());
-                    receipt.setComment(receiptForm.getReceipt().getComment());
+            if(receipt.getReceiptOCRId() != null) {
+                if(receipt.isActive()) {
+                    if(!StringUtils.isEmpty(receiptForm.getReceipt().getComment().getComment())) {
+                        commentManager.save(receiptForm.getReceipt().getComment());
+                        receipt.setComment(receiptForm.getReceipt().getComment());
+                    }
+                    receipt.inActive();
+                    List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
+
+                    ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
+                    receiptOCR.active();
+                    receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
+                    receiptOCR.setReceiptId(receipt.getId());
+                    receiptOCR.setComment(receipt.getComment());
+
+                    /** All activity at the end is better because you never know what could go wrong during populating other data */
+                    receiptManager.save(receipt);
+                    receiptOCRManager.save(receiptOCR);
+                    itemOCRManager.deleteWhereReceipt(receiptOCR);
+
+                    List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
+                    itemOCRManager.saveObjects(ocrItems);
+                    itemManager.deleteWhereReceipt(receipt);
+
+                    log.info("ReceiptEntityOCR @Id after save: " + receiptOCR.getId());
+                    UserProfileEntity userProfile = userProfileManager.findOne(receiptOCR.getUserProfileId());
+                    senderJMS.send(receiptOCR, userProfile);
+                } else {
+                    log.error("Attempt to invoke re-check on Receipt: " + receipt.getId() + ", Browser Back Action performed");
+                    throw new Exception("Receipt no longer exists");
                 }
-                receipt.inActive();
-                receiptManager.save(receipt);
-                List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
-
-                ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
-                receiptOCR.active();
-                receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
-                receiptOCR.setReceiptId(receipt.getId());
-                receiptOCR.setComment(receipt.getComment());
-                receiptOCRManager.save(receiptOCR);
-                itemOCRManager.deleteWhereReceipt(receiptOCR);
-
-                List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
-                itemOCRManager.saveObjects(ocrItems);
-                itemManager.deleteWhereReceipt(receipt);
-
-                log.info("ReceiptEntityOCR @Id after save: " + receiptOCR.getId());
-                UserProfileEntity userProfile = userProfileManager.findOne(receiptOCR.getUserProfileId());
-                senderJMS.send(receiptOCR, userProfile);
             } else {
-                log.error("Attempt to invoke re-check on Receipt: " + receipt.getId() + ", Browser Back Action performed");
-                throw new Exception("Receipt no longer exists");
+                log.error("No receiptOCR id found in Receipt: " + receipt.getId() + ", aborting the reopen process");
+                throw new Exception("Receipt could not be requested for re-check. Contact administrator with Receipt # " + receipt.getId());
             }
         } catch (Exception e) {
             log.error("Exception during customer requesting receipt recheck operation: " + e.getLocalizedMessage());

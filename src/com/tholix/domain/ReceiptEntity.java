@@ -75,24 +75,10 @@ public class ReceiptEntity extends BaseEntity {
     @DBRef
     private CommentEntity comment;
 
-	public ReceiptEntity() {
+    /** To keep bean happy */
+	public ReceiptEntity() {}
 
-	}
-
-	private ReceiptEntity(Date receiptDate, Double total, Double tax) {
-		super();
-		this.receiptDate = receiptDate;
-		this.total = total;
-		this.tax = tax;
-	}
-
-	private ReceiptEntity(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
-		super();
-		this.receiptStatus = receiptStatus;
-		this.receiptBlobId = receiptBlobId;
-		this.userProfileId = userProfileId;
-	}
-
+    @Deprecated
 	private ReceiptEntity(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
 		super();
 		this.receiptDate = receiptDate;
@@ -101,27 +87,6 @@ public class ReceiptEntity extends BaseEntity {
 		this.receiptStatus = receiptStatus;
 		this.receiptBlobId = receiptBlobId;
 		this.userProfileId = userProfileId;
-
-		DateTime dt = new DateTime(receiptDate);
-		this.year = dt.getYear();
-		this.month = dt.getMonthOfYear();
-		this.day = dt.getDayOfMonth();
-	}
-
-	/**
-	 * This method is used when the Entity is created for the first time.
-	 *
-	 * @param receiptDate
-	 * @param total
-	 * @param tax
-	 * @return
-	 */
-	public static ReceiptEntity updateInstance(Date receiptDate, Double total, Double tax) {
-		return new ReceiptEntity(receiptDate, total, tax);
-	}
-
-	public static ReceiptEntity newInstance(String description, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
-		return new ReceiptEntity(description, receiptStatus, receiptBlobId, userProfileId);
 	}
 
 	/**
@@ -165,6 +130,10 @@ public class ReceiptEntity extends BaseEntity {
 	}
 
 	public void setReceiptDate(Date receiptDate) {
+        DateTime dt = new DateTime(receiptDate);
+        this.year = dt.getYear();
+        this.month = dt.getMonthOfYear();
+        this.day = dt.getDayOfMonth();
 		this.receiptDate = receiptDate;
 	}
 

@@ -94,18 +94,21 @@ public class ReceiptController extends BaseController {
 	}
 
     @RequestMapping(method = RequestMethod.POST, params="re-check")
-    public String recheck(@ModelAttribute("receiptForm") ReceiptForm receiptForm) {
+    public ModelAndView recheck(@ModelAttribute("receiptForm") ReceiptForm receiptForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
         log.info("Initiating re-check on receipt " + receiptForm.getReceipt().getId());
 
         try {
             receiptService.reopen(receiptForm);
         } catch(Exception exce) {
-            log.error(exce.getLocalizedMessage());
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+            log.error(exce.getLocalizedMessage() + ", Receipt: " + receiptForm.getReceipt().getId());
+            receiptForm.setErrorMessage(exce.getLocalizedMessage());
+            return loadForm(receiptForm.getReceipt().getId(), receiptForm, userSession);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return "redirect:/landing.htm";
+        return new ModelAndView("redirect:/landing.htm");
     }
 
     @RequestMapping(method = RequestMethod.POST, params="update-expense-type")

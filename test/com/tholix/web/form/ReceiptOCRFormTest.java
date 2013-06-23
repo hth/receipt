@@ -75,22 +75,22 @@ public class ReceiptOCRFormTest {
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#getReceipt()}.
+	 * Test method for {@link ReceiptOCRForm#getReceiptOCR()}.
 	 */
 	@Test
 	public void testGetReceipt() {
-		assertNotNull(receiptOCRForm.getReceipt());
+		assertNotNull(receiptOCRForm.getReceiptOCR());
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#setReceipt(com.tholix.domain.ReceiptEntityOCR)}.
+	 * Test method for {@link ReceiptOCRForm#setReceiptOCR(com.tholix.domain.ReceiptEntityOCR)}.
 	 */
 	@Test
 	public void testSetReceipt() {
 		ReceiptOCRForm form = ReceiptOCRForm.newInstance(null, null);
-		assertNull(form.getReceipt());
-		form.setReceipt(receipt);
-		assertNotNull(form.getReceipt());
+		assertNull(form.getReceiptOCR());
+		form.setReceiptOCR(receipt);
+		assertNotNull(form.getReceiptOCR());
 	}
 
 	/**
