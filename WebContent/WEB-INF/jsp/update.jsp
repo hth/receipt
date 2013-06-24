@@ -284,10 +284,10 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="reject"/>
+                                    <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="reject" id="reject"/>
                                 </td>
-                                <td colspan="2" align="left">
-                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Update   " name="update"/>
+                                <td colspan="2">
+                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Update   " name="update" id="update"/>
                                 </td>
                             </tr>
                         </table>
@@ -361,6 +361,12 @@
         if(subTotalValue != '' && subTotalValue > 0 && totalValue != '' && totalValue > 0) {
             $('#expectedTax').text('{ Calculated Tax : ' + (totalValue/subTotalValue -1).toFixed(4) + ' % }');
         }
+    });
+</script>
+
+<script>
+    $(function() {
+        $("#update").focus();
     });
 </script>
 

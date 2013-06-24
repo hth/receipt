@@ -64,5 +64,10 @@
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
+<script>
+    $(function() {
+        $("#emailId").focus();
+    });
+</script>
 </body>
 </html>

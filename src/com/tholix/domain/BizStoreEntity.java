@@ -57,6 +57,10 @@ public class BizStoreEntity extends BaseEntity {
         return address.replaceFirst(",", "<br/>");
     }
 
+    public String getAddressWrappedMore() {
+        return getAddressWrapped().replaceFirst(",", "<br/>");
+    }
+
     public String getAddress() {
         return address;
     }

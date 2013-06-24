@@ -128,7 +128,7 @@
                 <spring:eval expression="bizStore.bizName.name" />
             </td>
             <td style="padding:3px;" align="center">
-                <spring:eval expression="bizStore.address" />
+                <spring:eval expression="bizStore.addressWrappedMore" />
             </td>
             <td style="padding:3px;" align="center">
                 <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
@@ -137,7 +137,7 @@
                 <spring:eval expression="bizStore.phone" />
             </td>
             <td style="padding:3px;" align="left">
-                ${bizStore.created}
+                <fmt:formatDate value="${bizStore.created}" type="both" />
             </td>
         </tr>
     </table>
@@ -162,7 +162,7 @@
                 <spring:eval expression="bizStore.bizName.name" />
             </td>
             <td style="padding:3px;" align="center">
-                <spring:eval expression="bizStore.address" />
+                <spring:eval expression="bizStore.addressWrappedMore" />
             </td>
             <td style="padding:3px;" align="center">
                 <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
@@ -171,7 +171,7 @@
                 <spring:eval expression="bizStore.phone" />
             </td>
             <td style="padding:3px;" align="left">
-                 ${bizStore.created}
+                <fmt:formatDate value="${bizStore.created}" type="both" />
             </td>
         </tr>
         </c:forEach>

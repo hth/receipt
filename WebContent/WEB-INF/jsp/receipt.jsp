@@ -107,14 +107,20 @@
                     <table style="width: 700px" class="etable">
                         <tr>
                             <td colspan="3">
-                                <div class="leftAlign"><b><spring:eval expression="receiptForm.receipt.bizName.name" /></b></div>
-                                <div class="rightAlign"><b><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="both"/></b></div>
+                                <div style="text-align: center; font-size: 15px">
+                                    <b><spring:eval expression="receiptForm.receipt.bizName.name" /></b>
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <div class="leftAlign"><b><spring:eval expression="receiptForm.receipt.bizStore.address"/></b></div>
-                                <div class="rightAlign"><b><spring:eval expression="receiptForm.receipt.bizStore.phone"/></b></div>
+                                <div class="leftAlign">
+                                    <b><spring:eval expression="receiptForm.receipt.bizStore.addressWrappedMore"/></b>
+                                </div>
+                                <div class="rightAlign">
+                                    <b><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="both"/></b>
+                                    <p><b><spring:eval expression="receiptForm.receipt.bizStore.phone"/></b></p>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -128,14 +134,14 @@
                             <tr>
                                 <td>
                                     <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                                            ${item.name}
+                                        ${item.name}
                                     </a>
                                 </td>
                                 <td style="text-align: right;">
                                     <spring:eval expression="item.price" />
                                 </td>
                                 <td style="text-align: left;">
-                                        ${item.taxed.description}
+                                    ${item.taxed.description}
                                 </td>
                                 <td style="text-align: left;">
                                     <form:select path="items[${status.index}].expenseType.id">
