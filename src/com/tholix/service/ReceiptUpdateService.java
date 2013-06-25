@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tholix.domain.CommentEntity;
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.repository.CommentManager;
 import com.tholix.repository.ItemManager;
 import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.MessageManager;
@@ -38,7 +40,7 @@ public class ReceiptUpdateService {
     @Autowired private MessageManager messageManager;
     @Autowired private AdminLandingService adminLandingService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
-    @Autowired private ReceiptService receiptService;
+    @Autowired private CommentManager commentManager;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -139,19 +141,38 @@ public class ReceiptUpdateService {
                     receipt.setCreated(fetchedReceipt.getCreated());
                 }
             }
-            receiptManager.save(receipt);
 
             populateItemsWithBizName(items, receipt);
             itemManager.saveObjects(items);
 
             adminLandingService.saveNewBusinessAndOrStore(receiptOCR);
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-            //Why set again when this is already set the first time
-            //receiptOCR.setReceiptId(receipt.getId());
             receiptOCR.inActive();
-            if(StringUtils.isEmpty(receiptOCR.getComment().getComment())) {
-                receiptOCR.setComment(null);
+
+            //On recheck comments are updated by technician. Receipt notes are never modified
+            if(!StringUtils.isEmpty(receiptOCR.getRecheckComment().getText())) {
+                CommentEntity comment = receiptOCR.getRecheckComment();
+                if(StringUtils.isEmpty(comment.getId())) {
+                    comment.setId(null);
+                }
+
+                commentManager.save(comment);
+                receiptOCR.setRecheckComment(comment);
+                receipt.setRecheckComment(comment);
+            } else {
+                CommentEntity comment = receiptOCR.getRecheckComment();
+                commentManager.delete(comment);
+                receiptOCR.setRecheckComment(null);
+                receipt.setRecheckComment(null);
             }
+
+            //Since Technician cannot change notes at least we gotta make sure we are not adding one when the Id for notes are missing
+            if(StringUtils.isEmpty(receiptOCR.getNotes().getId())) {
+                receiptOCR.setNotes(null);
+                receipt.setNotes(null);
+            }
+
+            receiptManager.save(receipt);
             receiptOCRManager.save(receiptOCR);
 
             try {

@@ -162,9 +162,11 @@
                         <form:hidden path="receiptOCR.version"/>
                         <form:hidden path="receiptOCR.receiptStatus"/>
                         <form:hidden path="receiptOCR.receiptId"/>
-                        <form:hidden path="receiptOCR.comment.id"/>
-                        <form:hidden path="receiptOCR.comment.version"/>
-                        <form:hidden path="receiptOCR.comment.comment" />
+                        <form:hidden path="receiptOCR.notes.id"/>
+                        <form:hidden path="receiptOCR.notes.version"/>
+                        <form:hidden path="receiptOCR.notes.text"/>
+                        <form:hidden path="receiptOCR.recheckComment.id"/>
+                        <form:hidden path="receiptOCR.recheckComment.version"/>
 
                         <form:hidden path="receiptOCR.receiptOCRTranslation"/>
                         <table border="0" style="width: 550px" class="etable">
@@ -256,19 +258,36 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <form:label for="receiptOCR.comment.comment" path="receiptOCR.comment.comment" cssErrorClass="error">
-                                        Comment: (do not add or modify as data will not be persisted)
+                                    <form:label for="receiptOCR.notes.text" path="receiptOCR.notes.text" cssErrorClass="error">
+                                        Receipt Notes:
                                     </form:label>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <form:textarea path="receiptOCR.comment.comment" id="comment" size="300" disabled="true"/>
+                                    <form:textarea path="receiptOCR.notes.text" id="notes" size="300" disabled="true"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <form:errors path="receiptOCR.comment.comment" cssClass="error" />
+                                    <form:errors path="receiptOCR.notes.text" cssClass="error" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <form:label for="receiptOCR.recheckComment.text" path="receiptOCR.recheckComment.text" cssErrorClass="error">
+                                        Re-Check message:
+                                    </form:label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <form:textarea path="receiptOCR.recheckComment.text" id="recheckComment" size="300" disabled="false"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <form:errors path="receiptOCR.recheckComment.text" cssClass="error" />
                                 </td>
                             </tr>
                         </table>

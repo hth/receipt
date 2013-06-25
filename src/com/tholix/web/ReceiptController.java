@@ -86,7 +86,7 @@ public class ReceiptController extends BaseController {
                 //TODO in case of failure to delete send message to USER
             }
         } catch(Exception exce) {
-            log.error(exce.getLocalizedMessage());
+            log.error("Error occurred during receipt delete: Receipt Id: " + receiptForm.getReceipt().getId() + ", error message: " + exce.getLocalizedMessage());
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), task);

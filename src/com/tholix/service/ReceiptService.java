@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.CommentEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -80,6 +81,7 @@ public class ReceiptService {
     }
 
     /**
+     * //TODO mark the items as deleted but do not delete Item and Receipt
      * Delete a Receipt and its associated data
      * @param receiptId - Receipt id to delete
      *
@@ -90,8 +92,25 @@ public class ReceiptService {
         if(receipt != null) {
             if(receipt.isActive()) {
                 itemManager.deleteWhereReceipt(receipt);
-                receiptManager.delete(receipt);
                 storageManager.deleteObject(receipt.getReceiptBlobId());
+
+                if(receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
+                    commentManager.delete(receipt.getRecheckComment());
+                }
+                if(receipt.getNotes() != null && !StringUtils.isEmpty(receipt.getNotes().getId())) {
+                    commentManager.delete(receipt.getNotes());
+                }
+
+                if(!StringUtils.isEmpty(receipt.getReceiptOCRId())) {
+                    ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
+                    if(receiptEntityOCR != null) {
+                        itemOCRManager.deleteWhereReceipt(receiptEntityOCR);
+                        receiptOCRManager.delete(receiptEntityOCR);
+                        receipt.setReceiptOCRId(null);
+                    }
+                }
+
+                receiptManager.delete(receipt);
                 return true;
             } else {
                 log.error("Attempt to delete inactive Receipt: " + receipt.getId() + ", Browser Back Action performed");
@@ -110,19 +129,42 @@ public class ReceiptService {
             ReceiptEntity receipt = receiptManager.findOne(receiptForm.getReceipt().getId());
             if(receipt.getReceiptOCRId() != null) {
                 if(receipt.isActive()) {
-                    if(!StringUtils.isEmpty(receiptForm.getReceipt().getComment().getComment())) {
-                        commentManager.save(receiptForm.getReceipt().getComment());
-                        receipt.setComment(receiptForm.getReceipt().getComment());
+                    if(!StringUtils.isEmpty(receiptForm.getReceipt().getRecheckComment().getText())) {
+                        CommentEntity comment = receiptForm.getReceipt().getRecheckComment();
+                        if(StringUtils.isEmpty(comment.getId())) {
+                            comment.setId(null);
+                        }
+
+                        commentManager.save(comment);
+                        receipt.setRecheckComment(comment);
+                    } else {
+                        CommentEntity comment = receiptForm.getReceipt().getRecheckComment();
+                        commentManager.delete(comment);
+                        receipt.setRecheckComment(null);
                     }
+
+                    if(!StringUtils.isEmpty(receiptForm.getReceipt().getNotes().getText())) {
+                        CommentEntity comment = receiptForm.getReceipt().getNotes();
+                        if(StringUtils.isEmpty(comment.getId())) {
+                            comment.setId(null);
+                        }
+
+                        commentManager.save(comment);
+                        receipt.setNotes(comment);
+                    } else {
+                        CommentEntity comment = receiptForm.getReceipt().getNotes();
+                        commentManager.delete(comment);
+                        receipt.setNotes(null);
+                    }
+
                     receipt.inActive();
                     List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
 
                     ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
                     receiptOCR.active();
                     receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
-                    //No need for this as this is being set already during first time save
-                    //receiptOCR.setReceiptId(receipt.getId());
-                    receiptOCR.setComment(receipt.getComment());
+                    receiptOCR.setRecheckComment(receipt.getRecheckComment());
+                    receiptOCR.setNotes(receipt.getNotes());
 
                     /** All activity at the end is better because you never know what could go wrong during populating other data */
                     receiptManager.save(receipt);
@@ -142,11 +184,13 @@ public class ReceiptService {
                 }
             } else {
                 log.error("No receiptOCR id found in Receipt: " + receipt.getId() + ", aborting the reopen process");
-                throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId());
+                throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
             }
         } catch (Exception e) {
             log.error("Exception during customer requesting receipt recheck operation: " + e.getLocalizedMessage());
-            throw e;
+
+            //Need to send a well formatted error message to customer instead of jumbled mumbled exception stacktrace
+            throw new Exception("Exception occurred during requesting receipt recheck operation for Receipt # " + receiptForm.getReceipt().getId() + ", contact Administrator with the Id");
         }
     }
 

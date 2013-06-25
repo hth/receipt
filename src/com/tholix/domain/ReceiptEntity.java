@@ -73,7 +73,10 @@ public class ReceiptEntity extends BaseEntity {
     private String receiptOCRId;
 
     @DBRef
-    private CommentEntity comment;
+    private CommentEntity recheckComment;
+
+    @DBRef
+    private CommentEntity notes;
 
     /** To keep bean happy */
 	public ReceiptEntity() {}
@@ -218,12 +221,20 @@ public class ReceiptEntity extends BaseEntity {
         this.receiptOCRId = receiptOCRId;
     }
 
-    public CommentEntity getComment() {
-        return comment;
+    public CommentEntity getRecheckComment() {
+        return recheckComment;
     }
 
-    public void setComment(CommentEntity comment) {
-        this.comment = comment;
+    public void setRecheckComment(CommentEntity recheckComment) {
+        this.recheckComment = recheckComment;
+    }
+
+    public CommentEntity getNotes() {
+        return notes;
+    }
+
+    public void setNotes(CommentEntity notes) {
+        this.notes = notes;
     }
 
     @Override

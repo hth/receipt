@@ -363,6 +363,7 @@
             </c:choose>
 		</div>
 		<div id="tabs-2">
+            <c:if test="${!empty receipts}">
             <table>
                 <tr>
                     <td style="vertical-align: top">
@@ -393,9 +394,12 @@
                     </td>
                 </tr>
             </table>
+            </c:if>
 		</div>
 		<div id="tabs-3">
+            <c:if test="${!empty receipts}">
             <div class="googleMapContainer" id="map-canvas"></div>
+            </c:if>
 		</div>
 	</div>
 </div>

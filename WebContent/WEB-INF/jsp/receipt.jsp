@@ -104,6 +104,11 @@
             <td valign="top">
                 <form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
                     <form:hidden path="receipt.id" />
+                    <form:hidden path="receipt.notes.id"/>
+                    <form:hidden path="receipt.notes.version"/>
+                    <form:hidden path="receipt.recheckComment.id"/>
+                    <form:hidden path="receipt.recheckComment.version"/>
+
                     <table style="width: 700px" class="etable">
                         <tr>
                             <td colspan="3">
@@ -186,17 +191,36 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <form:label for="receipt.comment.comment" path="receipt.comment.comment" cssErrorClass="error">Comment:</form:label>
+                                <form:label for="receipt.notes.text" path="receipt.notes.text" cssErrorClass="error">
+                                    Receipt Notes:
+                                </form:label>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <form:textarea path="receipt.comment.comment" id="comment" size="300" />
+                                <form:textarea path="receipt.notes.text" id="notes" size="300" />
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <form:errors path="receipt.comment.comment" cssClass="error" />
+                                <form:errors path="receipt.notes.text" cssClass="error" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <form:label for="receipt.recheckComment.text" path="receipt.recheckComment.text" cssErrorClass="error">
+                                    Re-Check message:
+                                </form:label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <form:textarea path="receipt.recheckComment.text" id="recheckComment" size="300" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <form:errors path="receipt.recheckComment.text" cssClass="error" />
                             </td>
                         </tr>
                     </table>

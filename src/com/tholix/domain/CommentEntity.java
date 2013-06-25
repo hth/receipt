@@ -17,23 +17,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 } )
 public class CommentEntity extends BaseEntity {
 
-    //TODO change this to text
     @Size(min = 0, max  = 256)
-    private String comment;
+    private String text;
 
-    public CommentEntity() {
-
-    }
+    public CommentEntity() {}
 
     public static CommentEntity newInstance() {
         return new CommentEntity();
     }
 
-    public String getComment() {
-        return comment;
+    public String getText() {
+        return text;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setText(String text) {
+        this.text = text;
     }
 }

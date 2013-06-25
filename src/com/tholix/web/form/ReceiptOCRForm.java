@@ -93,10 +93,8 @@ public final class ReceiptOCRForm {
         //If this is not set then user cannot reopen the a receipt for re-check.
         //TODO When deleting historical receiptOCR make sure to remove this id from receipt referencing receipt OCR
         receipt.setReceiptOCRId(receiptOCR.getId());
-
-        if(receiptOCR.getComment() != null && !StringUtils.isEmpty(receiptOCR.getComment().getComment())) {
-            receipt.setComment(receiptOCR.getComment());
-        }
+        receipt.setRecheckComment(receiptOCR.getRecheckComment());
+        receipt.setNotes(receiptOCR.getNotes());
 
         //This condition is mostly true for receipt when re-checked
         if(StringUtils.isNotEmpty(receiptOCR.getReceiptId())) {
