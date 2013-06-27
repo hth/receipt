@@ -6,7 +6,6 @@ package com.tholix.repository;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -83,7 +81,7 @@ public class StorageManagerImpl implements StorageManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(UploadReceiptImage object) {
+	public void deleteHard(UploadReceiptImage object) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 

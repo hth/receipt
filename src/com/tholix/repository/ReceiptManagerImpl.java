@@ -194,7 +194,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(ReceiptEntity object) {
+	public void deleteHard(ReceiptEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

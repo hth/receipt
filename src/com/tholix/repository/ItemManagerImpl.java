@@ -190,7 +190,7 @@ public class ItemManagerImpl implements ItemManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(ItemEntity object) {
+	public void deleteHard(ItemEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

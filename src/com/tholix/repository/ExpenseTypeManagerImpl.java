@@ -52,7 +52,7 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     }
 
     @Override
-    public void delete(ExpenseTypeEntity object) {
+    public void deleteHard(ExpenseTypeEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 

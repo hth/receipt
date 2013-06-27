@@ -58,7 +58,7 @@ public class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     }
 
     @Override
-    public void delete(ForgotRecoverEntity object) {
+    public void deleteHard(ForgotRecoverEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 

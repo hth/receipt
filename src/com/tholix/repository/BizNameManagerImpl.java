@@ -58,7 +58,7 @@ public class BizNameManagerImpl implements BizNameManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(BizNameEntity object) {
+    public void deleteHard(BizNameEntity object) {
         mongoTemplate.remove(object);
     }
 

@@ -104,7 +104,7 @@ public class ItemAnalyticControllerTest {
 
 		storageManager.deleteObject(receiptBlobId);
 		itemManager.deleteWhereReceipt(receipt);
-		receiptManager.delete(receipt);
+		receiptManager.deleteHard(receipt);
 	}
 
 }

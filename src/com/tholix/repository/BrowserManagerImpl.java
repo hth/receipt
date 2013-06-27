@@ -43,7 +43,7 @@ public class BrowserManagerImpl implements BrowserManager {
     }
 
     @Override
-    public void delete(BrowserEntity object) {
+    public void deleteHard(BrowserEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 

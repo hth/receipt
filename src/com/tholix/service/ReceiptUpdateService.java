@@ -90,7 +90,7 @@ public class ReceiptUpdateService {
                 long sizeItemInitial = itemManager.collectionSize();
 
                 itemManager.deleteWhereReceipt(receipt);
-                receiptManager.delete(receipt);
+                receiptManager.deleteHard(receipt);
 
                 long sizeReceiptFinal = receiptManager.collectionSize();
                 long sizeItemFinal = itemManager.collectionSize();
@@ -161,7 +161,7 @@ public class ReceiptUpdateService {
                 receipt.setRecheckComment(comment);
             } else {
                 CommentEntity comment = receiptOCR.getRecheckComment();
-                commentManager.delete(comment);
+                commentManager.deleteHard(comment);
                 receiptOCR.setRecheckComment(null);
                 receipt.setRecheckComment(null);
             }
@@ -192,7 +192,7 @@ public class ReceiptUpdateService {
                 long sizeItemInitial = itemManager.collectionSize();
 
                 itemManager.deleteWhereReceipt(receipt);
-                receiptManager.delete(receipt);
+                receiptManager.deleteHard(receipt);
 
                 long sizeReceiptFinal = receiptManager.collectionSize();
                 long sizeItemFinal = itemManager.collectionSize();
@@ -266,7 +266,7 @@ public class ReceiptUpdateService {
      * @param receiptOCR
      */
     public void deletePendingReceiptOCR(ReceiptEntityOCR receiptOCR) {
-        receiptOCRManager.delete(receiptOCR);
+        receiptOCRManager.deleteHard(receiptOCR);
         itemOCRManager.deleteWhereReceipt(receiptOCR);
         messageManager.deleteAllForReceiptOCR(receiptOCR.getId());
 
@@ -279,7 +279,8 @@ public class ReceiptUpdateService {
                         "Receipt OCR Id: " + receiptOCR.getId() + ", Receipt Id: " + receiptEntity.getId());
             } else {
                 log.info("ReceiptOCR has been processed by technician. Delete operation performed after its processed.");
-                receiptManager.delete(receiptEntity);
+                //TODO check if needs hard of soft delete
+                receiptManager.deleteHard(receiptEntity);
             }
         } else {
             log.info("ReceiptOCR has NOT been processed by technician. Delete operation performed before it could be processed.");

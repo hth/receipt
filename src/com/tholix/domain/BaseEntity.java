@@ -38,6 +38,8 @@ public abstract class BaseEntity implements Serializable {
 
     private boolean active = true;
 
+    private boolean deleted = false;
+
 	public BaseEntity() {
 		super();
 	}
@@ -64,6 +66,18 @@ public abstract class BaseEntity implements Serializable {
 
     public void inActive() {
         setActive(false);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    private void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public void markAsdeleted() {
+        setDeleted(true);
     }
 
     public Integer getVersion() {

@@ -65,7 +65,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(UserAuthenticationEntity object) {
+	public void deleteHard(UserAuthenticationEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

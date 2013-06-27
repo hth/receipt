@@ -218,7 +218,7 @@ public class LandingService {
             long sizeItemInitial = itemOCRManager.collectionSize();
             if(receiptOCR != null) {
                 itemOCRManager.deleteWhereReceipt(receiptOCR);
-                receiptOCRManager.delete(receiptOCR);
+                receiptOCRManager.deleteHard(receiptOCR);
             }
             long sizeReceiptFinal = receiptOCRManager.collectionSize();
             long sizeItemFinal = itemOCRManager.collectionSize();

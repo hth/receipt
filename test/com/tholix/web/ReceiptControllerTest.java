@@ -121,7 +121,7 @@ public class ReceiptControllerTest {
 		/** Delete operation */
 		storageManager.deleteObject(receiptBlobId);
 		itemManager.deleteWhereReceipt(receipt);
-		receiptManager.delete(receipt);
+		receiptManager.deleteHard(receipt);
 		assertNull(null, storageManager.get(receiptBlobId));
 	}
 

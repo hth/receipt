@@ -63,7 +63,7 @@ public class AdminLandingService {
                 log.error(e.getLocalizedMessage());
 
                 if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
-                    bizNameManager.delete(bizNameEntity);
+                    bizNameManager.deleteHard(bizNameEntity);
                 }
                 BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                 throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
@@ -114,7 +114,7 @@ public class AdminLandingService {
                 log.error(e.getLocalizedMessage());
 
                 if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
-                    bizNameManager.delete(bizNameEntity);
+                    bizNameManager.deleteHard(bizNameEntity);
                 }
                 BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                 throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());

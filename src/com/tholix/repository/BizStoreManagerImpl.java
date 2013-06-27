@@ -54,7 +54,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(BizStoreEntity object) {
+    public void deleteHard(BizStoreEntity object) {
         mongoTemplate.remove(object);
     }
 

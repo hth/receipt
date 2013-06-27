@@ -65,7 +65,7 @@ public class AccountService {
             log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
 
             //Roll back
-            userAuthenticationManager.delete(userAuthentication);
+            userAuthenticationManager.deleteHard(userAuthentication);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user profile");
             throw new Exception("error saving user profile");

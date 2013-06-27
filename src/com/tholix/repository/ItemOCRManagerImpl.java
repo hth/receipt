@@ -86,7 +86,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(ItemEntityOCR object) {
+	public void deleteHard(ItemEntityOCR object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

@@ -42,7 +42,7 @@ public class CommentManagerImpl implements CommentManager {
     }
 
     @Override
-    public void delete(CommentEntity object) {
+    public void deleteHard(CommentEntity object) {
         mongoTemplate.remove(object);
     }
 

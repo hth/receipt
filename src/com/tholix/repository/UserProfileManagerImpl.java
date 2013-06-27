@@ -93,7 +93,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(UserProfileEntity object) {
+    public void deleteHard(UserProfileEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

@@ -3,6 +3,14 @@
  */
 package com.tholix.web;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
 import static org.junit.Assert.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +22,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserPreferenceEntity;
@@ -146,9 +146,9 @@ public class AccountControllerTests {
         UserAuthenticationEntity user = userProfile.getUserAuthentication();
         UserPreferenceEntity preference = userPreferenceManager.getObjectUsingUserProfile(userProfile);
 
-        userAuthenticationManager.delete(user);
-        userProfileManager.delete(userProfile);
-        userPreferenceManager.delete(preference);
+        userAuthenticationManager.deleteHard(user);
+        userProfileManager.deleteHard(userProfile);
+        userPreferenceManager.deleteHard(preference);
 
         userProfile = userProfileManager.getObjectUsingEmail("dummy@tholix.com");
         assertNull(userProfile);

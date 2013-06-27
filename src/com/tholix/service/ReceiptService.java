@@ -91,26 +91,26 @@ public class ReceiptService {
         ReceiptEntity receipt = receiptManager.findOne(receiptId);
         if(receipt != null) {
             if(receipt.isActive()) {
-                itemManager.deleteWhereReceipt(receipt);
+                itemManager.deleteSoft(receipt);
                 storageManager.deleteObject(receipt.getReceiptBlobId());
 
                 if(receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
-                    commentManager.delete(receipt.getRecheckComment());
+                    commentManager.deleteHard(receipt.getRecheckComment());
                 }
                 if(receipt.getNotes() != null && !StringUtils.isEmpty(receipt.getNotes().getId())) {
-                    commentManager.delete(receipt.getNotes());
+                    commentManager.deleteHard(receipt.getNotes());
                 }
 
                 if(!StringUtils.isEmpty(receipt.getReceiptOCRId())) {
                     ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
                     if(receiptEntityOCR != null) {
                         itemOCRManager.deleteWhereReceipt(receiptEntityOCR);
-                        receiptOCRManager.delete(receiptEntityOCR);
+                        receiptOCRManager.deleteHard(receiptEntityOCR);
                         receipt.setReceiptOCRId(null);
                     }
                 }
 
-                receiptManager.delete(receipt);
+                receiptManager.deleteSoft(receipt);
                 return true;
             } else {
                 log.error("Attempt to delete inactive Receipt: " + receipt.getId() + ", Browser Back Action performed");
@@ -139,7 +139,7 @@ public class ReceiptService {
                         receipt.setRecheckComment(comment);
                     } else {
                         CommentEntity comment = receiptForm.getReceipt().getRecheckComment();
-                        commentManager.delete(comment);
+                        commentManager.deleteHard(comment);
                         receipt.setRecheckComment(null);
                     }
 
@@ -153,7 +153,7 @@ public class ReceiptService {
                         receipt.setNotes(comment);
                     } else {
                         CommentEntity comment = receiptForm.getReceipt().getNotes();
-                        commentManager.delete(comment);
+                        commentManager.deleteHard(comment);
                         receipt.setNotes(null);
                     }
 

@@ -53,7 +53,7 @@ public class ItemFeatureManagerImpl implements ItemFeatureManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(ItemFeatureEntity object) {
+	public void deleteHard(ItemFeatureEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 

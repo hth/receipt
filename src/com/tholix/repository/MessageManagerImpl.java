@@ -187,7 +187,7 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(MessageReceiptEntityOCR object) {
+    public void deleteHard(MessageReceiptEntityOCR object) {
         mongoTemplate.remove(object, TABLE);
     }
 

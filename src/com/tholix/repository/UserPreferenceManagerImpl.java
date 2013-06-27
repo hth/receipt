@@ -62,7 +62,7 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(UserPreferenceEntity object) {
+	public void deleteHard(UserPreferenceEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
