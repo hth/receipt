@@ -5,6 +5,7 @@ package com.tholix.web;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,7 +200,11 @@ public class ReceiptUpdateController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
-        receiptUpdateService.deletePendingReceiptOCR(receiptOCRForm.getReceiptOCR());
+        //Check cannot delete a pending receipt which has been processed once, i.e. has receipt id
+        //The check here is not required but its better to check before calling service method
+        if(StringUtils.isEmpty(receiptOCRForm.getReceiptOCR().getReceiptId())) {
+            receiptUpdateService.deletePendingReceiptOCR(receiptOCRForm.getReceiptOCR());
+        }
         return "redirect:/pending.htm";
     }
 }

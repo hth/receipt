@@ -165,12 +165,27 @@
     <c:when test="${!empty receiptOCRForm.receiptOCR}">
     <h2 class="demoHeaders">Pending receipt</h2>
 
-    <c:if test="${userSession.level.value lt 5}">
+    <c:choose>
+        <c:when test="${userSession.level.value lt 5 && empty receiptOCRForm.receiptOCR.receiptId}">
         <form:form method="post" action="delete.htm" modelAttribute="receiptOCRForm">
+            <form:hidden path="receiptOCR.receiptId"/>
             <form:hidden path="receiptOCR.id"/>
             <input id="deleteId" type="submit" value="Delete" name="delete"/>
         </form:form>
-    </c:if>
+        </c:when>
+        <c:otherwise>
+        <div class="ui-widget">
+            <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+                <p>
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                <span style="display:block; width: auto">
+                    This receipt is in the process of being Re-Checked.
+                </span>
+                </p>
+            </div>
+        </div>
+        </c:otherwise>
+    </c:choose>
 
     <c:if test="${!empty receiptOCRForm.errorMessage}">
         <div class="ui-widget">

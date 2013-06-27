@@ -262,28 +262,19 @@ public class ReceiptUpdateService {
     /**
      * Delete all the associated data with Receipt OCR like Item OCR, and
      * Message Receipt Entity OCR including deletion of with Receipt OCR
+     * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check
+     *
      *
      * @param receiptOCR
      */
     public void deletePendingReceiptOCR(ReceiptEntityOCR receiptOCR) {
-        receiptOCRManager.deleteHard(receiptOCR);
-        itemOCRManager.deleteWhereReceipt(receiptOCR);
-        messageManager.deleteAllForReceiptOCR(receiptOCR.getId());
-
-        ReceiptEntity receiptEntity = receiptManager.findWithReceiptOCR(receiptOCR.getId());
-        if(receiptEntity != null) {
-            //At this point ReceiptEntity is inactive because it already exists in the Collection
-            if(receiptEntity.isActive()) {
-                //Should never go here as it has to be inactive in this process, but any how
-                log.error("Invalid condition reached when user tried deleting a pending receipt: " +
-                        "Receipt OCR Id: " + receiptOCR.getId() + ", Receipt Id: " + receiptEntity.getId());
-            } else {
-                log.info("ReceiptOCR has been processed by technician. Delete operation performed after its processed.");
-                //TODO check if needs hard of soft delete
-                receiptManager.deleteHard(receiptEntity);
-            }
+        ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+        if(StringUtils.isEmpty(receiptEntityOCR.getReceiptId())) {
+            receiptOCRManager.deleteHard(receiptOCR);
+            itemOCRManager.deleteWhereReceipt(receiptOCR);
+            messageManager.deleteAllForReceiptOCR(receiptOCR.getId());
         } else {
-            log.info("ReceiptOCR has NOT been processed by technician. Delete operation performed before it could be processed.");
+            log.warn("User trying to delete processed Receipt OCR #: " + receiptEntityOCR.getId() + ", Receipt Id #:" + receiptEntityOCR.getReceiptId());
         }
     }
 
