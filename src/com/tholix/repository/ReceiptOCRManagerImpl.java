@@ -5,6 +5,9 @@ package com.tholix.repository;
 
 import java.util.List;
 
+import static com.tholix.repository.util.RC.isActive;
+import static com.tholix.repository.util.RC.isNotDeleted;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,14 +95,14 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public long numberOfPendingReceipts(String userProfileId) {
-        Criteria activeCriteria = Criteria.where("active").is(true);
-		return mongoTemplate.count(Query.query(Criteria.where("userProfileId").is(userProfileId)
-				.andOperator(activeCriteria)), TABLE);
+        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+		return mongoTemplate.count(query, TABLE);
 	}
 
 	@Override
 	public List<ReceiptEntityOCR> getAllObjects(String userProfileId) {
-        Query query = Query.query(Criteria.where("userProfileId").is(userProfileId).andOperator(Criteria.where("active").is(true)));
+        Query query = Query.query(Criteria.where("userProfileId").is(userProfileId)).addCriteria(isActive()).addCriteria(isNotDeleted());
         Sort sort = new Sort(Direction.ASC, "created");
 		return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
 	}

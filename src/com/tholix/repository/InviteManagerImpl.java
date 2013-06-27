@@ -2,6 +2,9 @@ package com.tholix.repository;
 
 import java.util.List;
 
+import static com.tholix.repository.util.RC.isActive;
+import static com.tholix.repository.util.RC.isNotDeleted;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -27,8 +30,9 @@ public class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity findByAuthenticationKey(String key) {
-        Criteria criteria = Criteria.where("authenticationKey").is(key).andOperator(Criteria.where("active").is(true));
-        return mongoTemplate.findOne(Query.query(criteria), InviteEntity.class, TABLE);
+        Criteria criteria = Criteria.where("authenticationKey").is(key);
+        Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
+        return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 
     @Override

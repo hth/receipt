@@ -68,7 +68,19 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      */
     List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId);
 
+    /**
+     * Delete Entity
+     *
+     * @param receipt
+     */
 	void deleteWhereReceipt(ReceiptEntity receipt);
+
+    /**
+     * Marks an entity deleted but does not delete it
+     *
+     * @param receipt
+     */
+    void deleteSoft(ReceiptEntity receipt);
 
     /**
      * Populate with just 'name' field based on first token. Used in AJAX call.

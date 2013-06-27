@@ -34,6 +34,7 @@ import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.utils.DateUtil;
 
 /**
  * @author hitender
@@ -222,6 +223,15 @@ public class ItemManagerImpl implements ItemManager {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.remove(Query.query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
 	}
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteSoft(ReceiptEntity receipt) {
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+        Query query = Query.query(Criteria.where("receipt").is(receipt));
+        Update update = Update.update("deleted", true).set("updated", DateUtil.nowTime()).inc("version", 1);
+        mongoTemplate.updateMulti(query, update, ItemEntity.class);
+    }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)

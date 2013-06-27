@@ -2,6 +2,9 @@ package com.tholix.repository;
 
 import java.util.List;
 
+import static com.tholix.repository.util.RC.isActive;
+import static com.tholix.repository.util.RC.isNotDeleted;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +79,8 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public List<ExpenseTypeEntity> activeExpenseTypes(String userProfileId) {
-        Query query = Query.query(Criteria.where("userProfileId").is(userProfileId).andOperator(Criteria.where("active").is(true)));
+        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
         Sort sort = new Sort(Sort.Direction.ASC, "expName");
 
         return mongoTemplate.find(query.with(sort), ExpenseTypeEntity.class, TABLE);
