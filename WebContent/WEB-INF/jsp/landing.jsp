@@ -255,7 +255,7 @@
                            size="33"/>
                     <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" size="5">
                 </div>
-                <div id="info" style="color: black;">&#8277; Invitation sent with your name and email address</div>
+                <div id="info" style="color: black; margin-top: 5px">&#8277; Invitation sent with your name and email address</div>
 			</td>
 			<td>
 				&nbsp;&nbsp;&nbsp;&nbsp;
