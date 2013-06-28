@@ -5,6 +5,8 @@ package com.tholix.repository;
 
 import java.util.List;
 
+import static com.tholix.repository.util.AppendAdditionalFields.update;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +90,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, UserLevelEnum level) {
-		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), Update.update("level", level), UserProfileEntity.class);
+		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), update(Update.update("level", level)), UserProfileEntity.class);
 	}
 
 	@Override

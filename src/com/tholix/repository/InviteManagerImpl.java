@@ -2,8 +2,7 @@ package com.tholix.repository;
 
 import java.util.List;
 
-import static com.tholix.repository.util.RC.isActive;
-import static com.tholix.repository.util.RC.isNotDeleted;
+import static com.tholix.repository.util.AppendAdditionalFields.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -38,7 +37,7 @@ public class InviteManagerImpl implements InviteManager {
     @Override
     public void invalidateAllEntries(InviteEntity object) {
         Criteria criteria = Criteria.where("newInvitedUser").is(object.getNewInvitedUser());
-        mongoTemplate.updateMulti(Query.query(criteria), Update.update("active", false), InviteEntity.class);
+        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("active", false)), InviteEntity.class);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.tholix.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tholix.repository.util.AppendAdditionalFields.update;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,11 +163,9 @@ public class MessageManagerImpl implements MessageManager {
                 .addCriteria(Criteria.where("receiptStatus").is(statusFind))
                 .addCriteria(Criteria.where("idReceiptOCR").is(id));
 
-        Update update = new Update()
-                .set("receiptStatus", statusSet)
-                .set("active", false);
+        Update update = Update.update("receiptStatus", statusSet).set("active", false);
 
-        return mongoTemplate.updateFirst(query, update, MessageReceiptEntityOCR.class);
+        return mongoTemplate.updateFirst(query, update(update), MessageReceiptEntityOCR.class);
     }
 
     @Override
@@ -177,12 +177,11 @@ public class MessageManagerImpl implements MessageManager {
                 .addCriteria(Criteria.where("active").is(false))
                 .addCriteria(Criteria.where("idReceiptOCR").is(receiptOCRId));
 
-        Update update = new Update()
-                .set("recordLocked", false)
+        Update update = Update.update("recordLocked", false)
                 .set("active", true)
                 .set("receiptStatus", statusSet);
 
-        return mongoTemplate.updateFirst(query, update, MessageReceiptEntityOCR.class);
+        return mongoTemplate.updateFirst(query, update(update), MessageReceiptEntityOCR.class);
     }
 
     @Override

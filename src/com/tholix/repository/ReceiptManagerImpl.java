@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.tholix.repository.util.RC.isActive;
-import static com.tholix.repository.util.RC.isNotDeleted;
+import static com.tholix.repository.util.AppendAdditionalFields.*;
 
 import org.apache.log4j.Logger;
 
@@ -204,8 +203,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteSoft(ReceiptEntity object) {
         Query query = Query.query(Criteria.where("id").is(object.getId()));
-        Update update = Update.update("deleted", true).set("updated", DateUtil.nowTime()).inc("version", 1);
-        mongoTemplate.updateFirst(query, update, ReceiptEntity.class);
+        Update update = Update.update("deleted", true);
+        mongoTemplate.updateFirst(query, update(update), ReceiptEntity.class);
     }
 
 	@Override
@@ -232,10 +231,9 @@ public class ReceiptManagerImpl implements ReceiptManager {
         Criteria criteria = Criteria.where("userProfileId").is(userProfileId)
                 .andOperator(Criteria.where("year").is(year),
                         Criteria.where("month").is(month),
-                        Criteria.where("day").is(day),
-                        Criteria.where("active").is(true));
+                        Criteria.where("day").is(day));
 
         Sort sort = new Sort(Direction.DESC, "receiptDate");
-        return mongoTemplate.find(Query.query(criteria).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
+        return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
     }
 }

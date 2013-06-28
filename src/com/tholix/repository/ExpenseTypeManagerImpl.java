@@ -2,8 +2,7 @@ package com.tholix.repository;
 
 import java.util.List;
 
-import static com.tholix.repository.util.RC.isActive;
-import static com.tholix.repository.util.RC.isNotDeleted;
+import static com.tholix.repository.util.AppendAdditionalFields.*;
 
 import org.apache.log4j.Logger;
 
@@ -90,7 +89,7 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     public void changeVisibility(String expenseTypeId, boolean changeTo) {
         Query query = Query.query(Criteria.where("id").is(expenseTypeId));
         Update update = Update.update("active", changeTo);
-        mongoTemplate.updateFirst(query, update, ExpenseTypeEntity.class);
+        mongoTemplate.updateFirst(query, update(update), ExpenseTypeEntity.class);
     }
 
     @Override

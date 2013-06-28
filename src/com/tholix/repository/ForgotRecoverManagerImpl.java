@@ -2,8 +2,7 @@ package com.tholix.repository;
 
 import java.util.List;
 
-import static com.tholix.repository.util.RC.isActive;
-import static com.tholix.repository.util.RC.isNotDeleted;
+import static com.tholix.repository.util.AppendAdditionalFields.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,7 +40,7 @@ public class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     @Override
     public void invalidateAllEntries(ForgotRecoverEntity object) {
         Criteria criteria = Criteria.where("userProfileId").is(object.getUserProfileId());
-        mongoTemplate.updateMulti(Query.query(criteria), Update.update("active", false), ForgotRecoverEntity.class);
+        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("active", false)), ForgotRecoverEntity.class);
     }
 
     @Override

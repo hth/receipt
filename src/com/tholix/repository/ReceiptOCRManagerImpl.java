@@ -5,8 +5,8 @@ package com.tholix.repository;
 
 import java.util.List;
 
-import static com.tholix.repository.util.RC.isActive;
-import static com.tholix.repository.util.RC.isNotDeleted;
+import static com.tholix.repository.util.AppendAdditionalFields.isActive;
+import static com.tholix.repository.util.AppendAdditionalFields.isNotDeleted;
 
 import org.apache.log4j.Logger;
 

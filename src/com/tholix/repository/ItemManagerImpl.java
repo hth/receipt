@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import static com.tholix.repository.util.AppendAdditionalFields.update;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -34,7 +36,6 @@ import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.utils.DateUtil;
 
 /**
  * @author hitender
@@ -214,7 +215,7 @@ public class ItemManagerImpl implements ItemManager {
 	public WriteResult updateObject(ItemEntity object) {
 		Query query = Query.query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
-		return mongoTemplate.updateFirst(query, update, TABLE);
+		return mongoTemplate.updateFirst(query, update(update), TABLE);
 	}
 
 	@Override
@@ -229,8 +230,8 @@ public class ItemManagerImpl implements ItemManager {
     public void deleteSoft(ReceiptEntity receipt) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("receipt").is(receipt));
-        Update update = Update.update("deleted", true).set("updated", DateUtil.nowTime()).inc("version", 1);
-        mongoTemplate.updateMulti(query, update, ItemEntity.class);
+        Update update = Update.update("deleted", true);
+        mongoTemplate.updateMulti(query, update(update), ItemEntity.class);
     }
 
     @Override

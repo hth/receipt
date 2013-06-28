@@ -5,6 +5,8 @@ package com.tholix.repository;
 
 import java.util.List;
 
+import static com.tholix.repository.util.AppendAdditionalFields.update;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +116,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 	public WriteResult updateObject(ItemEntityOCR object) {
 		Query query = Query.query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("name", object.getName());
-		return mongoTemplate.updateFirst(query, update, TABLE);
+		return mongoTemplate.updateFirst(query, update(update), TABLE);
 	}
 
     @Override
