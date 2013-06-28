@@ -56,6 +56,9 @@ public class ItemAnalyticController {
 
             DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
 
+            //TODO make sure a duplicate is reported when user uploads a new receipt and the old deleted receipt still existing with same information
+            //so comparing is essential and its better to remove the duplicate
+
             /** Gets site average */
             List<ItemEntity> siteAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), untilThisDay);
             itemAnalyticForm.setSiteAverageItems(siteAverageItems);
@@ -63,16 +66,16 @@ public class ItemAnalyticController {
             BigDecimal siteAveragePrice = itemAnalyticService.calculateAveragePrice(siteAverageItems);
             itemAnalyticForm.setSiteAveragePrice(siteAveragePrice);
 
-            /** Users historical items */
-            List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, userSession.getUserProfileId());
-            itemAnalyticForm.setYourHistoricalItems(yourItems);
-
             /** Your average */
             List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), userSession.getUserProfileId(), untilThisDay);
             itemAnalyticForm.setYourAverageItems(yourAverageItems);
 
             BigDecimal yourAveragePrice = itemAnalyticService.calculateAveragePrice(yourAverageItems);
             itemAnalyticForm.setYourAveragePrice(yourAveragePrice);
+
+            /** Users historical items */
+            List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, userSession.getUserProfileId());
+            itemAnalyticForm.setYourHistoricalItems(yourItems);
 
             /** Loads expense types */
             List<ExpenseTypeEntity> expenseTypes = expensesService.activeExpenseTypes(item.getUserProfileId());

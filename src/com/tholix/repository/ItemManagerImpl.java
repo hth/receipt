@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import static com.tholix.repository.util.AppendAdditionalFields.isNotDeleted;
 import static com.tholix.repository.util.AppendAdditionalFields.update;
 
 import org.apache.commons.lang3.StringUtils;
@@ -156,7 +157,7 @@ public class ItemManagerImpl implements ItemManager {
         Criteria criteriaB;
         if(userProfileId != null) {
             criteriaB = Criteria.where("userProfileId").is(userProfileId);
-            query = Query.query(criteriaA.andOperator(criteriaB));
+            query = Query.query(criteriaA.andOperator(criteriaB.andOperator(isNotDeleted())));
         }
 
         return mongoTemplate.find(query, ItemEntity.class, TABLE);
@@ -176,7 +177,7 @@ public class ItemManagerImpl implements ItemManager {
             Criteria criteriaA = Criteria.where("name").is(itemEntity.getName());
             Criteria criteriaB = Criteria.where("userProfileId").is(userProfileId);
 
-            Query query = Query.query(criteriaA.andOperator(criteriaB));
+            Query query = Query.query(criteriaA.andOperator(criteriaB.andOperator(isNotDeleted())));
             return mongoTemplate.find(query, ItemEntity.class, TABLE);
         } else {
             log.error("One of the query is trying to get items for different User Profile Id: " + userProfileId + ", Item Id: " + itemEntity.getId());
