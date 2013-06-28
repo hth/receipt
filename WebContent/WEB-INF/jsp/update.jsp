@@ -165,8 +165,9 @@
     <c:when test="${!empty receiptOCRForm.receiptOCR}">
     <h2 class="demoHeaders">Pending receipt</h2>
 
+    <c:if test="${userSession.level.value lt 5}">
     <c:choose>
-        <c:when test="${userSession.level.value lt 5 && empty receiptOCRForm.receiptOCR.receiptId}">
+        <c:when test="${empty receiptOCRForm.receiptOCR.receiptId}">
         <form:form method="post" action="delete.htm" modelAttribute="receiptOCRForm">
             <form:hidden path="receiptOCR.receiptId"/>
             <form:hidden path="receiptOCR.id"/>
@@ -186,6 +187,7 @@
         </div>
         </c:otherwise>
     </c:choose>
+    </c:if>
 
     <c:if test="${!empty receiptOCRForm.errorMessage}">
         <div class="ui-widget">
