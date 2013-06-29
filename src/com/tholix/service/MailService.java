@@ -10,9 +10,11 @@ import java.util.Map;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,15 @@ public class MailService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
 
+    @Value("${do.not.reply.email}")
+    private String doNotReplyEmail;
+
+    @Value("${dev.sent.to}")
+    private String devSentTo;
+
+    @Value("${invitee.email}")
+    private String inviteeEmail;
+
     /**
      * Send recover email to user of provided email id
      *
@@ -62,14 +73,11 @@ public class MailService {
                     Template template = cfg.getTemplate("text-account-recover.ftl");
                     final String text = processTemplateIntoString(template, rootMap);
 
-                    //TODO change this to email id to whom recovery is to be sent
-                    simpleMailMessage.setTo("admin@tholix.com");
+                    simpleMailMessage.setFrom(doNotReplyEmail);
+                    simpleMailMessage.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
 
-                    //Can override from email address like below
-                    simpleMailMessage.setFrom("do-not-reply@tholix.com");
-
-                    simpleMailMessage.setSubject(MAIL_RECOVER_SUBJECT);
                     simpleMailMessage.setText(text);
+                    simpleMailMessage.setSubject(MAIL_RECOVER_SUBJECT);
 
                     mailSender.send(simpleMailMessage);
                 } catch (IOException | TemplateException exception) {
@@ -101,12 +109,8 @@ public class MailService {
                     Template template = cfg.getTemplate("text-invite.ftl");
                     final String text = processTemplateIntoString(template, rootMap);
 
-                    //TODO change this to email id of Invite
-                    simpleMailMessage.setTo("admin@tholix.com");
-                    //simpleMailMessage.setTo(emailId);
-
-                    //Can override from email address like below
-                    simpleMailMessage.setFrom("invite@tholix.com");
+                    simpleMailMessage.setFrom(inviteeEmail);
+                    simpleMailMessage.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
 
                     simpleMailMessage.setSubject(MAIL_INVITE_SUBJECT + " - " + userProfileEntity.getName());
                     simpleMailMessage.setText(text);
