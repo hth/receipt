@@ -216,7 +216,7 @@
                 <table border="0" style="width: 225px" class="etable">
                     <tr>
                         <td style="padding:3px;">
-                            &nbsp;Add Expense Type <form:input path="expName" size="6" /> <sup>*</sup>
+                            &nbsp;Add Expense Type <form:input path="expName" size="6" title="Help's mark an item with specific expense type." /> <sup>*</sup>
                         </td>
                     </tr>
                     <tr>
@@ -326,6 +326,20 @@
     </p>
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
+
+<style>
+    label {
+        display: inline-block; width: 8em;
+    }
+</style>
+<script>
+    $(function () {
+        var tooltips = $("[title]").tooltip();
+        $.click(function () {
+            tooltips.tooltip("open");
+        });
+    });
+</script>
 
 </body>
 </html>

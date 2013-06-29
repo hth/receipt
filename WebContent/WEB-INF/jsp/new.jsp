@@ -29,34 +29,34 @@
 	<form:form method="post" modelAttribute="userRegistrationForm" action="new.htm">
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="600px">
 			<tr>
-				<td align="right" width="19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
-				<td width="30%"><form:input path="firstName" /></td>
-				<td width="51%"><form:errors path="firstName" cssClass="error" /></td>
+				<td style="text-align: right; width: 19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
+				<td style="width: 30%"><form:input path="firstName" title="Please provide your First Name." /></td>
+				<td style="width: 51%"><form:errors path="firstName" cssClass="error" /></td>
 			</tr>
 			<tr>
-				<td align="right" width="19%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
-				<td width="30%"><form:input path="lastName" /></td>
-				<td width="51%"><form:errors path="lastName" cssClass="error" /></td>
+				<td style="text-align: right; width: 19%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
+				<td style="width: 30%"><form:input path="lastName" title="Please provide your Last Name." /></td>
+				<td style="width: 51%"><form:errors path="lastName" cssClass="error" /></td>
 			</tr>
 			<tr>
-				<td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
-				<td width="30%"><form:input path="emailId" /></td>
-				<td width="51%"><form:errors path="emailId" cssClass="error" id="emailId.errors"/></td>
+				<td style="text-align: right; width: 19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
+				<td style="width: 30%"><form:input path="emailId" title="Please provide a valid email address. A confirmation email will be sent to this address. This email address will also be your login to receipt-o-fi." /></td>
+				<td style="width: 51%"><form:errors path="emailId" cssClass="error" id="emailId.errors"/></td>
 			</tr>
 			<tr>
-				<td align="right" width="19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-				<td width="30%"><form:input path="password" /></td>
-				<td width="51%"><form:errors path="password" cssClass="error" /></td>
+				<td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
+				<td style="width: 30%"><form:input path="password" title="Please enter a password." /></td>
+				<td style="width: 51%"><form:errors path="password" cssClass="error" /></td>
 			</tr>
 			<tr>
-				<td align="right" width="19%"><form:label for="accountType" path="accountType" cssErrorClass="error">Account Type:</form:label></td>
-				<td width="30%">
-					<form:select path="accountType" >
+				<td style="text-align: right; width: 19%"><form:label for="accountType" path="accountType" cssErrorClass="error">Account Type:</form:label></td>
+				<td style="width: 30%">
+					<form:select path="accountType" title="Select an account type.">
 						<form:option value="0" label="Select Account Type" />
 						<form:options itemValue="name" itemLabel="description" />
 					</form:select>
 				</td>
-				<td width="51%"><form:errors path="accountType" cssClass="error" /></td>
+				<td style="width: 51%"><form:errors path="accountType" cssClass="error" /></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
@@ -103,7 +103,7 @@
             if (availability.available) {
                 fieldValidated("emailId", { valid : true });
             } else {
-                fieldValidated("emailId", { valid : false, message : $('#emailId').val() + " is already registered. " + availability.suggestions });
+                fieldValidated("emailId", { valid : false, message : "<b>" + $('#emailId').val() + "</b> is already registered. " + availability.suggestions });
             }
         });
     }
@@ -127,6 +127,20 @@
             }
         }
     }
+</script>
+
+<style>
+    label {
+        display: inline-block; width: 8em;
+    }
+</style>
+<script>
+    $(function () {
+        var tooltips = $("[title]").tooltip();
+        $.click(function () {
+            tooltips.tooltip("open");
+        });
+    });
 </script>
 
 </body>

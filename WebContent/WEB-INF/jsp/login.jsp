@@ -29,12 +29,12 @@
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" style="width: 600px;">
 			<tr>
 				<td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
-				<td width="30%"><form:input path="emailId" /></td>
+				<td width="30%"><form:input path="emailId" title="Please enter the email address when you registered with us." /></td>
 				<td width="51%"><form:errors path="emailId" cssClass="error" /></td>
 			</tr>
 			<tr>
 				<td align="right" width="19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-				<td width="30%"><form:input path="password" /></td>
+				<td width="30%"><form:input path="password" title="Please enter the password you registered with." /></td>
 				<td width="51%"><form:errors path="password" cssClass="error" /></td>
 			</tr>
 			<tr>
@@ -50,9 +50,9 @@
 	</form:form>
 
 	<p>
-        <a href="<c:url value="new.htm"/>">Register Now</a>
+        <a href="<c:url value="new.htm"/>" title="Create a new account.">Register Now</a>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="forgot/password.htm">Forgot your password ?</a>
+        <a href="forgot/password.htm" title="Click here to recover your password.">Forgot your password ?</a>
     </p>
 </div>
 
@@ -69,5 +69,20 @@
         $("#emailId").focus();
     });
 </script>
+
+<style>
+    label {
+        display: inline-block; width: 8em;
+    }
+</style>
+<script>
+    $(function () {
+        var tooltips = $("[title]").tooltip();
+        $.click(function () {
+            tooltips.tooltip("open");
+        });
+    });
+</script>
+
 </body>
 </html>

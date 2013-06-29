@@ -32,8 +32,9 @@ public final class AvailabilityStatus {
         return AVAILABLE_INSTANCE;
     }
 
+    //TODO find a valid use for this. It was meant to suggest different email address for registration
     public static AvailabilityStatus notAvailable(String name) {
-        String[] suggestions = new String[] {"Try password <a href\"/receipt/forgot/password.htm\">Message Status: OK</a>"};
+        String[] suggestions = new String[] {"To recover password click button '<b>Recover</b>' below"};
         return new AvailabilityStatus(false, suggestions);
     }
 

@@ -11,7 +11,11 @@
     <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
 
+    <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
     <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+
+    <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
     <c:if test="${empty inviteAuthenticateForm.forgotAuthenticateForm}">
         <style>
@@ -23,6 +27,7 @@
             a:hover {color: #9caa6d; text-decoration:underline;}
         </style>
     </c:if>
+
 </head>
 <body>
 <div class="wrapper">
@@ -53,26 +58,26 @@
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
-                    <td style="width: 30%"><form:input path="firstName" /></td>
+                    <td style="width: 30%"><form:input path="firstName" title="Please provide your First Name." /></td>
                     <td style="width: 51%"><form:errors path="firstName" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
-                    <td style="width: 30%"><form:input path="lastName" /></td>
+                    <td style="width: 30%"><form:input path="lastName" title="Please provide your Last Name." /></td>
                     <td style="width: 51%"><form:errors path="lastName" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%">
                         <form:label for="forgotAuthenticateForm.password" path="forgotAuthenticateForm.password" cssErrorClass="error">Password:</form:label>
                     </td>
-                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.password" /></td>
+                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.password" title="Please enter a password." /></td>
                     <td style="width: 51%"><form:errors path="forgotAuthenticateForm.password" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%">
                         <form:label for="forgotAuthenticateForm.passwordSecond" path="forgotAuthenticateForm.passwordSecond" cssErrorClass="error">Retype Password</form:label>
                     </td>
-                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.passwordSecond" /></td>
+                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.passwordSecond" title="Please re-enter the password." /></td>
                     <td style="width: 51%"><form:errors path="forgotAuthenticateForm.passwordSecond" cssClass="error" /></td>
                 </tr>
                 <tr>
@@ -99,6 +104,20 @@
     </p>
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
+
+<style>
+    label {
+        display: inline-block; width: 8em;
+    }
+</style>
+<script>
+    $(function () {
+        var tooltips = $("[title]").tooltip();
+        $.click(function () {
+            tooltips.tooltip("open");
+        });
+    });
+</script>
 
 </body>
 </html>

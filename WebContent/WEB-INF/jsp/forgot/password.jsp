@@ -16,6 +16,7 @@
 
     <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+
 </head>
 <body>
 <div class="wrapper">
@@ -33,7 +34,7 @@
             </p>
             <tr>
                 <td style="text-align: right; width: 19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
-                <td style="width: 30%"><form:input path="emailId" /></td>
+                <td style="width: 30%"><form:input path="emailId" title="Enter your account's login email address." /></td>
                 <td style="width: 51%"><form:errors path="emailId" cssClass="error" /></td>
             </tr>
             <tr>
@@ -56,6 +57,20 @@
     </p>
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
+
+<style>
+    label {
+        display: inline-block; width: 8em;
+    }
+</style>
+<script>
+    $(function () {
+        var tooltips = $("[title]").tooltip();
+        $.click(function () {
+            tooltips.tooltip("open");
+        });
+    });
+</script>
 
 </body>
 </html>
