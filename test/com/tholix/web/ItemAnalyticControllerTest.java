@@ -102,7 +102,7 @@ public class ItemAnalyticControllerTest {
 		assertEquals("/itemanalytic", modelAndView.getViewName());
 		assertEquals(60.00, modelAndView.getModel().get("averagePrice"));
 
-		storageManager.deleteObject(receiptBlobId);
+		storageManager.deleteHard(receiptBlobId);
 		itemManager.deleteWhereReceipt(receipt);
 		receiptManager.deleteHard(receipt);
 	}

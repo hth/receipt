@@ -38,7 +38,11 @@ public class FileDBService {
         return storageManager.saveFile(uploadReceiptImage);
     }
 
-    public void deleteFile(String fileId) {
-        storageManager.deleteObject(fileId);
+    public void deleteHard(String fileId) {
+        storageManager.deleteHard(fileId);
+    }
+
+    public void deleteSoft(String fileId)  {
+        storageManager.deleteSoft(fileId);
     }
 }

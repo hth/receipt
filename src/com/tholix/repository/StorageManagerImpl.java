@@ -79,6 +79,13 @@ public class StorageManagerImpl implements StorageManager {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
+    @Override
+    public void deleteSoft(String id) {
+        GridFSDBFile receiptBlob = get(id);
+        receiptBlob.put("deleted", true);
+        receiptBlob.save();
+    }
+
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(UploadReceiptImage object) {
@@ -87,7 +94,7 @@ public class StorageManagerImpl implements StorageManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteObject(String id) {
+	public void deleteHard(String id) {
 		log.debug("deleted GridFs object - " + id);
 		gridFs.remove(new ObjectId(id));
 	}
@@ -106,7 +113,8 @@ public class StorageManagerImpl implements StorageManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	private String persist(UploadReceiptImage uploadReceiptImage) throws IOException {
 		boolean closeStreamOnPersist = true;
-		GridFSInputFile receiptBlob = gridFs.createFile(uploadReceiptImage.getFileData().getInputStream(),
+		GridFSInputFile receiptBlob = gridFs.createFile(
+                uploadReceiptImage.getFileData().getInputStream(),
                 uploadReceiptImage.getFileName(),
                 closeStreamOnPersist);
 
@@ -122,7 +130,7 @@ public class StorageManagerImpl implements StorageManager {
 		try {
 			return gridFs.findOne(new ObjectId(id));
 		} catch(IllegalArgumentException iae) {
-			log.error("Submitted image id " + id + ", error mesaage - " + iae.getLocalizedMessage());
+			log.error("Submitted image id " + id + ", error message - " + iae.getLocalizedMessage());
 			return null;
 		}
 	}

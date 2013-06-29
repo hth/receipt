@@ -119,7 +119,7 @@ public class ReceiptControllerTest {
 		assertEquals("/receipt", modelAndView.getViewName());
 
 		/** Delete operation */
-		storageManager.deleteObject(receiptBlobId);
+		storageManager.deleteHard(receiptBlobId);
 		itemManager.deleteWhereReceipt(receipt);
 		receiptManager.deleteHard(receipt);
 		assertNull(null, storageManager.get(receiptBlobId));

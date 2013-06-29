@@ -4,7 +4,6 @@
 package com.tholix.repository;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
@@ -33,7 +32,19 @@ public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
 
 	public GridFSDBFile getByFilename(String filename);
 
-	public void deleteObject(String id);
+    /**
+     * Removes the file from db
+     *
+     * @param id
+     */
+	public void deleteHard(String id);
+
+    /**
+     * Add a field delete and set the value to true
+     *
+     * @param id
+     */
+    public void deleteSoft(String id);
 
 	/**
 	 * Gets size of the GridFs

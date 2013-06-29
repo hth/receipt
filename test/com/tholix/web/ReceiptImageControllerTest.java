@@ -3,6 +3,14 @@
  */
 package com.tholix.web;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +19,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BindingResult;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import com.tholix.repository.StorageManager;
 import com.tholix.repository.UserPreferenceManager;
@@ -87,7 +87,7 @@ public class ReceiptImageControllerTest {
 //		assertNull(controller.getReceipt(receiptBlobId, userSession, request, response));
 //
 //		//Move the image to classes/build - images/no_image
-//		storageManager.deleteObject(receiptBlobId);
+//		storageManager.deleteHard(receiptBlobId);
 //		request = new MockHttpServletRequest();
 //	    response = new MockHttpServletResponse();
 //		assertNull(controller.getReceipt(receiptBlobId, userSession, request, response));

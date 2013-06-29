@@ -209,7 +209,7 @@ public class LandingService {
 
             int sizeFSInitial = fileDBService.getFSDBSize();
             if(receiptBlobId != null) {
-                fileDBService.deleteFile(receiptBlobId);
+                fileDBService.deleteHard(receiptBlobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
             log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
