@@ -42,6 +42,7 @@ import com.tholix.service.AccountService;
 import com.tholix.service.FileDBService;
 import com.tholix.service.LandingService;
 import com.tholix.service.MailService;
+import com.tholix.service.NotificationService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
@@ -67,6 +68,7 @@ public class LandingController extends BaseController {
 
     private static final String FILE_UPLOAD_FAILURE = "{\"success\" : false}";
     private static final String FILE_UPLOAD_SUCCESS = "{\"success\" : true}";
+    @Autowired NotificationService notificationService;
 
 	/**
 	 * Refers to landing.jsp
@@ -243,8 +245,10 @@ public class LandingController extends BaseController {
             if(userProfileEntity == null) {
                 boolean status = mailService.sendInvitation(emailId, userSession.getEmailId());
                 if(status) {
+                    notificationService.addNotification("Invitation Email sent to '" + emailId + "'", userSession.getUserProfileId());
                     return "Invitation Sent to: " + emailId;
                 } else {
+                    notificationService.addNotification("Unsuccessful in sending invitation email to '" + emailId + "'", userSession.getUserProfileId());
                     return "Unsuccessful in sending invitation: " + emailId;
                 }
             } else {

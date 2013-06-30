@@ -22,7 +22,13 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import com.tholix.domain.ForgotRecoverEntity;
 import com.tholix.domain.InviteEntity;
+import com.tholix.domain.UserAuthenticationEntity;
+import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
+import com.tholix.repository.InviteManager;
+import com.tholix.repository.UserAuthenticationManager;
+import com.tholix.repository.UserPreferenceManager;
+import com.tholix.repository.UserProfileManager;
 
 /**
  * User: hitender
@@ -40,6 +46,11 @@ public class MailService {
     @Autowired private InviteService inviteService;
     @Autowired private MailSender mailSender;
     @Autowired private SimpleMailMessage simpleMailMessage;
+
+    @Autowired private InviteManager inviteManager;
+    @Autowired private UserProfileManager userProfileManager;
+    @Autowired private UserAuthenticationManager userAuthenticationManager;
+    @Autowired private UserPreferenceManager userPreferenceManager;
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
@@ -95,8 +106,9 @@ public class MailService {
     public boolean sendInvitation(String emailId, String userProfileEmailId) {
         UserProfileEntity userProfileEntity =  accountService.findIfUserExists(userProfileEmailId);
         if(userProfileEntity != null) {
+            InviteEntity inviteEntity = null;
             try {
-                InviteEntity inviteEntity = inviteService.initiateInvite(emailId, userProfileEntity);
+                inviteEntity = inviteService.initiateInvite(emailId, userProfileEntity);
 
                 Map<String, String> rootMap = new HashMap<>();
                 rootMap.put("from", userProfileEntity.getName());
@@ -118,13 +130,35 @@ public class MailService {
                     mailSender.send(simpleMailMessage);
                 } catch(TemplateException | IOException exception) {
                     log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
+                    deleteInvite(inviteEntity);
+                    log.info("Due to failure in sending the invitation email. Deleting Invite: " + inviteEntity.getId() + ", for: " + inviteEntity.getEmailId());
                     return false;
                 }
             } catch (Exception exception) {
+                if(inviteEntity != null) {
+                    deleteInvite(inviteEntity);
+                    log.info("Due to failure in sending the invitation email. Deleting Invite: " + inviteEntity.getId() + ", for: " + inviteEntity.getEmailId());
+                }
                 log.error("Exception occurred during persisting InviteEntity: " + exception.getLocalizedMessage());
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * When invitation fails remove all the reference to the Invitation and the new user
+     *
+     * @param inviteEntity
+     */
+    private void deleteInvite(InviteEntity inviteEntity) {
+        log.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
+        UserProfileEntity userProfileEntity = accountService.findIfUserExists(inviteEntity.getEmailId());
+        UserAuthenticationEntity userAuthenticationEntity = userProfileEntity.getUserAuthentication();
+        UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfileEntity);
+        userPreferenceManager.deleteHard(userPreferenceEntity);
+        userAuthenticationManager.deleteHard(userAuthenticationEntity);
+        userProfileManager.deleteHard(userProfileEntity);
+        inviteManager.deleteHard(inviteEntity);
     }
 }

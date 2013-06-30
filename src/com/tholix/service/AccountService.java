@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.ForgotRecoverEntity;
 import com.tholix.domain.UserAuthenticationEntity;
+import com.tholix.domain.UserPreferenceEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.repository.ForgotRecoverManager;
 import com.tholix.repository.UserAuthenticationManager;
@@ -111,5 +112,9 @@ public class AccountService {
 
     public void updateAuthentication(UserAuthenticationEntity userAuthenticationEntity) throws Exception {
         userAuthenticationManager.save(userAuthenticationEntity);
+    }
+
+    public UserPreferenceEntity getPreference(UserProfileEntity userProfileEntity) {
+        return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
     }
 }

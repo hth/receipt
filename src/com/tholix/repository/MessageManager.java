@@ -11,6 +11,8 @@ import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
+ * JMS Message Manager
+ *
  * User: hitender
  * Date: 4/6/13
  * Time: 7:28 PM

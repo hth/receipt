@@ -98,6 +98,7 @@
     <bean id="itemFeatureManager"           class="com.tholix.repository.ItemFeatureManagerImpl" />
     <bean id="messageManager"               class="com.tholix.repository.MessageManagerImpl" />
     <bean id="expenseManager"               class="com.tholix.repository.ExpenseTypeManagerImpl" />
+    <bean id="notificationManager"          class="com.tholix.repository.NotificationManagerImpl" />
 
     <bean id="userRegistrationValidator"    class="com.tholix.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.tholix.web.validator.UserLoginValidator" />
