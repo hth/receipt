@@ -104,7 +104,7 @@
                                         } else {
                                             html = html +               "Pending receipts to be processed: ";
                                         }
-                                        html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: green;' class='timer' id='pendingCountValue'>" + 0 + "</strong></a>";
+                                        html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: #065c14;' class='timer' id='pendingCountValue'>" + 0 + "</strong></a>";
                                         html = html +               "</span>" +
                                                                 "</p>" +
                                                             "</div>" +
@@ -137,7 +137,7 @@
         });
     </script>
 
-    <!-- For tabs -->
+    <!-- For dashboard tabs -->
     <script>
         $(function () {
 
@@ -234,7 +234,7 @@
 			<div class="divOfCell250">
                 <h3>
                     <div class="dropdown">
-                        <a class="account">${sessionScope['userSession'].emailId}</a>
+                        <a class="account" style="color: #065c14">${sessionScope['userSession'].emailId}</a>
 
                         <div class="submenu">
                             <ul class="root">
@@ -256,37 +256,37 @@
 			<td valign="top">
                 <div id="pendingCountInitial">
                 <c:choose>
-                    <c:when test="${pendingCount gt 0}">
-                        <div class="ui-widget">
-                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                                <p>
-                                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-                                    <span style="display:block; width:310px;">
-                                        <c:choose>
-                                            <c:when test="${pendingCount} eq 1">
-                                                Pending receipt to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${pendingCount}</strong></a>
-                                            </c:when>
-                                            <c:otherwise>
-                                                Pending receipts to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong>${pendingCount}</strong></a>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="ui-widget">
-                            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                                <p>
-                                    <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
-                                    <span style="display:block; width:310px;">
-                                        No pending receipt
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </c:otherwise>
+                <c:when test="${pendingCount gt 0}">
+                <div class="ui-widget">
+                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                        <p>
+                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
+                            <span style="display:block; width:310px;">
+                            <c:choose>
+                                <c:when test="${pendingCount} eq 1">
+                                    Pending receipt to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong style="color: #065c14">${pendingCount}</strong></a>
+                                </c:when>
+                                <c:otherwise>
+                                    Pending receipts to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong style="color: #065c14">${pendingCount}</strong></a>
+                                </c:otherwise>
+                            </c:choose>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                </c:when>
+                <c:otherwise>
+                <div class="ui-widget">
+                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                        <p>
+                            <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
+                            <span style="display:block; width:310px;">
+                                No pending receipt
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                </c:otherwise>
                 </c:choose>
                 </div>
                 <div id="pendingCountId"></div>
