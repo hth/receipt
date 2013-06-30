@@ -231,7 +231,7 @@
  	<div class="divTable">
 		<div class="divRow">
             <div class="divOfCell300"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"></div>
-			<div class="divOfCell300">
+			<div class="divOfCell250">
                 <h3>
                     <div class="dropdown">
                         <a class="account">${sessionScope['userSession'].emailId}</a>
