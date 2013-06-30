@@ -247,7 +247,7 @@
                     </div>
                 </h3>
             </div>
-		    <div class="divOfCell200" id="active-tab-2"><h3>Total Expense: <a href="#" style="color: #468847"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
+		    <div class="divOfCell200" id="active-tab-2"><h3>Total Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
    	</div>
 

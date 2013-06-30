@@ -237,7 +237,7 @@ a img, a span { vertical-align: middle; }
     padding: 4px;
     line-height: 12px;
     font-size: 13px;
-    color: #468847;
+    color: #065c14;
     background-color: #dff0d8;
     border-color: #d6e9c6;
 }
@@ -279,7 +279,7 @@ a img, a span { vertical-align: middle; }
 
 .dropdown li a:hover
 {
-    background:#468847;
+    background:#065c14;
     color: #FFFFFF;
     text-decoration: none;
 }
