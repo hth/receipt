@@ -27,21 +27,21 @@ public class InviteEntity extends BaseEntity {
 
     @DBRef
     @Field("invited")
-    private UserProfileEntity newInvitedUser;
+    private UserProfileEntity invited;
 
     @DBRef
-    @Field("invited_by")
-    private UserProfileEntity userProfile;
+    @Field("invitedBy")
+    private UserProfileEntity invitedBy;
 
-    private InviteEntity(String emailId, String authenticationKey, UserProfileEntity newInvitedUser, UserProfileEntity userProfile) {
-        this.emailId = emailId;
-        this.authenticationKey = authenticationKey;
-        this.newInvitedUser = newInvitedUser;
-        this.userProfile = userProfile;
-    }
+    public static InviteEntity newInstance(String emailId, String authenticationKey, UserProfileEntity invited, UserProfileEntity invitedBy) {
+        InviteEntity inviteEntity = new InviteEntity();
 
-    public static InviteEntity newInstance(String emailId, String authenticationKey, UserProfileEntity newInvitedUser, UserProfileEntity userProfile) {
-        return new InviteEntity(emailId, authenticationKey, newInvitedUser, userProfile);
+        inviteEntity.setEmailId(emailId);
+        inviteEntity.setAuthenticationKey(authenticationKey);
+        inviteEntity.setInvited(invited);
+        inviteEntity.setInvitedBy(invitedBy);
+
+        return inviteEntity;
     }
 
     public String getEmailId() {
@@ -60,19 +60,19 @@ public class InviteEntity extends BaseEntity {
         this.authenticationKey = authenticationKey;
     }
 
-    public UserProfileEntity getNewInvitedUser() {
-        return newInvitedUser;
+    public UserProfileEntity getInvited() {
+        return invited;
     }
 
-    public void setNewInvitedUser(UserProfileEntity newInvitedUser) {
-        this.newInvitedUser = newInvitedUser;
+    public void setInvited(UserProfileEntity invited) {
+        this.invited = invited;
     }
 
-    public UserProfileEntity getUserProfile() {
-        return userProfile;
+    public UserProfileEntity getInvitedBy() {
+        return invitedBy;
     }
 
-    public void setUserProfile(UserProfileEntity userProfile) {
-        this.userProfile = userProfile;
+    public void setInvitedBy(UserProfileEntity invitedBy) {
+        this.invitedBy = invitedBy;
     }
 }

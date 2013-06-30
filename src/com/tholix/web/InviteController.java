@@ -55,10 +55,10 @@ public class InviteController {
         if(inviteEntity != null) {
             InviteAuthenticateForm inviteAuthenticateForm = InviteAuthenticateForm.newInstance();
             inviteAuthenticateForm.setEmailId(inviteEntity.getEmailId());
-            inviteAuthenticateForm.setFirstName(inviteEntity.getNewInvitedUser().getFirstName());
-            inviteAuthenticateForm.setLastName(inviteEntity.getNewInvitedUser().getLastName());
+            inviteAuthenticateForm.setFirstName(inviteEntity.getInvited().getFirstName());
+            inviteAuthenticateForm.setLastName(inviteEntity.getInvited().getLastName());
             inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key);
-            inviteAuthenticateForm.getForgotAuthenticateForm().setUserProfileId(inviteEntity.getNewInvitedUser().getId());
+            inviteAuthenticateForm.getForgotAuthenticateForm().setUserProfileId(inviteEntity.getInvited().getId());
             modelAndView.addObject("inviteAuthenticateForm", inviteAuthenticateForm);
         }
 
@@ -76,7 +76,7 @@ public class InviteController {
             InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(inviteAuthenticateForm.getForgotAuthenticateForm().getAuthenticationKey());
             ModelAndView modelAndView = new ModelAndView(INVITE_AUTH_CONFIRM);
             if(inviteEntity != null) {
-                UserProfileEntity userProfileEntity = inviteEntity.getNewInvitedUser();
+                UserProfileEntity userProfileEntity = inviteEntity.getInvited();
                 userProfileEntity.setFirstName(inviteAuthenticateForm.getFirstName());
                 userProfileEntity.setLastName(inviteAuthenticateForm.getLastName());
                 userProfileEntity.active();

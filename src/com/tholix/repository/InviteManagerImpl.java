@@ -36,7 +36,7 @@ public class InviteManagerImpl implements InviteManager {
 
     @Override
     public void invalidateAllEntries(InviteEntity object) {
-        Criteria criteria = Criteria.where("newInvitedUser").is(object.getNewInvitedUser());
+        Criteria criteria = Criteria.where("invited").is(object.getInvited());
         mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("active", false)), InviteEntity.class);
     }
 

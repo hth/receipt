@@ -237,7 +237,7 @@ public class LandingController extends BaseController {
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     public @ResponseBody
     String invite(@RequestParam(value="emailId") String emailId, @ModelAttribute UserSession userSession) {
-        log.info("Invitation sent to: " + emailId);
+        log.info("Invitation being sent to: " + emailId);
 
         boolean isValid = EmailValidator.getInstance().isValid(emailId);
         if(isValid) {
@@ -251,10 +251,19 @@ public class LandingController extends BaseController {
                     notificationService.addNotification("Unsuccessful in sending invitation email to '" + emailId + "'", userSession.getUserProfileId());
                     return "Unsuccessful in sending invitation: " + emailId;
                 }
+            } else if(userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
+                log.info(emailId + ", already registered. Thanks!");
+                return emailId + ", already registered. Thanks!";
+            } else if(userProfileEntity.isDeleted()) {
+                log.info(emailId + ", already registered but no longer with us. Appreciate!");
+
+                //Have to send a positive message
+                return emailId + ", already invited. Appreciate!";
             } else {
+                log.info(emailId + ", already invited. Thanks!");
                 // TODO can put a condition to check or if user is still in invitation mode or has completed registration
                 // TODO Based on either condition we can let user recover password or re-send invitation
-                return emailId + ", already registered or invited";
+                return emailId + ", already invited. Thanks!";
             }
         } else {
             return "Invalid Email: " + emailId;
