@@ -310,7 +310,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <form:textarea path="receiptOCR.notes.text" id="notes" size="300" disabled="true"/>
+                                    <form:textarea path="receiptOCR.notes.text" id="notes" size="300" cols="50" rows="4" disabled="true"/>
                                 </td>
                             </tr>
                             <tr>
@@ -327,7 +327,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <form:textarea path="receiptOCR.recheckComment.text" id="recheckComment" size="300" disabled="false"/>
+                                    <form:textarea path="receiptOCR.recheckComment.text" id="recheckComment" size="300" cols="50" rows="4" disabled="false"/>
                                 </td>
                             </tr>
                             <tr>
