@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * User: hitender
@@ -25,9 +26,11 @@ public class InviteEntity extends BaseEntity {
     private String authenticationKey;
 
     @DBRef
+    @Field("invited")
     private UserProfileEntity newInvitedUser;
 
     @DBRef
+    @Field("invited_by")
     private UserProfileEntity userProfile;
 
     private InviteEntity(String emailId, String authenticationKey, UserProfileEntity newInvitedUser, UserProfileEntity userProfile) {
