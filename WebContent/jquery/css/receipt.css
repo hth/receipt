@@ -309,3 +309,20 @@ a.account
     border-top:1px solid #dedede;
 }
 /* Menu ends */
+
+/** For google map */
+#map-canvas {
+    width: 700px;
+    height: 500px;
+}
+
+#off_screen {
+    position: absolute;
+    left: -1000px;
+    top: -1000px;
+}
+
+.mapContainer {
+    border: 1px solid red;
+}
+/** Google map ends */

@@ -327,12 +327,18 @@
 		</tr>
 	</table>
 
+    <c:if test="${!empty receipts}">
+    <div id="off_screen">
+        <div id="map-canvas"></div>
+    </div>
+    </c:if>
+
 	<!-- Tabs -->
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-1">Receipts</a></li>
 			<li><a href="#tabs-2">Expense Analysis</a></li>
-			<li><a href="#tabs-3">More</a></li>
+			<li><a href="#tabs-3">Geographical</a></li>
 		</ul>
 		<div id="tabs-1">
             <c:choose>
@@ -427,7 +433,7 @@
 		</div>
 		<div id="tabs-3">
             <c:if test="${!empty receipts}">
-            <div class="googleMapContainer" id="map-canvas"></div>
+            <div id="map-placeholder"></div>
             </c:if>
 		</div>
 	</div>
@@ -642,6 +648,7 @@
 </script>
 </c:if>
 
+<c:if test="${!empty receipts}">
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsVM5IGJXRnMEZvva3F3TW0tcbnbyW-Pw&sensor=false">
 </script>
@@ -671,9 +678,14 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             }
 
-            map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
-            infowindow = new google.maps.InfoWindow();
+            var $mapCanvas = $("#map-canvas");
+            map = new google.maps.Map($mapCanvas.get(0), myOptions);
+            var listenerHandle = google.maps.event.addListener(map, 'idle', function() {
+                $mapCanvas.appendTo($("#map-placeholder"));
+                google.maps.event.removeListener(listenerHandle);
+            });
 
+            infowindow = new google.maps.InfoWindow();
             google.maps.event.addListener(map, 'click', function() {
                 infowindow.close();
             });
@@ -759,13 +771,9 @@
                 infowindow.open(map, marker);
             });
         }
-        //http://stackoverflow.com/questions/5058258/google-map-v3-marker-click-function-problem-and-trigger-external-link?rq=1
     });
 </script>
-<style type="text/css">
-    .googleMapContainer {width:700px; height:500px;}
-    .mapContainer {border:1px solid red;}
-</style>
+</c:if>
 
 <script>
     $("#active-tab-2").click(function() {
