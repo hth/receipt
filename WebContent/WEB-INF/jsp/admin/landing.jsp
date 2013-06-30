@@ -17,21 +17,68 @@
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
+    <!-- For drop down menu -->
+    <script>
+        $(document).ready(function () {
+
+            $(".account").click(function () {
+                var X = $(this).attr('id');
+                if (X == 1) {
+                    $(".submenu").hide();
+                    $(this).attr('id', '0');
+                }
+                else {
+                    $(".submenu").show();
+                    $(this).attr('id', '1');
+                }
+
+            });
+
+            //Mouse click on sub menu
+            $(".submenu").mouseup(function () {
+                return false
+            });
+
+            //Mouse click on my account link
+            $(".account").mouseup(function () {
+                return false
+            });
+
+            //Document Click
+            $(document).mouseup(function () {
+                $(".submenu").hide();
+                $(".account").attr('id', '');
+            });
+        });
+    </script>
+
 </head>
 <body>
 <div class="wrapper">
-    <div style='width:243px;'>
-        <div style='width:20.25px; height: 20.25px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em 0em .0em; padding: .14em;'>
-            <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="19px" width="19px">
-        </div>
-        <div style='width:65px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:left; margin: .0em .0em .0em .0em; padding: .5em;'>
-            &nbsp;&nbsp;&nbsp;
-            <a href="${pageContext.request.contextPath}/landing.htm" style="text-decoration:none;">
-                <img src="../images/home.png" width="10px" height="10px" alt="Home"><span>&nbsp;&nbsp;Home</span>
-            </a>
-        </div>
-        <div style='width:130px; height: 12px; display:inline-block; background-color:rgba(0,0,0,0.1); float:right; margin: .0em .0em 0em .0em; padding: .5em;'>
-            <a href="${pageContext.request.contextPath}/userprofilepreference/i.htm" style="text-decoration:none;">${sessionScope['userSession'].emailId}</a>
+    <div class="divTable">
+        <div class="divRow">
+            <div class="divOfCell50">
+                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px">
+            </div>
+            <div class="divOfCell75">
+                <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
+            </div>
+            <div class="divOfCell250">
+                <h3>
+                    <div class="dropdown">
+                        <a class="account" style="color: #065c14">${sessionScope['userSession'].emailId}</a>
+
+                        <div class="submenu">
+                            <ul class="root">
+                                <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
+                                <li><a href="${pageContext.request.contextPath}/logout.htm">Logout</a></li>
+                                <li><a href="${pageContext.request.contextPath}/feedback.htm">Send Feedback</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </h3>
+            </div>
         </div>
     </div>
 

@@ -144,28 +144,7 @@
             $("#accordion").accordion();
 
             var availableTags = [
-                "ActionScript",
-                "AppleScript",
-                "Asp",
-                "BASIC",
-                "C",
-                "C++",
-                "Clojure",
-                "COBOL",
-                "ColdFusion",
-                "Erlang",
-                "Fortran",
-                "Groovy",
-                "Haskell",
-                "Java",
-                "JavaScript",
-                "Lisp",
-                "Perl",
-                "PHP",
-                "Python",
-                "Ruby",
-                "Scala",
-                "Scheme"
+                "ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"
             ];
             $("#autocomplete").autocomplete({
                 source: availableTags
@@ -216,12 +195,12 @@
 
             // Hover states on the static widgets
             $("#dialog-link, #icons li").hover(
-                    function () {
-                        $(this).addClass("ui-state-hover");
-                    },
-                    function () {
-                        $(this).removeClass("ui-state-hover");
-                    }
+                function () {
+                    $(this).addClass("ui-state-hover");
+                },
+                function () {
+                    $(this).removeClass("ui-state-hover");
+                }
             );
         });
     </script>
