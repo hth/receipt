@@ -19,9 +19,44 @@
 
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type='text/javascript' src="jquery/fullcalendar/fullcalendar.min.js"></script>
-    <script type='text/javascript' src="jquery/js/highcharts.js"></script>
+	<script type="text/javascript" src="jquery/fullcalendar/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="jquery/js/highcharts.js"></script>
     <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+
+    <!-- For drop down menu -->
+    <script>
+        $(document).ready(function () {
+
+            $(".account").click(function () {
+                var X = $(this).attr('id');
+                if (X == 1) {
+                    $(".submenu").hide();
+                    $(this).attr('id', '0');
+                }
+                else {
+                    $(".submenu").show();
+                    $(this).attr('id', '1');
+                }
+
+            });
+
+            //Mouse click on sub menu
+            $(".submenu").mouseup(function () {
+                return false
+            });
+
+            //Mouse click on my account link
+            $(".account").mouseup(function () {
+                return false
+            });
+
+            //Document Click
+            $(document).mouseup(function () {
+                $(".submenu").hide();
+                $(".account").attr('id', '');
+            });
+        });
+    </script>
 
     <script>
         function runCounter(max) {
@@ -30,16 +65,16 @@
 
             function incCounter() {
                 var currCount = parseInt($('#pendingCountValue').html());
-                $('#pendingCountValue').text(currCount+1);
-                if (currCount+1 != runTill) {
-                    setTimeout(incCounter,50);
+                $('#pendingCountValue').text(currCount + 1);
+                if (currCount + 1 != runTill) {
+                    setTimeout(incCounter, 50);
                 }
             }
         }
     </script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var errorHandler = function (event, id, fileName, reason) {
                 qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
             };
@@ -49,7 +84,7 @@
                 element: $('#restricted-fine-uploader')[0],
                 callbacks: {
                     onError: errorHandler,
-                    onComplete: function(id, fileName, responseJSON) {
+                    onComplete: function (id, fileName, responseJSON) {
                         if (responseJSON.success == true) {
                             $(this.getItemByFileId(id)).hide('slow');
 
@@ -95,108 +130,123 @@
                 text: {
                     uploadButton: '&uarr; &nbsp; Click or Drop to upload Receipt(s)'
                 },
-                showMessage: function(message) {
+                showMessage: function (message) {
                     $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
                 }
             });
         });
     </script>
 
-	<!-- For tabs -->
-	<script>
-		$(function() {
+    <!-- For tabs -->
+    <script>
+        $(function () {
 
-			$( "#accordion" ).accordion();
+            $("#accordion").accordion();
 
-			var availableTags = [
-				"ActionScript",
-				"AppleScript",
-				"Asp",
-				"BASIC",
-				"C",
-				"C++",
-				"Clojure",
-				"COBOL",
-				"ColdFusion",
-				"Erlang",
-				"Fortran",
-				"Groovy",
-				"Haskell",
-				"Java",
-				"JavaScript",
-				"Lisp",
-				"Perl",
-				"PHP",
-				"Python",
-				"Ruby",
-				"Scala",
-				"Scheme"
-			];
-			$( "#autocomplete" ).autocomplete({
-				source: availableTags
-			});
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"
+            ];
+            $("#autocomplete").autocomplete({
+                source: availableTags
+            });
 
-			$( "#button" ).button();
-			$( "#radioset" ).buttonset();
+            $("#button").button();
+            $("#radioset").buttonset();
 
-			$( "#tabs" ).tabs();
+            $("#tabs").tabs();
 
-			$( "#dialog" ).dialog({
-				autoOpen: false,
-				width: 400,
-				buttons: [
-					{
-						text: "Ok",
-						click: function() {
-							$( this ).dialog( "close" );
-						}
-					},
-					{
-						text: "Cancel",
-						click: function() {
-							$( this ).dialog( "close" );
-						}
-					}
-				]
-			});
+            $("#dialog").dialog({
+                autoOpen: false,
+                width: 400,
+                buttons: [
+                    {
+                        text: "Ok",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: "Cancel",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
 
-			// Link to open the dialog
-			$( "#dialog-link" ).click(function( event ) {
-				$( "#dialog" ).dialog( "open" );
-				event.preventDefault();
-			});
+            // Link to open the dialog
+            $("#dialog-link").click(function (event) {
+                $("#dialog").dialog("open");
+                event.preventDefault();
+            });
 
-			$( "#datepicker" ).datepicker({
-				inline: true
-			});
+            $("#datepicker").datepicker({
+                inline: true
+            });
 
-			$( "#slider" ).slider({
-				range: true,
-				values: [ 17, 67 ]
-			});
+            $("#slider").slider({
+                range: true,
+                values: [ 17, 67 ]
+            });
 
-			$( "#progressbar" ).progressbar({
-				value: 20
-			});
+            $("#progressbar").progressbar({
+                value: 20
+            });
 
-			// Hover states on the static widgets
-			$( "#dialog-link, #icons li" ).hover(
-				function() {
-					$( this ).addClass( "ui-state-hover" );
-				},
-				function() {
-					$( this ).removeClass( "ui-state-hover" );
-				}
-			);
-		});
-	</script>
+            // Hover states on the static widgets
+            $("#dialog-link, #icons li").hover(
+                    function () {
+                        $(this).addClass("ui-state-hover");
+                    },
+                    function () {
+                        $(this).removeClass("ui-state-hover");
+                    }
+            );
+        });
+    </script>
 </head>
 <body>
 <div class="wrapper">
  	<div class="divTable">
 		<div class="divRow">
             <div class="divOfCell300"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"></div>
-			<div class="divOfCell200"><h3><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">${sessionScope['userSession'].emailId}</a></h3></div>
+			<div class="divOfCell300">
+                <h3>
+                    <div class="dropdown">
+                        <a class="account">${sessionScope['userSession'].emailId}</a>
+
+                        <div class="submenu">
+                            <ul class="root">
+                                <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
+                                <li><a href="${pageContext.request.contextPath}/logout.htm">Logout</a></li>
+                                <li><a href="${pageContext.request.contextPath}/feedback.htm">Send Feedback</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </h3>
+            </div>
 		    <div class="divOfCell200" id="active-tab-2"><h3>Total Expense: <a href="#"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
    	</div>
@@ -872,7 +922,7 @@
                 var statusErrorMap = {
                     '400' : "Server understood the request but request content was invalid.",
                     '401' : "Unauthorised access.",
-                    '403' : "Forbidden resouce can't be accessed",
+                    '403' : "Forbidden resource can't be accessed",
                     '500' : "Internal Server Error.",
                     '503' : "Service Unavailable"
                 };
