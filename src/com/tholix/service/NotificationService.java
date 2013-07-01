@@ -1,5 +1,7 @@
 package com.tholix.service;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +40,13 @@ public class NotificationService {
         }
     }
 
+    /**
+     * List all the notification in descending order
+     *
+     * @param userProfileId
+     * @return
+     */
+    public List<NotificationEntity> notifications(String userProfileId) {
+        return notificationManager.getAllNotification(userProfileId, NotificationManager.LIMIT_FIVE);
+    }
 }

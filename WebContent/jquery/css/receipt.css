@@ -329,8 +329,8 @@ a.account
 
 /** For notification */
 .chunk {
-    background:#ccf;
-    border:0.2em solid #99c;
+    background:#eee;
+    border:1px solid #ccc;
     border-top-left-radius:0.8em;
     border-top-right-radius:0.8em;
     display:block;
@@ -343,24 +343,24 @@ a.account
     border:none;
     margin:0;
     padding:0;
+    background: #333;
 }
 .chunk .hd {
     display:block;
-    padding:0.5em 0 0.3em;
+    padding:0.5em 0 0.5em;
     width:100%; /* For IE8 */
 }
 .chunk .hd .text {
-    color:#003;
-    font-family:helvetica,arial;
+    color: white;
     font-size:138.5%;
     font-weight:normal;
     margin:0 0.5em;
     white-space:normal;
-    display:block;zoom:1; /* For IE7 */
+    display:block;
 }
 .chunk .bd {
-    background: #eef;
-    border-top:0.2em solid #99c;
-    padding:1em 0.5em;
+    background: #eee;;
+    /*border-top:0.2em solid #99c;*/
+    padding:0.5em 0.5em;
 }
 /* End of notification */

@@ -33,6 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.NotificationEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
@@ -107,6 +108,10 @@ public class LandingController extends BaseController {
         populateReceiptExpenseDonutChartDetails(modelAndView, allReceiptsForThisMonth);
 
         landingService.computeTotalExpense(userSession.getUserProfileId(), modelAndView);
+
+        /** Notification */
+        List<NotificationEntity> notifications = landingService.notifications(userSession.getUserProfileId());
+        modelAndView.addObject("notifications", notifications);
 
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
@@ -245,10 +250,10 @@ public class LandingController extends BaseController {
             if(userProfileEntity == null) {
                 boolean status = mailService.sendInvitation(emailId, userSession.getEmailId());
                 if(status) {
-                    notificationService.addNotification("Invitation Email sent to '" + emailId + "'", userSession.getUserProfileId());
+                    notificationService.addNotification("Invitation sent to '" + emailId + "'", userSession.getUserProfileId());
                     return "Invitation Sent to: " + emailId;
                 } else {
-                    notificationService.addNotification("Unsuccessful in sending invitation email to '" + emailId + "'", userSession.getUserProfileId());
+                    notificationService.addNotification("Unsuccessful in sending invitation to '" + emailId + "'", userSession.getUserProfileId());
                     return "Unsuccessful in sending invitation: " + emailId;
                 }
             } else if(userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {

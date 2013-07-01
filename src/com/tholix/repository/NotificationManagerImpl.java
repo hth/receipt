@@ -1,11 +1,17 @@
 package com.tholix.repository;
 
+
 import java.util.List;
+
+import static com.tholix.repository.util.AppendAdditionalFields.isNotDeleted;
 
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,5 +70,13 @@ public class NotificationManagerImpl implements NotificationManager {
     @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
+    }
+
+    @Override
+    public List<NotificationEntity> getAllNotification(String userProfileId, int limit) {
+        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Sort sort = new Sort(Sort.Direction.DESC, "created");
+        Query query = Query.query(criteria1.andOperator(isNotDeleted())).with(sort).limit(limit);
+        return mongoTemplate.find(query, NotificationEntity.class, TABLE);
     }
 }

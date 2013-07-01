@@ -232,7 +232,7 @@
 
 	<table>
 		<tr>
-			<td valign="top">
+			<td style="vertical-align: top;">
                 <div id="pendingCountInitial">
                 <c:choose>
                 <c:when test="${pendingCount gt 0}">
@@ -289,7 +289,7 @@
 			<td>
 				&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
-			<td valign="top">
+			<td style="vertical-align: top;">
 				<div>
 					<script type='text/javascript'>
 						$(document).ready(function() {
@@ -324,6 +324,27 @@
 					<div id='calendar'></div>
 			    </div>
 			</td>
+            <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </td>
+            <td style="vertical-align: top;">
+                <c:if test="${!empty notifications}">
+                <div>
+                    <section class="chunk">
+                        <fieldset>
+                            <legend class="hd">
+                                <span class="text">Notifications</span>
+                            </legend>
+                            <c:forEach var="notification" items="${notifications}" varStatus="status">
+                            <div class="bd">
+                                <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.message}</div>
+                            </div>
+                            </c:forEach>
+                        </fieldset>
+                    </section>
+                </div>
+                </c:if>
+            </td>
 		</tr>
 	</table>
 

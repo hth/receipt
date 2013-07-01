@@ -21,6 +21,7 @@ import com.google.common.primitives.Longs;
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
+import com.tholix.domain.NotificationEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UploadReceiptImage;
@@ -58,6 +59,7 @@ public class LandingService {
     @Autowired private ReceiptSenderJMS senderJMS;
     @Autowired private ItemManager itemManager;
     @Autowired private ItemService itemService;
+    @Autowired private NotificationService notificationService;
 
     public long pendingReceipt(String profileId) {
         return receiptOCRManager.numberOfPendingReceipts(profileId);
@@ -248,5 +250,9 @@ public class LandingService {
     public void setEmptyBiz(ReceiptEntityOCR receiptEntityOCR) {
         receiptEntityOCR.setBizName(bizNameManager.noName());
         receiptEntityOCR.setBizStore(bizStoreManager.noStore());
+    }
+
+    public List<NotificationEntity> notifications(String userProfileId) {
+        return notificationService.notifications(userProfileId);
     }
 }
