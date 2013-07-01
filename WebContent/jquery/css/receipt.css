@@ -326,3 +326,41 @@ a.account
     border: 1px solid red;
 }
 /** Google map ends */
+
+/** For notification */
+.chunk {
+    background:#ccf;
+    border:0.2em solid #99c;
+    border-top-left-radius:0.8em;
+    border-top-right-radius:0.8em;
+    display:block;
+    margin-bottom:2em;
+    overflow:hidden;
+    position:relative;
+}
+.chunk fieldset,
+.chunk legend {
+    border:none;
+    margin:0;
+    padding:0;
+}
+.chunk .hd {
+    display:block;
+    padding:0.5em 0 0.3em;
+    width:100%; /* For IE8 */
+}
+.chunk .hd .text {
+    color:#003;
+    font-family:helvetica,arial;
+    font-size:138.5%;
+    font-weight:normal;
+    margin:0 0.5em;
+    white-space:normal;
+    display:block;zoom:1; /* For IE7 */
+}
+.chunk .bd {
+    background: #eef;
+    border-top:0.2em solid #99c;
+    padding:1em 0.5em;
+}
+/* End of notification */
