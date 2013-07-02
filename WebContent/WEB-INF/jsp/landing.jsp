@@ -348,7 +348,7 @@
 		</tr>
 	</table>
 
-    <c:if test="${!empty receipts}">
+    <c:if test="${!empty months}">
     <div id="off_screen">
         <div id="map-canvas"></div>
     </div>
@@ -419,7 +419,7 @@
             </c:choose>
 		</div>
 		<div id="tabs-2">
-            <c:if test="${!empty receipts}">
+            <c:if test="${!empty months}">
             <table>
                 <tr>
                     <td style="vertical-align: top">
@@ -453,7 +453,7 @@
             </c:if>
 		</div>
 		<div id="tabs-3">
-            <c:if test="${!empty receipts}">
+            <c:if test="${!empty months}">
             <div id="map-placeholder"></div>
             </c:if>
 		</div>
@@ -468,7 +468,14 @@
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
+<script>
+    $("#active-tab-2").click(function() {
+        $( "#tabs" ).tabs({ active: 1 });
+    });
+</script>
+
 <c:if test="${!empty bizByExpenseTypes}">
+<!-- Biz by expense -->
 <script>
     $(function () {
 
@@ -596,6 +603,7 @@
 </c:if>
 
 <c:if test="${!empty months}">
+<!-- Monthly expense graph -->
 <script>
     $(function () {
         $('#monthly').highcharts({
@@ -641,7 +649,7 @@
                 }
             },
             series: [{
-                name: 'Population',
+                name: 'Monthly Expense',
                 data: [
                     <c:forEach var="month" items="${months}"  varStatus="status">
                     {y: ${month.stringTotal}, color: 'darkgreen'},
@@ -669,7 +677,8 @@
 </script>
 </c:if>
 
-<c:if test="${!empty receipts}">
+<c:if test="${!empty months}">
+<!-- Google Map -->
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsVM5IGJXRnMEZvva3F3TW0tcbnbyW-Pw&sensor=false">
 </script>
@@ -796,13 +805,8 @@
 </script>
 </c:if>
 
-<script>
-    $("#active-tab-2").click(function() {
-        $( "#tabs" ).tabs({ active: 1 });
-    });
-</script>
-
 <c:if test="${!empty itemExpenses}">
+<!-- Expense by Item types -->
 <script>
     $(function () {
         $('#allExpenseTypes').highcharts({
