@@ -127,7 +127,7 @@ public class ReceiptUpdateController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, params="reject")
     public ModelAndView reject(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
-        log.info("Rejecting Receipt OCR: " + receiptOCRForm.getReceiptOCR().getId());
+        log.info("Staring of Rejecting Receipt OCR: " + receiptOCRForm.getReceiptOCR().getId());
         try {
             ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
             receiptUpdateService.turkReject(receiptOCR);

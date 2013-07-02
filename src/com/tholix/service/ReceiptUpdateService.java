@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFSDBFile;
+
 import com.tholix.domain.CommentEntity;
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
@@ -22,6 +25,7 @@ import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.MessageManager;
 import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
+import com.tholix.repository.StorageManager;
 
 /**
  * User: hitender
@@ -41,6 +45,8 @@ public class ReceiptUpdateService {
     @Autowired private AdminLandingService adminLandingService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private CommentManager commentManager;
+    @Autowired private NotificationService notificationService;
+    @Autowired private StorageManager storageManager;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -80,6 +86,8 @@ public class ReceiptUpdateService {
                 messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.OCR_PROCESSED);
                 throw exce;
             }
+
+            notificationService.addNotification("Receipt processed '" + receipt.getBizName().getName() + "'", receiptOCR.getUserProfileId());
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
             log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptOCR.getId());
@@ -182,6 +190,8 @@ public class ReceiptUpdateService {
                 messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.TURK_REQUEST);
                 throw exce;
             }
+
+            notificationService.addNotification("Receipt re-checked '" + receipt.getBizName().getName() + "'", receiptOCR.getUserProfileId());
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
             log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptOCR.getId());
@@ -234,6 +244,7 @@ public class ReceiptUpdateService {
             receiptOCR.setBizName(null);
             receiptOCR.setBizStore(null);
             receiptOCR.inActive();
+            receiptOCR.markAsdeleted();
             receiptOCRManager.save(receiptOCR);
 
             try {
@@ -243,8 +254,14 @@ public class ReceiptUpdateService {
                 messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_RECEIPT_REJECT, ReceiptStatusEnum.OCR_PROCESSED);
                 throw exce;
             }
+            itemOCRManager.deleteWhereReceipt(receiptOCR);
+
+            storageManager.deleteSoft(receiptOCR.getReceiptBlobId());
+            GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId());
+            DBObject dbObject =  gridFSDBFile.getMetaData();
+            notificationService.addNotification("Could not process receipt '" + dbObject.get("original_fileName") + "'", receiptOCR.getUserProfileId());
         } catch(Exception exce) {
-            log.error(exce.getLocalizedMessage());
+            log.error("Rejection of a receipt failed: " + exce.getLocalizedMessage());
             log.warn("Revert all the transaction for ReceiptOCR: " + receiptOCR.getId());
 
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
@@ -273,6 +290,7 @@ public class ReceiptUpdateService {
             receiptOCRManager.deleteHard(receiptOCR);
             itemOCRManager.deleteWhereReceipt(receiptOCR);
             messageManager.deleteAllForReceiptOCR(receiptOCR.getId());
+            storageManager.deleteHard(receiptOCR.getReceiptBlobId());
         } else {
             log.warn("User trying to delete processed Receipt OCR #: " + receiptEntityOCR.getId() + ", Receipt Id #:" + receiptEntityOCR.getReceiptId());
         }

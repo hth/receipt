@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><fmt:message key="title" /></title>
+    <title><fmt:message key="notification.title" /></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
@@ -85,52 +85,38 @@
     <p>&nbsp;</p>
 
     <c:choose>
-    <c:when test="${!empty receipts}">
-    <table style="width: 650px" class="etable">
-        <tbody>
-        <tr>
-            <th style="padding:3px;"></th>
-            <th style="padding:3px;">Title</th>
-            <th style="padding:3px;">Receipt Date</th>
-            <th style="padding:3px;">Tax</th>
-            <th style="padding:3px;">Total</th>
-        </tr>
-        </tbody>
-        <c:forEach var="receipt" items="${receipts}"  varStatus="status">
-            <tr>
-                <td style="padding:3px;" align="right">
-                    ${status.count}
-                </td>
-                <td style="padding:3px;">
-                    <spring:eval expression="receipt.bizName.name" />
-                </td>
-                <td style="padding:3px;">
-                    <fmt:formatDate value="${receipt.receiptDate}" type="both"/>
-                </td>
-                <td style="padding:3px;" align="right">
-                    <spring:eval expression="receipt.tax" />
-                </td>
-                <td style="padding:3px;" align="right">
-                    <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
-                        <spring:eval expression="receipt.total" />
-                    </a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-    </c:when>
-    <c:otherwise>
-    <div class="ui-widget">
-        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-            <p>
-                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                <span style="display:block; width:410px;">
-                    No receipt submitted for this day
-                </span>
-            </p>
-        </div>
-    </div>
-    </c:otherwise>
+        <c:when test="${!empty notificationForm.notifications}">
+            <div>
+                <section class="chunk">
+                    <fieldset>
+                        <legend class="hd">
+                            <span class="text"><fmt:message key="notification.title" /></span>
+                        </legend>
+                        <c:forEach var="notification" items="${notificationForm.notifications}" varStatus="status">
+                            <div class="bd">
+                                <div class="text">
+                                ${status.count}. &nbsp;&nbsp;
+                                <fmt:formatDate value="${notification.created}" pattern="MM/dd/yy hh:mm:ss a z" /> &nbsp; - &nbsp;
+                                ${notification.message}
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </fieldset>
+                </section>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="ui-widget">
+                <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                    <p>
+                        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                        <span style="display:block; width:410px;">
+                            There are no <fmt:message key="notification.title" />
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </c:otherwise>
     </c:choose>
 </div>
 

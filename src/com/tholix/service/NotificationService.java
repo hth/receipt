@@ -46,7 +46,17 @@ public class NotificationService {
      * @param userProfileId
      * @return
      */
+    public List<NotificationEntity> notifications(String userProfileId, int limit) {
+        return notificationManager.getAllNotification(userProfileId, limit);
+    }
+
+    /**
+     * List last five notification in descending order
+     *
+     * @param userProfileId
+     * @return
+     */
     public List<NotificationEntity> notifications(String userProfileId) {
-        return notificationManager.getAllNotification(userProfileId, NotificationManager.LIMIT_FIVE);
+        return notifications(userProfileId, NotificationManager.LIMIT_FIVE);
     }
 }

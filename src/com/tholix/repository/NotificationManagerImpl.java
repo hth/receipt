@@ -76,7 +76,10 @@ public class NotificationManagerImpl implements NotificationManager {
     public List<NotificationEntity> getAllNotification(String userProfileId, int limit) {
         Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
         Sort sort = new Sort(Sort.Direction.DESC, "created");
-        Query query = Query.query(criteria1.andOperator(isNotDeleted())).with(sort).limit(limit);
+        Query query = Query.query(criteria1.andOperator(isNotDeleted())).with(sort);
+        if(limit != NotificationManager.ALL) {
+            query.limit(limit);
+        }
         return mongoTemplate.find(query, NotificationEntity.class, TABLE);
     }
 }

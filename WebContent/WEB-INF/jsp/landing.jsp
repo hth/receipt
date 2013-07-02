@@ -333,13 +333,16 @@
                     <section class="chunk">
                         <fieldset>
                             <legend class="hd">
-                                <span class="text">Notifications</span>
+                                <span class="text"><fmt:message key="notification.title" /></span>
                             </legend>
                             <c:forEach var="notification" items="${notifications}" varStatus="status">
                             <div class="bd">
                                 <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.message}</div>
                             </div>
                             </c:forEach>
+                            <div class="bd">
+                                <div class="text"><a href="${pageContext.request.contextPath}/notification.htm">more...</a></div>
+                            </div>
                         </fieldset>
                     </section>
                 </div>
