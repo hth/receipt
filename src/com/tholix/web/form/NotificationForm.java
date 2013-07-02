@@ -9,7 +9,7 @@ import com.tholix.domain.NotificationEntity;
  * Date: 7/1/13
  * Time: 9:57 PM
  */
-public class NotificationForm {
+public final class NotificationForm {
 
     private List<NotificationEntity> notifications;
 

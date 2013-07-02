@@ -85,36 +85,36 @@
     <p>&nbsp;</p>
 
     <c:choose>
-        <c:when test="${pendingReceipts.size() gt 0}">
-            <h2 class="demoHeaders">Pending receipt<c:if test="${pendingReceipts.size() gt 1}">s</c:if></h2>
+        <c:when test="${!empty pendingReceiptForm.pending}">
+            <h2 class="demoHeaders">Pending receipt<c:if test="${pendingReceiptForm.pending.size() gt 1}">s</c:if></h2>
 
             <table>
                 <tr>
-                    <td valign="top">
+                    <td style="vertical-align: top;">
                         <table style="width: 400px" class="etable">
                             <tr>
-                                <th style="padding: 3px;" align="left">&nbsp;</th>
-                                <th style="padding: 3px;" align="left">&nbsp;File Name</th>
-                                <th style="padding: 3px;" align="left">&nbsp;Upload Date</th>
+                                <th style="padding: 3px; text-align: left;">&nbsp;</th>
+                                <th style="padding: 3px; text-align: left;">&nbsp;File Name</th>
+                                <th style="padding: 3px; text-align: left;">&nbsp;Upload Date</th>
                             </tr>
-                            <c:forEach items="${pendingReceipts}" var="pendingReceiptForm" varStatus="status">
+                            <c:forEach items="${pendingReceiptForm.pending}" var="receipt" varStatus="status">
                             <tr>
-                                <td style="padding: 3px;" align="right">
+                                <td style="padding: 3px; text-align: right;">
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${pendingReceiptForm.receiptEntityOCR.id}">
-                                        ${pendingReceiptForm.fileName}
+                                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptEntityOCR.id}">
+                                    ${receipt.fileName}
                                     </a>
                                 </td>
-                                <td style="padding: 3px;" align="left">
-                                    <fmt:formatDate value="${pendingReceiptForm.receiptEntityOCR.created}" type="both"/>
+                                <td style="padding: 3px; text-align: left;">
+                                    <fmt:formatDate value="${receipt.receiptEntityOCR.created}" type="both"/>
                                 </td>
                             </tr>
                             </c:forEach>
                         </table>
                     </td>
-                    <td width="6px">&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;</td>
                     <td>
                      Empty. This should be removed
                     </td>
@@ -123,6 +123,48 @@
         </c:when>
         <c:otherwise>
             <h2 class="demoHeaders">No pending receipt</h2>
+        </c:otherwise>
+    </c:choose>
+
+    <c:choose>
+        <c:when test="${!empty pendingReceiptForm.rejected}">
+            <h2 class="demoHeaders">Rejected receipt<c:if test="${pendingReceiptForm.rejected.size() gt 1}">s</c:if></h2>
+
+            <table>
+                <tr>
+                    <td style="vertical-align: top;">
+                        <table style="width: 400px" class="etable">
+                            <tr>
+                                <th style="padding: 3px; text-align: left;">&nbsp;</th>
+                                <th style="padding: 3px; text-align: left;">&nbsp;File Name</th>
+                                <th style="padding: 3px; text-align: left;">&nbsp;Upload Date</th>
+                            </tr>
+                            <c:forEach items="${pendingReceiptForm.rejected}" var="receipt" varStatus="status">
+                                <tr>
+                                    <td style="padding: 3px; text-align: right;">
+                                            ${status.count}
+                                    </td>
+                                    <td style="padding: 3px;">
+                                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptEntityOCR.id}">
+                                        ${receipt.fileName}
+                                        </a>
+                                    </td>
+                                    <td style="padding: 3px; text-align: left;">
+                                        <fmt:formatDate value="${receipt.receiptEntityOCR.created}" type="both"/>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </td>
+                    <td>&nbsp;&nbsp;&nbsp;</td>
+                    <td>
+                        Empty. This should be removed
+                    </td>
+                </tr>
+            </table>
+        </c:when>
+        <c:otherwise>
+            <h2 class="demoHeaders">No rejected receipt to delete</h2>
         </c:otherwise>
     </c:choose>
 </div>

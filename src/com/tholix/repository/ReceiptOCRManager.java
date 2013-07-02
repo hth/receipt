@@ -27,5 +27,13 @@ public interface ReceiptOCRManager extends RepositoryManager<ReceiptEntityOCR> {
      * @param userProfileId
      * @return
      */
-	List<ReceiptEntityOCR> getAllObjects(String userProfileId);
+	List<ReceiptEntityOCR> getAllPending(String userProfileId);
+
+    /**
+     * Get all the rejected receipts
+     *
+     * @param userProfileId
+     * @return
+     */
+    List<ReceiptEntityOCR> getAllRejected(String userProfileId);
 }

@@ -3,8 +3,6 @@
  */
 package com.tholix.web;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserSession;
 import com.tholix.service.ReceiptPendingService;
 import com.tholix.utils.DateUtil;
@@ -40,12 +37,14 @@ public class ReceiptPendingController {
 	@Autowired private ReceiptPendingService receiptPendingService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
         DateTime time = DateUtil.now();
-		List<PendingReceiptForm> pendingReceiptFormList = receiptPendingService.getAllPending(userSession.getUserProfileId());
+
+		receiptPendingService.getAllPending(userSession.getUserProfileId(), pendingReceiptForm);
+        receiptPendingService.getAllRejected(userSession.getUserProfileId(), pendingReceiptForm);
 
 		ModelAndView modelAndView = new ModelAndView(RECEIPT_PENDING);
-		modelAndView.addObject("pendingReceipts", pendingReceiptFormList);
+		modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;

@@ -1,6 +1,5 @@
 package com.tholix.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.repository.ReceiptOCRManager;
-import com.tholix.repository.StorageManager;
 import com.tholix.web.form.PendingReceiptForm;
 
 /**
@@ -30,15 +28,27 @@ public class ReceiptPendingService {
      * @param userProfileId
      * @return
      */
-    public List<PendingReceiptForm> getAllPending(String userProfileId) {
-        List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllObjects(userProfileId);
-        List<PendingReceiptForm> pendingReceiptFormList = new ArrayList<>();
+    public void getAllPending(String userProfileId, PendingReceiptForm pendingReceiptForm) {
+        List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllPending(userProfileId);
         for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
             GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntityOCR.getReceiptBlobId());
             String originalFileName = (String) gridFSDBFile.getMetaData().get("original_fileName");
-            PendingReceiptForm pendingReceiptForm = PendingReceiptForm.newInstance(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
-            pendingReceiptFormList.add(pendingReceiptForm);
+            pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
         }
-        return  pendingReceiptFormList;
+    }
+
+    /**
+     * All pending receipt for a user
+     *
+     * @param userProfileId
+     * @return
+     */
+    public void getAllRejected(String userProfileId, PendingReceiptForm pendingReceiptForm) {
+        List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllRejected(userProfileId);
+        for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
+            GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntityOCR.getReceiptBlobId());
+            String originalFileName = (String) gridFSDBFile.getMetaData().get("original_fileName");
+            pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
+        }
     }
 }

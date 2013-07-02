@@ -1,6 +1,10 @@
 package com.tholix.web.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.web.helper.ReceiptOCRHelper;
 
 /**
  * User: hitender
@@ -9,41 +13,28 @@ import com.tholix.domain.ReceiptEntityOCR;
  */
 public final class PendingReceiptForm {
 
-    private String fileName;
-    private long fileSize;
-    private ReceiptEntityOCR receiptEntityOCR;
+    List<ReceiptOCRHelper> pending = new ArrayList<>();
+    List<ReceiptOCRHelper> rejected = new ArrayList<>();
 
     private PendingReceiptForm() {}
 
-    public static PendingReceiptForm newInstance(String fileName, long fileSize, ReceiptEntityOCR receiptEntityOCR) {
-        PendingReceiptForm pendingReceiptForm = new PendingReceiptForm();
-        pendingReceiptForm.setFileName(fileName);
-        pendingReceiptForm.setFileSize(fileSize);
-        pendingReceiptForm.setReceiptEntityOCR(receiptEntityOCR);
-        return pendingReceiptForm;
+    public static PendingReceiptForm newInstance() {
+        return new PendingReceiptForm();
     }
 
-    public String getFileName() {
-        return fileName;
+    public List<ReceiptOCRHelper> getPending() {
+        return pending;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void addPending(String fileName, long fileSize, ReceiptEntityOCR receiptEntityOCR) {
+        this.pending.add(ReceiptOCRHelper.newInstance(fileName, fileSize, receiptEntityOCR));
     }
 
-    public long getFileSize() {
-        return fileSize;
+    public List<ReceiptOCRHelper> getRejected() {
+        return rejected;
     }
 
-    public void setFileSize(long fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public ReceiptEntityOCR getReceiptEntityOCR() {
-        return receiptEntityOCR;
-    }
-
-    public void setReceiptEntityOCR(ReceiptEntityOCR receiptEntityOCR) {
-        this.receiptEntityOCR = receiptEntityOCR;
+    public void addRejected(String fileName, long fileSize, ReceiptEntityOCR receiptEntityOCR) {
+        this.rejected.add(ReceiptOCRHelper.newInstance(fileName, fileSize, receiptEntityOCR));
     }
 }

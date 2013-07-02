@@ -287,10 +287,10 @@ public class ReceiptUpdateService {
     public void deletePendingReceiptOCR(ReceiptEntityOCR receiptOCR) {
         ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
         if(StringUtils.isEmpty(receiptEntityOCR.getReceiptId())) {
-            receiptOCRManager.deleteHard(receiptOCR);
-            itemOCRManager.deleteWhereReceipt(receiptOCR);
-            messageManager.deleteAllForReceiptOCR(receiptOCR.getId());
-            storageManager.deleteHard(receiptOCR.getReceiptBlobId());
+            receiptOCRManager.deleteHard(receiptEntityOCR);
+            itemOCRManager.deleteWhereReceipt(receiptEntityOCR);
+            messageManager.deleteAllForReceiptOCR(receiptEntityOCR.getId());
+            storageManager.deleteHard(receiptEntityOCR.getReceiptBlobId());
         } else {
             log.warn("User trying to delete processed Receipt OCR #: " + receiptEntityOCR.getId() + ", Receipt Id #:" + receiptEntityOCR.getReceiptId());
         }

@@ -5,8 +5,7 @@ package com.tholix.repository;
 
 import java.util.List;
 
-import static com.tholix.repository.util.AppendAdditionalFields.isActive;
-import static com.tholix.repository.util.AppendAdditionalFields.isNotDeleted;
+import static com.tholix.repository.util.AppendAdditionalFields.*;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
  * @author hitender
@@ -101,11 +101,23 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	}
 
 	@Override
-	public List<ReceiptEntityOCR> getAllObjects(String userProfileId) {
-        Query query = Query.query(Criteria.where("userProfileId").is(userProfileId)).addCriteria(isActive()).addCriteria(isNotDeleted());
+	public List<ReceiptEntityOCR> getAllPending(String userProfileId) {
+        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+
         Sort sort = new Sort(Direction.ASC, "created");
 		return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
 	}
+
+    @Override
+    public List<ReceiptEntityOCR> getAllRejected(String userProfileId) {
+        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria2 = Criteria.where("receiptStatus").is(ReceiptStatusEnum.TURK_RECEIPT_REJECT);
+        Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
+
+        Sort sort = new Sort(Direction.ASC, "created");
+        return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
+    }
 
     @Override
     public long collectionSize() {
