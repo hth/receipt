@@ -209,7 +209,16 @@
 
     <c:choose>
     <c:when test="${!empty receiptOCRForm.receiptOCR}">
-    <h2 class="demoHeaders">Pending receipt</h2>
+
+    <spring:eval expression="receiptOCRForm.receiptOCR.receiptStatus == T(com.tholix.domain.types.ReceiptStatusEnum).TURK_RECEIPT_REJECT" var="isValid" />
+    <c:choose>
+        <c:when test="${!isValid}">
+            <h2 class="demoHeaders">Pending receipt</h2>
+        </c:when>
+        <c:otherwise>
+            <h2 class="demoHeaders">Rejected receipt</h2>
+        </c:otherwise>
+    </c:choose>
 
     <c:if test="${userSession.level.value lt 5}">
     <c:choose>
