@@ -21,10 +21,20 @@ public class NotificationService {
 
     @Autowired private NotificationManager notificationManager;
 
-    public void addNotification(String message, String userProfileId) {
+    /**
+     * Hide notification from user
+     *
+     * @param message
+     * @param userProfileId
+     * @param notified
+     */
+    public void addNotification(String message, String userProfileId, boolean notified) {
         NotificationEntity notificationEntity = NotificationEntity.newInstance();
         notificationEntity.setMessage(message);
         notificationEntity.setUserProfileId(userProfileId);
+        if(notified) {
+            notificationEntity.markAsNotified();
+        }
 
         try {
             notificationManager.save(notificationEntity);
@@ -38,6 +48,16 @@ public class NotificationService {
 
             log.error(sb.toString());
         }
+    }
+
+    /**
+     * Show notification to the user
+     *
+     * @param message
+     * @param userProfileId
+     */
+    public void addNotification(String message, String userProfileId) {
+        addNotification(message, userProfileId, true);
     }
 
     /**

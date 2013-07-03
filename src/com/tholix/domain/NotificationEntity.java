@@ -12,11 +12,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "NOTIFICATION")
 public class NotificationEntity extends BaseEntity {
 
+    //TODO add notification type as this will help in listing of the messages appropriately
+
     @NotNull
     private String message;
 
     @NotNull
     private String userProfileId;
+
+    @NotNull
+    private boolean notified = false;
 
     private NotificationEntity() {}
 
@@ -38,5 +43,17 @@ public class NotificationEntity extends BaseEntity {
 
     public void setUserProfileId(String userProfileId) {
         this.userProfileId = userProfileId;
+    }
+
+    public boolean isNotified() {
+        return notified;
+    }
+
+    public void markAsNotified() {
+        setNotified(true);
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
     }
 }

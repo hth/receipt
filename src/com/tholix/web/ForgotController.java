@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
@@ -174,15 +175,20 @@ public class ForgotController {
      * @throws IOException
      */
     @RequestMapping(method = RequestMethod.GET, value = "recoverConfirm")
-    public String recoverConfirm(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public String recoverConfirm(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, SessionStatus sessionStatus) throws IOException {
         Enumeration<String> attributes = httpServletRequest.getSession().getAttributeNames();
         while(attributes.hasMoreElements()) {
             String attributeName = attributes.nextElement();
             if(attributeName.equals(SUCCESS_EMAIL)) {
                 boolean condition = (boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EMAIL);
                 if(condition) {
-                    //important to invalidate at the end
-                    httpServletRequest.getSession().invalidate();
+                    // Marking any session if set as complete.
+                    // There should be nothing set anyways in previous request.
+                    // This is just a precaution
+                    sessionStatus.setComplete();
+
+                    // important to invalidate at the end
+                    httpServletRequest.getSession(false).invalidate();
                     return FORGOT_RECOVER_CONFIRM;
                 }
             }
