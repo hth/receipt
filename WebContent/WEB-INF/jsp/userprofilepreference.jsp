@@ -169,7 +169,7 @@
 
                         <div class="submenu">
                             <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/logout.htm">Logout</a></li>
+                                <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
                                 <li><a href="${pageContext.request.contextPath}/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
