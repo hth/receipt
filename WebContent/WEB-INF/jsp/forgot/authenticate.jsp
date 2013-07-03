@@ -53,12 +53,12 @@
         <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
             <tr>
                 <td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-                <td style="width: 30%"><form:input path="password" title="Please enter a password." /></td>
+                <td style="width: 30%"><form:input class="tooltip" path="password" title="Please enter a password." /></td>
                 <td style="width: 51%"><form:errors path="password" cssClass="error" /></td>
             </tr>
             <tr>
                 <td style="text-align: right; width: 19%"><form:label for="passwordSecond" path="passwordSecond" cssErrorClass="error">Retype Password</form:label></td>
-                <td style="width: 30%"><form:input path="passwordSecond" title="Please re-enter the password." /></td>
+                <td style="width: 30%"><form:input class="tooltip" path="passwordSecond" title="Please re-enter the password." /></td>
                 <td style="width: 51%"><form:errors path="passwordSecond" cssClass="error" /></td>
             </tr>
             <tr>
@@ -88,16 +88,30 @@
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
-<style>
-    label {
-        display: inline-block; width: 8em;
-    }
-</style>
 <script>
     $(function () {
-        var tooltips = $("[title]").tooltip();
-        $.click(function () {
-            tooltips.tooltip("open");
+        $('.tooltip').each(function () {
+            var $this, id, t;
+
+            $this = $(this);
+            id = this.id;
+            t = $('<span />', {
+                title: $this.attr('title')
+            }).appendTo($this.parent()).tooltip({
+                position: {
+                    of: '#' + id,
+                    my: "left+190 center",
+                    at: "left center",
+                    collision: "fit"
+                }
+            });
+            // remove the title from the real element.
+            $this.attr('title', '');
+            $('#' + id).focusin(function () {
+                t.tooltip('open');
+            }).focusout(function () {
+                t.tooltip('close');
+            });
         });
     });
 </script>

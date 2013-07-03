@@ -58,26 +58,26 @@
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
-                    <td style="width: 30%"><form:input path="firstName" title="Please provide your First Name." /></td>
+                    <td style="width: 30%"><form:input class="tooltip" path="firstName" title="Please provide your First Name." /></td>
                     <td style="width: 51%"><form:errors path="firstName" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%"><form:label for="lastName" path="lastName" cssErrorClass="error">Last Name:</form:label></td>
-                    <td style="width: 30%"><form:input path="lastName" title="Please provide your Last Name." /></td>
+                    <td style="width: 30%"><form:input class="tooltip" path="lastName" title="Please provide your Last Name." /></td>
                     <td style="width: 51%"><form:errors path="lastName" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%">
                         <form:label for="forgotAuthenticateForm.password" path="forgotAuthenticateForm.password" cssErrorClass="error">Password:</form:label>
                     </td>
-                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.password" title="Please enter a password." /></td>
+                    <td style="width: 30%"><form:input class="tooltip" path="forgotAuthenticateForm.password" title="Please enter a password." /></td>
                     <td style="width: 51%"><form:errors path="forgotAuthenticateForm.password" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%">
                         <form:label for="forgotAuthenticateForm.passwordSecond" path="forgotAuthenticateForm.passwordSecond" cssErrorClass="error">Retype Password</form:label>
                     </td>
-                    <td style="width: 30%"><form:input path="forgotAuthenticateForm.passwordSecond" title="Please re-enter the password." /></td>
+                    <td style="width: 30%"><form:input class="tooltip" path="forgotAuthenticateForm.passwordSecond" title="Please re-enter the password." /></td>
                     <td style="width: 51%"><form:errors path="forgotAuthenticateForm.passwordSecond" cssClass="error" /></td>
                 </tr>
                 <tr>
@@ -105,16 +105,30 @@
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
-<style>
-    label {
-        display: inline-block; width: 8em;
-    }
-</style>
 <script>
     $(function () {
-        var tooltips = $("[title]").tooltip();
-        $.click(function () {
-            tooltips.tooltip("open");
+        $('.tooltip').each(function () {
+            var $this, id, t;
+
+            $this = $(this);
+            id = this.id;
+            t = $('<span />', {
+                title: $this.attr('title')
+            }).appendTo($this.parent()).tooltip({
+                position: {
+                    of: '#' + id,
+                    my: "left+190 center",
+                    at: "left center",
+                    collision: "fit"
+                }
+            });
+            // remove the title from the real element.
+            $this.attr('title', '');
+            $('#' + id).focusin(function () {
+                t.tooltip('open');
+            }).focusout(function () {
+                t.tooltip('close');
+            });
         });
     });
 </script>

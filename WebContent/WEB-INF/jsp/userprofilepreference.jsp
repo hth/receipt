@@ -263,7 +263,7 @@
                 <table border="0" style="width: 225px" class="etable">
                     <tr>
                         <td style="padding:3px;">
-                            &nbsp;Add Expense Type <form:input path="expName" size="6" title="Help's mark an item with specific expense type." /> <sup>*</sup>
+                            &nbsp;Add Expense Type <form:input class="tooltip" path="expName" size="6" title="Help's mark an item with specific expense type." /> <sup>*</sup>
                         </td>
                     </tr>
                     <tr>
@@ -374,16 +374,30 @@
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
 
-<style>
-    label {
-        display: inline-block; width: 8em;
-    }
-</style>
 <script>
     $(function () {
-        var tooltips = $("[title]").tooltip();
-        $.click(function () {
-            tooltips.tooltip("open");
+        $('.tooltip').each(function () {
+            var $this, id, t;
+
+            $this = $(this);
+            id = this.id;
+            t = $('<span />', {
+                title: $this.attr('title')
+            }).appendTo($this.parent()).tooltip({
+                position: {
+                    of: '#' + id,
+                    my: "left+190 center",
+                    at: "left center",
+                    collision: "fit"
+                }
+            });
+            // remove the title from the real element.
+            $this.attr('title', '');
+            $('#' + id).focusin(function () {
+                t.tooltip('open');
+            }).focusout(function () {
+                t.tooltip('close');
+            });
         });
     });
 </script>
