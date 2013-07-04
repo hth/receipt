@@ -67,12 +67,12 @@ public class ReceiptUpdateController {
         DateTime time = DateUtil.now();
         ReceiptEntityOCR receipt = receiptUpdateService.loadReceiptOCRById(receiptOCRId);
         if(receipt == null) {
-            if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 log.info("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
             } else {
                 log.warn("No such receipt exists. Request made by: " + userSession.getUserProfileId());
             }
-        } else if(userSession.getUserProfileId().equalsIgnoreCase(receipt.getUserProfileId()) || (userSession.getLevel().value >= UserLevelEnum.WORKER.getValue())) {
+        } else if(userSession.getUserProfileId().equalsIgnoreCase(receipt.getUserProfileId()) || (userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue())) {
             receiptOCRForm.setReceiptOCR(receipt);
 
             List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);

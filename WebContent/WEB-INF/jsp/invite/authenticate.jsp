@@ -70,14 +70,14 @@
                     <td style="text-align: right; width: 19%">
                         <form:label for="forgotAuthenticateForm.password" path="forgotAuthenticateForm.password" cssErrorClass="error">Password:</form:label>
                     </td>
-                    <td style="width: 30%"><form:input class="tooltip" path="forgotAuthenticateForm.password" title="Please enter a password." /></td>
+                    <td style="width: 30%"><form:password class="tooltip" path="forgotAuthenticateForm.password" title="Please enter a password." /></td>
                     <td style="width: 51%"><form:errors path="forgotAuthenticateForm.password" cssClass="error" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right; width: 19%">
                         <form:label for="forgotAuthenticateForm.passwordSecond" path="forgotAuthenticateForm.passwordSecond" cssErrorClass="error">Retype Password</form:label>
                     </td>
-                    <td style="width: 30%"><form:input class="tooltip" path="forgotAuthenticateForm.passwordSecond" title="Please re-enter the password." /></td>
+                    <td style="width: 30%"><form:password class="tooltip" path="forgotAuthenticateForm.passwordSecond" title="Please re-enter the password." /></td>
                     <td style="width: 51%"><form:errors path="forgotAuthenticateForm.passwordSecond" cssClass="error" /></td>
                 </tr>
                 <tr>

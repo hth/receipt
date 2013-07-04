@@ -155,7 +155,7 @@
                 <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px">
             </div>
             <div class="divOfCell75">
-                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
+                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                 <c:when test="${isValid}">
                     <h3><a href="${pageContext.request.contextPath}/emp/landing.htm" style="color: #065c14">Home</a></h3>
@@ -195,7 +195,7 @@
     <table>
         <tr>
             <td valign="top">
-                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
+                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
                     <c:choose>

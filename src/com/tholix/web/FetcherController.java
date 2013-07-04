@@ -53,7 +53,7 @@ public class FetcherController {
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 return fetcherService.findBizName(bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
@@ -83,7 +83,7 @@ public class FetcherController {
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 return fetcherService.findBizAddress(bizAddress, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
@@ -114,7 +114,7 @@ public class FetcherController {
                              HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 return fetcherService.findBizPhone(bizPhone, bizAddress, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
@@ -144,7 +144,7 @@ public class FetcherController {
                             HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.WORKER.getValue()) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 return fetcherService.findItems(itemName, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");

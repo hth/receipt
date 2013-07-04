@@ -70,6 +70,7 @@
     });
 </script>
 
+<!--- For Text boxes -->
 <script>
     $(function () {
         $('.tooltip').each(function () {
@@ -94,6 +95,21 @@
             }).focusout(function () {
                 t.tooltip('close');
             });
+        });
+    });
+</script>
+
+<!-- For http links -->
+<style>
+    label {
+        display: inline-block; width: 8em;
+    }
+</style>
+<script>
+    $(function () {
+        var tooltips = $("[title]").tooltip();
+        $.click(function () {
+            tooltips.tooltip("open");
         });
     });
 </script>

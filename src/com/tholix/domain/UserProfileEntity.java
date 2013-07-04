@@ -54,9 +54,7 @@ public class UserProfileEntity extends BaseEntity {
 	private UserLevelEnum level = UserLevelEnum.USER;
 
 	/** To make bean happy */
-	private UserProfileEntity() {
-
-	}
+	private UserProfileEntity() {}
 
 	private UserProfileEntity(String emailId, String firstName, String lastName, Date registration, UserAuthenticationEntity userAuthentication) {
 		super();

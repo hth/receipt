@@ -175,7 +175,7 @@ public class LoginController {
             case EMPLOYER_PAID:
                 //do nothing for now
                 break;
-            case WORKER:
+            case TECHNICIAN:
                 path = "redirect:/emp/landing.htm";
                 break;
             case SUPERVISOR:

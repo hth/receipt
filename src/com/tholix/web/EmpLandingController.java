@@ -40,7 +40,7 @@ public class EmpLandingController {
     public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
         ModelAndView modelAndView;
-        if(userSession.getLevel() == UserLevelEnum.WORKER) {
+        if(userSession.getLevel() == UserLevelEnum.TECHNICIAN) {
             modelAndView = new ModelAndView(nextPage);
 
             //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
