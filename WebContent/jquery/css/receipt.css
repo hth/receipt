@@ -81,6 +81,7 @@ html, body {
 .divRow {
     display:table-row;
     width:auto;
+    white-space: nowrap;
 }
 .divOfCell50 {
     float:left;/*fix for  buggy browsers*/
@@ -95,10 +96,10 @@ html, body {
     background-color:#FFFFFF;
 }
 .divCell {
-     float:left;/*fix for  buggy browsers*/
-     display:table-column;
-     width:100px;
-     background-color:#FFFFFF;
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:100px;
+    background-color:#FFFFFF;
 }
 .divOfCell110 {
     float:left;/*fix for  buggy browsers*/
@@ -119,10 +120,10 @@ html, body {
     background-color:#FFFFFF;
 }
 .divOfCell200 {
-     float:left;/*fix for  buggy browsers*/
-     display:table-column;
-     width:200px;
-     background-color:#FFFFFF;
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:200px;
+    background-color:#FFFFFF;
 }
 .divOfCell250 {
     float:left;/*fix for  buggy browsers*/
@@ -131,10 +132,10 @@ html, body {
     background-color:#FFFFFF;
 }
 .divOfCell300 {
-     float:left;/*fix for  buggy browsers*/
-     display:table-column;
-     width:300px;
-     background-color:#FFFFFF;
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:300px;
+    background-color:#FFFFFF;
 }
 .divOfCell400 {
     float:left;/*fix for  buggy browsers*/
@@ -149,10 +150,10 @@ html, body {
     background-color:#FFFFFF;
 }
 .divOfCell600 {
-     float:left;/*fix for  buggy browsers*/
-     display:table-column;
-     width:600px;
-     background-color:#FFFFFF;
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:600px;
+    background-color:#FFFFFF;
 }
 /* End*/
 
