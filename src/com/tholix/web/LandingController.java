@@ -38,6 +38,7 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.types.NotificationTypeEnum;
 import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.service.AccountService;
 import com.tholix.service.FileDBService;
@@ -250,10 +251,14 @@ public class LandingController extends BaseController {
             if(userProfileEntity == null) {
                 boolean status = mailService.sendInvitation(emailId, userSession.getEmailId());
                 if(status) {
-                    notificationService.addNotification("Invitation sent to '" + emailId + "'", userSession.getUserProfileId());
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Invitation sent to '").append(emailId).append("'");
+                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, userSession.getUserProfileId());
                     return "Invitation Sent to: " + emailId;
                 } else {
-                    notificationService.addNotification("Unsuccessful in sending invitation to '" + emailId + "'", userSession.getUserProfileId());
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Unsuccessful in sending invitation to '" + emailId + "'");
+                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, userSession.getUserProfileId());
                     return "Unsuccessful in sending invitation: " + emailId;
                 }
             } else if(userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {

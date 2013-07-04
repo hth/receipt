@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tholix.domain.NotificationEntity;
+import com.tholix.domain.types.NotificationTypeEnum;
 import com.tholix.repository.NotificationManager;
 
 /**
@@ -28,8 +29,8 @@ public class NotificationService {
      * @param userProfileId
      * @param notified
      */
-    public void addNotification(String message, String userProfileId, boolean notified) {
-        NotificationEntity notificationEntity = NotificationEntity.newInstance();
+    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String userProfileId, boolean notified) {
+        NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationTypeEnum);
         notificationEntity.setMessage(message);
         notificationEntity.setUserProfileId(userProfileId);
         if(notified) {
@@ -56,8 +57,8 @@ public class NotificationService {
      * @param message
      * @param userProfileId
      */
-    public void addNotification(String message, String userProfileId) {
-        addNotification(message, userProfileId, true);
+    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String userProfileId) {
+        addNotification(message, notificationTypeEnum, userProfileId, true);
     }
 
     /**

@@ -4,6 +4,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.tholix.domain.types.NotificationTypeEnum;
+
 /**
  * User: hitender
  * Date: 6/30/13
@@ -11,8 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "NOTIFICATION")
 public class NotificationEntity extends BaseEntity {
-
-    //TODO add notification type as this will help in listing of the messages appropriately
 
     @NotNull
     private String message;
@@ -23,10 +23,15 @@ public class NotificationEntity extends BaseEntity {
     @NotNull
     private boolean notified = false;
 
+    @NotNull
+    private NotificationTypeEnum notificationTypeEnum;
+
     private NotificationEntity() {}
 
-    public static NotificationEntity newInstance() {
-        return new NotificationEntity();
+    public static NotificationEntity newInstance(NotificationTypeEnum notificationTypeEnum) {
+        NotificationEntity notificationEntity = new NotificationEntity();
+        notificationEntity.setNotificationTypeEnum(notificationTypeEnum);
+        return notificationEntity;
     }
 
     public String getMessage() {
@@ -55,5 +60,13 @@ public class NotificationEntity extends BaseEntity {
 
     public void setNotified(boolean notified) {
         this.notified = notified;
+    }
+
+    public NotificationTypeEnum getNotificationTypeEnum() {
+        return notificationTypeEnum;
+    }
+
+    private void setNotificationTypeEnum(NotificationTypeEnum notificationTypeEnum) {
+        this.notificationTypeEnum = notificationTypeEnum;
     }
 }

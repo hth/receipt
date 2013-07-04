@@ -18,6 +18,7 @@ import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
+import com.tholix.domain.types.NotificationTypeEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.repository.CommentManager;
 import com.tholix.repository.ItemManager;
@@ -87,7 +88,10 @@ public class ReceiptUpdateService {
                 throw exce;
             }
 
-            notificationService.addNotification("Receipt processed '" + receipt.getBizName().getName() + "'", receiptOCR.getUserProfileId());
+            StringBuilder sb = new StringBuilder();
+            sb.append("Receipt processed '").append(receipt.getBizName().getName()).append("'");
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receiptOCR.getUserProfileId());
+
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
             log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptOCR.getId());
@@ -191,7 +195,10 @@ public class ReceiptUpdateService {
                 throw exce;
             }
 
-            notificationService.addNotification("Receipt re-checked '" + receipt.getBizName().getName() + "'", receiptOCR.getUserProfileId());
+            StringBuilder sb = new StringBuilder();
+            sb.append("Receipt re-checked '").append(receipt.getBizName().getName()).append("'");
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receiptOCR.getUserProfileId());
+
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
             log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptOCR.getId());
@@ -259,7 +266,11 @@ public class ReceiptUpdateService {
             storageManager.deleteSoft(receiptOCR.getReceiptBlobId());
             GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId());
             DBObject dbObject =  gridFSDBFile.getMetaData();
-            notificationService.addNotification("Could not process receipt '" + dbObject.get("original_fileName") + "'", receiptOCR.getUserProfileId());
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Could not process receipt '").append(dbObject.get("original_fileName")).append("'");
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT_OCR, receiptOCR.getUserProfileId());
+
         } catch(Exception exce) {
             log.error("Rejection of a receipt failed: " + exce.getLocalizedMessage());
             log.warn("Revert all the transaction for ReceiptOCR: " + receiptOCR.getId());
