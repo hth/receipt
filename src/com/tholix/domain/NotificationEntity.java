@@ -24,7 +24,7 @@ public class NotificationEntity extends BaseEntity {
     private boolean notified = false;
 
     @NotNull
-    private NotificationTypeEnum notificationTypeEnum;
+    private NotificationTypeEnum notificationType;
 
     /**
      * Could be a receipt id or receipt ocr id
@@ -33,9 +33,9 @@ public class NotificationEntity extends BaseEntity {
 
     private NotificationEntity() {}
 
-    public static NotificationEntity newInstance(NotificationTypeEnum notificationTypeEnum) {
+    public static NotificationEntity newInstance(NotificationTypeEnum notificationType) {
         NotificationEntity notificationEntity = new NotificationEntity();
-        notificationEntity.setNotificationTypeEnum(notificationTypeEnum);
+        notificationEntity.setNotificationType(notificationType);
         return notificationEntity;
     }
 
@@ -67,12 +67,12 @@ public class NotificationEntity extends BaseEntity {
         this.notified = notified;
     }
 
-    public NotificationTypeEnum getNotificationTypeEnum() {
-        return notificationTypeEnum;
+    public NotificationTypeEnum getNotificationType() {
+        return notificationType;
     }
 
-    private void setNotificationTypeEnum(NotificationTypeEnum notificationTypeEnum) {
-        this.notificationTypeEnum = notificationTypeEnum;
+    private void setNotificationType(NotificationTypeEnum notificationType) {
+        this.notificationType = notificationType;
     }
 
     public String getReferenceId() {
