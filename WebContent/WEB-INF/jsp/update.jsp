@@ -176,9 +176,9 @@
                 <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px">
             </div>
             <div class="divOfCell75">
+                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
                 <c:choose>
-                    <%--//TODO change from constant--%>
-                    <c:when test="${userSession.level.value ge 5}">
+                    <c:when test="${isValid}">
                         <h3><a href="${pageContext.request.contextPath}/emp/landing.htm" style="color: #065c14">Home</a></h3>
                     </c:when>
                     <c:otherwise>
@@ -224,7 +224,8 @@
         </c:otherwise>
     </c:choose>
 
-    <c:if test="${userSession.level.value lt 5}">
+    <spring:eval expression="userSession.level lt T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
+    <c:if test="${isValid}">
     <c:choose>
         <c:when test="${empty receiptOCRForm.receiptOCR.receiptId}">
         <form:form method="post" action="delete.htm" modelAttribute="receiptOCRForm">
@@ -264,9 +265,9 @@
     <table>
         <tr>
             <td valign="top">
+                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
                 <c:choose>
-                <%--//TODO change from constant--%>
-                <c:when test="${userSession.level.value ge 5}">
+                    <c:when test="${isValid}">
                     <form:form method="post" action="update.htm" modelAttribute="receiptOCRForm">
                         <form:errors path="receiptOCR" cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
@@ -397,8 +398,9 @@
             <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
             <span style="display:block; width:700px;">
+            <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
             <c:choose>
-            <c:when test="${userSession.level.value ge 5}">
+                <c:when test="${isValid}">
                 Oops! Seems like user has deleted this receipt recently.
             </c:when>
             <c:otherwise>

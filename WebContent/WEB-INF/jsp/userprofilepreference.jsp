@@ -225,7 +225,8 @@
                             Last changed:
                             <b><fmt:formatDate value="${userProfile.userAuthentication.updated}" type="both" /></b></div>
                     </div>
-					<c:if test="${userSession.level.value > 5}">
+                    <spring:eval expression="userSession.level gt T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
+                    <c:if test="${isValid}">
                     <div class="divRow">
                         <div class="divOfCell600">&nbsp;</div>
                     </div>
@@ -243,7 +244,8 @@
 			   	</div>
 			   	<div>&nbsp;</div>
 
-			   	<c:if test="${userSession.level.value > 5}">
+                <spring:eval expression="userSession.level gt T(com.tholix.domain.types.UserLevelEnum).WORKER" var="isValid" />
+                <c:if test="${isValid}">
 			   	<div class="divRow">
 					<div class="divOfCell600"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
 				</div>
