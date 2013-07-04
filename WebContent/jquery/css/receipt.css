@@ -81,7 +81,8 @@ html, body {
 .divRow {
     display:table-row;
     width:auto;
-    white-space: nowrap;
+    /*poor Firefox support*/
+    /*white-space: nowrap;*/
 }
 .divOfCell50 {
     float:left;/*fix for  buggy browsers*/
