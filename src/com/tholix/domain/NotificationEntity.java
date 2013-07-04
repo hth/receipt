@@ -88,15 +88,11 @@ public class NotificationEntity extends BaseEntity {
             case MESSAGE:
                 return getMessage();
             case RECEIPT_OCR:
-                return parserMessage();
+                return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
             case RECEIPT:
-                return parserMessage();
+                return "<a href=\"" + "./receipt.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
             default:
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
-    }
-
-    private String parserMessage() {
-        return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
     }
 }
