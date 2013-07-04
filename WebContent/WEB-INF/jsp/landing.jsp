@@ -309,10 +309,10 @@
 									center : '',
 									right : 'title'
 								},
-                                contentHeight: 175,
+                                contentHeight: 225,
                                 aspectRatio: 1,
 								editable : false,
-                                weekMode : 'liquid',
+                                weekMode : 'fixed',
 								events : [
                                 <c:set var="receiptGroupedIterator" value="${requestScope.receiptGrouped}" />
                                 <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
