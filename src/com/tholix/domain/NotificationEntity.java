@@ -26,6 +26,11 @@ public class NotificationEntity extends BaseEntity {
     @NotNull
     private NotificationTypeEnum notificationTypeEnum;
 
+    /**
+     * Could be a receipt id or receipt ocr id
+     */
+    private String referenceId;
+
     private NotificationEntity() {}
 
     public static NotificationEntity newInstance(NotificationTypeEnum notificationTypeEnum) {
@@ -68,5 +73,13 @@ public class NotificationEntity extends BaseEntity {
 
     private void setNotificationTypeEnum(NotificationTypeEnum notificationTypeEnum) {
         this.notificationTypeEnum = notificationTypeEnum;
+    }
+
+    public String getReferenceId() {
+        return referenceId;
+    }
+
+    public void setReferenceId(String referenceId) {
+        this.referenceId = referenceId;
     }
 }

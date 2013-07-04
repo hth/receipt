@@ -90,7 +90,7 @@ public class ReceiptUpdateService {
 
             StringBuilder sb = new StringBuilder();
             sb.append("Receipt processed '").append(receipt.getBizName().getName()).append("'");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receiptOCR.getUserProfileId());
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
@@ -197,7 +197,7 @@ public class ReceiptUpdateService {
 
             StringBuilder sb = new StringBuilder();
             sb.append("Receipt re-checked '").append(receipt.getBizName().getName()).append("'");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receiptOCR.getUserProfileId());
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
@@ -269,7 +269,7 @@ public class ReceiptUpdateService {
 
             StringBuilder sb = new StringBuilder();
             sb.append("Could not process receipt '").append(dbObject.get("original_fileName")).append("'");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT_OCR, receiptOCR.getUserProfileId());
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT_OCR, receiptOCR);
 
         } catch(Exception exce) {
             log.error("Rejection of a receipt failed: " + exce.getLocalizedMessage());

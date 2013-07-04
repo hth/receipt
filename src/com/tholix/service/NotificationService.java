@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tholix.domain.NotificationEntity;
+import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.NotificationTypeEnum;
 import com.tholix.repository.NotificationManager;
 
@@ -26,16 +28,19 @@ public class NotificationService {
      * Hide notification from user
      *
      * @param message
+     * @param notificationTypeEnum
+     * @param id
      * @param userProfileId
      * @param notified
      */
-    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String userProfileId, boolean notified) {
+    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String id, String userProfileId, boolean notified) {
         NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationTypeEnum);
         notificationEntity.setMessage(message);
         notificationEntity.setUserProfileId(userProfileId);
         if(notified) {
             notificationEntity.markAsNotified();
         }
+        notificationEntity.setReferenceId(id);
 
         try {
             notificationManager.save(notificationEntity);
@@ -58,7 +63,39 @@ public class NotificationService {
      * @param userProfileId
      */
     public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String userProfileId) {
-        addNotification(message, notificationTypeEnum, userProfileId, true);
+        if(notificationTypeEnum == NotificationTypeEnum.MESSAGE) {
+            addNotification(message, notificationTypeEnum, null, userProfileId, true);
+        } else {
+            throw new UnsupportedOperationException("Incorrect method call for Notification Type");
+        }
+    }
+
+    /**
+     *
+     * @param message
+     * @param notificationTypeEnum
+     * @param receiptEntityOCR
+     */
+    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, ReceiptEntityOCR receiptEntityOCR) {
+        if(notificationTypeEnum == NotificationTypeEnum.RECEIPT_OCR) {
+            addNotification(message, notificationTypeEnum, receiptEntityOCR.getId(), receiptEntityOCR.getUserProfileId(), true);
+        } else {
+            throw new UnsupportedOperationException("Incorrect method call for Notification Type");
+        }
+    }
+
+    /**
+     *
+     * @param message
+     * @param notificationTypeEnum
+     * @param receiptEntity
+     */
+    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, ReceiptEntity receiptEntity) {
+        if(notificationTypeEnum == NotificationTypeEnum.RECEIPT) {
+            addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+        } else {
+            throw new UnsupportedOperationException("Incorrect method call for Notification Type");
+        }
     }
 
     /**
