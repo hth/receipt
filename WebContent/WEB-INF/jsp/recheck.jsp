@@ -168,8 +168,12 @@
             <div class="divOfCell250">
                 <h3>
                     <div class="dropdown">
-                        <a class="account" style="color: #065c14">${sessionScope['userSession'].emailId}</a>
-
+                        <div>
+                            <a class="account" style="color: #065c14">
+                                ${sessionScope['userSession'].emailId}
+                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;">
+                            </a>
+                        </div>
                         <div class="submenu">
                             <ul class="root">
                                 <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
