@@ -89,7 +89,9 @@ public class ReceiptUpdateService {
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Receipt processed '").append(receipt.getBizName().getName()).append("'");
+            sb.append(receipt.getTotalString());
+            sb.append(" '").append(receipt.getBizName().getName()).append("' ");
+            sb.append("receipt processed");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
         } catch(Exception exce) {
@@ -196,7 +198,9 @@ public class ReceiptUpdateService {
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Receipt re-checked '").append(receipt.getBizName().getName()).append("'");
+            sb.append(receipt.getTotalString());
+            sb.append(" '").append(receipt.getBizName().getName()).append("' ");
+            sb.append("receipt re-checked");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
         } catch(Exception exce) {

@@ -160,6 +160,12 @@ public class ReceiptEntity extends BaseEntity {
 		this.total = total;
 	}
 
+    public String getTotalString() {
+        //TODO try using JODA currency
+        java.text.NumberFormat currencyFormatter = java.text.NumberFormat.getCurrencyInstance();
+        return currencyFormatter.format(getTotal());
+    }
+
 	public Double getTax() {
 		return tax;
 	}
