@@ -101,7 +101,7 @@
                                 <div class="text">
                                 ${status.count}. &nbsp;&nbsp;
                                 <fmt:formatDate value="${notification.created}" pattern="MM/dd/yy hh:mm:ss a z" /> &nbsp; - &nbsp;
-                                ${notification.message}
+                                ${notification.notificationMessage}
                                 </div>
                             </div>
                         </c:forEach>

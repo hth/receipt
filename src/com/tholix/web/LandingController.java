@@ -257,7 +257,7 @@ public class LandingController extends BaseController {
                     return "Invitation Sent to: " + emailId;
                 } else {
                     StringBuilder sb = new StringBuilder();
-                    sb.append("Unsuccessful in sending invitation to '" + emailId + "'");
+                    sb.append("Unsuccessful in sending invitation to '").append(emailId).append("'");
                     notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, userSession.getUserProfileId());
                     return "Unsuccessful in sending invitation: " + emailId;
                 }

@@ -82,4 +82,21 @@ public class NotificationEntity extends BaseEntity {
     public void setReferenceId(String referenceId) {
         this.referenceId = referenceId;
     }
+
+    public String getNotificationMessage() {
+        switch(notificationType) {
+            case MESSAGE:
+                return getMessage();
+            case RECEIPT_OCR:
+                return parserMessage();
+            case RECEIPT:
+                return parserMessage();
+            default:
+                throw new UnsupportedOperationException("Reached invalid condition in Notification");
+        }
+    }
+
+    private String parserMessage() {
+        return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
+    }
 }
