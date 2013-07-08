@@ -39,8 +39,8 @@ import com.tholix.repository.UserProfileManager;
 public class MailService {
     private static Logger log = Logger.getLogger(MailService.class);
 
-    private static final String MAIL_RECOVER_SUBJECT = "How to reset your Receipt-O-Fi ID password";
-    private static final String MAIL_INVITE_SUBJECT = "Receipt-O-Fi invites you on behalf of";
+    private static final String MAIL_RECOVER_SUBJECT = "[r] How to reset your receipt-o-fi ID password";
+    private static final String MAIL_INVITE_SUBJECT = "[r] receipt-o-fi invites you on behalf of";
 
     @Autowired private AccountService accountService;
     @Autowired private InviteService inviteService;
