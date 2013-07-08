@@ -110,7 +110,7 @@
                                                             "</div>" +
                                                         "</div>";
                                         $('#pendingCountInitial').hide();
-                                        $('#pendingCountId').html(html);
+                                        $('#pendingCountId').html(html).show();
                                         $(runCounter(response));
                                     }
                                 }
@@ -260,6 +260,18 @@
 								]
 							});
 
+                            $('.fc-button-prev').click(function(){
+                                var start = $("#calendar").fullCalendar('getView').start;
+                                var eventTime = $.fullCalendar.formatDate(start, "MMM, yyyy");
+                                $(loadMonthlyExpenses(eventTime, 'prev'));
+                            });
+
+                            $('.fc-button-next').click(function(){
+                                var end = $("#calendar").fullCalendar('getView').end;
+                                var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
+                                $(loadMonthlyExpenses(eventTime, 'next'));
+                            });
+
 						});
 					</script>
 					<div id='calendar'></div>
@@ -306,8 +318,9 @@
 			<li><a href="#tabs-3">Geographical</a></li>
 		</ul>
 		<div id="tabs-1">
+            <div id="onLoadReceiptForMonthId">
             <c:choose>
-            <c:when test="${!empty receipts}">
+            <c:when test="${!empty landingForm.receiptForMonth.receipts}">
             <table>
                 <tr>
                     <td style="vertical-align: top">
@@ -319,23 +332,23 @@
                                 <th style="padding: 3px;">Tax</th>
                                 <th style="padding: 3px;">Total</th>
                             </tr>
-                            <c:forEach var="receipt" items="${receipts}"  varStatus="status">
+                            <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}"  varStatus="status">
                             <tr>
-                                <td style="padding: 3px;" align="right">
+                                <td style="padding: 3px; text-align: right">
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <spring:eval expression="receipt.bizName.name" />
+                                    <spring:eval expression="receipt.name" />
                                 </td>
                                 <td style="padding: 3px;">
-                                    <fmt:formatDate value="${receipt.receiptDate}" type="date"/>
+                                    <fmt:formatDate value="${receipt.date}" type="date"/>
                                 </td>
-                                <td style="padding: 3px;" align="right">
+                                <td style="padding: 3px; text-align: right">
                                     <spring:eval expression="receipt.tax" />
                                 </td>
-                                <td style="padding: 3px;" align="right">
+                                <td style="padding: 3px; text-align: right">
                                     <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
-                                        <spring:eval expression="receipt.total" />
+                                        <spring:eval expression='receipt.total' />
                                     </a>
                                 </td>
                             </tr>
@@ -361,6 +374,9 @@
             </div>
             </c:otherwise>
             </c:choose>
+            </div>
+
+            <div id="refreshReceiptForMonthId"></div>
 		</div>
 		<div id="tabs-2">
             <c:if test="${!empty months}">
@@ -416,6 +432,23 @@
     $("#active-tab-2").click(function() {
         $( "#tabs" ).tabs({ active: 1 });
     });
+</script>
+
+<script>
+    function loadMonthlyExpenses(date, clicked) {
+        $.ajax({
+            type: "POST",
+            url: '${pageContext. request. contextPath}/landing/monthly_expenses.htm',
+            data: {
+                monthView: date,
+                buttonClick: clicked
+            },
+            success: function (response) {
+                $('#onLoadReceiptForMonthId').hide();
+                $('#refreshReceiptForMonthId').html(response).show();
+            }
+        });
+    }
 </script>
 
 <c:if test="${!empty bizByExpenseTypes}">
@@ -476,7 +509,7 @@
                 enabled: false
             },
             title: {
-                text: 'Business By Expense, ?Month?, ?2013?'
+                text: 'Business By Expense, ${landingForm.receiptForMonth.monthYear}'
             },
             yAxis: {
                 title: {

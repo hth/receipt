@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import org.joda.time.DateTime;
+
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
@@ -42,7 +44,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param userProfileId
      * @return
      */
-    List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId);
+    List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId, DateTime monthYear);
 
     /**
      * Get receipts associated with year, month, day

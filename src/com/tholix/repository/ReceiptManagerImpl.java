@@ -65,11 +65,10 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
-    public List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId) {
-        DateTime dateTime = DateUtil.now();
+    public List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId, DateTime monthYear) {
         Criteria criteria = Criteria.where("userProfileId").is(userProfileId);
-        Criteria criteria1 = Criteria.where("month").is(dateTime.getMonthOfYear());
-        Criteria criteria2 = Criteria.where("year").is(dateTime.getYear());
+        Criteria criteria1 = Criteria.where("month").is(monthYear.getMonthOfYear());
+        Criteria criteria2 = Criteria.where("year").is(monthYear.getYear());
 
         Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
         Query query = Query.query(criteria).addCriteria(criteria1).addCriteria(criteria2).addCriteria(isActive()).addCriteria(isNotDeleted());

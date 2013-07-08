@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Longs;
@@ -39,6 +43,8 @@ import com.tholix.service.routes.ReceiptSenderJMS;
 import com.tholix.utils.ABBYYCloudService;
 import com.tholix.utils.Maths;
 import com.tholix.utils.ReceiptParser;
+import com.tholix.web.helper.ReceiptForMonth;
+import com.tholix.web.helper.ReceiptLandingView;
 
 /**
  * User: hitender
@@ -60,6 +66,7 @@ public class LandingService {
     @Autowired private ItemManager itemManager;
     @Autowired private ItemService itemService;
     @Autowired private NotificationService notificationService;
+    @Autowired private ReceiptService receiptService;
 
     public long pendingReceipt(String profileId) {
         return receiptOCRManager.numberOfPendingReceipts(profileId);
@@ -70,8 +77,8 @@ public class LandingService {
         return receiptManager.getAllReceipts(profileId);
     }
 
-    public List<ReceiptEntity> getAllReceiptsForThisMonth(String profileId) {
-        return receiptManager.getAllReceiptsForThisMonth(profileId);
+    public List<ReceiptEntity> getAllReceiptsForThisMonth(String profileId, DateTime monthYear) {
+        return receiptManager.getAllReceiptsForThisMonth(profileId, monthYear);
     }
 
     public Iterator<ReceiptGrouped> getReceiptGroupedByDate(String profileId) {
@@ -254,5 +261,23 @@ public class LandingService {
 
     public List<NotificationEntity> notifications(String userProfileId) {
         return notificationService.notifications(userProfileId);
+    }
+
+    /**
+     *
+     * @param allReceiptsForThisMonth
+     * @param monthYear
+     * @return
+     */
+    public ReceiptForMonth getReceiptForMonth(List<ReceiptEntity> allReceiptsForThisMonth, DateTime monthYear) {
+        String pattern = "MMM, yyyy";
+        DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+
+        ReceiptForMonth receiptForMonth = ReceiptForMonth.newInstance();
+        receiptForMonth.setMonthYear(dtf.print(monthYear));
+        for(ReceiptEntity receiptEntity : allReceiptsForThisMonth) {
+            receiptForMonth.addReceipt(ReceiptLandingView.newInstance(receiptEntity));
+        }
+        return receiptForMonth;
     }
 }

@@ -4,6 +4,7 @@
 package com.tholix.web;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -32,6 +35,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.tholix.domain.NotificationEntity;
 import com.tholix.domain.ReceiptEntity;
@@ -49,6 +54,8 @@ import com.tholix.utils.DateUtil;
 import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.LandingDonutChart;
+import com.tholix.web.form.LandingForm;
+import com.tholix.web.helper.ReceiptForMonth;
 import com.tholix.web.rest.Base;
 import com.tholix.web.rest.Header;
 import com.tholix.web.rest.LandingView;
@@ -78,15 +85,20 @@ public class LandingController extends BaseController {
 	private static final String NEXT_PAGE_IS_CALLED_LANDING = "/landing";
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage) {
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession,
+                                 @ModelAttribute("uploadReceiptImage") UploadReceiptImage uploadReceiptImage,
+                                 @ModelAttribute("landingForm") LandingForm landingForm) {
+
         DateTime time = DateUtil.now();
         log.info("LandingController loadForm: " + userSession.getEmailId());
 
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
         modelAndView.addObject("userSession", userSession);
 
-		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId());
-		modelAndView.addObject("receipts", allReceiptsForThisMonth);
+		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId(), DateUtil.now());
+        ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, DateUtil.now());
+        modelAndView.addObject("receiptForMonth", receiptForMonth);
+        landingForm.setReceiptForMonth(receiptForMonth);
 
         long pendingCount = landingService.pendingReceipt(userSession.getUserProfileId());
         modelAndView.addObject("pendingCount", pendingCount);
@@ -99,12 +111,12 @@ public class LandingController extends BaseController {
         List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(userSession.getUserProfileId());
         modelAndView.addObject("months", receiptGroupedByMonth);
 
-        /** Used for charting in Expense tab */
+        /** Used for charting in Expense Analysis tab */
         log.info("Calculating Pie chart - item expense");
         Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpense(userSession.getUserProfileId());
         modelAndView.addObject("itemExpenses", itemExpenses);
 
-        /** Used for donut chart of each receipts with respect to expense types */
+        /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
         log.info("Calculating Donut chart - receipt expense");
         populateReceiptExpenseDonutChartDetails(modelAndView, allReceiptsForThisMonth);
 
@@ -117,6 +129,48 @@ public class LandingController extends BaseController {
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 	}
+
+    /**
+     * Loads monthly receipt data for the selected month
+     *
+     * @param monthView
+     * @param previousOrNext
+     * @param userSession
+     * @param httpServletResponse
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/monthly_expenses", method = RequestMethod.POST)
+    public @ResponseBody
+    ModelAndView monthlyExpenses(@RequestParam("monthView") String monthView,
+                                 @RequestParam("buttonClick") String previousOrNext,
+                                 @ModelAttribute("userSession") UserSession userSession,
+                                 @ModelAttribute("landingForm") LandingForm landingForm,
+                                 HttpServletResponse httpServletResponse) throws IOException {
+
+        ModelAndView modelAndView = new ModelAndView("/z/landingTabs");
+
+        if(userSession != null) {
+            String pattern = "MMM, yyyy";
+            DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+            DateTime monthYear = dtf.parseDateTime(monthView);
+            if(previousOrNext.equalsIgnoreCase("next")) {
+                monthYear = monthYear.minusMonths(1);
+            }
+
+            List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId(), monthYear);
+            ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, monthYear);
+            landingForm.setReceiptForMonth(receiptForMonth);
+
+            /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
+            log.info("Calculating Donut chart - receipt expense");
+            populateReceiptExpenseDonutChartDetails(modelAndView, allReceiptsForThisMonth);
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+        }
+
+        return modelAndView;
+    }
 
     /**
      * Populate Receipt expense donut chart
@@ -221,7 +275,7 @@ public class LandingController extends BaseController {
         UserProfileEntity userProfile = authenticate(profileId, authKey);
         if(userProfile != null) {
             long pendingCount = landingService.pendingReceipt(profileId);
-            List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(profileId);
+            List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(profileId, DateUtil.now());
 
             LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId(), Header.newInstance(getAuth(profileId)));
             landingView.setPendingCount(pendingCount);

@@ -156,16 +156,24 @@ public class FetcherController {
         }
     }
 
+    /**
+     * Gets all the pending receipt after a receipt is successfully uploaded
+     *
+     * @param userSession
+     * @param httpServletResponse
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/pending", method = RequestMethod.POST)
     public @ResponseBody
-    long pendingReceipts(@ModelAttribute("userSession") UserSession userSession, HttpServletResponse httpServletResponse)
-            throws IOException {
+    long pendingReceipts(@ModelAttribute("userSession") UserSession userSession,
+                         HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             return landingService.pendingReceipt(userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return -1;
+            return -1L;
         }
     }
 }
