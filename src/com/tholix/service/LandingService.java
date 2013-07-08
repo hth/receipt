@@ -99,7 +99,35 @@ public class LandingService {
             }
         };
 
-        return descendingOrder.sortedCopy(receiptGroupedList);
+        List<ReceiptGrouped> sortedList = descendingOrder.sortedCopy(receiptGroupedList);
+
+        /** In case there is just receipts for one month then add empty data to show the chart pretty for at least two additional months */
+        if(sortedList.size() < 3) {
+            if(sortedList.size() == 1) {
+                ReceiptGrouped receiptGrouped = sortedList.get(0);
+                DateTime dateTime = receiptGrouped.getDateTime();
+
+                dateTime = dateTime.minusMonths(1);
+                ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+                sortedList.add(r1);
+
+                dateTime = dateTime.minusMonths(1);
+                ReceiptGrouped r2 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+                sortedList.add(r2);
+
+            } else if(sortedList.size() == 2) {
+                ReceiptGrouped receiptGrouped = sortedList.get(0);
+                DateTime dateTime = receiptGrouped.getDateTime();
+
+                dateTime = dateTime.minusMonths(1);
+                ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+                sortedList.add(r1);
+            }
+
+            sortedList = descendingOrder.sortedCopy(sortedList);
+        }
+
+        return sortedList;
     }
 
     /**
