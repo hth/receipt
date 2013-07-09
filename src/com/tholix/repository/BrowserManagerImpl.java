@@ -34,7 +34,7 @@ public class BrowserManagerImpl implements BrowserManager {
 
     @Override
     public BrowserEntity findOne(String cookieId) {
-        return mongoTemplate.findOne(Query.query(Criteria.where("cookieId").is(cookieId)), BrowserEntity.class);
+        return mongoTemplate.findOne(Query.query(Criteria.where("COOKIE").is(cookieId)), BrowserEntity.class);
     }
 
     @Override

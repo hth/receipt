@@ -70,17 +70,17 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public List<ExpenseTypeEntity> allExpenseTypes(String userProfileId) {
-        Query query = Query.query(Criteria.where("userProfileId").is(userProfileId));
-        Sort sort = new Sort(Sort.Direction.ASC, "expName");
+        Query query = Query.query(Criteria.where("USER_PROFILE_ID").is(userProfileId));
+        Sort sort = new Sort(Sort.Direction.ASC, "EXP_NAME");
 
         return mongoTemplate.find(query.with(sort), ExpenseTypeEntity.class, TABLE);
     }
 
     @Override
     public List<ExpenseTypeEntity> activeExpenseTypes(String userProfileId) {
-        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
-        Sort sort = new Sort(Sort.Direction.ASC, "expName");
+        Sort sort = new Sort(Sort.Direction.ASC, "EXP_NAME");
 
         return mongoTemplate.find(query.with(sort), ExpenseTypeEntity.class, TABLE);
     }
@@ -88,7 +88,7 @@ public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     @Override
     public void changeVisibility(String expenseTypeId, boolean changeTo) {
         Query query = Query.query(Criteria.where("id").is(expenseTypeId));
-        Update update = Update.update("active", changeTo);
+        Update update = Update.update("ACTIVE", changeTo);
         mongoTemplate.updateFirst(query, update(update), ExpenseTypeEntity.class);
     }
 

@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -28,16 +29,21 @@ public abstract class BaseEntity implements Serializable {
 	protected String id;
 
 	@Version
+    @Field("VERSION")
 	private Integer version;
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
+    @Field("UPDATE")
 	private Date updated = DateUtil.nowTime();
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
+    @Field("CREATE")
 	private Date created = DateUtil.nowTime();
 
+    @Field("ACTIVE")
     private boolean active = true;
 
+    @Field("DELETE")
     private boolean deleted = false;
 
 	public BaseEntity() {

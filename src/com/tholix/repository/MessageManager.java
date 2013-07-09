@@ -25,15 +25,15 @@ public interface MessageManager extends RepositoryManager<MessageReceiptEntityOC
 
     List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status, int limit);
 
-    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, ReceiptStatusEnum status);
+    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status);
 
-    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, ReceiptStatusEnum status, int limit);
+    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit);
 
     List<MessageReceiptEntityOCR> findAllPending();
 
-    List<MessageReceiptEntityOCR> findPending(String emailId, String profileId, ReceiptStatusEnum status);
+    List<MessageReceiptEntityOCR> findPending(String emailId, String userProfileId, ReceiptStatusEnum status);
 
-    WriteResult updateObject(String id, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
+    WriteResult updateObject(String receiptOCRId, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
 
     /**
      * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.

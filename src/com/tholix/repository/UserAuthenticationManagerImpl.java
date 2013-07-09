@@ -62,7 +62,7 @@ public class UserAuthenticationManagerImpl implements UserAuthenticationManager 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
-		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), update(Update.update("name", name)), TABLE);
+		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), update(Update.update("NAME", name)), TABLE);
 	}
 
 	@Override

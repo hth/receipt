@@ -99,7 +99,7 @@ public class ItemManagerImpl implements ItemManager {
     @Deprecated
 	@Override
 	public ItemEntity findOne(String id) {
-		Sort sort = new Sort(Direction.ASC, "sequence");
+		Sort sort = new Sort(Direction.ASC, "SEQUENCE");
 		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)).with(sort), ItemEntity.class, TABLE);
 	}
 
@@ -112,14 +112,14 @@ public class ItemManagerImpl implements ItemManager {
      */
     @Override
     public ItemEntity findItem(String itemId, String userProfileId) {
-        Query query = Query.query(Criteria.where("id").is(itemId).andOperator(Criteria.where("userProfileId").is(userProfileId)));
+        Query query = Query.query(Criteria.where("id").is(itemId).andOperator(Criteria.where("USER_PROFILE_ID").is(userProfileId)));
         return mongoTemplate.findOne(query, ItemEntity.class, TABLE);
     }
 
 	@Override
 	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt) {
-		Sort sort = new Sort(Direction.ASC, "sequence");
-		return mongoTemplate.find(Query.query(Criteria.where("receipt").is(receipt)).with(sort), ItemEntity.class, TABLE);
+		Sort sort = new Sort(Direction.ASC, "SEQUENCE");
+		return mongoTemplate.find(Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId()))).with(sort), ItemEntity.class, TABLE);
 	}
 
     /**
@@ -151,12 +151,12 @@ public class ItemManagerImpl implements ItemManager {
     public List<ItemEntity> findAllByNameLimitByDays(String name, String userProfileId, DateTime untilThisDay) {
         // Can choose Item create date but if needs accuracy then find receipts for these items and filter receipts by date provided.
         // Not sure how much beneficial it would be other than more data crunching.
-        Criteria criteriaA = Criteria.where("name").is(name);
+        Criteria criteriaA = Criteria.where("NAME").is(name);
         Query query = Query.query(criteriaA);
 
         Criteria criteriaB;
         if(userProfileId != null) {
-            criteriaB = Criteria.where("userProfileId").is(userProfileId);
+            criteriaB = Criteria.where("USER_PROFILE_ID").is(userProfileId);
             query = Query.query(criteriaA.andOperator(criteriaB.andOperator(isNotDeleted())));
         }
 
@@ -174,8 +174,8 @@ public class ItemManagerImpl implements ItemManager {
     @Override
     public List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId) {
         if(itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
-            Criteria criteriaA = Criteria.where("name").is(itemEntity.getName());
-            Criteria criteriaB = Criteria.where("userProfileId").is(userProfileId);
+            Criteria criteriaA = Criteria.where("NAME").is(itemEntity.getName());
+            Criteria criteriaB = Criteria.where("USER_PROFILE_ID").is(userProfileId);
 
             Query query = Query.query(criteriaA.andOperator(criteriaB.andOperator(isNotDeleted())));
             return mongoTemplate.find(query, ItemEntity.class, TABLE);
@@ -215,7 +215,7 @@ public class ItemManagerImpl implements ItemManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntity object) {
 		Query query = Query.query(Criteria.where("id").is(object.getId()));
-		Update update = Update.update("name", object.getName());
+		Update update = Update.update("NAME", object.getName());
 		return mongoTemplate.updateFirst(query, update(update), TABLE);
 	}
 
@@ -223,22 +223,22 @@ public class ItemManagerImpl implements ItemManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(ReceiptEntity receipt) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-		mongoTemplate.remove(Query.query(Criteria.where("receipt").is(receipt)), ItemEntity.class);
+		mongoTemplate.remove(Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId()))), ItemEntity.class);
 	}
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteSoft(ReceiptEntity receipt) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = Query.query(Criteria.where("receipt").is(receipt));
-        Update update = Update.update("deleted", true);
+        Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
+        Update update = Update.update("DELETE", true);
         mongoTemplate.updateMulti(query, update(update), ItemEntity.class);
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ItemEntity> findItems(String name, String bizName) {
-        Criteria criteriaI = Criteria.where("name").regex(new StringTokenizer("^" + name).nextToken(), "i");
+        Criteria criteriaI = Criteria.where("NAME").regex(new StringTokenizer("^" + name).nextToken(), "i");
         Query query;
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
@@ -246,12 +246,12 @@ public class ItemManagerImpl implements ItemManager {
             //query = Query.query(criteriaI);
             return new ArrayList<>();
         } else {
-            Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
+            Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
             query = Query.query(criteriaI).addCriteria(criteriaB);
         }
 
         //This makes just one of the field populated
-        query.fields().include("name");
+        query.fields().include("NAME");
         return mongoTemplate.find(query, ItemEntity.class, TABLE);
     }
 
@@ -274,7 +274,7 @@ public class ItemManagerImpl implements ItemManager {
 
     @Override
     public long countItemsUsingExpenseType(String expenseTypeId) {
-        Query query = Query.query(Criteria.where("expenseType.id").is(expenseTypeId));
+        Query query = Query.query(Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseTypeId)));
         return mongoTemplate.count(query, ItemEntity.class);
     }
 
@@ -287,12 +287,12 @@ public class ItemManagerImpl implements ItemManager {
      */
     @Override
     public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseType) {
-        Query query = Query.query(Criteria.where("expenseType.$id").is(new ObjectId(expenseType.getId())));
+        Query query = Query.query(Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseType.getId())));
         return mongoTemplate.find(query, ItemEntity.class);
     }
 
     @Override
     public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
-        return mongoTemplate.find(Query.query(Criteria.where("expenseType").is(StringUtils.trimToNull(null)).and("userProfileId").is(userProfileId)), ItemEntity.class);
+        return mongoTemplate.find(Query.query(Criteria.where("EXPENSE_TYPE").is(StringUtils.trimToNull(null)).and("USER_PROFILE_ID").is(userProfileId)), ItemEntity.class);
     }
 }

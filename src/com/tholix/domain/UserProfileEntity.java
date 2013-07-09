@@ -13,6 +13,7 @@ import java.util.Date;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -30,27 +31,34 @@ public class UserProfileEntity extends BaseEntity {
 
 	@Indexed(unique = true)
 	@Email
+    @Field("EMAIL")
 	private String emailId;
 
 	@Size(min = 1, max = 64)
     @Pattern(regexp = "^[a-zA-Z]+$", message = "First Name must be alphabetic with no spaces")
+    @Field("FIRST_NAME")
     private String firstName;
 
 	@Size(min = 1, max = 64)
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Last Name must be alphabetic with no spaces")
+    @Field("LAST_NAME")
     private String lastName;
 
 	@DateTimeFormat(iso = ISO.DATE)
+    @Field("REGISTRATION")
 	private Date registration;
 
 	/* For time zone */
 	@NotNull
+    @Field("HOURS_OFF_SET")
 	private int hoursOffset;
 
 	@DBRef
+    @Field("USER_AUTHENTICATION")
 	private UserAuthenticationEntity userAuthentication;
 
 	@NotNull
+    @Field("USER_LEVEL_ENUM")
 	private UserLevelEnum level = UserLevelEnum.USER;
 
 	/** To make bean happy */

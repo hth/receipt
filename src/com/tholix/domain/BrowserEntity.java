@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * User: hitender
@@ -13,17 +14,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "BROWSER")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "browser_idx", def = "{'updated': 1}", unique=true),
+        @CompoundIndex(name = "browser_idx", def = "{'UPDATE': 1}", unique=true),
 } )
 public class BrowserEntity extends BaseEntity {
 
     @NotNull
+    @Field("COOKIE")
     private String cookieId;
 
     @NotNull
+    @Field("IP")
     private String ip;
 
     @NotNull
+    @Field("USER_AGENT")
     private String userAgent;
 
     private BrowserEntity(String cookieId, String ip, String userAgent) {

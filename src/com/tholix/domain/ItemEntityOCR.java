@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -21,32 +22,40 @@ import com.tholix.domain.types.TaxEnum;
  *
  */
 @Document(collection = "ITEM_OCR")
-@CompoundIndexes({ @CompoundIndex(name = "user_item_ocr_idx", def = "{'receipt': -1, 'userProfileId': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "user_item_ocr_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}") })
 public class ItemEntityOCR extends BaseEntity {
 	private static final long serialVersionUID = -8655601429195675799L;
 
 	@Size(min = 1, max = 128)
+    @Field("NAME")
 	private String name;
 
 	@NumberFormat(style = Style.CURRENCY)
+    @Field("PRICE")
 	private String price;
 
 	@NotNull
+    @Field("TAX_ENUM")
 	private TaxEnum taxed = TaxEnum.NOT_TAXED;
 
 	@NotNull
+    @Field("SEQUENCE")
 	private int sequence;
 
 	@DBRef
+    @Field("RECEIPT")
 	private ReceiptEntityOCR receipt;
 
 	@NotNull
+    @Field("USER_PROFILE_ID")
 	private String userProfileId;
 
     @DBRef
+    @Field("BIZ_NAME")
     private BizNameEntity bizName;
 
     @DBRef
+    @Field("EXPENSE_TYPE")
     private ExpenseTypeEntity expenseType;
 
 	/** To keep spring happy in recreating the bean from form during submit action */

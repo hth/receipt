@@ -66,7 +66,6 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	@Override
 	public ReceiptEntityOCR findOne(String id) {
 		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ReceiptEntityOCR.class, TABLE);
-
 	}
 
 	@Override
@@ -95,27 +94,27 @@ public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
 	public long numberOfPendingReceipts(String userProfileId) {
-        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
 		return mongoTemplate.count(query, TABLE);
 	}
 
 	@Override
 	public List<ReceiptEntityOCR> getAllPending(String userProfileId) {
-        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
 
-        Sort sort = new Sort(Direction.ASC, "created");
+        Sort sort = new Sort(Direction.ASC, "CREATE");
 		return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
 	}
 
     @Override
     public List<ReceiptEntityOCR> getAllRejected(String userProfileId) {
-        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
-        Criteria criteria2 = Criteria.where("receiptStatus").is(ReceiptStatusEnum.TURK_RECEIPT_REJECT);
+        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteria2 = Criteria.where("RECEIPT_STATUS_ENUM").is(ReceiptStatusEnum.TURK_RECEIPT_REJECT);
         Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
 
-        Sort sort = new Sort(Direction.ASC, "created");
+        Sort sort = new Sort(Direction.ASC, "CREATE");
         return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
     }
 

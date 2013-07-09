@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 
 /**
@@ -17,25 +18,30 @@ import org.springframework.format.annotation.NumberFormat;
  */
 @Document(collection = "BIZ_STORE")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_store_idx", def = "{'address': 1, 'phone': 1}", unique=true),
+        @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public class BizStoreEntity extends BaseEntity {
 
     @NotNull
     @Size(min = 0, max = 128)
+    @Field("ADDRESS")
     private String address;
 
     @NotNull
     @Size(min = 0, max = 20)
+    @Field("PHONE")
     private String phone;
 
     @NumberFormat(style = NumberFormat.Style.NUMBER)
+    @Field("LAT")
     private double lat;
 
     @NumberFormat(style = NumberFormat.Style.NUMBER)
+    @Field("LNG")
     private double lng;
 
     @DBRef
+    @Field("BIZ_NAME")
     private BizNameEntity bizName;
 
     /* To make bean happy */

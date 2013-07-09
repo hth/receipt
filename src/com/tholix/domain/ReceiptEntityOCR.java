@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.tholix.domain.types.ReceiptStatusEnum;
 
@@ -20,46 +21,59 @@ import com.tholix.domain.types.ReceiptStatusEnum;
  *
  */
 @Document(collection = "RECEIPT_OCR")
-@CompoundIndexes({ @CompoundIndex(name = "user_receipt_ocr_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "user_receipt_ocr_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
 public class ReceiptEntityOCR extends BaseEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
 
 	@NotNull
+    @Field("RECEIPT_STATUS_ENUM")
 	private ReceiptStatusEnum receiptStatus;
 
 	@NotNull
+    @Field("RECEIPT_BLOB_ID")
 	private String receiptBlobId;
 
 	@NotNull
+    @Field("RECEIPT_DATE")
 	private String receiptDate;
 
     @Transient
+    @Field("SUB_TOTAL")
     private String subTotal;
 
 	@NotNull
+    @Field("TOTAL")
 	private String total;
 
 	@NotNull
+    @Field("TAX")
 	private String tax = "0.00";
 
 	@NotNull
+    @Field("USER_PROFILE_ID")
 	private String userProfileId;
 
 	@NotNull
+    @Field("OCR_TRANSLATION")
 	private String receiptOCRTranslation;
 
     @DBRef
+    @Field("BIZ_NAME")
     private BizNameEntity bizName;
 
     @DBRef
+    @Field("BIZ_STORE")
     private BizStoreEntity bizStore;
 
+    @Field("RECEIPT_ID")
     private String receiptId;
 
     @DBRef
+    @Field("COMMENT_RECHECK")
     private CommentEntity recheckComment;
 
     @DBRef
+    @Field("COMMENT_NOTES")
     private CommentEntity notes;
 
     /** To keep bean happy */

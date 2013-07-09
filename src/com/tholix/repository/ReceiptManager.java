@@ -73,6 +73,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      */
     Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId);
 
+    @Deprecated
     List<String> findTitles(String title);
 
     ReceiptEntity findWithReceiptOCR(String receiptOCRId);

@@ -1,5 +1,7 @@
 package com.tholix.domain;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -15,22 +17,25 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "INVITE")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "invite_key_idx", def = "{'authenticationKey' : 0}", unique = true)
+        @CompoundIndex(name = "invite_key_idx", def = "{'AUTH' : 0}", unique = true)
 } )
 public class InviteEntity extends BaseEntity {
 
     @NotNull
+    @Field("EMAIL")
+    @Email
     private String emailId;
 
     @NotNull
+    @Field("AUTH")
     private String authenticationKey;
 
     @DBRef
-    @Field("invited")
+    @Field("USER_PROFILE_INVITED")
     private UserProfileEntity invited;
 
     @DBRef
-    @Field("invitedBy")
+    @Field("USER_PROFILE_INVITED_BY")
     private UserProfileEntity invitedBy;
 
     public static InviteEntity newInstance(String emailId, String authenticationKey, UserProfileEntity invited, UserProfileEntity invitedBy) {

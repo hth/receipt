@@ -73,14 +73,14 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     public BizStoreEntity noStore() {
-        return mongoTemplate.findOne(Query.query(Criteria.where("address").is("")), BizStoreEntity.class, TABLE);
+        return mongoTemplate.findOne(Query.query(Criteria.where("ADDRESS").is("")), BizStoreEntity.class, TABLE);
     }
 
     public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
-        Query query = Query.query(Criteria.where("address").is(bizStoreEntity.getAddress()));
+        Query query = Query.query(Criteria.where("ADDRESS").is(bizStoreEntity.getAddress()));
 
         if(StringUtils.isNotEmpty(bizStoreEntity.getPhone())) {
-            query.addCriteria(Criteria.where("phone").is(bizStoreEntity.getPhone()));
+            query.addCriteria(Criteria.where("PHONE").is(bizStoreEntity.getPhone()));
         }
 
         return mongoTemplate.findOne(query, BizStoreEntity.class, TABLE);
@@ -88,16 +88,16 @@ public class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> findAll(String bizAddress, BizNameEntity bizNameEntity) {
-        Criteria criteriaA = Criteria.where("address").regex("^" + bizAddress, "i");
-        Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
+        Criteria criteriaA = Criteria.where("ADDRESS").regex("^" + bizAddress, "i");
+        Criteria criteriaB = Criteria.where("BIZ_NAME").is(bizNameEntity);
 
         return mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA), BizStoreEntity.class, TABLE);
     }
 
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
-        Criteria criteriaA = Criteria.where("address").regex("^" + bizAddress, "i");
-        Criteria criteriaB = Criteria.where("bizName").is(bizNameEntity);
+        Criteria criteriaA = Criteria.where("ADDRESS").regex("^" + bizAddress, "i");
+        Criteria criteriaB = Criteria.where("BIZ_NAME").is(bizNameEntity);
 
         Query query = Query.query(criteriaB).addCriteria(criteriaA);
         query.fields().include(fieldName);
@@ -106,9 +106,9 @@ public class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
-        Criteria criteriaA = Criteria.where("phone").regex("^" + bizPhone, "i");
-        Criteria criteriaB = Criteria.where("address").is(bizAddress);
-        Criteria criteriaC = Criteria.where("bizName").is(bizNameEntity);
+        Criteria criteriaA = Criteria.where("PHONE").regex("^" + bizPhone, "i");
+        Criteria criteriaB = Criteria.where("ADDRESS").is(bizAddress);
+        Criteria criteriaC = Criteria.where("BIZ_NAME").is(bizNameEntity);
 
         Query query = Query.query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
         query.fields().include(fieldName);
@@ -117,8 +117,8 @@ public class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
-        Sort sort = new Sort(Sort.Direction.DESC, "created");
-        return mongoTemplate.find(Query.query(Criteria.where("bizName").is(bizNameEntity)).with(sort).limit(limit), BizStoreEntity.class, TABLE);
+        Sort sort = new Sort(Sort.Direction.DESC, "CREATE");
+        return mongoTemplate.find(Query.query(Criteria.where("BIZ_NAME").is(bizNameEntity)).with(sort).limit(limit), BizStoreEntity.class, TABLE);
     }
 
     @Override

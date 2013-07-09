@@ -227,7 +227,8 @@ public class ForgotController {
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
                         SHAHashing.hashCodeSHA512(forgotAuthenticateForm.getPassword()),
-                        SHAHashing.hashCodeSHA1(RandomString.newInstance().nextString()));
+                        SHAHashing.hashCodeSHA1(RandomString.newInstance().nextString())
+                );
 
 
                 userAuthenticationEntity.setId(userProfileEntity.getUserAuthentication().getId());

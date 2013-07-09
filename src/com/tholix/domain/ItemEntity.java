@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -24,32 +25,40 @@ import com.tholix.domain.types.TaxEnum;
  */
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
 @Document(collection = "ITEM")
-@CompoundIndexes({ @CompoundIndex(name = "user_item_idx", def = "{'receipt': -1, 'user': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "user_item_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}") })
 public class ItemEntity extends BaseEntity {
 	private static final long serialVersionUID = 1031429034359059354L;
 
 	@Size(min = 1, max = 128)
+    @Field("NAME")
 	private String name;
 
 	@NumberFormat(style = Style.CURRENCY)
+    @Field("PRICE")
 	private Double price;
 
 	@NotNull
+    @Field("TAX_ENUM")
 	private TaxEnum taxed = TaxEnum.NOT_TAXED;
 
 	@NotNull
+    @Field("SEQUENCE")
 	private int sequence;
 
-	@DBRef
-	private ReceiptEntity receipt;
-
 	@NotNull
+    @Field("USER_PROFILE_ID")
 	private String userProfileId;
 
     @DBRef
+    @Field("RECEIPT")
+    private ReceiptEntity receipt;
+
+    @DBRef
+    @Field("BIZ_NAME")
     private BizNameEntity bizName;
 
     @DBRef
+    @Field("EXPENSE_TYPE")
     private ExpenseTypeEntity expenseType;
 
 	public ItemEntity() {}

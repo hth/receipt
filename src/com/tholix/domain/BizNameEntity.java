@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * User: hitender
@@ -14,12 +15,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "BIZ_NAME")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_name_idx", def = "{'name': 1}",  unique = true),
+        @CompoundIndex(name = "biz_name_idx", def = "{'NAME': 1}",  unique = true),
 } )
 public class BizNameEntity extends BaseEntity {
 
     @NotNull
     @Size(min = 0, max = 60)
+    @Field("NAME")
     private String name;
 
     /* To make bean happy */

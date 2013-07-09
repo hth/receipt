@@ -52,7 +52,7 @@ public class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("userProfile").is(userProfile)), UserPreferenceEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("USER_PROFILE.$id").is(new ObjectId(userProfile.getId()))), UserPreferenceEntity.class, TABLE);
 	}
 
 	@Override

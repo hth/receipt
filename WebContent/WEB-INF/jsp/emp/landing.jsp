@@ -114,8 +114,8 @@
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.since" />
                     </td>
-                    <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
-                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.idReceiptOCR}">
+                    <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptOCRId}">
                             Open
                         </a>
                     </td>
@@ -150,8 +150,8 @@
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.since" />
                     </td>
-                    <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
-                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.idReceiptOCR}">
+                    <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptOCRId}">
                             Open
                         </a>
                     </td>
@@ -186,8 +186,8 @@
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.since" />
                     </td>
-                    <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.idReceiptOCR}">
+                    <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.receiptOCRId}">
                             Open
                         </a>
                     </td>
@@ -222,8 +222,8 @@
                     <td style="padding:3px;">
                         <spring:eval expression="receipt.since" />
                     </td>
-                    <td style="padding:3px;" align="right" title="${receipt.idReceiptOCR}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.idReceiptOCR}">
+                    <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.receiptOCRId}">
                             Open
                         </a>
                     </td>

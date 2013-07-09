@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.UserLevelEnum;
@@ -20,20 +21,27 @@ import com.tholix.utils.DateUtil;
 public class MessageReceiptEntityOCR extends BaseEntity {
 
     @NotNull
-    private String idReceiptOCR;
+    @Field("RECEIPT_OCR_ID")
+    private String receiptOCRId;
 
     @NotNull
+    @Field("USER_LEVEL_ENUM")
     private UserLevelEnum level = UserLevelEnum.USER;
 
     @Email
+    @Field("EMAIL")
     String emailId;
 
+    @NotNull
+    @Field("USER_PROFILE_ID")
     String userProfileId;
 
     @NotNull
+    @Field("LOCKED")
     private boolean recordLocked = false;
 
     @NotNull
+    @Field("RECEIPT_STATUS_ENUM")
     private ReceiptStatusEnum receiptStatus;
 
     @Transient
@@ -41,8 +49,8 @@ public class MessageReceiptEntityOCR extends BaseEntity {
 
     private MessageReceiptEntityOCR() {}
 
-    private MessageReceiptEntityOCR(String idReceiptOCR, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
-        this.idReceiptOCR = idReceiptOCR;
+    private MessageReceiptEntityOCR(String receiptOCRId, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
+        this.receiptOCRId = receiptOCRId;
         this.level = level;
         this.receiptStatus = receiptStatus;
     }
@@ -51,8 +59,8 @@ public class MessageReceiptEntityOCR extends BaseEntity {
         return new MessageReceiptEntityOCR(idReceiptOCR, level, receiptStatus);
     }
 
-    public String getIdReceiptOCR() {
-        return idReceiptOCR;
+    public String getReceiptOCRId() {
+        return receiptOCRId;
     }
 
     public UserLevelEnum getLevel() {
@@ -99,7 +107,7 @@ public class MessageReceiptEntityOCR extends BaseEntity {
     public String toString() {
         return "MessageReceiptEntityOCR{" +
                 "id='" + id + '\'' +
-                ", idReceiptOCR='" + idReceiptOCR + '\'' +
+                ", receiptOCRId='" + receiptOCRId + '\'' +
                 ", level=" + level +
                 ", emailId='" + emailId + '\'' +
                 ", userProfileId='" + userProfileId + '\'' +

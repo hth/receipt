@@ -57,20 +57,20 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ReceiptEntity> getAllReceipts(String userProfileId) {
-        Criteria criteria = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria = Criteria.where("USER_PROFILE_ID").is(userProfileId);
 
-		Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
+		Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "CREATE"));
 		return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
 	}
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId, DateTime monthYear) {
-        Criteria criteria = Criteria.where("userProfileId").is(userProfileId);
-        Criteria criteria1 = Criteria.where("month").is(monthYear.getMonthOfYear());
-        Criteria criteria2 = Criteria.where("year").is(monthYear.getYear());
+        Criteria criteria = Criteria.where("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteria1 = Criteria.where("MONTH").is(monthYear.getMonthOfYear());
+        Criteria criteria2 = Criteria.where("YEAR").is(monthYear.getYear());
 
-        Sort sort = new Sort(Direction.DESC, "receiptDate").and(new Sort(Direction.DESC, "created"));
+        Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "CREATE"));
         Query query = Query.query(criteria).addCriteria(criteria1).addCriteria(criteria2).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query.with(sort), ReceiptEntity.class, TABLE);
     }
@@ -78,16 +78,16 @@ public class ReceiptManagerImpl implements ReceiptManager {
 	@Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId) {
-        GroupBy groupBy = GroupBy.key("day", "month", "year")
+        GroupBy groupBy = GroupBy.key("DAY", "MONTH", "YEAR")
                 .initialDocument("{ total: 0 }")
                 .reduceFunction("function(obj, result) { " +
-                        "  result.day = obj.day; " +
-                        "  result.month = obj.month; " +
-                        "  result.year = obj.year; " +
-                        "  result.total += obj.total; " +
+                        "  result.day = obj.DAY; " +
+                        "  result.month = obj.MONTH; " +
+                        "  result.year = obj.YEAR; " +
+                        "  result.total += obj.TOTAL; " +
                         "}");
 
-        Criteria criteria = Criteria.where("userProfileId").is(userProfileId).andOperator(isActive().andOperator(isNotDeleted()));
+        Criteria criteria = Criteria.where("USER_PROFILE_ID").is(userProfileId).andOperator(isActive().andOperator(isNotDeleted()));
         GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
         return results.iterator();
 	}
@@ -96,18 +96,18 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
-        GroupBy groupBy = GroupBy.key("month", "year")
+        GroupBy groupBy = GroupBy.key("MONTH", "YEAR")
                 .initialDocument("{ total: 0 }")
                 .reduceFunction("function(obj, result) { " +
-                        "  result.month = obj.month; " +
-                        "  result.year = obj.year; " +
-                        "  result.total += obj.total; " +
+                        "  result.month = obj.MONTH; " +
+                        "  result.year = obj.YEAR; " +
+                        "  result.total += obj.TOTAL; " +
                         "}");
 
         DateTime date = DateUtil.now().minusMonths(13);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
-        Criteria criteriaA = Criteria.where("userProfileId").is(userProfileId);
-        Criteria criteriaB = Criteria.where("receiptDate").gte(since.toDate());
+        Criteria criteriaA = Criteria.where("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteriaB = Criteria.where("RECEIPT_DATE").gte(since.toDate());
         Criteria criteria = criteriaA.andOperator(criteriaB.andOperator(isActive().andOperator(isNotDeleted())));
 
         GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
@@ -118,11 +118,11 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<String> findTitles(String title) {
-        Criteria criteria = Criteria.where("title").regex(title, "i");
+        Criteria criteria = Criteria.where("TITLE").regex(title, "i");
         Query query = Query.query(criteria);
 
         //This makes just one of the field populated
-        query.fields().include("title");
+        query.fields().include("TITLE");
         List<ReceiptEntity> list = mongoTemplate.find(query, ReceiptEntity.class, TABLE);
 
         List<String> titles = new ArrayList<>();
@@ -174,7 +174,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public ReceiptEntity findReceipt(String receiptId, String userProfileId) {
         Query query = Query.query(Criteria.where("id").is(receiptId))
-                .addCriteria(Criteria.where("userProfileId").is(userProfileId))
+                .addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId))
                 .addCriteria(isActive())
                 .addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
@@ -182,7 +182,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public ReceiptEntity findWithReceiptOCR(String receiptOCRId) {
-        Query query = Query.query(Criteria.where("receiptOCRId").is(receiptOCRId));
+        Query query = Query.query(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
         return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
     }
 
@@ -202,7 +202,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteSoft(ReceiptEntity object) {
         Query query = Query.query(Criteria.where("id").is(object.getId()));
-        Update update = Update.update("deleted", true);
+        Update update = Update.update("DELETE", true);
         mongoTemplate.updateFirst(query, update(update), ReceiptEntity.class);
     }
 
@@ -227,12 +227,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String userProfileId) {
-        Criteria criteria = Criteria.where("userProfileId").is(userProfileId)
-                .andOperator(Criteria.where("year").is(year),
-                        Criteria.where("month").is(month),
-                        Criteria.where("day").is(day));
+        Criteria criteria = Criteria.where("USER_PROFILE_ID").is(userProfileId)
+                .andOperator(Criteria.where("YEAR").is(year),
+                        Criteria.where("MONTH").is(month),
+                        Criteria.where("DAY").is(day));
 
-        Sort sort = new Sort(Direction.DESC, "receiptDate");
+        Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE");
         return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
     }
 }

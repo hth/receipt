@@ -63,11 +63,11 @@ public class UploadReceiptImage {
     public DBObject getMetaData() {
         DBObject metaData = new BasicDBObject();
 
-        metaData.put("original_fileName", getOriginalFileName());
-        metaData.put("emailId", getEmailId());
-        metaData.put("userProfileId", getUserProfileId());
-        metaData.put("emailId_and_fileName", getEmailId() + "_" + getOriginalFileName());
-        metaData.put("userProfileId_and_fileName", getUserProfileId() + "_" + getOriginalFileName());
+        metaData.put("ORIGINAL_FILENAME", getOriginalFileName());
+        metaData.put("EMAIL", getEmailId());
+        metaData.put("USER_PROFILE_ID", getUserProfileId());
+        metaData.put("EMAIL_AND_FILENAME", getEmailId() + "_" + getOriginalFileName());
+        metaData.put("USER_PROFILE_ID_AND_FILENAME", getUserProfileId() + "_" + getOriginalFileName());
 
         return metaData;
     }

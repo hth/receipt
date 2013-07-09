@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author hitender
@@ -16,16 +17,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 @Document(collection = "USER_DATA")
-@CompoundIndexes({ @CompoundIndex(name = "user_data_idx", def = "{'userAuthentication': 1, 'clientName': -1}") })
+@CompoundIndexes({ @CompoundIndex(name = "user_data_idx", def = "{'USER_AUTHENTICATION': 1, 'CLIENT_NAME': -1}") })
 public class UserDataEntity extends BaseEntity {
 
 	private static final long serialVersionUID = 4809841412952941731L;
 
 	@DBRef
+    @Field("USER_AUTHENTICATION")
 	private UserAuthenticationEntity userAuthentication;
 
 	/** Name of a business or a client */
 	@Size(min = 1, max = 128)
+    @Field("CLIENT_NAME")
 	private String clientName;
 
 	// @PersistenceConstructor

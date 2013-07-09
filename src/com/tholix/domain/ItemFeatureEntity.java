@@ -5,6 +5,7 @@ package com.tholix.domain;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.tholix.domain.types.FeaturesOnItemEnum;
 
@@ -20,6 +21,7 @@ public class ItemFeatureEntity extends BaseEntity {
 	private static final long serialVersionUID = -4231361664120744038L;
 
 	@DBRef
+    @Field("ITEM")
 	private ItemEntity itemEntity;
 
 	private FeaturesOnItemEnum featureOnItem;

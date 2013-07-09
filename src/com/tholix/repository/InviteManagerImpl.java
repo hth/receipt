@@ -1,8 +1,12 @@
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 import static com.tholix.repository.util.AppendAdditionalFields.*;
+
+import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -24,20 +28,22 @@ import com.tholix.domain.InviteEntity;
 @Repository
 @Transactional(readOnly = true)
 public class InviteManagerImpl implements InviteManager {
+    private final static Logger log = Logger.getLogger(InviteManagerImpl.class);
 
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
     public InviteEntity findByAuthenticationKey(String key) {
-        Criteria criteria = Criteria.where("authenticationKey").is(key);
+        Criteria criteria = Criteria.where("AUTH").is(key);
         Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 
     @Override
     public void invalidateAllEntries(InviteEntity object) {
-        Criteria criteria = Criteria.where("invited").is(object.getInvited());
-        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("active", false)), InviteEntity.class);
+        Criteria criteria = Criteria.where("USER_PROFILE_INVITED.$id").is(new ObjectId(object.getInvited().getId()));
+        WriteResult writeResult = mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("ACTIVE", false)), InviteEntity.class);
+        log.info(writeResult.toString());
     }
 
     @Override

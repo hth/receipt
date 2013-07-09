@@ -82,7 +82,7 @@ public class StorageManagerImpl implements StorageManager {
     @Override
     public void deleteSoft(String id) {
         GridFSDBFile receiptBlob = get(id);
-        receiptBlob.put("deleted", true);
+        receiptBlob.put("DELETE", true);
         receiptBlob.save();
     }
 

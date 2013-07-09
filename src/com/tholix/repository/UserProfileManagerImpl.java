@@ -3,6 +3,8 @@
  */
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 import static com.tholix.repository.util.AppendAdditionalFields.update;
@@ -65,12 +67,12 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("userAuthentication").is(object)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("USER_AUTHENTICATION.$id").is(new ObjectId(object.getId()))), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
 	public UserProfileEntity getObjectUsingEmail(String emailId) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("emailId").is(emailId)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("EMAIL").is(emailId)), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
@@ -90,7 +92,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, UserLevelEnum level) {
-		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), update(Update.update("level", level)), UserProfileEntity.class);
+		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), update(Update.update("USER_LEVEL_ENUM", level)), UserProfileEntity.class);
 	}
 
 	@Override
@@ -119,7 +121,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
 		//TODO this does not seems to be working query
-		Criteria a = Criteria.where("firstName").regex(name, "i");
+		Criteria a = Criteria.where("FIRST_NAME").regex(name, "i");
 		//Criteria b = Criteria.where("lastName").regex(name, "i");
 		//return mongoTemplate.find(Query.query(a.orOperator(b)), UserProfileEntity.class, TABLE);
 		return mongoTemplate.find(Query.query(a), UserProfileEntity.class, TABLE);
@@ -127,7 +129,7 @@ public class UserProfileManagerImpl implements UserProfileManager {
 
     @Override
     public UserProfileEntity findOneByEmail(String emailId) {
-        Criteria a = Criteria.where("emailId").is(emailId);
+        Criteria a = Criteria.where("EMAIL").is(emailId);
         return mongoTemplate.findOne(Query.query(a), UserProfileEntity.class, TABLE);
     }
 

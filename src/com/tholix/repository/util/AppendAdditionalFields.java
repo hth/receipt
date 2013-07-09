@@ -16,19 +16,19 @@ public final class AppendAdditionalFields {
     private static final Logger log = Logger.getLogger(AppendAdditionalFields.class);
 
     public static Criteria isDeleted() {
-        return Criteria.where("deleted").is(true);
+        return Criteria.where("DELETE").is(true);
     }
 
     public static Criteria isActive() {
-        return Criteria.where("active").is(true);
+        return Criteria.where("ACTIVE").is(true);
     }
 
     public static Criteria isNotDeleted() {
-        return Criteria.where("deleted").is(false);
+        return Criteria.where("DELETE").is(false);
     }
 
     public static Criteria isNotActive() {
-        return Criteria.where("active").is(false);
+        return Criteria.where("ACTIVE").is(false);
     }
 
     /**
@@ -41,7 +41,7 @@ public final class AppendAdditionalFields {
      */
     public static Update update(Update update) {
         if(update != null) {
-            return update.set("updated", DateUtil.nowTime()).inc("version", 1);
+            return update.set("UPDATE", DateUtil.nowTime()).inc("VERSION", 1);
         } else {
             log.error("Update cannot be null");
         }

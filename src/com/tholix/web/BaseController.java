@@ -33,7 +33,7 @@ public abstract class BaseController {
 
     public String getAuth(UserProfileEntity userProfile) {
         UserAuthenticationEntity userAuthentication = userAuthenticationManager.findOne(userProfile.getUserAuthentication().getId());
-        return userAuthentication.getAuth();
+        return userAuthentication.getAuthenticationKey();
     }
 
     public UserProfileEntity authenticate(String profileId, String authKey) {
@@ -65,7 +65,7 @@ public abstract class BaseController {
      * @return
      */
     private boolean checkAuthKey(String authKey, UserProfileEntity userProfile) {
-        return userProfile != null && authKey.equals(userProfile.getUserAuthentication().getAuth());
+        return userProfile != null && authKey.equals(userProfile.getUserAuthentication().getAuthenticationKey());
     }
 
     /**

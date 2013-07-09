@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
@@ -29,53 +30,67 @@ import com.tholix.utils.Maths;
  *
  */
 @Document(collection = "RECEIPT")
-@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'receiptBlobId': 1, 'userProfileId': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
 	@NotNull
+    @Field("RECEIPT_STATUS")
 	private ReceiptStatusEnum receiptStatus;
 
 	@NotNull
+    @Field("RECEIPT_BLOB_ID")
 	private String receiptBlobId;
 
 	@NotNull
     @DateTimeFormat(iso = ISO.DATE_TIME)
+    @Field("RECEIPT_DATE")
 	private Date receiptDate;
 
 	@NotNull
+    @Field("YEAR")
 	private int year;
 
 	@NotNull
+    @Field("MONTH")
 	private int month;
 
 	@NotNull
+    @Field("DAY")
 	private int day;
 
 	@NotNull
 	@NumberFormat(style = Style.CURRENCY)
+    @Field("TOTAL")
 	private Double total;
 
 	@NotNull
 	@NumberFormat(style = Style.CURRENCY)
+    @Field("TAX")
 	private Double tax = 0.00;
 
 	@NotNull
+    @Field("USER_PROFILE_ID")
 	private String userProfileId;
 
     @DBRef
+    @Field("BIZ_NAME")
     private BizNameEntity bizName;
 
     @DBRef
+    @Field("BIZ_STORE")
     private BizStoreEntity bizStore;
 
     @NotNull
+    @Field("RECEIPT_OCR_ID")
     private String receiptOCRId;
 
     @DBRef
+    @Field("COMMENT_RECHECK")
     private CommentEntity recheckComment;
 
     @DBRef
+    @Field("COMMENT_NOTES")
     private CommentEntity notes;
 
     /** To keep bean happy */

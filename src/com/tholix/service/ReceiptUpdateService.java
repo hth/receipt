@@ -272,7 +272,7 @@ public class ReceiptUpdateService {
             DBObject dbObject =  gridFSDBFile.getMetaData();
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Could not process receipt '").append(dbObject.get("original_fileName")).append("'");
+            sb.append("Could not process receipt '").append(dbObject.get("ORIGINAL_FILENAME")).append("'");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT_OCR, receiptOCR);
 
         } catch(Exception exce) {

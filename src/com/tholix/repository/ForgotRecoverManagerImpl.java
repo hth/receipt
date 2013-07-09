@@ -39,8 +39,8 @@ public class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public void invalidateAllEntries(ForgotRecoverEntity object) {
-        Criteria criteria = Criteria.where("userProfileId").is(object.getUserProfileId());
-        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("active", false)), ForgotRecoverEntity.class);
+        Criteria criteria = Criteria.where("USER_PROFILE_ID").is(object.getUserProfileId());
+        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("ACTIVE", false)), ForgotRecoverEntity.class);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public ForgotRecoverEntity findByAuthenticationKey(String key) {
-        Criteria criteria = Criteria.where("authenticationKey").is(key);
+        Criteria criteria = Criteria.where("AUTH").is(key);
         Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, ForgotRecoverEntity.class, TABLE);
     }

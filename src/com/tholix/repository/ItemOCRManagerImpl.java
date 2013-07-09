@@ -3,6 +3,8 @@
  */
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 import static com.tholix.repository.util.AppendAdditionalFields.update;
@@ -75,8 +77,8 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public List<ItemEntityOCR> getWhereReceipt(ReceiptEntityOCR receipt) {
-		Query query = Query.query(Criteria.where("receipt").is(receipt));
-		Sort sort = new Sort(Direction.ASC, "sequence");
+		Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
+		Sort sort = new Sort(Direction.ASC, "SEQUENCE");
 		return mongoTemplate.find(query.with(sort), ItemEntityOCR.class, TABLE);
 	}
 
@@ -95,7 +97,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(ReceiptEntityOCR receipt) {
-		Query query = Query.query(Criteria.where("receipt").is(receipt));
+		Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
 		mongoTemplate.remove(query, ItemEntityOCR.class);
 	}
 
@@ -115,7 +117,7 @@ public class ItemOCRManagerImpl implements ItemOCRManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntityOCR object) {
 		Query query = Query.query(Criteria.where("id").is(object.getId()));
-		Update update = Update.update("name", object.getName());
+		Update update = Update.update("NAME", object.getName());
 		return mongoTemplate.updateFirst(query, update(update), TABLE);
 	}
 

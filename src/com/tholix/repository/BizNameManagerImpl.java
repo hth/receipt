@@ -47,7 +47,7 @@ public class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public BizNameEntity findOneByName(String name) {
-        Criteria criteria = Criteria.where("name").is(name);
+        Criteria criteria = Criteria.where("NAME").is(name);
         return mongoTemplate.findOne(Query.query(criteria), BizNameEntity.class, TABLE);
     }
 
@@ -78,12 +78,12 @@ public class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public BizNameEntity noName() {
-        return mongoTemplate.findOne(Query.query(Criteria.where("name").is("")), BizNameEntity.class, TABLE);
+        return mongoTemplate.findOne(Query.query(Criteria.where("NAME").is("")), BizNameEntity.class, TABLE);
     }
 
     @Override
     public List<BizNameEntity> findAllBiz(String bizName) {
-        return mongoTemplate.find(Query.query(Criteria.where("name").regex("^" + bizName, "i")), BizNameEntity.class, TABLE);
+        return mongoTemplate.find(Query.query(Criteria.where("NAME").regex("^" + bizName, "i")), BizNameEntity.class, TABLE);
     }
 
     public List<String> findAllBizStr(String bizName) {

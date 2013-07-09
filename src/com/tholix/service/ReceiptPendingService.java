@@ -32,7 +32,7 @@ public class ReceiptPendingService {
         List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllPending(userProfileId);
         for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
             GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntityOCR.getReceiptBlobId());
-            String originalFileName = (String) gridFSDBFile.getMetaData().get("original_fileName");
+            String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
             pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
         }
     }
@@ -47,7 +47,7 @@ public class ReceiptPendingService {
         List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllRejected(userProfileId);
         for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
             GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntityOCR.getReceiptBlobId());
-            String originalFileName = (String) gridFSDBFile.getMetaData().get("original_fileName");
+            String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
             pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
         }
     }

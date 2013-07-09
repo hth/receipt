@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * User: hitender
@@ -13,15 +14,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "FORGOT_RECOVER")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "forgot_recover_idx",     def = "{'userProfileId': 0, 'created': 1}"),
-        @CompoundIndex(name = "forgot_recover_key_idx", def = "{'authenticationKey' : 0}", unique = true)
+        @CompoundIndex(name = "forgot_recover_idx",     def = "{'USER_PROFILE_ID': 0, 'CREATE': 1}"),
+        @CompoundIndex(name = "forgot_recover_key_idx", def = "{'AUTH' : 0}", unique = true)
 } )
 public class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
+    @Field("USER_PROFILE_ID")
     private String userProfileId;
 
     @NotNull
+    @Field("AUTH")
     private String authenticationKey;
 
     private ForgotRecoverEntity(String userProfileId, String authenticationKey) {

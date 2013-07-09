@@ -3,6 +3,7 @@ package com.tholix.domain;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.tholix.domain.types.NotificationTypeEnum;
 
@@ -15,15 +16,19 @@ import com.tholix.domain.types.NotificationTypeEnum;
 public class NotificationEntity extends BaseEntity {
 
     @NotNull
+    @Field("MESSAGE")
     private String message;
 
     @NotNull
+    @Field("USER_PROFILE_ID")
     private String userProfileId;
 
     @NotNull
+    @Field("NOTIFIED")
     private boolean notified = false;
 
     @NotNull
+    @Field("NOTIFICATION_ENUM")
     private NotificationTypeEnum notificationType;
 
     /**

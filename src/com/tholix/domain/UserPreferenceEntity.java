@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.tholix.domain.types.AccountTypeEnum;
 
@@ -23,9 +24,11 @@ public class UserPreferenceEntity extends BaseEntity {
 
 	@DBRef
 	@Indexed(unique = true)
+    @Field("USER_PROFILE")
 	private UserProfileEntity userProfile;
 
 	@NotNull
+    @Field("ACCOUNT_ENUM")
 	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
 
 	/** To make bean happy */

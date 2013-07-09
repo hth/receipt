@@ -47,12 +47,12 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status, int limit) {
-        Query query = Query.query(Criteria.where("recordLocked").is(false))
-                .addCriteria(Criteria.where("receiptStatus").is(status));
+        Query query = Query.query(Criteria.where("LOCKED").is(false))
+                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(status));
 
         List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "level"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "created"));
+        orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "CREATE"));
         Sort sort = new Sort(orders);
 
         query.with(sort).limit(limit);
@@ -61,13 +61,13 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, ReceiptStatusEnum status) {
-        return findUpdateWithLimit(emailId, profileId, status, QUERY_LIMIT);
+    public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status) {
+        return findUpdateWithLimit(emailId, userProfileId, status, QUERY_LIMIT);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String profileId, ReceiptStatusEnum status, int limit) {
+    public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
 //                    "{" +
@@ -82,12 +82,12 @@ public class MessageManagerImpl implements MessageManager {
 
 //        BasicDBObject basicDBObject = new BasicDBObject()
 //                .append("recordLocked", false)
-//                .append("receiptStatus", "OCR_PROCESSED");
+//                .append("RECEIPT_STATUS_ENUM", "OCR_PROCESSED");
 
         List<MessageReceiptEntityOCR> list = findWithLimit(status);
         for(MessageReceiptEntityOCR object : list) {
             object.setEmailId(emailId);
-            object.setUserProfileId(profileId);
+            object.setUserProfileId(userProfileId);
             object.setRecordLocked(true);
             try {
                 save(object);
@@ -107,15 +107,15 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<MessageReceiptEntityOCR> findPending(String emailId, String profileId, ReceiptStatusEnum status) {
-        Query query = Query.query(Criteria.where("recordLocked").is(true))
-                .addCriteria(Criteria.where("receiptStatus").is(status))
-                .addCriteria(Criteria.where("emailId").is(emailId))
-                .addCriteria(Criteria.where("userProfileId").is(profileId));
+    public List<MessageReceiptEntityOCR> findPending(String emailId, String userProfileId, ReceiptStatusEnum status) {
+        Query query = Query.query(Criteria.where("LOCKED").is(true))
+                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(status))
+                .addCriteria(Criteria.where("EMAIL").is(emailId))
+                .addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId));
 
         List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "level"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "created"));
+        orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "CREATE"));
         Sort sort = new Sort(orders);
 
         query.with(sort);
@@ -124,12 +124,12 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageReceiptEntityOCR> findAllPending() {
-        Query query = Query.query(Criteria.where("recordLocked").is(true))
-                .addCriteria(Criteria.where("receiptStatus").is(ReceiptStatusEnum.OCR_PROCESSED));
+        Query query = Query.query(Criteria.where("LOCKED").is(true))
+                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(ReceiptStatusEnum.OCR_PROCESSED));
 
         List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "level"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "created"));
+        orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "CREATE"));
         Sort sort = new Sort(orders);
 
         query.with(sort);
@@ -157,13 +157,13 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public WriteResult updateObject(String id, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet) {
+    public WriteResult updateObject(String receiptOCRId, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = Query.query(Criteria.where("recordLocked").is(true))
-                .addCriteria(Criteria.where("receiptStatus").is(statusFind))
-                .addCriteria(Criteria.where("idReceiptOCR").is(id));
+        Query query = Query.query(Criteria.where("LOCKED").is(true))
+                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(statusFind))
+                .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
-        Update update = Update.update("receiptStatus", statusSet).set("active", false);
+        Update update = Update.update("RECEIPT_STATUS_ENUM", statusSet).set("ACTIVE", false);
 
         return mongoTemplate.updateFirst(query, update(update), MessageReceiptEntityOCR.class);
     }
@@ -172,14 +172,14 @@ public class MessageManagerImpl implements MessageManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult undoUpdateObject(String receiptOCRId, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = Query.query(Criteria.where("recordLocked").is(true))
-                .addCriteria(Criteria.where("receiptStatus").is(statusFind))
-                .addCriteria(Criteria.where("active").is(false))
-                .addCriteria(Criteria.where("idReceiptOCR").is(receiptOCRId));
+        Query query = Query.query(Criteria.where("LOCKED").is(true))
+                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(statusFind))
+                .addCriteria(Criteria.where("ACTIVE").is(false))
+                .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
         Update update = Update.update("recordLocked", false)
-                .set("active", true)
-                .set("receiptStatus", statusSet);
+                .set("ACTIVE", true)
+                .set("RECEIPT_STATUS_ENUM", statusSet);
 
         return mongoTemplate.updateFirst(query, update(update), MessageReceiptEntityOCR.class);
     }
@@ -192,7 +192,7 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public void deleteAllForReceiptOCR(String receiptOCRId) {
-        Query query = Query.query(Criteria.where("idReceiptOCR").is(receiptOCRId));
+        Query query = Query.query(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
         mongoTemplate.remove(query, MessageReceiptEntityOCR.class);
     }
 

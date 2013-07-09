@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * User: hitender
@@ -13,11 +14,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "COMMENT")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "comment_idx", def = "{'id': 1}"),
+        @CompoundIndex(name = "comment_idx", def = "{'ID': 1}"),
 } )
 public class CommentEntity extends BaseEntity {
 
     @Size(min = 0, max  = 256)
+    @Field("TEXT")
     private String text;
 
     public CommentEntity() {}

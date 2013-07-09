@@ -17,94 +17,12 @@
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
-	<!-- For tabs -->
-	<script>
-		$(function() {
-
-			$( "#accordion" ).accordion();
-
-			var availableTags = [
-				"ActionScript",
-				"AppleScript",
-				"Asp",
-				"BASIC",
-				"C",
-				"C++",
-				"Clojure",
-				"COBOL",
-				"ColdFusion",
-				"Erlang",
-				"Fortran",
-				"Groovy",
-				"Haskell",
-				"Java",
-				"JavaScript",
-				"Lisp",
-				"Perl",
-				"PHP",
-				"Python",
-				"Ruby",
-				"Scala",
-				"Scheme"
-			];
-			$( "#autocomplete" ).autocomplete({
-				source: availableTags
-			});
-
-			$( "#button" ).button();
-			$( "#radioset" ).buttonset();
-
-			$( "#tabs" ).tabs();
-
-			$( "#dialog" ).dialog({
-				autoOpen: false,
-				width: 400,
-				buttons: [
-					{
-						text: "Ok",
-						click: function() {
-							$( this ).dialog( "close" );
-						}
-					},
-					{
-						text: "Cancel",
-						click: function() {
-							$( this ).dialog( "close" );
-						}
-					}
-				]
-			});
-
-			// Link to open the dialog
-			$( "#dialog-link" ).click(function( event ) {
-				$( "#dialog" ).dialog( "open" );
-				event.preventDefault();
-			});
-
-			$( "#datepicker" ).datepicker({
-				inline: true
-			});
-
-			$( "#slider" ).slider({
-				range: true,
-				values: [ 17, 67 ]
-			});
-
-			$( "#progressbar" ).progressbar({
-				value: 20
-			});
-
-			// Hover states on the static widgets
-			$( "#dialog-link, #icons li" ).hover(
-				function() {
-					$( this ).addClass( "ui-state-hover" );
-				},
-				function() {
-					$( this ).removeClass( "ui-state-hover" );
-				}
-			);
-		});
-	</script>
+    <!-- For dashboard tabs -->
+    <script>
+        $(function () {
+            $("#tabs").tabs();
+        });
+    </script>
 
     <script>
         <c:if test="${!empty showTab}">
@@ -217,13 +135,14 @@
                     <div class="divRow">
                         <div class="divOfCell600">
                             Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;
-                            <b>${userProfile.userAuthentication.auth}</b>
+                            <b>${userProfile.userAuthentication.authenticationKey}</b>
                         </div>
                     </div>
                     <div class="divRow">
                         <div class="divOfCell600">
                             Last changed:
-                            <b><fmt:formatDate value="${userProfile.userAuthentication.updated}" type="both" /></b></div>
+                            <b><fmt:formatDate value="${userProfile.userAuthentication.updated}" type="both" /></b>
+                        </div>
                     </div>
                     <spring:eval expression="userSession.level gt T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                     <c:if test="${isValid}">
@@ -294,7 +213,7 @@
                     <p>No Expense Type visible</p>
                 </c:otherwise>
             </c:choose>
-            <table style="width: 275px" class="etable">
+            <table style="width: 325px" class="etable">
                 <tr>
                     <th style="padding:3px;"># Used</th>
                     <th style="padding:3px;">Show</th>
