@@ -109,9 +109,14 @@ public final class Maths {
      * @return
      */
     public static BigDecimal divide(Double divide, BigDecimal by, int scale) {
-        BigDecimal total = new BigDecimal(divide.toString());
-        BigDecimal outcome = total.divide(by, scale, BigDecimal.ROUND_HALF_UP);
-        return outcome;
+        try {
+            BigDecimal total = new BigDecimal(divide.toString());
+            BigDecimal outcome = total.divide(by, scale, BigDecimal.ROUND_HALF_UP);
+            return outcome;
+        } catch(ArithmeticException arec) {
+            log.error("Tried dividing by zero, " + divide + ", " + by);
+            return BigDecimal.ZERO;
+        }
     }
 
     /**
