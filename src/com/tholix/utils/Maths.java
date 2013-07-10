@@ -1,12 +1,12 @@
 package com.tholix.utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * User: hitender
@@ -134,6 +134,14 @@ public final class Maths {
 
     public static BigDecimal multiply(BigDecimal value, Double withThis) {
         return multiply(value, new BigDecimal(withThis.toString()));
+    }
+
+    public static BigDecimal multiply(Double value, int withThis) {
+        return multiply(new BigDecimal(value.toString()), new BigDecimal(withThis));
+    }
+
+    public static BigDecimal multiply(BigDecimal value, int withThis) {
+        return multiply(value, new BigDecimal(withThis));
     }
 
     public static BigDecimal percent(BigDecimal value) {

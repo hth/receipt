@@ -34,6 +34,9 @@ public class ItemEntityOCR extends BaseEntity {
     @Field("PRICE")
 	private String price;
 
+    @Field("QUANTITY")
+    private int quantity = 1;
+
 	@NotNull
     @Field("TAX_ENUM")
 	private TaxEnum taxed = TaxEnum.NOT_TAXED;
@@ -102,6 +105,14 @@ public class ItemEntityOCR extends BaseEntity {
 	public void setPrice(String price) {
 		this.price = price;
 	}
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
 	public TaxEnum getTaxed() {
 		return taxed;

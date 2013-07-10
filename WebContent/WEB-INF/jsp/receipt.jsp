@@ -190,12 +190,22 @@
                             <form:hidden path="items[${status.index}].id"/>
                             <tr>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
-                                        ${item.name}
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${item.quantity eq 1}">
+                                            <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                                                ${item.name}
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                                                ${item.name}
+                                            </a>
+                                            <div style="margin-top: 5px">${item.quantity} @ <spring:eval expression="item.price"/> each</div>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                                 <td style="text-align: right;">
-                                    <spring:eval expression="item.price" />
+                                    <spring:eval expression="item.totalPrice" />
                                 </td>
                                 <td style="text-align: left;">
                                     ${item.taxed.description}

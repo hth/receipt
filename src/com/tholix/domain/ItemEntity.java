@@ -5,7 +5,9 @@ package com.tholix.domain;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,6 +17,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.tholix.domain.types.TaxEnum;
+import com.tholix.utils.Maths;
 
 /**
  * Represents each individual item on a receipt.
@@ -36,6 +39,9 @@ public class ItemEntity extends BaseEntity {
 	@NumberFormat(style = Style.CURRENCY)
     @Field("PRICE")
 	private Double price;
+
+    @Field("QUANTITY")
+    private int quantity = 1;
 
 	@NotNull
     @Field("TAX_ENUM")
@@ -109,7 +115,21 @@ public class ItemEntity extends BaseEntity {
 		this.price = price;
 	}
 
-	public TaxEnum getTaxed() {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @NumberFormat(style = Style.CURRENCY)
+    @Transient
+    public BigDecimal getTotalPrice() {
+        return Maths.multiply(price, quantity);
+    }
+
+    public TaxEnum getTaxed() {
 		return taxed;
 	}
 

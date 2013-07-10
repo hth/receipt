@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
@@ -120,8 +121,9 @@ public final class ReceiptOCRForm {
                 name = name.replaceAll("\\s+", " ");
 
                 ItemEntity item = ItemEntity.newInstance();
-                item.setName(name);
+                item.setName(WordUtils.capitalizeFully(name));
                 item.setPrice(Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue());
+                item.setQuantity(itemOCR.getQuantity());
                 item.setTaxed(itemOCR.getTaxed());
                 item.setSequence(itemOCR.getSequence());
                 item.setReceipt(receipt);

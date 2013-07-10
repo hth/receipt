@@ -279,7 +279,7 @@
                         <form:hidden path="receiptOCR.receiptOCRTranslation"/>
                         <table border="0" style="width: 550px" class="etable">
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     <div class="leftAlign">
                                         <form:label for="receiptOCR.bizName.name" path="receiptOCR.bizName.name" cssErrorClass="error">Biz Name</form:label>
                                         <form:input path="receiptOCR.bizName.name" id="bizName" size="52"/>
@@ -291,13 +291,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     <div class="leftAlign"><form:errors path="receiptOCR.bizName.name" cssClass="error" /></div>
                                     <div class="rightAlign"><form:errors path="receiptOCR.receiptDate" cssClass="error" /></div>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     <div class="leftAlign">
                                         <form:label for="receiptOCR.bizStore.address" path="receiptOCR.bizStore.address" cssErrorClass="error">Address : </form:label>
                                         <form:input path="receiptOCR.bizStore.address" id="address" size="70"/>
@@ -309,20 +309,24 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th align="left">&nbsp;</th>
-                                <th align="left">&nbsp;Name</th>
-                                <th align="left">&nbsp;Price</th>
-                                <th align="left">&nbsp;</th>
+                                <th>&nbsp;</th>
+                                <th style="text-align: left">&nbsp;Name</th>
+                                <th style="text-align: left">&nbsp;Quantity</th>
+                                <th style="text-align: left">&nbsp;Price</th>
+                                <th>&nbsp;</th>
                             </tr>
                             <c:forEach items="${receiptOCRForm.items}" varStatus="status">
                             <tr>
-                                <td align="left">
+                                <td style="text-align: left">
                                     ${status.index + 1}
                                 </td>
-                                <td align="left">
+                                <td style="text-align: left">
                                     <form:input path="items[${status.index}].name" class="items" size="64"/>
                                 </td>
-                                <td align="right">
+                                <td style="text-align: left">
+                                    <form:input path="items[${status.index}].quantity" size="4" />
+                                </td>
+                                <td style="text-align: right">
                                     <form:input path="items[${status.index}].price" size="16"/>
                                     <form:errors path="items[${status.index}].price" cssClass="error" />
                                 </td>
@@ -335,7 +339,7 @@
                             </tr>
                             </c:forEach>
                             <tr>
-                                <td colspan="2" style="text-align: right; font-size: 12px; font-weight: bold">
+                                <td colspan="3" style="text-align: right; font-size: 12px; font-weight: bold">
                                     <span>&nbsp;&nbsp;Tax &nbsp;</span>
                                 </td>
                                 <td colspan="1" style="font-size: 12px; font-weight: bold">
@@ -346,7 +350,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: right;">
+                                <td colspan="3" style="text-align: right;">
                                     <b><label id="expectedTax" name="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
                                     <form:input path="receiptOCR.tax" id="tax" size="5"/>
                                 </td>
@@ -360,7 +364,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">
+                                <td colspan="3">
                                     <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="reject" id="reject"/>
                                 </td>
                                 <td colspan="2">
