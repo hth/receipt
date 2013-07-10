@@ -206,8 +206,13 @@ public class ReceiptEntity extends BaseEntity {
 
     @Transient
     public BigDecimal calculateTax() {
-        BigDecimal taxPercent = Maths.subtract(calculateItemPriceWithTax(), BigDecimal.ONE);
-        return taxPercent;
+        BigDecimal priceOfItemWithTax = calculateItemPriceWithTax();
+        if(priceOfItemWithTax.compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal taxPercent = Maths.subtract(priceOfItemWithTax, BigDecimal.ONE);
+            return taxPercent;
+        } else {
+            return BigDecimal.ZERO;
+        }
     }
 
 	public String getUserProfileId() {
