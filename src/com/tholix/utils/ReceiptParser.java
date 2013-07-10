@@ -3,15 +3,11 @@
  */
 package com.tholix.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import com.tholix.domain.ItemEntityOCR;
@@ -40,47 +36,38 @@ public final class ReceiptParser {
 			Matcher dateMatcher = date.matcher(s);
 			if (itemMatcher.find()) {
 				save = save + s;
-				p(save);
+				log.debug(save);
 				items.add(processItem(save, sequence, receiptOCR));
 				s = "";
 			} else if (dateMatcher.find()) {
 				// http://stackoverflow.com/questions/600733/using-java-to-find-substring-of-a-bigger-string-using-regular-expression
 				// String date = d.group(1);
 
-				p("Found date - " + s);
+				log.debug("Found date - " + s);
 				receiptOCR.setReceiptDate(s.trim());
 			}
 			save = s;
 		}
+
+        //At least have one item added for place holder. This will help is cloning for more items later.
+        if(items.size() == 0) {
+            items.add(processItem("", 1, receiptOCR));
+        }
 	}
 
 	private static ItemEntityOCR processItem(String itemString, int sequence, ReceiptEntityOCR receipt) {
 		String name = itemString.substring(0, itemString.lastIndexOf("\t") + 1);
-		p(name);
+		log.debug(name);
 
 		//Used for global name. This is hidden from user.
 		//String globalName = name.replaceAll("[^A-Za-z ]", "").replaceAll("\\s+", " ");
-		//p("'" + globalName.trim() + "'");
+		//log.debug("'" + globalName.trim() + "'");
 
 		String price = itemString.substring(itemString.lastIndexOf("\t") + 1);
-		p(price);
+		log.debug(price);
 
 		ItemEntityOCR item = ItemEntityOCR.newInstance(name.trim(), price.trim(), TaxEnum.NOT_TAXED, sequence, receipt, receipt.getUserProfileId());
         item.setBizName(receipt.getBizName());
 		return item;
-	}
-
-	private static void p(String print) {
-		System.out.println(print);
-	}
-
-	/**
-	 * @param args
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws IOException {
-		String receiptContent = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/BB.txt"));
-		List<ItemEntityOCR> items = new ArrayList<ItemEntityOCR>();
-		read(receiptContent, ReceiptEntityOCR.newInstance(), items);
 	}
 }
