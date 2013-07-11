@@ -50,6 +50,8 @@ public class ReceiptOCRFormValidator implements Validator {
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
         if (receiptOCRForm.getItems() != null) {
+            boolean conditionFailed = false;
+            int conditionFailedCounter = 0;
             for (ItemEntityOCR item : receiptOCRForm.getItems()) {
                 if (StringUtils.isNotEmpty(item.getName()) && StringUtils.isNotEmpty(item.getPrice())) {
                     try {
@@ -59,7 +61,17 @@ public class ReceiptOCRFormValidator implements Validator {
                         errors.rejectValue("items[" + count + "].price", "field.currency", new Object[]{item.getPrice()}, "Unsupported currency format");
                     }
                     count++;
+                } else {
+                    /** Count need to check the condition below */
+                    conditionFailed = true;
+                    conditionFailedCounter ++;
                 }
+            }
+
+            /** This condition is added to make sure no receipt is added without at least one valid item in the list */
+            if(conditionFailed && (receiptOCRForm.getItems().size() == conditionFailedCounter)) {
+                log.error("Exception during update of receipt: " + receiptOCRForm.getReceiptOCR().getId() + ", as no items were found");
+                errors.rejectValue("receiptOCR", "field.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
             }
         } else {
             log.error("Exception during update of receipt: " + receiptOCRForm.getReceiptOCR().getId() + ", as no items were found");
