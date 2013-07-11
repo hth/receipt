@@ -14,7 +14,12 @@ import com.tholix.domain.BizStoreEntity;
  * Time: 11:20 PM
  */
 public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
-    public static String TABLE = BaseEntity.getClassAnnotationValue(BizStoreEntity.class, Document.class, "collection");
+    static String TABLE = BaseEntity.getClassAnnotationValue(BizStoreEntity.class, Document.class, "collection");
+
+    //TODO use annotation instead
+    /** Field name */
+    String ADDRESS = "ADDRESS";
+    String PHONE = "PHONE";
 
     BizStoreEntity noStore();
 

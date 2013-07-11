@@ -1,5 +1,7 @@
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +91,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAll(String bizAddress, BizNameEntity bizNameEntity) {
         Criteria criteriaA = Criteria.where("ADDRESS").regex("^" + bizAddress, "i");
-        Criteria criteriaB = Criteria.where("BIZ_NAME").is(bizNameEntity);
+        Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
         return mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA), BizStoreEntity.class, TABLE);
     }
@@ -97,7 +99,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
         Criteria criteriaA = Criteria.where("ADDRESS").regex("^" + bizAddress, "i");
-        Criteria criteriaB = Criteria.where("BIZ_NAME").is(bizNameEntity);
+        Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
         Query query = Query.query(criteriaB).addCriteria(criteriaA);
         query.fields().include(fieldName);
@@ -108,7 +110,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
         Criteria criteriaA = Criteria.where("PHONE").regex("^" + bizPhone, "i");
         Criteria criteriaB = Criteria.where("ADDRESS").is(bizAddress);
-        Criteria criteriaC = Criteria.where("BIZ_NAME").is(bizNameEntity);
+        Criteria criteriaC = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
         Query query = Query.query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
         query.fields().include(fieldName);
@@ -118,7 +120,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
         Sort sort = new Sort(Sort.Direction.DESC, "CREATE");
-        return mongoTemplate.find(Query.query(Criteria.where("BIZ_NAME").is(bizNameEntity)).with(sort).limit(limit), BizStoreEntity.class, TABLE);
+        return mongoTemplate.find(Query.query(Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))).with(sort).limit(limit), BizStoreEntity.class, TABLE);
     }
 
     @Override

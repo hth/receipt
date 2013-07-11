@@ -55,9 +55,9 @@ public class FetcherService {
      */
     public List<String> findBizAddress(String bizAddress, String bizName) {
         DateTime time = DateUtil.now();
-        log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
+        log.info("Search for Biz address: " + bizAddress + ", within Biz Name: " + bizName);
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizAddress, bizNameEntity, "address");
+        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizAddress, bizNameEntity, BizStoreManager.ADDRESS);
 
         List<String> address = new ArrayList<>();
         for(BizStoreEntity bizStoreEntity : list) {
@@ -79,7 +79,7 @@ public class FetcherService {
         DateTime time = DateUtil.now();
         log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, "phone");
+        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, BizStoreManager.PHONE);
 
         List<String> phone = new ArrayList<>();
         for(BizStoreEntity bizStoreEntity : list) {
