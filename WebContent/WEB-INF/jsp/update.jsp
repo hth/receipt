@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="../jquery/js/dynamic_list_helper2.js"></script>
 
     <%--This makes the other JQuery fail--%>
     <%--<script type="text/javascript">--%>
@@ -268,7 +269,7 @@
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
-                    <form:form method="post" action="update.htm" modelAttribute="receiptOCRForm">
+                    <form:form method="post" action="update.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
                         <form:errors path="receiptOCR" cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
                         <form:hidden path="receiptOCR.id"/>
@@ -279,7 +280,7 @@
                         <form:hidden path="receiptOCR.receiptOCRTranslation"/>
                         <table border="0" style="width: 550px" class="etable">
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <div class="leftAlign">
                                         <form:label for="receiptOCR.bizName.name" path="receiptOCR.bizName.name" cssErrorClass="error">Biz Name</form:label>
                                         <form:input path="receiptOCR.bizName.name" id="bizName" size="52"/>
@@ -291,13 +292,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <div class="leftAlign"><form:errors path="receiptOCR.bizName.name" cssClass="error" /></div>
                                     <div class="rightAlign"><form:errors path="receiptOCR.receiptDate" cssClass="error" /></div>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <div class="leftAlign">
                                         <form:label for="receiptOCR.bizStore.address" path="receiptOCR.bizStore.address" cssErrorClass="error">Address : </form:label>
                                         <form:input path="receiptOCR.bizStore.address" id="address" size="70"/>
@@ -310,36 +311,47 @@
                             </tr>
                             <tr>
                                 <th>&nbsp;</th>
+                                <th>&nbsp;</th>
                                 <th style="text-align: left">&nbsp;Name</th>
                                 <th style="text-align: left">&nbsp;Quantity</th>
                                 <th style="text-align: left">&nbsp;Price</th>
                                 <th>&nbsp;</th>
                             </tr>
+                            <tbody id="itemListContainer">
                             <c:forEach items="${receiptOCRForm.items}" varStatus="status">
+                                <tr class="itemRow">
+                                    <td style="text-align: left">
+                                        <a href="#" class="removeItem">X</a>
+                                    </td>
+                                    <td style="text-align: left">
+                                        ${status.index + 1}
+                                    </td>
+                                    <td style="text-align: left">
+                                        <form:input path="items[${status.index}].name" size="64"/>
+                                    </td>
+                                    <td style="text-align: left">
+                                        <form:input path="items[${status.index}].quantity" size="4" />
+                                    </td>
+                                    <td style="text-align: right">
+                                        <form:input path="items[${status.index}].price" size="8"/>
+                                        <form:errors path="items[${status.index}].price" cssClass="error" />
+                                    </td>
+                                    <td>
+                                        <form:select path="items[${status.index}].taxed">
+                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:options itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
                             <tr>
-                                <td style="text-align: left">
-                                    ${status.index + 1}
-                                </td>
-                                <td style="text-align: left">
-                                    <form:input path="items[${status.index}].name" class="items" size="64"/>
-                                </td>
-                                <td style="text-align: left">
-                                    <form:input path="items[${status.index}].quantity" size="4" />
-                                </td>
-                                <td style="text-align: right">
-                                    <form:input path="items[${status.index}].price" size="16"/>
-                                    <form:errors path="items[${status.index}].price" cssClass="error" />
-                                </td>
-                                <td>
-                                    <form:select path="items[${status.index}].taxed">
-                                        <form:option value="NONE" label="--- Select ---"/>
-                                        <form:options itemValue="name" itemLabel="description" />
-                                    </form:select>
+                                <td colspan="6">
+                                    <a href="#" id="addItemRow">Add Item Row</a>&nbsp;&nbsp;
                                 </td>
                             </tr>
-                            </c:forEach>
                             <tr>
-                                <td colspan="3" style="text-align: right; font-size: 12px; font-weight: bold">
+                                <td colspan="4" style="text-align: right; font-size: 12px; font-weight: bold">
                                     <span>&nbsp;&nbsp;Tax &nbsp;</span>
                                 </td>
                                 <td colspan="1" style="font-size: 12px; font-weight: bold">
@@ -350,21 +362,21 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: right;">
-                                    <b><label id="expectedTax" name="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
+                                <td colspan="4" style="text-align: right; width: 300px">
+                                    <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
                                     <form:input path="receiptOCR.tax" id="tax" size="5"/>
                                 </td>
                                 <td colspan="1">
-                                    <form:input path="receiptOCR.subTotal" id="subTotal" size="16"/>
+                                    <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
                                     <form:errors path="receiptOCR.subTotal" cssClass="error" />
                                 </td>
                                 <td colspan="1">
-                                    <form:input path="receiptOCR.total" id="total" size="16"/>
+                                    <form:input path="receiptOCR.total" id="total" size="8"/>
                                     <form:errors path="receiptOCR.total" cssClass="error" />
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3">
+                                <td colspan="4">
                                     <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="reject" id="reject"/>
                                 </td>
                                 <td colspan="2">
@@ -378,7 +390,6 @@
                     &nbsp;
                 </c:otherwise>
                 </c:choose>
-
             </td>
             <td>&nbsp;</td>
             <td>
@@ -449,6 +460,28 @@
 <script>
     $(function() {
         $("#update").focus();
+    });
+</script>
+
+<script type="text/javascript">
+//    http://outbottle.com/spring-3-mvc-adding-objects-to-a-list-element-on-the-fly-at-form-submit-generic-method/
+    function rowAdded(rowElement) {
+        //clear the imput fields for the row
+        $(rowElement).find("input").val('');
+    }
+
+    $(document).ready( function() {
+        var config = {
+            rowClass : 'itemRow',
+            addRowId : 'addItemRow',
+            removeRowClass : 'removeItem',
+            formId : 'receiptUpdateForm',
+            rowContainerId : 'itemListContainer',
+            indexedPropertyName : 'items',
+            indexedPropertyMemberNames : 'name,quantity,price,taxed',
+            rowAddedListener : rowAdded
+        };
+        new DynamicListHelper(config);
     });
 </script>
 

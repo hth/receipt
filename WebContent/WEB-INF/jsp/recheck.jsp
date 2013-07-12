@@ -269,7 +269,7 @@
                                         <form:input path="items[${status.index}].quantity" size="4" />
                                     </td>
                                     <td style="text-align: right">
-                                        <form:input path="items[${status.index}].price" size="16" />
+                                        <form:input path="items[${status.index}].price" size="8" />
                                         <form:errors path="items[${status.index}].price" cssClass="error" />
                                     </td>
                                     <td>
@@ -293,15 +293,15 @@
                             </tr>
                             <tr>
                                 <td colspan="3" style="text-align: right;">
-                                    <b><label id="expectedTax" name="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
+                                    <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
                                     <form:input path="receiptOCR.tax" id="tax" size="5"/>
                                 </td>
                                 <td colspan="1">
-                                    <form:input path="receiptOCR.subTotal" id="subTotal" size="16"/>
+                                    <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
                                     <form:errors path="receiptOCR.subTotal" cssClass="error" />
                                 </td>
                                 <td colspan="1">
-                                    <form:input path="receiptOCR.total" id="total" size="16"/>
+                                    <form:input path="receiptOCR.total" id="total" size="8"/>
                                     <form:errors path="receiptOCR.total" cssClass="error" />
                                 </td>
                             </tr>
