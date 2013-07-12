@@ -71,11 +71,11 @@ public class ReceiptOCRFormValidator implements Validator {
             /** This condition is added to make sure no receipt is added without at least one valid item in the list */
             if(conditionFailed && (receiptOCRForm.getItems().size() == conditionFailedCounter)) {
                 log.error("Exception during update of receipt: " + receiptOCRForm.getReceiptOCR().getId() + ", as no items were found");
-                errors.rejectValue("receiptOCR", "field.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
+                errors.rejectValue("receiptOCR", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
             }
         } else {
             log.error("Exception during update of receipt: " + receiptOCRForm.getReceiptOCR().getId() + ", as no items were found");
-            errors.rejectValue("receiptOCR", "field.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
+            errors.rejectValue("receiptOCR", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
         }
 
         if (StringUtils.isNotEmpty(receiptOCRForm.getReceiptOCR().getSubTotal())) {
