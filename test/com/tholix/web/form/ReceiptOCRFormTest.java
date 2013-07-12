@@ -18,7 +18,6 @@ import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.domain.types.TaxEnum;
 
 /**
  * @author hitender
@@ -40,7 +39,10 @@ public class ReceiptOCRFormTest {
 					BaseTest.receiptStatus, BaseTest.receiptBlobId, BaseTest.userProfileId);
 
 		items = new ArrayList<ItemEntityOCR>();
-		items.add(ItemEntityOCR.newInstance("Item1", "80.00", TaxEnum.TAXED, 1, receipt, BaseTest.userProfileId));
+
+        //Will not work
+		items.add(ItemEntityOCR.newInstance());
+
 
 		receiptOCRForm = ReceiptOCRForm.newInstance(receipt, items);
 		receiptEntity = receiptOCRForm.getReceiptEntity();

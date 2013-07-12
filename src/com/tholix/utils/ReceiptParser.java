@@ -55,19 +55,24 @@ public final class ReceiptParser {
         }
 	}
 
-	private static ItemEntityOCR processItem(String itemString, int sequence, ReceiptEntityOCR receipt) {
+	private static ItemEntityOCR processItem(String itemString, int sequence, ReceiptEntityOCR receiptOCR) {
 		String name = itemString.substring(0, itemString.lastIndexOf("\t") + 1);
-		log.debug(name);
 
 		//Used for global name. This is hidden from user.
 		//String globalName = name.replaceAll("[^A-Za-z ]", "").replaceAll("\\s+", " ");
 		//log.debug("'" + globalName.trim() + "'");
 
 		String price = itemString.substring(itemString.lastIndexOf("\t") + 1);
-		log.debug(price);
+		log.debug("Item name : " + name + ", Item price : " + price);
 
-		ItemEntityOCR item = ItemEntityOCR.newInstance(name.trim(), price.trim(), TaxEnum.NOT_TAXED, sequence, receipt, receipt.getUserProfileId());
-        item.setBizName(receipt.getBizName());
-		return item;
+		ItemEntityOCR itemOCR = ItemEntityOCR.newInstance();
+        itemOCR.setName(name.trim());
+        itemOCR.setPrice(price.trim());
+        itemOCR.setTaxed(TaxEnum.NOT_TAXED);
+        itemOCR.setSequence(sequence);
+        itemOCR.setReceipt(receiptOCR);
+        itemOCR.setUserProfileId(receiptOCR.getUserProfileId());
+        itemOCR.setBizName(receiptOCR.getBizName());
+		return itemOCR;
 	}
 }

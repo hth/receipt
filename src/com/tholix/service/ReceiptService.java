@@ -208,9 +208,16 @@ public class ReceiptService {
 
         for(ItemEntity item : items) {
             if(StringUtils.isNotEmpty(item.getName())) {
-                ItemEntityOCR itemOCR = ItemEntityOCR.newInstance(item.getName(), item.getPrice().toString(), item.getTaxed(), item.getSequence(), receiptOCR, receiptOCR.getUserProfileId());
+                ItemEntityOCR itemOCR = ItemEntityOCR.newInstance();
+                itemOCR.setName(item.getName());
+                itemOCR.setPrice(item.getPrice().toString());
+                itemOCR.setTaxed(item.getTaxed());
+                itemOCR.setSequence(item.getSequence());
+                itemOCR.setReceipt(receiptOCR);
+                itemOCR.setUserProfileId(receiptOCR.getUserProfileId());
                 itemOCR.setExpenseType(item.getExpenseType());
                 itemOCR.setCreated(item.getCreated());
+                itemOCR.setQuantity(item.getQuantity());
                 itemOCR.setUpdated();
 
                 itemOCR.setBizName(receiptOCR.getBizName());

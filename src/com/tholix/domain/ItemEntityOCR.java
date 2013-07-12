@@ -62,32 +62,13 @@ public class ItemEntityOCR extends BaseEntity {
     private ExpenseTypeEntity expenseType;
 
 	/** To keep spring happy in recreating the bean from form during submit action */
-	public ItemEntityOCR() {
-
-	}
-
-	private ItemEntityOCR(String name, String price, TaxEnum taxed, int sequence, ReceiptEntityOCR receipt, String userProfileId) {
-		super();
-		this.name = name;
-		this.price = price;
-		this.taxed = taxed;
-		this.receipt = receipt;
-		this.userProfileId = userProfileId;
-		this.sequence = sequence;
-	}
+	public ItemEntityOCR() {}
 
 	/**
-	 * This method is used when the Entity is created for the first time.
-	 *
-	 * @param name
-	 * @param price
-	 * @param taxed
-	 * @param receipt
-	 * @param userProfileId
-	 * @return
+	 * This method is used when the Entity is created for the first time or during receipt re-check.
 	 */
-	public static ItemEntityOCR newInstance(String name, String price, TaxEnum taxed, int sequence, ReceiptEntityOCR receipt, String userProfileId) {
-		return new ItemEntityOCR(name, price, taxed, sequence, receipt, userProfileId);
+	public static ItemEntityOCR newInstance() {
+	    return new ItemEntityOCR();
 	}
 
 	public String getName() {
