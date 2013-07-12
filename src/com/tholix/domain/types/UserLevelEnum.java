@@ -10,8 +10,8 @@ package com.tholix.domain.types;
 public enum UserLevelEnum {
 	USER("USER",                    "User",           1, UserLevelEnum.DEFAULT_JMS_LEVEL),
 	EMPLOYER("EMPLOYER",            "Employer",       2, UserLevelEnum.DEFAULT_JMS_LEVEL + 1),
-	USER_PAID("USER_PAID",          "User_Paid",      3, UserLevelEnum.DEFAULT_JMS_LEVEL + 2),
-	EMPLOYER_PAID("EMPLOYER_PAID",  "Employer_Paid",  4, UserLevelEnum.DEFAULT_JMS_LEVEL + 3),
+	USER_PAID("USER_PAID",          "User Paid",      3, UserLevelEnum.DEFAULT_JMS_LEVEL + 2),
+	EMPLOYER_PAID("EMPLOYER_PAID",  "Employer Paid",  4, UserLevelEnum.DEFAULT_JMS_LEVEL + 3),
 	TECHNICIAN("TECHNICIAN",        "Technician",     5, UserLevelEnum.DEFAULT_JMS_LEVEL + 4),
 	SUPERVISOR("SUPERVISOR",        "Supervisor",     6, UserLevelEnum.DEFAULT_JMS_LEVEL + 5),
 	ADMIN("ADMIN",                  "Admin",          7, UserLevelEnum.DEFAULT_JMS_LEVEL + 6),
