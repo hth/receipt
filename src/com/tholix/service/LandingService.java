@@ -219,7 +219,9 @@ public class LandingService {
         ReceiptEntityOCR receiptOCR = null;
         List<ItemEntityOCR> items;
         try {
-            String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
+            //No more using OCR
+            String receiptOCRTranslation = "";
+            //String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
             //TODO remove Temp Code
             //String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
             log.info("Translation: " + receiptOCRTranslation);
