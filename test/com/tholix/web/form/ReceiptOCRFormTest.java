@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-import com.tholix.BaseTest;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
@@ -35,8 +34,7 @@ public class ReceiptOCRFormTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		receipt = ReceiptEntityOCR.newInstance(BaseTest.receiptDate, BaseTest.total, BaseTest.tax,
-					BaseTest.receiptStatus, BaseTest.receiptBlobId, BaseTest.userProfileId);
+		receipt = null;
 
 		items = new ArrayList<ItemEntityOCR>();
 

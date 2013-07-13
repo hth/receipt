@@ -30,6 +30,7 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.types.ReceiptOfEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.repository.BizNameManager;
@@ -210,11 +211,11 @@ public class LandingService {
     /**
      * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS
      *
-     * @param profileId
+     * @param userProfileId
      * @param uploadReceiptImage
      * @throws Exception
      */
-    public void uploadReceipt(String profileId, UploadReceiptImage uploadReceiptImage) throws Exception {
+    public void uploadReceipt(String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
         String receiptBlobId = null;
         ReceiptEntityOCR receiptOCR = null;
         List<ItemEntityOCR> items;
@@ -229,7 +230,13 @@ public class LandingService {
             receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
             log.info("File Id: " + receiptBlobId);
 
-            receiptOCR = ReceiptEntityOCR.newInstance(ReceiptStatusEnum.OCR_PROCESSED, receiptBlobId, profileId, receiptOCRTranslation);
+            receiptOCR = ReceiptEntityOCR.newInstance();
+            receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+            receiptOCR.setReceiptBlobId(receiptBlobId);
+            receiptOCR.setUserProfileId(userProfileId);
+            receiptOCR.setReceiptOCRTranslation(receiptOCRTranslation);
+            receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
+
             setEmptyBiz(receiptOCR);
 
             items = new LinkedList<>();

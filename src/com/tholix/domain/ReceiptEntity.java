@@ -21,6 +21,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.types.ReceiptOfEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.utils.Maths;
 
@@ -35,8 +36,12 @@ public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
 	@NotNull
-    @Field("RECEIPT_STATUS")
+    @Field("RECEIPT_STATUS_ENUM")
 	private ReceiptStatusEnum receiptStatus;
+
+    @NotNull
+    @Field("RECEIPT_OF_ENUM")
+    private ReceiptOfEnum receiptOf;
 
 	@NotNull
     @Field("RECEIPT_BLOB_ID")
@@ -134,6 +139,14 @@ public class ReceiptEntity extends BaseEntity {
 	public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
 		this.receiptStatus = receiptStatus;
 	}
+
+    public ReceiptOfEnum getReceiptOf() {
+        return receiptOf;
+    }
+
+    public void setReceiptOf(ReceiptOfEnum receiptOf) {
+        this.receiptOf = receiptOf;
+    }
 
 	public String getReceiptBlobId() {
 		return receiptBlobId;

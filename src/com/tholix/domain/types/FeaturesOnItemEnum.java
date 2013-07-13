@@ -24,7 +24,7 @@ public enum FeaturesOnItemEnum {
         this.description = description;
     }
 
-    public String getValue() {
+    public String getName() {
         return name;
     }
 

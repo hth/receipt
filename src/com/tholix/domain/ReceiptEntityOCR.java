@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.tholix.domain.types.ReceiptOfEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
 
 /**
@@ -28,6 +29,10 @@ public class ReceiptEntityOCR extends BaseEntity {
 	@NotNull
     @Field("RECEIPT_STATUS_ENUM")
 	private ReceiptStatusEnum receiptStatus;
+
+    @NotNull
+    @Field("RECEIPT_OF_ENUM")
+    private ReceiptOfEnum receiptOf;
 
 	@NotNull
     @Field("RECEIPT_BLOB_ID")
@@ -79,53 +84,6 @@ public class ReceiptEntityOCR extends BaseEntity {
     /** To keep bean happy */
 	public ReceiptEntityOCR() {}
 
-	private ReceiptEntityOCR(String receiptDate, String total, String tax) {
-		super();
-		this.receiptDate = receiptDate;
-		this.total = total;
-		this.tax = tax;
-	}
-
-	private ReceiptEntityOCR(ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
-		super();
-		this.receiptStatus = receiptStatus;
-		this.receiptBlobId = receiptBlobId;
-		this.userProfileId = userProfileId;
-		this.receiptOCRTranslation = receiptOCRTranslation;
-	}
-
-	private ReceiptEntityOCR(String receiptDate, String total, String tax, ReceiptStatusEnum receiptStatus, String receiptBlobId,
-			String userProfileId) {
-		super();
-		this.receiptDate = receiptDate;
-		this.total = total;
-		this.tax = tax;
-		this.receiptStatus = receiptStatus;
-		this.receiptBlobId = receiptBlobId;
-		this.userProfileId = userProfileId;
-	}
-
-	/**
-	 * This method is used when the Entity is created for the first time.
-	 *
-	 * @param receiptDate
-	 * @param total
-	 * @param tax
-	 * @return
-	 */
-	public static ReceiptEntityOCR updateInstance(String receiptDate, String total, String tax) {
-		return new ReceiptEntityOCR(receiptDate, total, tax);
-	}
-
-	public static ReceiptEntityOCR newInstance(ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId, String receiptOCRTranslation) {
-		return new ReceiptEntityOCR(receiptStatus, receiptBlobId, userProfileId, receiptOCRTranslation);
-	}
-
-	public static ReceiptEntityOCR newInstance(String receiptDate, String total, String tax, ReceiptStatusEnum receiptStatus,
-			String receiptBlobId, String userProfileId) {
-		return new ReceiptEntityOCR(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
-	}
-
 	public static ReceiptEntityOCR newInstance() {
 		return new ReceiptEntityOCR();
 	}
@@ -138,7 +96,15 @@ public class ReceiptEntityOCR extends BaseEntity {
 		this.receiptStatus = receiptStatus;
 	}
 
-	public String getReceiptBlobId() {
+    public ReceiptOfEnum getReceiptOf() {
+        return receiptOf;
+    }
+
+    public void setReceiptOf(ReceiptOfEnum receiptOf) {
+        this.receiptOf = receiptOf;
+    }
+
+    public String getReceiptBlobId() {
 		return receiptBlobId;
 	}
 

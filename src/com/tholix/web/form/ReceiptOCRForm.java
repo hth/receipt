@@ -90,6 +90,7 @@ public final class ReceiptOCRForm {
 		receipt.setCreated(receiptOCR.getCreated());
         receipt.setBizName(receiptOCR.getBizName());
         receipt.setBizStore(receiptOCR.getBizStore());
+        receipt.setReceiptOf(receiptOCR.getReceiptOf());
 
         //If this is not set then user cannot reopen the a receipt for re-check.
         //TODO When deleting historical receiptOCR make sure to remove this id from receipt referencing receipt OCR
