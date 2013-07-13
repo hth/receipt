@@ -12,7 +12,8 @@
     <property name="resources.dir"              value="resources" />
     <property name="resources.conf.dir"         value="${resources.dir}/conf" />
     <property name="resources.conf.prod.dir"    value="${resources.conf.dir}/production" />
-    <property name="prod.ready"                 value="production_ready" />
+    <property name="prod.ready.dir"             value="production_ready" />
+    <property name="prod.ready.build.dir"       value="${prod.ready.dir}/WEB-INF/classes" />
     <property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
 
     <!-- TODO implement proguard -->
@@ -50,35 +51,6 @@
         <echo message="" />
     </target>
 
-    <target name="all" depends="undeploy, clean, build, deploy-prod-war">
-        <echo message="Deployed new build" />
-    </target>
-
-    <target name="resources" description="Moves resources to appropriate place">
-        <copy todir="${build.dir}">
-            <fileset dir="${resources.dir}">
-                <include name="log4j.web.properties" />
-                <include name="messages.properties" />
-            </fileset>
-        </copy>
-        <copy todir="${build.dir}/conf">
-            <fileset dir="${resources.conf.dir}">
-                <exclude name="dev.properties" />
-                <include name="*.properties" />
-            </fileset>
-        </copy>
-        <copy todir="${build.dir}/conf">
-            <fileset dir="${resources.conf.prod.dir}">
-                <include name="*.properties" />
-            </fileset>
-        </copy>
-        <copy todir="${build.dir}/images">
-            <fileset dir="${web.dir}/images">
-                <include name="**/*.*"/>
-            </fileset>
-        </copy>
-    </target>
-
     <target name="init-db" description="Initialize the database to starting point by restoring from database dump">
         <exec executable="mongorestore">
             <arg value="--db"/>
@@ -87,30 +59,65 @@
         </exec>
     </target>
 
-    <target name="build" description="Compile main source tree java files" depends="resources">
-        <mkdir dir="${build.dir}" />
-        <javac destdir="${build.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+    <target name="all" depends="undeploy, clean, compile, deploy-prod-war">
+        <echo message="Deployed new build" />
+    </target>
+
+    <target name="resources" description="Moves resources to appropriate place">
+        <delete dir="${prod.ready.dir}" />
+        <mkdir dir="${prod.ready.dir}" />
+
+        <copy todir="${prod.ready.build.dir}">
+            <fileset dir="${resources.dir}">
+                <include name="log4j.web.properties" />
+                <include name="messages.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${prod.ready.build.dir}/conf">
+            <fileset dir="${resources.conf.dir}">
+                <exclude name="dev.properties" />
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${prod.ready.build.dir}/conf">
+            <fileset dir="${resources.conf.prod.dir}">
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile" description="Compile main source tree java files" depends="resources">
+        <javac destdir="${prod.ready.build.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
             <src path="${src.dir}" />
             <classpath refid="master-classpath" />
         </javac>
     </target>
 
-    <target name="ready-prod" depends="build" description="Getting ready to war all the files">
-        <delete dir="${prod.ready}" />
-        <mkdir dir="${prod.ready}" />
-        <copy todir="${prod.ready}">
+    <target name="ready-prod" depends="compile" description="Getting ready to war all the files">
+        <copy todir="${prod.ready.dir}">
             <fileset dir="${web.dir}">
-                <include name="**/*.*" />
+                <include name="**/*.jsp" />
+                <include name="**/*.css" />
+                <include name="**/*.js"  />
+                <include name="**/*.png" />
+                <include name="**/*.gif" />
+                <include name="**/*.jpeg"/>
+                <include name="**/*.jpg" />
+                <include name="**/*.html"/>
+                <include name="**/*.txt" />
+                <include name="**/*.xml" />
+                <include name="**/*.jar" />
+                <include name="**/*.ftl" />
             </fileset>
         </copy>
 
         <!-- Remove Dev Servlet XML -->
         <delete>
-            <fileset dir="${prod.ready}/WEB-INF" includes="receipt-servlet.xml"/>
+            <fileset dir="${prod.ready.dir}/WEB-INF" includes="receipt-servlet.xml"/>
         </delete>
 
         <!-- Copy Prod Servlet XML -->
-        <copy todir="${prod.ready}/WEB-INF">
+        <copy todir="${prod.ready.dir}/WEB-INF">
             <fileset dir="${resources.conf.prod.dir}">
                 <include name="receipt-servlet.xml" />
             </fileset>
@@ -119,12 +126,12 @@
 
     <target name="build-prod-war" depends="ready-prod" description="Build war file">
         <war destfile="${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
-            <fileset dir="${prod.ready}">
+            <fileset dir="${prod.ready.dir}">
                 <include name="**/*.*" />
             </fileset>
         </war>
 
-        <delete dir="${prod.ready}" />
+        <delete dir="${prod.ready.dir}" />
     </target>
 
     <target name="deploy-prod-war" depends="build-prod-war" description="Deploy application as a WAR file">
@@ -222,7 +229,7 @@
         </javac>
     </target>
 
-    <target name="tests" depends="build, buildtests" description="Run tests">
+    <target name="tests" depends="compile, buildtests" description="Run tests">
         <junit printsummary="on" fork="false" haltonfailure="false" failureproperty="tests.failed" showoutput="true">
             <classpath refid="master-classpath" />
             <formatter type="brief" usefile="false" />
