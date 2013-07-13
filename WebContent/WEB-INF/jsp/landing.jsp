@@ -304,7 +304,8 @@
 		</tr>
 	</table>
 
-    <c:if test="${!empty months}">
+    <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).USER_PAID" var="isValid" />
+    <c:if test="${!empty months && isValid}}">
     <div id="off_screen">
         <div id="map-canvas"></div>
     </div>
@@ -315,7 +316,9 @@
 		<ul>
 			<li><a href="#tabs-1">Receipts</a></li>
 			<li><a href="#tabs-2">Expense Analysis</a></li>
+            <c:if test="${isValid}">
 			<li><a href="#tabs-3">Geographical</a></li>
+            </c:if>
 		</ul>
 		<div id="tabs-1">
             <div id="onLoadReceiptForMonthId">
@@ -412,11 +415,13 @@
             </table>
             </c:if>
 		</div>
+        <c:if test="${isValid}">
 		<div id="tabs-3">
             <c:if test="${!empty months}">
             <div id="map-placeholder"></div>
             </c:if>
 		</div>
+        </c:if>
 	</div>
 </div>
 
@@ -654,7 +659,7 @@
 </script>
 </c:if>
 
-<c:if test="${!empty months}">
+<c:if test="${!empty months && isvalid}">
 <!-- Google Map -->
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsVM5IGJXRnMEZvva3F3TW0tcbnbyW-Pw&sensor=false">
