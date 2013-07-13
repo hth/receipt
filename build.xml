@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <project name="receipt" basedir="." default="usage">
 	<property file="build.properties" />	
-	<property name="name" value="receipt" />
-	<property name="database" value="rm" />
-	<property name="database.test" value="rm-test"/>
+	<property name="name"                       value="receipt" />
+	<property name="database"                   value="rm" />
+	<property name="database.test"              value="rm-test"/>
 
-	<property name="src.dir" value="src" />
-	<property name="web.dir" value="WebContent" />
-	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
-	<property name="test.dir" value="test" />
-	<property name="resources.dir" value="resources" />
-    <property name="resources.conf.dir" value="${resources.dir}/conf" />
-	<property name="datadump.dir" value="${resources.dir}/dump/${database}" />
+	<property name="src.dir"                    value="src" />
+	<property name="web.dir"                    value="WebContent" />
+	<property name="build.dir"                  value="${web.dir}/WEB-INF/classes" />
+	<property name="test.dir"                   value="test" />
+	<property name="resources.dir"              value="resources" />
+    <property name="resources.conf.dir"         value="${resources.dir}/conf" />
+    <property name="resources.conf.prod.dir"    value="${resources.conf.dir}/production" />
+	<property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
 
 	<path id="master-classpath">
 		<fileset dir="${web.dir}/WEB-INF/lib">
@@ -99,7 +100,7 @@
 		</copy>
 	</target>
 
-	<target name="deploywar" depends="build-war" description="Deploy application as a WAR file">
+	<target name="deploy-war" depends="build-war" description="Deploy application as a WAR file">
 		<copy todir="${deploy.path}" preservelastmodified="true">
 			<fileset dir=".">
 				<include name="*.war" />
