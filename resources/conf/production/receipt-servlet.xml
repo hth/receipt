@@ -49,6 +49,7 @@
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
     <!-- Forwards requests to the "/" resource to the "welcome" view -->
+    <!--suppress SpringModelInspection -->
     <mvc:view-controller path="/" view-name="login"/>
 
     <!-- the application context definition for the receipt DispatcherServlet -->
@@ -63,22 +64,22 @@
     </bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host"               value="${yahooMailHost}"/>
-        <property name="port"               value="${yahooMailPort}"/>
-        <property name="defaultEncoding"    value="${yahooEncoding}"/>
-        <property name="username"           value="${yahooUsername}"/>
-        <property name="password"           value="${yahoo}"/>
+        <property name="port"               value="${sslMailPort}"/>
+        <property name="defaultEncoding"    value="${mailEncoding}"/>
+        <property name="host"               value="${goDaddyMailHost}"/>
+        <property name="username"           value="${goDaddyUsername}"/>
+        <property name="password"           value="${goDaddy}"/>
         <property name="javaMailProperties">
             <props>
                 <!-- Use SMTP transport protocol -->
-                <prop key="mail.transport.protocol">${yahooProtocol}</prop>
+                <prop key="mail.transport.protocol">${smtpProtocol}</prop>
                 <!-- Use SMTP-AUTH to authenticate to SMTP server -->
                 <prop key="mail.smtp.auth">true</prop>
                 <!-- Use TLS to encrypt communication with SMTP server, May be just for GMAIL-->
                 <!--<prop key="mail.smtp.starttls.enable">true</prop>-->
                 <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
-                <prop key="mail.smtp.port">${yahooMailPort}</prop>
-                <prop key="mail.smtp.socketFactory.port">${yahooMailPort}</prop>
+                <prop key="mail.smtp.port">${sslMailPort}</prop>
+                <prop key="mail.smtp.socketFactory.port">${sslMailPort}</prop>
                 <prop key="mail.debug">true</prop>
             </props>
         </property>
@@ -86,7 +87,7 @@
 
     <!-- this is a template message that we can pre-load with default state -->
     <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
-        <property name="from" value="${yahooUsername}"/>
+        <property name="from" value="${goDaddyUsername}"/>
     </bean>
 
     <!-- refer this for session scope -->
@@ -183,6 +184,7 @@
     <bean id="receiptListenerJMS" class="com.tholix.service.routes.ReceiptListenerJMS" />
 
     <jms:listener-container connection-factory="connectionFactory">
+        <!--suppress SpringModelInspection -->
         <jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
     </jms:listener-container>
     <!-- ===================================== -->
@@ -202,6 +204,7 @@
 
     <!-- Define the MongoTemplate which handles connectivity with MongoDB -->
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <!--suppress SpringModelInspection -->
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
         <property name="writeConcern">
             <!--http://jonathan-whywecanthavenicethings.blogspot.com/2011/11/wheres-my-exceptions-spring-data.html-->

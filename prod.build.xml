@@ -142,6 +142,7 @@
 
     <target name="clean" description="Clean output directories">
         <delete dir="${prod.ready.dir}" />
+        <delete file="${name}.war" />
         <echo message="Cleaned" />
     </target>
 
