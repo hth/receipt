@@ -63,7 +63,7 @@
         <echo message="Deployed new build" />
     </target>
 
-    <target name="resources" description="Moves resources to appropriate place">
+    <target name="resources" description="Moves resources to appropriate place" depends="clean">
         <delete dir="${prod.ready.dir}" />
         <mkdir dir="${prod.ready.dir}" />
 
@@ -130,8 +130,6 @@
                 <include name="**/*.*" />
             </fileset>
         </war>
-
-        <delete dir="${prod.ready.dir}" />
     </target>
 
     <target name="deploy-prod-war" depends="build-prod-war" description="Deploy application as a WAR file">
@@ -143,14 +141,7 @@
     </target>
 
     <target name="clean" description="Clean output directories">
-        <delete>
-            <fileset dir="${build.dir}">
-                <include name="**/*.class" />
-            </fileset>
-            <fileset dir="${build.dir}">
-                <include name="**/*.*"/>
-            </fileset>
-        </delete>
+        <delete dir="${prod.ready.dir}" />
         <echo message="Cleaned" />
     </target>
 

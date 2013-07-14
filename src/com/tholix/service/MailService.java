@@ -86,6 +86,7 @@ public class MailService {
 
                     simpleMailMessage.setFrom(doNotReplyEmail);
                     simpleMailMessage.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
+                    log.info("Mail recovery send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
 
                     simpleMailMessage.setText(text);
                     simpleMailMessage.setSubject(MAIL_RECOVER_SUBJECT);
@@ -123,6 +124,7 @@ public class MailService {
 
                     simpleMailMessage.setFrom(inviteeEmail);
                     simpleMailMessage.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
+                    log.info("Invitation send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
 
                     simpleMailMessage.setSubject(MAIL_INVITE_SUBJECT + " - " + userProfileEntity.getName());
                     simpleMailMessage.setText(text);
