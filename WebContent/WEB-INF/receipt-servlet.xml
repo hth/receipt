@@ -160,7 +160,7 @@
     <!-- http://sourceforge.net/projects/activemqbrowser/files/ -->
     <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL">
-            <value>tcp://localhost:61616</value>
+            <value>${activemq-URL}</value>
         </property>
     </bean>
 
