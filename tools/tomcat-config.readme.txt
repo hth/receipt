@@ -10,3 +10,30 @@ For the exception
 Follow
 
     Create a file called log4j.properties with the following content and save it into $CATALINA_BASE/lib
+
+####################################
+
+For SSL setup
+
+keytool -genkey -alias Receiptofi -keyalg RSA -keystore /Location/receiptofi_keystore
+
+What is your first and last name?
+  [Receiptofi Inc]:  www.receiptofi.com
+What is the name of your organizational unit?
+  [Receiptofi]:  Receiptofi
+What is the name of your organization?
+  [Receiptofi Inc]:  Receiptofi Inc
+
+
+In server.xml. Put the key in Tomcat Conf directory. And no point having port 8080 open.
+
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" SSLEnabled="true"
+    maxThreads="150" scheme="https" secure="true"
+    clientAuth="false" sslProtocol="TLS"
+    keystoreFile="/Location/conf/receiptofi_keystore"
+    keystorePass="XXXXXXX"
+    />
+
+<Connector port="8009" protocol="org.apache.coyote.http11.Http11NioProtocol" redirectPort="8443" />
+
+############## End of SSL ###########
