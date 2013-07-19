@@ -6,3 +6,6 @@ db.MESSAGE_RECEIPT_OCR.update( { recordLocked: false, receiptStatus: "OCR_PROCES
 
 //Multiple record update with new field
 db.USER_AUTHENTICATION.update({}, { $set: {NEW_FIELD_NAME: 'XX_SOME_XX'} }, {multi: true});
+
+//Removes a field from all the records/documents
+db.USER_AUTHENTICATION.update( { FIELD: { $exists: true } }, {$unset: { FIELD : 1 } }, false, true)
