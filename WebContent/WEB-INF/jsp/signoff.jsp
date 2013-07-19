@@ -6,8 +6,8 @@
     <meta http-equiv="imagetoolbar" content="no" />
     <meta http-equiv="Refresh" content="5;url=login.htm">
 
-    <link rel="icon" type="image/x-icon" href="/receipt/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="/receipt/images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
     <link rel='stylesheet' type='text/css' href='/receipt/jquery/css/receipt.css'>
     <meta name="robots" content="noindex,nofollow" />
@@ -26,10 +26,10 @@
 <body>
 <div class="wrapper">
     <div class="error_page">
-        <img alt="receipt-o-fi logo" src="/receipt/images/receipt-o-fi.logo.jpg" height="45px" />
+        <img alt="receipt-o-fi logo" src="images/receipt-o-fi.logo.jpg" height="45px" />
         <h1>Signed Off.</h1>
         <p>&nbsp;</p>
-        <p>Will be re-directed to login page in 5 seconds... </p>
+        <p>Will be re-directed to login page in 5 seconds... or <a href="login.htm">Click to the login</a></p>
     </div>
 </div>
 

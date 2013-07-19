@@ -25,7 +25,7 @@
           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
-	<context:component-scan base-package="com.tholix" />
+    <context:component-scan base-package="com.tholix" />
 
     <!-- Currently not being used -->
     <!--suppress SpringModelInspection -->
@@ -37,31 +37,31 @@
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/dev.properties"    order="4" ignore-unresolvable="true" />
 
-	<!-- Configures the @Controller programming model -->
-	<mvc:annotation-driven />
+    <!-- Configures the @Controller programming model -->
+    <mvc:annotation-driven />
 
     <!-- turn on declarative caching -->
     <cache:annotation-driven />
 
-	<!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
+    <!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
 
-	<!-- Autowired -->
-	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <!-- Autowired -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
-	<!-- Forwards requests to the "/" resource to the "welcome" view -->
+    <!-- Forwards requests to the "/" resource to the "welcome" view -->
     <!--suppress SpringModelInspection -->
-	<mvc:view-controller path="/" view-name="login"/>
+    <mvc:view-controller path="/" view-name="login"/>
 
-	<!-- the application context definition for the receipt DispatcherServlet -->
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="messages" />
-		<!--<property name="cacheSeconds" value="0" />-->
-	</bean>
+    <!-- the application context definition for the receipt DispatcherServlet -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages" />
+        <!--<property name="cacheSeconds" value="0" />-->
+    </bean>
 
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    	<!-- one of the properties available; the maximum file size in bytes; supports 10MB -->
-    	<property name="maxUploadSize" value="10485760"/>
-	</bean>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes; supports 10MB -->
+        <property name="maxUploadSize" value="10485760"/>
+    </bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="port"               value="${sslMailPort}"/>
@@ -90,9 +90,9 @@
         <property name="from" value="${goDaddyUsername}"/>
     </bean>
 
-	<!-- refer this for session scope -->
-	<!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
-	<!-- an HTTP Session-scoped bean exposed as a proxy -->
+    <!-- refer this for session scope -->
+    <!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
+    <!-- an HTTP Session-scoped bean exposed as a proxy -->
     <bean id="userAuthenticationManager"    class="com.tholix.repository.UserAuthenticationManagerImpl" />
     <bean id="userProfileManager"           class="com.tholix.repository.UserProfileManagerImpl" />
     <bean id="userPreferenceManager"        class="com.tholix.repository.UserPreferenceManagerImpl" />
@@ -117,48 +117,48 @@
     <!-- JMS configuration                     -->
     <!-- ===================================== -->
     <!-- JMS connection factory for ActiveMQ connecting to a remote broker on a specific host name and port. -->
-	<!-- CachingConnectionFactory -->
-	<!-- preferred way of doing it -->
-	<!-- <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+    <!-- CachingConnectionFactory -->
+    <!-- preferred way of doing it -->
+    <!-- <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL">
             <value>tcp://localhost:61616</value>
         </property>
     </bean>
 
-	<bean id="jmsFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
-		<property name="connectionFactory" ref="connectionFactory"/>
-	</bean>
+    <bean id="jmsFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
 
-	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
         <property name="defaultDestination" ref="destination" />
-	</bean>
+    </bean>
 
-	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="orderQueue"/>
     </bean>
 
-	<jms:listener-container connection-factory="connectionFactory">
-    	<jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
-	</jms:listener-container>
+    <jms:listener-container connection-factory="connectionFactory">
+        <jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+    </jms:listener-container>
 
-	<bean id="receiptSenderJMS" class="com.tholix.service.routes.ReceiptSenderJMS" />
-	<bean id="receiptListenerJMS" class="com.tholix.service.routes.ReceiptListenerJMS" />    -->
+    <bean id="receiptSenderJMS" class="com.tholix.service.routes.ReceiptSenderJMS" />
+    <bean id="receiptListenerJMS" class="com.tholix.service.routes.ReceiptListenerJMS" />    -->
     <!-- ===================================== -->
     <!-- JMS configuration end                 -->
     <!-- ===================================== -->
 
 
     <!-- ====================== -->
-	<!-- JMS                    -->
-	<!-- ====================== -->
+    <!-- JMS                    -->
+    <!-- ====================== -->
     <!--<amq:topic id="eventTopic" name="topic.events" />-->
 
     <!--<amq:queue id="processingQueue" name="queue.process" />-->
     <!--<amq:queue id="orderQueue" name="orderQueue"/>-->
 
     <!-- http://sourceforge.net/projects/activemqbrowser/files/ -->
-	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL">
             <value>tcp://localhost:61616</value>
         </property>
@@ -185,8 +185,8 @@
 
     <jms:listener-container connection-factory="connectionFactory">
         <!--suppress SpringModelInspection -->
-    	<jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
-	</jms:listener-container>
+        <jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+    </jms:listener-container>
     <!-- ===================================== -->
     <!-- JSM bean End                          -->
     <!-- ===================================== -->
@@ -196,28 +196,28 @@
     <!-- ===================================== -->
     <!-- Factory bean that creates the Mongo instance -->
     <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
-    	<property name="host" value="localhost"/>
-    	<property name="port" value="27017"/>
+        <property name="host" value="localhost"/>
+        <property name="port" value="27017"/>
     </bean>
 
     <mongo:db-factory dbname="rm" mongo-ref="mongo"/>
 
-	<!-- Define the MongoTemplate which handles connectivity with MongoDB -->
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <!-- Define the MongoTemplate which handles connectivity with MongoDB -->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <!--suppress SpringModelInspection -->
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
         <property name="writeConcern">
             <!--http://jonathan-whywecanthavenicethings.blogspot.com/2011/11/wheres-my-exceptions-spring-data.html-->
             <util:constant static-field="com.mongodb.WriteConcern.SAFE" />
         </property>
-	</bean>
+    </bean>
 
     <bean id="gridfsDb" factory-bean="mongoTemplate" factory-method="getDb" />
-	<bean id="storageManager" class="com.tholix.repository.StorageManagerImpl">
- 		<constructor-arg index="0" name="gridfsDb" ref="gridfsDb" />
-	</bean>
+    <bean id="storageManager" class="com.tholix.repository.StorageManagerImpl">
+        <constructor-arg index="0" name="gridfsDb" ref="gridfsDb" />
+    </bean>
 
-	<!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
+    <!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
     <!-- ===================================== -->
     <!-- Mongo Configuration Ends              -->
@@ -253,10 +253,10 @@
         <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
     </bean>
 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
         <property name="cache"  value="true" />
         <property name="order"  value="1" />
     </bean>

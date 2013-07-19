@@ -4,7 +4,10 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +18,10 @@ import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailSender;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
@@ -39,12 +44,12 @@ import com.tholix.repository.UserProfileManager;
 public class MailService {
     private static Logger log = Logger.getLogger(MailService.class);
 
-    private static final String MAIL_RECOVER_SUBJECT = "[r] How to reset your receipt-o-fi ID password";
-    private static final String MAIL_INVITE_SUBJECT = "[r] receipt-o-fi invites you on behalf of";
+    private static final String MAIL_RECOVER_SUBJECT = "How to reset your Receiptofi ID password";
+    private static final String MAIL_INVITE_SUBJECT = "Invites you on behalf of";
 
     @Autowired private AccountService accountService;
     @Autowired private InviteService inviteService;
-    @Autowired private MailSender mailSender;
+    @Autowired private JavaMailSenderImpl mailSender;
     @Autowired private SimpleMailMessage simpleMailMessage;
 
     @Autowired private InviteManager inviteManager;
@@ -64,9 +69,16 @@ public class MailService {
     @Value("${invitee.email}")
     private String inviteeEmail;
 
+    @Value("${email.address.name}")
+    private String emailAddressName;
+
+    @Value("${domain}")
+    private String domain;
+
     /**
      * Send recover email to user of provided email id
      *
+     * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
      * @param emailId
      */
     public boolean mailRecoverLink(String emailId) {
@@ -78,20 +90,37 @@ public class MailService {
                 Map<String, String> rootMap = new HashMap<>();
                 rootMap.put("to", userProfileEntity.getName());
                 rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
+                rootMap.put("domain", domain);
 
                 try {
                     Configuration cfg = freemarkerConfiguration.createConfiguration();
                     Template template = cfg.getTemplate("text-account-recover.ftl");
                     final String text = processTemplateIntoString(template, rootMap);
 
-                    simpleMailMessage.setFrom(doNotReplyEmail);
-                    simpleMailMessage.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
+                    MimeMessage message = mailSender.createMimeMessage();
+
+                    // use the true flag to indicate you need a multipart message
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true , "UTF-8");
+                    helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
+
+                    String sentTo = !StringUtils.isEmpty(devSentTo) ? devSentTo : emailId;
+                    if(!sentTo.equalsIgnoreCase(devSentTo)) {
+                        helper.setTo(new InternetAddress(emailId, userProfileEntity.getName()));
+                    } else {
+                        helper.setTo(new InternetAddress(devSentTo, emailAddressName));
+                    }
                     log.info("Mail recovery send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
 
-                    simpleMailMessage.setText(text);
-                    simpleMailMessage.setSubject(MAIL_RECOVER_SUBJECT);
+                    // use the true flag to indicate the text included is HTML
+                    helper.setText(text, true);
+                    helper.setSubject(userProfileEntity.getName() + ": " + MAIL_RECOVER_SUBJECT);
 
-                    mailSender.send(simpleMailMessage);
+                    //Attach image always at the end
+                    URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
+                    FileSystemResource res = new FileSystemResource(url.getPath());
+                    helper.addInline("receiptofi.logo", res);
+
+                    mailSender.send(message);
                 } catch (IOException | TemplateException exception) {
                     log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
                     return false;
@@ -116,20 +145,31 @@ public class MailService {
                 rootMap.put("fromEmail", userProfileEntity.getEmailId());
                 rootMap.put("to", emailId);
                 rootMap.put("link", inviteEntity.getAuthenticationKey());
+                rootMap.put("domain", domain);
 
                 try {
                     Configuration cfg = freemarkerConfiguration.createConfiguration();
                     Template template = cfg.getTemplate("text-invite.ftl");
                     final String text = processTemplateIntoString(template, rootMap);
 
-                    simpleMailMessage.setFrom(inviteeEmail);
-                    simpleMailMessage.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
+                    MimeMessage message = mailSender.createMimeMessage();
+
+                    // use the true flag to indicate you need a multipart message
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+                    helper.setFrom(new InternetAddress(inviteeEmail, emailAddressName));
+                    helper.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
                     log.info("Invitation send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
 
-                    simpleMailMessage.setSubject(MAIL_INVITE_SUBJECT + " - " + userProfileEntity.getName());
-                    simpleMailMessage.setText(text);
+                    // use the true flag to indicate the text included is HTML
+                    helper.setText(text, true);
+                    helper.setSubject(MAIL_INVITE_SUBJECT + " - " + userProfileEntity.getName());
 
-                    mailSender.send(simpleMailMessage);
+                    //Attach image always at the end
+                    URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
+                    FileSystemResource res = new FileSystemResource(url.getPath());
+                    helper.addInline("receiptofi.logo", res);
+
+                    mailSender.send(message);
                 } catch(TemplateException | IOException exception) {
                     log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
                     deleteInvite(inviteEntity);
