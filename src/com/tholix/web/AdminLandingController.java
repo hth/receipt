@@ -96,22 +96,35 @@ public class AdminLandingController {
         }
 	}
 
+    /**
+     *
+     * @param userSearchForm
+     * @param userSession - Required when user try to refresh page after log out
+     * @return
+     */
 	@RequestMapping(value = "/landing", method = RequestMethod.POST)
-	public ModelAndView loadUser(@ModelAttribute("userLoginForm") UserSearchForm userSearchForm) {
+	public ModelAndView loadUser(@ModelAttribute("userLoginForm") UserSearchForm userSearchForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
-		List<UserSearchForm> userSearchForms = adminLandingService.findAllUsers(userSearchForm.getUserName());
+        List<UserSearchForm> userSearchForms = adminLandingService.findAllUsers(userSearchForm.getUserName());
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
-		modelAndView.addObject("users", userSearchForms);
-		modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
+        modelAndView.addObject("users", userSearchForms);
+        modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
         modelAndView.addObject("bizForm", BizForm.newInstance());
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 	}
 
+    /**
+     *
+     * @param bizForm
+     * @param result
+     * @param userSession - Required when user try to refresh page after log out
+     * @return
+     */
     @RequestMapping(value = "/addBusiness", method = RequestMethod.POST)
-    public ModelAndView addBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result) {
+    public ModelAndView addBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("userSearchForm", UserSearchForm.newInstance());
