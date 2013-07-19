@@ -75,6 +75,9 @@ public class MailService {
     @Value("${domain}")
     private String domain;
 
+    @Value("${emailUrlProtocol}")
+    private String urlProtocol;
+
     /**
      * Send recover email to user of provided email id
      *
@@ -91,6 +94,7 @@ public class MailService {
                 rootMap.put("to", userProfileEntity.getName());
                 rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
                 rootMap.put("domain", domain);
+                rootMap.put("emailUrlProtocol", urlProtocol);
 
                 try {
                     Configuration cfg = freemarkerConfiguration.createConfiguration();
@@ -146,6 +150,7 @@ public class MailService {
                 rootMap.put("to", emailId);
                 rootMap.put("link", inviteEntity.getAuthenticationKey());
                 rootMap.put("domain", domain);
+                rootMap.put("emailUrlProtocol", urlProtocol);
 
                 try {
                     Configuration cfg = freemarkerConfiguration.createConfiguration();

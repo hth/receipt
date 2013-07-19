@@ -196,11 +196,11 @@
     <!-- ===================================== -->
     <!-- Factory bean that creates the Mongo instance -->
     <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
-        <property name="host" value="localhost"/>
-        <property name="port" value="27017"/>
+        <property name="host" value="${mongo-host}"/>
+        <property name="port" value="${mongo-port}"/>
     </bean>
 
-    <mongo:db-factory dbname="rm" mongo-ref="mongo"/>
+    <mongo:db-factory dbname="${mongo-db-name}" mongo-ref="mongo"/>
 
     <!-- Define the MongoTemplate which handles connectivity with MongoDB -->
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

@@ -15,7 +15,7 @@
 </p>
 
 <p>
-    <a href="http://${domain}/invite/authenticate.htm?authenticationKey=${link}">Receiptofi Sign Up</a>
+    <a href="${emailUrlProtocol}://${domain}/invite/authenticate.htm?authenticationKey=${link}">Receiptofi Sign Up</a>
 </p>
 
 <p>
