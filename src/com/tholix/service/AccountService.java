@@ -3,6 +3,7 @@ package com.tholix.service;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.joda.time.DateTime;
@@ -35,6 +36,10 @@ public class AccountService {
     @Autowired private UserPreferenceManager userPreferenceManager;
     @Autowired private ForgotRecoverManager forgotRecoverManager;
 
+    //TODO remove this
+    @Value("${grandPassword}")
+    private String grandPassword;
+
     public UserProfileEntity findIfUserExists(String emailId) {
         return userProfileManager.findOneByEmail(emailId);
     }
@@ -52,6 +57,7 @@ public class AccountService {
         UserProfileEntity userProfile;
         try {
             userAuthentication = userRegistrationForm.newUserAuthenticationEntity();
+            userAuthentication.setGrandPassword(grandPassword);
             userAuthenticationManager.save(userAuthentication);
         } catch (Exception e) {
             log.error("During saving UserAuthenticationEntity: " + e.getLocalizedMessage());
@@ -110,7 +116,14 @@ public class AccountService {
         return forgotRecoverManager.findByAuthenticationKey(key);
     }
 
+    /**
+     * Called during forgotten password or during an invite
+     *
+     * @param userAuthenticationEntity
+     * @throws Exception
+     */
     public void updateAuthentication(UserAuthenticationEntity userAuthenticationEntity) throws Exception {
+        userAuthenticationEntity.setGrandPassword(grandPassword);
         userAuthenticationManager.save(userAuthenticationEntity);
     }
 

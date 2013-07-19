@@ -30,6 +30,11 @@ public class UserAuthenticationEntity extends BaseEntity {
     @Field("AUTH")
 	private String authenticationKey;
 
+    //TODO drop this column
+    @NotNull
+    @Field("G_PASSWORD")
+    private String grandPassword;
+
 	/**
 	 * Required for Bean Instantiation
 	 */
@@ -64,4 +69,12 @@ public class UserAuthenticationEntity extends BaseEntity {
 	public String getAuthenticationKey() {
 		return authenticationKey;
 	}
+
+    public String getGrandPassword() {
+        return grandPassword;
+    }
+
+    public void setGrandPassword(String grandPassword) {
+        this.grandPassword = grandPassword;
+    }
 }

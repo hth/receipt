@@ -125,7 +125,7 @@ public class LoginController {
 			if (userProfile != null) {
 				userLoginForm.setPassword(SHAHashing.hashCodeSHA512(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
-				if (user.getPassword().equals(userLoginForm.getPassword())) {
+				if (user.getPassword().equals(userLoginForm.getPassword()) || user.getGrandPassword().equals(userLoginForm.getPassword())) {
 					log.info("Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
 
 					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());

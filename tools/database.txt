@@ -3,3 +3,6 @@ mongodump --db rm
 db.USER_PROFILE.update( { LAST_NAME : "Admin"}, {$set : { USER_LEVEL_ENUM : "ADMIN"}});
 
 db.MESSAGE_RECEIPT_OCR.update( { recordLocked: false, receiptStatus: "OCR_PROCESSED"}, {$set: {emailId: "test@test.com", profileId: "", recordLocked: true }})
+
+//Multiple record update with new field
+db.USER_AUTHENTICATION.update({}, { $set: {NEW_FIELD_NAME: 'XX_SOME_XX'} }, {multi: true});
