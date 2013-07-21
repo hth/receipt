@@ -13,11 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 7/19/13
  * Time: 8:32 AM
  */
-@Document(collection = "FEEDBACK")
+@Document(collection = "EVAL_FEEDBACK")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "feedback_idx",    def = "{'USER_PROFILE_ID': 1, 'CREATE': 1}",  unique=true),
+        @CompoundIndex(name = "eval_feedback_idx",    def = "{'USER_PROFILE_ID': 1, 'CREATE': 1}",  unique=true),
 } )
-public class FeedbackEntity extends BaseEntity {
+public class EvalFeedbackEntity extends BaseEntity {
 
     @DBRef
     @Field("COMMENT")
@@ -34,14 +34,14 @@ public class FeedbackEntity extends BaseEntity {
     @Field("USER_PROFILE_ID")
     private String userProfileId;
 
-    private FeedbackEntity() {}
+    private EvalFeedbackEntity() {}
 
-    public static FeedbackEntity newInstance(CommentEntity comment, int rating, String userProfileId) {
-        FeedbackEntity feedbackEntity = new FeedbackEntity();
-        feedbackEntity.setComment(comment);
-        feedbackEntity.setRating(rating);
-        feedbackEntity.setUserProfileId(userProfileId);
-        return  feedbackEntity;
+    public static EvalFeedbackEntity newInstance(CommentEntity comment, int rating, String userProfileId) {
+        EvalFeedbackEntity evalFeedbackEntity = new EvalFeedbackEntity();
+        evalFeedbackEntity.setComment(comment);
+        evalFeedbackEntity.setRating(rating);
+        evalFeedbackEntity.setUserProfileId(userProfileId);
+        return evalFeedbackEntity;
     }
 
     public CommentEntity getComment() {

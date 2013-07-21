@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.tholix.domain.CommentEntity;
-import com.tholix.domain.FeedbackEntity;
+import com.tholix.domain.EvalFeedbackEntity;
+import com.tholix.repository.EvalFeedbackManager;
 import com.tholix.web.form.UploadReceiptImage;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.FileTypeEnum;
 import com.tholix.repository.CommentManager;
-import com.tholix.repository.FeedbackManager;
 
 /**
  * User: hitender
@@ -21,11 +21,11 @@ import com.tholix.repository.FeedbackManager;
  * Time: 5:32 PM
  */
 @Service
-public class FeedbackService {
-    private static final Logger log = Logger.getLogger(FeedbackService.class);
+public class EvalFeedbackService {
+    private static final Logger log = Logger.getLogger(EvalFeedbackService.class);
 
     @Autowired CommentManager commentManager;
-    @Autowired FeedbackManager feedbackManager;
+    @Autowired EvalFeedbackManager evalFeedbackManager;
     @Autowired FileDBService fileDBService;
 
     public void addFeedback(String comment, int rating, CommonsMultipartFile fileData, UserSession userSession) {
@@ -46,11 +46,11 @@ public class FeedbackService {
                 blobId = fileDBService.saveFile(uploadReceiptImage);
             }
 
-            FeedbackEntity feedbackEntity = FeedbackEntity.newInstance(commentEntity, rating, userSession.getUserProfileId());
+            EvalFeedbackEntity evalFeedbackEntity = EvalFeedbackEntity.newInstance(commentEntity, rating, userSession.getUserProfileId());
             if(!StringUtils.isEmpty(blobId)) {
-                feedbackEntity.setAttachmentBlobId(blobId);
+                evalFeedbackEntity.setAttachmentBlobId(blobId);
             }
-            feedbackManager.save(feedbackEntity);
+            evalFeedbackManager.save(evalFeedbackEntity);
         } catch (Exception exce) {
             log.error(exce.getLocalizedMessage());
         }

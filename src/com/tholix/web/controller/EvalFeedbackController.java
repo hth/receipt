@@ -18,11 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.UserSession;
-import com.tholix.service.FeedbackService;
+import com.tholix.service.EvalFeedbackService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.web.form.FeedbackForm;
-import com.tholix.web.validator.FeedbackValidator;
+import com.tholix.web.form.EvalFeedbackForm;
+import com.tholix.web.validator.EvalFeedbackValidator;
 
 /**
  * User: hitender
@@ -42,11 +42,11 @@ public class EvalFeedbackController {
     /* For confirming which page to show */
     private static final String SUCCESS_EVAL = "success_eval_feedback";
 
-    @Autowired FeedbackService feedbackService;
-    @Autowired FeedbackValidator feedbackValidator;
+    @Autowired EvalFeedbackService evalFeedbackService;
+    @Autowired EvalFeedbackValidator evalFeedbackValidator;
 
     @RequestMapping(method = RequestMethod.GET, value = "/feedback")
-    public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("feedbackForm") FeedbackForm feedbackForm) {
+    public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
         DateTime time = DateUtil.now();
         log.info("Feedback loadForm: " + userSession.getEmailId());
         ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
@@ -56,18 +56,18 @@ public class EvalFeedbackController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/feedback")
     public ModelAndView postForm(@ModelAttribute("userSession") UserSession userSession,
-                                 @ModelAttribute("feedbackForm") FeedbackForm feedbackForm,
+                                 @ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm,
                                  HttpServletRequest httpServletRequest, BindingResult result) {
 
         DateTime time = DateUtil.now();
-        feedbackValidator.validate(feedbackForm, result);
+        evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result check");
             return modelAndView;
         }
 
-        feedbackService.addFeedback(feedbackForm.getComment(), feedbackForm.getRating(), feedbackForm.getFileData(), userSession);
+        evalFeedbackService.addFeedback(evalFeedbackForm.getComment(), evalFeedbackForm.getRating(), evalFeedbackForm.getFileData(), userSession);
         log.info("Feedback saved successfully");
 
         httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, true);

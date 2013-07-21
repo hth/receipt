@@ -7,7 +7,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  * Date: 7/19/13
  * Time: 8:27 AM
  */
-public final class FeedbackForm {
+public final class EvalFeedbackForm {
 
     private String comment;
 

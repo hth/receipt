@@ -104,7 +104,7 @@
     <bean id="messageManager"               class="com.tholix.repository.MessageManagerImpl" />
     <bean id="expenseManager"               class="com.tholix.repository.ExpenseTypeManagerImpl" />
     <bean id="notificationManager"          class="com.tholix.repository.NotificationManagerImpl" />
-    <bean id="feedbackManager"              class="com.tholix.repository.FeedbackManagerImpl" />
+    <bean id="evalFeedbackManager"          class="com.tholix.repository.EvalFeedbackManagerImpl" />
 
     <bean id="userRegistrationValidator"    class="com.tholix.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.tholix.web.validator.UserLoginValidator" />
@@ -114,7 +114,7 @@
     <bean id="forgotRecoverValidator"       class="com.tholix.web.validator.ForgotRecoverValidator" />
     <bean id="forgotAuthenticateValidator"  class="com.tholix.web.validator.ForgotAuthenticateValidator" />
     <bean id="inviteAuthenticateValidator"  class="com.tholix.web.validator.InviteAuthenticateValidator" />
-    <bean id="feedbackValidator"            class="com.tholix.web.validator.FeedbackValidator" />
+    <bean id="evalFeedbackValidator"        class="com.tholix.web.validator.EvalFeedbackValidator" />
     <!-- ===================================== -->
     <!-- JMS configuration                     -->
     <!-- ===================================== -->

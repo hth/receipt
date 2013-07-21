@@ -15,12 +15,10 @@
 
     <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
     <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
-    <link rel='stylesheet' type='text/css' href="../jquery/fineuploader/fineuploader-3.6.3.css" />
 
     <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../jquery/js/raty/jquery.raty.min.js"></script>
-    <script type="text/javascript" src="../jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -53,70 +51,6 @@
             $(document).mouseup(function () {
                 $(".submenu").hide();
                 $(".account").attr('id', '');
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            var errorHandler = function (event, id, fileName, reason) {
-                qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
-            };
-
-            <%-- TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html --%>
-            var restricteduploader = new qq.FineUploader({
-                element: $('#restricted-fine-uploader')[0],
-                callbacks: {
-                    onError: errorHandler,
-                    onComplete: function (id, fileName, responseJSON) {
-                        if (responseJSON.success == true) {
-                            $(this.getItemByFileId(id)).hide('slow');
-
-                            $.ajax({
-                                type: 'POST',
-                                url:  '${pageContext. request. contextPath}/fetcher/pending.htm',
-                                success: function(response) {
-                                    if(response > 0) {
-                                        var html = '';
-                                        html = html +   "<div class='ui-widget'>" +
-                                                "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
-                                                "<p>" +
-                                                "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
-                                                "<span style='display:block; width:310px;'>";
-                                        if(response == 1) {
-                                            html = html +               "Pending receipt to be processed: ";
-                                        } else {
-                                            html = html +               "Pending receipts to be processed: ";
-                                        }
-                                        html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: #065c14;' class='timer' id='pendingCountValue'>" + 0 + "</strong></a>";
-                                        html = html +               "</span>" +
-                                                "</p>" +
-                                                "</div>" +
-                                                "</div>";
-                                        $('#pendingCountInitial').hide();
-                                        $('#pendingCountId').html(html).show();
-                                        $(runCounter(response));
-                                    }
-                                }
-                            });
-                        }
-                    }
-                },
-                request: {
-                    endpoint: '${pageContext. request. contextPath}/landing/upload.htm',
-                    customHeaders: { Accept: 'multipart/form-data' }
-                },
-                multiple: true,
-                validation: {
-                    allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
-                    sizeLimit: 10485760 // 10 MB in bytes
-                },
-                text: {
-                    uploadButton: '&uarr; &nbsp; Click or Drop to upload Attachment(s)'
-                },
-                showMessage: function (message) {
-                    $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
-                }
             });
         });
     </script>
@@ -164,7 +98,7 @@
                     <span class="text"><fmt:message key="feedback.title" /></span>
                 </legend>
                 <div class="bd">
-                <form:form method="post" action="feedback.htm" modelAttribute="feedbackForm" enctype="multipart/form-data">
+                <form:form method="post" action="feedback.htm" modelAttribute="evalFeedbackForm" enctype="multipart/form-data">
                     <form:hidden path="rating" />
                     <div class="divTable">
                         <div class="divRow">
