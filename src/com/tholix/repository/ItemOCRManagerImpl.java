@@ -36,7 +36,7 @@ import com.tholix.domain.ReceiptEntityOCR;
  */
 @Repository
 @Transactional(readOnly = true)
-public class ItemOCRManagerImpl implements ItemOCRManager {
+public final class ItemOCRManagerImpl implements ItemOCRManager {
 	private static final long serialVersionUID = -6094519223354771552L;
 	private static final Logger log = Logger.getLogger(ItemOCRManagerImpl.class);
 

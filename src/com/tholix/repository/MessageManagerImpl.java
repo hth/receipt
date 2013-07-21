@@ -30,7 +30,7 @@ import com.tholix.domain.types.ReceiptStatusEnum;
  */
 @Repository
 @Transactional(readOnly = true)
-public class MessageManagerImpl implements MessageManager {
+public final class MessageManagerImpl implements MessageManager {
     private static final Logger log = Logger.getLogger(MessageManagerImpl.class);
 
     @Autowired private MongoTemplate mongoTemplate;

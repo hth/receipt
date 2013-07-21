@@ -18,7 +18,7 @@ import com.tholix.domain.BrowserEntity;
  * Time: 4:08 PM
  */
 @Repository
-public class BrowserManagerImpl implements BrowserManager {
+public final class BrowserManagerImpl implements BrowserManager {
 
     @Autowired private MongoTemplate mongoTemplate;
 

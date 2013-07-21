@@ -30,7 +30,7 @@ import com.tholix.domain.UserAuthenticationEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class UserAuthenticationManagerImpl implements UserAuthenticationManager {
+public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
 	private static final Logger log = Logger.getLogger(UserAuthenticationManagerImpl.class);
 
 	private static final long serialVersionUID = 5745317401200234475L;

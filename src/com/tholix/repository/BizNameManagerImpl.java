@@ -23,7 +23,7 @@ import com.tholix.domain.BizNameEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class BizNameManagerImpl implements BizNameManager {
+public final class BizNameManagerImpl implements BizNameManager {
 
     @Autowired
     private MongoTemplate mongoTemplate;

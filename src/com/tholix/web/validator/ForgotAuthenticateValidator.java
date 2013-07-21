@@ -13,7 +13,7 @@ import com.tholix.web.form.ForgotAuthenticateForm;
  * Date: 6/4/13
  * Time: 3:11 AM
  */
-public class ForgotAuthenticateValidator implements Validator {
+public final class ForgotAuthenticateValidator implements Validator {
     private static final Logger log = Logger.getLogger(ForgotAuthenticateValidator.class);
 
     @Override

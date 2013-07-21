@@ -28,7 +28,7 @@ import com.tholix.domain.BizStoreEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class BizStoreManagerImpl implements BizStoreManager {
+public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Autowired private MongoTemplate mongoTemplate;
 

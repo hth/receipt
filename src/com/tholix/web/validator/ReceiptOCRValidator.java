@@ -23,7 +23,7 @@ import com.tholix.web.form.ReceiptOCRForm;
  * @author hitender
  * @since Jan 10, 2013 10:00:24 PM
  */
-public class ReceiptOCRValidator implements Validator {
+public final class ReceiptOCRValidator implements Validator {
     private static final Logger log = Logger.getLogger(ReceiptOCRValidator.class);
 
     @Override

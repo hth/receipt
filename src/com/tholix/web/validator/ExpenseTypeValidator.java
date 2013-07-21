@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
  * Date: 5/14/13
  * Time: 7:08 PM
  */
-public class ExpenseTypeValidator implements Validator {
+public final class ExpenseTypeValidator implements Validator {
     private static final Logger log = Logger.getLogger(ExpenseTypeValidator.class);
     private static int EXPENSE_TYPE_MAX_CHAR = 6;
 

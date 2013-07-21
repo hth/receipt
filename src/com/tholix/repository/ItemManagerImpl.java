@@ -45,7 +45,7 @@ import com.tholix.domain.ReceiptEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class ItemManagerImpl implements ItemManager {
+public final class ItemManagerImpl implements ItemManager {
 	private static final Logger log = Logger.getLogger(ItemManagerImpl.class);
 
 	private static final long serialVersionUID = 5734660649481504610L;

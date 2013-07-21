@@ -30,7 +30,7 @@ import com.tholix.web.form.UploadReceiptImage;
  *
  */
 @Transactional(readOnly = true)
-public class StorageManagerImpl implements StorageManager {
+public final class StorageManagerImpl implements StorageManager {
 	private static final long serialVersionUID = -5264258042433041673L;
 	private static final Logger log = Logger.getLogger(StorageManagerImpl.class);
 

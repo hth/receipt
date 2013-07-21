@@ -23,7 +23,7 @@ import com.tholix.domain.ForgotRecoverEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class ForgotRecoverManagerImpl implements ForgotRecoverManager {
+public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Autowired private MongoTemplate mongoTemplate;
 

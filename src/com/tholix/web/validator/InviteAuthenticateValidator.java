@@ -13,7 +13,7 @@ import com.tholix.web.form.InviteAuthenticateForm;
  * Date: 6/9/13
  * Time: 5:39 PM
  */
-public class InviteAuthenticateValidator implements Validator {
+public final class InviteAuthenticateValidator implements Validator {
     private static final Logger log = Logger.getLogger(InviteAuthenticateValidator.class);
 
     @Override

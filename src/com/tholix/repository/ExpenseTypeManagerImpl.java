@@ -23,7 +23,7 @@ import com.tholix.domain.ExpenseTypeEntity;
  * Date: 5/13/13
  * Time: 11:59 PM
  */
-public class ExpenseTypeManagerImpl implements ExpenseTypeManager {
+public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     private static final Logger log = Logger.getLogger(ExpenseTypeManagerImpl.class);
 
     @Autowired private MongoTemplate mongoTemplate;

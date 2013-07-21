@@ -15,7 +15,7 @@ import com.tholix.web.form.ForgotRecoverForm;
  * Date: 5/31/13
  * Time: 8:29 PM
  */
-public class ForgotRecoverValidator implements Validator {
+public final class ForgotRecoverValidator implements Validator {
     private static final Logger log = Logger.getLogger(ForgotRecoverValidator.class);
 
     @Override

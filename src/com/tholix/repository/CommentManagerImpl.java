@@ -18,7 +18,7 @@ import com.tholix.domain.CommentEntity;
  * Time: 7:13 PM
  */
 @Repository
-public class CommentManagerImpl implements CommentManager {
+public final class CommentManagerImpl implements CommentManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override

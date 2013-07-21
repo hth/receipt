@@ -33,7 +33,7 @@ import com.tholix.domain.types.ReceiptStatusEnum;
  */
 @Repository
 @Transactional(readOnly = true)
-public class ReceiptOCRManagerImpl implements ReceiptOCRManager {
+public final class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	private static final long serialVersionUID = 8740416340416509290L;
 	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
 

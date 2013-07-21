@@ -26,7 +26,7 @@ import com.tholix.domain.NotificationEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class NotificationManagerImpl implements NotificationManager {
+public final class NotificationManagerImpl implements NotificationManager {
     private static final Logger log = Logger.getLogger(NotificationManagerImpl.class);
 
     @Autowired

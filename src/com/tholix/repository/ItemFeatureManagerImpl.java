@@ -23,7 +23,7 @@ import com.tholix.domain.ItemFeatureEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class ItemFeatureManagerImpl implements ItemFeatureManager {
+public final class ItemFeatureManagerImpl implements ItemFeatureManager {
 	private static final long serialVersionUID = -2211419786590573846L;
 
 	@Autowired private MongoTemplate mongoTemplate;

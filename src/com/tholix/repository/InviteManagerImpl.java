@@ -27,7 +27,7 @@ import com.tholix.domain.InviteEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class InviteManagerImpl implements InviteManager {
+public final class InviteManagerImpl implements InviteManager {
     private final static Logger log = Logger.getLogger(InviteManagerImpl.class);
 
     @Autowired private MongoTemplate mongoTemplate;

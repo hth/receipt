@@ -28,7 +28,7 @@ import com.tholix.domain.UserProfileEntity;
  */
 @Repository
 @Transactional(readOnly = true)
-public class UserPreferenceManagerImpl implements UserPreferenceManager {
+public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 	private static final long serialVersionUID = -4805176857358849811L;
 
 	@Autowired private MongoTemplate mongoTemplate;

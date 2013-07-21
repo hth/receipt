@@ -41,7 +41,7 @@ import com.tholix.utils.DateUtil;
  */
 @Repository
 @Transactional(readOnly = true)
-public class ReceiptManagerImpl implements ReceiptManager {
+public final class ReceiptManagerImpl implements ReceiptManager {
 	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
 
 	private static final long serialVersionUID = -8812261440000722447L;

@@ -13,7 +13,7 @@ import com.tholix.web.form.BizForm;
  * Date: 5/10/13
  * Time: 12:35 AM
  */
-public class BizFormValidator implements Validator {
+public final class BizFormValidator implements Validator {
     private static final Logger log = Logger.getLogger(BizFormValidator.class);
 
     @Override

@@ -16,7 +16,7 @@ import com.tholix.web.form.UserRegistrationForm;
  * @since Dec 25, 2012 12:17:57 PM
  *
  */
-public class UserRegistrationValidator implements Validator {
+public final class UserRegistrationValidator implements Validator {
 	private static final Logger log = Logger.getLogger(UserRegistrationValidator.class);
 
 	public static final String EMAIL_REGEX = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";

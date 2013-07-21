@@ -35,7 +35,7 @@ import com.tholix.domain.types.UserLevelEnum;
  */
 @Repository
 @Transactional(readOnly = true)
-public class UserProfileManagerImpl implements UserProfileManager {
+public final class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
 	private static final Logger log = Logger.getLogger(UserProfileManagerImpl.class);
 
