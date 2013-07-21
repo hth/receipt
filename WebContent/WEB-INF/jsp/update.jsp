@@ -200,7 +200,7 @@
                             <ul class="root">
                                 <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
                                 <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
-                                <li><a href="${pageContext.request.contextPath}/feedback.htm">Send Feedback</a></li>
+                                <li><a href="${pageContext.request.contextPath}/eval/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
 
