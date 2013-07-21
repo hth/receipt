@@ -1,5 +1,9 @@
 package com.tholix.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Enumeration;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +30,17 @@ import com.tholix.web.validator.FeedbackValidator;
  * Time: 8:19 AM
  */
 @Controller
-@RequestMapping(value = "/feedback")
+@RequestMapping(value = "/eval")
 @SessionAttributes({"userSession"})
-public class FeedbackController {
-    private static final Logger log = Logger.getLogger(FeedbackController.class);
+public class EvalFeedbackController {
+    private static final Logger log = Logger.getLogger(EvalFeedbackController.class);
 
-    /**
-     * Refers to landing.jsp
-     */
-    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK = "/feedback/feedback";
+    /* Refers to feedback.jsp and next one to feedbackConfirm.jsp */
+    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK            = "/eval/feedback";
+    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM    = "/eval/feedbackConfirm";
+
+    /* For confirming which page to show */
+    private static final String SUCCESS_EVAL = "success_eval_feedback";
 
     @Autowired FeedbackService feedbackService;
     @Autowired FeedbackValidator feedbackValidator;
@@ -48,10 +54,10 @@ public class FeedbackController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value = "/feedback")
     public ModelAndView postForm(@ModelAttribute("userSession") UserSession userSession,
                                  @ModelAttribute("feedbackForm") FeedbackForm feedbackForm,
-                                 BindingResult result) {
+                                 HttpServletRequest httpServletRequest, BindingResult result) {
 
         DateTime time = DateUtil.now();
         feedbackValidator.validate(feedbackForm, result);
@@ -62,6 +68,32 @@ public class FeedbackController {
         }
 
         feedbackService.addFeedback(feedbackForm.getComment(), feedbackForm.getRating(), feedbackForm.getFileData(), userSession);
-        return new ModelAndView("/feedback/feedbackConfirm");
+        log.info("Feedback saved successfully");
+
+        httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, true);
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return new ModelAndView("redirect:" + NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM + ".htm");
+    }
+
+    /**
+     * Add this gymnastic to make sure the page does not process when refreshed again or bookmarked.
+     *
+     * @return
+     * @throws java.io.IOException
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/feedbackConfirm")
+    public String recoverConfirm(HttpServletRequest httpServletRequest) throws IOException {
+        Enumeration<String> attributes = httpServletRequest.getSession().getAttributeNames();
+        while(attributes.hasMoreElements()) {
+            String attributeName = attributes.nextElement();
+            if(attributeName.equals(SUCCESS_EVAL)) {
+                boolean condition = (boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EVAL);
+                if(condition) {
+                    httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, false);
+                    return NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM;
+                }
+            }
+        }
+        return "redirect:" + NEXT_PAGE_IS_CALLED_FEEDBACK + ".htm";
     }
 }

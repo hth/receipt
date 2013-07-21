@@ -1,5 +1,6 @@
 package com.tholix.web.validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.validation.Errors;
@@ -46,7 +47,7 @@ public final class FeedbackValidator implements  Validator {
         }
 
         //Can upload SVG as image/svg+xml
-        if(!feedbackForm.getFileData().getContentType().startsWith("image/")) {
+        if(!feedbackForm.getFileData().getContentType().startsWith("image/") && !StringUtils.isEmpty(feedbackForm.getFileName())) {
             errors.rejectValue("fileData", "file.data", new Object[] { feedbackForm.getFileName() }, ", is not supported. Supported format .JPEG, .JPG, .PNG");
         }
     }

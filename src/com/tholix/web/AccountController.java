@@ -36,8 +36,8 @@ import com.tholix.web.validator.UserRegistrationValidator;
 public class AccountController {
     private static final Logger log = Logger.getLogger(AccountController.class);
 
-    private static final String NEW_ACCOUNT             = "new";
-    private static final String FORGOT_RECOVER_ACCOUNT  = "forgot/recover";
+    private static final String NEW_ACCOUNT             = "/new";
+    private static final String FORGOT_RECOVER_ACCOUNT  = "/forgot/recover";
 
     @Autowired private UserRegistrationValidator userRegistrationValidator;
     @Autowired private AccountService accountService;

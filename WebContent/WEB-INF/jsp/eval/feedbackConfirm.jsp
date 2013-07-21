@@ -10,17 +10,19 @@
     <title><fmt:message key="feedback.title" /></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <meta http-equiv="Refresh" content="3;url=../landing.htm">
+
     <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
 
-    <link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
-    <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
+    <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+    <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href="../jquery/fineuploader/fineuploader-3.6.3.css" />
 
-    <script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="jquery/js/raty/jquery.raty.min.js"></script>
-    <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/raty/jquery.raty.min.js"></script>
+    <script type="text/javascript" src="../jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -127,7 +129,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50">
-                <img src="../${pageContext.request.contextPath}/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px">
+                <img src="${pageContext.request.contextPath}/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px">
             </div>
             <div class="divOfCell75">
                 <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
@@ -138,7 +140,7 @@
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="images/gear.png" width="18px" height="15px" style="float: right;">
+                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;">
                             </a>
                         </div>
                         <div class="submenu">
@@ -158,57 +160,23 @@
     <p>&nbsp;</p>
 
     <div>
-        <section class="chunk">
-            <fieldset>
-                <legend class="hd">
-                    <span class="text"><fmt:message key="feedback.title" /></span>
-                </legend>
-                <div class="bd">
-                <form:form method="post" action="feedback.htm" modelAttribute="feedbackForm" enctype="multipart/form-data">
-                    <form:hidden path="rating" />
-                    <div class="divTable">
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                Message:
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <form:textarea path="comment" id="comment" size="300" cols="50" rows="4" />
-                                <br/>
-                                <form:errors path="comment" cssClass="error" />
-                            </div>
-                        </div>
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                Please rate:
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <div id="star"></div>
-                            </div>
-                        </div>
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                Attachment:
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <form:input path="fileData" type="file" size="17"/>
-                                <br/>
-                                <form:errors path="fileData" cssClass="error" />
-                            </div>
-                        </div>
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                &nbsp;
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <input type="submit" value="Submit" name="submit"/>
-                            </div>
-                        </div>
-                    </div>
-                </form:form>
-                </div>
-            </fieldset>
-        </section>
+        <div class='ui-widget'>
+            <div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>
+                <p>
+                   <span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>
+                   <span style='display:block; width:310px;'>
+                       <p>Thank you for providing valuable feedback.</p>
+                   </span>
+                </p>
+            </div>
+        </div>
     </div>
+
+    <p>
+        <br/><br/><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Redirecting to home page in couple of seconds... If not redirected then please <a href="../landing.htm">click here</a>
+    </p>
 </div>
 
 <div class="footer">
@@ -218,19 +186,5 @@
     </p>
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
-
-<script>
-    $('#star').raty({
-        score   : $('#rating').val(),
-        cancel  : true,
-        size    : 25
-    });
-</script>
-<script>
-    $("#star > img").click(function(){
-        var score = $(this).attr("alt");
-        $('#rating').val(score);
-    });
-</script>
 
 </body>
