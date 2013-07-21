@@ -8,6 +8,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+import com.tholix.domain.types.FileTypeEnum;
+
 /**
  * @author hitender
  * @since Jan 3, 2013 12:56:16 AM
@@ -21,6 +23,7 @@ public class UploadReceiptImage {
 	private CommonsMultipartFile fileData;
     private String emailId;
     private String userProfileId;
+    private FileTypeEnum fileType;
 
     private UploadReceiptImage() { }
 
@@ -58,6 +61,14 @@ public class UploadReceiptImage {
 
     public void setUserProfileId(String userProfileId) {
         this.userProfileId = userProfileId;
+    }
+
+    public FileTypeEnum getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(FileTypeEnum fileType) {
+        this.fileType = fileType;
     }
 
     public DBObject getMetaData() {

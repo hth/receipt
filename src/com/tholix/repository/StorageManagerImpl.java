@@ -118,6 +118,8 @@ public class StorageManagerImpl implements StorageManager {
                 uploadReceiptImage.getFileName(),
                 closeStreamOnPersist);
 
+        receiptBlob.put("DELETE", false);
+        receiptBlob.put("FILE_TYPE", uploadReceiptImage.getFileType().getName());
 		receiptBlob.setContentType(uploadReceiptImage.getFileData().getContentType());
         receiptBlob.setMetaData(uploadReceiptImage.getMetaData());
 

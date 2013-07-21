@@ -30,7 +30,7 @@ import com.tholix.service.ReceiptUpdateService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.ReceiptOCRForm;
-import com.tholix.web.validator.ReceiptOCRFormValidator;
+import com.tholix.web.validator.ReceiptOCRValidator;
 
 /**
  * Class manages first processing of a receipt. That includes loading of a receipts by technician.
@@ -49,7 +49,7 @@ public class ReceiptUpdateController {
     private static final String nextPageRecheck = "recheck";
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
-    @Autowired private ReceiptOCRFormValidator receiptOCRFormValidator;
+    @Autowired private ReceiptOCRValidator receiptOCRValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
 
     /**
@@ -96,7 +96,7 @@ public class ReceiptUpdateController {
 	public String update(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptOCRForm.getReceiptOCR().getId() + " ; Title : " + receiptOCRForm.getReceiptOCR().getBizName().getName());
-		receiptOCRFormValidator.validate(receiptOCRForm, result);
+		receiptOCRValidator.validate(receiptOCRForm, result);
 		if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return nextPage;
@@ -170,7 +170,7 @@ public class ReceiptUpdateController {
     public String recheck(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptOCRForm.getReceiptOCR().getId() + " ; Title : " + receiptOCRForm.getReceiptOCR().getBizName().getName());
-        receiptOCRFormValidator.validate(receiptOCRForm, result);
+        receiptOCRValidator.validate(receiptOCRForm, result);
         if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return nextPageRecheck;

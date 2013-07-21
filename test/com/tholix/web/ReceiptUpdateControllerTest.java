@@ -3,10 +3,6 @@
  */
 package com.tholix.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,12 +10,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.tholix.domain.UserSession;
 import com.tholix.repository.ItemManager;
 import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
-import com.tholix.web.validator.ReceiptOCRFormValidator;
+import com.tholix.web.validator.ReceiptOCRValidator;
 
 /**
  * @author hitender
@@ -32,7 +32,7 @@ public class ReceiptUpdateControllerTest {
 	@Autowired private ItemManager itemManager;
 	@Autowired private ReceiptOCRManager receiptOCRManager;
 	@Autowired private ItemOCRManager itemOCRManager;
-	@Autowired private ReceiptOCRFormValidator receiptOCRFormValidator;
+	@Autowired private ReceiptOCRValidator receiptOCRValidator;
 
 	private ReceiptUpdateController controller;
 	private UserSession userSession;

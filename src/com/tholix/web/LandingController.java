@@ -43,6 +43,7 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.domain.types.FileTypeEnum;
 import com.tholix.domain.types.NotificationTypeEnum;
 import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.service.AccountService;
@@ -239,6 +240,7 @@ public class LandingController extends BaseController {
                 uploadReceiptImage.setFileData(commonsMultipartFile);
                 uploadReceiptImage.setEmailId(userSession.getEmailId());
                 uploadReceiptImage.setUserProfileId(userSession.getUserProfileId());
+                uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
                     landingService.uploadReceipt(userSession.getUserProfileId(), uploadReceiptImage);
                     outcome = FILE_UPLOAD_SUCCESS;
