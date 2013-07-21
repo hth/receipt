@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
-import com.tholix.domain.UploadReceiptImage;
+import com.tholix.web.form.UploadReceiptImage;
 
 /**
  * @author hitender

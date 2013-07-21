@@ -22,7 +22,7 @@ import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 
-import com.tholix.domain.UploadReceiptImage;
+import com.tholix.web.form.UploadReceiptImage;
 
 /**
  * @author hitender

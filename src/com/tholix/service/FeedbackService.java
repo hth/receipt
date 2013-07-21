@@ -9,7 +9,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.tholix.domain.CommentEntity;
 import com.tholix.domain.FeedbackEntity;
-import com.tholix.domain.UploadReceiptImage;
+import com.tholix.web.form.UploadReceiptImage;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.FileTypeEnum;
 import com.tholix.repository.CommentManager;

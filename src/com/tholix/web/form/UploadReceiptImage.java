@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tholix.domain;
+package com.tholix.web.form;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -11,6 +11,8 @@ import com.mongodb.DBObject;
 import com.tholix.domain.types.FileTypeEnum;
 
 /**
+ * This class acts as a form and entity. Its shared across multiple layers. Used in persisting Image file.
+ *
  * @author hitender
  * @since Jan 3, 2013 12:56:16 AM
  *

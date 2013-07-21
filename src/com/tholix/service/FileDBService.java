@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
-import com.tholix.domain.UploadReceiptImage;
+import com.tholix.web.form.UploadReceiptImage;
 import com.tholix.repository.StorageManager;
 
 /**

@@ -40,7 +40,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.tholix.domain.NotificationEntity;
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.UploadReceiptImage;
+import com.tholix.web.form.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.FileTypeEnum;
