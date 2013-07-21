@@ -34,21 +34,28 @@ public final class EvalFeedbackValidator implements  Validator {
                     "Minimum length of 15 characters");
         }
 
-        if(evalFeedbackForm.getFileData().getSize() == 0) {
-            errors.rejectValue("fileData", "file.length.empty", new Object[] { "" }, "There seems to be no file or a file of empty size found");
-        }
+        if(evalFeedbackForm.getFileData().getSize() != 0) {
+            if(evalFeedbackForm.getFileData().getSize() > 10485760) {
+                errors.rejectValue("fileData",
+                        "file.length.high",
+                        new Object[] { "" },
+                        "Uploaded file size exceeds the file size limitation of 10MB");
+            }
 
-        if(evalFeedbackForm.getFileData().getSize() > 10485760) {
-            errors.rejectValue("fileData", "file.length.high", new Object[] { "" }, "Uploaded file size exceeds the file size limitation of 10MB");
-        }
+            if (evalFeedbackForm.getFileName().length() < 5) {
+                errors.rejectValue("fileData",
+                        "field.length",
+                        new Object[] { Integer.valueOf("5") },
+                        "A file name should be minimum of five characters");
+            }
 
-        if (evalFeedbackForm.getFileName().length() < 5) {
-            errors.rejectValue("fileData", "field.length", new Object[] { Integer.valueOf("5") }, "A file name should be minimum of five characters");
-        }
-
-        //Can upload SVG as image/svg+xml
-        if(!evalFeedbackForm.getFileData().getContentType().startsWith("image/") && !StringUtils.isEmpty(evalFeedbackForm.getFileName())) {
-            errors.rejectValue("fileData", "file.data", new Object[] { evalFeedbackForm.getFileName() }, ", is not supported. Supported format .JPEG, .JPG, .PNG");
+            //Can upload SVG as image/svg+xml
+            if(!evalFeedbackForm.getFileData().getContentType().startsWith("image/") && !StringUtils.isEmpty(evalFeedbackForm.getFileName())) {
+                errors.rejectValue("fileData",
+                        "file.data",
+                        new Object[] { evalFeedbackForm.getFileName() },
+                        ", is not supported. Supported format .JPEG, .JPG, .PNG");
+            }
         }
     }
 }

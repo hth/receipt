@@ -24,19 +24,13 @@ import com.tholix.repository.CommentManager;
 public class EvalFeedbackService {
     private static final Logger log = Logger.getLogger(EvalFeedbackService.class);
 
-    @Autowired CommentManager commentManager;
     @Autowired EvalFeedbackManager evalFeedbackManager;
     @Autowired FileDBService fileDBService;
 
     public void addFeedback(String comment, int rating, CommonsMultipartFile fileData, UserSession userSession) {
-        CommentEntity commentEntity;
         String blobId = "";
         try {
-            commentEntity = CommentEntity.newInstance();
-            commentEntity.setText(comment);
-            commentManager.save(commentEntity);
-
-            if(fileData != null) {
+            if(fileData.getSize() > 0) {
                 UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
                 uploadReceiptImage.setFileData(fileData);
                 uploadReceiptImage.setEmailId(userSession.getEmailId());
@@ -46,7 +40,7 @@ public class EvalFeedbackService {
                 blobId = fileDBService.saveFile(uploadReceiptImage);
             }
 
-            EvalFeedbackEntity evalFeedbackEntity = EvalFeedbackEntity.newInstance(commentEntity, rating, userSession.getUserProfileId());
+            EvalFeedbackEntity evalFeedbackEntity = EvalFeedbackEntity.newInstance(comment, rating, userSession.getUserProfileId());
             if(!StringUtils.isEmpty(blobId)) {
                 evalFeedbackEntity.setAttachmentBlobId(blobId);
             }

@@ -4,7 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -19,9 +18,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 } )
 public class EvalFeedbackEntity extends BaseEntity {
 
-    @DBRef
-    @Field("COMMENT")
-    private CommentEntity comment;
+    @Field("FEEDBACK")
+    private String feedback;
 
     @Field("ATTACHMENT_BLOB_ID")
     private String attachmentBlobId;
@@ -36,20 +34,20 @@ public class EvalFeedbackEntity extends BaseEntity {
 
     private EvalFeedbackEntity() {}
 
-    public static EvalFeedbackEntity newInstance(CommentEntity comment, int rating, String userProfileId) {
+    public static EvalFeedbackEntity newInstance(String feedback, int rating, String userProfileId) {
         EvalFeedbackEntity evalFeedbackEntity = new EvalFeedbackEntity();
-        evalFeedbackEntity.setComment(comment);
+        evalFeedbackEntity.setFeedback(feedback);
         evalFeedbackEntity.setRating(rating);
         evalFeedbackEntity.setUserProfileId(userProfileId);
         return evalFeedbackEntity;
     }
 
-    public CommentEntity getComment() {
-        return comment;
+    public String getFeedback() {
+        return feedback;
     }
 
-    public void setComment(CommentEntity comment) {
-        this.comment = comment;
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
     }
 
     public String getAttachmentBlobId() {
