@@ -59,6 +59,8 @@ In Root - index.jsp
 ############## End Root JSP #########
 
 ############## Port forwarding internal and external ######
+http://obscuredclarity.blogspot.ie/2011/05/port-forwarding-80-to-8080-for-tomcat.html
+
 sudo ipfw show
 
 Step 2: Add port forwarding rule (80 to 8080 for Tomcat)
