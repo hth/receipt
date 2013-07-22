@@ -3,6 +3,27 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 	<display-name>receipt</display-name>
 
+    <!-- Java Melody Start -->
+    <filter>
+        <filter-name>monitoring</filter-name>
+        <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+        <!-- really do I need async ? -->
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>allowed-addr-pattern</param-name>
+            <!-- Allows 192.168.1.* with mask 255.255.255.255, other wise add |123\.123\.123\.123 -->
+            <param-value>192\.168\.1\..*</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>monitoring</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+        <listener-class>net.bull.javamelody.SessionListener</listener-class>
+    </listener>
+    <!-- Java Melody Ends -->
+
 	<servlet>
 		<servlet-name>receipt</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -87,7 +108,8 @@
 	    <param-value>/WEB-INF/classes/log4j.web.properties</param-value>
 	</context-param>
 
-	<listener>
-	    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-	</listener>
+    <!-- For logging log4j -->
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
 </web-app>
