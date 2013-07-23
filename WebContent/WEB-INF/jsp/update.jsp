@@ -8,8 +8,8 @@
 	<title><fmt:message key="receipt.update" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-    <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
 
 	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
@@ -18,14 +18,6 @@
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/raphael/raphael-min.js"></script>
     <script type="text/javascript" src="../jquery/js/dynamic_list_helper2.js"></script>
-
-    <%--This makes the other JQuery fail--%>
-    <%--<script type="text/javascript">--%>
-		<%--$("document").ready(function(){--%>
-			<%--$(".alternativeRow").btnAddRow({oddRowCSS:"oddRow",evenRowCSS:"evenRow"});--%>
-			<%--$(".delRow").btnDelRow();--%>
-		<%--});--%>
-	<%--</script>--%>
 
 	<script>
 		/* add background color to holder in tr tag */
@@ -265,7 +257,7 @@
 
     <table>
         <tr>
-            <td valign="top">
+            <td style="vertical-align: top;">
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
@@ -375,7 +367,7 @@
                                     <form:errors path="receiptOCR.total" cssClass="error" />
                                 </td>
                             </tr>
-                            <tr>
+                            <tr style="height: 6em;">
                                 <td colspan="4">
                                     <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="reject" id="reject"/>
                                 </td>
@@ -392,7 +384,7 @@
                 </c:choose>
             </td>
             <td>&nbsp;</td>
-            <td>
+            <td style="vertical-align: top;">
                 <div id="holder">
                     <c:choose>
                     <c:when test="${empty receiptOCRForm.receiptOCR}">

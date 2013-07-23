@@ -17,6 +17,8 @@
 	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type="text/javascript" src="jquery/js/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
 	<style type="text/css">
 		.leftAlign {
@@ -101,13 +103,80 @@
         });
     </script>
 
+    <script>
+        $(document).focusout(function() {
+            $( "#notes" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/modify/receipt_notes.htm',
+                        data: {
+                            term: request.term,
+                            nameParam: $("#receiptId").val()
+                        },
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data == true) {
+                                var html = '';
+                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
+                                $('#savedNotes').html(html).show();
+                                $('.timestamp').cuteTime();
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).focusout(function() {
+            $( "#recheckComment" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/modify/receipt_recheckComment.htm',
+                        data: {
+                            term: request.term,
+                            nameParam: $("#receiptId").val()
+                        },
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data == true) {
+                                var html = '';
+                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
+                                $('#savedRecheckComment').html(html).show();
+                                $('.timestamp').cuteTime();
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).ready(function () {
+            $('#notes').NobleCount('#notesCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
+            });
+            $('#recheckComment').NobleCount('#recheckCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
+            });
+        });
+
+        $(document).ready(function () {
+            $('.timestamp').cuteTime();
+        });
+    </script>
+
 </head>
 <body>
 <div class="wrapper">
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50">
-                <img src="images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px">
+                <img src="images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px" id="logo">
             </div>
             <div class="divOfCell75">
                 <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
@@ -153,9 +222,9 @@
     </c:if>
     <table>
         <tr>
-            <td valign="top">
+            <td style="vertical-align: top;">
                 <form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
-                    <form:hidden path="receipt.id" />
+                    <form:hidden path="receipt.id" id="receiptId"/>
                     <form:hidden path="receipt.notes.id"/>
                     <form:hidden path="receipt.notes.version"/>
                     <form:hidden path="receipt.recheckComment.id"/>
@@ -241,7 +310,7 @@
                             <td style="text-align: right;">&nbsp;</td>
                             <td style="text-align: right;">&nbsp;</td>
                         </tr>
-                        <tr height="60em">
+                        <tr style="height: 6em;">
                             <td colspan="3">
                                 <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check"/></div>
                                 <div class="rightAlign">&nbsp;&nbsp;</div>
@@ -260,7 +329,10 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <form:textarea path="receipt.notes.text" id="notes" size="300" cols="50" rows="4" />
+                                <form:textarea path="receipt.notes.text" id="notes" size="250" cols="50" rows="4" />
+                                <br/>
+                                <span id='notesCount'></span> characters remaining.
+                                <span id="savedNotes" class="okay">Saved - <span class="timestamp" id="savedNotesTime"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span></span>
                             </td>
                         </tr>
                         <tr>
@@ -277,7 +349,10 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <form:textarea path="receipt.recheckComment.text" id="recheckComment" size="300" cols="50" rows="4" />
+                                <form:textarea path="receipt.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" />
+                                <br/>
+                                <span id='recheckCount'></span> characters remaining.
+                                <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp" id="savedRecheckCommentTime"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span></span>
                             </td>
                         </tr>
                         <tr>
@@ -288,8 +363,8 @@
                     </table>
                 </form:form>
             </td>
-            <td width="6px">&nbsp;</td>
-            <td valign="top">
+            <td style="width: 6px;">&nbsp;</td>
+            <td style="vertical-align: top;">
                 <div id="holder">
                     <div src="" width="700px" height="700px" id="receipt.image"></div>
                 </div>
@@ -320,6 +395,12 @@
     </p>
     <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
 </div>
+
+<script>
+    $(function() {
+        $("#logo").focus();
+    });
+</script>
 
 </body>
 </html>

@@ -236,4 +236,99 @@ public class ReceiptService {
     public void updateItemWithExpenseType(ItemEntity item) throws Exception {
         itemManager.updateItemWithExpenseType(item);
     }
+
+    /**
+     * Saves notes to receipt
+     *
+     * @param notes
+     * @param receiptId
+     * @param userProfileId
+     * @return
+     */
+    public boolean updateNotes(String notes, String receiptId, String userProfileId) {
+        ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
+        CommentEntity commentEntity = receiptEntity.getNotes();
+        boolean commentEntityBoolean = false;
+        if(commentEntity == null) {
+            commentEntityBoolean = true;
+            commentEntity = CommentEntity.newInstance();
+            commentEntity.setText(notes);
+        } else {
+            commentEntity.setText(notes);
+        }
+        try {
+            commentManager.save(commentEntity);
+            if(commentEntityBoolean) {
+                receiptEntity.setNotes(commentEntity);
+                receiptManager.save(receiptEntity);
+            }
+            return true;
+        } catch (Exception exce) {
+            log.error("Failed updating notes for receipt: " + receiptId);
+            return false;
+        }
+    }
+
+    /**
+     * Saves recheck comment to receipt
+     *
+     * @param comment
+     * @param receiptId
+     * @param userProfileId
+     * @return
+     */
+    public boolean updateComment(String comment, String receiptId, String userProfileId) {
+        ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
+        CommentEntity commentEntity = receiptEntity.getRecheckComment();
+        boolean commentEntityBoolean = false;
+        if(commentEntity == null) {
+            commentEntityBoolean = true;
+            commentEntity = CommentEntity.newInstance();
+            commentEntity.setText(comment);
+        } else {
+            commentEntity.setText(comment);
+        }
+        try {
+            commentManager.save(commentEntity);
+            if(commentEntityBoolean) {
+                receiptEntity.setRecheckComment(commentEntity);
+                receiptManager.save(receiptEntity);
+            }
+            return true;
+        } catch (Exception exce) {
+            log.error("Failed updating comment for receipt: " + receiptId);
+            return false;
+        }
+    }
+
+    /**
+     * Saves recheck comment to receipt OCR
+     *
+     * @param comment
+     * @param receiptOCRId
+     * @return
+     */
+    public boolean updateOCRComment(String comment, String receiptOCRId) {
+        ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCRId);
+        CommentEntity commentEntity = receiptEntityOCR.getRecheckComment();
+        boolean commentEntityBoolean = false;
+        if(commentEntity == null) {
+            commentEntityBoolean = true;
+            commentEntity = CommentEntity.newInstance();
+            commentEntity.setText(comment);
+        } else {
+            commentEntity.setText(comment);
+        }
+        try {
+            commentManager.save(commentEntity);
+            if(commentEntityBoolean) {
+                receiptEntityOCR.setRecheckComment(commentEntity);
+                receiptOCRManager.save(receiptEntityOCR);
+            }
+            return true;
+        } catch (Exception exce) {
+            log.error("Failed updating comment for receiptOCR: " + receiptOCRId);
+            return false;
+        }
+    }
 }

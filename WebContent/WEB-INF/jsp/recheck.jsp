@@ -16,14 +16,8 @@
     <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../jquery/js/raphael/raphael-min.js"></script>
-
-    <%--This makes the other JQuery fail--%>
-    <%--<script type="text/javascript">--%>
-    <%--$("document").ready(function(){--%>
-    <%--$(".alternativeRow").btnAddRow({oddRowCSS:"oddRow",evenRowCSS:"evenRow"});--%>
-    <%--$(".delRow").btnDelRow();--%>
-    <%--});--%>
-    <%--</script>--%>
+    <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <script>
         /* add background color to holder in tr tag */
@@ -62,6 +56,41 @@
                     });
             // setTimeout(function () {R.safari();});
         };
+    </script>
+
+    <!-- For drop down menu -->
+    <script>
+        $(document).ready(function () {
+
+            $(".account").click(function () {
+                var X = $(this).attr('id');
+                if (X == 1) {
+                    $(".submenu").hide();
+                    $(this).attr('id', '0');
+                }
+                else {
+                    $(".submenu").show();
+                    $(this).attr('id', '1');
+                }
+
+            });
+
+            //Mouse click on sub menu
+            $(".submenu").mouseup(function () {
+                return false
+            });
+
+            //Mouse click on my account link
+            $(".account").mouseup(function () {
+                return false
+            });
+
+            //Document Click
+            $(document).mouseup(function () {
+                $(".submenu").hide();
+                $(".account").attr('id', '');
+            });
+        });
     </script>
 
     <script type="text/javascript">
@@ -109,40 +138,46 @@
             });
 
         });
-    </script>
 
-    <!-- For drop down menu -->
-    <script>
+        $(document).focusout(function() {
+            $( "#recheckComment" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/modify/receiptOCR_recheckComment.htm',
+                        data: {
+                            term: request.term,
+                            nameParam: $("#receiptId").val()
+                        },
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data == true) {
+                                var html = '';
+                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
+                                $('#savedRecheckComment').html(html).show();
+                                $('.timestamp').cuteTime();
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
         $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
+            $('#notes').NobleCount('#notesCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
             });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
+            $('#recheckComment').NobleCount('#recheckCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
             });
+        });
 
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
+        $(document).ready(function () {
+            $('.timestamp').cuteTime();
         });
     </script>
 
@@ -152,7 +187,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px">
+                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px" id="logo">
             </div>
             <div class="divOfCell75">
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
@@ -194,7 +229,7 @@
 
     <table>
         <tr>
-            <td valign="top">
+            <td style="vertical-align: top;">
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
@@ -206,7 +241,7 @@
                     <form:form method="post" action="recheck.htm" modelAttribute="receiptOCRForm">
                         <form:errors path="receiptOCR" cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
-                        <form:hidden path="receiptOCR.id"/>
+                        <form:hidden path="receiptOCR.id" id="receiptId"/>
                         <form:hidden path="receiptOCR.userProfileId"/>
                         <form:hidden path="receiptOCR.version"/>
                         <form:hidden path="receiptOCR.receiptStatus"/>
@@ -305,7 +340,7 @@
                                     <form:errors path="receiptOCR.total" cssClass="error" />
                                 </td>
                             </tr>
-                            <tr>
+                            <tr style="height: 6em;">
                                 <td colspan="3">&nbsp;</td>
                                 <td colspan="2" align="left"><input type="submit" value="Receipt Re-Check" name="recheck"/></td>
                             </tr>
@@ -318,7 +353,9 @@
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:textarea path="receiptOCR.notes.text" id="notes" size="300" cols="50" rows="4" disabled="true"/>
+                                    <form:textarea path="receiptOCR.notes.text" id="notes" size="250" cols="50" rows="4" disabled="true"/>
+                                    <br/>
+                                    <span id='notesCount'></span> characters remaining remaining
                                 </td>
                             </tr>
                             <tr>
@@ -335,7 +372,10 @@
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:textarea path="receiptOCR.recheckComment.text" id="recheckComment" size="300" cols="50" rows="4" disabled="false"/>
+                                    <form:textarea path="receiptOCR.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" disabled="false"/>
+                                    <br/>
+                                    <span id='recheckCount'></span> characters remaining.
+                                    <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp" id="savedRecheckCommentTime"><fmt:formatDate value="${receiptOCRForm.receiptOCR.recheckComment.updated}" type="both"/></span></span>
                                 </td>
                             </tr>
                             <tr>
@@ -356,7 +396,7 @@
 
             </td>
             <td>&nbsp;</td>
-            <td>
+            <td style="vertical-align: top;">
                 <div id="holder">
                     <c:choose>
                     <c:when test="${empty receiptOCRForm.receiptOCR}">
@@ -396,6 +436,12 @@
         if(subTotalValue != '' && subTotalValue > 0 && totalValue != '' && totalValue > 0) {
             $('#expectedTax').text('{ Calculated Tax : ' + (totalValue/subTotalValue -1).toFixed(4) + ' % }');
         }
+    });
+</script>
+
+<script>
+    $(function() {
+        $("#logo").focus();
     });
 </script>
 

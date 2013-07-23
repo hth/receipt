@@ -19,6 +19,7 @@
     <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../jquery/js/raty/jquery.raty.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -51,6 +52,16 @@
             $(document).mouseup(function () {
                 $(".submenu").hide();
                 $(".account").attr('id', '');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#comment').NobleCount('#feedbackComment', {
+                on_negative: 'error',
+                on_positive: 'success',
+                max_chars: 250
             });
         });
     </script>
@@ -105,7 +116,9 @@
                                 Message:
                             </div>
                             <div class="divOfCell500" style="background-color: #eee">
-                                <form:textarea path="comment" id="comment" size="300" cols="50" rows="4" />
+                                <form:textarea path="comment" id="comment" size="250" cols="50" rows="4" />
+                                <br/>
+                                <span id='feedbackComment'></span> characters remaining remaining
                                 <br/>
                                 <form:errors path="comment" cssClass="error" />
                             </div>

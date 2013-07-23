@@ -64,6 +64,9 @@ html, body {
 .error {
 	color: red;
 }
+.okay {
+    color: #065c14;
+}
 .success {
     color: darkblue;
 }
