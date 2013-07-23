@@ -359,7 +359,7 @@
                         </table>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="container" style="min-width: 525px; height: 275px; margin: 0 auto"></div>
+                        <div id="container" style="min-width: 525px; height: 400px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>
@@ -591,7 +591,7 @@
         $('#monthly').highcharts({
             chart: {
                 type: 'column',
-                margin: [ 50, 50, 100, 40]
+                margin: [ 50, 50, 100, 50]
             },
             title: {
                 text: 'Monthly Expenses ${months.get(0).year - 1} - ${months.get(0).year}'
