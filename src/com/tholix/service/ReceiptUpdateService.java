@@ -255,7 +255,7 @@ public class ReceiptUpdateService {
             receiptOCR.setBizName(null);
             receiptOCR.setBizStore(null);
             receiptOCR.inActive();
-            receiptOCR.markAsdeleted();
+            receiptOCR.markAsDeleted();
             receiptOCRManager.save(receiptOCR);
 
             try {

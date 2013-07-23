@@ -37,6 +37,9 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ItemFeatureEntity object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
 		mongoTemplate.save(object, TABLE);
 	}
 

@@ -140,8 +140,10 @@ public final class MessageManagerImpl implements MessageManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(MessageReceiptEntityOCR object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
-        mongoTemplate.save(object);
+        if(object.getId() != null) {
+            object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override

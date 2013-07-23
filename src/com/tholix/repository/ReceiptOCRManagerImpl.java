@@ -54,7 +54,9 @@ public final class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 			// Save will always try to update or create new record.
 			// mongoTemplate.insert(object, TABLE);
 
-			object.setUpdated();
+            if(object.getId() != null) {
+                object.setUpdated();
+            }
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntityOCR: " + e.getLocalizedMessage());

@@ -57,7 +57,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 //                log.error("User seems to be already registered: " + object.getEmailId());
 //                throw new Exception("User already registered with email: " + object.getEmailId());
 //            }
-            object.setUpdated();
+            if(object.getId() != null) {
+                object.setUpdated();
+            }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for UserProfileEntity: " + e.getLocalizedMessage());

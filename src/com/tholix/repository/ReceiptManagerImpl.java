@@ -142,7 +142,9 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 			// Save will always try to update or create new record.
 			// mongoTemplate.insert(object, TABLE);
 
-			object.setUpdated();
+            if(object.getId() != null) {
+                object.setUpdated();
+            }
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntity: " + e.getLocalizedMessage());

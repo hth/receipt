@@ -47,7 +47,10 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 	public void save(UserAuthenticationEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
-			mongoTemplate.save(object, TABLE);
+            if(object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for UserAuthenticationEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());

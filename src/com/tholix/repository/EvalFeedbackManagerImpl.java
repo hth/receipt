@@ -29,7 +29,10 @@ public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
 
     @Override
     public void save(EvalFeedbackEntity object) throws Exception {
-        mongoTemplate.save(object);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override

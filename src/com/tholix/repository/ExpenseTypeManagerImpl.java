@@ -36,7 +36,10 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     @Override
     public void save(ExpenseTypeEntity object) throws Exception {
         try {
-            mongoTemplate.save(object);
+            if(object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
         } catch (DataIntegrityViolationException e) {
             log.error("Duplicate record entry for ExpenseType: " + e.getLocalizedMessage());
             throw new Exception("Expense Name: " + object.getExpName() + ", already exists");

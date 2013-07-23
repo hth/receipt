@@ -113,7 +113,7 @@ public final class Maths {
             BigDecimal total = new BigDecimal(divide.toString());
             BigDecimal outcome = total.divide(by, scale, BigDecimal.ROUND_HALF_UP);
             return outcome;
-        } catch(ArithmeticException arec) {
+        } catch(ArithmeticException exce) {
             log.error("Tried dividing by zero, " + divide + ", " + by);
             return BigDecimal.ZERO;
         }

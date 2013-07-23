@@ -39,7 +39,10 @@ public final class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public void save(NotificationEntity object) throws Exception {
-        mongoTemplate.save(object);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override

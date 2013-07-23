@@ -41,7 +41,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BizStoreEntity object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        mongoTemplate.save(object);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override

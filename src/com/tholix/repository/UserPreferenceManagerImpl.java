@@ -42,7 +42,10 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UserPreferenceEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-		mongoTemplate.save(object, TABLE);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
 	}
 
 	@Override

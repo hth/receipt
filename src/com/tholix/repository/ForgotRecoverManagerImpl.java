@@ -34,7 +34,10 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public void save(ForgotRecoverEntity object) throws Exception {
-        mongoTemplate.save(object);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override

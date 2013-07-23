@@ -29,7 +29,10 @@ public final class BrowserManagerImpl implements BrowserManager {
 
     @Override
     public void save(BrowserEntity object) throws Exception {
-        mongoTemplate.save(object);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override

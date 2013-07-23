@@ -63,8 +63,10 @@ public final class ItemManagerImpl implements ItemManager {
 	public void save(ItemEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
-			object.setUpdated();
-			mongoTemplate.save(object, TABLE);
+            if(object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());

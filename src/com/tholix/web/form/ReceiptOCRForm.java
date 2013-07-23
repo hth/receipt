@@ -88,6 +88,7 @@ public final class ReceiptOCRForm {
         receipt.setReceiptBlobId(receiptOCR.getReceiptBlobId());
         receipt.setUserProfileId(receiptOCR.getUserProfileId());
 		receipt.setCreated(receiptOCR.getCreated());
+        receipt.setUpdated();
         receipt.setBizName(receiptOCR.getBizName());
         receipt.setBizStore(receiptOCR.getBizStore());
         receipt.setReceiptOf(receiptOCR.getReceiptOf());

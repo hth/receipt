@@ -28,7 +28,10 @@ public final class CommentManagerImpl implements CommentManager {
 
     @Override
     public void save(CommentEntity object) throws Exception {
-        mongoTemplate.save(object);
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override
