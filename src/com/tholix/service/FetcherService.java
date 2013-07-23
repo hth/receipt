@@ -56,15 +56,18 @@ public class FetcherService {
     public List<String> findBizAddress(String bizAddress, String bizName) {
         DateTime time = DateUtil.now();
         log.info("Search for Biz address: " + bizAddress + ", within Biz Name: " + bizName);
-        BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizAddress, bizNameEntity, BizStoreManager.ADDRESS);
-
         List<String> address = new ArrayList<>();
-        for(BizStoreEntity bizStoreEntity : list) {
-            address.add(bizStoreEntity.getAddress());
+
+        BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
+        if(bizNameEntity != null) {
+            List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizAddress, bizNameEntity, BizStoreManager.ADDRESS);
+            for(BizStoreEntity bizStoreEntity : list) {
+                address.add(bizStoreEntity.getAddress());
+            }
+
+            log.info("found item.. total size " + list.size());
         }
 
-        log.info("found item.. total size " + list.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return address;
     }
@@ -78,15 +81,20 @@ public class FetcherService {
     public List<String> findBizPhone(String bizPhone, String bizAddress, String bizName) {
         DateTime time = DateUtil.now();
         log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
-        BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, BizStoreManager.PHONE);
-
         List<String> phone = new ArrayList<>();
-        for(BizStoreEntity bizStoreEntity : list) {
-            phone.add(bizStoreEntity.getPhone());
+
+        BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
+        if(bizNameEntity != null) {
+            List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, BizStoreManager.PHONE);
+
+
+            for(BizStoreEntity bizStoreEntity : list) {
+                phone.add(bizStoreEntity.getPhone());
+            }
+
+            log.info("found item.. total size " + list.size());
         }
 
-        log.info("found item.. total size " + list.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return phone;
     }

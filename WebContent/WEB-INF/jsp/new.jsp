@@ -75,7 +75,7 @@
 
 	<p>Please note: A verification email will be sent to your email address.</p>
 
-    <p><a href="<c:url value="login.htm"/>">Login</a></p>
+    <p><a href="<c:url value="login.htm"/>" title="Click here to go to login.">Login</a></p>
 </div>
 
 <div class="footer">
@@ -153,6 +153,16 @@
             }).focusout(function () {
                 t.tooltip('close');
             });
+        });
+    });
+</script>
+
+<!-- For http links -->
+<script>
+    $(function () {
+        var tooltips = $("[title]").tooltip();
+        $.click(function () {
+            tooltips.tooltip("open");
         });
     });
 </script>

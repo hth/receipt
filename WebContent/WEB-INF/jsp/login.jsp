@@ -100,11 +100,6 @@
 </script>
 
 <!-- For http links -->
-<style>
-    label {
-        display: inline-block; width: 8em;
-    }
-</style>
 <script>
     $(function () {
         var tooltips = $("[title]").tooltip();
