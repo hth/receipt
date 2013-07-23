@@ -3,6 +3,8 @@ package com.tholix.domain;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -36,6 +38,6 @@ public class BizNameEntity extends BaseEntity {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = StringUtils.strip(name);
     }
 }

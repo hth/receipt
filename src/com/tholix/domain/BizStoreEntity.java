@@ -3,6 +3,8 @@ package com.tholix.domain;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -10,6 +12,10 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
+
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 /**
  * User: hitender
@@ -72,15 +78,32 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = StringUtils.strip(address);
     }
 
     public String getPhone() {
         return phone;
     }
 
+    public String getPhoneFormatted() {
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        try {
+            //Currently defaults to US
+            Phonenumber.PhoneNumber numberPrototype = phoneUtil.parse(phone, "US");
+            return phoneUtil.format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        return "";
+    }
+
+    /**
+     * Remove everything other than numbers. Do the formatting on client side
+     *
+     * @param phone
+     */
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = phone.replaceAll("[^0-9]", "");
     }
 
     public double getLat() {

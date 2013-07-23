@@ -82,7 +82,7 @@ public abstract class BaseEntity implements Serializable {
         this.deleted = deleted;
     }
 
-    public void markAsdeleted() {
+    public void markAsDeleted() {
         setDeleted(true);
     }
 
@@ -108,9 +108,15 @@ public abstract class BaseEntity implements Serializable {
 		return created;
 	}
 
+    @Deprecated
 	public void setCreated(Date created) {
 		this.created = created;
 	}
+
+    public void setCreateAndUpdate(Date created) {
+        this.created = created;
+        this.updated = created;
+    }
 
 	/**
 	 *

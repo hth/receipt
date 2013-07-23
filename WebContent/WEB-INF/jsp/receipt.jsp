@@ -176,7 +176,7 @@
                                 </div>
                                 <div class="rightAlign">
                                     <b><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="both"/></b>
-                                    <p><b><spring:eval expression="receiptForm.receipt.bizStore.phone"/></b></p>
+                                    <p><b><spring:eval expression="receiptForm.receipt.bizStore.phoneFormatted"/></b></p>
                                 </div>
                             </td>
                         </tr>

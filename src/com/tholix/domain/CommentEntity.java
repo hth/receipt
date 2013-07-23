@@ -2,6 +2,8 @@ package com.tholix.domain;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,8 +19,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
         @CompoundIndex(name = "comment_idx", def = "{'ID': 1}"),
 } )
 public class CommentEntity extends BaseEntity {
+    private static final int TEXT_LENGTH = 250;
 
-    @Size(min = 0, max  = 256)
+    @Size(min = 0, max = TEXT_LENGTH)
     @Field("TEXT")
     private String text;
 
@@ -33,6 +36,7 @@ public class CommentEntity extends BaseEntity {
     }
 
     public void setText(String text) {
-        this.text = text;
+        text = StringUtils.trim(text);
+        this.text = StringUtils.substring(text, 0, TEXT_LENGTH);
     }
 }
