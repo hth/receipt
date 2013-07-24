@@ -10,8 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import static com.tholix.repository.util.AppendAdditionalFields.isNotDeleted;
-import static com.tholix.repository.util.AppendAdditionalFields.update;
+import static com.tholix.repository.util.AppendAdditionalFields.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -276,7 +275,8 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public long countItemsUsingExpenseType(String expenseTypeId) {
-        Query query = Query.query(Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseTypeId)));
+        Criteria criteria = Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseTypeId));
+        Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.count(query, ItemEntity.class);
     }
 
@@ -289,12 +289,14 @@ public final class ItemManagerImpl implements ItemManager {
      */
     @Override
     public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseType) {
-        Query query = Query.query(Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseType.getId())));
+        Criteria criteria = Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseType.getId()));
+        Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query, ItemEntity.class);
     }
 
     @Override
     public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
-        return mongoTemplate.find(Query.query(Criteria.where("EXPENSE_TYPE").is(StringUtils.trimToNull(null)).and("USER_PROFILE_ID").is(userProfileId)), ItemEntity.class);
+        Criteria criteria = Criteria.where("EXPENSE_TYPE").is(StringUtils.trimToNull(null)).and("USER_PROFILE_ID").is(userProfileId);
+        return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()), ItemEntity.class);
     }
 }
