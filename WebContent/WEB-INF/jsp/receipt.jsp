@@ -280,7 +280,7 @@
                                     ${item.taxed.description}
                                 </td>
                                 <td style="text-align: left;">
-                                    <form:select path="items[${status.index}].expenseType.id">
+                                    <form:select path="items[${status.index}].expenseType.id" id="itemId">
                                         <form:option value="NONE" label="--- Select ---" />
                                         <form:options items="${receiptForm.expenseTypes}" itemValue="id" itemLabel="expName" />
                                     </form:select>
@@ -412,7 +412,7 @@
 
 <script>
     $(function() {
-        $("#logo").focus();
+        $("#itemId").focus();
     });
 </script>
 

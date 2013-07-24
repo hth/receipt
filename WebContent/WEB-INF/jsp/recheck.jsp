@@ -308,7 +308,7 @@
                                         <form:errors path="items[${status.index}].price" cssClass="error" />
                                     </td>
                                     <td>
-                                        <form:select path="items[${status.index}].taxed">
+                                        <form:select path="items[${status.index}].taxed" id="itemId">
                                             <form:option value="NONE" label="--- Select ---"/>
                                             <form:options itemValue="name" itemLabel="description" />
                                         </form:select>
@@ -449,7 +449,7 @@
 
 <script>
     $(function() {
-        $("#logo").focus();
+        $("#itemId").focus();
     });
 </script>
 
