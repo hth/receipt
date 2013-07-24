@@ -17,6 +17,7 @@ import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.UserProfileEntity;
+import com.tholix.domain.types.CommentTypeEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.repository.CommentManager;
 import com.tholix.repository.ItemManager;
@@ -251,7 +252,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if(commentEntity == null) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance();
+            commentEntity = CommentEntity.newInstance(CommentTypeEnum.NOTES);
             commentEntity.setText(notes);
         } else {
             commentEntity.setText(notes);
@@ -283,7 +284,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if(commentEntity == null) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance();
+            commentEntity = CommentEntity.newInstance(CommentTypeEnum.RECHECK);
             commentEntity.setText(comment);
         } else {
             commentEntity.setText(comment);
@@ -314,7 +315,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if(commentEntity == null) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance();
+            commentEntity = CommentEntity.newInstance(CommentTypeEnum.RECHECK);
             commentEntity.setText(comment);
         } else {
             commentEntity.setText(comment);

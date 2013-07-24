@@ -9,6 +9,10 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.google.common.base.Objects;
+
+import com.tholix.domain.types.CommentTypeEnum;
+
 /**
  * User: hitender
  * Date: 6/11/13
@@ -25,10 +29,15 @@ public class CommentEntity extends BaseEntity {
     @Field("TEXT")
     private String text;
 
+    @Field("COMMENT_TYPE")
+    private CommentTypeEnum commentType;
+
     public CommentEntity() {}
 
-    public static CommentEntity newInstance() {
-        return new CommentEntity();
+    public static CommentEntity newInstance(CommentTypeEnum commentType) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setCommentType(commentType);
+        return commentEntity;
     }
 
     public String getText() {
@@ -38,5 +47,21 @@ public class CommentEntity extends BaseEntity {
     public void setText(String text) {
         text = StringUtils.trim(text);
         this.text = StringUtils.substring(text, 0, TEXT_LENGTH);
+    }
+
+    public CommentTypeEnum getCommentType() {
+        return commentType;
+    }
+
+    public void setCommentType(CommentTypeEnum commentType) {
+        this.commentType = commentType;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("text", text)
+                .add("updated", getUpdated())
+                .toString();
     }
 }
