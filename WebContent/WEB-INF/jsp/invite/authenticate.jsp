@@ -42,7 +42,7 @@
     </c:if>
 
     <c:if test="${!empty inviteAuthenticateForm.forgotAuthenticateForm}">
-        <img src="../images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px">
+        <img src="../images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
         <p>&nbsp;</p>
         <h2>
             <fmt:message key="invite.heading" />

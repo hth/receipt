@@ -148,14 +148,14 @@
 <div class="wrapper">
  	<div class="divTable">
 		<div class="divRow">
-            <div class="divOfCell250"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"></div>
+            <div class="divOfCell250"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
 			<div class="divOfCell250">
                 <h3>
                     <div class="dropdown">
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="images/gear.png" width="18px" height="15px" style="float: right;">
+                                <img src="images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">

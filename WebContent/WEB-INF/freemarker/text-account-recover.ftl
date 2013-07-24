@@ -30,6 +30,6 @@ Thanks,
 <br/>
 Receiptofi Customer Support
 <br/>
-<img src="cid:receiptofi.logo" alt="receipt-o-fi logo" height="40px" width="240px">
+<img src="cid:receiptofi.logo" alt="Receiptofi logo" height="40px" width="240px"/>
 </body>
 </html>

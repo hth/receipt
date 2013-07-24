@@ -33,6 +33,6 @@ ${from} (${fromEmail})
 <p>
     Receiptofi Customer Support would like to hear from you if you would not like to receive emails from us.
 </p>
-<img src="cid:receiptofi.logo" alt="Receiptofi Logo" height="40px" width="240px">
+<img src="cid:receiptofi.logo" alt="Receiptofi Logo" height="40px" width="240px"/>
 </body>
 </html>

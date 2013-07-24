@@ -187,7 +187,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px" id="logo">
+                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px"/>
             </div>
             <div class="divOfCell75">
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
@@ -206,7 +206,7 @@
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;">
+                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
