@@ -119,7 +119,7 @@
                                 var html = '';
                                 html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
                                 $('#savedNotes').html(html).show();
-                                $('.timestamp').cuteTime();
+                                $('.timestamp').cuteTime({ refresh: 10000 });
                             }
                         }
                     });
@@ -143,7 +143,7 @@
                                 var html = '';
                                 html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
                                 $('#savedRecheckComment').html(html).show();
-                                $('.timestamp').cuteTime();
+                                $('.timestamp').cuteTime({ refresh: 10000 });
                             }
                         }
                     });
@@ -166,7 +166,7 @@
         });
 
         $(document).ready(function () {
-            $('.timestamp').cuteTime();
+            $('.timestamp').cuteTime({ refresh: 10000 });
         });
     </script>
 
