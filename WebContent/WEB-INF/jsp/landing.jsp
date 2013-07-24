@@ -359,7 +359,7 @@
                         </table>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="container" style="min-width: 525px; height: 400px; margin: 0 auto"></div>
+                        <div id="container" style="min-width: 425px; height: 400px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>
@@ -386,7 +386,7 @@
             <table>
                 <tr>
                     <td style="vertical-align: top">
-                        <div id="monthly" style="min-width: 525px; height: 375px; margin: 0 auto"></div>
+                        <div id="monthly" style="min-width: 475px; height: 375px; margin: 0 auto"></div>
 
                         <fieldset style="width:295px;">
                             <legend>Total Expense</legend>
@@ -409,7 +409,7 @@
                         </fieldset>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="allExpenseTypes" style="min-width: 525px; height: 375px; margin: 0 auto"></div>
+                        <div id="allExpenseTypes" style="min-width: 425px; height: 400px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>
