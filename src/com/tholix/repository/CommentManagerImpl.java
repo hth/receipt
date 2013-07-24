@@ -26,11 +26,18 @@ public final class CommentManagerImpl implements CommentManager {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
+    /**
+     * Note: comment should not be marked updated with new time as its already updated by Ajax
+     *
+     * @param object
+     * @throws Exception
+     */
     @Override
     public void save(CommentEntity object) throws Exception {
-        if(object.getId() != null) {
-            object.setUpdated();
-        }
+        //Note: comment should not be marked updated with new time as its already updated by Ajax
+//        if(object.getId() != null) {
+//            object.setUpdated();
+//        }
         mongoTemplate.save(object, TABLE);
     }
 

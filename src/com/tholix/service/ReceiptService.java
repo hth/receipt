@@ -130,34 +130,6 @@ public class ReceiptService {
             ReceiptEntity receipt = receiptManager.findOne(receiptForm.getReceipt().getId());
             if(receipt.getReceiptOCRId() != null) {
                 if(receipt.isActive()) {
-                    if(!StringUtils.isEmpty(receiptForm.getReceipt().getRecheckComment().getText())) {
-                        CommentEntity comment = receiptForm.getReceipt().getRecheckComment();
-                        if(StringUtils.isEmpty(comment.getId())) {
-                            comment.setId(null);
-                        }
-
-                        commentManager.save(comment);
-                        receipt.setRecheckComment(comment);
-                    } else {
-                        CommentEntity comment = receiptForm.getReceipt().getRecheckComment();
-                        commentManager.deleteHard(comment);
-                        receipt.setRecheckComment(null);
-                    }
-
-                    if(!StringUtils.isEmpty(receiptForm.getReceipt().getNotes().getText())) {
-                        CommentEntity comment = receiptForm.getReceipt().getNotes();
-                        if(StringUtils.isEmpty(comment.getId())) {
-                            comment.setId(null);
-                        }
-
-                        commentManager.save(comment);
-                        receipt.setNotes(comment);
-                    } else {
-                        CommentEntity comment = receiptForm.getReceipt().getNotes();
-                        commentManager.deleteHard(comment);
-                        receipt.setNotes(null);
-                    }
-
                     receipt.inActive();
                     List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
 
@@ -258,6 +230,7 @@ public class ReceiptService {
             commentEntity.setText(notes);
         }
         try {
+            commentEntity.setUpdated();
             commentManager.save(commentEntity);
             if(commentEntityBoolean) {
                 receiptEntity.setNotes(commentEntity);
@@ -290,6 +263,7 @@ public class ReceiptService {
             commentEntity.setText(comment);
         }
         try {
+            commentEntity.setUpdated();
             commentManager.save(commentEntity);
             if(commentEntityBoolean) {
                 receiptEntity.setRecheckComment(commentEntity);
@@ -321,6 +295,7 @@ public class ReceiptService {
             commentEntity.setText(comment);
         }
         try {
+            commentEntity.setUpdated();
             commentManager.save(commentEntity);
             if(commentEntityBoolean) {
                 receiptEntityOCR.setRecheckComment(commentEntity);

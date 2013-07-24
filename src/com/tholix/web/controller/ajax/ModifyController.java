@@ -2,9 +2,10 @@ package com.tholix.web.controller.ajax;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+
+import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ import com.tholix.service.ReceiptService;
 @RequestMapping(value = "/modify")
 @SessionAttributes({"userSession"})
 public class ModifyController {
-
+     private static final Logger log = Logger.getLogger(ModifyController.class);
 
     @Autowired ReceiptService receiptService;
 
@@ -52,6 +53,7 @@ public class ModifyController {
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
+            log.info("Receipt notes updated by userProfileId: " + userSession.getUserProfileId());
             return receiptService.updateNotes(notes, receiptId, userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
@@ -77,6 +79,7 @@ public class ModifyController {
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
+            log.info("Receipt recheck comment updated by userProfileId: " + userSession.getUserProfileId());
             return receiptService.updateComment(comment, receiptId, userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
@@ -103,6 +106,7 @@ public class ModifyController {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
+                log.info("Receipt OCR recheck comment updated by userProfileId: " + userSession.getUserProfileId());
                 return receiptService.updateOCRComment(comment, receiptOCRId);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");

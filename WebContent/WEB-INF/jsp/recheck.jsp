@@ -355,7 +355,8 @@
                                 <td colspan="5">
                                     <form:textarea path="receiptOCR.notes.text" id="notes" size="250" cols="50" rows="4" disabled="true"/>
                                     <br/>
-                                    <span id='notesCount'></span> characters remaining remaining
+                                    <span id='notesCount'></span> characters remaining.
+                                    <span id="savedNotes" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptOCRForm.receiptOCR.notes.updated}" type="both"/></span></span>
                                 </td>
                             </tr>
                             <tr>

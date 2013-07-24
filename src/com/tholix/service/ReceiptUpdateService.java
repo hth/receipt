@@ -143,10 +143,11 @@ public class ReceiptUpdateService {
      */
     @Transactional(rollbackFor={Exception.class})
     public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
+        ReceiptEntity fetchedReceipt = null;
         try {
             adminLandingService.saveNewBusinessAndOrStore(receipt);
             if(StringUtils.isNotEmpty(receipt.getId())) {
-                ReceiptEntity fetchedReceipt = receiptManager.findOne(receipt.getId());
+                fetchedReceipt = receiptManager.findOne(receipt.getId());
                 if(fetchedReceipt == null) {
                     // By creating new receipt with old id, we move the pending receipt from the list back to users account
                     log.warn("Something had gone wrong with original receipt id: " + receipt.getId() + ", so creating another with old receipt id");
@@ -163,14 +164,25 @@ public class ReceiptUpdateService {
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
             receiptOCR.inActive();
 
-            //On recheck comments are updated by technician. Receipt notes are never modified
+            //Only recheck comments are updated by technician. Receipt notes are never modified
             if(!StringUtils.isEmpty(receiptOCR.getRecheckComment().getText())) {
                 CommentEntity comment = receiptOCR.getRecheckComment();
                 if(StringUtils.isEmpty(comment.getId())) {
                     comment.setId(null);
                 }
 
-                commentManager.save(comment);
+                /**
+                 * If the comment is not equal then it means Technician has modified the comment and this needs
+                 * to be updated with new time. Else do not update the time of recheck comment
+                 */
+                String fetchedRecheckComment = "";
+                if(fetchedReceipt != null && fetchedReceipt.getRecheckComment() != null) {
+                    fetchedRecheckComment = fetchedReceipt.getRecheckComment().getText();
+                }
+                if(!comment.getText().equalsIgnoreCase(fetchedRecheckComment)) {
+                    comment.setUpdated();
+                    commentManager.save(comment);
+                }
                 receiptOCR.setRecheckComment(comment);
                 receipt.setRecheckComment(comment);
             } else {
