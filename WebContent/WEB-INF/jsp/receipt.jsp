@@ -332,7 +332,14 @@
                                 <form:textarea path="receipt.notes.text" id="notes" size="250" cols="50" rows="4" />
                                 <br/>
                                 <span id='notesCount'></span> characters remaining.
-                                <span id="savedNotes" class="okay">Saved - <span class="timestamp" id="savedNotesTime"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span></span>
+                                <c:choose>
+                                    <c:when test="${!empty receiptForm.receipt.notes.id}">
+                                        <span id="savedNotes" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span></span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span id="savedNotes" class="okay"></span>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                         <tr>
@@ -352,7 +359,14 @@
                                 <form:textarea path="receipt.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" />
                                 <br/>
                                 <span id='recheckCount'></span> characters remaining.
-                                <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp" id="savedRecheckCommentTime"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span></span>
+                                <c:choose>
+                                    <c:when test="${!empty receiptForm.receipt.recheckComment.id}">
+                                        <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span></span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span id="savedRecheckComment" class="okay"></span>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                         <tr>

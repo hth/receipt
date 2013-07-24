@@ -375,7 +375,14 @@
                                     <form:textarea path="receiptOCR.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" disabled="false"/>
                                     <br/>
                                     <span id='recheckCount'></span> characters remaining.
-                                    <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp" id="savedRecheckCommentTime"><fmt:formatDate value="${receiptOCRForm.receiptOCR.recheckComment.updated}" type="both"/></span></span>
+                                    <c:choose>
+                                        <c:when test="${!empty receiptOCRForm.receiptOCR.recheckComment.id}">
+                                            <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptOCRForm.receiptOCR.recheckComment.updated}" type="both"/></span></span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span id="savedRecheckComment" class="okay"></span>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                             <tr>
