@@ -3,20 +3,24 @@
  */
 package com.tholix.web.form;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
+import org.apache.log4j.Logger;
 
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.domain.types.TaxEnum;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
+import com.tholix.utils.Maths;
 
 /**
  * @author hitender
@@ -25,6 +29,7 @@ import com.tholix.utils.Formatter;
  * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
 public final class ReceiptOCRForm {
+    private static final Logger log = Logger.getLogger(ReceiptOCRForm.class);
 
 	ReceiptEntityOCR receiptOCR;
 	List<ItemEntityOCR> items;
@@ -141,4 +146,37 @@ public final class ReceiptOCRForm {
 
 		return listOfItems;
 	}
+
+    /**
+     * Used for calculating individual item tax calculation
+     *
+     * @param items
+     * @param receipt
+     */
+    public void updateItemWithTaxAmount(List<ItemEntity> items, ReceiptEntity receipt) {
+        BigDecimal taxedItemTotalWithoutTax = BigDecimal.ZERO;
+
+        for(ItemEntity item : items) {
+            if(item.getTaxed() == TaxEnum.TAXED) {
+                taxedItemTotalWithoutTax = Maths.add(taxedItemTotalWithoutTax, item.getTotalPriceWithoutTax());
+            }
+        }
+
+        BigDecimal tax = Maths.calculateTax(receipt.getTax(), taxedItemTotalWithoutTax);
+        if(tax.compareTo(BigDecimal.ZERO) == 0) {
+            receipt.setPercentTax("0.0000");
+        } else {
+            receipt.setPercentTax(tax.toString());
+        }
+
+        for(ItemEntity item : items) {
+            if(item.getTaxed() == TaxEnum.TAXED) {
+                BigDecimal taxedAmount = Maths.multiply(item.getPrice().toString(), receipt.getPercentTax().toString());
+                item.setTax(new Double(taxedAmount.toString()));
+            } else {
+                item.setTax(0.00);
+            }
+        }
+
+    }
 }

@@ -1,20 +1,18 @@
 package com.tholix.service;
 
-import com.tholix.domain.ExpenseTypeEntity;
-import com.tholix.domain.ItemEntity;
-import com.tholix.domain.ReceiptEntity;
-import com.tholix.domain.types.TaxEnum;
-import com.tholix.repository.ExpenseTypeManager;
-import com.tholix.repository.ItemManager;
-import com.tholix.repository.ReceiptManager;
-import com.tholix.utils.Maths;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.tholix.domain.ExpenseTypeEntity;
+import com.tholix.domain.ItemEntity;
+import com.tholix.repository.ExpenseTypeManager;
+import com.tholix.repository.ItemManager;
+import com.tholix.utils.Maths;
 
 /**
  * User: hitender
@@ -25,7 +23,6 @@ import java.util.Map;
 public class ItemService {
 
     @Autowired private ItemManager itemManager;
-    @Autowired private ReceiptManager receiptManager;
     @Autowired private ExpenseTypeManager expenseTypeManager;
 
     public long countItemsUsingExpenseType(ExpenseTypeEntity expenseType) {
@@ -86,9 +83,7 @@ public class ItemService {
      */
     private BigDecimal calculateSum(BigDecimal sum, List<ItemEntity> items) {
         for(ItemEntity item : items) {
-            String receiptId = item.getReceipt().getId();
-            ReceiptEntity receiptEntity = receiptManager.findOne(receiptId);
-            sum = calculateTotalCost(sum, item, receiptEntity);
+            sum = calculateTotalCost(sum, item);
         }
         return sum;
     }
@@ -111,19 +106,15 @@ public class ItemService {
     }
 
     /**
-     * Calculate total cost of the item
+     * Calculate total cost of the item with tax. If there are multiple items then multiply with quantity.
+     * Helpful in showing the data in donut chart
      *
      * @param sum
      * @param item
-     * @param receiptEntity
      * @return
      */
-    public BigDecimal calculateTotalCost(BigDecimal sum, ItemEntity item, ReceiptEntity receiptEntity) {
-        if(item.getTaxed() == TaxEnum.TAXED) {
-            sum = Maths.add(sum, Maths.multiply(receiptEntity.calculateItemPriceWithTax(), item.getPrice()));
-        } else {
-            sum = Maths.add(sum, item.getPrice());
-        }
+    public BigDecimal calculateTotalCost(BigDecimal sum, ItemEntity item) {
+        sum = Maths.add(sum, item.getTotalPriceWithTax());
         return sum;
     }
 }

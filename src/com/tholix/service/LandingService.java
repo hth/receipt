@@ -28,7 +28,6 @@ import com.tholix.domain.ItemEntityOCR;
 import com.tholix.domain.NotificationEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
-import com.tholix.web.form.UploadReceiptImage;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptOfEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
@@ -43,6 +42,7 @@ import com.tholix.repository.UserProfileManager;
 import com.tholix.service.routes.ReceiptSenderJMS;
 import com.tholix.utils.Maths;
 import com.tholix.utils.ReceiptParser;
+import com.tholix.web.form.UploadReceiptImage;
 import com.tholix.web.helper.ReceiptForMonth;
 import com.tholix.web.helper.ReceiptLandingView;
 
@@ -149,7 +149,7 @@ public class LandingService {
 
                 for(ItemEntity itemEntity : itemEntities) {
                     BigDecimal sum = BigDecimal.ZERO;
-                    sum = itemService.calculateTotalCost(sum, itemEntity, receipt);
+                    sum = itemService.calculateTotalCost(sum, itemEntity);
                     if(itemEntity.getExpenseType() != null) {
                         if(itemMaps.containsKey(itemEntity.getExpenseType().getExpName())) {
                             BigDecimal out = itemMaps.get(itemEntity.getExpenseType().getExpName());

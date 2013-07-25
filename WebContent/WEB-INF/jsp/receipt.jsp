@@ -232,14 +232,14 @@
 
                     <table style="width: 700px" class="etable">
                         <tr>
-                            <td colspan="3">
+                            <td colspan="4">
                                 <div style="text-align: center; font-size: 15px">
                                     <b><spring:eval expression="receiptForm.receipt.bizName.name" /></b>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3">
+                            <td colspan="4">
                                 <div class="leftAlign">
                                     <b><spring:eval expression="receiptForm.receipt.bizStore.addressWrappedMore"/></b>
                                 </div>
@@ -250,14 +250,18 @@
                             </td>
                         </tr>
                         <tr>
+                            <th></th>
                             <th>Name</th>
                             <th>Price</th>
-                            <th></th>
+                            <th>Tax</th>
                             <th>Expense Type</th>
                         </tr>
                         <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
                             <form:hidden path="items[${status.index}].id"/>
                             <tr>
+                                <td style="padding: 3px; text-align: right; width: 6px">
+                                    ${status.count}
+                                </td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${item.quantity eq 1}">
@@ -274,10 +278,18 @@
                                     </c:choose>
                                 </td>
                                 <td style="text-align: right;">
-                                    <spring:eval expression="item.totalPrice" />
+                                    <spring:eval expression="item.totalPriceWithoutTax" />
                                 </td>
                                 <td style="text-align: left;">
-                                    ${item.taxed.description}
+                                    <spring:eval expression="item.taxed == T(com.tholix.domain.types.TaxEnum).TAXED" var="isValid" />
+                                    <c:choose>
+                                        <c:when test="${!isValid}">
+                                            &nbsp;
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:eval expression="item.totalTax"/> (T)
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                                 <td style="text-align: left;">
                                     <form:select path="items[${status.index}].expenseType.id" id="itemId">
@@ -288,7 +300,7 @@
                             </tr>
                         </c:forEach>
                         <tr>
-                            <td style="text-align: right;">
+                            <td style="text-align: right;" colspan="2">
                                 Sub Total
                             </td>
                             <td style="text-align: right;"><fmt:formatNumber value="${receiptForm.receipt.total - receiptForm.receipt.tax}" type="currency" /></td>
@@ -296,9 +308,9 @@
                             <td style="text-align: right;">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td style="text-align: right;">
+                            <td style="text-align: right; white-space: nowrap;" colspan="2">
                                 <label style="font-size: 11px">
-                                    { Calculated Tax : <b><spring:eval expression="receiptForm.receipt.calculateTax()" /> %</b> }
+                                    { Calculated Tax Rate : <b><spring:eval expression="receiptForm.receipt.percentTax" /></b> }
                                 </label>&nbsp;&nbsp;&nbsp;
                                 <span>Tax &nbsp;</span>
                                 <b><spring:eval expression="receiptForm.receipt.tax" /></b>
@@ -311,7 +323,7 @@
                             <td style="text-align: right;">&nbsp;</td>
                         </tr>
                         <tr style="height: 6em;">
-                            <td colspan="3">
+                            <td colspan="4">
                                 <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check"/></div>
                                 <div class="rightAlign">&nbsp;&nbsp;</div>
                                 <div class="rightAlign"><input type="submit" value="Delete" name="delete"/></div>
@@ -321,14 +333,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <form:label for="receipt.notes.text" path="receipt.notes.text" cssErrorClass="error">
                                     Receipt Notes:
                                 </form:label>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <form:textarea path="receipt.notes.text" id="notes" size="250" cols="50" rows="4" />
                                 <br/>
                                 <span id='notesCount'></span> characters remaining.
@@ -343,19 +355,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <form:errors path="receipt.notes.text" cssClass="error" />
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <form:label for="receipt.recheckComment.text" path="receipt.recheckComment.text" cssErrorClass="error">
                                     Re-Check message:
                                 </form:label>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <form:textarea path="receipt.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" />
                                 <br/>
                                 <span id='recheckCount'></span> characters remaining.
@@ -370,7 +382,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <form:errors path="receipt.recheckComment.text" cssClass="error" />
                             </td>
                         </tr>

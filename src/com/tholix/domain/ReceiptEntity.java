@@ -4,7 +4,6 @@
 package com.tholix.domain;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -23,7 +22,6 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.types.ReceiptOfEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
-import com.tholix.utils.Maths;
 
 /**
  * @author hitender
@@ -73,6 +71,11 @@ public class ReceiptEntity extends BaseEntity {
 	@NumberFormat(style = Style.CURRENCY)
     @Field("TAX")
 	private Double tax = 0.00;
+
+    @NotNull
+    @NumberFormat(style = Style.PERCENT)
+    @Field("PERCENT_TAX")
+    private String percentTax;
 
 	@NotNull
     @Field("USER_PROFILE_ID")
@@ -188,6 +191,12 @@ public class ReceiptEntity extends BaseEntity {
 		this.total = total;
 	}
 
+    /**
+     * Used to show the value in notification
+     *
+     * @return
+     */
+    @Transient
     public String getTotalString() {
         //TODO try using JODA currency
         java.text.NumberFormat currencyFormatter = java.text.NumberFormat.getCurrencyInstance();
@@ -203,29 +212,20 @@ public class ReceiptEntity extends BaseEntity {
 	}
 
     /**
-     * Round at fourth decimal
+     * Percentage of tax paid for all the items that were taxed
      *
-     * @return tax value that needs to be multiplied with price of the item to find the actual price paid for the item
+     * @return
      */
-    @Transient
-    public BigDecimal calculateItemPriceWithTax() {
-        return Maths.divide(getTotal(), getSubTotal(), 4);
+    public String getPercentTax() {
+        return percentTax;
     }
 
-    @Transient
-    public BigDecimal getSubTotal() {
-        return Maths.subtract(getTotal(), getTax());
-    }
-
-    @Transient
-    public BigDecimal calculateTax() {
-        BigDecimal priceOfItemWithTax = calculateItemPriceWithTax();
-        if(priceOfItemWithTax.compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal taxPercent = Maths.subtract(priceOfItemWithTax, BigDecimal.ONE);
-            return taxPercent;
-        } else {
-            return BigDecimal.ZERO;
-        }
+    /**
+     * Percentage of tax paid for all the items that were taxed
+     * @param percentTax - 0.6667
+     */
+    public void setPercentTax(String percentTax) {
+        this.percentTax = percentTax;
     }
 
 	public String getUserProfileId() {

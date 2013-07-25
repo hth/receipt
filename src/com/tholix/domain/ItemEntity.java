@@ -40,6 +40,13 @@ public class ItemEntity extends BaseEntity {
     @Field("PRICE")
 	private Double price;
 
+    /**
+     * Paid tax on an item
+     */
+    @NumberFormat(style = Style.CURRENCY)
+    @Field("TAX")
+    private Double tax;
+
     @Field("QUANTITY")
     private int quantity = 1;
 
@@ -115,6 +122,28 @@ public class ItemEntity extends BaseEntity {
 		this.price = price;
 	}
 
+    /**
+     * Paid tax on an item
+     * @return
+     */
+    public Double getTax() {
+        return tax;
+    }
+
+    /**
+     * Set computed tax for the item
+     * @param tax
+     */
+    public void setTax(Double tax) {
+        this.tax = tax;
+    }
+
+    @NumberFormat(style = Style.CURRENCY)
+    @Transient
+    public BigDecimal getTotalTax() {
+        return Maths.multiply(tax, quantity);
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -125,8 +154,14 @@ public class ItemEntity extends BaseEntity {
 
     @NumberFormat(style = Style.CURRENCY)
     @Transient
-    public BigDecimal getTotalPrice() {
+    public BigDecimal getTotalPriceWithoutTax() {
         return Maths.multiply(price, quantity);
+    }
+
+    @NumberFormat(style = Style.CURRENCY)
+    @Transient
+    public BigDecimal getTotalPriceWithTax() {
+        return Maths.add(getTotalPriceWithoutTax(), getTotalTax());
     }
 
     public TaxEnum getTaxed() {

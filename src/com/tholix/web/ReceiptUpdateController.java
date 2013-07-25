@@ -106,7 +106,9 @@ public class ReceiptUpdateController {
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
             ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
             List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);
+            receiptOCRForm.updateItemWithTaxAmount(items, receipt);
             ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
+
             receiptUpdateService.turkReceipt(receipt, items, receiptOCR);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return REDIRECT_EMP_LANDING_HTM;
@@ -180,7 +182,9 @@ public class ReceiptUpdateController {
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
             ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
             List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);
+            receiptOCRForm.updateItemWithTaxAmount(items, receipt);
             ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
+
             receiptUpdateService.turkReceiptReCheck(receipt, items, receiptOCR);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return REDIRECT_EMP_LANDING_HTM;

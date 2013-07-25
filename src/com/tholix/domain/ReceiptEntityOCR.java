@@ -144,7 +144,7 @@ public class ReceiptEntityOCR extends BaseEntity {
 		this.tax = tax;
 	}
 
-	public String getUserProfileId() {
+    public String getUserProfileId() {
 		return userProfileId;
 	}
 

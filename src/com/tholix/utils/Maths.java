@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
  */
 public final class Maths {
     private static volatile Logger log = Logger.getLogger(Maths.class);
+    private static final int SCALE = 6;
 
     //double[] values = { 1.0, 3.5, 123.4567, 10.0 };
     //output 1 3.5 123.457 10
@@ -80,13 +81,12 @@ public final class Maths {
      */
     public static BigDecimal divide(BigDecimal divide, BigDecimal by) {
         try {
-            BigDecimal division = divide.divide(by, 2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
-            division = division.setScale(2, BigDecimal.ROUND_HALF_UP);
-            //log.debug("divide: " + divide + " / " + by + " = " + division);
+            BigDecimal division = divide.divide(by, 6, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
+            division = division.setScale(SCALE, BigDecimal.ROUND_HALF_UP);
             return division;
         } catch (ArithmeticException exception) {
             // This should never occur. If this occur the problem is likely to be in code than receipt data.
-            log.error("Divide: " + divide + ", by: " + by + ". Message: " + exception.getLocalizedMessage());
+            log.error("Tried Divide: " + divide + ", by: " + by + ". Message: " + exception.getLocalizedMessage());
             return BigDecimal.ZERO;
         }
     }
@@ -105,18 +105,12 @@ public final class Maths {
      *
      * @param divide
      * @param by
-     * @param scale
      * @return
      */
-    public static BigDecimal divide(Double divide, BigDecimal by, int scale) {
-        try {
-            BigDecimal total = new BigDecimal(divide.toString());
-            BigDecimal outcome = total.divide(by, scale, BigDecimal.ROUND_HALF_UP);
-            return outcome;
-        } catch(ArithmeticException exce) {
-            log.error("Tried dividing by zero, " + divide + ", " + by);
-            return BigDecimal.ZERO;
-        }
+    public static BigDecimal divide(Double divide, BigDecimal by) {
+        BigDecimal total = new BigDecimal(divide.toString());
+        BigDecimal outcome = divide(total, by);
+        return outcome;
     }
 
     /**
@@ -145,6 +139,10 @@ public final class Maths {
         return multiply(new BigDecimal(value.toString()), new BigDecimal(withThis));
     }
 
+    public static  BigDecimal multiply(String value, String withThis) {
+        return  multiply(new BigDecimal(value), new BigDecimal(withThis));
+    }
+
     public static BigDecimal multiply(BigDecimal value, int withThis) {
         return multiply(value, new BigDecimal(withThis));
     }
@@ -158,5 +156,19 @@ public final class Maths {
         ParsePosition pos = new ParsePosition(0);
         formatter.parse(str, pos);
         return str.length() == pos.getIndex();
+    }
+
+    /**
+     *
+     * @param taxedAmount
+     * @param withoutTaxedAmount
+     * @return
+     */
+    public static BigDecimal calculateTax(Double taxedAmount, BigDecimal withoutTaxedAmount) {
+        if(taxedAmount == 0 || withoutTaxedAmount.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
+        BigDecimal fraction = divide(taxedAmount, withoutTaxedAmount);
+        return fraction;
     }
 }
