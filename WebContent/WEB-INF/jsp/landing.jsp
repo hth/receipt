@@ -359,7 +359,7 @@
                         </table>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="container" style="min-width: 425px; height: 400px; margin: 0 auto"></div>
+                        <div id="container" style="min-width: 575px; height: 400px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>

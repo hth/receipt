@@ -146,7 +146,7 @@
                             <c:forEach items="${pendingReceiptForm.rejected}" var="receipt" varStatus="status">
                                 <tr>
                                     <td style="padding: 3px; text-align: right;">
-                                            ${status.count}
+                                        ${status.count}
                                     </td>
                                     <td style="padding: 3px;">
                                         <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptEntityOCR.id}">
