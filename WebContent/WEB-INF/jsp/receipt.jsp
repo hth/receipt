@@ -310,7 +310,7 @@
                         <tr>
                             <td style="text-align: right; white-space: nowrap;" colspan="2">
                                 <label style="font-size: 11px">
-                                    { Calculated Tax Rate : <b><spring:eval expression="receiptForm.receipt.percentTax" /></b> }
+                                    { Calculated Tax Rate : <b><spring:eval expression="receiptForm.receipt.percentTax4Display" /></b> }
                                 </label>&nbsp;&nbsp;&nbsp;
                                 <span>Tax &nbsp;</span>
                                 <b><spring:eval expression="receiptForm.receipt.tax" /></b>
@@ -346,7 +346,9 @@
                                 <span id='notesCount'></span> characters remaining.
                                 <c:choose>
                                     <c:when test="${!empty receiptForm.receipt.notes.id}">
-                                        <span id="savedNotes" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span></span>
+                                        <span id="savedNotes" class="okay">
+                                            Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span>
+                                        </span>
                                     </c:when>
                                     <c:otherwise>
                                         <span id="savedNotes" class="okay"></span>
@@ -373,7 +375,9 @@
                                 <span id='recheckCount'></span> characters remaining.
                                 <c:choose>
                                     <c:when test="${!empty receiptForm.receipt.recheckComment.id}">
-                                        <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span></span>
+                                        <span id="savedRecheckComment" class="okay">
+                                            Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span>
+                                        </span>
                                     </c:when>
                                     <c:otherwise>
                                         <span id="savedRecheckComment" class="okay"></span>

@@ -3,9 +3,13 @@
  */
 package com.tholix.domain;
 
+import freemarker.template.utility.StringUtil;
+
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -221,11 +225,21 @@ public class ReceiptEntity extends BaseEntity {
     }
 
     /**
-     * Percentage of tax paid for all the items that were taxed
-     * @param percentTax - 0.6667
+     * Percentage of tax paid for all the items that were taxed. Scaled till 6th value
+     * @param percentTax - 0.666667
      */
     public void setPercentTax(String percentTax) {
         this.percentTax = percentTax;
+    }
+
+    /**
+     * Used for displaying on receipt page till 4th decimal. 0.666
+     *
+     * @return
+     */
+    @Transient
+    public String getPercentTax4Display() {
+        return StringUtils.substring(this.percentTax, 0, 5);
     }
 
 	public String getUserProfileId() {
