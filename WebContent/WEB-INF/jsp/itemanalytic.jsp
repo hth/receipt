@@ -173,7 +173,15 @@
                         <spring:eval expression="item.price" />
                     </td>
                     <td style="padding:3px; text-align: right; width: 70px;">
-                        ${item.taxed.description}
+                        <spring:eval expression="item.taxed == T(com.tholix.domain.types.TaxEnum).TAXED" var="isValid" />
+                        <c:choose>
+                            <c:when test="${!isValid}">
+                                &nbsp;
+                            </c:when>
+                            <c:otherwise>
+                                <spring:eval expression="item.tax"/> (T)
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                     <td style="padding:3px; text-align: left; width: 100px">
                         <form:select path="yourHistoricalItems[${status.index}].expenseType.id">
