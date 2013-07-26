@@ -93,7 +93,7 @@ public class NotificationEntity extends BaseEntity {
         this.referenceId = referenceId;
     }
 
-    public String getNotificationMessage() {
+    public String getNotificationMessage4Display() {
         switch(notificationType) {
             case MESSAGE:
                 return getMessage();
@@ -101,6 +101,19 @@ public class NotificationEntity extends BaseEntity {
                 return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage4Display() + "</a>";
             case RECEIPT:
                 return "<a href=\"" + "./receipt.htm?id=" + getReferenceId() + "\">" + getMessage4Display() + "</a>";
+            default:
+                throw new UnsupportedOperationException("Reached invalid condition in Notification");
+        }
+    }
+
+    public String getNotificationMessage() {
+        switch(notificationType) {
+            case MESSAGE:
+                return getMessage();
+            case RECEIPT_OCR:
+                return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
+            case RECEIPT:
+                return "<a href=\"" + "./receipt.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
             default:
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }

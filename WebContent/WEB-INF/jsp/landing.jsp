@@ -291,7 +291,7 @@
                             </legend>
                             <c:forEach var="notification" items="${notifications}" varStatus="status">
                             <div class="bd">
-                                <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.notificationMessage}</div>
+                                <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.notificationMessage4Display}</div>
                             </div>
                             </c:forEach>
                             <div class="bd">
