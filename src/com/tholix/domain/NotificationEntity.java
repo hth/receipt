@@ -2,6 +2,9 @@ package com.tholix.domain;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -14,6 +17,8 @@ import com.tholix.domain.types.NotificationTypeEnum;
  */
 @Document(collection = "NOTIFICATION")
 public class NotificationEntity extends BaseEntity {
+    private static final int OFF_SET = 0;
+    private static final int MAX_WIDTH = 40;
 
     @NotNull
     @Field("MESSAGE")
@@ -93,11 +98,21 @@ public class NotificationEntity extends BaseEntity {
             case MESSAGE:
                 return getMessage();
             case RECEIPT_OCR:
-                return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
+                return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage4Display() + "</a>";
             case RECEIPT:
-                return "<a href=\"" + "./receipt.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
+                return "<a href=\"" + "./receipt.htm?id=" + getReferenceId() + "\">" + getMessage4Display() + "</a>";
             default:
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
+    }
+
+    /**
+     * Used in displaying the message in short form on landing page
+     *
+     * @return
+     */
+    @Transient
+    private String getMessage4Display() {
+        return StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH);
     }
 }
