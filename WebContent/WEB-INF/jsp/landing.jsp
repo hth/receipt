@@ -140,13 +140,14 @@
     <!-- For dashboard tabs -->
     <script>
         $(function () {
+            $('#tabs').css('width','1425px');
             $("#tabs").tabs();
         });
     </script>
 </head>
 <body>
 <div class="wrapper">
- 	<div class="divTable">
+ 	<div class="divTable" style="width: 810px">
 		<div class="divRow">
             <div class="divOfCell250"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
 			<div class="divOfCell250">
@@ -173,7 +174,7 @@
 		</div>
    	</div>
 
-	<table>
+	<table style="width: 1150px">
 		<tr>
 			<td style="vertical-align: top;">
                 <div id="pendingCountInitial">
