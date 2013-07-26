@@ -4,13 +4,11 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.types.UserLevelEnum;
-import com.tholix.utils.DateUtil;
 
 /**
  * User: hitender
@@ -43,9 +41,6 @@ public class MessageReceiptEntityOCR extends BaseEntity {
     @NotNull
     @Field("RECEIPT_STATUS_ENUM")
     private ReceiptStatusEnum receiptStatus;
-
-    @Transient
-    private String since;
 
     private MessageReceiptEntityOCR() {}
 
@@ -97,10 +92,6 @@ public class MessageReceiptEntityOCR extends BaseEntity {
 
     public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
         this.receiptStatus = receiptStatus;
-    }
-
-    public String getSince() {
-        return DateUtil.getDurationStr(getCreated());
     }
 
     @Override

@@ -129,10 +129,12 @@ public final class DateUtil {
 
     /**
      * Time in seconds, minutes, hours, days. Does not support precision.
+     * This is replaced by js cute-time as this was mostly used for display purpose
      *
      * @param date
      * @return
      */
+    @Deprecated
     public static String getDurationStr(Date date) {
         int time = (DateUtil.duration(new DateTime(date)).getSeconds());
         if(time < DateUtil.MINUTE_IN_SECONDS) {

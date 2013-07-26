@@ -16,6 +16,7 @@
 
     <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -49,6 +50,10 @@
                 $(".submenu").hide();
                 $(".account").attr('id', '');
             });
+        });
+
+        $(document).ready(function () {
+            $('.timestamp').cuteTime({ refresh: 10000 });
         });
     </script>
 
@@ -112,7 +117,7 @@
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
                     </td>
                     <td style="padding:3px;">
-                        <spring:eval expression="receipt.since" />
+                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
                         <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptOCRId}">
@@ -148,7 +153,7 @@
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
                     </td>
                     <td style="padding:3px;">
-                        <spring:eval expression="receipt.since" />
+                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
                         <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptOCRId}">
@@ -184,7 +189,7 @@
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
                     </td>
                     <td style="padding:3px;">
-                        <spring:eval expression="receipt.since" />
+                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
                         <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.receiptOCRId}">
@@ -220,7 +225,7 @@
                         <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
                     </td>
                     <td style="padding:3px;">
-                        <spring:eval expression="receipt.since" />
+                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px;" align="right" title="${receipt.receiptOCRId}">
                         <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.receiptOCRId}">

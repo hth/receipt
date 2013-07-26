@@ -8,7 +8,7 @@ import com.tholix.web.helper.ReceiptForMonth;
  * Time: 3:18 PM
  */
 //TODO to be used and everything should be a JSON
-public class LandingForm {
+public final class LandingForm {
 
     private ReceiptForMonth receiptForMonth;
 
