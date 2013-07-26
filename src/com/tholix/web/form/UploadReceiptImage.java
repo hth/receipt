@@ -21,7 +21,7 @@ import com.tholix.domain.types.FileTypeEnum;
  *      For GridFsTemplate
  * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
  */
-public class UploadReceiptImage {
+public final class UploadReceiptImage {
 	private CommonsMultipartFile fileData;
     private String emailId;
     private String userProfileId;
