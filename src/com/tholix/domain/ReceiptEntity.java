@@ -3,8 +3,6 @@
  */
 package com.tholix.domain;
 
-import freemarker.template.utility.StringUtil;
-
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
