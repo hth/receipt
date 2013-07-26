@@ -16,6 +16,7 @@ import java.util.Map;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 
@@ -117,8 +118,9 @@ public class LandingController extends BaseController {
         Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpense(userSession.getUserProfileId());
         modelAndView.addObject("itemExpenses", itemExpenses);
 
-        /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
+        /** Used for donut chart of each receipts with respect to expense types in TAB 1 */
         log.info("Calculating Donut chart - receipt expense");
+        /** bizNames and bizByExpenseTypes added here */
         populateReceiptExpenseDonutChartDetails(modelAndView, allReceiptsForThisMonth);
 
         landingService.computeTotalExpense(userSession.getUserProfileId(), modelAndView);
@@ -184,7 +186,7 @@ public class LandingController extends BaseController {
         StringBuilder bizNames_sb = new StringBuilder();
         Map<String, Map<String, BigDecimal>> bizByExpenseTypeMap = landingService.allBusinessByExpenseType(receipts);
         for(String bizName : bizByExpenseTypeMap.keySet()) {
-            bizNames_sb.append("'").append(bizName).append("',");
+            bizNames_sb.append("'").append(StringUtils.abbreviate(bizName, LandingDonutChart.OFF_SET, LandingDonutChart.MAX_WIDTH)).append("',");
 
             LandingDonutChart landingDonutChart = LandingDonutChart.newInstance(bizName);
 

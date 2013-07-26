@@ -97,13 +97,13 @@
                             <span class="text"><fmt:message key="notification.title" /></span>
                         </legend>
                         <c:forEach var="notification" items="${notificationForm.notifications}" varStatus="status">
-                            <div class="bd">
-                                <div class="text">
-                                <fmt:formatNumber value="${status.count}" pattern="00"/>. &nbsp;&nbsp;
-                                <fmt:formatDate value="${notification.created}" pattern="MM/dd/yy hh:mm:ss a z" /> &nbsp; - &nbsp;
-                                ${notification.notificationMessage}
-                                </div>
+                        <div class="bd">
+                            <div class="text">
+                            <fmt:formatNumber value="${status.count}" pattern="00"/>. &nbsp;&nbsp;
+                            <fmt:formatDate value="${notification.created}" pattern="MM/dd/yy hh:mm:ss a z" /> &nbsp; - &nbsp;
+                            ${notification.notificationMessage}
                             </div>
+                        </div>
                         </c:forEach>
                     </fieldset>
                 </section>
