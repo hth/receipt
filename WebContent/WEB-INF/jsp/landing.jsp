@@ -305,19 +305,17 @@
 		</tr>
 	</table>
 
-    <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).USER_PAID" var="isValid" />
-    <c:if test="${!empty months && isValid}}">
+    <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).USER_PAID" var="isValidForMap" />
     <div id="off_screen">
         <div id="map-canvas"></div>
     </div>
-    </c:if>
 
 	<!-- Tabs -->
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-1">Receipts</a></li>
 			<li><a href="#tabs-2">Expense Analysis</a></li>
-            <c:if test="${isValid}">
+            <c:if test="${isValidForMap}">
 			<li><a href="#tabs-3">Geographical</a></li>
             </c:if>
 		</ul>
@@ -444,7 +442,7 @@
             </table>
             </c:if>
 		</div>
-        <c:if test="${isValid}">
+        <c:if test="${isValidForMap}">
 		<div id="tabs-3">
             <c:if test="${!empty months}">
             <div id="map-placeholder"></div>
@@ -688,7 +686,7 @@
 </script>
 </c:if>
 
-<c:if test="${!empty months && isvalid}">
+<c:if test="${!empty months && isValidForMap}">
 <!-- Google Map -->
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsVM5IGJXRnMEZvva3F3TW0tcbnbyW-Pw&sensor=false">

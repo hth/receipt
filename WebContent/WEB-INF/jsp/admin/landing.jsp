@@ -90,13 +90,13 @@
 
     <h2>Search users to change profile settings</h2>
     <form:form method="post" modelAttribute="userSearchForm" action="landing.htm">
-        <table style="width: 325px" class="etable">
+        <table style="width: 400px" class="etable">
             <tr>
                 <th style="padding: 3px;">Search Name: </th>
                 <td style="padding: 3px;">&nbsp;<form:input path="userName" size="27" /></td>
             </tr>
             <c:if test="${!empty users}">
-                <table style="width: 325px" class="etable">
+                <table style="width: 400px" class="etable">
                     <tbody>
                         <tr>
                             <th style="padding: 3px;"></th>
