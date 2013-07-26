@@ -127,7 +127,7 @@
 					    <div class="divOfCell600">
                         Registration:
                         &nbsp;
-                        <b>${userProfile.registration}</b></div>
+                        <b><fmt:formatDate value="${userProfile.registration}" type="both" /></b></div>
 					</div>
                     <div class="divRow">
                         <div class="divOfCell600">&nbsp;</div>
