@@ -16,6 +16,7 @@
 
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
 
     <!-- For dashboard tabs -->
     <script>
@@ -65,6 +66,14 @@
             $(document).mouseup(function () {
                 $(".submenu").hide();
                 $(".account").attr('id', '');
+            });
+        });
+
+        $(document).ready(function () {
+            $('#expenseTypeId').NobleCount('#expenseTypeIdCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 6
             });
         });
     </script>
@@ -185,18 +194,23 @@
             <form:form modelAttribute="expenseTypeForm" method="post" action="addExpenseType.htm">
                 <form:errors path="expName" cssClass="error" />
                 <form:hidden path="forYear" />
-                <table border="0" style="width: 225px" class="etable">
-                    <tr>
-                        <td style="padding:3px;">
-                            &nbsp;Add Expense Type <form:input class="tooltip" path="expName" size="6" title="Help's mark an item with specific expense type." /> <sup>*</sup>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding:3px; text-align: left;">
-                            <sup>*</sup>(Max of 6 characters) <input type="submit" value="Add" name="Add" style="text-align: right;"/>&nbsp;&nbsp;
-                        </td>
-                    </tr>
-                </table>
+                <div style="width: 325px">
+                    <section class="chunk">
+                        <fieldset>
+                            <legend class="hd">
+                                <span class="text">Add New Expense Type</span>
+                            </legend>
+                            <div class="bd">
+                                <div class="text">
+                                    <form:input class="tooltip" path="expName" size="6" title="Help's mark an item with specific expense type." id="expenseTypeId"/>
+                                    <input type="submit" value=" Add " name="Add" style="text-align: right;"/>&nbsp;
+                                    <br/><br/>
+                                    <span id='expenseTypeIdCount'></span> characters remaining.
+                                </div>
+                            </div>
+                        </fieldset>
+                    </section>
+                </div>
             </form:form>
 
             <c:if test="${!empty expenseTypes}">
