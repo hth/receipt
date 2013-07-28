@@ -54,6 +54,8 @@ html, body {
 }
 /* End*/
 
+.hover { background-color: #7DBD00; }
+
 /* For Calendar */
 #calendar {
 	width: 425px;

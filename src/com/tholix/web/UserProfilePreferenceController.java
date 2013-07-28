@@ -29,6 +29,7 @@ import com.tholix.service.ItemService;
 import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
+import com.tholix.web.form.ExpenseTypeForm;
 import com.tholix.web.validator.ExpenseTypeValidator;
 
 /**
@@ -83,11 +84,11 @@ public class UserProfilePreferenceController {
 	}
 
     @RequestMapping(value="/addExpenseType", method = RequestMethod.POST)
-    public ModelAndView updateUser(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("expenseType") ExpenseTypeEntity expenseType, BindingResult result) {
+    public ModelAndView updateUser(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm, BindingResult result) {
         DateTime time = DateUtil.now();
         UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
 
-        expenseTypeValidator.validate(expenseType, result);
+        expenseTypeValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
             ModelAndView modelAndView = populateModel(nextPage, userProfile);
             modelAndView.addObject("showTab", "#tabs-2");
@@ -97,7 +98,7 @@ public class UserProfilePreferenceController {
         }
 
         try {
-            expenseType.setUserProfile(userSession.getUserProfileId());
+            ExpenseTypeEntity expenseType = ExpenseTypeEntity.newInstance(expenseTypeForm.getExpName(), userSession.getUserProfileId());
             userProfilePreferenceService.addExpenseType(expenseType);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -146,7 +147,7 @@ public class UserProfilePreferenceController {
 		ModelAndView modelAndView = new ModelAndView(nextPage);
 		modelAndView.addObject("userProfile", userProfile);
 		modelAndView.addObject("userPreference", userPreference);
-        modelAndView.addObject("expenseTypeForm", ExpenseTypeEntity.newInstance("", userProfile.getId()));
+        modelAndView.addObject("expenseTypeForm", ExpenseTypeForm.newInstance());
 
         List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfile.getId());
         modelAndView.addObject("expenseTypes", expenseTypes);

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.BaseEntity;
+import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
 
@@ -29,6 +30,14 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     ReceiptEntity findReceipt(String receiptId, String userProfileId);
+
+    /**
+     * Find all receipts with BizName for the user
+     * @param bizNameEntity
+     * @param userProfileId
+     * @return
+     */
+    List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId);
 
     /**
      * Gets all the user receipts

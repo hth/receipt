@@ -3,7 +3,12 @@
  */
 package com.tholix.web;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.log4j.Logger;
 
@@ -20,16 +25,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
+import com.tholix.repository.BizNameManager;
 import com.tholix.service.ReceiptService;
 import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.ReceiptForm;
+import com.tholix.web.helper.ReceiptLandingView;
 import com.tholix.web.rest.Header;
 
 /**
@@ -44,8 +52,10 @@ public class ReceiptController extends BaseController {
 	private static final Logger log = Logger.getLogger(ReceiptController.class);
 
 	private static String NEXT_PAGE = "/receipt";
+    private static String NEXT_PAGE_BY_BIZ = "/receiptByBiz";
 
     @Autowired private ReceiptService receiptService;
+    @Autowired private BizNameManager bizNameManager;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -174,6 +184,42 @@ public class ReceiptController extends BaseController {
             header = getHeaderForProfileOrAuthFailure();
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return header;
+        }
+    }
+
+    /**
+     *
+     * @param id
+     * @param userSession
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/biz")
+    public ModelAndView receiptByBizName(@RequestParam("id") String id,
+                                         @ModelAttribute("userSession") UserSession userSession,
+                                         HttpServletResponse httpServletResponse) throws IOException {
+
+        DateTime time = DateUtil.now();
+        log.info("Loading Receipts by Biz Name id: " + id);
+        List<ReceiptLandingView> receiptLandingViews = new ArrayList<>();
+
+        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_BY_BIZ);
+        if(userSession != null) {
+
+            List<BizNameEntity> bizNames = bizNameManager.findAllBiz(id);
+            for(BizNameEntity bizNameEntity : bizNames) {
+                List<ReceiptEntity> receipts = receiptService.findReceipt(bizNameEntity, userSession.getUserProfileId());
+                for(ReceiptEntity receiptEntity : receipts) {
+                    receiptLandingViews.add(ReceiptLandingView.newInstance(receiptEntity));
+                }
+            }
+
+            modelAndView.addObject("receiptLandingViews", receiptLandingViews);
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+            return modelAndView;
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return null;
         }
     }
 }

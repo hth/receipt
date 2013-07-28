@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Contains data associated to be shown on donut pie chart
+ *
  * User: hitender
  * Date: 5/25/13
  * Time: 11:17 AM
@@ -31,6 +33,10 @@ public final class LandingDonutChart {
 
     public String getBizName() {
         return bizName;
+    }
+
+    public String getNoSpaceBizName() {
+        return StringUtils.deleteWhitespace(bizName);
     }
 
     public String getShortenedBizName4Display() {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import org.joda.time.DateTime;
 
+import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.CommentEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
@@ -306,5 +307,15 @@ public class ReceiptService {
             log.error("Failed updating comment for receiptOCR: " + receiptOCRId);
             return false;
         }
+    }
+
+    /**
+     *
+     * @param bizNameEntity
+     * @param userProfileId
+     * @return
+     */
+    public List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId) {
+        return receiptManager.findReceipt(bizNameEntity, userProfileId);
     }
 }

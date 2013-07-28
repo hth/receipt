@@ -3,6 +3,8 @@
  */
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +32,7 @@ import org.joda.time.DateTime;
 
 import com.mongodb.WriteResult;
 
+import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.utils.DateUtil;
@@ -180,6 +183,18 @@ public final class ReceiptManagerImpl implements ReceiptManager {
                 .addCriteria(isActive())
                 .addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
+    }
+
+    @Override
+    public List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId) {
+        Criteria criteria1 = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria2 = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        criteria2.andOperator(isActive().andOperator(isNotDeleted()));
+
+        Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE");
+
+        Query query = Query.query(criteria1).addCriteria(criteria2).with(sort);
+        return mongoTemplate.find(query, ReceiptEntity.class, TABLE);
     }
 
     @Override

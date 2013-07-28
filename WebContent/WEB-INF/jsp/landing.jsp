@@ -320,7 +320,7 @@
             <table>
                 <tr>
                     <td style="vertical-align: top">
-                        <table style="width: 470px" class="etable">
+                        <table style="width: 470px" class="etable" id="tableReceiptForMonth">
                             <tr>
                                 <th style="padding: 3px;"></th>
                                 <th style="padding: 3px;">Business</th>
@@ -329,7 +329,7 @@
                                 <th style="padding: 3px;">Total</th>
                             </tr>
                             <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}"  varStatus="status">
-                            <tr>
+                            <tr id="${receipt.noSpaceBizName}">
                                 <td style="padding: 3px; text-align: right">
                                     ${status.count}
                                 </td>
@@ -354,7 +354,10 @@
                     <td style="vertical-align: top">
                         <div id="container" style="min-width: 575px; height: 400px; margin: 0 auto"></div>
                     </td>
-                    <td style="vertical-align: top">
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td style="vertical-align: top;">
                         <div>
                             <section class="chunk">
                                 <fieldset>
@@ -362,22 +365,20 @@
                                         <span class="text"><fmt:message key="business.name.abrev" /></span>
                                     </legend>
                                     <div class="bd">
-
-                                        <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
-                                            <div class="divTable">
-                                                <div class="divRow">
-                                                    <div class="divCell" style="background-color: #eee">
-                                                        <fmt:formatNumber value="${status.count}" pattern="00"/>.
-                                                        &nbsp; ${item.shortenedBizName4Display}
-                                                    </div>
-                                                    <div class="divOfCell200" style="background-color: #eee">
-                                                        - &nbsp;${item.bizName}
-                                                    </div>
+                                    <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
+                                        <div class="divTable">
+                                            <div class="divRow">
+                                                <div class="divCell" style="background-color: #eee">
+                                                    <fmt:formatNumber value="${status.count}" pattern="00"/>.
+                                                    &nbsp; ${item.shortenedBizName4Display}
+                                                </div>
+                                                <div class="divOfCell200" style="background-color: #eee">
+                                                    - &nbsp;${item.bizName}
                                                 </div>
                                             </div>
-                                        </c:forEach>
+                                        </div>
+                                    </c:forEach>
                                     </div>
-
                                 </fieldset>
                             </section>
                         </div>
@@ -484,19 +485,20 @@
 
         var colors = Highcharts.getOptions().colors,
                 categories = [${bizNames}],
-                name = 'Receipt Expenses',
                 data = [
                     <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
                     {
                         y: ${item.total},
                         color: colors[${status.count-1}],
-                        url: 'http://bing.com/search?q=foo',
+                        url: 'receipt/biz.htm?id=${item.bizName}',
+                        id: '${item.noSpaceBizName}',
                         drilldown: {
                             name: '${item.bizName}',
                             categories: [${item.expenseTypes}],
                             data: [${item.expenseValues}],
                             color: colors[${status.count-1}],
-                            url: 'http://bing.com/search?q=foo'
+                            url: 'receipt/biz.htm?id=${item.bizName}',
+                            id: '${item.noSpaceBizName}'
                         }
                     },
                     </c:forEach>
@@ -512,7 +514,9 @@
             bizNames.push({
                 name: categories[i],
                 y: data[i].y,
-                color: data[i].color
+                color: data[i].color,
+                url: data[i].url,
+                id: data[i].id
             });
 
             // add version data
@@ -521,7 +525,9 @@
                 expenseTypes.push({
                     name: data[i].drilldown.categories[j],
                     y: data[i].drilldown.data[j],
-                    color: Highcharts.Color(data[i].color).brighten(brightness).get()
+                    color: Highcharts.Color(data[i].color).brighten(brightness).get(),
+                    url: data[i].drilldown.url,
+                    id: data[i].drilldown.id
                 });
             }
         }
@@ -545,7 +551,8 @@
             plotOptions: {
                 pie: {
                     shadow: false,
-                    center: ['50%', '50%']
+                    center: ['50%', '50%'],
+                    slicedOffset: 0
                 }
             },
             tooltip: {
@@ -561,7 +568,7 @@
                     size: '60%',
                     dataLabels: {
                         formatter: function () {
-                            return this.y > 5 ? this.point.name : null;
+                            return this.y > 1 ? this.point.name : null;
                         },
                         color: 'white',
                         distance: -30
@@ -569,8 +576,16 @@
                     point: {
                         events: {
                             click: function(e) {
-                                location.href = e.point.series.options.url; //proper path 2)
-                                e.preventDefault();
+                                console.log(this.options.url);
+                                location.href = this.options.url;
+                            },
+                            mouseOver: function(e) {
+                                console.log('#' + this.options.id);
+                                $('#' + this.options.id).addClass("hover");
+                            },
+                            mouseOut: function(e) {
+                                console.log('#' + this.options.id);
+                                $('#' + this.options.id).removeClass("hover");
                             }
                         }
                     },
@@ -591,8 +606,16 @@
                     point: {
                         events: {
                             click: function(e) {
-                                location.href = e.point.series.options.url; //proper path 2)
-                                e.preventDefault();
+                                console.log(this.options.url);
+                                location.href = this.options.url;
+                            },
+                            mouseOver: function(e) {
+                                console.log('#' + this.options.id);
+                                $('#' + this.options.id).addClass("hover");
+                            },
+                            mouseOut: function(e) {
+                                console.log('#' + this.options.id);
+                                $('#' + this.options.id).removeClass("hover");
                             }
                         }
                     },

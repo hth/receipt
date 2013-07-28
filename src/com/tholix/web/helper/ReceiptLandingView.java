@@ -2,6 +2,8 @@ package com.tholix.web.helper;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -28,6 +30,8 @@ public final class ReceiptLandingView {
 
     String userProfileId;
 
+    String noSpaceBizName;
+
     private ReceiptLandingView() {}
 
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
@@ -38,6 +42,7 @@ public final class ReceiptLandingView {
         receiptLandingView.setTax(receiptEntity.getTax());
         receiptLandingView.setTotal(receiptEntity.getTotal());
         receiptLandingView.setUserProfileId(receiptEntity.getUserProfileId());
+        receiptLandingView.setNoSpaceBizName(StringUtils.deleteWhitespace(receiptEntity.getBizName().getName()));
         return receiptLandingView;
     }
 
@@ -87,5 +92,13 @@ public final class ReceiptLandingView {
 
     public void setUserProfileId(String userProfileId) {
         this.userProfileId = userProfileId;
+    }
+
+    public String getNoSpaceBizName() {
+        return noSpaceBizName;
+    }
+
+    public void setNoSpaceBizName(String noSpaceBizName) {
+        this.noSpaceBizName = noSpaceBizName;
     }
 }
