@@ -18,7 +18,7 @@ import com.tholix.domain.types.NotificationTypeEnum;
 @Document(collection = "NOTIFICATION")
 public class NotificationEntity extends BaseEntity {
     private static final int OFF_SET = 0;
-    private static final int MAX_WIDTH = 40;
+    private static final int MAX_WIDTH = 33;
 
     @NotNull
     @Field("MESSAGE")
@@ -93,6 +93,11 @@ public class NotificationEntity extends BaseEntity {
         this.referenceId = referenceId;
     }
 
+    /**
+     * Move this to form if exists
+     *
+     * @return
+     */
     public String getNotificationMessage4Display() {
         switch(notificationType) {
             case MESSAGE:
