@@ -140,7 +140,7 @@
     <!-- For dashboard tabs -->
     <script>
         $(function () {
-            $('#tabs').css('width','1425px');
+            $('#tabs').css('width','1075px');
             $("#tabs").tabs();
         });
     </script>
@@ -174,7 +174,7 @@
 		</div>
    	</div>
 
-	<table style="width: 1150px">
+	<table style="width: 1075px">
 		<tr>
 			<td style="vertical-align: top;">
                 <div id="pendingCountInitial">
@@ -230,9 +230,6 @@
                 </div>
                 <div id="info" style="color: black; margin-top: 5px">&#8277; Invitation sent with your name and email address</div>
 			</td>
-			<td>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-			</td>
 			<td style="vertical-align: top;">
 				<div>
 					<script type='text/javascript'>
@@ -278,9 +275,6 @@
 					<div id='calendar'></div>
 			    </div>
 			</td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
             <td style="vertical-align: top;">
                 <c:if test="${!empty notifications}">
                 <div>

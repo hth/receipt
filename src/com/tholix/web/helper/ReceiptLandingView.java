@@ -12,7 +12,7 @@ import com.tholix.domain.ReceiptEntity;
  * Date: 7/6/13
  * Time: 12:54 PM
  */
-public class ReceiptLandingView {
+public final class ReceiptLandingView {
 
     String id;
     String name;

@@ -36,19 +36,14 @@ public class ExpenseTypeEntity extends BaseEntity {
     private String userProfileId;
 
     /** To make bean happy */
-    public ExpenseTypeEntity() {
-
-    }
-
-    private ExpenseTypeEntity(String expName, String userProfileId) {
-        super();
-        this.expName = expName;
-        this.userProfileId = userProfileId;
-        this.forYear = DateUtil.now().getYear();
-    }
+    public ExpenseTypeEntity() {}
 
     public static ExpenseTypeEntity newInstance(String expName, String userProfileId) {
-        return new ExpenseTypeEntity(expName, userProfileId);
+        ExpenseTypeEntity expenseTypeEntity = new ExpenseTypeEntity();
+        expenseTypeEntity.setExpName(expName);
+        expenseTypeEntity.setUserProfile(userProfileId);
+        expenseTypeEntity.setForYear(DateUtil.now().getYear());
+        return expenseTypeEntity;
     }
 
     public String getExpName() {

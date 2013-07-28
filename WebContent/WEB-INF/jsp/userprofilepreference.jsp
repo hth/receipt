@@ -193,7 +193,6 @@
 
             <form:form modelAttribute="expenseTypeForm" method="post" action="addExpenseType.htm">
                 <form:errors path="expName" cssClass="error" />
-                <form:hidden path="forYear" />
                 <div style="width: 325px">
                     <section class="chunk">
                         <fieldset>

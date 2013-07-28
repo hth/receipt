@@ -4,7 +4,8 @@
 /*}*/
 html, body {
     height: 100%;
-    font: 85.5% "Trebuchet MS", sans-serif;
+    font: "Trebuchet MS", sans-serif;
+    font-size: 0.88em;
     margin: 0px 2px;
     background: #e6e6e6;
 

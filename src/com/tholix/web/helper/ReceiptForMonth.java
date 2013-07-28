@@ -12,7 +12,7 @@ import com.google.gson.annotations.Since;
  * Date: 7/6/13
  * Time: 12:18 PM
  */
-public class ReceiptForMonth {
+public final class ReceiptForMonth {
 
     @Since(1.0)
     private String monthYear;
