@@ -45,8 +45,8 @@ import com.tholix.web.validator.ReceiptOCRValidator;
 public class ReceiptUpdateController {
     private static final Logger log = Logger.getLogger(ReceiptUpdateController.class);
 
-	private static final String nextPage = "update";
-    private static final String nextPageRecheck = "recheck";
+	private static final String nextPage = "/update";
+    private static final String nextPageRecheck = "/recheck";
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
     @Autowired private ReceiptOCRValidator receiptOCRValidator;

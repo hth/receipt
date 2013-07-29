@@ -56,6 +56,7 @@ public class ItemService {
         for(ExpenseTypeEntity expenseTypeEntity : expenseTypeEntities) {
 
             BigDecimal sum = BigDecimal.ZERO;
+            //Todo this query take a long time. Optimize it. Almost 150ms through this loop
             List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseType(expenseTypeEntity);
             sum = calculateSum(sum, items);
             netSum = Maths.add(netSum, sum);

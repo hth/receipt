@@ -26,6 +26,8 @@ import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.ExpenseForm;
 
 /**
+ * Lists out expenses related items. Call made from Pie chart on Tab 2
+ *
  * User: hitender
  * Date: 5/23/13
  * Time: 11:28 PM

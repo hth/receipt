@@ -6,6 +6,8 @@ import com.tholix.domain.ExpenseTypeEntity;
 import com.tholix.domain.ItemEntity;
 
 /**
+ * Used in displaying items with specific expense type
+ *
  * User: hitender
  * Date: 5/24/13
  * Time: 1:20 AM
