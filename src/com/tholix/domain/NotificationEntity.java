@@ -18,7 +18,7 @@ import com.tholix.domain.types.NotificationTypeEnum;
 @Document(collection = "NOTIFICATION")
 public class NotificationEntity extends BaseEntity {
     private static final int OFF_SET = 0;
-    private static final int MAX_WIDTH = 33;
+    private static final int MAX_WIDTH = 45;
 
     @NotNull
     @Field("MESSAGE")

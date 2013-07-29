@@ -140,7 +140,7 @@
     <!-- For dashboard tabs -->
     <script>
         $(function () {
-            $('#tabs').css('width','1075px');
+            $('#tabs').css('width','1025px');
             $("#tabs").tabs();
         });
     </script>
@@ -174,17 +174,17 @@
 		</div>
    	</div>
 
-	<table style="width: 1075px">
+	<table style="width: 1025px">
 		<tr>
-			<td style="vertical-align: top;">
-                <div id="pendingCountInitial">
+			<td style="vertical-align: top; width: 260px">
+                <div id="pendingCountInitial" style="width: 260px">
                 <c:choose>
                 <c:when test="${pendingCount gt 0}">
                 <div class="ui-widget">
                     <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                         <p>
                             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-                            <span style="display:block; width:310px;">
+                            <span style="display:block; width:260px;">
                             <c:choose>
                                 <c:when test="${pendingCount} eq 1">
                                     Pending receipt to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong style="color: #065c14">${pendingCount}</strong></a>
@@ -203,7 +203,7 @@
                     <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                         <p>
                             <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
-                            <span style="display:block; width:310px;">
+                            <span style="display:block; width:260px;">
                                 No pending receipt
                             </span>
                         </p>
@@ -212,21 +212,22 @@
                 </c:otherwise>
                 </c:choose>
                 </div>
-                <div id="pendingCountId"></div>
+                <div id="pendingCountId" style="width: 260px"></div>
                 &nbsp;&nbsp;&nbsp;
-                <fieldset style="width: 310px; margin-bottom: 10px;">
+                <fieldset style="width: 240px; margin-bottom: 10px;">
                     <legend>Upload Receipt</legend>
                     <div id="restricted-fine-uploader"></div>
                     <%--<div style="margin-top: 10px; margin-bottom:1px; font-size: 12px">&#8277; Upload 3 files at a time; &#8277; Max upload size - 10 MB</div>--%>
                 </fieldset>
-                <div>
+                <div style="width: 260px; display: inline">
                     Friend's
                     <input id="inviteEmailId" type="text"
-                           onfocus="this.value=''; setInviteBackGroundColor('white'); $('#info').html('&#8277; Invitation sent with your name and email address');                                                        "
+                           onfocus="this.value=''; setInviteBackGroundColor('white'); $('#info').html('&#8277; Invitation sent with your name and email address');                                                         "
                            onblur="setInviteBackGroundColor('#fefefe')"
                            value=" Email address here ..."
-                           size="33"/>
-                    <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" size="5">
+                           class="inputForInvitationEmail"
+                           />
+                    <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" />
                 </div>
                 <div id="info" style="color: black; margin-top: 5px">&#8277; Invitation sent with your name and email address</div>
 			</td>
@@ -275,7 +276,7 @@
 					<div id='calendar'></div>
 			    </div>
 			</td>
-            <td style="vertical-align: top;">
+            <td style="vertical-align: top;" style="width: 250px">
                 <c:if test="${!empty notifications}">
                 <div>
                     <section class="chunk">
@@ -352,7 +353,7 @@
                         </table>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="container" style="min-width: 575px; height: 400px; margin: 0 auto"></div>
+                        <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
                     </td>
                 </tr>
                 <tr>
@@ -372,7 +373,7 @@
                                                     <fmt:formatNumber value="${status.count}" pattern="00"/>.
                                                     &nbsp; ${item.shortenedBizName4Display}
                                                 </div>
-                                                <div class="divOfCell200" style="background-color: #eee">
+                                                <div class="divOfCell300" style="background-color: #eee">
                                                     - &nbsp;${item.bizName}
                                                 </div>
                                             </div>
@@ -408,7 +409,7 @@
             <table>
                 <tr>
                     <td style="vertical-align: top">
-                        <div id="monthly" style="min-width: 475px; height: 375px; margin: 0 auto"></div>
+                        <div id="monthly" style="min-width: 475px; height: 350px; margin: 0 auto"></div>
 
                         <fieldset style="width:295px;">
                             <legend>Total Expense</legend>
@@ -431,7 +432,7 @@
                         </fieldset>
                     </td>
                     <td style="vertical-align: top">
-                        <div id="allExpenseTypes" style="min-width: 575px; height: 400px; margin: 0 auto"></div>
+                        <div id="allExpenseTypes" style="min-width: 525px; height: 420px; margin: 0 auto"></div>
                     </td>
                 </tr>
             </table>
