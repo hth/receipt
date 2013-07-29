@@ -72,11 +72,11 @@ public class UserProfilePreferenceService {
         }
     }
 
-    public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo) {
+    public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String userProfileId) {
         if(changeStatTo.equalsIgnoreCase("true")) {
-            expenseTypeManager.changeVisibility(expenseTypeId, false);
+            expenseTypeManager.changeVisibility(expenseTypeId, false, userProfileId);
         } else {
-            expenseTypeManager.changeVisibility(expenseTypeId, true);
+            expenseTypeManager.changeVisibility(expenseTypeId, true, userProfileId);
         }
     }
 }

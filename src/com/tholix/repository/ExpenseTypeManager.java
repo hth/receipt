@@ -19,5 +19,5 @@ public interface ExpenseTypeManager extends RepositoryManager<ExpenseTypeEntity>
 
     List<ExpenseTypeEntity> activeExpenseTypes(String userProfileId);
 
-    void changeVisibility(String expenseTypeId, boolean changeTo);
+    void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId);
 }

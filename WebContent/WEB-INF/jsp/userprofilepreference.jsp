@@ -254,7 +254,7 @@
                     <td style="padding:3px;">
                         <c:choose>
                         <c:when test="${expenseTypeCount.get(expenseType.expName) eq 0}">
-                            <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?uid=${sessionScope['userSession'].userProfileId}&id=${expenseType.id}&status=${expenseType.active}">
+                            <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?id=${expenseType.id}&status=${expenseType.active}">
                             <c:choose>
                                 <c:when test="${expenseType.active eq true}">
                                     Hide

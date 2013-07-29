@@ -114,17 +114,27 @@ public class UserProfilePreferenceController {
         return modelAndView;
     }
 
+    /**
+     * To Show and Hide the expense type
+     * //TODO convert to ajax call instead
+     * //TODO remove profileId and added UserSession
+     *
+     * @param expenseTypeId
+     * @param changeStatTo
+     * @param userSession
+     * @return
+     */
     @RequestMapping(value="/expenseTypeVisible", method = RequestMethod.GET)
-    public ModelAndView changeExpenseTypeVisibleStatus(@RequestParam(value="uid") String profileId,
-                                                       @RequestParam(value="id") String expenseTypeId,
-                                                       @RequestParam(value="status") String changeStatTo) {
+    public ModelAndView changeExpenseTypeVisibleStatus(@RequestParam(value="id") String expenseTypeId,
+                                                       @RequestParam(value="status") String changeStatTo,
+                                                       @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
         //Secondary check. In case some one tries to be smart by passing parameters in URL :)
         if(itemService.countItemsUsingExpenseType(expenseTypeId) == 0) {
-            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTypeId, changeStatTo);
+            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTypeId, changeStatTo, userSession.getUserProfileId());
         }
-        UserProfileEntity userProfile = userProfilePreferenceService.findById(profileId);
+        UserProfileEntity userProfile = userProfilePreferenceService.findById(userSession.getUserProfileId());
 
         ModelAndView modelAndView = populateModel(nextPage, userProfile);
 

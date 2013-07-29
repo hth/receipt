@@ -89,8 +89,10 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     }
 
     @Override
-    public void changeVisibility(String expenseTypeId, boolean changeTo) {
-        Query query = Query.query(Criteria.where("id").is(expenseTypeId));
+    public void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId) {
+        Criteria criteria1 = Criteria.where("id").is(expenseTypeId);
+        Criteria criteria2 = Criteria.where("userProfileId").is(userProfileId);
+        Query query = Query.query(criteria1).addCriteria(criteria2);
         Update update = Update.update("ACTIVE", changeTo);
         mongoTemplate.updateFirst(query, update(update), ExpenseTypeEntity.class);
     }
