@@ -31,7 +31,7 @@ public final class ExpenseTypeValidator implements Validator {
         ExpenseTypeForm expenseTypeForm = (ExpenseTypeForm) obj;
         if(expenseTypeForm.getExpName() != null && expenseTypeForm.getExpName().length() > EXPENSE_TYPE_MAX_CHAR) {
             log.error("Size of the Expense Type larger than " + EXPENSE_TYPE_MAX_CHAR + " : " + expenseTypeForm.getExpName());
-            errors.rejectValue("expName", "expenseType.expName", new Object[] { expenseTypeForm.getExpName() }, "Expense Name cannot extend " + EXPENSE_TYPE_MAX_CHAR + " characters ");
+            errors.rejectValue("expName", "expenseType.expName", new Object[] { EXPENSE_TYPE_MAX_CHAR }, "Expense Name cannot extend " + EXPENSE_TYPE_MAX_CHAR + " characters ");
         }
     }
 }

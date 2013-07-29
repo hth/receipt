@@ -1,5 +1,7 @@
 package com.tholix.repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 import static com.tholix.repository.util.AppendAdditionalFields.*;
@@ -90,11 +92,14 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId) {
-        Criteria criteria1 = Criteria.where("id").is(expenseTypeId);
-        Criteria criteria2 = Criteria.where("userProfileId").is(userProfileId);
+        Criteria criteria1 = Criteria.where("id").is(new ObjectId(expenseTypeId));
+        Criteria criteria2 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(criteria2);
         Update update = Update.update("ACTIVE", changeTo);
-        mongoTemplate.updateFirst(query, update(update), ExpenseTypeEntity.class);
+
+        //TODO try using writeResult to check for condition
+        WriteResult writeResult = mongoTemplate.updateFirst(query, update(update), ExpenseTypeEntity.class);
+        log.info(writeResult);
     }
 
     @Override

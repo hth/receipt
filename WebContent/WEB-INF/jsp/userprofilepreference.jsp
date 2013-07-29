@@ -191,8 +191,9 @@
 
             <p/>
 
-            <form:form modelAttribute="expenseTypeForm" method="post" action="addExpenseType.htm">
-                <form:errors path="expName" cssClass="error" />
+            <spring:eval expression="${userProfile.id eq sessionScope['userSession'].userProfileId}" var="isSameUser" />
+
+            <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
                 <div style="width: 325px">
                     <section class="chunk">
                         <fieldset>
@@ -202,8 +203,13 @@
                             <div class="bd">
                                 <div class="text">
                                     <form:input class="tooltip" path="expName" size="6" title="Help's mark an item with specific expense type." id="expenseTypeId"/>
-                                    <input type="submit" value=" Add " name="Add" style="text-align: right;"/>&nbsp;
+                                    <input type="submit" value=" Add " name="Add" style="text-align: right;" <c:out value="${(isSameUser) ? '' : 'disabled'}"/> />&nbsp;
                                     <br/><br/>
+                                </div>
+                                <div class="text">
+                                    <form:errors path="expName" cssClass="error" />
+                                </div>
+                                <div class="text">
                                     <span id='expenseTypeIdCount'></span> characters remaining.
                                 </div>
                             </div>
@@ -238,32 +244,62 @@
                     <td style="padding:3px;">
                         <c:choose>
                             <c:when test="${expenseType.active eq true}">
-                                <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
-                                    <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
-                                </a>
+                                <c:choose>
+                                    <c:when test="${isSameUser}">
+                                        <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
+                                            <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                    </c:otherwise>
+                                </c:choose>
                             </c:when>
                             <c:otherwise>
-                                <del>
-                                <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
-                                    <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
-                                </a>
-                                </del>
+                                <c:choose>
+                                    <c:when test="${isSameUser}">
+                                        <del>
+                                            <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
+                                                <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                            </a>
+                                        </del>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <del>
+                                            <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                        </del>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:otherwise>
                         </c:choose>
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
                         <c:when test="${expenseTypeCount.get(expenseType.expName) eq 0}">
-                            <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?id=${expenseType.id}&status=${expenseType.active}">
                             <c:choose>
-                                <c:when test="${expenseType.active eq true}">
-                                    Hide
+                                <c:when test="${isSameUser}">
+                                    <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?id=${expenseType.id}&status=${expenseType.active}">
+                                        <c:choose>
+                                            <c:when test="${expenseType.active eq true}">
+                                                Hide
+                                            </c:when>
+                                            <c:otherwise>
+                                                Show
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </a>
                                 </c:when>
                                 <c:otherwise>
-                                    Show
+                                    <c:choose>
+                                        <c:when test="${expenseType.active eq true}">
+                                            Hide
+                                        </c:when>
+                                        <c:otherwise>
+                                            Show
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:otherwise>
                             </c:choose>
-                            </a>
                         </c:when>
                         <c:otherwise>
                             Always Shown
