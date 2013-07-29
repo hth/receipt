@@ -15,7 +15,7 @@ import com.tholix.domain.UserProfileEntity;
  *
  */
 public interface UserPreferenceManager extends RepositoryManager<UserPreferenceEntity> {
-	public static String TABLE = BaseEntity.getClassAnnotationValue(UserPreferenceEntity.class, Document.class, "collection");
+	static String TABLE = BaseEntity.getClassAnnotationValue(UserPreferenceEntity.class, Document.class, "collection");
 
-	public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
+	UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
 }

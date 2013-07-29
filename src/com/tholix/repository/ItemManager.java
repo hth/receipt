@@ -104,7 +104,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      * @param expenseTypeId
      * @return
      */
-    long countItemsUsingExpenseType(String expenseTypeId);
+    long countItemsUsingExpenseType(String expenseTypeId, String userProfileId);
 
     List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseType);
 

@@ -25,12 +25,8 @@ public class ItemService {
     @Autowired private ItemManager itemManager;
     @Autowired private ExpenseTypeManager expenseTypeManager;
 
-    public long countItemsUsingExpenseType(ExpenseTypeEntity expenseType) {
-        return itemManager.countItemsUsingExpenseType(expenseType.getId());
-    }
-
-    public long countItemsUsingExpenseType(String expenseTypeId) {
-        return itemManager.countItemsUsingExpenseType(expenseTypeId);
+    public long countItemsUsingExpenseType(String expenseTypeId, String userProfileId) {
+        return itemManager.countItemsUsingExpenseType(expenseTypeId, userProfileId);
     }
 
     public List<ItemEntity> itemsForExpenseType(ExpenseTypeEntity expenseTypeEntity) {

@@ -117,7 +117,6 @@ public class UserProfilePreferenceController {
     /**
      * To Show and Hide the expense type
      * //TODO convert to ajax call instead
-     * //TODO remove profileId and added UserSession
      *
      * @param expenseTypeId
      * @param changeStatTo
@@ -131,7 +130,7 @@ public class UserProfilePreferenceController {
         DateTime time = DateUtil.now();
 
         //Secondary check. In case some one tries to be smart by passing parameters in URL :)
-        if(itemService.countItemsUsingExpenseType(expenseTypeId) == 0) {
+        if(itemService.countItemsUsingExpenseType(expenseTypeId, userSession.getUserProfileId()) == 0) {
             userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTypeId, changeStatTo, userSession.getUserProfileId());
         }
         UserProfileEntity userProfile = userProfilePreferenceService.findById(userSession.getUserProfileId());
@@ -169,7 +168,7 @@ public class UserProfilePreferenceController {
                 count++;
             }
 
-            expenseTypeCount.put(expenseType.getExpName(), itemService.countItemsUsingExpenseType(expenseType));
+            expenseTypeCount.put(expenseType.getExpName(), itemService.countItemsUsingExpenseType(expenseType.getId(), userProfile.getId()));
         }
         modelAndView.addObject("expenseTypeCount", expenseTypeCount);
         modelAndView.addObject("visibleExpenseTypes", count);

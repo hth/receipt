@@ -274,9 +274,10 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public long countItemsUsingExpenseType(String expenseTypeId) {
+    public long countItemsUsingExpenseType(String expenseTypeId, String userProfileId) {
         Criteria criteria = Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseTypeId));
-        Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
+        Query query = Query.query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.count(query, ItemEntity.class);
     }
 
