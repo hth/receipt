@@ -107,18 +107,18 @@
                     </tbody>
                     <c:forEach var="user" items="${users}"  varStatus="status">
                     <tr>
-                        <td style="padding: 3px;" align="center">
+                        <td style="padding: 3px;text-align: left; vertical-align: top">
                             ${status.count}
                         </td>
-                        <td style="padding: 3px;" align="center" title="${user.level}">
+                        <td style="padding: 3px; text-align: left; vertical-align: top" title="${user.level}">
                             <spring:eval expression="user.level.description" />
                         </td>
-                        <td style="padding: 3px;" align="left" title="${user.userName}">
+                        <td style="padding: 3px; text-align: left; vertical-align: top" title="${user.userName}">
                             <a href="${pageContext.request.contextPath}/userprofilepreference/their.htm?id=${user.id}">
                                 <spring:eval expression="user.userName" />
                             </a>
                         </td>
-                        <td style="padding: 3px;">
+                        <td style="padding: 3px; text-align: left; vertical-align: top">
                             ${user.emailId}
                         </td>
                     </tr>
@@ -175,19 +175,19 @@
         </tr>
         </tbody>
         <tr>
-            <td style="padding:3px;" align="center">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.bizName.name" />
             </td>
-            <td style="padding:3px;" align="center">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.addressWrappedMore" />
             </td>
-            <td style="padding:3px;" align="center">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
             </td>
-            <td style="padding:3px;" align="left">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.phone" />
             </td>
-            <td style="padding:3px;" align="left">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <fmt:formatDate value="${bizStore.created}" type="both" />
             </td>
         </tr>
@@ -209,19 +209,19 @@
         </tbody>
         <c:forEach var="bizStore" items="${last10BizStore}"  varStatus="status">
         <tr>
-            <td style="padding:3px;" align="center">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.bizName.name" />
             </td>
-            <td style="padding:3px;" align="center">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.addressWrappedMore" />
             </td>
-            <td style="padding:3px;" align="center">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
             </td>
-            <td style="padding:3px;" align="left">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <spring:eval expression="bizStore.phone" />
             </td>
-            <td style="padding:3px;" align="left">
+            <td style="padding:3px; text-align: left; vertical-align: top">
                 <fmt:formatDate value="${bizStore.created}" type="both" />
             </td>
         </tr>
