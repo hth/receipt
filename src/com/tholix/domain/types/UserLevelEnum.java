@@ -8,13 +8,15 @@ package com.tholix.domain.types;
  * @since Mar 25, 2013 1:11:21 AM
  */
 public enum UserLevelEnum {
-	USER("USER",                    "User",           1, UserLevelEnum.DEFAULT_JMS_LEVEL),
-	EMPLOYER("EMPLOYER",            "Employer",       2, UserLevelEnum.DEFAULT_JMS_LEVEL + 1),
-	USER_PAID("USER_PAID",          "User Paid",      3, UserLevelEnum.DEFAULT_JMS_LEVEL + 2),
-	EMPLOYER_PAID("EMPLOYER_PAID",  "Employer Paid",  4, UserLevelEnum.DEFAULT_JMS_LEVEL + 3),
-	TECHNICIAN("TECHNICIAN",        "Technician",     5, UserLevelEnum.DEFAULT_JMS_LEVEL + 4),
-	SUPERVISOR("SUPERVISOR",        "Supervisor",     6, UserLevelEnum.DEFAULT_JMS_LEVEL + 5),
-	ADMIN("ADMIN",                  "Admin",          7, UserLevelEnum.DEFAULT_JMS_LEVEL + 6),
+	USER("USER",                                        "User",                 1, UserLevelEnum.DEFAULT_JMS_LEVEL),
+	USER_COMMUNITY("USER_COMMUNITY",                    "User Community",       2, UserLevelEnum.DEFAULT_JMS_LEVEL + 1),
+    USER_PAID("USER_PAID",                              "User Paid",            2, UserLevelEnum.DEFAULT_JMS_LEVEL + 1),
+	EMPLOYER("EMPLOYER",                                "Employer",             3, UserLevelEnum.DEFAULT_JMS_LEVEL + 2),
+	EMPLOYER_COMMUNITY("EMPLOYER_COMMUNITY",            "Employer Community",   4, UserLevelEnum.DEFAULT_JMS_LEVEL + 3),
+	EMPLOYER_PAID("EMPLOYER_PAID",                      "Employer Paid",        4, UserLevelEnum.DEFAULT_JMS_LEVEL + 3),
+	TECHNICIAN("TECHNICIAN",                            "Technician",           5, UserLevelEnum.DEFAULT_JMS_LEVEL + 4),
+	SUPERVISOR("SUPERVISOR",                            "Supervisor",           6, UserLevelEnum.DEFAULT_JMS_LEVEL + 5),
+	ADMIN("ADMIN",                                      "Admin",                7, UserLevelEnum.DEFAULT_JMS_LEVEL + 6),
 	;
 
     //TODO to use JMS message setting in future. Currently message is picked based on level of the user.
