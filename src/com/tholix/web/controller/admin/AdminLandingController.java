@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -32,6 +33,8 @@ import com.tholix.web.LoginController;
 import com.tholix.web.form.UserSearchForm;
 
 /**
+ * Redirect to prevent re-submit.
+ *
  * @author hitender
  * @since Mar 26, 2013 1:14:24 AM
  */
@@ -46,7 +49,7 @@ public class AdminLandingController {
 
 	@RequestMapping(value = "/landing", method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession,
-                                 @ModelAttribute("userLoginForm") UserSearchForm userSearchForm) {
+                                 @ModelAttribute("userSearchForm") UserSearchForm userSearchForm) {
 
         if(userSession.getLevel() == UserLevelEnum.ADMIN) {
             ModelAndView modelAndView = new ModelAndView(nextPage);
@@ -94,17 +97,19 @@ public class AdminLandingController {
      * @return
      */
 	@RequestMapping(value = "/landing", method = RequestMethod.POST)
-	public ModelAndView loadUser(@ModelAttribute("userSession") UserSession userSession,
-                                 @ModelAttribute("userLoginForm") UserSearchForm userSearchForm) {
+	public String loadUser(@ModelAttribute("userSession") UserSession userSession,
+                                 @ModelAttribute("userLoginForm") UserSearchForm userSearchForm,
+                                 final RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         List<UserSearchForm> userSearchForms = adminLandingService.findAllUsers(userSearchForm.getUserName());
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("users", userSearchForms);
-        modelAndView.addObject("userSearchForm", userSearchForm);
+        redirectAttrs.addFlashAttribute("users", userSearchForms);
+        redirectAttrs.addFlashAttribute("userSearchForm", userSearchForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return modelAndView;
+
+        //Re-direct to prevent resubmit
+        return "redirect:" + nextPage + ".htm";
 	}
 }
