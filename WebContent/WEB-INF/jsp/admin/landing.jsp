@@ -95,13 +95,19 @@
                 <th style="padding: 3px;">Search Name: </th>
                 <td style="padding: 3px;">&nbsp;<form:input path="userName" size="27" /></td>
             </tr>
+            <tr>
+                <td colspan="2">
+                    Enter at least 2 characters to find a specific user or else its list all the user below.
+                    Would change this later as the number of users increases.
+                </td>
+            </tr>
             <c:if test="${!empty users}">
                 <table style="width: 400px" class="etable">
                     <tbody>
                         <tr>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;">Level</th>
-                            <th style="padding: 3px;">Last, First Name</th>
+                            <th style="padding: 3px;">First, Last Name</th>
                             <th style="padding: 3px">Mail Id</th>
                         </tr>
                     </tbody>
@@ -124,110 +130,9 @@
                     </tr>
                     </c:forEach>
                 </table>
-                </c:if>
+            </c:if>
         </table>
     </form:form>
-
-    <p>&nbsp;</p>
-
-    <h2>Add new Business or Stores to existing business</h2>
-    <form:form method="post" modelAttribute="bizForm" action="addBusiness.htm">
-        <form:errors path="bizError" cssClass="error" />
-        <form:errors path="bizSuccess" cssClass="success" />
-        <table style="width: 700px" class="etable">
-            <tr>
-                <td style="padding: 3px;" colspan="2">
-                    <form:label for="bizName.name" path="bizName.name" cssErrorClass="error">Biz Name: </form:label>
-                    <form:input path="bizName.name" id="name" size="52"/>
-                    <form:errors path="bizName.name" cssClass="error" />
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 3px;">
-                    <form:label for="bizStore.address" path="bizStore.address" cssErrorClass="error">Address: &nbsp;</form:label>
-                    <form:input path="bizStore.address" id="name" size="65"/>
-                    <form:errors path="bizStore.address" cssClass="error" />
-                </td>
-                <td style="padding: 3px;">
-                    <form:label for="bizStore.phone" path="bizStore.phone" cssErrorClass="error">Phone: </form:label>
-                    <form:input path="bizStore.phone" id="name" size="18"/>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 3px;" colspan="2">
-                    <input type="submit" value="Add Store or New Business" name="add"/>
-                </td>
-            </tr>
-        </table>
-    </form:form>
-
-    <c:if test="${!empty bizStore}">
-    <br/>
-    Added...
-    <table style="width: 650px" class="etable">
-        <tbody>
-        <tr>
-            <th style="padding:3px;">Store Name</th>
-            <th style="padding:3px;">Address</th>
-            <th style="padding:3px;">Lat, Lng</th>
-            <th style="padding:3px;">Phone</th>
-            <th style="padding:3px;">Created</th>
-        </tr>
-        </tbody>
-        <tr>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.bizName.name" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.addressWrappedMore" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.phone" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <fmt:formatDate value="${bizStore.created}" type="both" />
-            </td>
-        </tr>
-    </table>
-    </c:if>
-
-    <c:if test="${!empty last10BizStore}">
-    <br/>
-    Last 10 records for same business
-    <table style="width: 650px" class="etable">
-        <tbody>
-        <tr>
-            <th style="padding:3px;">Store Name</th>
-            <th style="padding:3px;">Address</th>
-            <th style="padding:3px;">Lat, Lng</th>
-            <th style="padding:3px;">Phone</th>
-            <th style="padding:3px;">Created</th>
-        </tr>
-        </tbody>
-        <c:forEach var="bizStore" items="${last10BizStore}"  varStatus="status">
-        <tr>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.bizName.name" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.addressWrappedMore" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <spring:eval expression="bizStore.phone" />
-            </td>
-            <td style="padding:3px; text-align: left; vertical-align: top">
-                <fmt:formatDate value="${bizStore.created}" type="both" />
-            </td>
-        </tr>
-        </c:forEach>
-    </table>
-    </c:if>
 </div>
 
 <div class="footer">

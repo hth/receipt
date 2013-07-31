@@ -35,7 +35,7 @@ public final class UserSearchForm {
         userSearchForm.setId(userProfile.getId());
         userSearchForm.setFirstName(userProfile.getFirstName());
         userSearchForm.setLastName(userProfile.getLastName());
-        userSearchForm.setUserName(userProfile.getLastName() + ", " + userProfile.getFirstName());
+        userSearchForm.setUserName(userProfile.getFirstName() + ", " + userProfile.getLastName());
         userSearchForm.setLevel(userProfile.getLevel());
         userSearchForm.setEmailId(userProfile.getEmailId());
         return userSearchForm;
@@ -53,6 +53,11 @@ public final class UserSearchForm {
 		this.userName = userName;
 	}
 
+    /**
+     * Not sure why this logic but it forces user toe enter more than two characters to find a specific user
+     *
+     * @return
+     */
 	public String getUserName() {
 		if(userName.length() > 2 && !userName.equalsIgnoreCase(", ")) {
 			return userName;
