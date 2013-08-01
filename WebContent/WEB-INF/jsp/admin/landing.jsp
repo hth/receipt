@@ -57,15 +57,15 @@
 <div class="wrapper">
     <div class="divTable">
         <div class="divRow">
-            <div class="divOfCell50">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="40px"/>
+            <div class="divOfCell50" style="height: 46px">
+                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
-            <div class="divOfCell75">
+            <div class="divOfCell75" style="height: 46px">
                 <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
             </div>
             <div class="divOfCell250">
                 <h3>
-                    <div class="dropdown">
+                    <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}

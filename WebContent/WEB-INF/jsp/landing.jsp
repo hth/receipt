@@ -149,10 +149,10 @@
 <div class="wrapper">
  	<div class="divTable" style="width: 810px">
 		<div class="divRow">
-            <div class="divOfCell250"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
+            <div class="divOfCell250" style="height: 46px"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
 			<div class="divOfCell250">
                 <h3>
-                    <div class="dropdown">
+                    <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
@@ -170,7 +170,7 @@
                     </div>
                 </h3>
             </div>
-		    <div class="divOfCell300" id="active-tab-2"><h3>Total Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
+		    <div class="divOfCell300" id="active-tab-2" style="height: 46px"><h3>Total Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
    	</div>
 
