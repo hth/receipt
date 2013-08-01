@@ -54,10 +54,6 @@ html, body {
 }
 /* End*/
 
-.hover {
-    background-color: #7DBD00;
-}
-
 /* For Calendar */
 #calendar {
 	width: 425px;
@@ -224,14 +220,13 @@ html, body {
     border: 1px solid #ccc;
     text-align: left;
 }
-.etable tr:hover {
-    background-color: #7DBD00;
+.etable.hover tr {
+    background-color: lightblue;
 }
 .etable tr.highlight{
     background-color: #7DBD00;
 }
 /* End */
-
 
 /* This is for div table */
 .leftAlign {

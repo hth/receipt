@@ -5,12 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css' />
-
-    <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/highcharts.js"></script>
-
 </head>
 <body>
 <c:choose>
@@ -18,7 +12,7 @@
         <table>
             <tr>
                 <td style="vertical-align: top">
-                    <table style="width: 470px" class="etable">
+                    <table style="width: 470px" class="etable" id="tableReceiptForMonth">
                         <tr>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;">Business</th>
@@ -26,8 +20,8 @@
                             <th style="padding: 3px;">Tax</th>
                             <th style="padding: 3px;">Total</th>
                         </tr>
-                        <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}"  varStatus="status">
-                            <tr>
+                        <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
+                            <tr id="${receipt.noSpaceBizName}">
                                 <td style="padding: 3px; text-align: right">
                                     ${status.count}
                                 </td>
@@ -50,7 +44,36 @@
                     </table>
                 </td>
                 <td style="vertical-align: top">
-                    <div id="containerRefresh" style="min-width: 525px; height: 275px; margin: 0 auto"></div>
+                    <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td style="vertical-align: top;">
+                    <div>
+                        <section class="chunk">
+                            <fieldset>
+                                <legend class="hd">
+                                    <span class="text"><fmt:message key="business.name.abrev" /></span>
+                                </legend>
+                                <div class="bd">
+                                    <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
+                                        <div class="divTable">
+                                            <div class="divRow">
+                                                <div class="divCell" style="background-color: #eee">
+                                                    <fmt:formatNumber value="${status.count}" pattern="00"/>.
+                                                    &nbsp; ${item.shortenedBizName4Display}
+                                                </div>
+                                                <div class="divOfCell300" style="background-color: #eee">
+                                                    - &nbsp;${item.bizName}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </fieldset>
+                        </section>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -72,128 +95,150 @@
 <c:if test="${!empty bizByExpenseTypes}">
 <!-- Biz by expense -->
 <script>
-    $(function () {
+$(function () {
 
-        var colors = Highcharts.getOptions().colors,
-                categories = [${bizNames}],
-                name = 'Receipt Expenses',
-                data = [
-                    <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
-                    {
-                        y: ${item.total},
-                        color: colors[${status.count-1}],
-                        url: 'http://bing.com/search?q=foo',
-                        drilldown: {
-                            name: '${item.bizName}',
-                            categories: [${item.expenseTypes}],
-                            data: [${item.expenseValues}],
-                            color: colors[${status.count-1}],
-                            url: 'http://bing.com/search?q=foo'
-                        }
-                    },
-                    </c:forEach>
-                ];
-
-
-        // Build the data arrays
-        var bizNames = [];
-        var expenseTypes = [];
-        for (var i = 0; i < data.length; i++) {
-
-            // add browser data
-            bizNames.push({
-                name: categories[i],
-                y: data[i].y,
-                color: data[i].color
-            });
-
-            // add version data
-            for (var j = 0; j < data[i].drilldown.data.length; j++) {
-                var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
-                expenseTypes.push({
-                    name: data[i].drilldown.categories[j],
-                    y: data[i].drilldown.data[j],
-                    color: Highcharts.Color(data[i].color).brighten(brightness).get()
-                });
-            }
-        }
-
-        // Create the chart
-        $('#containerRefresh').highcharts({
-            chart: {
-                type: 'pie'
-            },
-            credits: {
-                enabled: false
-            },
-            title: {
-                text: 'Business By Expense, ${landingForm.receiptForMonth.monthYear}'
-            },
-            yAxis: {
-                title: {
-                    text: 'Total expense'
+    var colors = Highcharts.getOptions().colors,
+        categories = [${bizNames}],
+        data = [
+            <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
+            {
+                y: ${item.total},
+                color: colors[${status.count-1}],
+                url: 'receipt/biz.htm?id=${item.bizName}',
+                id: '${item.noSpaceBizName}',
+                drilldown: {
+                    name: '${item.bizName}',
+                    categories: [${item.expenseTypes}],
+                    data: [${item.expenseValues}],
+                    color: colors[${status.count-1}],
+                    url: 'receipt/biz.htm?id=${item.bizName}',
+                    id: '${item.noSpaceBizName}'
                 }
             },
-            plotOptions: {
-                pie: {
-                    shadow: false,
-                    center: ['50%', '50%']
-                }
-            },
-            tooltip: {
-                valueSuffix: '$',
-                formatter: function() {
-                    return this.point.name + ": " + this.point.y + "$";
-                }
-            },
-            series: [
-                {
-                    name: 'Total',
-                    data: bizNames,
-                    size: '60%',
-                    dataLabels: {
-                        formatter: function () {
-                            return this.y > 5 ? this.point.name : null;
-                        },
-                        color: 'white',
-                        distance: -30
-                    },
-                    point: {
-                        events: {
-                            click: function(e) {
-                                location.href = e.point.series.options.url; //proper path 2)
-                                e.preventDefault();
-                            }
-                        }
-                    },
-                    allowPointSelect: true,
-                    cursor: 'pointer'
-                },
-                {
-                    name: 'Total',
-                    data: expenseTypes,
-                    size: '80%',
-                    innerSize: '60%',
-                    dataLabels: {
-                        formatter: function () {
-                            // display only if larger than 1
-                            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + this.y + '$' : null;
-                        }
-                    },
-                    point: {
-                        events: {
-                            click: function(e) {
-                                location.href = e.point.series.options.url; //proper path 2)
-                                e.preventDefault();
-                            }
-                        }
-                    },
-                    allowPointSelect: true,
-                    cursor: 'pointer'
-                }
-            ]
+            </c:forEach>
+        ];
+
+
+    // Build the data arrays
+    var bizNames = [];
+    var expenseTypes = [];
+    for (var i = 0; i < data.length; i++) {
+
+        // add browser data
+        bizNames.push({
+            name: categories[i],
+            y: data[i].y,
+            color: data[i].color,
+            url: data[i].url,
+            id: data[i].id
         });
+
+        // add version data
+        for (var j = 0; j < data[i].drilldown.data.length; j++) {
+            var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
+            expenseTypes.push({
+                name: data[i].drilldown.categories[j],
+                y: data[i].drilldown.data[j],
+                color: Highcharts.Color(data[i].color).brighten(brightness).get(),
+                url: data[i].drilldown.url,
+                id: data[i].drilldown.id
+            });
+        }
+    }
+
+    // Create the chart
+    $('#container').highcharts({
+        chart: {
+            type: 'pie'
+        },
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: 'Business By Expense, ${landingForm.receiptForMonth.monthYear}'
+        },
+        yAxis: {
+            title: {
+                text: 'Total expense'
+            }
+        },
+        plotOptions: {
+            pie: {
+                shadow: false,
+                center: ['50%', '50%'],
+                slicedOffset: 0
+            }
+        },
+        tooltip: {
+            valueSuffix: '$',
+            formatter: function() {
+                return this.point.name + ": " + this.point.y + "$";
+            }
+        },
+        series: [
+            {
+                name: 'Total',
+                data: bizNames,
+                size: '60%',
+                dataLabels: {
+                    formatter: function () {
+                        return this.y > 1 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                },
+                point: {
+                    events: {
+                        click: function(e) {
+                            console.log(this.options.url);
+                            location.href = this.options.url;
+                        },
+                        mouseOver: function(e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
+                        },
+                        mouseOut: function(e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
+                        }
+                    }
+                },
+                allowPointSelect: true,
+                cursor: 'pointer'
+            },
+            {
+                name: 'Total',
+                data: expenseTypes,
+                size: '80%',
+                innerSize: '60%',
+                dataLabels: {
+                    formatter: function () {
+                        // display only if larger than 1
+                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + this.y + '$' : null;
+                    }
+                },
+                point: {
+                    events: {
+                        click: function(e) {
+                            console.log(this.options.url);
+                            location.href = this.options.url;
+                        },
+                        mouseOver: function(e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
+                        },
+                        mouseOut: function(e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
+                        }
+                    }
+                },
+                allowPointSelect: true,
+                cursor: 'pointer'
+            }
+        ]
     });
+});
 </script>
 </c:if>
 

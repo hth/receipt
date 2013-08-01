@@ -329,7 +329,7 @@
                                 <th style="padding: 3px;">Tax</th>
                                 <th style="padding: 3px;">Total</th>
                             </tr>
-                            <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}"  varStatus="status">
+                            <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
                             <tr id="${receipt.noSpaceBizName}">
                                 <td style="padding: 3px; text-align: right">
                                     ${status.count}
@@ -485,25 +485,25 @@
     $(function () {
 
         var colors = Highcharts.getOptions().colors,
-                categories = [${bizNames}],
-                data = [
-                    <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
-                    {
-                        y: ${item.total},
+            categories = [${bizNames}],
+            data = [
+                <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
+                {
+                    y: ${item.total},
+                    color: colors[${status.count-1}],
+                    url: 'receipt/biz.htm?id=${item.bizName}',
+                    id: '${item.noSpaceBizName}',
+                    drilldown: {
+                        name: '${item.bizName}',
+                        categories: [${item.expenseTypes}],
+                        data: [${item.expenseValues}],
                         color: colors[${status.count-1}],
                         url: 'receipt/biz.htm?id=${item.bizName}',
-                        id: '${item.noSpaceBizName}',
-                        drilldown: {
-                            name: '${item.bizName}',
-                            categories: [${item.expenseTypes}],
-                            data: [${item.expenseValues}],
-                            color: colors[${status.count-1}],
-                            url: 'receipt/biz.htm?id=${item.bizName}',
-                            id: '${item.noSpaceBizName}'
-                        }
-                    },
-                    </c:forEach>
-                ];
+                        id: '${item.noSpaceBizName}'
+                    }
+                },
+                </c:forEach>
+            ];
 
 
         // Build the data arrays
@@ -582,11 +582,11 @@
                             },
                             mouseOver: function(e) {
                                 console.log('#' + this.options.id);
-                                $('#' + this.options.id).addClass("hover");
+                                $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
                             },
                             mouseOut: function(e) {
                                 console.log('#' + this.options.id);
-                                $('#' + this.options.id).removeClass("hover");
+                                $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
                             }
                         }
                     },
@@ -612,11 +612,11 @@
                             },
                             mouseOver: function(e) {
                                 console.log('#' + this.options.id);
-                                $('#' + this.options.id).addClass("hover");
+                                $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
                             },
                             mouseOut: function(e) {
                                 console.log('#' + this.options.id);
-                                $('#' + this.options.id).removeClass("hover");
+                                $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
                             }
                         }
                     },
