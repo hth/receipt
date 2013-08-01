@@ -4,8 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html>
 <html>
-<head>
-</head>
+<head></head>
 <body>
 <c:choose>
     <c:when test="${!empty landingForm.receiptForMonth.receipts}">
