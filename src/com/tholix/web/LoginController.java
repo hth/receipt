@@ -157,7 +157,7 @@ public class LoginController {
      * @param level
      * @return
      */
-    protected static String landingHomePage(UserLevelEnum level) {
+    public static String landingHomePage(UserLevelEnum level) {
         String path = "redirect:/landing.htm";
         switch(level) {
             case ADMIN:
