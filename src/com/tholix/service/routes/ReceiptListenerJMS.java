@@ -5,6 +5,7 @@ package com.tholix.service.routes;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,10 @@ import com.tholix.repository.MessageManager;
  *
  */
 @Component
-public class ReceiptListenerJMS {
+public final class ReceiptListenerJMS {
 	private static final Logger log = Logger.getLogger(ReceiptListenerJMS.class);
 
-    @Autowired
-    MessageManager messageManager;
+    @Autowired private MessageManager messageManager;
 
 	public void receive(Map<String, Object> message) throws Exception {
 		String id = (String) message.get("id");
@@ -45,7 +45,10 @@ public class ReceiptListenerJMS {
                 break;
         }
 
-        UserLevelEnum levelEnum = UserLevelEnum.valueOf(level.toUpperCase());
+        //TODO write unit test to make sure the new levels are added as per the format. Use Camel Format
+        /** Required to match the name for User Level */
+        String matchingName = StringUtils.replace(level, " ", "_");
+        UserLevelEnum levelEnum = UserLevelEnum.valueOf(matchingName.toUpperCase());
         MessageReceiptEntityOCR object = MessageReceiptEntityOCR.newInstance(id, levelEnum, receiptStatusEnum);
         messageManager.save(object);
 

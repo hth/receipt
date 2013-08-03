@@ -11,6 +11,7 @@ import javax.jms.Session;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
@@ -22,14 +23,17 @@ import com.tholix.domain.UserProfileEntity;
  * @since Mar 30, 2013 2:42:21 AM
  *
  */
-public class ReceiptSenderJMS {
+public final class ReceiptSenderJMS {
 	private static final Logger log = Logger.getLogger(ReceiptSenderJMS.class);
 
-	@Autowired
-    private JmsTemplate jmsSenderTemplate;
+	@Autowired private JmsTemplate jmsSenderTemplate;
 
-	public void send(final ReceiptEntityOCR receiptOCR, final UserProfileEntity userProfile){
-        jmsSenderTemplate.send("orderQueue",
+    @Value("${queue-name}")
+    private String queueName;
+
+	public void send(final ReceiptEntityOCR receiptOCR, final UserProfileEntity userProfile) {
+        assert(queueName.length() > 0);
+        jmsSenderTemplate.send(queueName,
 				new MessageCreator() {
 					public Message createMessage(Session session) throws JMSException {
 						MapMessage mapMessage = session.createMapMessage();

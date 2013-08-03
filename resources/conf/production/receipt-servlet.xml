@@ -137,11 +137,11 @@
     </bean>
 
     <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg value="orderQueue"/>
+        <constructor-arg value="${queue-name}"/>
     </bean>
 
     <jms:listener-container connection-factory="connectionFactory">
-        <jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+        <jms:listener destination="${queue-name}" ref="receiptListenerJMS" method="receive" />
     </jms:listener-container>
 
     <bean id="receiptSenderJMS" class="com.tholix.service.routes.ReceiptSenderJMS" />
@@ -157,7 +157,7 @@
     <!--<amq:topic id="eventTopic" name="topic.events" />-->
 
     <!--<amq:queue id="processingQueue" name="queue.process" />-->
-    <!--<amq:queue id="orderQueue" name="orderQueue"/>-->
+    <!--<amq:queue id="${queue-name}" name="${queue-name}"/>-->
 
     <!-- http://sourceforge.net/projects/activemqbrowser/files/ -->
     <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -167,8 +167,8 @@
     </bean>
 
     <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg value="orderQueue"/>
-        <!--<constructor-arg ref="orderQueue" />-->
+        <constructor-arg value="${queue-name}"/>
+        <!--<constructor-arg ref="${queue-name}" />-->
     </bean>
 
     <!--http://briansjavablog.blogspot.com/2012/09/spring-jms-tutorial-with-activemq.html-->
@@ -187,7 +187,7 @@
 
     <jms:listener-container connection-factory="connectionFactory">
         <!--suppress SpringModelInspection -->
-        <jms:listener destination="orderQueue" ref="receiptListenerJMS" method="receive" />
+        <jms:listener destination="${queue-name}" ref="receiptListenerJMS" method="receive" />
     </jms:listener-container>
     <!-- ===================================== -->
     <!-- JSM bean End                          -->
