@@ -98,13 +98,17 @@
                                                             "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
                                                                 "<p>" +
                                                                     "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
-                                                                    "<span style='display:block; width:310px;'>";
+                                                                    "<span style='width:260px;'>";
                                         if(response == 1) {
                                             html = html +               "Pending receipt to be processed: ";
                                         } else {
                                             html = html +               "Pending receipts to be processed: ";
                                         }
-                                        html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: #065c14;' class='timer' id='pendingCountValue'>" + 0 + "</strong></a>";
+                                        html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm' style='text-decoration: none;'>" +
+                                                                            "<strong class='pendingCounter' id='pendingCountValue'>" +
+                                                                                0 +
+                                                                            "</strong>" +
+                                                                        "</a>";
                                         html = html +               "</span>" +
                                                                 "</p>" +
                                                             "</div>" +
@@ -177,20 +181,30 @@
 	<table style="width: 1025px">
 		<tr>
 			<td style="vertical-align: top; width: 260px">
-                <div id="pendingCountInitial" style="width: 260px">
+                <div id="pendingCountInitial" style="width: 260px;">
                 <c:choose>
                 <c:when test="${pendingCount gt 0}">
                 <div class="ui-widget">
-                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                    <div class="ui-state-highlight ui-corner-all default-state" style="margin-top: 0px; padding: 0 .7em;">
                         <p>
                             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-                            <span style="display:block; width:260px;">
+                            <span style="width:260px;">
                             <c:choose>
                                 <c:when test="${pendingCount} eq 1">
-                                    Pending receipt to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong style="color: #065c14">${pendingCount}</strong></a>
+                                    Pending receipt to be processed:
+                                    <a href="${pageContext.request.contextPath}/pending.htm" style="text-decoration: none;">
+                                        <strong class="pendingCounter">
+                                        ${pendingCount}
+                                        </strong>
+                                    </a>
                                 </c:when>
                                 <c:otherwise>
-                                    Pending receipts to be processed: <a href="${pageContext.request.contextPath}/pending.htm"><strong style="color: #065c14">${pendingCount}</strong></a>
+                                    Pending receipts to be processed:
+                                    <a href="${pageContext.request.contextPath}/pending.htm" style="text-decoration: none;">
+                                        <strong class="pendingCounter">
+                                        ${pendingCount}
+                                        </strong>
+                                    </a>
                                 </c:otherwise>
                             </c:choose>
                             </span>

@@ -237,6 +237,8 @@ html, body {
 }
 /* End */
 
+.pendingCounter { font-family: Georgia,'Times New Roman',Times; font-size: 21px; font-weight: 400; color: #065c14; margin-top: -5px; }
+
 /** This is set for input text field size */
 input { font-size: 13px; }
 /** End of input text field size */
@@ -263,6 +265,12 @@ a img, a span { vertical-align: middle; }
     color: #065c14;
     background-color: #dff0d8;
     border-color: #d6e9c6;
+}
+.default-state {
+    margin: 0;
+    padding: 4px;
+    line-height: 12px;
+    font-size: 13px;
 }
 
 /* Menu Start */
