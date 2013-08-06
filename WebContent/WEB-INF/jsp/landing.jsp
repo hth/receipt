@@ -98,7 +98,7 @@
                                                             "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
                                                                 "<p>" +
                                                                     "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
-                                                                    "<span style='width:260px;'>";
+                                                                    "<span style='width:280px;'>";
                                         if(response == 1) {
                                             html = html +               "Pending receipt to be processed: ";
                                         } else {
@@ -180,15 +180,15 @@
 
 	<table style="width: 1025px">
 		<tr>
-			<td style="vertical-align: top; width: 260px">
-                <div id="pendingCountInitial" style="width: 260px;">
+			<td style="vertical-align: top; width: 280px">
+                <div id="pendingCountInitial" style="width: 280px;">
                 <c:choose>
                 <c:when test="${pendingCount gt 0}">
                 <div class="ui-widget">
                     <div class="ui-state-highlight ui-corner-all default-state" style="margin-top: 0px; padding: 0 .7em;">
                         <p>
                             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-                            <span style="width:260px;">
+                            <span style="width:280px;">
                             <c:choose>
                                 <c:when test="${pendingCount} eq 1">
                                     Pending receipt to be processed:
@@ -217,7 +217,7 @@
                     <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                         <p>
                             <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
-                            <span style="display:block; width:260px;">
+                            <span style="display:block; width:280px;">
                                 No pending receipt
                             </span>
                         </p>
@@ -226,14 +226,14 @@
                 </c:otherwise>
                 </c:choose>
                 </div>
-                <div id="pendingCountId" style="width: 260px"></div>
+                <div id="pendingCountId" style="width: 280px"></div>
                 &nbsp;&nbsp;&nbsp;
-                <fieldset style="width: 240px; margin-bottom: 10px;">
-                    <legend>Upload Receipt</legend>
-                    <div id="restricted-fine-uploader"></div>
+                <fieldset style="width: 260px; margin-bottom: 10px;">
+                    <legend style="color: #065c14; font-weight: bold; font-size: 1.05em">&nbsp;Upload Receipt&nbsp;</legend>
+                    <div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em"></div>
                     <%--<div style="margin-top: 10px; margin-bottom:1px; font-size: 12px">&#8277; Upload 3 files at a time; &#8277; Max upload size - 10 MB</div>--%>
                 </fieldset>
-                <div style="width: 260px; display: inline">
+                <div style="width: 280px; display: inline">
                     Friend's
                     <input id="inviteEmailId" type="text"
                            onfocus="this.value=''; setInviteBackGroundColor('white'); $('#info').html('&#8277; Invitation sent with your name and email address');                                                         "
