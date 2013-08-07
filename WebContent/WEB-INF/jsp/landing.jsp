@@ -268,7 +268,7 @@
 									start : '${receiptGrouped.date}',
 									end   : '${receiptGrouped.date}',
 									url   : '${pageContext.request.contextPath}/day.htm?date=${receiptGrouped.date.time}'
-								} ,
+								},
                                 </c:forEach>
 								]
 							});
@@ -314,7 +314,7 @@
 		</tr>
 	</table>
 
-    <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).USER_PAID" var="isValidForMap" />
+    <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
     <div id="off_screen">
         <div id="map-canvas"></div>
     </div>
