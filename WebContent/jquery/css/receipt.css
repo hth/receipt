@@ -17,10 +17,18 @@ html, body {
 .wrapper {
     min-height: 100%;
     height: auto !important;
-    margin: 0 auto -142px; /* the bottom margin is the negative value of the footer's height */
+    margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
 }
 .footer, .push {
-    height: 142px; /* .push must be the same height as .footer */
+    height: 80px; /* .push must be the same height as .footer */
+    background-color: whiteSmoke;
+    border-top: 1px solid #DDD;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 .demoHeaders {
 	margin-top: 2em;
