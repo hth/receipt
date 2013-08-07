@@ -65,6 +65,8 @@
                 butt2[1].stop().attr({fill: "#000"});
             });
             // setTimeout(function () {R.safari();});
+
+            img.rotate(90);
         };
 	</script>
 
