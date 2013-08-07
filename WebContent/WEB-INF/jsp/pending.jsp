@@ -118,10 +118,6 @@
                             </c:forEach>
                         </table>
                     </td>
-                    <td>&nbsp;&nbsp;&nbsp;</td>
-                    <td>
-                     Empty. This should be removed
-                    </td>
                 </tr>
             </table>
         </c:when>
@@ -159,10 +155,6 @@
                             </tr>
                             </c:forEach>
                         </table>
-                    </td>
-                    <td>&nbsp;&nbsp;&nbsp;</td>
-                    <td>
-                        Empty. This should be removed
                     </td>
                 </tr>
             </table>

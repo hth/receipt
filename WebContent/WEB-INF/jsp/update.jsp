@@ -385,13 +385,13 @@
             </td>
             <td>&nbsp;</td>
             <td style="vertical-align: top;">
-                <div id="holder">
+                <div id="holder" style="height: 850px">
                     <c:choose>
                     <c:when test="${empty receiptOCRForm.receiptOCR}">
                         &nbsp;
                     </c:when>
                     <c:otherwise>
-                        <div src="" width="700px" height="700px" id="receiptOCR.image"></div>
+                        <div src="" style="width: 700px; height: 700px" id="receiptOCR.image"></div>
                     </c:otherwise>
                     </c:choose>
                 </div>

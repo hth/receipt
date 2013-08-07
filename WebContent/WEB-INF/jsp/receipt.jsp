@@ -395,8 +395,8 @@
             </td>
             <td style="width: 6px;">&nbsp;</td>
             <td style="vertical-align: top;">
-                <div id="holder">
-                    <div src="" width="700px" height="700px" id="receipt.image"></div>
+                <div id="holder" style="height: 850px">
+                    <div src="" style="width: 700px; height: 700px" id="receipt.image"></div>
                 </div>
             </td>
         </tr>
