@@ -460,6 +460,8 @@
 		</div>
         </c:if>
 	</div>
+
+    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
 
 <div class="footer">

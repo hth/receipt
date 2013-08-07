@@ -420,6 +420,8 @@
     </div>
     </c:otherwise>
     </c:choose>
+
+    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
 
 <div class="footer">

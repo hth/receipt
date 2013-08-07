@@ -133,6 +133,8 @@
             </c:if>
         </table>
     </form:form>
+
+    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
 
 <div class="footer">

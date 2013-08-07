@@ -163,6 +163,8 @@
             <h2 class="demoHeaders">No rejected receipt to delete</h2>
         </c:otherwise>
     </c:choose>
+
+    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
 
 <div class="footer">
