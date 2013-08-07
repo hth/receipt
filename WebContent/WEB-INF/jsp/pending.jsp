@@ -144,19 +144,19 @@
                                 <th style="padding: 3px; text-align: left;">&nbsp;Upload Date</th>
                             </tr>
                             <c:forEach items="${pendingReceiptForm.rejected}" var="receipt" varStatus="status">
-                                <tr>
-                                    <td style="padding: 3px; text-align: right;">
-                                        ${status.count}
-                                    </td>
-                                    <td style="padding: 3px;">
-                                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptEntityOCR.id}">
-                                        ${receipt.fileName}
-                                        </a>
-                                    </td>
-                                    <td style="padding: 3px; text-align: left;">
-                                        <fmt:formatDate value="${receipt.receiptEntityOCR.created}" type="both"/>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td style="padding: 3px; text-align: right;">
+                                    ${status.count}
+                                </td>
+                                <td style="padding: 3px;">
+                                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptEntityOCR.id}">
+                                    ${receipt.fileName}
+                                    </a>
+                                </td>
+                                <td style="padding: 3px; text-align: left;">
+                                    <fmt:formatDate value="${receipt.receiptEntityOCR.created}" type="both"/>
+                                </td>
+                            </tr>
                             </c:forEach>
                         </table>
                     </td>
