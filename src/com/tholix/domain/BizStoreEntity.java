@@ -27,6 +27,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public class BizStoreEntity extends BaseEntity {
+    private static final String PHONE_BLANK = "000_000_0000";
 
     @NotNull
     @Size(min = 0, max = 128)
@@ -51,9 +52,7 @@ public class BizStoreEntity extends BaseEntity {
     private BizNameEntity bizName;
 
     /* To make bean happy */
-    public BizStoreEntity() {
-
-    }
+    public BizStoreEntity() {}
 
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
@@ -103,6 +102,9 @@ public class BizStoreEntity extends BaseEntity {
      * @param phone
      */
     public void setPhone(String phone) {
+        if(StringUtils.isEmpty(phone)) {
+            this.phone = PHONE_BLANK;
+        }
         this.phone = phone.replaceAll("[^0-9]", "");
     }
 
