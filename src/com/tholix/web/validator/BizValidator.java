@@ -25,7 +25,7 @@ public final class BizValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         log.info("Executing validation for new bizForm");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bizName.name",       "field.required", new Object[] { "Biz Name" });
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bizStore.address",   "field.required", new Object[] { "Address" });
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name",      "field.required", new Object[] { "Biz Name" });
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",   "field.required", new Object[] { "Address" });
     }
 }

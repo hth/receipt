@@ -78,7 +78,10 @@ public class BusinessController {
             return modelAndView;
         } else {
             ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
-            BizStoreEntity bizStoreEntity = bizForm.getBizStore();
+
+            BizStoreEntity bizStoreEntity = BizStoreEntity.newInstance();
+            bizStoreEntity.setAddress(bizForm.getAddress());
+            bizStoreEntity.setPhone(bizForm.getPhone());
             try {
                 externalService.decodeAddress(bizStoreEntity);
             } catch (Exception e) {
@@ -88,7 +91,10 @@ public class BusinessController {
             }
 
             receiptEntity.setBizStore(bizStoreEntity);
-            receiptEntity.setBizName(bizForm.getBizName());
+
+            BizNameEntity bizNameEntity = BizNameEntity.newInstance();
+            bizNameEntity.setName(bizForm.getName());
+            receiptEntity.setBizName(bizNameEntity);
             try {
                 bizService.saveNewBusinessAndOrStore(receiptEntity);
                 bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getName() + "' added successfully");
@@ -128,14 +134,8 @@ public class BusinessController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return modelAndView;
         } else {
-            BizNameEntity bizNameEntity = bizForm.getBizName();
-            BizStoreEntity bizStoreEntity = bizForm.getBizStore();
 
-            String bizName = bizNameEntity.getName();
-            String address = bizStoreEntity.getAddress();
-            String phone = bizStoreEntity.getPhone();
-
-            Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(bizName, address, phone);
+            Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(bizForm.getName(), bizForm.getAddress(), bizForm.getPhone());
             modelAndView.addObject("last10BizStore", bizStoreEntities);
             if(bizStoreEntities.size() > 0) {
                 bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");

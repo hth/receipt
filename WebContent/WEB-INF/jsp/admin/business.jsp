@@ -115,23 +115,23 @@
         <table style="width: 760px" class="etable">
             <tr>
                 <td style="padding: 3px;">
-                    <form:label for="bizName.name" path="bizName.name" cssErrorClass="error">Biz Name:</form:label>
+                    <form:label for="name" path="name" cssErrorClass="error">Biz Name:</form:label>
                 </td>
                 <td style="padding: 3px;" colspan="2">
-                    <form:input path="bizName.name" id="name" class="inputForBizName"/>
-                    <form:errors path="bizName.name" cssClass="error" />
+                    <form:input path="name" id="name" class="inputForBizName"/>
+                    <form:errors path="name" cssClass="error" />
                 </td>
             </tr>
             <tr>
                 <td style="padding: 3px;">
-                    <form:label for="bizStore.address" path="bizStore.address" cssErrorClass="error">Address:</form:label>
+                    <form:label for="address" path="address" cssErrorClass="error">Address:</form:label>
                 </td>
                 <td style="padding: 3px;">
-                    <form:input path="bizStore.address" id="address" class="inputForBizAddress"/>
+                    <form:input path="address" id="address" class="inputForBizAddress"/>
                 </td>
                 <td style="padding: 3px;">
-                    <form:label for="bizStore.phone" path="bizStore.phone" cssErrorClass="error">Phone: </form:label>
-                    <form:input path="bizStore.phone" id="phone" class="inputForBizPhone"/>
+                    <form:label for="phone" path="phone" cssErrorClass="error">Phone: </form:label>
+                    <form:input path="phone" id="phone" class="inputForBizPhone"/>
                 </td>
             </tr>
             <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.bizForm'].allErrors}">
@@ -140,10 +140,10 @@
                     &nbsp;
                 </td>
                 <td style="padding: 3px;">
-                    <form:errors path="bizStore.address" cssClass="error" />
+                    <form:errors path="address" cssClass="error" />
                 </td>
                 <td style="padding: 3px;">
-                    <form:errors path="bizStore.phone" cssClass="error" />
+                    <form:errors path="phone" cssClass="error" />
                 </td>
             </tr>
             </c:if>
