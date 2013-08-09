@@ -27,6 +27,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public class BizStoreEntity extends BaseEntity {
+    /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     private static final String PHONE_BLANK = "000_000_0000";
 
     @NotNull
@@ -103,7 +104,7 @@ public class BizStoreEntity extends BaseEntity {
      */
     public void setPhone(String phone) {
         if(StringUtils.isEmpty(phone)) {
-            this.phone = PHONE_BLANK;
+            phone = PHONE_BLANK;
         }
         this.phone = phone.replaceAll("[^0-9]", "");
     }

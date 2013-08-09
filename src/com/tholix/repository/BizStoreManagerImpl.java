@@ -103,28 +103,36 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
         if(bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
             Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-            return mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA).limit(30), BizStoreEntity.class, TABLE);
+            return mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA).limit(STORE_LIMIT), BizStoreEntity.class, TABLE);
         } else {
-            return mongoTemplate.find(Query.query(criteriaA).limit(30), BizStoreEntity.class, TABLE);
+            return mongoTemplate.find(Query.query(criteriaA).limit(STORE_LIMIT), BizStoreEntity.class, TABLE);
         }
     }
 
     @Override
     public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
-        Criteria criteriaA = new Criteria();
+        Query query = null;
         if(StringUtils.isNotEmpty(bizAddress)) {
-            criteriaA.andOperator(Criteria.where("ADDRESS").regex("^" + bizAddress, "i"));
+            query = Query.query(Criteria.where("ADDRESS").regex("^" + bizAddress, "i"));
         }
         if(StringUtils.isNotEmpty(bizPhone)) {
-            criteriaA.andOperator(Criteria.where("PHONE").regex("^" + bizPhone, "i"));
+            Criteria criteria = Criteria.where("PHONE").regex("^" + bizPhone, "i");
+            if(query == null) {
+                query = Query.query(criteria);
+            } else {
+                query.addCriteria(criteria);
+            }
         }
 
         if(bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
-            Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-            return mongoTemplate.find(Query.query(criteriaB).addCriteria(criteriaA).limit(30), BizStoreEntity.class, TABLE);
-        } else {
-            return mongoTemplate.find(Query.query(criteriaA).limit(30), BizStoreEntity.class, TABLE);
+            Criteria criteriaA = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+            if(query != null) {
+                query.addCriteria(criteriaA);
+            } else {
+                query = Query.query(criteriaA);
+            }
         }
+        return mongoTemplate.find(query.limit(STORE_LIMIT), BizStoreEntity.class, TABLE);
     }
 
     @Override

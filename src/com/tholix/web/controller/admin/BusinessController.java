@@ -83,7 +83,7 @@ public class BusinessController {
                 externalService.decodeAddress(bizStoreEntity);
             } catch (Exception e) {
                 log.error("For Address: " + bizStoreEntity.getAddress() + ", " + e.getLocalizedMessage());
-                result.rejectValue("bizError", "", e.getLocalizedMessage());
+                bizForm.setBizError(e.getLocalizedMessage());
                 return modelAndView;
             }
 
@@ -91,8 +91,9 @@ public class BusinessController {
             receiptEntity.setBizName(bizForm.getBizName());
             try {
                 bizService.saveNewBusinessAndOrStore(receiptEntity);
+                bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getName() + "' added successfully");
             } catch(Exception e) {
-                result.rejectValue("bizError", "", e.getLocalizedMessage());
+                bizForm.setBizError(e.getLocalizedMessage());
                 return modelAndView;
             }
 
@@ -100,7 +101,7 @@ public class BusinessController {
                 modelAndView.addObject("bizStore", receiptEntity.getBizStore());
                 modelAndView.addObject("last10BizStore", bizService.getAllStoresForBusinessName(receiptEntity));
             } else {
-                result.rejectValue("bizError", "", "Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getName());
+                bizForm.setBizError("Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getName());
             }
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -136,6 +137,9 @@ public class BusinessController {
 
             Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(bizName, address, phone);
             modelAndView.addObject("last10BizStore", bizStoreEntities);
+            if(bizStoreEntities.size() > 0) {
+                bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");
+            }
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             return modelAndView;

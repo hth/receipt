@@ -88,6 +88,28 @@
 
     <p>&nbsp;</p>
 
+    <c:if test="${!empty bizForm.bizError}">
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                <span style="display:block; width: auto">${bizForm.bizError}</span>
+            </p>
+        </div>
+    </div>
+    </c:if>
+
+    <c:if test="${!empty bizForm.bizSuccess}">
+        <div class="ui-widget">
+            <div class="ui-state-highlight ui-corner-all alert-success" style="margin-top: 0px; padding: 0 .7em;">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                    <span style="display:block; width: auto">${bizForm.bizSuccess}</span>
+                </p>
+            </div>
+        </div>
+    </c:if>
+
     <h2>Add new Business or Stores to existing business</h2>
     <form:form method="post" modelAttribute="bizForm" action="business.htm">
         <table style="width: 760px" class="etable">
@@ -157,8 +179,8 @@
                 <td style="padding:3px; text-align: left; vertical-align: top">
                     <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
                 </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.phone" />
+                <td style="padding:3px; text-align: left; vertical-align: top" title="<spring:eval expression="bizStore.phone"/>">
+                    <spring:eval expression="bizStore.phoneFormatted"/>
                 </td>
                 <td style="padding:3px; text-align: left; vertical-align: top">
                     <fmt:formatDate value="${bizStore.created}" type="both" />
@@ -169,7 +191,7 @@
 
     <c:if test="${!empty last10BizStore}">
         <br/>
-        Last 10 records for same business
+        Last 10 records for same business. Search is limited to just 10 records.
         <table style="width: 650px" class="etable">
             <tbody>
             <tr>
@@ -181,23 +203,23 @@
             </tr>
             </tbody>
             <c:forEach var="bizStore" items="${last10BizStore}"  varStatus="status">
-                <tr>
-                    <td style="padding:3px; text-align: left; vertical-align: top">
-                        <spring:eval expression="bizStore.bizName.name" />
-                    </td>
-                    <td style="padding:3px; text-align: left; vertical-align: top">
-                        <spring:eval expression="bizStore.addressWrappedMore" />
-                    </td>
-                    <td style="padding:3px; text-align: left; vertical-align: top">
-                        <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
-                    </td>
-                    <td style="padding:3px; text-align: left; vertical-align: top">
-                        <spring:eval expression="bizStore.phoneFormatted"/>
-                    </td>
-                    <td style="padding:3px; text-align: left; vertical-align: top">
-                        <fmt:formatDate value="${bizStore.created}" type="both" />
-                    </td>
-                </tr>
+            <tr>
+                <td style="padding:3px; text-align: left; vertical-align: top">
+                    <spring:eval expression="bizStore.bizName.name" />
+                </td>
+                <td style="padding:3px; text-align: left; vertical-align: top">
+                    <spring:eval expression="bizStore.addressWrappedMore" />
+                </td>
+                <td style="padding:3px; text-align: left; vertical-align: top">
+                    <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
+                </td>
+                <td style="padding:3px; text-align: left; vertical-align: top" title="<spring:eval expression="bizStore.phone"/>">
+                    <spring:eval expression="bizStore.phoneFormatted"/>
+                </td>
+                <td style="padding:3px; text-align: left; vertical-align: top">
+                    <fmt:formatDate value="${bizStore.created}" type="both" />
+                </td>
+            </tr>
             </c:forEach>
         </table>
     </c:if>
