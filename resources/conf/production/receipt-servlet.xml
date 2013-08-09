@@ -105,11 +105,14 @@
     <bean id="expenseManager"               class="com.tholix.repository.ExpenseTypeManagerImpl" />
     <bean id="notificationManager"          class="com.tholix.repository.NotificationManagerImpl" />
     <bean id="evalFeedbackManager"          class="com.tholix.repository.EvalFeedbackManagerImpl" />
+    <bean id="bizNameManager"               class="com.tholix.repository.BizNameManagerImpl" />
+    <bean id="bizStoreManager"              class="com.tholix.repository.BizStoreManagerImpl" />
 
     <bean id="userRegistrationValidator"    class="com.tholix.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.tholix.web.validator.UserLoginValidator" />
     <bean id="receiptOCRValidator"          class="com.tholix.web.validator.ReceiptOCRValidator" />
-    <bean id="bizFormValidator"             class="com.tholix.web.validator.BizFormValidator" />
+    <bean id="bizValidator"                 class="com.tholix.web.validator.BizValidator" />
+    <bean id="bizSearchValidator"           class="com.tholix.web.validator.BizSearchValidator" />
     <bean id="expenseTypeValidator"         class="com.tholix.web.validator.ExpenseTypeValidator" />
     <bean id="forgotRecoverValidator"       class="com.tholix.web.validator.ForgotRecoverValidator" />
     <bean id="forgotAuthenticateValidator"  class="com.tholix.web.validator.ForgotAuthenticateValidator" />

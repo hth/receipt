@@ -28,7 +28,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
 	/**
 	 * Used for searching user based on name. Search could be based on First Name or Last Name.
-	 * The list is sorted based on Last Name. Displayed with format Last Name, First Name.
+	 * The list is sorted based on First Name. Displayed with format First Name, Last Name.
 	 * @param name
 	 * @return
 	 */

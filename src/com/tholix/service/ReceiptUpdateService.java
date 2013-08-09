@@ -44,6 +44,7 @@ public class ReceiptUpdateService {
     @Autowired private ItemManager itemManager;
     @Autowired private MessageManager messageManager;
     @Autowired private AdminLandingService adminLandingService;
+    @Autowired private BizService bizService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private CommentManager commentManager;
     @Autowired private NotificationService notificationService;
@@ -68,13 +69,13 @@ public class ReceiptUpdateService {
     @Transactional(rollbackFor={Exception.class})
     public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         try {
-            adminLandingService.saveNewBusinessAndOrStore(receipt);
+            bizService.saveNewBusinessAndOrStore(receipt);
             receiptManager.save(receipt);
 
             populateItemsWithBizName(items, receipt);
             itemManager.saveObjects(items);
 
-            adminLandingService.saveNewBusinessAndOrStore(receiptOCR);
+            bizService.saveNewBusinessAndOrStore(receiptOCR);
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
             receiptOCR.setReceiptId(receipt.getId());
             receiptOCR.inActive();
@@ -145,7 +146,7 @@ public class ReceiptUpdateService {
     public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         ReceiptEntity fetchedReceipt = null;
         try {
-            adminLandingService.saveNewBusinessAndOrStore(receipt);
+            bizService.saveNewBusinessAndOrStore(receipt);
             if(StringUtils.isNotEmpty(receipt.getId())) {
                 fetchedReceipt = receiptManager.findOne(receipt.getId());
                 if(fetchedReceipt == null) {
@@ -160,7 +161,7 @@ public class ReceiptUpdateService {
             populateItemsWithBizName(items, receipt);
             itemManager.saveObjects(items);
 
-            adminLandingService.saveNewBusinessAndOrStore(receiptOCR);
+            bizService.saveNewBusinessAndOrStore(receiptOCR);
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
             receiptOCR.inActive();
 

@@ -93,11 +93,11 @@
         <table style="width: 400px" class="etable">
             <tr>
                 <th style="padding: 3px;">Search Name: </th>
-                <td style="padding: 3px;">&nbsp;<form:input path="userName" size="27" /></td>
+                <td style="padding: 3px;">&nbsp;<form:input path="userName" size="25" /></td>
             </tr>
             <tr>
                 <td colspan="2">
-                    Enter at least 2 characters to find a specific user or else its list all the user below.
+                    Enter at least 3 characters to find a specific user or else its list all the user below.
                     Would change this later as the number of users increases.
                 </td>
             </tr>

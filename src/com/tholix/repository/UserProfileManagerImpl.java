@@ -122,11 +122,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 		//TODO look into PageRequest for limit data
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
-		//TODO this does not seems to be working query
+        //Can add "^" + to force search only the names starting with
 		Criteria a = Criteria.where("FIRST_NAME").regex(name, "i");
-		//Criteria b = Criteria.where("lastName").regex(name, "i");
-		//return mongoTemplate.find(Query.query(a.orOperator(b)), UserProfileEntity.class, TABLE);
-		return mongoTemplate.find(Query.query(a), UserProfileEntity.class, TABLE);
+		Criteria b = Criteria.where("LAST_NAME").regex(name, "i");
+		return mongoTemplate.find(Query.query(new Criteria().orOperator(a, b)), UserProfileEntity.class, TABLE);
 	}
 
     @Override

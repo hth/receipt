@@ -86,12 +86,42 @@ html, body {
     width: 160px;
     display: inline;
     height: 18px;
-    padding: 0 0 0 0px;
+    padding: 1px;
     font-size: 13px;
     border: solid 1px gray;
     color: gray;
 }
 /* End for Invitation Email Text box */
+
+/* For Biz Search Text box */
+.inputForBizPhone {
+    width: 140px;
+    display: inline;
+    height: 18px;
+    padding: 2px;
+    font-size: 13px;
+    border: solid 1px gray;
+    color: #000000;
+}
+.inputForBizName {
+    width: 360px;
+    display: inline;
+    height: 18px;
+    padding: 2px;
+    font-size: 13px;
+    border: solid 1px gray;
+    color: #000000;
+}
+.inputForBizAddress {
+    width: 450px;
+    display: inline;
+    height: 18px;
+    padding: 2px;
+    font-size: 13px;
+    border: solid 1px gray;
+    color: #000000;
+}
+/* End for Biz Search Text box */
 
 /* The code below is for the small table to show the tax, total and grand total */
 .divTable {

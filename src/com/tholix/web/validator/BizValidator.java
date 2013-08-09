@@ -13,8 +13,8 @@ import com.tholix.web.form.BizForm;
  * Date: 5/10/13
  * Time: 12:35 AM
  */
-public final class BizFormValidator implements Validator {
-    private static final Logger log = Logger.getLogger(BizFormValidator.class);
+public final class BizValidator implements Validator {
+    private static final Logger log = Logger.getLogger(BizValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -25,7 +25,7 @@ public final class BizFormValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         log.info("Executing validation for new bizForm");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bizName.name",       "field.required", new Object[] { "Name" });
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bizName.name",       "field.required", new Object[] { "Biz Name" });
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bizStore.address",   "field.required", new Object[] { "Address" });
     }
 }

@@ -25,7 +25,16 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     BizStoreEntity findOne(BizStoreEntity bizStoreEntity);
 
-    List<BizStoreEntity> findAll(String bizAddress, BizNameEntity bizNameEntity);
+    /**
+     * Search for specific Biz, Address or Phone. Limited to 30
+     *
+     * @param bizAddress
+     * @param bizPhone
+     * @param bizNameEntity
+     * @return
+     */
+    List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity);
+    List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity);
 
     /**
      * Used for Ajax. Populates BizStoreEntity with just fieldName.
