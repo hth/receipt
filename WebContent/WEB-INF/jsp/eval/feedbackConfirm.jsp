@@ -81,10 +81,10 @@
                                     if(response > 0) {
                                         var html = '';
                                         html = html +   "<div class='ui-widget'>" +
-                                                "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
-                                                "<p>" +
-                                                "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
-                                                "<span style='display:block; width:310px;'>";
+                                                            "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
+                                                                "<p>" +
+                                                                    "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
+                                                                    "<span style='display:block; width:310px;'>";
                                         if(response == 1) {
                                             html = html +               "Pending receipt to be processed: ";
                                         } else {
@@ -92,9 +92,9 @@
                                         }
                                         html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm'><strong style='color: #065c14;' class='timer' id='pendingCountValue'>" + 0 + "</strong></a>";
                                         html = html +               "</span>" +
-                                                "</p>" +
-                                                "</div>" +
-                                                "</div>";
+                                                                "</p>" +
+                                                            "</div>" +
+                                                        "</div>";
                                         $('#pendingCountInitial').hide();
                                         $('#pendingCountId').html(html).show();
                                         $(runCounter(response));
