@@ -13,9 +13,11 @@
 
     <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
     <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href='../jquery/js/alpixel/jMenu.jquery.css'  />
 
     <script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/alpixel/jMenu.jquery.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -48,6 +50,10 @@
             $(document).mouseup(function () {
                 $(".submenu").hide();
                 $(".account").attr('id', '');
+            });
+
+            $(document).ready(function() {
+                $("#jMenu").jMenu();
             });
         });
     </script>
@@ -85,6 +91,31 @@
             </div>
         </div>
     </div>
+
+    <ul id="jMenu">
+        <li>
+            <a class="fNiv">User</a>
+            <ul>
+                <li class="arrow"></li>
+                <li>
+                    <a href="landing.htm">Search</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a class="fNiv">Business</a>
+            <ul>
+                <li class="arrow"></li>
+                <li>
+                    <a href="business.htm">Add</a>
+                </li>
+                <li>
+                    <a href="business.htm">Search</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 
     <p>&nbsp;</p>
 
