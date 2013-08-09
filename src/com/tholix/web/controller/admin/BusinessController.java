@@ -2,16 +2,19 @@ package com.tholix.web.controller.admin;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -48,7 +51,14 @@ public class BusinessController {
     @Autowired private BizSearchValidator bizSearchValidator;
 
     @RequestMapping(value = "/business", method = RequestMethod.GET)
-    public ModelAndView loadSearchForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm) {
+    public ModelAndView loadSearchForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
+                                       final Model model) {
+
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.bizForm", model.asMap().get("result"));
+        }
+
         if(userSession.getLevel() == UserLevelEnum.ADMIN) {
             ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
             return modelAndView;
@@ -67,15 +77,20 @@ public class BusinessController {
      * @return
      */
     @RequestMapping(value = "/business", method = RequestMethod.POST, params = "add")
-    public ModelAndView addBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result, @ModelAttribute("userSession") UserSession userSession) {
+    public String addBiz(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
+                         BindingResult result,
+                         final RedirectAttributes redirectAttrs) {
+
         DateTime time = DateUtil.now();
-        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
-        modelAndView.addObject("bizForm", bizForm);
+        redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         bizValidator.validate(bizForm, result);
         if (result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-            return modelAndView;
+            redirectAttrs.addFlashAttribute("result", result);
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+            //Re-direct to prevent resubmit
+            return "redirect:" + NEXT_PAGE + ".htm";
         } else {
             ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
 
@@ -87,7 +102,10 @@ public class BusinessController {
             } catch (Exception e) {
                 log.error("For Address: " + bizStoreEntity.getAddress() + ", " + e.getLocalizedMessage());
                 bizForm.setBizError(e.getLocalizedMessage());
-                return modelAndView;
+
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+                //Re-direct to prevent resubmit
+                return "redirect:" + NEXT_PAGE + ".htm";
             }
 
             receiptEntity.setBizStore(bizStoreEntity);
@@ -100,18 +118,22 @@ public class BusinessController {
                 bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getName() + "' added successfully");
             } catch(Exception e) {
                 bizForm.setBizError(e.getLocalizedMessage());
-                return modelAndView;
+
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+                //Re-direct to prevent resubmit
+                return "redirect:" + NEXT_PAGE + ".htm";
             }
 
             if(receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
-                modelAndView.addObject("bizStore", receiptEntity.getBizStore());
-                modelAndView.addObject("last10BizStore", bizService.getAllStoresForBusinessName(receiptEntity));
+                redirectAttrs.addFlashAttribute("bizStore", receiptEntity.getBizStore());
+                redirectAttrs.addFlashAttribute("last10BizStore", bizService.getAllStoresForBusinessName(receiptEntity));
             } else {
                 bizForm.setBizError("Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getName());
             }
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-            return modelAndView;
+            //Re-direct to prevent resubmit
+            return "redirect:" + NEXT_PAGE + ".htm";
         }
     }
 
@@ -124,25 +146,33 @@ public class BusinessController {
      * @return
      */
     @RequestMapping(value = "/business", method = RequestMethod.POST, params = "search")
-    public ModelAndView searchBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result, @ModelAttribute("userSession") UserSession userSession) {
+    public String searchBiz(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
+                            BindingResult result,
+                            final RedirectAttributes redirectAttrs) {
+
         DateTime time = DateUtil.now();
-        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
-        modelAndView.addObject("bizForm", bizForm);
+        redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         bizSearchValidator.validate(bizForm, result);
         if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-            return modelAndView;
+            //Re-direct to prevent resubmit
+            return "redirect:" + NEXT_PAGE + ".htm";
         } else {
 
-            Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(bizForm.getName(), bizForm.getAddress(), bizForm.getPhone());
-            modelAndView.addObject("last10BizStore", bizStoreEntities);
-            if(bizStoreEntities.size() > 0) {
-                bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");
-            }
+            String name     = StringUtils.trim(bizForm.getName());
+            String address  = StringUtils.trim(bizForm.getAddress());
+            String phone    = StringUtils.trim(BizStoreEntity.phoneCleanup(bizForm.getPhone()));
+            Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(name, address, phone);
+            bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");
+
+            redirectAttrs.addFlashAttribute("last10BizStore", bizStoreEntities);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
-            return modelAndView;
+            //Re-direct to prevent resubmit
+            return "redirect:" + NEXT_PAGE + ".htm";
         }
     }
 }

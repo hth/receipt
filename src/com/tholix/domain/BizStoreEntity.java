@@ -106,7 +106,7 @@ public class BizStoreEntity extends BaseEntity {
         if(StringUtils.isEmpty(phone)) {
             phone = PHONE_BLANK;
         }
-        this.phone = phone.replaceAll("[^0-9]", "");
+        this.phone = phoneCleanup(phone);
     }
 
     public double getLat() {
@@ -131,5 +131,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
+    }
+
+    /**
+     * Strip all the characters other than number
+     *
+     * @param phone
+     * @return
+     */
+    public static String phoneCleanup(String phone) {
+        return phone.replaceAll("[^0-9]", "");
     }
 }
