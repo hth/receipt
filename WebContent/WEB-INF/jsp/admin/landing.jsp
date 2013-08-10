@@ -104,14 +104,11 @@
         </li>
 
         <li>
-            <a class="fNiv">Business</a>
+            <a class="fNiv">Business &nbsp;&nbsp;&nbsp;</a>
             <ul>
                 <li class="arrow"></li>
                 <li>
-                    <a href="business.htm">Add</a>
-                </li>
-                <li>
-                    <a href="business.htm">Search</a>
+                    <a href="business.htm">Search & Add</a>
                 </li>
             </ul>
         </li>

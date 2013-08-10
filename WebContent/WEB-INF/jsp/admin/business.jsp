@@ -104,14 +104,11 @@
         </li>
 
         <li>
-            <a class="fNiv">Business</a>
+            <a class="fNiv">Business &nbsp;&nbsp;&nbsp;</a>
             <ul>
                 <li class="arrow"></li>
                 <li>
-                    <a href="business.htm">Add</a>
-                </li>
-                <li>
-                    <a href="business.htm">Search</a>
+                    <a href="business.htm">Search & Add</a>
                 </li>
             </ul>
         </li>
@@ -143,116 +140,124 @@
 
     <h2>Add new Business or Stores to existing business</h2>
     <form:form method="post" modelAttribute="bizForm" action="business.htm">
-        <table style="width: 760px" class="etable">
-            <tr>
-                <td style="padding: 3px;">
-                    <form:label for="name" path="name" cssErrorClass="error">Biz Name:</form:label>
-                </td>
-                <td style="padding: 3px;" colspan="2">
-                    <form:input path="name" id="name" class="inputForBizName"/>
-                    <form:errors path="name" cssClass="error" />
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 3px;">
-                    <form:label for="address" path="address" cssErrorClass="error">Address:</form:label>
-                </td>
-                <td style="padding: 3px;">
-                    <form:input path="address" id="address" class="inputForBizAddress"/>
-                </td>
-                <td style="padding: 3px;">
-                    <form:label for="phone" path="phone" cssErrorClass="error">Phone: </form:label>
-                    <form:input path="phone" id="phone" class="inputForBizPhone"/>
-                </td>
-            </tr>
-            <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.bizForm'].allErrors}">
-            <tr>
-                <td style="padding: 3px;">
-                    &nbsp;
-                </td>
-                <td style="padding: 3px;">
-                    <form:errors path="address" cssClass="error" />
-                </td>
-                <td style="padding: 3px;">
-                    <form:errors path="phone" cssClass="error" />
-                </td>
-            </tr>
-            </c:if>
-            <tr>
-                <td style="padding: 3px;" colspan="3">
-                    <input type="submit" value="Search Business" name="search"/>
-                    <input type="submit" value="Add a Store or New a Business" name="add"/>
-                </td>
-            </tr>
-        </table>
+    <table style="width: 760px" class="etable">
+        <tr>
+            <td style="padding: 3px;">
+                <form:label for="name" path="name" cssErrorClass="error">Biz Name:</form:label>
+            </td>
+            <td style="padding: 3px;" colspan="2">
+                <form:input path="name" id="name" class="inputForBizName"/>
+                <form:errors path="name" cssClass="error" />
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 3px;">
+                <form:label for="address" path="address" cssErrorClass="error">Address:</form:label>
+            </td>
+            <td style="padding: 3px;">
+                <form:input path="address" id="address" class="inputForBizAddress"/>
+            </td>
+            <td style="padding: 3px;">
+                <form:label for="phone" path="phone" cssErrorClass="error">Phone: </form:label>
+                <form:input path="phone" id="phone" class="inputForBizPhone"/>
+            </td>
+        </tr>
+        <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.bizForm'].allErrors}">
+        <tr>
+            <td style="padding: 3px;">
+                &nbsp;
+            </td>
+            <td style="padding: 3px;">
+                <form:errors path="address" cssClass="error" />
+            </td>
+            <td style="padding: 3px;">
+                <form:errors path="phone" cssClass="error" />
+            </td>
+        </tr>
+        </c:if>
+        <tr>
+            <td style="padding: 3px;" colspan="3">
+                <input type="submit" value="Search Business" name="search"/>
+                <input type="submit" value="Add a Store or New a Business" name="add"/>
+            </td>
+        </tr>
+    </table>
     </form:form>
 
     <c:if test="${!empty bizStore}">
-        <br/>
-        Added...
-        <table style="width: 650px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;">Store Name</th>
-                <th style="padding:3px;">Address</th>
-                <th style="padding:3px;">Lat, Lng</th>
-                <th style="padding:3px;">Phone</th>
-                <th style="padding:3px;">Created</th>
-            </tr>
-            </tbody>
-            <tr>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.bizName.name" />
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.addressWrappedMore" />
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top" title="<spring:eval expression="bizStore.phone"/>">
-                    <spring:eval expression="bizStore.phoneFormatted"/>
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <fmt:formatDate value="${bizStore.created}" type="both" />
-                </td>
-            </tr>
-        </table>
+    <br/>
+    Added...
+    <table style="width: 650px" class="etable">
+        <tbody>
+        <tr>
+            <th style="padding:3px;">Store Name</th>
+            <th style="padding:3px;">Address</th>
+            <th style="padding:3px;">Lat, Lng</th>
+            <th style="padding:3px;">Phone</th>
+            <th style="padding:3px;">Created</th>
+        </tr>
+        </tbody>
+        <tr>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=">
+                <spring:eval expression="bizStore.bizName.name" />
+                </a>
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}">
+                <spring:eval expression="bizStore.addressWrappedMore" />
+                </a>
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top" title="<spring:eval expression="bizStore.phone"/>">
+                <spring:eval expression="bizStore.phoneFormatted"/>
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <fmt:formatDate value="${bizStore.created}" type="both" />
+            </td>
+        </tr>
+    </table>
     </c:if>
 
     <c:if test="${!empty last10BizStore}">
-        <br/>
-        Last 10 records for same business. Search is limited to just 10 records.
-        <table style="width: 650px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;">Store Name</th>
-                <th style="padding:3px;">Address</th>
-                <th style="padding:3px;">Lat, Lng</th>
-                <th style="padding:3px;">Phone</th>
-                <th style="padding:3px;">Created</th>
-            </tr>
-            </tbody>
-            <c:forEach var="bizStore" items="${last10BizStore}"  varStatus="status">
-            <tr>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.bizName.name" />
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.addressWrappedMore" />
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top" title="<spring:eval expression="bizStore.phone"/>">
-                    <spring:eval expression="bizStore.phoneFormatted"/>
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <fmt:formatDate value="${bizStore.created}" type="both" />
-                </td>
-            </tr>
-            </c:forEach>
-        </table>
+    <br/>
+    Last 10 records for same business. Search is limited to just 10 records.
+    <table style="width: 650px" class="etable">
+        <tbody>
+        <tr>
+            <th style="padding:3px;">Store Name</th>
+            <th style="padding:3px;">Address</th>
+            <th style="padding:3px;">Lat, Lng</th>
+            <th style="padding:3px;">Phone</th>
+            <th style="padding:3px;">Created</th>
+        </tr>
+        </tbody>
+        <c:forEach var="bizStore" items="${last10BizStore}"  varStatus="status">
+        <tr>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=">
+                <spring:eval expression="bizStore.bizName.name" />
+                </a>
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}">
+                <spring:eval expression="bizStore.addressWrappedMore" />
+                </a>
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top" title="<spring:eval expression="bizStore.phone"/>">
+                <spring:eval expression="bizStore.phoneFormatted"/>
+            </td>
+            <td style="padding:3px; text-align: left; vertical-align: top">
+                <fmt:formatDate value="${bizStore.created}" type="both" />
+            </td>
+        </tr>
+        </c:forEach>
+    </table>
     </c:if>
 
     <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>

@@ -140,6 +140,9 @@ public class BizStoreEntity extends BaseEntity {
      * @return
      */
     public static String phoneCleanup(String phone) {
-        return phone.replaceAll("[^0-9]", "");
+        if(StringUtils.isNotEmpty(phone)) {
+            return phone.replaceAll("[^0-9]", "");
+        }
+        return phone;
     }
 }

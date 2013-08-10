@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -43,6 +44,7 @@ import com.tholix.web.validator.BizValidator;
 public class BusinessController {
     private static final Logger log = Logger.getLogger(BusinessController.class);
     private static final String NEXT_PAGE = "/admin/business";
+    private static final String EDIT_PAGE = "/admin/businessEdit";
 
     @Autowired private ExternalService externalService;
     @Autowired private BizService bizService;
@@ -69,6 +71,89 @@ public class BusinessController {
         return new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
     }
 
+    @RequestMapping(value = "/business/edit", method = RequestMethod.GET)
+    public ModelAndView editStore(@ModelAttribute("userSession") UserSession userSession,
+                                  @RequestParam("nameId") String nameId,
+                                  @RequestParam("storeId") String storeId,
+                                  @ModelAttribute("bizForm") BizForm bizForm) {
+
+        if(userSession.getLevel() == UserLevelEnum.ADMIN) {
+            ModelAndView modelAndView = new ModelAndView(EDIT_PAGE);
+            BizNameEntity bizNameEntity = bizService.findName(nameId);
+            bizForm.setBizName(bizNameEntity);
+
+            if(StringUtils.isNotEmpty(storeId)) {
+                BizStoreEntity bizStoreEntity = bizService.findStore(storeId);
+                bizForm.setBizStore(bizStoreEntity);
+            }
+
+            return modelAndView;
+        }
+
+        //Re-direct user to his home page because user tried accessing Un-Authorized page
+        log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
+        return new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
+    }
+
+    /**
+     * Edit Biz Name and or Biz Address, Phone.
+     *
+     * No validation is performed.
+     *
+     * @param bizForm
+     * @param userSession - Required when user try to refresh page after log out
+     * @return
+     */
+    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "edit")
+    public String editBiz(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
+                          final RedirectAttributes redirectAttrs) {
+
+        DateTime time = DateUtil.now();
+        redirectAttrs.addFlashAttribute("bizForm", bizForm);
+
+        BizStoreEntity bizStoreEntity;
+        if(StringUtils.isNotEmpty(bizForm.getAddressId())) {
+            bizStoreEntity = bizService.findStore(bizForm.getAddressId());
+            bizStoreEntity.setAddress(bizForm.getAddress());
+            bizStoreEntity.setPhone(bizForm.getPhone());
+            try {
+                externalService.decodeAddress(bizStoreEntity);
+                bizService.saveStore(bizStoreEntity);
+            } catch (Exception e) {
+                log.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
+                bizForm.setBizError("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
+
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+                //Re-direct to prevent resubmit
+                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
+            }
+        }
+
+        BizNameEntity bizNameEntity;
+        if(StringUtils.isNotEmpty(bizForm.getNameId())) {
+            bizNameEntity = bizService.findName(bizForm.getNameId());
+            bizNameEntity.setName(bizForm.getName());
+            try {
+                bizService.saveName(bizNameEntity);
+                log.info("Business '" + bizNameEntity.getName() + "' updated successfully");
+            } catch(Exception e) {
+                log.error("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
+                bizForm.setBizError("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
+
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+                //Re-direct to prevent resubmit
+                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
+            }
+        }
+
+        Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
+        redirectAttrs.addFlashAttribute("last10BizStore", bizStoreEntities);
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+        //Re-direct to prevent resubmit
+        return "redirect:" + NEXT_PAGE + ".htm";
+    }
+
     /**
      *
      * @param bizForm
@@ -92,22 +177,21 @@ public class BusinessController {
             //Re-direct to prevent resubmit
             return "redirect:" + NEXT_PAGE + ".htm";
         } else {
-            ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
-
             BizStoreEntity bizStoreEntity = BizStoreEntity.newInstance();
             bizStoreEntity.setAddress(bizForm.getAddress());
             bizStoreEntity.setPhone(bizForm.getPhone());
             try {
                 externalService.decodeAddress(bizStoreEntity);
             } catch (Exception e) {
-                log.error("For Address: " + bizStoreEntity.getAddress() + ", " + e.getLocalizedMessage());
-                bizForm.setBizError(e.getLocalizedMessage());
+                log.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
+                bizForm.setBizError("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 //Re-direct to prevent resubmit
                 return "redirect:" + NEXT_PAGE + ".htm";
             }
 
+            ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
             receiptEntity.setBizStore(bizStoreEntity);
 
             BizNameEntity bizNameEntity = BizNameEntity.newInstance();
@@ -117,7 +201,8 @@ public class BusinessController {
                 bizService.saveNewBusinessAndOrStore(receiptEntity);
                 bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getName() + "' added successfully");
             } catch(Exception e) {
-                bizForm.setBizError(e.getLocalizedMessage());
+                log.error("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
+                bizForm.setBizError("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 //Re-direct to prevent resubmit
@@ -162,17 +247,27 @@ public class BusinessController {
             return "redirect:" + NEXT_PAGE + ".htm";
         } else {
 
-            String name     = StringUtils.trim(bizForm.getName());
-            String address  = StringUtils.trim(bizForm.getAddress());
-            String phone    = StringUtils.trim(BizStoreEntity.phoneCleanup(bizForm.getPhone()));
-            Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(name, address, phone);
-            bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");
-
+            Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
             redirectAttrs.addFlashAttribute("last10BizStore", bizStoreEntities);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             //Re-direct to prevent resubmit
             return "redirect:" + NEXT_PAGE + ".htm";
         }
+    }
+
+    /**
+     * Search for matching biz criteria
+     *
+     * @param bizForm
+     * @return
+     */
+    private Set<BizStoreEntity> searchBizStoreEntities(BizForm bizForm) {
+        String name     = StringUtils.trim(bizForm.getName());
+        String address  = StringUtils.trim(bizForm.getAddress());
+        String phone    = StringUtils.trim(BizStoreEntity.phoneCleanup(bizForm.getPhone()));
+        Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(name, address, phone);
+        bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");
+        return bizStoreEntities;
     }
 }

@@ -49,7 +49,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public BizStoreEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
+        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), BizStoreEntity.class, TABLE);
     }
 
     @Override

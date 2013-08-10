@@ -38,14 +38,10 @@
 }
 
 .jMenu li ul li.arrow {
-    background-color: #322f32;
-    background-image: url('../../../images/arrow_down.png');
-    background-repeat: no-repeat;
-    background-position: center center;
+    background: #322f32 url('../../../images/arrow_down.png') no-repeat center center;
     height: 6px;
-    padding: 0;
     border-bottom: none;
-    padding-bottom: 10px
+    padding: 0 0 10px;
 }
 
 .jMenu li ul li a {
@@ -58,10 +54,7 @@
 }
 
 .jMenu li ul li a.isParent {
-    background-color: #3a3a3a;
-    background-image: url('../../../images/arrow_right.png');
-    background-repeat: no-repeat;
-    background-position: right center;
+    background: #3a3a3a url('../../../images/arrow_right.png') no-repeat right center;
 }
 
 .jMenu li ul li a:hover {

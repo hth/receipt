@@ -1,5 +1,8 @@
 package com.tholix.web.form;
 
+import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.BizStoreEntity;
+
 /**
  * User: hitender
  * Date: 4/22/13
@@ -9,6 +12,9 @@ public final class BizForm {
     private String name;
     private String address;
     private String phone;
+
+    private String nameId;
+    private String addressId;
 
     private String bizError;
     private String bizSuccess;
@@ -42,6 +48,33 @@ public final class BizForm {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getNameId() {
+        return nameId;
+    }
+
+    public void setNameId(String nameId) {
+        this.nameId = nameId;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
+    public void setBizName(BizNameEntity bizName) {
+        this.name = bizName.getName();
+        this.nameId = bizName.getId();
+    }
+
+    public void setBizStore(BizStoreEntity bizStore) {
+        this.address = bizStore.getAddress();
+        this.addressId = bizStore.getId();
+        this.phone = bizStore.getPhoneFormatted();
     }
 
     /** To be used in future for sending confirmation regarding adding Biz Name and Store success or failure */

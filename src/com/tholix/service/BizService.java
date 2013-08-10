@@ -32,6 +32,22 @@ public final class BizService {
     @Autowired private BizStoreManager bizStoreManager;
     @Autowired private ExternalService externalService;
 
+    public BizNameEntity findName(String bizId) {
+        return bizNameManager.findOne(bizId);
+    }
+
+    public void saveName(BizNameEntity bizNameEntity) throws Exception {
+        bizNameManager.save(bizNameEntity);
+    }
+
+    public BizStoreEntity findStore(String storeId) {
+        return bizStoreManager.findOne(storeId);
+    }
+
+    public void saveStore(BizStoreEntity bizStoreEntity) throws Exception {
+        bizStoreManager.save(bizStoreEntity);
+    }
+
     public Set<BizStoreEntity> bizSearch(String bizName, String bizAddress, String bizPhone) {
         Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
 
