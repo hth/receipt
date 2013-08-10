@@ -98,7 +98,7 @@
             <ul>
                 <li class="arrow"></li>
                 <li>
-                    <a href="landing.htm">Search</a>
+                    <a href="../landing.htm">Search</a>
                 </li>
             </ul>
         </li>
@@ -108,7 +108,7 @@
             <ul>
                 <li class="arrow"></li>
                 <li>
-                    <a href="business.htm">Search & Add</a>
+                    <a href="../business.htm">Search & Add</a>
                 </li>
             </ul>
         </li>
