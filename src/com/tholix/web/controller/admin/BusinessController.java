@@ -28,7 +28,7 @@ import com.tholix.service.BizService;
 import com.tholix.service.ExternalService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.web.LoginController;
+import com.tholix.web.controller.LoginController;
 import com.tholix.web.form.BizForm;
 import com.tholix.web.validator.BizSearchValidator;
 import com.tholix.web.validator.BizValidator;

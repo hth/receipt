@@ -19,6 +19,7 @@ import com.tholix.repository.ItemManager;
 import com.tholix.repository.ItemOCRManager;
 import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
+import com.tholix.web.controller.ReceiptUpdateController;
 import com.tholix.web.validator.ReceiptOCRValidator;
 
 /**
@@ -59,7 +60,7 @@ public class ReceiptUpdateControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptUpdateController#loadForm(java.lang.String, com.tholix.web.form.ReceiptOCRForm)}.
+	 * Test method for {@link com.tholix.web.controller.ReceiptUpdateController#loadForm(java.lang.String, com.tholix.web.form.ReceiptOCRForm)}.
 	 */
 	@Test
 	public void testLoadForm() {
@@ -67,7 +68,7 @@ public class ReceiptUpdateControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptUpdateController#post(com.tholix.web.form.ReceiptOCRForm, javax.servlet.http.HttpSession, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.controller.ReceiptUpdateController#post(com.tholix.web.form.ReceiptOCRForm, javax.servlet.http.HttpSession, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 */
 	@Test
 	public void testPost() {

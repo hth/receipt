@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import com.tholix.repository.StorageManager;
 import com.tholix.repository.UserPreferenceManager;
 import com.tholix.repository.UserProfileManager;
+import com.tholix.web.controller.ReceiptImageController;
 
 /**
  * @author hitender
@@ -70,7 +71,7 @@ public class ReceiptImageControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptImageController#getReceipt(String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.http.HttpSession)}.
+	 * Test method for {@link com.tholix.web.controller.ReceiptImageController#getReceipt(String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.http.HttpSession)}.
 	 * @throws IOException
 	 */
 	@Test

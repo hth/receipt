@@ -3,11 +3,11 @@
  */
 package com.tholix.web;
 
-import static org.junit.Assert.fail;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 /**
  * @author hitender
@@ -31,7 +31,7 @@ public class ReceiptPendingControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.ReceiptPendingController#loadForm(javax.servlet.http.HttpSession)}.
+	 * Test method for {@link com.tholix.web.controller.ReceiptPendingController#loadForm(javax.servlet.http.HttpSession)}.
 	 */
 	@Test
 	public void testLoadForm() {

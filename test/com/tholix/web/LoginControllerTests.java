@@ -3,12 +3,20 @@
  */
 package com.tholix.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.security.InvalidParameterException;
 import java.util.Iterator;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -25,16 +33,9 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import com.tholix.repository.UserAuthenticationManager;
 import com.tholix.repository.UserProfileManager;
+import com.tholix.web.controller.LoginController;
 import com.tholix.web.form.UserLoginForm;
 import com.tholix.web.validator.UserLoginValidator;
 
@@ -122,7 +123,7 @@ public class LoginControllerTests {
     }
 
 	/**
-	 * Test method for {@link com.tholix.web.LoginController#getUserLoginForm()}.
+	 * Test method for {@link com.tholix.web.controller.LoginController#getUserLoginForm()}.
 	 */
 	@Test
 	public void testGetUserLoginForm() {
@@ -130,7 +131,7 @@ public class LoginControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.LoginController#loadForm(org.springframework.ui.Model)}.
+	 * Test method for {@link com.tholix.web.controller.LoginController#loadForm(org.springframework.ui.Model)}.
 	 */
 	@Test
 	public void testLoadForm() {
@@ -139,7 +140,7 @@ public class LoginControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.LoginController#post(com.tholix.web.form.UserLoginForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.controller.LoginController#post(com.tholix.web.form.UserLoginForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 * {@link reference http://stackoverflow.com/questions/8299607/junit-testing-for-annotated-controller}
 	 */
 	@Test

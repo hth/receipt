@@ -29,6 +29,7 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.repository.UserAuthenticationManager;
 import com.tholix.repository.UserPreferenceManager;
 import com.tholix.repository.UserProfileManager;
+import com.tholix.web.controller.AccountController;
 import com.tholix.web.form.UserRegistrationForm;
 import com.tholix.web.validator.UserRegistrationValidator;
 
@@ -101,7 +102,7 @@ public class AccountControllerTests {
     }
 
 	/**
-	 * Test method for {@link com.tholix.web.AccountController#getUserRegistrationForm()}.
+	 * Test method for {@link com.tholix.web.controller.AccountController#getUserRegistrationForm()}.
 	 */
 	@Test
 	public void testGetUserRegistrationForm() {
@@ -109,7 +110,7 @@ public class AccountControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.AccountController#loadForm(org.springframework.ui.Model)}.
+	 * Test method for {@link com.tholix.web.controller.AccountController#loadForm(org.springframework.ui.Model)}.
 	 */
 	@Test
 	public void testLoadForm() {
@@ -117,7 +118,7 @@ public class AccountControllerTests {
 	}
 
 	/**
-	 * Test method for {@link com.tholix.web.AccountController#post(com.tholix.web.form.UserRegistrationForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
+	 * Test method for {@link com.tholix.web.controller.AccountController#post(com.tholix.web.form.UserRegistrationForm, org.springframework.validation.BindingResult, org.springframework.web.servlet.mvc.support.RedirectAttributes)}.
 	 */
 	@Test
 	public void testPost() {

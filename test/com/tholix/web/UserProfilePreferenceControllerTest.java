@@ -1,10 +1,5 @@
 package com.tholix.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.validation.BindingResult;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -12,8 +7,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.validation.BindingResult;
+
 import com.tholix.repository.UserPreferenceManager;
 import com.tholix.repository.UserProfileManager;
+import com.tholix.web.controller.UserProfilePreferenceController;
 
 /**
  * @author hitender

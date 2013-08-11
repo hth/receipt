@@ -29,7 +29,7 @@ import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.AdminLandingService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.web.LoginController;
+import com.tholix.web.controller.LoginController;
 import com.tholix.web.form.UserSearchForm;
 
 /**
