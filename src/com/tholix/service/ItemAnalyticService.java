@@ -24,7 +24,7 @@ import com.tholix.utils.Maths;
  * Time: 7:38 PM
  */
 @Service
-public class ItemAnalyticService {
+public final class ItemAnalyticService {
 
     @Autowired private ItemManager itemManager;
 

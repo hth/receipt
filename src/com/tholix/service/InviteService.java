@@ -20,7 +20,7 @@ import com.tholix.web.form.UserRegistrationForm;
  * Time: 2:06 PM
  */
 @Service
-public class InviteService {
+public final class InviteService {
     private static Logger log = Logger.getLogger(InviteService.class);
 
     @Autowired private AccountService accountService;

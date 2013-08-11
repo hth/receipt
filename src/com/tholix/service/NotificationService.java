@@ -19,7 +19,7 @@ import com.tholix.repository.NotificationManager;
  * Time: 2:07 PM
  */
 @Service
-public class NotificationService {
+public final class NotificationService {
     private static final Logger log = Logger.getLogger(NotificationService.class);
 
     @Autowired private NotificationManager notificationManager;

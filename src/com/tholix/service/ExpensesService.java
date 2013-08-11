@@ -14,7 +14,7 @@ import com.tholix.repository.ExpenseTypeManager;
  * Time: 11:49 PM
  */
 @Service
-public class ExpensesService {
+public final class ExpensesService {
 
     @Autowired private ExpenseTypeManager expenseTypeManager;
 

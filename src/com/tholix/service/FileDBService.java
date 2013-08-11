@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
-import com.tholix.web.form.UploadReceiptImage;
 import com.tholix.repository.StorageManager;
+import com.tholix.web.form.UploadReceiptImage;
 
 /**
  * User: hitender
@@ -16,7 +16,7 @@ import com.tholix.repository.StorageManager;
  * Time: 12:59 PM
  */
 @Service
-public class FileDBService {
+public final class FileDBService {
 
     @Autowired private StorageManager storageManager;
 

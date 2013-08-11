@@ -22,7 +22,7 @@ import com.tholix.web.form.UserSearchForm;
  * Time: 8:34 PM
  */
 @Service
-public class AdminLandingService {
+public final class AdminLandingService {
     private static final Logger log = Logger.getLogger(AdminLandingService.class);
 
     @Autowired private UserProfileManager userProfileManager;

@@ -18,7 +18,7 @@ import com.tholix.repository.UserProfileManager;
  * Time: 9:37 AM
  */
 @Service
-public class UserProfilePreferenceService {
+public final class UserProfilePreferenceService {
 
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private UserPreferenceManager userPreferenceManager;

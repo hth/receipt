@@ -20,7 +20,7 @@ import com.tholix.utils.Maths;
  * Time: 5:07 PM
  */
 @Service
-public class ItemService {
+public final class ItemService {
 
     @Autowired private ItemManager itemManager;
     @Autowired private ExpenseTypeManager expenseTypeManager;

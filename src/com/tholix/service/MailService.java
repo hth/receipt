@@ -41,7 +41,7 @@ import com.tholix.repository.UserProfileManager;
  * Time: 10:20 AM
  */
 @Service
-public class MailService {
+public final class MailService {
     private static Logger log = Logger.getLogger(MailService.class);
 
     private static final String MAIL_RECOVER_SUBJECT = "How to reset your Receiptofi ID password";

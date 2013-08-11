@@ -25,7 +25,7 @@ import com.tholix.utils.PerformanceProfiling;
  * Time: 7:57 PM
  */
 @Service
-public class FetcherService {
+public final class FetcherService {
     private static final Logger log = Logger.getLogger(FetcherService.class);
 
     @Autowired private ItemManager itemManager;

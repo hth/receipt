@@ -28,7 +28,7 @@ import com.tholix.web.form.UserRegistrationForm;
  * Time: 9:53 PM
  */
 @Service
-public class AccountService {
+public final class AccountService {
     private static final Logger log = Logger.getLogger(AccountService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;

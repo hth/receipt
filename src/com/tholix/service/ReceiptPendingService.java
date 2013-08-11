@@ -17,7 +17,7 @@ import com.tholix.web.form.PendingReceiptForm;
  * Time: 4:37 AM
  */
 @Service
-public class ReceiptPendingService {
+public final class ReceiptPendingService {
 
     @Autowired private ReceiptOCRManager receiptOCRManager;
     @Autowired private FileDBService fileDBService;

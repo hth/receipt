@@ -15,7 +15,7 @@ import com.tholix.repository.MessageManager;
  * Time: 8:12 PM
  */
 @Service
-public class EmpLandingService {
+public final class EmpLandingService {
 
     @Autowired private MessageManager messageManager;
 

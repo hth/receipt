@@ -17,7 +17,7 @@ import com.tholix.repository.UserAuthenticationManager;
  * Time: 9:33 PM
  */
 @Service
-public class LoginService {
+public final class LoginService {
     private static Logger log = Logger.getLogger(LoginService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;

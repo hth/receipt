@@ -34,7 +34,7 @@ import com.tholix.repository.StorageManager;
  * Time: 2:09 PM
  */
 @Service
-public class ReceiptUpdateService {
+public final class ReceiptUpdateService {
     private static final Logger log = Logger.getLogger(ReceiptUpdateService.class);
 
     @Autowired private ReceiptOCRManager receiptOCRManager;
@@ -43,7 +43,6 @@ public class ReceiptUpdateService {
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ItemManager itemManager;
     @Autowired private MessageManager messageManager;
-    @Autowired private AdminLandingService adminLandingService;
     @Autowired private BizService bizService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private CommentManager commentManager;

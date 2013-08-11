@@ -36,7 +36,7 @@ import com.tholix.web.form.ReceiptForm;
  * Time: 1:09 PM
  */
 @Service
-public class ReceiptService {
+public final class ReceiptService {
     private static Logger log = Logger.getLogger(ReceiptService.class);
 
     @Autowired private ReceiptManager receiptManager;

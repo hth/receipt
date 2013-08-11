@@ -52,7 +52,7 @@ import com.tholix.web.helper.ReceiptLandingView;
  * Time: 2:04 AM
  */
 @Service
-public class LandingService {
+public final class LandingService {
     private static final Logger log = Logger.getLogger(LandingService.class);
 
     @Autowired private ReceiptManager receiptManager;

@@ -28,7 +28,7 @@ import com.tholix.utils.PerformanceProfiling;
  * Time: 7:51 PM
  */
 @Service
-public class ExternalService {
+public final class ExternalService {
     private static final Logger log = Logger.getLogger(ExternalService.class);
 
     private static final String ADDRESS_DECODE_URL = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
