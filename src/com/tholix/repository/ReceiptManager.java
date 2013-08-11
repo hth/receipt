@@ -91,10 +91,18 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     void deleteSoft(ReceiptEntity object);
 
     /**
-     * Count valid and invalid receipts
+     * Count includes all active and inactive receipts
      *
      * @param bizStoreEntity
      * @return
      */
-    long countAllReceipt(BizStoreEntity bizStoreEntity);
+    long countAllReceiptForAStore(BizStoreEntity bizStoreEntity);
+
+    /**
+     * Count includes all active and inactive receipts
+     *
+     * @param bizNameEntity
+     * @return
+     */
+    long countAllReceiptForABizName(BizNameEntity bizNameEntity);
 }

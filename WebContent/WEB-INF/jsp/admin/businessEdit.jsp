@@ -185,6 +185,7 @@
             <tr>
                 <td style="padding: 3px;" colspan="4">
                     <input type="submit" value="Edit" name="edit"/>
+                    <input type="submit" value="Delete Store" name="delete_store"/>
                     <input type="submit" value="Search Business" name="search"/>
                 </td>
             </tr>

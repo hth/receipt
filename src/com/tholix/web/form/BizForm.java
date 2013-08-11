@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.BizStoreEntity;
 
@@ -110,7 +112,11 @@ public final class BizForm {
     }
 
     public void setBizError(String bizError) {
-        this.bizError = bizError;
+        if(StringUtils.isEmpty(this.bizError))  {
+            this.bizError = bizError;
+        } else {
+            this.bizError = this.bizError + ", " + bizError;
+        }
     }
 
     public String getBizSuccess() {
@@ -118,6 +124,10 @@ public final class BizForm {
     }
 
     public void setBizSuccess(String bizSuccess) {
-        this.bizSuccess = bizSuccess;
+        if(StringUtils.isEmpty(this.bizSuccess)) {
+            this.bizSuccess = bizSuccess;
+        } else {
+            this.bizSuccess = this.bizSuccess + ", " + bizSuccess;
+        }
     }
 }

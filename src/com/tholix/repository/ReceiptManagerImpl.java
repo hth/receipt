@@ -225,8 +225,14 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public long countAllReceipt(BizStoreEntity bizStoreEntity) {
+    public long countAllReceiptForAStore(BizStoreEntity bizStoreEntity) {
         Criteria criteria = Criteria.where("BIZ_STORE.$id").is(new ObjectId(bizStoreEntity.getId()));
+        return mongoTemplate.count(Query.query(criteria), TABLE);
+    }
+
+    @Override
+    public long countAllReceiptForABizName(BizNameEntity bizNameEntity) {
+        Criteria criteria = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
         return mongoTemplate.count(Query.query(criteria), TABLE);
     }
 

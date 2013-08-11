@@ -179,6 +179,7 @@
             <td style="padding: 3px;" colspan="3">
                 <input type="submit" value="Search Business" name="search"/>
                 <input type="submit" value="Add a Store or New a Business" name="add"/>
+                <input type="submit" value="Reset" name="reset"/>
             </td>
         </tr>
     </table>

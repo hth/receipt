@@ -1,5 +1,6 @@
 package com.tholix.web.controller.admin;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -96,6 +97,23 @@ public class BusinessController {
     }
 
     /**
+     * Reset the form
+     *
+     * @param userSession
+     * @param redirectAttrs
+     * @return
+     */
+    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "reset")
+    public String reset(@ModelAttribute("userSession") UserSession userSession,
+                        final RedirectAttributes redirectAttrs) {
+        DateTime time = DateUtil.now();
+        redirectAttrs.addFlashAttribute("bizForm", BizForm.newInstance());
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+        //Re-direct to prevent resubmit
+        return "redirect:" + NEXT_PAGE + ".htm";
+    }
+
+    /**
      * Edit Biz Name and or Biz Address, Phone.
      *
      * No validation is performed.
@@ -143,6 +161,55 @@ public class BusinessController {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 //Re-direct to prevent resubmit
                 return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
+            }
+        }
+
+        Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
+        bizForm.setLast10BizStore(bizStoreEntities);
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+        //Re-direct to prevent resubmit
+        return "redirect:" + NEXT_PAGE + ".htm";
+    }
+
+    /**
+     * Delete Biz Name and or Biz Address, Phone. when there are no active or inactive receipts referring to any of the
+     * stores.
+     *
+     * No validation is performed.
+     *
+     * @param bizForm
+     * @param userSession - Required when user try to refresh page after log out
+     * @return
+     */
+    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "delete_store")
+    public String deleteBizStore(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
+                                 final RedirectAttributes redirectAttrs) {
+
+        DateTime time = DateUtil.now();
+        redirectAttrs.addFlashAttribute("bizForm", bizForm);
+
+        BizStoreEntity bizStoreEntity;
+        if(StringUtils.isNotEmpty(bizForm.getAddressId())) {
+            bizStoreEntity = bizService.findStore(bizForm.getAddressId());
+            BizNameEntity bizNameEntity = bizStoreEntity.getBizName();
+
+            Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
+            bizStoreEntities.add(bizStoreEntity);
+            bizService.countReceiptForBizStore(bizStoreEntities, bizForm);
+            if(bizForm.getReceiptCount().get(bizStoreEntity.getId()) == 0) {
+                bizService.deleteBizStore(bizStoreEntity);
+                bizForm.setBizSuccess("Deleted store successfully");
+                log.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user: " + userSession.getEmailId());
+
+                //To make sure no orphan biz name are lingering around
+                if(bizService.countReceiptForBizName(bizNameEntity) == 0) {
+                    bizService.deleteBizName(bizNameEntity);
+                    bizForm.setBizSuccess("Deleted biz name successfully");
+                    log.info("Deleted biz name: " + bizNameEntity.getName() + ", id: " + bizNameEntity.getId() + ", by user: " + userSession.getEmailId());
+                }
+            } else {
+                bizForm.setBizError("Could not delete the store as its currently being referred by a receipt");
             }
         }
 

@@ -321,12 +321,22 @@ public final class ReceiptService {
     }
 
     /**
-     * Counts all the receipt that has referred the store
+     * Counts all the valid and invalid receipt that has referred the store
      *
      * @param bizStoreEntity
      * @return
      */
-    public long countAllReceipt(BizStoreEntity bizStoreEntity) {
-        return receiptManager.countAllReceipt(bizStoreEntity);
+    public long countAllReceiptForAStore(BizStoreEntity bizStoreEntity) {
+        return receiptManager.countAllReceiptForAStore(bizStoreEntity);
+    }
+
+    /**
+     * Counts all the valid and invalid receipt that has referred the biz name
+     *
+     * @param bizNameEntity
+     * @return
+     */
+    public long countAllReceiptForABizName(BizNameEntity bizNameEntity) {
+        return receiptManager.countAllReceiptForABizName(bizNameEntity);
     }
 }

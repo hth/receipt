@@ -68,9 +68,13 @@ public final class BizService {
 
     public void countReceiptForBizStore(Set<BizStoreEntity> bizStoreEntities, BizForm bizForm) {
         for(BizStoreEntity bizStoreEntity : bizStoreEntities) {
-            long count = receiptService.countAllReceipt(bizStoreEntity);
+            long count = receiptService.countAllReceiptForAStore(bizStoreEntity);
             bizForm.addReceiptCount(bizStoreEntity.getId(), count);
         }
+    }
+
+    public long countReceiptForBizName(BizNameEntity bizNameEntity) {
+        return receiptService.countAllReceiptForABizName(bizNameEntity);
     }
 
     /**
@@ -185,5 +189,13 @@ public final class BizService {
         Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
         bizStoreEntities.addAll(bizStoreManager.findAllWithStartingAddressStartingPhone(null, null, receiptEntity.getBizName()));
         return bizStoreEntities;
+    }
+
+    public void deleteBizStore(BizStoreEntity bizStore) {
+        bizStoreManager.deleteHard(bizStore);
+    }
+
+    public void deleteBizName(BizNameEntity bizName) {
+        bizNameManager.deleteHard(bizName);
     }
 }
