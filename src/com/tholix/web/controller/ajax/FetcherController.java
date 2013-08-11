@@ -176,4 +176,27 @@ public class FetcherController {
             return -1L;
         }
     }
+
+    /**
+     *
+     *
+     * For dev make the values come from properties file
+     *
+     * @param date
+     * @param total
+     * @param userProfileId
+     * @param userSession
+     * @param httpServletResponse
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/duplicate_check", method = RequestMethod.POST)
+    public @ResponseBody
+    boolean checkForDuplicate(@RequestParam("term") String date, @RequestParam("total") String total,
+                              @RequestParam("userProfileId") String userProfileId,
+                              @ModelAttribute("userSession") UserSession userSession,
+                              HttpServletResponse httpServletResponse) throws IOException {
+        return false;
+
+    }
 }

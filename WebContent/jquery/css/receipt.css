@@ -312,8 +312,7 @@ a img, a span { vertical-align: middle; }
 }
 
 /* Menu Start */
-.dropdown
-{
+.dropdown {
     color: #555;
     margin: 3px -22px 0 0;
     width: 143px;
@@ -321,8 +320,7 @@ a img, a span { vertical-align: middle; }
     height: 17px;
     text-align:left;
 }
-.submenu
-{
+.submenu {
     background: #fff;
     position: absolute;
     top: -12px;
@@ -335,8 +333,7 @@ a img, a span { vertical-align: middle; }
     border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
-.dropdown li a
-{
+.dropdown li a {
     color: #555555;
     display: block;
     font-family: "Trebuchet MS", sans-serif;
@@ -346,14 +343,12 @@ a img, a span { vertical-align: middle; }
     text-decoration:none;
 }
 
-.dropdown li a:hover
-{
+.dropdown li a:hover {
     background: #065c14;
     color: #FFFFFF;
     text-decoration: none;
 }
-a.account
-{
+a.account {
     font-size: 15px;
     line-height: 16px;
     color: #555;
@@ -368,20 +363,18 @@ a.account
     /*background: url(../../images/gear.png) 220px 17px no-repeat;*/
     cursor:pointer;
 }
-.root
-{
+.root {
     list-style:none;
     margin:0px;
-    padding:0px;
     font-size: 11px;
-    padding: 11px 0 0 0px;
+    padding: 0px;
     border-top:1px solid #dedede;
 }
 /* Menu ends */
 
 /** For google map */
 #map-canvas {
-    width: 700px;
+    width: 1000px;
     height: 500px;
 }
 
