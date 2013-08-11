@@ -54,6 +54,7 @@ import com.tholix.service.NotificationService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
+import com.tholix.web.controller.BaseController;
 import com.tholix.web.form.LandingDonutChart;
 import com.tholix.web.form.LandingForm;
 import com.tholix.web.form.UploadReceiptImage;
@@ -76,9 +77,6 @@ public class LandingController extends BaseController {
     @Autowired FileDBService fileDBService;
     @Autowired MailService mailService;
     @Autowired AccountService accountService;
-
-    private static final String FILE_UPLOAD_FAILURE = "{\"success\" : false}";
-    private static final String FILE_UPLOAD_SUCCESS = "{\"success\" : true}";
     @Autowired NotificationService notificationService;
 
 	/**
@@ -225,7 +223,7 @@ public class LandingController extends BaseController {
     String upload(@ModelAttribute UserSession userSession, HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
         log.info("Upload a receipt");
-        String outcome = FILE_UPLOAD_FAILURE;
+        String outcome = "{\"success\" : false}";
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if(isMultipart) {
@@ -245,10 +243,10 @@ public class LandingController extends BaseController {
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
                     landingService.uploadReceipt(userSession.getUserProfileId(), uploadReceiptImage);
-                    outcome = FILE_UPLOAD_SUCCESS;
+                    outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {
-                    outcome = "{\"success\" : false, \"error\" : \"" + exce.getLocalizedMessage() + "\"}";
+                    outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
                     log.error("Receipt upload exception: " + exce.getLocalizedMessage() + ", for user: " + userSession.getUserProfileId());
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
                 }
