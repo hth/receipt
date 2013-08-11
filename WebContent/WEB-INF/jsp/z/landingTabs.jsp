@@ -43,7 +43,7 @@
                     </table>
                 </td>
                 <td style="vertical-align: top">
-                    <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
+                    <div id="containerRefresh" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
                 </td>
             </tr>
             <tr>
@@ -146,7 +146,7 @@ $(function () {
     }
 
     // Create the chart
-    $('#container').highcharts({
+    $('#containerRefresh').highcharts({
         chart: {
             type: 'pie'
         },
