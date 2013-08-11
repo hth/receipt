@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tholix.web;
+package com.tholix.web.controller;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;

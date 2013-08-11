@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tholix.web;
+package com.tholix.web.controller;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

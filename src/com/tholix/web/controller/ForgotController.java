@@ -1,4 +1,4 @@
-package com.tholix.web;
+package com.tholix.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

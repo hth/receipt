@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tholix.web;
+package com.tholix.web.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
