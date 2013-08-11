@@ -407,7 +407,7 @@
                     <p>
                         <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                         <span style="display:block; width:410px;">
-                            No receipt(s) submitted or transformed for this month
+                            No receipt(s) submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>
                         </span>
                     </p>
                 </div>

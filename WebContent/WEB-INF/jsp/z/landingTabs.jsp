@@ -20,25 +20,25 @@
                             <th style="padding: 3px;">Total</th>
                         </tr>
                         <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
-                            <tr id="${receipt.noSpaceBizName}">
-                                <td style="padding: 3px; text-align: right">
-                                    ${status.count}
-                                </td>
-                                <td style="padding: 3px;">
-                                    <spring:eval expression="receipt.name" />
-                                </td>
-                                <td style="padding: 3px;">
-                                    <fmt:formatDate value="${receipt.date}" type="date"/>
-                                </td>
-                                <td style="padding: 3px; text-align: right">
-                                    <spring:eval expression="receipt.tax" />
-                                </td>
-                                <td style="padding: 3px; text-align: right">
-                                    <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
-                                        <spring:eval expression='receipt.total' />
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr id="${receipt.noSpaceBizName}">
+                            <td style="padding: 3px; text-align: right">
+                                ${status.count}
+                            </td>
+                            <td style="padding: 3px;">
+                                <spring:eval expression="receipt.name" />
+                            </td>
+                            <td style="padding: 3px;">
+                                <fmt:formatDate value="${receipt.date}" type="date"/>
+                            </td>
+                            <td style="padding: 3px; text-align: right">
+                                <spring:eval expression="receipt.tax" />
+                            </td>
+                            <td style="padding: 3px; text-align: right">
+                                <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
+                                    <spring:eval expression='receipt.total' />
+                                </a>
+                            </td>
+                        </tr>
                         </c:forEach>
                     </table>
                 </td>
@@ -83,7 +83,7 @@
                 <p>
                     <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                     <span style="display:block; width:410px;">
-                        No receipt(s) submitted or transformed for this month
+                        No receipt(s) submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>
                     </span>
                 </p>
             </div>
