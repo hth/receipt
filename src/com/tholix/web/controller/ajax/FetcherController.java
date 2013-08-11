@@ -1,4 +1,4 @@
-package com.tholix.web;
+package com.tholix.web.controller.ajax;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
