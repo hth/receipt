@@ -191,10 +191,10 @@
         </table>
     </form:form>
 
-    <c:if test="${!empty last10BizStore}">
+    <c:if test="${!empty bizForm.last10BizStore}">
         <br/>
         Last 10 records for same business. Search is limited to just 10 records.
-        <table style="width: 650px" class="etable">
+        <table style="width: 760px" class="etable">
             <tbody>
             <tr>
                 <th style="padding:3px;">Store Name</th>
@@ -204,16 +204,19 @@
                 <th style="padding:3px;">Created</th>
             </tr>
             </tbody>
-            <c:forEach var="bizStore" items="${last10BizStore}"  varStatus="status">
+            <c:forEach var="bizStore" items="${bizForm.last10BizStore}"  varStatus="status">
             <tr>
                 <td style="padding:3px; text-align: left; vertical-align: top">
                     <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=">
-                        <spring:eval expression="bizStore.bizName.name" />
+                    <spring:eval expression="bizStore.bizName.name" />
                     </a>
+
+                    <br/><br/>
+                    <i>Store Referred</i> - <b><spring:eval expression="bizForm.receiptCount.get(bizStore.id)" /></b> <i>time(s) in receipt</i>
                 </td>
                 <td style="padding:3px; text-align: left; vertical-align: top">
                     <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}">
-                        <spring:eval expression="bizStore.addressWrappedMore" />
+                    <spring:eval expression="bizStore.addressWrappedMore" />
                     </a>
                 </td>
                 <td style="padding:3px; text-align: left; vertical-align: top">

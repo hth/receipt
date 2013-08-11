@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.CommentEntity;
 import com.tholix.domain.ItemEntity;
 import com.tholix.domain.ItemEntityOCR;
@@ -317,5 +318,15 @@ public final class ReceiptService {
      */
     public List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId) {
         return receiptManager.findReceipt(bizNameEntity, userProfileId);
+    }
+
+    /**
+     * Counts all the receipt that has referred the store
+     *
+     * @param bizStoreEntity
+     * @return
+     */
+    public long countAllReceipt(BizStoreEntity bizStoreEntity) {
+        return receiptManager.countAllReceipt(bizStoreEntity);
     }
 }

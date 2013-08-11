@@ -18,6 +18,7 @@ import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.repository.BizNameManager;
 import com.tholix.repository.BizStoreManager;
+import com.tholix.web.form.BizForm;
 
 /**
  * User: hitender
@@ -31,6 +32,7 @@ public final class BizService {
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;
     @Autowired private ExternalService externalService;
+    @Autowired private ReceiptService receiptService;
 
     public BizNameEntity findName(String bizId) {
         return bizNameManager.findOne(bizId);
@@ -64,6 +66,12 @@ public final class BizService {
         return bizStoreEntities;
     }
 
+    public void countReceiptForBizStore(Set<BizStoreEntity> bizStoreEntities, BizForm bizForm) {
+        for(BizStoreEntity bizStoreEntity : bizStoreEntities) {
+            long count = receiptService.countAllReceipt(bizStoreEntity);
+            bizForm.addReceiptCount(bizStoreEntity.getId(), count);
+        }
+    }
 
     /**
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
@@ -173,7 +181,9 @@ public final class BizService {
      * @param receiptEntity
      * @return
      */
-    public List<BizStoreEntity> getAllStoresForBusinessName(ReceiptEntity receiptEntity) {
-        return bizStoreManager.findAllAddress(receiptEntity.getBizName(), 10);
+    public Set<BizStoreEntity> getAllStoresForBusinessName(ReceiptEntity receiptEntity) {
+        Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
+        bizStoreEntities.addAll(bizStoreManager.findAllWithStartingAddressStartingPhone(null, null, receiptEntity.getBizName()));
+        return bizStoreEntities;
     }
 }

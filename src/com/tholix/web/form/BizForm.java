@@ -1,5 +1,9 @@
 package com.tholix.web.form;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.BizStoreEntity;
 
@@ -15,6 +19,9 @@ public final class BizForm {
 
     private String nameId;
     private String addressId;
+
+    private Set<BizStoreEntity> last10BizStore;
+    private Map<String, Long> receiptCount = new HashMap<>();
 
     private String bizError;
     private String bizSuccess;
@@ -75,6 +82,26 @@ public final class BizForm {
         this.address = bizStore.getAddress();
         this.addressId = bizStore.getId();
         this.phone = bizStore.getPhoneFormatted();
+    }
+
+    public Set<BizStoreEntity> getLast10BizStore() {
+        return last10BizStore;
+    }
+
+    public void setLast10BizStore(Set<BizStoreEntity> last10BizStore) {
+        this.last10BizStore = last10BizStore;
+    }
+
+    public Map<String, Long> getReceiptCount() {
+        return receiptCount;
+    }
+
+    public void setReceiptCount(Map<String, Long> receiptCount) {
+        this.receiptCount = receiptCount;
+    }
+
+    public void addReceiptCount(String id, Long count) {
+        this.receiptCount.put(id, count);
     }
 
     /** To be used in future for sending confirmation regarding adding Biz Name and Store success or failure */

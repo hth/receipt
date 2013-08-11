@@ -147,7 +147,7 @@ public class BusinessController {
         }
 
         Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
-        redirectAttrs.addFlashAttribute("last10BizStore", bizStoreEntities);
+        bizForm.setLast10BizStore(bizStoreEntities);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         //Re-direct to prevent resubmit
@@ -211,7 +211,7 @@ public class BusinessController {
 
             if(receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
                 redirectAttrs.addFlashAttribute("bizStore", receiptEntity.getBizStore());
-                redirectAttrs.addFlashAttribute("last10BizStore", bizService.getAllStoresForBusinessName(receiptEntity));
+                bizForm.setLast10BizStore(bizService.getAllStoresForBusinessName(receiptEntity));
             } else {
                 bizForm.setBizError("Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getName());
             }
@@ -248,7 +248,7 @@ public class BusinessController {
         } else {
 
             Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
-            redirectAttrs.addFlashAttribute("last10BizStore", bizStoreEntities);
+            bizForm.setLast10BizStore(bizStoreEntities);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             //Re-direct to prevent resubmit
@@ -268,6 +268,8 @@ public class BusinessController {
         String phone    = StringUtils.trim(BizStoreEntity.phoneCleanup(bizForm.getPhone()));
         Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(name, address, phone);
         bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");
+
+        bizService.countReceiptForBizStore(bizStoreEntities, bizForm);
         return bizStoreEntities;
     }
 }

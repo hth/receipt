@@ -62,6 +62,9 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @param bizNameEntity
      * @param limit
      * @return
+     *
+     * @deprecated replaced by findAllWithStartingAddressStartingPhone
      */
+    @Deprecated
     List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit);
 }

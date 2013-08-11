@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.BaseEntity;
 import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
 
@@ -88,4 +89,12 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     ReceiptEntity findWithReceiptOCR(String receiptOCRId);
 
     void deleteSoft(ReceiptEntity object);
+
+    /**
+     * Count valid and invalid receipts
+     *
+     * @param bizStoreEntity
+     * @return
+     */
+    long countAllReceipt(BizStoreEntity bizStoreEntity);
 }

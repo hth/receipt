@@ -33,6 +33,7 @@ import org.joda.time.DateTime;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.BizNameEntity;
+import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.utils.DateUtil;
@@ -223,7 +224,13 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         mongoTemplate.updateFirst(query, update(update), ReceiptEntity.class);
     }
 
-	@Override
+    @Override
+    public long countAllReceipt(BizStoreEntity bizStoreEntity) {
+        Criteria criteria = Criteria.where("BIZ_STORE.$id").is(new ObjectId(bizStoreEntity.getId()));
+        return mongoTemplate.count(Query.query(criteria), TABLE);
+    }
+
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createCollection() {
 		throw new UnsupportedOperationException("Method not implemented");
