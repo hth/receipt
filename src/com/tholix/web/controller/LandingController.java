@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tholix.web;
+package com.tholix.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,7 +54,6 @@ import com.tholix.service.NotificationService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.web.controller.BaseController;
 import com.tholix.web.form.LandingDonutChart;
 import com.tholix.web.form.LandingForm;
 import com.tholix.web.form.UploadReceiptImage;

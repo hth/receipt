@@ -17,7 +17,6 @@ import com.tholix.repository.NotificationManager;
 import com.tholix.service.NotificationService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
-import com.tholix.web.LandingController;
 import com.tholix.web.form.NotificationForm;
 
 /**
