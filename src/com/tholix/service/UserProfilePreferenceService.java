@@ -28,8 +28,8 @@ public final class UserProfilePreferenceService {
         return userProfileManager.getObjectUsingEmail(emailId);
     }
 
-    public void updateProfile(UserProfileEntity userProfile) {
-        userProfileManager.updateObject(userProfile.getId(), userProfile.getLevel());
+    public void updateProfile(UserProfileEntity userProfile) throws Exception {
+        userProfileManager.save(userProfile);
     }
 
     public UserProfileEntity findById(String userProfileId) {

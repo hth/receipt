@@ -116,82 +116,116 @@
 	<!-- Tabs -->
 	<h2 class="demoHeaders">Profile And Preferences</h2>
 
+    <c:if test="${!empty userProfilePreferenceForm.errorMessage}">
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                <span style="display:block; width: auto">${userProfilePreferenceForm.errorMessage}</span>
+            </p>
+        </div>
+    </div>
+    </c:if>
+
+    <c:if test="${!empty userProfilePreferenceForm.successMessage}">
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all alert-success" style="margin-top: 0px; padding: 0 .7em;">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                <span style="display:block; width: auto">${userProfilePreferenceForm.successMessage}</span>
+            </p>
+        </div>
+    </div>
+    </c:if>
+
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-1">Profile</a></li>
 			<li><a href="#tabs-2">Preferences</a></li>
 		</ul>
 		<div id="tabs-1">
-			<form:form method="post" modelAttribute="userProfile" action="update.htm">
-				<form:hidden path="id"/>
+			<form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
+				<form:hidden path="userProfile.id"/>
 				<div class="divTable">
 					<div class="divRow">
 						<div class="divOfCell600">
                             Name:
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <b>${userProfile.firstName}  ${userProfile.lastName}</b>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b><spring:eval expression="userProfilePreferenceForm.userProfile.name" /></b>
                         </div>
 					</div>
 					<div class="divRow">
 					    <div class="divOfCell600">
                         Registration:
-                        &nbsp;
-                        <b><fmt:formatDate value="${userProfile.registration}" type="both" /></b></div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.registration}" type="both" /></b></div>
 					</div>
+                    <div class="divRow">
+                        <div class="divOfCell600">
+                            Profile changed:&nbsp;
+                            <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both" /></b>
+                        </div>
+                    </div>
                     <div class="divRow">
                         <div class="divOfCell600">&nbsp;</div>
                     </div>
                     <div class="divRow">
                         <div class="divOfCell600">
-                            Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;
-                            <b>${userProfile.userAuthentication.authenticationKey}</b>
+                            Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b><spring:eval expression="userProfilePreferenceForm.userProfile.userAuthentication.authenticationKey" /></b>
                         </div>
                     </div>
                     <div class="divRow">
                         <div class="divOfCell600">
-                            Last changed:
-                            <b><fmt:formatDate value="${userProfile.userAuthentication.updated}" type="both" /></b>
+                            Auth changed:&nbsp;
+                            <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.userAuthentication.updated}" type="both" /></b>
                         </div>
                     </div>
-                    <spring:eval expression="userSession.level gt T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
-                    <c:if test="${isValid}">
+                    <spring:eval expression="userSession.level eq T(com.tholix.domain.types.UserLevelEnum).ADMIN" var="isAdmin" />
+                    <!-- If changing the access level here then update the condition check in POST method -->
+                    <c:if test="${isAdmin}">
                     <div class="divRow">
                         <div class="divOfCell600">&nbsp;</div>
                     </div>
 					<div class="divRow">
 						<div class="divOfCell600">
-                        Level:
+                        Level: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-						<form:select path="level" >
+						<form:select path="userProfile.level" >
 							<form:option value="0" label="Select Account Type" />
 							<form:options itemValue="name" itemLabel="description" />
 						</form:select>
 						</div>
 					</div>
+                    <div class="divRow">
+                        <div class="divOfCell600">
+                        Active: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <form:checkbox path="active" id="active" />Active
+                        </div>
+                    </div>
 					</c:if>
 			   	</div>
 			   	<div>&nbsp;</div>
 
-                <spring:eval expression="userSession.level gt T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
-                <c:if test="${isValid}">
-			   	<div class="divRow">
+                <c:if test="${isAdmin}">
+                <!-- If changing the access level here then update the condition check in POST method -->
+                <div class="divRow">
 					<div class="divOfCell600"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
 				</div>
 				</c:if>
 			</form:form>
 		</div>
 		<div id="tabs-2">
-			<form:form modelAttribute="userPreference">
-				<div class="divTable">
-					<div class="divRow">
-						<div class="divOfCell600">Account Type: <b>${userPreference.accountType.description}</b></div>
-					</div>
-			   	</div>
-			</form:form>
+            <div class="divTable">
+                <div class="divRow">
+                    <div class="divOfCell600">Account Type: <b><spring:eval expression="userProfilePreferenceForm.userPreference.accountType.description" /></b></div>
+                </div>
+            </div>
 
             <p/>
 
-            <spring:eval expression="${userProfile.id eq sessionScope['userSession'].userProfileId}" var="isSameUser" />
+            <spring:eval expression="${userProfilePreferenceForm.userProfile.id eq sessionScope['userSession'].userProfileId}" var="isSameUser" />
 
             <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
                 <div style="width: 325px">
@@ -202,6 +236,7 @@
                             </legend>
                             <div class="bd">
                                 <div class="text">
+                                    Expense Name:
                                     <form:input class="tooltip" path="expName" size="6" title="Help's mark an item with specific expense type." id="expenseTypeId"/>
                                     <input type="submit" value=" Add " name="Add" style="text-align: right;" <c:out value="${(isSameUser) ? '' : 'disabled'}"/> />&nbsp;
                                     <br/><br/>
@@ -218,15 +253,15 @@
                 </div>
             </form:form>
 
-            <c:if test="${!empty expenseTypes}">
+            <c:if test="${!empty userProfilePreferenceForm.expenseTypes}">
             <br/>
-
+            <!-- Used in displaying all the Expense Tags for the user -->
             <c:choose>
-                <c:when test="${visibleExpenseTypes eq 1}">
-                    <p>${visibleExpenseTypes} - Expense Type is available in selection </p>
+                <c:when test="${userProfilePreferenceForm.visibleExpenseTypes eq 1}">
+                    <p>${userProfilePreferenceForm.visibleExpenseTypes} - Expense Type is available in selection </p>
                 </c:when>
-                <c:when test="${visibleExpenseTypes gt 1}">
-                    <p>${visibleExpenseTypes} - Expense Types are available in selection</p>
+                <c:when test="${userProfilePreferenceForm.visibleExpenseTypes gt 1}">
+                    <p>${userProfilePreferenceForm.visibleExpenseTypes} - Expense Types are available in selection</p>
                 </c:when>
                 <c:otherwise>
                     <p>No Expense Type visible</p>
@@ -239,7 +274,7 @@
                     <th style="padding:3px;">Expense Type</th>
                     <th style="padding:3px;">Since</th>
                 </tr>
-                <c:forEach var="expenseType" items="${expenseTypes}" varStatus="status">
+                <c:forEach var="expenseType" items="${userProfilePreferenceForm.expenseTypes}" varStatus="status">
                 <tr>
                     <td style="padding:3px;">
                         <c:choose>
@@ -247,11 +282,11 @@
                                 <c:choose>
                                     <c:when test="${isSameUser}">
                                         <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
-                                            <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                            <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
                                         </a>
                                     </c:when>
                                     <c:otherwise>
-                                        <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                        <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>
@@ -260,13 +295,13 @@
                                     <c:when test="${isSameUser}">
                                         <del>
                                             <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
-                                                <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                                <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
                                             </a>
                                         </del>
                                     </c:when>
                                     <c:otherwise>
                                         <del>
-                                            <spring:eval expression="expenseTypeCount.get(expenseType.expName)" />
+                                            <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
                                         </del>
                                     </c:otherwise>
                                 </c:choose>
@@ -275,7 +310,7 @@
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
-                        <c:when test="${expenseTypeCount.get(expenseType.expName) eq 0}">
+                        <c:when test="${userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName) eq 0}">
                             <c:choose>
                                 <c:when test="${isSameUser}">
                                     <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?id=${expenseType.id}&status=${expenseType.active}">

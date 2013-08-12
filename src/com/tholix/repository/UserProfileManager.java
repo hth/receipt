@@ -36,5 +36,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     UserProfileEntity findOneByEmail(String emailId);
 
+    @Deprecated
 	WriteResult updateObject(String id, UserLevelEnum level);
 }

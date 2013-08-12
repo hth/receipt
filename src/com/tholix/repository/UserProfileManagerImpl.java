@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 
 import java.util.List;
 
+import static com.tholix.repository.util.AppendAdditionalFields.isActive;
 import static com.tholix.repository.util.AppendAdditionalFields.update;
 
 import org.apache.log4j.Logger;
@@ -74,7 +75,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity getObjectUsingEmail(String emailId) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("EMAIL").is(emailId)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(Query.query(Criteria.where("EMAIL").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
 	}
 
 	@Override

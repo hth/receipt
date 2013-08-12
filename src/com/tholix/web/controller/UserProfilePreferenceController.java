@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
@@ -35,6 +36,7 @@ import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.PerformanceProfiling;
 import com.tholix.web.form.ExpenseTypeForm;
+import com.tholix.web.form.UserProfilePreferenceForm;
 import com.tholix.web.validator.ExpenseTypeValidator;
 
 /**
@@ -55,24 +57,52 @@ public class UserProfilePreferenceController {
     @Autowired private ExpenseTypeValidator expenseTypeValidator;
 
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm) {
+	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession,
+                                 @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+                                 @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
+                                 SessionStatus sessionStatus,
+                                 HttpServletResponse httpServletResponse) throws IOException {
         DateTime time = DateUtil.now();
 
         UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfile);
+        if(userProfile == null) {
+            /** If user profile fails to load here then seems user was marked inactive */
+            /** Sign off user */
+            sessionStatus.setComplete();
+            log.warn("User does not seem to have access granted: " + userSession.getEmailId());
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return null;
+        }
+
+        userProfilePreferenceForm.setUserProfile(userProfile);
+        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
 	}
 
+    /**
+     * Used for adding Expense Type
+     *
+     * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
+     * @param userSession
+     * @param userProfilePreferenceForm
+     * @param expenseTypeForm
+     * @param result
+     * @return
+     */
     @RequestMapping(value="/i", method = RequestMethod.POST)
-    public ModelAndView updateUser(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm, BindingResult result) {
+    public ModelAndView addExpenseTag(@ModelAttribute("userSession") UserSession userSession,
+                                      @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
+                                      @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+                                      BindingResult result) {
         DateTime time = DateUtil.now();
         UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
+        userProfilePreferenceForm.setUserProfile(userProfile);
 
         expenseTypeValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
-            ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfile);
+            ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
             modelAndView.addObject("showTab", "#tabs-2");
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
@@ -87,7 +117,7 @@ public class UserProfilePreferenceController {
             result.rejectValue("expName", "", e.getLocalizedMessage());
         }
 
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfile);
+        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
 
         //There is UI logic based on this. Set the right to be active when responding.
         modelAndView.addObject("showTab", "#tabs-2");
@@ -109,7 +139,8 @@ public class UserProfilePreferenceController {
     public ModelAndView changeExpenseTypeVisibleStatus(@ModelAttribute("userSession") UserSession userSession,
                                                        @RequestParam(value="id") String expenseTypeId,
                                                        @RequestParam(value="status") String changeStatTo,
-                                                       @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm) {
+                                                       @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+                                                       @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm) {
         DateTime time = DateUtil.now();
 
         //Secondary check. In case some one tries to be smart by passing parameters in URL :)
@@ -117,8 +148,9 @@ public class UserProfilePreferenceController {
             userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTypeId, changeStatTo, userSession.getUserProfileId());
         }
         UserProfileEntity userProfile = userProfilePreferenceService.findById(userSession.getUserProfileId());
+        userProfilePreferenceForm.setUserProfile(userProfile);
 
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfile);
+        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
 
         //There is UI logic based on this. Set the right to be active when responding.
         modelAndView.addObject("showTab", "#tabs-2");
@@ -141,6 +173,7 @@ public class UserProfilePreferenceController {
 	public ModelAndView getUser(@ModelAttribute("userSession") UserSession userSession,
                                 @RequestParam("id") String id,
                                 @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+                                @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
                                 HttpServletResponse httpServletResponse) throws IOException {
 
         DateTime time = DateUtil.now();
@@ -148,7 +181,8 @@ public class UserProfilePreferenceController {
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.ADMIN.getValue()) {
                 UserProfileEntity userProfile = userProfilePreferenceService.findById(id);
-                ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfile);
+                userProfilePreferenceForm.setUserProfile(userProfile);
+                ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
                 modelAndView.addObject("id", id);
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -169,7 +203,6 @@ public class UserProfilePreferenceController {
      *
      * @param userSession
      * @param expenseTypeForm
-     * @param userProfile
      * @param httpServletResponse
      * @return
      * @throws IOException
@@ -177,16 +210,33 @@ public class UserProfilePreferenceController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	public ModelAndView updateUser(@ModelAttribute("userSession") UserSession userSession,
                                    @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-                                   @ModelAttribute("userProfile") UserProfileEntity userProfile,
+                                   @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
                                    HttpServletResponse httpServletResponse) throws IOException {
 
         DateTime time = DateUtil.now();
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.ADMIN.getValue()) {
-                userProfilePreferenceService.updateProfile(userProfile);
-                userProfile = userProfilePreferenceService.findById(userProfile.getId());
-                ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfile);
+                UserProfileEntity userProfile = userProfilePreferenceService.findById(userProfilePreferenceForm.getUserProfile().getId());
+                userProfile.setLevel(userProfilePreferenceForm.getUserProfile().getLevel());
+                if(!userProfilePreferenceForm.isActive() || !userProfile.isActive()) {
+                    if(userProfilePreferenceForm.isActive()) {
+                        userProfile.active();
+                    } else {
+                        userProfile.inActive();
+                    }
+                }
+                try {
+                    userProfilePreferenceService.updateProfile(userProfile);
+                } catch (Exception exce) {
+                    log.error("Failed updating User Profile: " + exce.getLocalizedMessage() + ", user profile Id: " + userProfile.getEmailId());
+                    userProfilePreferenceForm.setErrorMessage("Failed updating user profile: " + exce.getLocalizedMessage());
+                }
+
+                //Re-fetch after update to confirm successful update
+                userProfile = userProfilePreferenceService.findById(userProfilePreferenceForm.getUserProfile().getId());
+                userProfilePreferenceForm.setUserProfile(userProfile);
+                ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
                 return modelAndView;
@@ -202,20 +252,20 @@ public class UserProfilePreferenceController {
 
 	/**
 	 * @param nextPage
-     * @param userProfile
+     * @param userProfilePreferenceForm
 	 * @return
 	 */
-	private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, UserProfileEntity userProfile) {
+	private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, UserProfilePreferenceForm userProfilePreferenceForm) {
         DateTime time = DateUtil.now();
 
-        UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfile);
+        UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreferenceForm.getUserProfile());
 		ModelAndView modelAndView = new ModelAndView(nextPage);
-		modelAndView.addObject("userProfile", userProfile);
-		modelAndView.addObject("userPreference", userPreference);
+        userProfilePreferenceForm.setUserPreference(userPreference);
         modelAndView.addObject("expenseTypeForm", expenseTypeForm);
 
-        List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfile.getId());
-        modelAndView.addObject("expenseTypes", expenseTypes);
+
+        List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfilePreferenceForm.getUserProfile().getId());
+        userProfilePreferenceForm.setExpenseTypes(expenseTypes);
 
         Map<String, Long> expenseTypeCount = new HashMap<>();
         int count = 0;
@@ -224,10 +274,14 @@ public class UserProfilePreferenceController {
                 count++;
             }
 
-            expenseTypeCount.put(expenseType.getExpName(), itemService.countItemsUsingExpenseType(expenseType.getId(), userProfile.getId()));
+            expenseTypeCount.put(
+                    expenseType.getExpName(),
+                    itemService.countItemsUsingExpenseType(expenseType.getId(), userProfilePreferenceForm.getUserProfile().getId())
+            );
         }
-        modelAndView.addObject("expenseTypeCount", expenseTypeCount);
-        modelAndView.addObject("visibleExpenseTypes", count);
+
+        userProfilePreferenceForm.setExpenseTypeCount(expenseTypeCount);
+        userProfilePreferenceForm.setVisibleExpenseTypes(count);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
