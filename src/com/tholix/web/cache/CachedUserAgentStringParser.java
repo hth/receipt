@@ -59,4 +59,8 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
         return result;
     }
 
+    @Override
+    public void shutdown() {
+        log.info("Shutting down - uadetector - UserAgentStringParser");
+    }
 }
