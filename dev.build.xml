@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="receipt" basedir="." default="usage">
+<project name="receiptofi-dev" basedir="." default="usage">
 	<property file="build.properties" />	
 	<property name="name"                       value="receipt" />
 	<property name="database"                   value="rm" />
