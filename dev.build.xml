@@ -45,7 +45,7 @@
 		<echo message="" />
 	</target>
 
-	<target name="all" depends="undeploy, clean, build, deploy">
+	<target name="all" depends="undeploy, clean, compile, deploy">
 		<echo message="Deployed new build" />
 	</target>
 
@@ -76,7 +76,7 @@
 		</exec>
 	</target>
 
-	<target name="build" description="Compile main source tree java files" depends="resources">
+	<target name="compile" description="Compile main source tree java files" depends="resources">
 		<mkdir dir="${build.dir}" />
 		<javac destdir="${build.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
 			<src path="${src.dir}" />
@@ -84,7 +84,7 @@
 		</javac>
 	</target>
 
-    <target name="build-war" depends="build" description="Build war file">
+    <target name="make-war" depends="compile" description="Build war file">
         <war destfile="${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
             <fileset dir="${web.dir}">
                 <include name="**/*.*" />
@@ -92,7 +92,7 @@
         </war>
     </target>
 
-	<target name="deploy" depends="build" description="Deploy application">
+	<target name="deploy" depends="compile" description="Deploy application">
 		<copy todir="${deploy.path}/${name}" preservelastmodified="true">
 			<fileset dir="${web.dir}">
 				<include name="**/*.*" />
@@ -100,7 +100,7 @@
 		</copy>
 	</target>
 
-	<target name="deploy-war" depends="build-war" description="Deploy application as a WAR file">
+	<target name="deploy-war" depends="make-war" description="Deploy application as a WAR file">
 		<copy todir="${deploy.path}" preservelastmodified="true">
 			<fileset dir=".">
 				<include name="*.war" />
@@ -195,7 +195,7 @@
 		</javac>
 	</target>
 
-	<target name="tests" depends="build, buildtests" description="Run tests">
+	<target name="tests" depends="compile, buildtests" description="Run tests">
 		<junit printsummary="on" fork="false" haltonfailure="false" failureproperty="tests.failed" showoutput="true">
 			<classpath refid="master-classpath" />
 			<formatter type="brief" usefile="false" />

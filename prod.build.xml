@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="receipt" basedir="." default="usage">
+<project name="receiptofi-prod" basedir="." default="usage">
     <property file="build.properties" />
     <property name="name"                       value="receipt" />
     <property name="database"                   value="rm" />
@@ -124,7 +124,7 @@
         </copy>
     </target>
 
-    <target name="build-prod-war" depends="ready-prod" description="Build war file">
+    <target name="make-prod-war" depends="ready-prod" description="Build war file">
         <war destfile="${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
             <fileset dir="${prod.ready.dir}">
                 <include name="**/*.*" />
@@ -132,7 +132,7 @@
         </war>
     </target>
 
-    <target name="deploy-prod-war" depends="build-prod-war" description="Deploy application as a WAR file">
+    <target name="deploy-prod-war" depends="make-prod-war" description="Deploy application as a WAR file">
         <copy todir="${deploy.path}" preservelastmodified="true">
             <fileset dir=".">
                 <include name="*.war" />
