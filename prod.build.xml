@@ -13,12 +13,17 @@
     <property name="resources.conf.dir"         value="${resources.dir}/conf" />
     <property name="resources.conf.prod.dir"    value="${resources.conf.dir}/production" />
     <property name="prod.ready.dir"             value="production_ready" />
-    <property name="prod.ready.build.dir"       value="${prod.ready.dir}/WEB-INF/classes" />
+    <property name="prod.ready.classes.dir"     value="${prod.ready.dir}/WEB-INF/classes" />
+    <property name="prod.ready.lib.dir"         value="${prod.ready.dir}/WEB-INF/lib" />
     <property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
+    <property name="classes.jar"                value="server" />
 
-    <!-- TODO implement proguard -->
-    <taskdef resource="proguard/ant/task.properties" classpath="./tools/lib/proguard.jar" />
-    <proguard configuration="./tools/proguard.cfg"/>
+    <!-- Used for time stamping the server.jar -->
+    <tstamp>
+        <format property="time-now" pattern="yyyyMMddHHmm" />
+    </tstamp>
+
+    <!-- TODO http://alvinalexander.com/blog/post/java/sample-cobertura-ant-build-script -->
 
     <path id="master-classpath">
         <fileset dir="${web.dir}/WEB-INF/lib">
@@ -67,19 +72,19 @@
         <delete dir="${prod.ready.dir}" />
         <mkdir dir="${prod.ready.dir}" />
 
-        <copy todir="${prod.ready.build.dir}">
+        <copy todir="${prod.ready.classes.dir}">
             <fileset dir="${resources.dir}">
                 <include name="log4j.web.properties" />
                 <include name="messages.properties" />
             </fileset>
         </copy>
-        <copy todir="${prod.ready.build.dir}/conf">
+        <copy todir="${prod.ready.classes.dir}/conf">
             <fileset dir="${resources.conf.dir}">
                 <exclude name="dev.properties" />
                 <include name="*.properties" />
             </fileset>
         </copy>
-        <copy todir="${prod.ready.build.dir}/conf">
+        <copy todir="${prod.ready.classes.dir}/conf">
             <fileset dir="${resources.conf.prod.dir}">
                 <include name="*.properties" />
             </fileset>
@@ -87,10 +92,15 @@
     </target>
 
     <target name="compile" description="Compile main source tree java files" depends="resources">
-        <javac destdir="${prod.ready.build.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+        <javac destdir="${prod.ready.classes.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
             <src path="${src.dir}" />
             <classpath refid="master-classpath" />
         </javac>
+        <jar destfile="${prod.ready.lib.dir}/${classes.jar}-${time-now}.jar" basedir="${prod.ready.classes.dir}"/>
+    </target>
+
+    <target name="obfuscate">
+        <ant antfile="proguard.build.xml" target="obfuscate" inheritall="false" />
     </target>
 
     <target name="ready-prod" depends="compile" description="Getting ready to war all the files">
