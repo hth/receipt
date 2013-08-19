@@ -268,8 +268,9 @@ public class UserProfilePreferenceController {
         UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreferenceForm.getUserProfile());
 		ModelAndView modelAndView = new ModelAndView(nextPage);
         userProfilePreferenceForm.setUserPreference(userPreference);
-        modelAndView.addObject("expenseTypeForm", expenseTypeForm);
-
+        if(expenseTypeForm != null) {
+            modelAndView.addObject("expenseTypeForm", expenseTypeForm);
+        }
 
         List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfilePreferenceForm.getUserProfile().getId());
         userProfilePreferenceForm.setExpenseTypes(expenseTypes);
