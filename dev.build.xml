@@ -138,6 +138,9 @@
 				<include name="**/*.*"/>
 			</fileset>
 		</delete>
+        <delete>
+            <fileset dir="." includes="**/*.war"/>
+        </delete>
 		<echo message="Cleaned" />
 	</target>
 

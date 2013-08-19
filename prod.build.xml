@@ -159,7 +159,7 @@
     </target>
 
     <target name="make-prod-war" depends="ready-prod" description="Build war file">
-        <war destfile="${name}-${label}.war" webxml="${web.dir}/WEB-INF/web.xml">
+        <war destfile="${name}-${env.BUILD_NUMBER}.war" webxml="${web.dir}/WEB-INF/web.xml">
             <fileset dir="${prod.ready.dir}">
                 <include name="**/*.*" />
             </fileset>
@@ -178,7 +178,9 @@
 
     <target name="clean" description="Clean output directories">
         <delete dir="${prod.ready.dir}" />
-        <delete file="${name}-${label}.war" />
+        <delete>
+            <fileset dir="." includes="**/*.war"/>
+        </delete>
         <echo message="Cleaned" />
     </target>
 
