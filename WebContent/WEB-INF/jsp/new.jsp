@@ -45,7 +45,7 @@
 			</tr>
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-				<td style="width: 30%"><form:input class="tooltip" path="password" title="Please enter a password." /></td>
+				<td style="width: 30%"><form:password class="tooltip" path="password" title="Please enter a password." /></td>
 				<td style="width: 51%"><form:errors path="password" cssClass="error" /></td>
 			</tr>
 			<tr>
