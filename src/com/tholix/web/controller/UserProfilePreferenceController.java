@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -61,7 +63,8 @@ public class UserProfilePreferenceController {
                                  @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
                                  @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
                                  SessionStatus sessionStatus,
-                                 HttpServletResponse httpServletResponse) throws IOException {
+                                 HttpServletResponse httpServletResponse,
+                                 final Model model) throws IOException {
         DateTime time = DateUtil.now();
 
         UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
@@ -75,7 +78,12 @@ public class UserProfilePreferenceController {
         }
 
         userProfilePreferenceForm.setUserProfile(userProfile);
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
+        ModelAndView modelAndView = populateModel(nextPage, null, userProfilePreferenceForm);
+
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", model.asMap().get("result"));
+        }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;
@@ -92,21 +100,27 @@ public class UserProfilePreferenceController {
      * @return
      */
     @RequestMapping(value="/i", method = RequestMethod.POST)
-    public ModelAndView addExpenseTag(@ModelAttribute("userSession") UserSession userSession,
+    public String addExpenseTag(@ModelAttribute("userSession") UserSession userSession,
                                       @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
                                       @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-                                      BindingResult result) {
+                                      BindingResult result,
+                                      final RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
+
+        //There is UI logic based on this. Set the right to be active when responding.
+        redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
+
         UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
         userProfilePreferenceForm.setUserProfile(userProfile);
 
         expenseTypeValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
-            ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
-            modelAndView.addObject("showTab", "#tabs-2");
+            redirectAttrs.addFlashAttribute("result", result);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
-            return modelAndView;
+
+            //Re-direct to prevent resubmit
+            return "redirect:" + nextPage + "/i" + ".htm";
         }
 
         try {
@@ -117,13 +131,10 @@ public class UserProfilePreferenceController {
             result.rejectValue("expName", "", e.getLocalizedMessage());
         }
 
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
-
-        //There is UI logic based on this. Set the right to be active when responding.
-        modelAndView.addObject("showTab", "#tabs-2");
-
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return modelAndView;
+
+        //Re-direct to prevent resubmit
+        return "redirect:" + nextPage + "/i" + ".htm";
     }
 
     /**
@@ -208,7 +219,7 @@ public class UserProfilePreferenceController {
      * @throws IOException
      */
 	@RequestMapping(value="/update", method = RequestMethod.POST)
-	public ModelAndView updateUser(@ModelAttribute("userSession") UserSession userSession,
+	public String updateUser(@ModelAttribute("userSession") UserSession userSession,
                                    @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
                                    @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
                                    HttpServletResponse httpServletResponse) throws IOException {
@@ -233,13 +244,9 @@ public class UserProfilePreferenceController {
                     userProfilePreferenceForm.setErrorMessage("Failed updating user profile: " + exce.getLocalizedMessage());
                 }
 
-                //Re-fetch after update to confirm successful update
-                userProfile = userProfilePreferenceService.findById(userProfilePreferenceForm.getUserProfile().getId());
-                userProfilePreferenceForm.setUserProfile(userProfile);
-                ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
-
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-                return modelAndView;
+                //Re-direct to prevent resubmit
+                return "redirect:" + nextPage + "/their" + ".htm?id=" + userProfilePreferenceForm.getUserProfile().getId();
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
