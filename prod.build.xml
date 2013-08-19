@@ -159,7 +159,7 @@
     </target>
 
     <target name="make-prod-war" depends="ready-prod" description="Build war file">
-        <war destfile="${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+        <war destfile="${name}-${label}.war" webxml="${web.dir}/WEB-INF/web.xml">
             <fileset dir="${prod.ready.dir}">
                 <include name="**/*.*" />
             </fileset>
