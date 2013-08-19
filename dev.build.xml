@@ -63,6 +63,7 @@
 	</target>
 
 	<target name="resources" description="Moves resources to appropriate place">
+        <delete file="receipt-main-dev-build-4.war" />
 		<copy todir="${build.dir}">
 			<fileset dir="${resources.dir}">
 				<include name="log4j.web.properties" />
