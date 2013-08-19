@@ -18,6 +18,10 @@
     <property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
     <property name="classes.jar"                value="server" />
 
+    <!-- Used for Jenkins Environment -->
+    <property environment="env"/>
+    <property name="label" value="${env.JOB_NAME}-${env.BUILD_NUMBER}"/>
+
     <!-- Used for time stamping the server.jar -->
     <tstamp>
         <format property="time-now" pattern="yyyyMMddHHmm" />
@@ -96,11 +100,18 @@
             <src path="${src.dir}" />
             <classpath refid="master-classpath" />
         </javac>
-        <jar destfile="${prod.ready.lib.dir}/${classes.jar}-${time-now}.jar" basedir="${prod.ready.classes.dir}"/>
-    </target>
-
-    <target name="obfuscate">
-        <ant antfile="proguard.build.xml" target="obfuscate" inheritall="false" />
+        <!--<jar destfile="${prod.ready.lib.dir}/${classes.jar}-${time-now}.jar" basedir="${prod.ready.classes.dir}">-->
+            <!--<manifest>-->
+                <!--<attribute name="Built-By and Build-For"    value="Receiptofi, Inc."/>-->
+                <!--<attribute name="Implementation-Vendor"     value="Receiptofi, Inc."/>-->
+                <!--<attribute name="Implementation-Owner"      value="Receiptofi, Inc."/>-->
+                <!--<attribute name="Implementation-Title"      value="Receiptofi"/>-->
+                <!--<attribute name="Implementation-Version"    value="0.1.1"/>-->
+                <!--<attribute name="Built-On"                  value="${time-now}" />-->
+                <!--<attribute name="Built-Info"                value="${label}" />-->
+                <!--<attribute name="Copyright"                 value="2013"/>-->
+            <!--</manifest>-->
+        <!--</jar>-->
     </target>
 
     <target name="ready-prod" depends="compile" description="Getting ready to war all the files">
@@ -140,6 +151,8 @@
                 <include name="**/*.*" />
             </fileset>
         </war>
+        <echo>Time of build - ${time-now}</echo>
+        <echo>Build details - ${label}</echo>
     </target>
 
     <target name="deploy-prod-war" depends="make-prod-war" description="Deploy application as a WAR file">

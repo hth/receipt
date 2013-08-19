@@ -13,6 +13,18 @@
     <property name="resources.conf.dir"         value="${resources.dir}/conf" />
     <property name="resources.conf.prod.dir"    value="${resources.conf.dir}/production" />
 	<property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
+    <property name="classes.jar"                value="server-dev" />
+
+    <!-- Used for Jenkins Environment -->
+    <property environment="env"/>
+    <property name="label" value="${env.JOB_NAME}-${env.BUILD_NUMBER}"/>
+
+    <!-- Used for time stamping the server.jar -->
+    <tstamp>
+        <format property="time-now" pattern="yyyyMMddHHmm" />
+    </tstamp>
+
+    <!-- TODO http://alvinalexander.com/blog/post/java/sample-cobertura-ant-build-script -->
 
 	<path id="master-classpath">
 		<fileset dir="${web.dir}/WEB-INF/lib">
@@ -90,6 +102,8 @@
                 <include name="**/*.*" />
             </fileset>
         </war>
+        <echo>Time of build - ${time-now}</echo>
+        <echo>Build details - ${label}</echo>
     </target>
 
 	<target name="deploy" depends="compile" description="Deploy application">
