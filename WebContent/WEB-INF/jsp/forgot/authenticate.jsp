@@ -53,12 +53,12 @@
         <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
             <tr>
                 <td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-                <td style="width: 30%"><form:input class="tooltip" path="password" title="Please enter a password." /></td>
+                <td style="width: 30%"><form:password class="tooltip" path="password" title="Please enter a password." /></td>
                 <td style="width: 51%"><form:errors path="password" cssClass="error" /></td>
             </tr>
             <tr>
                 <td style="text-align: right; width: 19%"><form:label for="passwordSecond" path="passwordSecond" cssErrorClass="error">Retype Password</form:label></td>
-                <td style="width: 30%"><form:input class="tooltip" path="passwordSecond" title="Please re-enter the password." /></td>
+                <td style="width: 30%"><form:password class="tooltip" path="passwordSecond" title="Please re-enter the password." /></td>
                 <td style="width: 51%"><form:errors path="passwordSecond" cssClass="error" /></td>
             </tr>
             <tr>
@@ -76,7 +76,7 @@
         </table>
         </form:form>
 
-        <p><b>* Please update Receipt-O-Fi Mobile App with new Authorization Code found on 'Profile And Preferences' page</b></p>
+        <p><b>* Please update Receiptofi Mobile App with new Authorization Code found on 'Profile And Preferences' page</b></p>
     </c:if>
 </div>
 
