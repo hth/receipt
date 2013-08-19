@@ -27,6 +27,11 @@
         <format property="time-now" pattern="yyyyMMddHHmm" />
     </tstamp>
 
+    <!-- Only on build machine -->
+    <target name="check-pass-properties">
+        <available file="/Users/jenkins/Documents/receiptofi-additional-files/pass.properties" property="properties.present"/>
+    </target>
+
     <!-- TODO http://alvinalexander.com/blog/post/java/sample-cobertura-ant-build-script -->
 
     <path id="master-classpath">
@@ -95,7 +100,15 @@
         </copy>
     </target>
 
-    <target name="compile" description="Compile main source tree java files" depends="resources">
+    <target name="do-if-pass-present" depends="check-pass-properties" if="properties.present">
+        <copy todir="${prod.ready.classes.dir}/conf">
+            <fileset dir="/Users/jenkins/Documents/receiptofi-additional-files">
+                <include name="pass.properties" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile" description="Compile main source tree java files" depends="resources, do-if-pass-present">
         <javac destdir="${prod.ready.classes.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
             <src path="${src.dir}" />
             <classpath refid="master-classpath" />
