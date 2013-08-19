@@ -15,10 +15,6 @@
 	<property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
     <property name="classes.jar"                value="server-dev" />
 
-    <!-- Used for Jenkins Environment -->
-    <property environment="env"/>
-    <property name="label" value="${env.JOB_NAME}-${env.BUILD_NUMBER}"/>
-
     <!-- Used for time stamping the server.jar -->
     <tstamp>
         <format property="time-now" pattern="yyyyMMddHHmm" />
@@ -110,13 +106,11 @@
 	</target>
 
     <target name="make-war" depends="compile" description="Build war file">
-        <war destfile="${name}-${label}.war" webxml="${web.dir}/WEB-INF/web.xml">
+        <war destfile="${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
             <fileset dir="${web.dir}">
                 <include name="**/*.*" />
             </fileset>
         </war>
-        <echo>Time of build - ${time-now}</echo>
-        <echo>Build details - ${label}</echo>
     </target>
 
 	<target name="deploy" depends="compile" description="Deploy application">

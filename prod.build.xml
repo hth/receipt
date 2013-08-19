@@ -18,7 +18,7 @@
     <property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
     <property name="classes.jar"                value="server" />
 
-    <!-- Used for Jenkins Environment -->
+    <!-- Used for Jenkins Environment and only for prod version -->
     <property environment="env"/>
     <property name="label" value="${env.JOB_NAME}-${env.BUILD_NUMBER}"/>
 
@@ -178,7 +178,7 @@
 
     <target name="clean" description="Clean output directories">
         <delete dir="${prod.ready.dir}" />
-        <delete file="${name}.war" />
+        <delete file="${name}-${label}.war" />
         <echo message="Cleaned" />
     </target>
 
