@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Disabled</key>
+	<false/>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>CATALINA_HOME</key>
+		<string>/Library/Tomcat</string>
+		<key>JAVA_HOME</key>
+		<string>/Library/Java/Home</string>
+	</dict>
+	<key>Label</key>
+	<string>com.receiptofi</string>
+	<key>OnDemand</key>
+	<false/>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Library/Tomcat/bin/launchd_wrapper.sh</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>ServiceDescription</key>
+	<string>Confluence</string>
+	<key>StandardErrorPath</key>
+	<string>/var/log/receiptofi-tomcat/launchd.stderr</string>
+	<key>StandardOutPath</key>
+	<string>/var/log/receiptofi-tomcat/launchd.stdout</string>
+	<key>UserName</key>
+	<string>db</string>
+</dict>
+</plist>
