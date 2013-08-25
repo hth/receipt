@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Its important to modify and append the manager-script to tomcat-users.xml -->
+<tomcat-users>
+    <role rolename="tomcat"/>
+    <role rolename="role1"/>
+    <role rolename="manager"/>
+    <role rolename="manager-gui"/>
+    <role rolename="manager-script"/>
+    <user username="tomcat" password="X_ASK_FOR_PASSWORD_X" roles="tomcat,manager,manager-gui,manager-script,role1"/>
+    <user username="both" password="X_ASK_FOR_PASSWORD_X" roles="tomcat,role1"/>
+    <user username="role1" password="X_ASK_FOR_PASSWORD_X" roles="role1"/>
+</tomcat-users>
