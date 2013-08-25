@@ -22,7 +22,7 @@ import com.tholix.domain.UserSession;
 public class SignOff {
     private static final Logger log = Logger.getLogger(SignOff.class);
 
-    private static final String SIGN_OFF  = "/signoff";
+    private static final String SIGN_OFF = "/signoff";
 
     @RequestMapping(value = "/signoff", method = RequestMethod.GET)
     public String signoff(@ModelAttribute UserSession userSession, SessionStatus sessionStatus) {
