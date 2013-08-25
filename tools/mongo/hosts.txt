@@ -1,0 +1,31 @@
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1       localhost
+255.255.255.255 broadcasthost
+::1             localhost
+fe80::1%lo0     localhost
+
+#Mongo Servers
+192.168.1.60    m2
+192.168.1.60    ofi-2
+192.168.1.60    ofi2
+192.168.1.60    primary
+192.168.1.60    primary.receiptofi.com
+
+192.168.1.69    m1
+192.168.1.69    ofi-1
+192.168.1.69    ofi1
+192.168.1.69    secondary-1
+192.168.1.69    secondary1
+192.168.1.69    secondary-1.receiptofi.com
+
+192.168.1.71    m3
+192.168.1.71    ofi-3
+192.168.1.71    ofi3
+192.168.1.71    secondary-2
+192.168.1.71    secondary2
+192.168.1.71    secondary-2.receiptofi.com

@@ -1,0 +1,39 @@
+# Store data at default /data/db
+dbpath = /data/db
+
+# Append logs to /var/log/mongodb/mongo.log
+logpath = /var/log/mongodb/mongo.log
+logappend = true
+
+# Run as conventional database
+fork = true
+
+# 25GB oplog size;
+oplogSize=25600
+
+# Only accept local connections. Note: This did not work, hence commented. Currently listens to all the interfaces.
+#bind_ip = 127.0.0.1,192.168.1.60,192.168.1.69,192.168.1.71,192.168.1.67
+
+# Choose a name for your replica set; make sure its consistent
+replSet = flab
+
+# Diagnostic Configurations
+# http://docs.mongodb.org/manual/administration/configuration/
+
+# Profiles if query is slower than 50ms; default is 100ms
+slowms = 50
+
+# Profile the query; sets the level to profile
+profile = 3
+
+# Verbose for logging; currently turned off; switch on when there are real issues
+#verbose = true
+
+#Level 3 logs all read and write operations
+diaglog = 3
+
+# Forces all request to be validated. Don`t use in production as this can cause performance issue. Use only when in untrusted environment.
+#objcheck = true
+
+# Profile cpu
+cpu = true

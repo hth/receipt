@@ -1,0 +1,107 @@
+    1  exit
+    2  ls -al
+    3  mv ~/Downloads/mongodb-osx-x86_64-2.4.6 /usr/local/mongodb
+    4  sudo mv ~/Downloads/mongodb-osx-x86_64-2.4.6 /usr/local/mongodb
+    5  cd usr
+    6  ls -al
+    7  cd /usr/
+    8  ls -al
+    9  mkdir
+   10  mkdir local
+   11  sudo mkdir local
+   12  cd local
+   13  sudo mkdir mongodb
+   14  ls -al
+   15  pwd
+   16  sudo mv ~/Downloads/mongodb-osx-x86_64-2.4.6 /usr/local/mongodb
+   17  ls -al
+   18  cd mongodb/
+   19  ls -al
+   20  cd /usr
+   21  ls -al
+   22  cd local/
+   23  ls -al
+   24  sudo mkdir -p /data/db
+   25  cd /d
+   26  cd /data/
+   27  ls -al
+   28  sudo chown db /data/db
+   29  ls -al
+   30  rm /usr/local
+   31  rmdir /usr/local/
+   32  sudo rmdir /usr/local
+   33  sudo rmdir -r /usr/local
+   34  sudo rm -rf /usr/local
+   35  cd /usr
+   36  ls -al
+   37  mkdir local
+   38  sudo mkdir local
+   39  ls -al
+   40  cd ..
+   41  sudo mv ~/Downloads/mongodb /usr/local
+   42  cd /usr/local/mongodb/
+   43  ls -al
+   44  cd ~
+   45  pwd
+   46  ls -al
+   47  touch .bash_profile
+   48  vim .bash_profile
+   49  exit
+   50  mongo -version
+   51  mongod
+   52  cd /Library/LaunchDaemons/
+   53  ls -al
+   54  sudo vim /Library/LaunchDaemons/mongodb.plist
+   55  sudo launchctl load /Library/LaunchDaemons/mongodb.plist
+   56  mongo --host 192.168.1.69 --port 27017
+   57  cd /etc
+   58  ls -al
+   59  vim /etc/hosts
+   60  sudo vim /etc/hosts
+   61  sudo vim /etc/hosts
+   62  exit
+   63  vim /etc/hosts
+   64  mongo --host m1 --port 27017
+   65  mongo --host m2 --port 27017
+   66  mongo
+   67  cd /var/log/
+   68  ls -al
+   69  sudo vim /etc/hosts
+   70  sudo vim /Library/LaunchDaemons/mongodb.plist
+   71  sudo vim /Library/LaunchDaemons/mongodb.plist
+   72  touch /etc/mongod.conf
+   73  sudo touch /etc/mongod.conf
+   74  cd /etc
+   75  ls -al
+   76  sudo vim /etc/mongod.conf
+   77  ls -al
+   78  sudo vim /Library/LaunchDaemons/mongodb.plist
+   79  mkdir -p /var/log/mongodb
+   80  sudo mkdir -p /var/log/mongodb
+   81  sudo launchctl unload /Library/LaunchDaemons/mongodb.plist
+   82  sudo launchctl load /Library/LaunchDaemons/mongodb.plist
+   83  mongo
+   84  cd /var/log/
+   85  ls -al
+   86  mongo -version
+   87  ps -ef | grep mongo
+   88  ps -ef | grep mongo
+   89  ps -ef | grep mongo
+   90  sudo vim /etc/mongod.conf
+   91  exit
+   92  mongo --host m1
+   93  sudo vim /etc/mongod.conf
+   94  sudo vim /etc/mongod.conf
+   95  exit
+   96  sudo vim /etc/mongod.conf
+   97  exit
+   98  sudo vim /etc/mongod.conf
+   99  sudo vim /etc/mongod.conf
+  100  sudo vim /etc/mongod.conf
+  101  exit
+  102  mongo
+  103  sudo vim /etc/mongod.conf
+  104  ps -ef | grep mongo
+  105  sudo vim /Library/LaunchDaemons/mongodb.plist
+  106  sudo vim /etc/hosts
+  107  vim .bash_profile

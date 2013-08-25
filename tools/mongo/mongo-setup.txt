@@ -1,0 +1,129 @@
+Steps to setup MongoDB on Mac OS X
+
+Tested on: MongoDB version 2.4.6 and mac 10.8.X
+
+Installing standalone MongoDB on any machine.
+
+STEP I
+
+Download mongo from official site
+Unzip it. Unzip using mac tool or on your favourite shell
+	tar xzf mongodb-osx-x86_64-2.4.6.tgz
+
+Rename the unzipped folder to mongodb
+	sudo mv ~/Downloads/mongodb /usr/local
+
+Create folder to hold data. Mongo stores data to default location ‘/data/db’. Don’t forget to set the permission. Prefer creating a user that has access to MongoDB and can start and stop MongoDB. Use this user to set as username for ‘/data/db’
+	sudo mkdir -p /data/db
+	sudo chown yourusername /data/db
+
+Create folder for logging MongoDB messages. This is defined later in ‘mongod.conf’
+	sudo mkdir -p /var/log/mongodb
+
+Create/update .bash_profile
+	touch ~/.bash_profile
+	vim ~/.bash_profile
+
+	Type the following the bash_profile
+		export MONGO_PATH=/usr/local/mongodb
+		export PATH=$PATH:$MONGO_PATH/bin
+
+Restart shell and type to confirm if mongo is working
+	$ mongo -version
+	MongoDB shell version: 2.4.6
+
+STEP II
+
+For auto start MongoDB
+	sudo touch /Library/LaunchDaemons/mongodb.plist
+	sudo vim /Library/LaunchDaemons/mongodb.plist
+
+	Add the following in the above file
+
+	<?xml version="1.0" encoding="UTF-8"?>
+ 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ 	<plist version="1.0">
+    	<dict>
+        	<key>Label</key>
+        	<string>mongodb</string>
+        	<key>ProgramArguments</key>
+        	<array>
+            	<string>/usr/local/mongodb/bin/mongod</string>
+            	<string>run</string>
+            	<string>--config</string>
+            	<string>/etc/mongod.conf</string>
+        	</array>
+        	<key>RunAtLoad</key>
+        	<true/>
+        	<key>KeepAlive</key>
+        	<true/>
+        	<key>WorkingDirectory</key>
+        	<string>/usr/local/mongodb</string>
+        	<key>StandardErrorPath</key>
+        	<string>/var/log/mongodb/error.log</string>
+        	<key>StandardOutPath</key>
+        	<string>/var/log/mongodb/output.log</string>
+        	<key>HardResourceLimits</key>
+        	<dict>
+           		<key>NumberOfFiles</key>
+           		<integer>1024</integer>
+        	</dict>
+        	<key>SoftResourceLimits</key>
+        	<dict>
+            	<key>NumberOfFiles</key>
+            	<integer>1024</integer>
+        	</dict>
+    	</dict>
+ 	</plist>
+
+Create mongod.conf file
+	sudo touch /etc/mongod.conf
+	sudo vim /etc/mongod.conf
+
+	Save the file with following contents in mongod.conf
+		# Store data at default /data/db
+		dbpath = /data/db
+
+		# Append logs to /var/log/mongodb/mongo.log
+		logpath = /var/log/mongodb/mongo.log
+		logappend = true
+
+		# Run as conventional database
+		fork = true
+
+		# 25GB oplog size;
+		oplogSize=25600
+
+		# Only accept local connections. Note: This did not work, hence commented. Currently listens to all the interfaces.
+		#bind_ip = 127.0.0.1,192.168.1.60,192.168.1.69,192.168.1.71,192.168.1.67
+
+		# Choose a name for your replica set; make sure its consistent
+		replSet = flab
+
+		# Diagnostic Configurations
+		# http://docs.mongodb.org/manual/administration/configuration/
+
+		# Profiles if query is slower than 50ms; default is 100ms
+		slowms = 50
+
+		# Profile the query; sets the level to profile
+		profile = 3
+
+		# Verbose for logging; currently turned off; switch on when there are real issues
+		#verbose = true
+
+		#Level 3 logs all read and write operations
+		diaglog = 3
+
+		# Forces all request to be validated. Don`t use in production as this can cause performance issue. Use only when in untrusted environment.
+		#objcheck = true
+
+		# Profile cpu
+		cpu = true
+
+Now reload/load the above by typing
+	sudo launchctl unload /Library/LaunchDaemons/mongodb.plist
+	sudo launchctl load /Library/LaunchDaemons/mongodb.plist
+
+Test again if mongo is running
+	ps -ef | grep mongo
