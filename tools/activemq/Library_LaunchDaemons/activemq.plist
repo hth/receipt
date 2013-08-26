@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>Label</key>
+        <string>com.apache.activemq</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/Library/ActiveMQ/bin/macosx/activemq</string>
+            <string>start</string>
+            <string>;</string>
+            <string>--stop-cmd</string>
+            <string>/Library/ActiveMQ/bin/macosx/activemq</string>
+            <string>stop</string>
+            <string>;</string>
+            <string>--restart-cmd</string>
+            <string>/Library/ActiveMQ/bin/macosx/activemq</string>
+            <string>restart</string>
+            <string>;</string>
+            <string>--pid=none</string>
+        </array>
+        <key>WorkingDirectory</key>
+        <string>/Library/ActiveMQ</string>
+        <key>ServiceDescription</key>
+        <string>Receiptofi ActiveMQ</string>
+        <key>StandardErrorPath</key>
+        <string>/var/log/activemq.receiptofi.stderr</string>
+        <key>StandardOutPath</key>
+        <string>/var/log/activemq.receiptofi.stdout</string>
+        <key>UserName</key>
+        <string>db</string>
+    </dict>
+</plist>
