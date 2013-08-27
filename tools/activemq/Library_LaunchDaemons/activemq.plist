@@ -5,6 +5,8 @@
         <key>RunAtLoad</key>
         <true/>
         <key>KeepAlive</key>
+        <false/>
+        <key>AbandonProcessGroup</key>
         <true/>
         <key>Label</key>
         <string>com.apache.activemq</string>
@@ -12,16 +14,6 @@
         <array>
             <string>/Library/ActiveMQ/bin/macosx/activemq</string>
             <string>start</string>
-            <string>;</string>
-            <string>--stop-cmd</string>
-            <string>/Library/ActiveMQ/bin/macosx/activemq</string>
-            <string>stop</string>
-            <string>;</string>
-            <string>--restart-cmd</string>
-            <string>/Library/ActiveMQ/bin/macosx/activemq</string>
-            <string>restart</string>
-            <string>;</string>
-            <string>--pid=none</string>
         </array>
         <key>WorkingDirectory</key>
         <string>/Library/ActiveMQ</string>
