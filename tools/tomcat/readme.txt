@@ -12,3 +12,4 @@ http://www.manniwood.com/tomcat_stuff/index.html
 
 #Run and check if tomcat is running
 sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist
+sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist

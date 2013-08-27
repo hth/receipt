@@ -53,7 +53,7 @@ In server.xml, Put the key in Tomcat Conf directory. And point port 8080 to re-d
 ############## Root JSP   ###########
 In Root - index.jsp
 <%
-    String redirectURL = "https://receiptofi.com:8443/receipt";
+    String redirectURL = "https://receiptofi.com/receipt";
     response.sendRedirect(redirectURL);
 %>
 ############## End Root JSP #########
