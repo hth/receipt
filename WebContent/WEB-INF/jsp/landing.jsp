@@ -419,7 +419,8 @@
             <div id="refreshReceiptForMonthId"></div>
 		</div>
 		<div id="tabs-2">
-            <c:if test="${!empty months}">
+            <c:choose>
+            <c:when test="${!empty months}">
             <table>
                 <tr>
                     <td style="vertical-align: top">
@@ -450,13 +451,36 @@
                     </td>
                 </tr>
             </table>
-            </c:if>
+            </c:when>
+            <c:otherwise>
+            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                <p>
+                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                    <span style="display:block; width:410px;">
+                        No expense analysis available as no receipt submitted or transformed
+                    </span>
+                </p>
+            </div>
+            </c:otherwise>
+            </c:choose>
 		</div>
         <c:if test="${isValidForMap}">
 		<div id="tabs-3">
-            <c:if test="${!empty months}">
+            <c:choose>
+            <c:when test="${!empty months}">
             <div id="map-placeholder"></div>
-            </c:if>
+            </c:when>
+            <c:otherwise>
+            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                <p>
+                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                    <span style="display:block; width:410px;">
+                        No data available as no receipt submitted or transformed
+                    </span>
+                </p>
+            </div>
+            </c:otherwise>
+            </c:choose>
 		</div>
         </c:if>
 	</div>
