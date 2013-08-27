@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -238,6 +239,8 @@ public class UserProfilePreferenceController {
                     }
                 }
                 try {
+                    //TODO remove this code as its a temporary fix to update all the email ids with lowercase
+                    userProfile.setEmailId(StringUtils.lowerCase(userProfile.getEmailId()));
                     userProfilePreferenceService.updateProfile(userProfile);
                 } catch (Exception exce) {
                     log.error("Failed updating User Profile: " + exce.getLocalizedMessage() + ", user profile Id: " + userProfile.getEmailId());

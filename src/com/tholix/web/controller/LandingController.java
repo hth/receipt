@@ -298,6 +298,9 @@ public class LandingController extends BaseController {
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     public @ResponseBody
     String invite(@RequestParam(value="emailId") String emailId, @ModelAttribute UserSession userSession) {
+        //Always lower case the email address
+        emailId = StringUtils.lowerCase(emailId);
+
         log.info("Invitation being sent to: " + emailId);
 
         boolean isValid = EmailValidator.getInstance().isValid(emailId);

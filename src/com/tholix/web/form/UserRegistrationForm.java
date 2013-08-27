@@ -3,6 +3,8 @@
  */
 package com.tholix.web.form;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.joda.time.DateTime;
 
 import com.tholix.domain.UserAuthenticationEntity;
@@ -64,8 +66,13 @@ public final class UserRegistrationForm {
 		this.lastName = lastName;
 	}
 
+    /**
+     * During registration make sure all the email ids are lowered case.
+     *
+     * @return
+     */
 	public String getEmailId() {
-		return emailId;
+		return StringUtils.lowerCase(emailId);
 	}
 
 	public void setEmailId(String emailId) {

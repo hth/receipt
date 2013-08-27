@@ -8,6 +8,7 @@ import javax.annotation.PreDestroy;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +122,8 @@ public class LoginController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
 			return LOGIN_PAGE;
 		} else {
-			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userLoginForm.getEmailId());
+            //Always check user login with lower letter email case
+			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(StringUtils.lowerCase(userLoginForm.getEmailId()));
 			if (userProfile != null) {
 				userLoginForm.setPassword(SHAHashing.hashCodeSHA512(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
