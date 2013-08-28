@@ -108,7 +108,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
                         "  result.total += obj.TOTAL; " +
                         "}");
 
-        DateTime date = DateUtil.now().minusMonths(13);
+        DateTime date = DateUtil.now().minusMonths(SHOW_DATA_FOR_LAST_X_MONTHS);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
         Criteria criteriaA = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Criteria criteriaB = Criteria.where("RECEIPT_DATE").gte(since.toDate());

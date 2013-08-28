@@ -24,6 +24,8 @@ import com.tholix.domain.value.ReceiptGrouped;
 public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 	static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
 
+    int SHOW_DATA_FOR_LAST_X_MONTHS = 13;
+
     /**
      *
      * @param receiptId

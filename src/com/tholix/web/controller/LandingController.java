@@ -107,6 +107,7 @@ public class LandingController extends BaseController {
         Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
         modelAndView.addObject("receiptGrouped", receiptGrouped);
 
+        /** Lists all the receipt grouped by months */
         List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(userSession.getUserProfileId());
         modelAndView.addObject("months", receiptGroupedByMonth);
 
