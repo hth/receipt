@@ -718,7 +718,7 @@
             series: [{
                 name: 'Monthly Expense',
                 data: [
-                    <c:forEach var="month" items="${months}"  varStatus="status">
+                    <c:forEach var="month" items="${months}" varStatus="status">
                     {y: ${month.stringTotal}, color: 'darkgreen'},
                     </c:forEach>
                 ],
@@ -793,11 +793,9 @@
              * other.
              */
             var locations = [
-                ['San Francisco', 37.77493,	-122.41942, 4],
-                ['Sunnyvale',   37.36886,	-122.03656, 5],
-                ['Los Angles',  34.05223,	-118.24368, 3],
-                ['Seattle',     47.60621,	-122.33207, 2],
-                ['New York',    40.71435,	-74.00597, 1]
+                <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
+                    ['${loc.bizName.name}' + " : " + "<b>" +  '${loc.totalStr}' + "</b>", ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}],
+                </c:forEach>
             ];
 
             for (var i = 0; i < locations.length; i++) {

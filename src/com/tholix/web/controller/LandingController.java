@@ -45,7 +45,9 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.FileTypeEnum;
 import com.tholix.domain.types.NotificationTypeEnum;
+import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.domain.value.ReceiptGrouped;
+import com.tholix.domain.value.ReceiptGroupedByBizLocation;
 import com.tholix.service.AccountService;
 import com.tholix.service.FileDBService;
 import com.tholix.service.LandingService;
@@ -110,6 +112,11 @@ public class LandingController extends BaseController {
         /** Lists all the receipt grouped by months */
         List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(userSession.getUserProfileId());
         modelAndView.addObject("months", receiptGroupedByMonth);
+
+        if(userSession.getLevel().value >= UserLevelEnum.USER_COMMUNITY.value) {
+            List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(userSession.getUserProfileId());
+            landingForm.setReceiptGroupedByBizLocations(receiptGroupedByBizLocations);
+        }
 
         /** Used for charting in Expense Analysis tab */
         log.info("Calculating Pie chart - item expense");

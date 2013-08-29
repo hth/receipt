@@ -36,6 +36,7 @@ import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
+import com.tholix.domain.value.ReceiptGroupedByBizLocation;
 import com.tholix.utils.DateUtil;
 
 /**
@@ -115,6 +116,26 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         Criteria criteria = criteriaA.andOperator(criteriaB.andOperator(isActive().andOperator(isNotDeleted())));
 
         GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
+        return results.iterator();
+    }
+
+    public Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String userProfileId) {
+        GroupBy groupBy = GroupBy.key("BIZ_STORE", "BIZ_NAME")
+                .initialDocument("{ total: 0 }")
+                .reduceFunction("function(obj, result) { " +
+                        "  result.total += obj.TOTAL; " +
+                        "  result.bizStore = obj.BIZ_STORE; " +
+                        "  result.bizName = obj.BIZ_NAME; " +
+                        "}");
+
+
+        DateTime date = DateUtil.now().minusMonths(SHOW_DATA_FOR_LAST_X_MONTHS);
+        DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
+        Criteria criteriaA = Criteria.where("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteriaB = Criteria.where("RECEIPT_DATE").gte(since.toDate());
+        Criteria criteria = criteriaA.andOperator(criteriaB.andOperator(isActive().andOperator(isNotDeleted())));
+
+        GroupByResults<ReceiptGroupedByBizLocation> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGroupedByBizLocation.class);
         return results.iterator();
     }
 

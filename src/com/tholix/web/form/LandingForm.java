@@ -1,5 +1,8 @@
 package com.tholix.web.form;
 
+import java.util.List;
+
+import com.tholix.domain.value.ReceiptGroupedByBizLocation;
 import com.tholix.web.helper.ReceiptForMonth;
 
 /**
@@ -11,6 +14,7 @@ import com.tholix.web.helper.ReceiptForMonth;
 public final class LandingForm {
 
     private ReceiptForMonth receiptForMonth;
+    private List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations;
 
 
     public ReceiptForMonth getReceiptForMonth() {
@@ -19,6 +23,14 @@ public final class LandingForm {
 
     public void setReceiptForMonth(ReceiptForMonth receiptForMonth) {
         this.receiptForMonth = receiptForMonth;
+    }
+
+    public List<ReceiptGroupedByBizLocation> getReceiptGroupedByBizLocations() {
+        return receiptGroupedByBizLocations;
+    }
+
+    public void setReceiptGroupedByBizLocations(List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations) {
+        this.receiptGroupedByBizLocations = receiptGroupedByBizLocations;
     }
 }
 

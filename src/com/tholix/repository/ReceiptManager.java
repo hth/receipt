@@ -15,6 +15,7 @@ import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.value.ReceiptGrouped;
+import com.tholix.domain.value.ReceiptGroupedByBizLocation;
 
 /**
  * @author hitender
@@ -84,6 +85,14 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId);
+
+    /**
+     * Group receipts by location and sum up the total expense on that particular business location
+     *
+     * @param userProfileId
+     * @return
+     */
+    Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String userProfileId);
 
     @Deprecated
     List<String> findTitles(String title);

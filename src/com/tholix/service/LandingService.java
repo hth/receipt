@@ -32,6 +32,7 @@ import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.types.ReceiptOfEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
 import com.tholix.domain.value.ReceiptGrouped;
+import com.tholix.domain.value.ReceiptGroupedByBizLocation;
 import com.tholix.repository.BizNameManager;
 import com.tholix.repository.BizStoreManager;
 import com.tholix.repository.ItemManager;
@@ -128,6 +129,11 @@ public final class LandingService {
         }
 
         return sortedList;
+    }
+
+    public List<ReceiptGroupedByBizLocation> getAllObjectsGroupedByBizLocation(String userProfileId) {
+        Iterator<ReceiptGroupedByBizLocation> grpIterator = receiptManager.getAllReceiptGroupedByBizLocation(userProfileId);
+        return Lists.newArrayList(grpIterator);
     }
 
     /**
