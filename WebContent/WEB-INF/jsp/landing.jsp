@@ -864,6 +864,11 @@
                 infowindow.setContent(title);
                 infowindow.open(map, marker);
             });
+
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                infowindow.setContent(title);
+                infowindow.open(map, marker);
+            });
         }
     });
 </script>

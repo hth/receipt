@@ -278,7 +278,7 @@
                                             <div style="margin-top: 5px">
                                                 ${item.quantity} @
                                                 <fmt:formatNumber value="${item.price}" type="currency" pattern="###,###.####" /> each</div>
-                                            <%--<spring:eval expression="item.price"/>--%>
+                                                <%--<spring:eval expression="item.price"/>--%>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
