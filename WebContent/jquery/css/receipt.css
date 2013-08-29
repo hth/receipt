@@ -386,6 +386,7 @@ a.account {
 
 .mapContainer {
     border: 1px solid red;
+    padding: 5px;
 }
 /** Google map ends */
 

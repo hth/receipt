@@ -751,32 +751,20 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        var us_center = new google.maps.LatLng(37.090240,-95.7128910);
+        var bounds = new google.maps.LatLngBounds ();
+        var map, infowindow;
 
-        var map;
-        var infowindow;
+        getGoogleMap();
 
-        getGoogleMap('41.033245', '29.110191',
-                '<div class="mapContainer">' +
-                '<div class="mapContentLeft"><h1>Hotel Name <i>Information/Suggestion</i></h1>' +
-                '<div>Hotel Image</div>' +
-                '</div>' +
-                '<div class="mapContentRight">' +
-                    '<div class="mapHotelStars">*****</div>' +
-                    '<div class="mapHotelAdress">Hotel Adress</div>' +
-                    '<div class="mapHotelPrice"> Currency + Integer </div>' +
-                    '</div>' +
-                '</div>');
-
-        function getGoogleMap(Altitude, Latitude, Address) {
+        function getGoogleMap() {
             var myOptions = {
-                center: us_center,
                 zoom: 4,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             }
 
             var $mapCanvas = $("#map-canvas");
             map = new google.maps.Map($mapCanvas.get(0), myOptions);
+            map.fitBounds(bounds);  //Fit these bounds to the map
             var listenerHandle = google.maps.event.addListener(map, 'idle', function() {
                 $mapCanvas.appendTo($("#map-placeholder"));
                 google.maps.event.removeListener(listenerHandle);
@@ -794,7 +782,15 @@
              */
             var locations = [
                 <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
-                    ['${loc.bizName.name}' + " : " + "<b>" +  '${loc.totalStr}' + "</b>", ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}],
+                    [
+                        '<div class="mapContainer">' +
+                            '<div><h1>${loc.bizName.name} : <b>${loc.totalStr}</b></h1></div>' +
+                            '<div>' +
+                                '<div>${loc.bizStore.address}</div>' +
+                            '</div>' +
+                        '</div>',
+                        ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
+                    ],
                 </c:forEach>
             ];
 
@@ -805,6 +801,9 @@
                 var longitude   = location[2];
                 var xindex      = location[3];
                 displayMarker(title, latitude, longitude, xindex);
+
+                // And increase the bounds to take this point
+                bounds.extend(new google.maps.LatLng (latitude, longitude));
             }
         }
 
