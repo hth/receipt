@@ -27,7 +27,7 @@
 
         $(document).ready(function () {
             $("#copy-button").zclip({
-                path: '../jquery/js/clip/ZeroClipboard.swf',
+                path: 'https://receiptofi.com/receipt/jquery/js/clip/ZeroClipboard.swf',
                 copy: $('#auth b').text()
             });
         });
