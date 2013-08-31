@@ -17,11 +17,19 @@
 	<script type="text/javascript" src="../jquery/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="../jquery/js/clip/jquery.zclip.min.js"></script>
 
     <!-- For dashboard tabs -->
     <script>
         $(function () {
             $("#tabs").tabs();
+        });
+
+        $(document).ready(function () {
+            $("#copy-button").zclip({
+                path: '../jquery/js/clip/ZeroClipboard.swf',
+                copy: $('#auth b').text()
+            });
         });
     </script>
 
@@ -144,77 +152,77 @@
 			<li><a href="#tabs-2">Preferences</a></li>
 		</ul>
 		<div id="tabs-1">
-			<form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
-				<form:hidden path="userProfile.id"/>
-				<div class="divTable">
-					<div class="divRow">
-						<div class="divOfCell600">
-                            Name:
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <b><spring:eval expression="userProfilePreferenceForm.userProfile.name" /></b>
-                        </div>
-					</div>
-					<div class="divRow">
-					    <div class="divOfCell600">
-                        Registration:
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.registration}" type="both" /></b></div>
-					</div>
-                    <div class="divRow">
-                        <div class="divOfCell600">
-                            Profile changed:&nbsp;
-                            <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both" /></b>
-                        </div>
+            <div class="divTable">
+                <div class="divRow">
+                    <div class="divOfCell600">
+                        Name:
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.name" /></b>
                     </div>
-                    <div class="divRow">
-                        <div class="divOfCell600">&nbsp;</div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600">
+                    Registration:
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.registration}" type="both" /></b></div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600">
+                        Profile changed:&nbsp;
+                        <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both" /></b>
                     </div>
-                    <div class="divRow">
-                        <div class="divOfCell600">
-                            Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <b><spring:eval expression="userProfilePreferenceForm.userProfile.userAuthentication.authenticationKey" /></b>
-                        </div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600">&nbsp;</div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600" id="auth">
+                        Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.userAuthentication.authenticationKey" /></b>
+                        <button id='copy-button'>copy</button>
                     </div>
-                    <div class="divRow">
-                        <div class="divOfCell600">
-                            Auth changed:&nbsp;
-                            <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.userAuthentication.updated}" type="both" /></b>
-                        </div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600">
+                        Auth changed:&nbsp;
+                        <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.userAuthentication.updated}" type="both" /></b>
                     </div>
-                    <spring:eval expression="userSession.level eq T(com.tholix.domain.types.UserLevelEnum).ADMIN" var="isAdmin" />
-                    <!-- If changing the access level here then update the condition check in POST method -->
-                    <c:if test="${isAdmin}">
-                    <div class="divRow">
-                        <div class="divOfCell600">&nbsp;</div>
-                    </div>
-					<div class="divRow">
-						<div class="divOfCell600">
+                </div>
+            </div>
+
+            <spring:eval expression="userSession.level eq T(com.tholix.domain.types.UserLevelEnum).ADMIN" var="isAdmin" />
+            <c:if test="${isAdmin}">
+            <!-- If changing the access level here then update the condition check in POST method -->
+
+            <div>&nbsp;</div>
+
+            <form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
+            <form:hidden path="userProfile.id"/>
+            <div class="divTable">
+                <div class="divRow">
+                    <div class="divOfCell600">
                         Level: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-						<form:select path="userProfile.level" >
-							<form:option value="0" label="Select Account Type" />
-							<form:options itemValue="name" itemLabel="description" />
-						</form:select>
-						</div>
-					</div>
-                    <div class="divRow">
-                        <div class="divOfCell600">
+                        <form:select path="userProfile.level" >
+                            <form:option value="0" label="Select Account Type" />
+                            <form:options itemValue="name" itemLabel="description" />
+                        </form:select>
+                    </div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600">
                         Active: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         <form:checkbox path="active" id="active" />Active
-                        </div>
                     </div>
-					</c:if>
-			   	</div>
-			   	<div>&nbsp;</div>
-
-                <c:if test="${isAdmin}">
-                <!-- If changing the access level here then update the condition check in POST method -->
-                <div class="divRow">
-					<div class="divOfCell600"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
-				</div>
-				</c:if>
-			</form:form>
+                </div>
+            </div>
+            <!-- If changing the access level here then update the condition check in POST method -->
+            <div class="divRow">
+                <div class="divOfCell600"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
+            </div>
+            </form:form>
+            </c:if>
 		</div>
 		<div id="tabs-2">
             <div class="divTable">
