@@ -142,6 +142,7 @@
                 <include name="**/*.xml" />
                 <include name="**/*.jar" />
                 <include name="**/*.ftl" />
+                <include name="**/*.swf" />
             </fileset>
         </copy>
 
