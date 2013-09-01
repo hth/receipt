@@ -1,7 +1,5 @@
 package com.tholix.web.rest;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessOrder;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorOrder;
@@ -10,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.List;
 
 import com.tholix.domain.ReceiptEntity;
 
@@ -19,7 +18,7 @@ import com.tholix.domain.ReceiptEntity;
  * Time: 10:35 PM
  * http://glassfish.java.net/nonav/javaee5/api/javax/xml/bind/annotation/XmlElements.html
  */
-@XmlRootElement(namespace="http://tholix.com/schema/receipt/v1", name="landingView")
+@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="landingView")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
 @XmlType(name="home", propOrder = { "userId", "emailId", "pendingCount", "receipts" })

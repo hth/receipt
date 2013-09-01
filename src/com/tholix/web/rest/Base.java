@@ -1,12 +1,11 @@
 package com.tholix.web.rest;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * User: hitender
@@ -17,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  * http://docs.oracle.com/javaee/5/tutorial/doc/bnbcv.html
  * http://docs.oracle.com/cd/E13222_01/wls/docs103/webserv/data_types.html
  */
-@XmlRootElement(namespace="http://tholix.com/schema/receipt/v1", name="receipt_root")
+@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="receipt_root")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "header" })
 @XmlSeeAlso({Header.class})
