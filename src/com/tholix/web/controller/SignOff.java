@@ -24,7 +24,7 @@ public class SignOff {
 
     private static final String SIGN_OFF = "/signoff";
 
-    @RequestMapping(value = "/signoff", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String signoff(@ModelAttribute UserSession userSession, SessionStatus sessionStatus) {
         sessionStatus.setComplete();
         log.info(("logged out: " + userSession.getUserProfileId()));
