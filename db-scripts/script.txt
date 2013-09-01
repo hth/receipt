@@ -1,0 +1,2 @@
+#27
+db.INVITE.update({}, { $set: {COUNT: NumberInt(1)} }, {multi: true});
