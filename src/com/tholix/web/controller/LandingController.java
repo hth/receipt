@@ -314,8 +314,19 @@ public class LandingController extends BaseController {
         boolean isValid = EmailValidator.getInstance().isValid(emailId);
         if(isValid) {
             UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
-            if(userProfileEntity == null) {
-                boolean status = mailService.sendInvitation(emailId, userSession.getEmailId());
+            /**
+             * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
+             * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
+             * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to limit
+             * the number of invite.
+             */
+            if(userProfileEntity == null || (!userProfileEntity.isActive() && !userProfileEntity.isDeleted())) {
+                boolean status;
+                if(userProfileEntity == null) {
+                    status = mailService.sendInvitation(emailId, userSession.getEmailId());
+                } else {
+                    status = mailService.reSendInvitation(emailId, userSession.getEmailId());
+                }
                 if(status) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("Invitation sent to '").append(emailId).append("'");

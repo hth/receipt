@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mongodb.WriteResult;
 
 import com.tholix.domain.InviteEntity;
+import com.tholix.domain.UserProfileEntity;
 
 /**
  * User: hitender
@@ -33,8 +34,8 @@ public final class InviteManagerImpl implements InviteManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public InviteEntity findByAuthenticationKey(String key) {
-        Criteria criteria = Criteria.where("AUTH").is(key);
+    public InviteEntity findByAuthenticationKey(String auth) {
+        Criteria criteria = Criteria.where("AUTH").is(auth);
         Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
@@ -56,6 +57,7 @@ public final class InviteManagerImpl implements InviteManager {
         if(object.getId() != null) {
             object.setUpdated();
         }
+        object.increaseInvitationCount();
         mongoTemplate.save(object, TABLE);
     }
 
@@ -87,5 +89,20 @@ public final class InviteManagerImpl implements InviteManager {
     @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
+    }
+
+    @Override
+    public InviteEntity reInviteActiveInvite(String emailId, UserProfileEntity invitedBy) {
+        Criteria criteria1 = Criteria.where("EMAIL").is(emailId);
+        Criteria criteria2 = Criteria.where("USER_PROFILE_INVITED_BY.$id").is(new ObjectId(invitedBy.getId()));
+        Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isActive()).addCriteria(isNotDeleted());
+        return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
+    }
+
+    @Override
+    public InviteEntity find(String emailId) {
+        Criteria criteria1 = Criteria.where("EMAIL").is(emailId);
+        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 }

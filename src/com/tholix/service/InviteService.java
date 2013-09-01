@@ -60,6 +60,20 @@ public final class InviteService {
         }
     }
 
+    /**
+     * Re-Invite only when the invite is active
+     *
+     * @param emailId
+     * @return
+     */
+    public InviteEntity reInviteActiveInvite(String emailId, UserProfileEntity userProfile) {
+        return inviteManager.reInviteActiveInvite(emailId, userProfile);
+    }
+
+    public InviteEntity find(String emailId) {
+        return inviteManager.find(emailId);
+    }
+
     public InviteEntity findInviteAuthenticationForKey(String key) {
         return inviteManager.findByAuthenticationKey(key);
     }

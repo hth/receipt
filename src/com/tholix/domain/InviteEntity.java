@@ -17,7 +17,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "INVITE")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "invite_key_idx", def = "{'AUTH' : 0}", unique = true)
+        @CompoundIndex(name = "invite_email_idx",   def = "{'EMAIL': 0}", unique = false),
+        @CompoundIndex(name = "invite_key_idx",     def = "{'AUTH' : 0}", unique = true)
 } )
 public class InviteEntity extends BaseEntity {
 
@@ -37,6 +38,10 @@ public class InviteEntity extends BaseEntity {
     @DBRef
     @Field("USER_PROFILE_INVITED_BY")
     private UserProfileEntity invitedBy;
+
+    @NotNull
+    @Field("COUNT")
+    private int invitationCount;
 
     public static InviteEntity newInstance(String emailId, String authenticationKey, UserProfileEntity invited, UserProfileEntity invitedBy) {
         InviteEntity inviteEntity = new InviteEntity();
@@ -79,5 +84,13 @@ public class InviteEntity extends BaseEntity {
 
     public void setInvitedBy(UserProfileEntity invitedBy) {
         this.invitedBy = invitedBy;
+    }
+
+    public int getInvitationCount() {
+        return invitationCount;
+    }
+
+    public void increaseInvitationCount() {
+        this.invitationCount ++;
     }
 }
