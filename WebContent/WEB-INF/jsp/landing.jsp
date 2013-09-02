@@ -17,7 +17,7 @@
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
     <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
 
-	<script type="text/javascript" src="jquery/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="jquery/js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type="text/javascript" src="jquery/fullcalendar/fullcalendar.min.js"></script>
     <script type="text/javascript" src="jquery/js/highcharts.js"></script>
