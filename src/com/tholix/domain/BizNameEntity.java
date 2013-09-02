@@ -3,9 +3,6 @@ package com.tholix.domain;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -39,11 +36,12 @@ public class BizNameEntity extends BaseEntity {
     }
 
     /**
-     * Added Capitalize Fully feature to business name
+     * Cannot: Added Capitalize Fully feature to business name as the name has to be matching with business style
      *
      * @param name
      */
     public void setName(String name) {
-        this.name = WordUtils.capitalizeFully(StringUtils.strip(name));
+        //this.name = WordUtils.capitalize(WordUtils.capitalizeFully(StringUtils.strip(name)), '.', '(', ')');
+        this.name = name;
     }
 }

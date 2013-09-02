@@ -128,7 +128,7 @@ public final class ReceiptOCRForm {
                 name = name.replaceAll("\\s+", " ");
 
                 ItemEntity item = ItemEntity.newInstance();
-                item.setName(WordUtils.capitalizeFully(name));
+                item.setName(WordUtils.capitalize(WordUtils.capitalizeFully(name),  '.', '(', ')'));
                 item.setPrice(Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue());
                 item.setQuantity(itemOCR.getQuantity());
                 item.setTaxed(itemOCR.getTaxed());
