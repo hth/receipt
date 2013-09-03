@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -13,9 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
+import com.tholix.utils.Formatter;
 
 /**
  * User: hitender
@@ -27,6 +26,8 @@ import com.google.i18n.phonenumbers.Phonenumber;
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public class BizStoreEntity extends BaseEntity {
+    private static final Logger log = Logger.getLogger(BizStoreEntity.class.getName());
+
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     private static final String PHONE_BLANK = "000_000_0000";
 
@@ -86,15 +87,7 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     public String getPhoneFormatted() {
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        try {
-            //Currently defaults to US
-            Phonenumber.PhoneNumber numberPrototype = phoneUtil.parse(phone, "US");
-            return phoneUtil.format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
-        } catch (NumberParseException e) {
-            System.err.println("NumberParseException was thrown: " + e.toString());
-        }
-        return "";
+        return Formatter.phone(phone);
     }
 
     /**

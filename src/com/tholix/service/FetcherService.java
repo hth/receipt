@@ -17,6 +17,7 @@ import com.tholix.repository.BizNameManager;
 import com.tholix.repository.BizStoreManager;
 import com.tholix.repository.ItemManager;
 import com.tholix.utils.DateUtil;
+import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
 
 /**
@@ -87,9 +88,8 @@ public final class FetcherService {
         if(bizNameEntity != null) {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, BizStoreManager.PHONE);
 
-
             for(BizStoreEntity bizStoreEntity : list) {
-                phone.add(bizStoreEntity.getPhone());
+                phone.add(Formatter.phone(bizStoreEntity.getPhone()));
             }
 
             log.info("found item.. total size " + list.size());
