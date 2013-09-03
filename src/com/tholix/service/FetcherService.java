@@ -65,7 +65,7 @@ public final class FetcherService {
                 address.add(bizStoreEntity.getAddress());
             }
 
-            log.info("found item.. total size " + list.size());
+            log.info("found address(es).. total size " + list.size());
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
