@@ -102,10 +102,7 @@
 <!-- For http links -->
 <script>
     $(function () {
-        var tooltips = $("[title]").tooltip();
-        $.click(function () {
-            tooltips.tooltip("open");
-        });
+        $(document).tooltip();
     });
 </script>
 
