@@ -77,6 +77,8 @@
                             term: request.term,
                             nameParam: $("#bizName").val()
                         },
+                        contentType: "*/*",
+                        dataTypes: "application/json",
                         success: function (data) {
                             console.log('response=', data);
                             response(data);
@@ -97,6 +99,8 @@
                             nameParam: $("#bizName").val(),
                             addressParam: $("#address").val()
                         },
+                        contentType: "*/*",
+                        dataTypes: "application/json",
                         success: function (data) {
                             console.log('response=', data);
                             response(data);
@@ -116,6 +120,8 @@
                             term: request.term,
                             nameParam: $("#bizName").val()
                         },
+                        contentType: "*/*",
+                        dataTypes: "application/json",
                         success: function (data) {
                             console.log('response=', data);
                             response(data);
@@ -321,7 +327,7 @@
                                         ${status.index + 1}
                                     </td>
                                     <td style="text-align: left">
-                                        <form:input path="items[${status.index}].name" size="64"/>
+                                        <form:input path="items[${status.index}].name" cssClass="items" size="64"/>
                                     </td>
                                     <td style="text-align: left">
                                         <form:input path="items[${status.index}].quantity" size="4" />

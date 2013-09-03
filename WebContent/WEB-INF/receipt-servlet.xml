@@ -10,19 +10,19 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
-		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		  http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		  http://www.springframework.org/schema/context
-          http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/context/spring-context-3.2.xsd
           http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
           http://www.springframework.org/schema/data/mongo
           http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
           http://www.springframework.org/schema/util
-          http://www.springframework.org/schema/util/spring-util-3.0.xsd
+          http://www.springframework.org/schema/util/spring-util-3.2.xsd
           http://www.springframework.org/schema/cache
           http://www.springframework.org/schema/cache/spring-cache.xsd
           http://www.springframework.org/schema/jms
-          http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
+          http://www.springframework.org/schema/jms/spring-jms-3.2.xsd">
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
     <context:component-scan base-package="com.tholix" />
@@ -38,19 +38,31 @@
     <context:property-placeholder location="classpath:/conf/dev.properties"    order="4" ignore-unresolvable="true" />
 
     <!-- Configures the @Controller programming model -->
-    <mvc:annotation-driven />
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
 
     <!-- turn on declarative caching -->
     <cache:annotation-driven />
 
     <!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
 
-    <!-- Autowired -->
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-
     <!-- Forwards requests to the "/" resource to the "welcome" view -->
     <!--suppress SpringModelInspection -->
     <mvc:view-controller path="/" view-name="login"/>
+
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="false" />
+        <property name="favorParameter"     value="true" />
+        <!--<property name="defaultContentType" value="text/html" />-->
+        <!--<property name="useJaf"             value="false"/>-->
+
+        <property name="mediaTypes">
+            <map>
+                <entry key="html" value="text/html" />
+                <entry key="json" value="application/json" />
+                <entry key="xml" value="application/xml" />
+            </map>
+        </property>
+    </bean>
 
     <!-- the application context definition for the receipt DispatcherServlet -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
