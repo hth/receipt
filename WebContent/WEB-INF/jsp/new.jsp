@@ -16,8 +16,6 @@
 
 	<script type="text/javascript" src="jquery/js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type='text/javascript' src="jquery/js/json.min.js"></script>
-
 </head>
 <body>
 <div class="wrapper">
@@ -41,7 +39,7 @@
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
 				<td style="width: 30%"><form:input class="tooltip" path="emailId" title="Please provide a valid email address. A confirmation email will be sent to this address. This email address will also be your login to receipt-o-fi." /></td>
-				<td style="width: 51%"><form:errors path="emailId" cssClass="error" id="emailId.errors"/></td>
+				<td style="width: 51%" id="emailIdErrors"><form:errors path="emailId" cssClass="error" id="emailId.errors"/></td>
 			</tr>
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
@@ -99,32 +97,28 @@
     });
 
     function checkAvailability() {
-        $.getJSON("${pageContext. request. contextPath}/new/availability.htm", { emailId: $('#emailId').val() }, function(availability) {
-            if (availability.available) {
-                fieldValidated("emailId", { valid : true });
-            } else {
-                fieldValidated("emailId", { valid : false, message : "<b>" + $('#emailId').val() + "</b> is already registered. " + availability.suggestions });
+        $.ajax({
+            url: '${pageContext. request. contextPath}/new/availability.htm',
+            data: {
+                emailId: $('#emailId').val()
+            },
+            contentType: "*/*",
+            dataTypes: "application/json",
+            success: function (data) {
+                console.log('response=', $.parseJSON(data));
+                fieldValidated("emailId", $.parseJSON(data));
             }
         });
     }
 
     function fieldValidated(field, result) {
-        if (result.valid) {
-            $("#" + field + "Label").removeClass("error");
+        if (result.valid == "true") {
             $("#" + field + "\\.errors").remove();
             $("#recoverId").css({'display': 'none'});
-            //$("#signupId").removeAttr('disable', 'disable');
         } else {
-            $("#" + field + "Label").addClass("error");
-            if ($("#" + field + "\\.errors").length == 0) {
-                $("#" + field).after("<span id='" + field + ".errors'>" + result.message + "</span>");
-
-                //Add the button for recovery and hide button for SignUp
-                $("#recoverId").css({'display': 'inline'});
-                //$("#signupId").attr('disable', 'disable');
-            } else {
-                $("#" + field + "\\.errors").html("<span id='" + field + ".errors'>" + result.message + "</span>");
-            }
+            $("#emailIdErrors").html("<span id='" + field + ".errors' style='color:red;'>" + result.message + "</span>");
+            //Add the button for recovery and hide button for SignUp
+            $("#recoverId").css({'display': 'inline'});
         }
     }
 </script>

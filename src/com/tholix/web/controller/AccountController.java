@@ -3,6 +3,7 @@
  */
 package com.tholix.web.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,19 +114,33 @@ public class AccountController {
      */
     @RequestMapping(value="/availability", method=RequestMethod.GET)
     public @ResponseBody
-    AvailabilityStatus getAvailability(@RequestParam String emailId) {
+    String getAvailability(@RequestParam String emailId) {
         DateTime time = DateUtil.now();
         log.info("Auto find if the emailId is present: " + emailId);
+        AvailabilityStatus availabilityStatus;
+
         UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
         if(userProfileEntity != null) {
             if (userProfileEntity.getEmailId().equals(emailId)) {
                 log.info("Not Available: " + emailId);
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-                return AvailabilityStatus.notAvailable(emailId);
+                availabilityStatus = AvailabilityStatus.notAvailable(emailId);
+                return new StringBuilder()
+                        .append("{ \"valid\" : \"")
+                        .append(availabilityStatus.isAvailable())
+                        .append("\", \"message\" : \"")
+                        .append("<b>")
+                        .append(emailId)
+                        .append("</b>")
+                        .append(" is already registered. ")
+                        .append(StringUtils.join(availabilityStatus.getSuggestions()))
+                        .append("\" }")
+                        .toString();
             }
         }
         log.info("Available: " + emailId);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-        return AvailabilityStatus.available();
+        availabilityStatus = AvailabilityStatus.available();
+        return "{ \"valid\" : \"" + availabilityStatus.isAvailable() + "\" }";
     }
 }
