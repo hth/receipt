@@ -37,7 +37,12 @@
 
     <servlet-mapping>
         <servlet-name>receipt</servlet-name>
-        <url-pattern>/rest/*</url-pattern>
+        <url-pattern>*.xml</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>receipt</servlet-name>
+        <url-pattern>*.json</url-pattern>
     </servlet-mapping>
 
     <!--http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html-->

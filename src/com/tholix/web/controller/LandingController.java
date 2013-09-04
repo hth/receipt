@@ -275,7 +275,7 @@ public class LandingController extends BaseController {
      * @param authKey
      * @return
      */
-    @RequestMapping(value = "/user/{profileId}/auth/{authKey}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{profileId}/auth/{authKey}.xml", method = RequestMethod.GET, produces="application/xml")
     public @ResponseBody
     Base loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();

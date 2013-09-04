@@ -152,7 +152,7 @@ public class ReceiptController extends BaseController {
      * @param authKey   auth key
      * @return Header
      */
-    @RequestMapping(value = "/d/{id}/user/{profileId}/auth/{authKey}", method=RequestMethod.GET)
+    @RequestMapping(value = "/d/{receiptId}/user/{profileId}/auth/{authKey}.xml", method=RequestMethod.GET)
     public @ResponseBody
     Header deleteRest(@PathVariable String receiptId, @PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();

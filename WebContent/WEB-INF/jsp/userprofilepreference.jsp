@@ -178,7 +178,7 @@
                 <div class="divRow">
                     <div class="divOfCell600" id="auth">
                         Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.userAuthentication.authenticationKey" /></b>
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.userAuthentication.authenticationKey" /></b> **
                         <button id='copy-button'>copy</button>
                     </div>
                 </div>
@@ -189,6 +189,9 @@
                     </div>
                 </div>
             </div>
+            <p>
+                ** <b>Auth Code</b> is like password. Keep it secure.
+            </p>
 
             <spring:eval expression="userSession.level eq T(com.tholix.domain.types.UserLevelEnum).ADMIN" var="isAdmin" />
             <c:if test="${isAdmin}">
@@ -200,6 +203,12 @@
             <form:hidden path="userProfile.id"/>
             <div class="divTable">
                 <div class="divRow">
+                    <div class="divRow">
+                        <div class="divOfCell600">
+                            Profile Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b><spring:eval expression="userProfilePreferenceForm.userProfile.id" /></b>
+                        </div>
+                    </div>
                     <div class="divOfCell600">
                         Level: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
