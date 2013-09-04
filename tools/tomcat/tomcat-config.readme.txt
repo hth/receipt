@@ -13,6 +13,12 @@ Follow
 
 ####################################
 
+1) If facivon.ico is changed in Catelina Home/Webapps/ROOT then all web apps will show this image url to root- apache-tomcat-x.x.xx/webapps/ROOT
+
+2) To change icon of each application specify following in head section < link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"
+
+####################################
+
 For SSL setup
 
 keytool -genkey -alias Receiptofi -keyalg RSA -keystore /Location/receiptofi_keystore
