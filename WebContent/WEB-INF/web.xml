@@ -87,14 +87,6 @@
         <location>/500.html</location>
     </error-page>
 
-    <!--Marks session cookie as secure when connected over http-->
-    <session-config>
-        <cookie-config>
-            <http-only>true</http-only>
-            <secure>true</secure>
-        </cookie-config>
-    </session-config>
-
     <!--<filter>-->
         <!--<filter-name>session</filter-name>-->
         <!--<filter-class>org.eclipse.jetty.continuation.ContinuationFilter</filter-class>-->
