@@ -11,7 +11,7 @@ import com.tholix.domain.BizStoreEntity;
  * User: hitender
  * Date: 8/27/13 8:04 PM
  */
-public class ReceiptGroupedByBizLocation implements Serializable {
+public final class ReceiptGroupedByBizLocation implements Serializable {
 
     private BigDecimal total;
     private BizNameEntity bizName;

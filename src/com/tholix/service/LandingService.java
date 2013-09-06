@@ -69,6 +69,12 @@ public final class LandingService {
     @Autowired private NotificationService notificationService;
     @Autowired private ReceiptService receiptService;
 
+    static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
+        public int compare(ReceiptGrouped left, ReceiptGrouped right) {
+            return Longs.compare(left.dateInMillisForSorting(), right.dateInMillisForSorting());
+        }
+    };
+
     public long pendingReceipt(String profileId) {
         return receiptOCRManager.numberOfPendingReceipts(profileId);
     }
@@ -94,13 +100,18 @@ public final class LandingService {
         Iterator<ReceiptGrouped> groupedIterator = receiptManager.getAllObjectsGroupedByMonth(userProfileId);
 
         List<ReceiptGrouped> receiptGroupedList = Lists.newArrayList(groupedIterator);
-        Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
-            public int compare(ReceiptGrouped left, ReceiptGrouped right) {
-                return Longs.compare(left.dateInMillisForSorting(), right.dateInMillisForSorting());
-            }
-        };
-
         List<ReceiptGrouped> sortedList = descendingOrder.sortedCopy(receiptGroupedList);
+        return sortedList;
+    }
+
+    /**
+     * Add appropriate empty months if month count is less than three
+     *
+     * @param receiptGroupedList
+     * @return
+     */
+    public List<ReceiptGrouped> addMonthsIfLessThanThree(List<ReceiptGrouped> receiptGroupedList) {
+        List<ReceiptGrouped> sortedList = Lists.newArrayList(receiptGroupedList);
 
         /** In case there is just receipts for one month then add empty data to show the chart pretty for at least two additional months */
         if(sortedList.size() < 3) {
@@ -127,7 +138,6 @@ public final class LandingService {
 
             sortedList = descendingOrder.sortedCopy(sortedList);
         }
-
         return sortedList;
     }
 

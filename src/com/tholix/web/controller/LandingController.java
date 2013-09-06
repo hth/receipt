@@ -111,7 +111,8 @@ public class LandingController extends BaseController {
 
         /** Lists all the receipt grouped by months */
         List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(userSession.getUserProfileId());
-        modelAndView.addObject("months", receiptGroupedByMonth);
+        modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
+        landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
 
         if(userSession.getLevel().value >= UserLevelEnum.USER_COMMUNITY.value) {
             List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(userSession.getUserProfileId());

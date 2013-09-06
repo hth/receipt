@@ -2,6 +2,7 @@ package com.tholix.web.form;
 
 import java.util.List;
 
+import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.domain.value.ReceiptGroupedByBizLocation;
 import com.tholix.web.helper.ReceiptForMonth;
 
@@ -15,7 +16,7 @@ public final class LandingForm {
 
     private ReceiptForMonth receiptForMonth;
     private List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations;
-
+    private List<ReceiptGrouped> receiptGroupedByMonths;
 
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
@@ -31,6 +32,20 @@ public final class LandingForm {
 
     public void setReceiptGroupedByBizLocations(List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations) {
         this.receiptGroupedByBizLocations = receiptGroupedByBizLocations;
+    }
+
+    public List<ReceiptGrouped> getReceiptGroupedByMonths() {
+        return receiptGroupedByMonths;
+    }
+
+    /**
+     * Currently list receipt data for 13 months.
+     * TODO Should it be increased to 7 years?
+     *
+     * @param receiptGroupedByMonths
+     */
+    public void setReceiptGroupedByMonths(List<ReceiptGrouped> receiptGroupedByMonths) {
+        this.receiptGroupedByMonths = receiptGroupedByMonths;
     }
 }
 
