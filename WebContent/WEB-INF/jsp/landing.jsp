@@ -711,7 +711,7 @@
             tooltip: {
                 formatter: function() {
                     return '<b>'+ this.x +'</b><br/>'+
-                            'Expense in ${months.get(0).year}: '+ Highcharts.numberFormat(this.y, 1) +
+                            'Expense in ${months.get(0).year}: '+ Highcharts.numberFormat(this.y, 2) +
                             '$';
                 }
             },
