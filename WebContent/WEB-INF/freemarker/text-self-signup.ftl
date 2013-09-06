@@ -13,7 +13,7 @@
 </p>
 
 <p>
-	<a href="${emailUrlProtocol}://${domain}/validate/valid.htm?authenticationKey=${link}">Verify Now ></a>
+	<a href="${https}://${domain}/validate/valid.htm?authenticationKey=${link}">Verify Now ></a>
 
 </p>
 
