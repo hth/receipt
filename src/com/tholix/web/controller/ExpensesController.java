@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,8 +42,8 @@ public class ExpensesController {
     @Autowired private ItemService itemService;
     @Autowired private ExpensesService expensesService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView forExpenseType(@RequestParam("type") String expenseType, @ModelAttribute("expenseForm") ExpenseForm expenseForm, @ModelAttribute("userSession") UserSession userSession) {
+    @RequestMapping(value = "{expenseType}", method = RequestMethod.GET)
+    public ModelAndView forExpenseType(@PathVariable String expenseType, @ModelAttribute("expenseForm") ExpenseForm expenseForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
         List<ExpenseTypeEntity> expenseTypes = expensesService.activeExpenseTypes(userSession.getUserProfileId());

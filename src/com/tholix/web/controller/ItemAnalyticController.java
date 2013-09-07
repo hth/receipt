@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,8 +45,8 @@ public class ItemAnalyticController {
 	@Autowired private ItemAnalyticService itemAnalyticService;
     @Autowired private ExpensesService expensesService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@RequestParam("id") String id, @ModelAttribute("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm, @ModelAttribute("userSession") UserSession userSession) {
+	@RequestMapping(value = "{id}", method = RequestMethod.GET)
+	public ModelAndView loadForm(@PathVariable String id, @ModelAttribute("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
 		ItemEntity item = itemAnalyticService.findItemById(id, userSession.getUserProfileId());

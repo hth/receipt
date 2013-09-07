@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -58,8 +57,8 @@ public class ReceiptController extends BaseController {
     @Autowired private BizNameManager bizNameManager;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@RequestParam("id") String receiptId, @ModelAttribute("receiptForm") ReceiptForm receiptForm, @ModelAttribute("userSession") UserSession userSession) {
+	@RequestMapping(value = "{receiptId}", method = RequestMethod.GET)
+	public ModelAndView loadForm(@PathVariable String receiptId, @ModelAttribute("receiptForm") ReceiptForm receiptForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
         log.info("Loading Receipt Item with id: " + receiptId);
 
@@ -193,8 +192,8 @@ public class ReceiptController extends BaseController {
      * @param userSession
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/biz")
-    public ModelAndView receiptByBizName(@RequestParam("id") String id,
+    @RequestMapping(value = "/biz/{id}", method = RequestMethod.GET)
+    public ModelAndView receiptByBizName(@PathVariable String id,
                                          @ModelAttribute("userSession") UserSession userSession,
                                          HttpServletResponse httpServletResponse) throws IOException {
 

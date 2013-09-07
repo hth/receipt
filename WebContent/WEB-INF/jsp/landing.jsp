@@ -359,7 +359,7 @@
                                     <spring:eval expression="receipt.tax" />
                                 </td>
                                 <td style="padding: 3px; text-align: right">
-                                    <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
+                                    <a href="${pageContext.request.contextPath}/receipt/${receipt.id}.htm">
                                         <spring:eval expression='receipt.total' />
                                     </a>
                                 </td>
@@ -568,14 +568,14 @@
                 {
                     y: ${item.total},
                     color: colors[${status.count-1}],
-                    url: 'receipt/biz.htm?id=${item.bizName}',
+                    url: 'receipt/biz/${item.bizName}.htm',
                     id: '${item.noSpaceBizName}',
                     drilldown: {
                         name: '${item.bizName}',
                         categories: [${item.expenseTypes}],
                         data: [${item.expenseValues}],
                         color: colors[${status.count-1}],
-                        url: 'receipt/biz.htm?id=${item.bizName}',
+                        url: 'receipt/biz/${item.bizName}.htm',
                         id: '${item.noSpaceBizName}'
                     }
                 },
@@ -973,7 +973,7 @@
                                         y: ${item.value},
                                         sliced: true,
                                         selected: true,
-                                        url: '${pageContext.request.contextPath}/expenses.htm?type=${item.key}'
+                                        url: '${pageContext.request.contextPath}/expenses/${item.key}.htm'
                                     },
                                     <c:set var="first" value="true"/>
                                 </c:when>
@@ -983,7 +983,7 @@
                                         y: ${item.value},
                                         sliced: false,
                                         selected: false,
-                                        url: '${pageContext.request.contextPath}/expenses.htm?type=${item.key}'
+                                        url: '${pageContext.request.contextPath}/expenses/${item.key}.htm'
                                     },
                                 </c:otherwise>
                             </c:choose>
@@ -996,7 +996,7 @@
                                     y: ${item.value},
                                     sliced: false,
                                     selected: false,
-                                    url: '${pageContext.request.contextPath}/expenses.htm?type=${item.key}'
+                                    url: '${pageContext.request.contextPath}/expenses/${item.key}.htm'
                                 },
                             </c:forEach>
                         </c:otherwise>

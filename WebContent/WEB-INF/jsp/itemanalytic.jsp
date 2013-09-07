@@ -8,15 +8,15 @@
 	<title><fmt:message key="item.analytic.title" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-    <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
+	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
-	<script type="text/javascript" src="jquery/js/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type='text/javascript' src="jquery/js/highcharts.js"></script>
+	<script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type='text/javascript' src="../jquery/js/highcharts.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -59,7 +59,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
                 <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
@@ -70,7 +70,7 @@
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
@@ -105,7 +105,7 @@
         </tbody>
         <tr>
             <td style="padding:3px;">
-                <a href="${pageContext.request.contextPath}/receipt.htm?id=${itemAnalyticForm.item.receipt.id}">
+                <a href="${pageContext.request.contextPath}/receipt/${itemAnalyticForm.item.receipt.id}.htm">
                 ${itemAnalyticForm.item.receipt.bizName.name}
                 </a>
             </td>
@@ -154,7 +154,7 @@
                         ${status.count}
                     </td>
                     <td style="padding:3px;">
-                        <a href="${pageContext.request.contextPath}/receipt.htm?id=${item.receipt.id}">
+                        <a href="${pageContext.request.contextPath}/receipt/${item.receipt.id}.htm">
                         ${item.receipt.bizName.name}
                         </a>
                     </td>
@@ -165,7 +165,7 @@
                         <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
                     </td>
                     <td style="padding:3px;">
-                        <a href="${pageContext.request.contextPath}/itemanalytic.htm?id=${item.id}">
+                        <a href="${pageContext.request.contextPath}/itemanalytic/${item.id}.htm">
                         ${item.name}
                         </a>
                     </td>

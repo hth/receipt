@@ -34,7 +34,7 @@
                                 <spring:eval expression="receipt.tax" />
                             </td>
                             <td style="padding: 3px; text-align: right">
-                                <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
+                                <a href="${pageContext.request.contextPath}/receipt/${receipt.id}.htm">
                                     <spring:eval expression='receipt.total' />
                                 </a>
                             </td>
@@ -103,14 +103,14 @@ $(function () {
             {
                 y: ${item.total},
                 color: colors[${status.count-1}],
-                url: 'receipt/biz.htm?id=${item.bizName}',
+                url: 'receipt/biz/${item.bizName}.htm',
                 id: '${item.noSpaceBizName}',
                 drilldown: {
                     name: '${item.bizName}',
                     categories: [${item.expenseTypes}],
                     data: [${item.expenseValues}],
                     color: colors[${status.count-1}],
-                    url: 'receipt/biz.htm?id=${item.bizName}',
+                    url: 'receipt/biz/${item.bizName}.htm',
                     id: '${item.noSpaceBizName}'
                 }
             },

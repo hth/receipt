@@ -8,14 +8,14 @@
     <title><fmt:message key="receipt.by.biz" /></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
 
-    <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href='../../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+    <link rel='stylesheet' type='text/css' href='../../jquery/css/receipt.css'>
 
-    <script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -58,7 +58,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="../../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
                 <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
@@ -69,7 +69,7 @@
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <img src="../../images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
@@ -119,7 +119,7 @@
                                     <spring:eval expression="receipt.tax" />
                                 </td>
                                 <td style="padding: 3px; text-align: right">
-                                    <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
+                                    <a href="${pageContext.request.contextPath}/receipt/${receipt.id}.htm">
                                         <spring:eval expression='receipt.total' />
                                     </a>
                                 </td>
