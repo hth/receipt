@@ -29,7 +29,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.ReceiptEntity;
 import com.tholix.web.rest.Header;
-import com.tholix.web.rest.LandingView;
+import com.tholix.web.rest.ReportView;
 
 /**
  * User: hitender
@@ -59,15 +59,14 @@ public final class ReportService {
     public String monthlyReport(DateTime month, String profileId, String emailId, Header header) {
         List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(profileId, month);
 
-        LandingView landingView = LandingView.newInstance(profileId, emailId, header);
-        landingView.setPendingCount(0);
-        landingView.setReceipts(receipts);
-        landingView.setHeader(header);
+        ReportView reportView = ReportView.newInstance(profileId, emailId, header);
+        reportView.setReceipts(receipts);
+        reportView.setHeader(header);
 
-        return monthlyReport(landingView);
+        return monthlyReport(reportView);
     }
 
-    private String monthlyReport(LandingView landingView) {
+    private String monthlyReport(ReportView reportView) {
         File file = null;
         try {
             file = File.createTempFile("XML-Report", ".xml");
@@ -76,14 +75,14 @@ public final class ReportService {
         }
 
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(LandingView.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(ReportView.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
             // output pretty printed
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 
-            jaxbMarshaller.marshal(landingView, file);
-            jaxbMarshaller.marshal(landingView, System.out);
+            jaxbMarshaller.marshal(reportView, file);
+            jaxbMarshaller.marshal(reportView, System.out);
 
             Map rootMap = new HashMap();
             rootMap.put("doc", freemarker.ext.dom.NodeModel.parse(file));
