@@ -324,11 +324,12 @@
 		<ul>
 			<li><a href="#tabs-1">Receipts</a></li>
 			<li><a href="#tabs-2">Expense Analysis</a></li>
+            <li><a href="#tabs-3">Reports</a></li>
             <c:if test="${isValidForMap}">
-			<li><a href="#tabs-3">Geographical</a></li>
+            <li><a href="#tabs-4">Geographical</a></li>
             </c:if>
 		</ul>
-		<div id="tabs-1">
+		<div id="tabs-1" style="height: 500px">
             <div id="onLoadReceiptForMonthId">
             <c:choose>
             <c:when test="${!empty landingForm.receiptForMonth.receipts}">
@@ -370,35 +371,36 @@
                         <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
                     </td>
                 </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td style="vertical-align: top;">
-                        <div>
-                            <section class="chunk">
-                                <fieldset>
-                                    <legend class="hd">
-                                        <span class="text"><fmt:message key="business.name.abrev" /></span>
-                                    </legend>
-                                    <div class="bd">
-                                    <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
-                                        <div class="divTable">
-                                            <div class="divRow">
-                                                <div class="divCell" style="background-color: #eee">
-                                                    <fmt:formatNumber value="${status.count}" pattern="00"/>.
-                                                    &nbsp; ${item.shortenedBizName4Display}
-                                                </div>
-                                                <div class="divOfCell300" style="background-color: #eee">
-                                                    - &nbsp;${item.bizName}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                    </div>
-                                </fieldset>
-                            </section>
-                        </div>
-                    </td>
-                </tr>
+                <%--Remove associated data for this table--%>
+                <%--<tr>--%>
+                    <%--<td>&nbsp;</td>--%>
+                    <%--<td style="vertical-align: top;">--%>
+                        <%--<div>--%>
+                            <%--<section class="chunk">--%>
+                                <%--<fieldset>--%>
+                                    <%--<legend class="hd">--%>
+                                        <%--<span class="text"><fmt:message key="business.name.abrev" /></span>--%>
+                                    <%--</legend>--%>
+                                    <%--<div class="bd">--%>
+                                    <%--<c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">--%>
+                                        <%--<div class="divTable">--%>
+                                            <%--<div class="divRow">--%>
+                                                <%--<div class="divCell" style="background-color: #eee">--%>
+                                                    <%--<fmt:formatNumber value="${status.count}" pattern="00"/>.--%>
+                                                    <%--&nbsp; ${item.shortenedBizName4Display}--%>
+                                                <%--</div>--%>
+                                                <%--<div class="divOfCell300" style="background-color: #eee">--%>
+                                                    <%--- &nbsp;${item.bizName}--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</c:forEach>--%>
+                                    <%--</div>--%>
+                                <%--</fieldset>--%>
+                            <%--</section>--%>
+                        <%--</div>--%>
+                    <%--</td>--%>
+                <%--</tr>--%>
             </table>
             </c:when>
             <c:otherwise>
@@ -418,13 +420,13 @@
 
             <div id="refreshReceiptForMonthId"></div>
 		</div>
-		<div id="tabs-2">
+		<div id="tabs-2" style="height: 500px">
             <c:choose>
             <c:when test="${!empty months}">
             <table>
                 <tr>
                     <td style="vertical-align: top">
-                        <div id="monthly" style="min-width: 475px; height: 350px; margin: 0 auto"></div>
+                        <div id="monthly" style="min-width: 475px; height: 425px; margin: 0 auto"></div>
 
                         <fieldset style="width:295px;">
                             <legend>Total Expense</legend>
@@ -464,8 +466,43 @@
             </c:otherwise>
             </c:choose>
 		</div>
+        <div id="tabs-3" style="height: 500px">
+            <c:choose>
+                <c:when test="${!empty landingForm.receiptGroupedByMonths}">
+                    <p>
+                    <span style="display:block; width:410px;">
+                        <b>Archived monthly report(s) for active month(s)</b>
+                    </span>
+                    </p>
+
+                    <table style="width: 100px" class="etable">
+                        <c:forEach var="item" items="${landingForm.receiptGroupedByMonths}"  varStatus="status">
+                            <tr>
+                                <td style="padding: 3px;">
+                                    <a href="${pageContext.request.contextPath}/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" target="_blank">
+                                        <spring:eval expression='item.dateTime.toString("MMM, yyyy")' />
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    <div class="ui-widget">
+                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                            <p>
+                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                            <span style="display:block; width:410px;">
+                                No receipt(s) submitted or transformed
+                            </span>
+                            </p>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
         <c:if test="${isValidForMap}">
-		<div id="tabs-3">
+		<div id="tabs-4" style="height: 500px">
             <c:choose>
             <c:when test="${!empty months}">
             <div id="map-placeholder"></div>

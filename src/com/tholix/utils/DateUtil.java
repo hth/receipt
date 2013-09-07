@@ -90,6 +90,16 @@ public final class DateUtil {
 	}
 
     /**
+     * Converts java.util.Date to Joda DateTime
+     *
+     * @param date
+     * @return
+     */
+    public static DateTime toDateTime(Date date) {
+        return new DateTime(date);
+    }
+
+    /**
      *
      * @return DateTime of type Joda Time
      */
@@ -136,7 +146,7 @@ public final class DateUtil {
      */
     @Deprecated
     public static String getDurationStr(Date date) {
-        int time = (DateUtil.duration(new DateTime(date)).getSeconds());
+        int time = (DateUtil.duration(toDateTime(date)).getSeconds());
         if(time < DateUtil.MINUTE_IN_SECONDS) {
             return time + " Seconds";
 

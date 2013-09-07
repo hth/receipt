@@ -53,6 +53,7 @@ import com.tholix.service.FileDBService;
 import com.tholix.service.LandingService;
 import com.tholix.service.MailService;
 import com.tholix.service.NotificationService;
+import com.tholix.service.ReportService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
@@ -79,6 +80,7 @@ public class LandingController extends BaseController {
     @Autowired MailService mailService;
     @Autowired AccountService accountService;
     @Autowired NotificationService notificationService;
+    @Autowired ReportService reportService;
 
 	/**
 	 * Refers to landing.jsp
@@ -300,6 +302,34 @@ public class LandingController extends BaseController {
             Header header = getHeaderForProfileOrAuthFailure();
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return header;
+        }
+    }
+
+    @RequestMapping(value = "/report/{monthYear}", method = RequestMethod.GET)
+    public @ResponseBody
+    String generateReport(@PathVariable String monthYear, @ModelAttribute UserSession userSession) {
+        Header header = Header.newInstance(getAuth(userSession.getUserProfileId()));
+        String pattern = "MMM, yyyy";
+        try {
+            DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+            DateTime dateTime = dtf.parseDateTime(monthYear);
+            dateTime = dateTime.plusMonths(1).minusDays(1);
+
+            header.setStatus(Header.RESULT.SUCCESS);
+            return reportService.monthlyReport(dateTime,
+                    userSession.getUserProfileId(),
+                    userSession.getEmailId(),
+                    header
+            );
+        } catch(IllegalArgumentException iae) {
+            header.setMessage("Invalid parameter. Correct format - " + pattern + " [Please provide parameter shown without quotes - 'Jan, 2013']");
+            header.setStatus(Header.RESULT.FAILURE);
+
+            return reportService.monthlyReport(DateTime.now().minusYears(40),
+                    userSession.getUserProfileId(),
+                    userSession.getEmailId(),
+                    header
+            );
         }
     }
 

@@ -18,7 +18,8 @@ import com.tholix.domain.ReceiptEntity;
  * Time: 10:35 PM
  * http://glassfish.java.net/nonav/javaee5/api/javax/xml/bind/annotation/XmlElements.html
  */
-@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="landingView")
+//@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="landingView")
+@XmlRootElement(name="landingView")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
 @XmlType(name="home", propOrder = { "userId", "emailId", "pendingCount", "receipts" })
