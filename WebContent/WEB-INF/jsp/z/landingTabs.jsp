@@ -46,35 +46,35 @@
                     <div id="containerRefresh" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
                 </td>
             </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td style="vertical-align: top;">
-                    <div>
-                        <section class="chunk">
-                            <fieldset>
-                                <legend class="hd">
-                                    <span class="text"><fmt:message key="business.name.abrev" /></span>
-                                </legend>
-                                <div class="bd">
-                                    <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
-                                        <div class="divTable">
-                                            <div class="divRow">
-                                                <div class="divCell" style="background-color: #eee">
-                                                    <fmt:formatNumber value="${status.count}" pattern="00"/>.
-                                                    &nbsp; ${item.shortenedBizName4Display}
-                                                </div>
-                                                <div class="divOfCell300" style="background-color: #eee">
-                                                    - &nbsp;${item.bizName}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </fieldset>
-                        </section>
-                    </div>
-                </td>
-            </tr>
+            <%--<tr>--%>
+                <%--<td>&nbsp;</td>--%>
+                <%--<td style="vertical-align: top;">--%>
+                    <%--<div>--%>
+                        <%--<section class="chunk">--%>
+                            <%--<fieldset>--%>
+                                <%--<legend class="hd">--%>
+                                    <%--<span class="text"><fmt:message key="business.name.abrev" /></span>--%>
+                                <%--</legend>--%>
+                                <%--<div class="bd">--%>
+                                    <%--<c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">--%>
+                                        <%--<div class="divTable">--%>
+                                            <%--<div class="divRow">--%>
+                                                <%--<div class="divCell" style="background-color: #eee">--%>
+                                                    <%--<fmt:formatNumber value="${status.count}" pattern="00"/>.--%>
+                                                    <%--&nbsp; ${item.shortenedBizName4Display}--%>
+                                                <%--</div>--%>
+                                                <%--<div class="divOfCell300" style="background-color: #eee">--%>
+                                                    <%--- &nbsp;${item.bizName}--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</c:forEach>--%>
+                                <%--</div>--%>
+                            <%--</fieldset>--%>
+                        <%--</section>--%>
+                    <%--</div>--%>
+                <%--</td>--%>
+            <%--</tr>--%>
         </table>
     </c:when>
     <c:otherwise>

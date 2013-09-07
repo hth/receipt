@@ -47,6 +47,9 @@ public final class ReportService {
     @Value("${http}")
     private String http;
 
+    @Value("${https}")
+    private String https;
+
     @Value("${host}")
     private String host;
 
@@ -87,7 +90,7 @@ public final class ReportService {
             Map rootMap = new HashMap();
             rootMap.put("doc", freemarker.ext.dom.NodeModel.parse(file));
 
-            rootMap.put("http", http);
+            rootMap.put("protocol", https);
             rootMap.put("host", host);
             rootMap.put("port", port);
             rootMap.put("appname", appName);

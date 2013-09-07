@@ -4,11 +4,11 @@
 <head>
 	<title></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-	<link rel="icon" type="image/x-icon" 			href="${http}://${host}:${port}/${appname}/images/circle-leaf-sized_small.png" />
-	<link rel="shortcut icon" type="image/x-icon" 	href="${http}://${host}:${port}/${appname}/images/circle-leaf-sized_small.png" />
+	<link rel="icon" type="image/x-icon" 			href="${protocol}://${host}:${port}/${appname}/images/circle-leaf-sized_small.png" />
+	<link rel="shortcut icon" type="image/x-icon" 	href="${protocol}://${host}:${port}/${appname}/images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' 			href='${http}://${host}:${port}/${appname}/jquery/css/receipt.css' />
-	<link rel='stylesheet' type='text/css' 			href='${http}://${host}:${port}/${appname}/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
+	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/jquery/css/receipt.css' />
+	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
 
 	<style type="text/css">
 		#headerDiv, #contentDiv {
@@ -68,7 +68,7 @@
 <body>
 <div class="divTable" style="width: 810px">
 	<div class="divRow">
-		<div class="divOfCell250" style="height: 46px"><img src="${http}://${host}:${port}/${appname}/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
+		<div class="divOfCell250" style="height: 46px"><img src="${protocol}://${host}:${port}/${appname}/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
 		<div class="divOfCell250">
 			<h3>
 				<div class="dropdown" style="height: 17px">
@@ -135,7 +135,7 @@
 			<div style="clear:both;"></div>
 			<div id="contentDiv">
 				<div id="myContent" style="display: block;">
-					<img src="${http}://${host}:${port}/${appname}/receiptimage.htm?id=${receipt.receiptBlobId}" style="width: 200px; height: 200px"/>
+					<img src="${protocol}://${host}:${port}/${appname}/receiptimage.htm?id=${receipt.receiptBlobId}" style="width: 200px; height: 200px"/>
 				</div>
 			</div>
 		</td>
