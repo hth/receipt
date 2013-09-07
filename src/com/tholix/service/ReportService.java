@@ -56,6 +56,9 @@ public final class ReportService {
     @Value("${port}")
     private String port;
 
+    @Value("${secure.port}")
+    private String securePort;
+
     @Value("${app.name}")
     private String appName;
 
@@ -92,7 +95,11 @@ public final class ReportService {
 
             rootMap.put("protocol", https);
             rootMap.put("host", host);
-            rootMap.put("port", port);
+            if(rootMap.get("protocol").equals(https)) {
+                rootMap.put("port", securePort);
+            } else {
+                rootMap.put("port", port);
+            }
             rootMap.put("appname", appName);
 
             return freemarkerDo(rootMap);
