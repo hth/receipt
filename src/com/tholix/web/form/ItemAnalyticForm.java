@@ -21,6 +21,7 @@ public final class ItemAnalyticForm {
     private List<ItemEntity> yourAverageItems;
     private List<ItemEntity> yourHistoricalItems;
     private int days;
+    private String message;
 
     private ItemAnalyticForm() {}
 
@@ -105,5 +106,13 @@ public final class ItemAnalyticForm {
 
     public void setDays(int days) {
         this.days = days;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

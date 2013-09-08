@@ -89,6 +89,19 @@
 
     <p>&nbsp;</p>
 
+    <c:if test="${!empty itemAnalyticForm.message}">
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+            <p>
+                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                <span style="display:block; width:410px;">
+                    ${itemAnalyticForm.message}
+                </span>
+            </p>
+        </div>
+    </div>
+    </c:if>
+
     <c:choose>
     <c:when test="${!empty itemAnalyticForm.yourHistoricalItems}">
     <table style="width: 900px" class="etable">

@@ -55,6 +55,9 @@ public class ItemAnalyticController {
             itemAnalyticForm.setDays(NINETY_DAYS);
 
             DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
+            if(item.getReceipt().getReceiptDate().before(untilThisDay.toDate())) {
+                itemAnalyticForm.setMessage("Since the item " + item.getName() + " was purchased more than " + NINETY_DAYS + " days ago no average could be calculated.");
+            }
 
             //TODO make sure a duplicate is reported when user uploads a new receipt and the old deleted receipt still existing with same information
             //so comparing is essential and its better to remove the duplicate
