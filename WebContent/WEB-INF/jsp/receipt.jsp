@@ -225,7 +225,7 @@
     <table>
         <tr>
             <td style="vertical-align: top;">
-                <form:form method="post" action="receipt.htm" modelAttribute="receiptForm">
+                <form:form method="post" action="../receipt.htm" modelAttribute="receiptForm">
                     <form:hidden path="receipt.id" id="receiptId"/>
                     <form:hidden path="receipt.notes.id"/>
                     <form:hidden path="receipt.notes.version"/>

@@ -115,7 +115,7 @@
                     <spring:eval expression="receipt.tax" />
                 </td>
                 <td style="padding:3px;" align="right">
-                    <a href="${pageContext.request.contextPath}/receipt.htm?id=${receipt.id}">
+                    <a href="${pageContext.request.contextPath}/receipt/${receipt.id}.htm">
                         <spring:eval expression="receipt.total" />
                     </a>
                 </td>
