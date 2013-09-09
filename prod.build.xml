@@ -143,6 +143,7 @@
                 <include name="**/*.jar" />
                 <include name="**/*.ftl" />
                 <include name="**/*.swf" />
+                <include name="**/*.map" />
             </fileset>
         </copy>
 
