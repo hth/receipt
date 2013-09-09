@@ -784,7 +784,7 @@
 <c:if test="${!empty months && isValidForMap}">
 <!-- Google Map -->
 <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsVM5IGJXRnMEZvva3F3TW0tcbnbyW-Pw&sensor=false">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCquJHK554o_uKPO-HqYMU5ifGtbIiU9_c&sensor=false">
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
