@@ -92,8 +92,8 @@ public class ReceiptUpdateController {
      * @param result
      * @return
      */
-	@RequestMapping(value = "/update", method = RequestMethod.POST, params="update")
-	public String update(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
+	@RequestMapping(value = "/submit", method = RequestMethod.POST, params= "submit")
+	public String submit(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptOCRForm.getReceiptOCR().getId() + " ; Title : " + receiptOCRForm.getReceiptOCR().getBizName().getName());
 		receiptOCRValidator.validate(receiptOCRForm, result);

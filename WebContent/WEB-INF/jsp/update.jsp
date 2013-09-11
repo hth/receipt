@@ -232,7 +232,7 @@
         <form:form method="post" action="delete.htm" modelAttribute="receiptOCRForm">
             <form:hidden path="receiptOCR.receiptId"/>
             <form:hidden path="receiptOCR.id"/>
-            <input id="deleteId" type="submit" value="Delete" name="delete"/>
+            <input type="submit" value="Delete" name="delete" id="deleteId"/>
         </form:form>
         </c:when>
         <c:otherwise>
@@ -269,7 +269,7 @@
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
-                    <form:form method="post" action="update.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                    <form:form method="post" action="submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
                         <form:errors path="receiptOCR" cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
                         <form:hidden path="receiptOCR.id"/>
@@ -380,7 +380,7 @@
                                     <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="reject" id="reject"/>
                                 </td>
                                 <td colspan="2">
-                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Update   " name="update" id="update"/>
+                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="submit" id="submit"/>
                                 </td>
                             </tr>
                         </table>
@@ -461,7 +461,7 @@
 
 <script>
     $(function() {
-        $("#update").focus();
+        $("#submit").focus();
     });
 </script>
 
