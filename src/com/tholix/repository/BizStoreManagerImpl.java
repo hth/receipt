@@ -137,21 +137,36 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
-        Criteria criteriaA = Criteria.where("ADDRESS").regex("^" + bizAddress, "i");
-        Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        Query query;
+        if(StringUtils.isBlank(bizAddress)) {
+            Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
-        Query query = Query.query(criteriaB).addCriteria(criteriaA);
+            query = Query.query(criteriaB);
+        } else {
+            Criteria criteriaA = Criteria.where("ADDRESS").regex("^" + bizAddress, "i");
+            Criteria criteriaB = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+
+            query = Query.query(criteriaB).addCriteria(criteriaA);
+        }
         query.fields().include(fieldName);
         return mongoTemplate.find(query, BizStoreEntity.class, TABLE);
     }
 
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
-        Criteria criteriaA = Criteria.where("PHONE").regex("^" + bizPhone, "i");
-        Criteria criteriaB = Criteria.where("ADDRESS").is(bizAddress);
-        Criteria criteriaC = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        Query query;
+        if(StringUtils.isBlank(bizPhone)) {
+            Criteria criteriaB = Criteria.where("ADDRESS").is(bizAddress);
+            Criteria criteriaC = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
-        Query query = Query.query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
+            query = Query.query(criteriaC).addCriteria(criteriaB);
+        } else {
+            Criteria criteriaA = Criteria.where("PHONE").regex("^" + bizPhone, "i");
+            Criteria criteriaB = Criteria.where("ADDRESS").is(bizAddress);
+            Criteria criteriaC = Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+
+            query = Query.query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
+        }
         query.fields().include(fieldName);
         return mongoTemplate.find(query, BizStoreEntity.class, TABLE);
     }
