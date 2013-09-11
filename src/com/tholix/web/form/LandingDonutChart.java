@@ -16,6 +16,7 @@ public final class LandingDonutChart {
     public static final int MAX_WIDTH   = 8;
 
     private String bizName;
+    private String bizNameForId;
     private BigDecimal total;
     private String expenseTypes;
     private String expenseValues;
@@ -25,6 +26,9 @@ public final class LandingDonutChart {
 
     private LandingDonutChart(String bizName) {
         this.bizName = bizName;
+
+        /** Remove all alpha numeric characters as it creates issues with 'id' */
+        this.bizNameForId = StringUtils.deleteWhitespace(bizName).replaceAll("[^a-zA-Z0-9]", "");
     }
 
     public static LandingDonutChart newInstance(String bizName) {
@@ -35,12 +39,8 @@ public final class LandingDonutChart {
         return bizName;
     }
 
-    public String getNoSpaceBizName() {
-        return StringUtils.deleteWhitespace(bizName);
-    }
-
-    public String getShortenedBizName4Display() {
-        return StringUtils.abbreviate(bizName, OFF_SET, MAX_WIDTH);
+    public String getBizNameForId() {
+        return bizNameForId;
     }
 
     public void setBizName(String bizName) {

@@ -128,8 +128,8 @@ public class LandingController extends BaseController {
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1 */
         log.info("Calculating Donut chart - receipt expense");
-        /** bizNames and bizByExpenseTypes added here */
-        populateReceiptExpenseDonutChartDetails(modelAndView, allReceiptsForThisMonth);
+        /** bizNames and bizByExpenseTypes added below to landingForm*/
+        populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
 
         landingService.computeTotalExpense(userSession.getUserProfileId(), modelAndView);
 
@@ -142,7 +142,7 @@ public class LandingController extends BaseController {
 	}
 
     /**
-     * Loads monthly receipt data for the selected month
+     * Loads monthly data for the selected month in the calendar
      *
      * @param monthView
      * @param previousOrNext
@@ -175,7 +175,7 @@ public class LandingController extends BaseController {
 
             /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
             log.info("Calculating Donut chart - receipt expense");
-            populateReceiptExpenseDonutChartDetails(modelAndView, allReceiptsForThisMonth);
+            populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
         }
@@ -186,10 +186,10 @@ public class LandingController extends BaseController {
     /**
      * Populate Receipt expense donut chart
      *
-     * @param modelAndView
+     * @param landingForm
      * @param receipts
      */
-    private void populateReceiptExpenseDonutChartDetails(ModelAndView modelAndView, List<ReceiptEntity> receipts) {
+    private void populateReceiptExpenseDonutChartDetails(LandingForm landingForm, List<ReceiptEntity> receipts) {
         List<LandingDonutChart> bizByExpenseTypes = new ArrayList<>();
         StringBuilder bizNames_sb = new StringBuilder();
         Map<String, Map<String, BigDecimal>> bizByExpenseTypeMap = landingService.allBusinessByExpenseType(receipts);
@@ -217,8 +217,8 @@ public class LandingController extends BaseController {
             bizByExpenseTypes.add(landingDonutChart);
         }
 
-        modelAndView.addObject("bizNames", bizNames_sb.toString().substring(0, bizNames_sb.toString().length() > 0 ? (bizNames_sb.toString().length() - 1) : 0));
-        modelAndView.addObject("bizByExpenseTypes", bizByExpenseTypes);
+        landingForm.setBizNames(bizNames_sb.toString().substring(0, bizNames_sb.toString().length() > 0 ? (bizNames_sb.toString().length() - 1) : 0));
+        landingForm.setBizByExpenseTypes(bizByExpenseTypes);
     }
 
     /**

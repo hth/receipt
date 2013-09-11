@@ -30,7 +30,7 @@ public final class ReceiptLandingView {
 
     String userProfileId;
 
-    String noSpaceBizName;
+    String bizNameForId;
 
     private ReceiptLandingView() {}
 
@@ -42,7 +42,9 @@ public final class ReceiptLandingView {
         receiptLandingView.setTax(receiptEntity.getTax());
         receiptLandingView.setTotal(receiptEntity.getTotal());
         receiptLandingView.setUserProfileId(receiptEntity.getUserProfileId());
-        receiptLandingView.setNoSpaceBizName(StringUtils.deleteWhitespace(receiptEntity.getBizName().getName()));
+
+        /** Remove all alpha numeric characters as it creates issues with 'id' */
+        receiptLandingView.setBizNameForId(StringUtils.deleteWhitespace(receiptEntity.getBizName().getName()).replaceAll("[^a-zA-Z0-9]", ""));
         return receiptLandingView;
     }
 
@@ -94,11 +96,11 @@ public final class ReceiptLandingView {
         this.userProfileId = userProfileId;
     }
 
-    public String getNoSpaceBizName() {
-        return noSpaceBizName;
+    public String getBizNameForId() {
+        return bizNameForId;
     }
 
-    public void setNoSpaceBizName(String noSpaceBizName) {
-        this.noSpaceBizName = noSpaceBizName;
+    public void setBizNameForId(String bizNameForId) {
+        this.bizNameForId = bizNameForId;
     }
 }

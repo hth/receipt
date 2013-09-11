@@ -345,9 +345,9 @@
                                 <th style="padding: 3px;">Total</th>
                             </tr>
                             <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
-                            <tr id="${receipt.noSpaceBizName}">
+                            <tr id="${receipt.bizNameForId}">
                                 <td style="padding: 3px; text-align: right">
-                                    ${status.count}
+                                    <fmt:formatNumber value="${status.count}" pattern="00"/>.
                                 </td>
                                 <td style="padding: 3px;">
                                     <spring:eval expression="receipt.name" />
@@ -371,36 +371,6 @@
                         <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
                     </td>
                 </tr>
-                <%--Remove associated data for this table--%>
-                <%--<tr>--%>
-                    <%--<td>&nbsp;</td>--%>
-                    <%--<td style="vertical-align: top;">--%>
-                        <%--<div>--%>
-                            <%--<section class="chunk">--%>
-                                <%--<fieldset>--%>
-                                    <%--<legend class="hd">--%>
-                                        <%--<span class="text"><fmt:message key="business.name.abrev" /></span>--%>
-                                    <%--</legend>--%>
-                                    <%--<div class="bd">--%>
-                                    <%--<c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">--%>
-                                        <%--<div class="divTable">--%>
-                                            <%--<div class="divRow">--%>
-                                                <%--<div class="divCell" style="background-color: #eee">--%>
-                                                    <%--<fmt:formatNumber value="${status.count}" pattern="00"/>.--%>
-                                                    <%--&nbsp; ${item.shortenedBizName4Display}--%>
-                                                <%--</div>--%>
-                                                <%--<div class="divOfCell300" style="background-color: #eee">--%>
-                                                    <%--- &nbsp;${item.bizName}--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</c:forEach>--%>
-                                    <%--</div>--%>
-                                <%--</fieldset>--%>
-                            <%--</section>--%>
-                        <%--</div>--%>
-                    <%--</td>--%>
-                <%--</tr>--%>
             </table>
             </c:when>
             <c:otherwise>
@@ -556,27 +526,27 @@
     }
 </script>
 
-<c:if test="${!empty bizByExpenseTypes}">
+<c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
 <script>
     $(function () {
 
         var colors = Highcharts.getOptions().colors,
-            categories = [${bizNames}],
+            categories = [${landingForm.bizNames}],
             data = [
-                <c:forEach var="item" items="${bizByExpenseTypes}"  varStatus="status">
+                <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
                 {
                     y: ${item.total},
                     color: colors[${status.count-1}],
                     url: 'receipt/biz/${item.bizName}.htm',
-                    id: '${item.noSpaceBizName}',
+                    id: '${item.bizNameForId}',
                     drilldown: {
                         name: '${item.bizName}',
                         categories: [${item.expenseTypes}],
                         data: [${item.expenseValues}],
                         color: colors[${status.count-1}],
                         url: 'receipt/biz/${item.bizName}.htm',
-                        id: '${item.noSpaceBizName}'
+                        id: '${item.bizNameForId}'
                     }
                 },
                 </c:forEach>

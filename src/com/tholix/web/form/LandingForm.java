@@ -17,6 +17,8 @@ public final class LandingForm {
     private ReceiptForMonth receiptForMonth;
     private List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations;
     private List<ReceiptGrouped> receiptGroupedByMonths;
+    private List<LandingDonutChart> bizByExpenseTypes;
+    private String bizNames;
 
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
@@ -46,6 +48,22 @@ public final class LandingForm {
      */
     public void setReceiptGroupedByMonths(List<ReceiptGrouped> receiptGroupedByMonths) {
         this.receiptGroupedByMonths = receiptGroupedByMonths;
+    }
+
+    public List<LandingDonutChart> getBizByExpenseTypes() {
+        return bizByExpenseTypes;
+    }
+
+    public void setBizByExpenseTypes(List<LandingDonutChart> bizByExpenseTypes) {
+        this.bizByExpenseTypes = bizByExpenseTypes;
+    }
+
+    public String getBizNames() {
+        return bizNames;
+    }
+
+    public void setBizNames(String bizNames) {
+        this.bizNames = bizNames;
     }
 }
 
