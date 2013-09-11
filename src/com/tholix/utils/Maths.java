@@ -16,7 +16,12 @@ import org.apache.log4j.Logger;
  */
 public final class Maths {
     private static volatile Logger log = Logger.getLogger(Maths.class);
-    private static final int SCALE = 6;
+
+    /**
+     * Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places.
+     */
+    public static final int SCALE_FOUR = 4;
+    public static final int SCALE_SIX = 6;
 
     //double[] values = { 1.0, 3.5, 123.4567, 10.0 };
     //output 1 3.5 123.457 10
@@ -81,8 +86,8 @@ public final class Maths {
      */
     public static BigDecimal divide(BigDecimal divide, BigDecimal by) {
         try {
-            BigDecimal division = divide.divide(by, 6, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
-            division = division.setScale(SCALE, BigDecimal.ROUND_HALF_UP);
+            BigDecimal division = divide.divide(by, SCALE_SIX, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
+            division = division.setScale(SCALE_SIX, BigDecimal.ROUND_HALF_UP);
             return division;
         } catch (ArithmeticException exception) {
             // This should never occur. If this occur the problem is likely to be in code than receipt data.
@@ -120,9 +125,10 @@ public final class Maths {
      * @param withThis
      * @return
      */
+    //TODO may be include strip trailing zeros
     public static BigDecimal multiply(BigDecimal value, BigDecimal withThis) {
         BigDecimal multiplication = value.multiply(withThis);
-        multiplication = multiplication.setScale(2, BigDecimal.ROUND_HALF_UP);
+        multiplication = multiplication.setScale(SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
         //log.debug("multiply: " + value + " * " + withThis + " = " + multiplication);
         return multiplication;
     }
