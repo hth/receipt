@@ -3,6 +3,9 @@
  */
 package com.tholix.utils;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,13 +26,10 @@ public final class Formatter {
 	private static final Logger log = Logger.getLogger(Formatter.class);
 
     //Defaults to US
-    private static String FORMAT_TO_US = "US";
+    private static final String FORMAT_TO_US = "US";
 
 	/** For double */
 	public static DecimalFormat df = new DecimalFormat("#.##");
-
-	public static NumberFormat defaultFormat = NumberFormat.getCurrencyInstance();
-    private static PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
     //Refer bug #3
     //TODO may be change this method to support just item format and net format. Means have two method with scale of 2 and 4. 2 scale for total; and 4 scale for
@@ -37,12 +37,18 @@ public final class Formatter {
 		BigDecimal d;
         try {
             if(value.startsWith("$")) {
-                Number number = defaultFormat.parse(value);
-                d = new BigDecimal(number.doubleValue()).setScale(4, BigDecimal.ROUND_HALF_UP);
+                Number number = FormatterSingleton.INSTANCE.currencyInstance().parse(value);
+                d = new BigDecimal(number.doubleValue()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
             } else {
-                d = new BigDecimal(value).setScale(4, BigDecimal.ROUND_HALF_UP);
+                try {
+                    Object object = FormatterSingleton.INSTANCE.engine().eval(value);
+                    d = new BigDecimal(object.toString()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
+                } catch (ScriptException se) {
+                    log.error("Error parsing number value: " + value + ", exception: " + se);
+                    throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
+                }
+                //d = new BigDecimal(value).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
             }
-
             return d;
         } catch(NumberFormatException nfe) {
             log.error("Error parsing number value: " + value + ", exception: " + nfe);
@@ -59,11 +65,31 @@ public final class Formatter {
     public static String phone(String phone) {
         try {
             //Currently defaults to US
-            Phonenumber.PhoneNumber numberPrototype = phoneUtil.parse(phone, FORMAT_TO_US);
-            return phoneUtil.format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
+            Phonenumber.PhoneNumber numberPrototype = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
+            return FormatterSingleton.INSTANCE.phoneInstance().format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
             log.error("NumberParseException was thrown while parsing the phone number : " + e.toString());
             return "";
         }
+    }
+}
+
+/**
+ * Define all singleton here
+ *
+ */
+enum FormatterSingleton {
+    INSTANCE;
+
+    protected ScriptEngine engine() {
+        return new ScriptEngineManager().getEngineByName("JavaScript");
+    }
+
+    protected PhoneNumberUtil phoneInstance() {
+        return PhoneNumberUtil.getInstance();
+    }
+
+    protected NumberFormat currencyInstance() {
+        return NumberFormat.getCurrencyInstance();
     }
 }
