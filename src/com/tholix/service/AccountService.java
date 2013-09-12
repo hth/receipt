@@ -67,6 +67,9 @@ public final class AccountService {
 
         try {
             userProfile = userRegistrationForm.newUserProfileEntity(userAuthentication);
+            //TODO For now de-activate all registration. Currently registration is by invitation only.
+            userProfile.inActive();
+
             userProfileManager.save(userProfile);
         } catch (Exception e) {
             log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());

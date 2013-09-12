@@ -71,6 +71,7 @@ public class AccountController {
         }
 
         try {
+            //TODO For now de-activate all registration. Currently registration is by invitation only.
             userProfile = accountService.createNewAccount(userRegistrationForm);
             log.info("Registered new Email Id: " + userProfile.getEmailId());
         } catch(Exception exce) {
@@ -83,9 +84,15 @@ public class AccountController {
         redirectAttrs.addFlashAttribute("userSession", userSession);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-        /** This code to invoke the controller */
-        return "redirect:/landing.htm";
-	}
+
+        if(userProfile.isActive()) {
+            /** This code to invoke the controller */
+            return "redirect:/landing.htm";
+        } else {
+            //TODO For now de-activate all registration. Currently registration is by invitation only.
+            return NEW_ACCOUNT;
+        }
+    }
 
     /**
      * Starts the account recovery process
