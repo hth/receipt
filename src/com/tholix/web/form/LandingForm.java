@@ -1,5 +1,6 @@
 package com.tholix.web.form;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.tholix.domain.value.ReceiptGrouped;
@@ -17,6 +18,9 @@ public final class LandingForm {
     private ReceiptForMonth receiptForMonth;
     private List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations;
     private List<ReceiptGrouped> receiptGroupedByMonths;
+
+    /** Receipts grouped by days. Used in showing in Calendar */
+    private Iterator<ReceiptGrouped> receiptGrouped;
     private List<LandingDonutChart> bizByExpenseTypes;
     private String bizNames;
 
@@ -48,6 +52,14 @@ public final class LandingForm {
      */
     public void setReceiptGroupedByMonths(List<ReceiptGrouped> receiptGroupedByMonths) {
         this.receiptGroupedByMonths = receiptGroupedByMonths;
+    }
+
+    public Iterator<ReceiptGrouped> getReceiptGrouped() {
+        return receiptGrouped;
+    }
+
+    public void setReceiptGrouped(Iterator<ReceiptGrouped> receiptGrouped) {
+        this.receiptGrouped = receiptGrouped;
     }
 
     public List<LandingDonutChart> getBizByExpenseTypes() {

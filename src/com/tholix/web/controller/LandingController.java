@@ -109,7 +109,7 @@ public class LandingController extends BaseController {
         /** Receipt grouped by date */
         log.info("Calculating calendar grouped expense");
         Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(userSession.getUserProfileId());
-        modelAndView.addObject("receiptGrouped", receiptGrouped);
+        landingForm.setReceiptGrouped(receiptGrouped);
 
         /** Lists all the receipt grouped by months */
         List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(userSession.getUserProfileId());
