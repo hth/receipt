@@ -1,5 +1,7 @@
 package com.tholix.web.form;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * User: hitender
  * Date: 5/31/13
@@ -17,7 +19,7 @@ public final class ForgotRecoverForm {
     }
 
     public String getEmailId() {
-        return emailId;
+        return StringUtils.lowerCase(emailId);
     }
 
     public void setEmailId(String emailId) {
