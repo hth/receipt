@@ -98,6 +98,9 @@
                 <include name="*.properties" />
             </fileset>
         </copy>
+        <propertyfile file="${prod.ready.classes.dir}/conf/build.version.properties">
+            <entry key="build.version" value="${env.BUILD_NUMBER}"/>
+        </propertyfile>
     </target>
 
     <target name="do-if-pass-present" depends="check-pass-properties" if="properties.present">

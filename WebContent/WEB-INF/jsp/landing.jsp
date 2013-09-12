@@ -261,7 +261,7 @@
 								editable : false,
                                 weekMode : 'liquid',
 								events : [
-                                <c:set var="receiptGroupedIterator" value="${requestScope.receiptGrouped}" />
+                                <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
                                 <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
 								{
 									title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
@@ -500,7 +500,7 @@
         <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
         <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
     </p>
-    <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+    <p>&copy; 2013 receipt-o-fi. All Rights Reserved. Build #<fmt:message key="build.version" /></p>
 </div>
 
 <script>
