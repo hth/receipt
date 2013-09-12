@@ -61,7 +61,7 @@
         <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
         <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
     </p>
-    <p>&copy; 2013 receipt-o-fi. All Rights Reserved.</p>
+    <p>&copy; 2013 receipt-o-fi. All Rights Reserved. Build - #<fmt:message key="build.version" />.</p>
 </div>
 
 <script>

@@ -36,8 +36,6 @@
     <context:property-placeholder location="classpath:/conf/pass.properties"   order="3" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/prod.properties"   order="4" ignore-unresolvable="true" />
-    <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/build.version.properties" order="5" ignore-unresolvable="true" />
 
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />

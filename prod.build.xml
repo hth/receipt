@@ -98,7 +98,7 @@
                 <include name="*.properties" />
             </fileset>
         </copy>
-        <propertyfile file="${prod.ready.classes.dir}/conf/build.version.properties">
+        <propertyfile file="${prod.ready.classes.dir}/messages.properties">
             <entry key="build.version" value="${env.BUILD_NUMBER}"/>
         </propertyfile>
     </target>
