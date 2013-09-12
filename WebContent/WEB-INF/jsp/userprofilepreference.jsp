@@ -203,12 +203,12 @@
             <form:hidden path="userProfile.id"/>
             <div class="divTable">
                 <div class="divRow">
-                    <div class="divRow">
-                        <div class="divOfCell600">
-                            Profile Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <b><spring:eval expression="userProfilePreferenceForm.userProfile.id" /></b>
-                        </div>
+                    <div class="divOfCell600">
+                        Profile Id: &nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.id" /></b>
                     </div>
+                </div>
+                <div class="divRow">
                     <div class="divOfCell600">
                         Level: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -220,7 +220,7 @@
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
-                        Active: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Active: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         <form:checkbox path="active" id="active" />Active
                     </div>
