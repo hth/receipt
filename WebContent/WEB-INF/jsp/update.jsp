@@ -8,16 +8,16 @@
 	<title><fmt:message key="receipt.update" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+	<link rel='stylesheet' type='text/css' href='../../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='../../jquery/css/receipt.css'>
 
-	<script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type="text/javascript" src="../jquery/js/raphael/raphael-min.js"></script>
-    <script type="text/javascript" src="../jquery/js/dynamic_list_helper2.js"></script>
+	<script type="text/javascript" src="../../jquery/js/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="../../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script type="text/javascript" src="../../jquery/js/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/dynamic_list_helper2.js"></script>
 
 	<script>
 		/* add background color to holder in tr tag */
@@ -174,7 +174,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="../../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
@@ -193,7 +193,7 @@
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <img src="../../images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
@@ -229,7 +229,7 @@
     <c:if test="${isValid}">
     <c:choose>
         <c:when test="${empty receiptOCRForm.receiptOCR.receiptId}">
-        <form:form method="post" action="delete.htm" modelAttribute="receiptOCRForm">
+        <form:form method="post" action="../delete.htm" modelAttribute="receiptOCRForm">
             <form:hidden path="receiptOCR.receiptId"/>
             <form:hidden path="receiptOCR.id"/>
             <input type="submit" value="Delete" name="delete" id="deleteId"/>
@@ -269,7 +269,8 @@
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
-                    <form:form method="post" action="submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                    <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                        <form:errors path="errorMessage" cssClass="error" />
                         <form:errors path="receiptOCR" cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
                         <form:hidden path="receiptOCR.id"/>
@@ -362,15 +363,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4" style="text-align: right; width: 300px">
+                                <td colspan="4" style="text-align: right; width: 300px; vertical-align: top">
                                     <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
                                     <form:input path="receiptOCR.tax" id="tax" size="5"/>
                                 </td>
-                                <td colspan="1">
+                                <td colspan="1" style="vertical-align: top">
                                     <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
                                     <form:errors path="receiptOCR.subTotal" cssClass="error" />
                                 </td>
-                                <td colspan="1">
+                                <td colspan="1" style="vertical-align: top">
                                     <form:input path="receiptOCR.total" id="total" size="8"/>
                                     <form:errors path="receiptOCR.total" cssClass="error" />
                                 </td>

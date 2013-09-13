@@ -135,7 +135,7 @@ public class LandingController extends BaseController {
 
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(userSession.getUserProfileId());
-        modelAndView.addObject("notifications", notifications);
+        landingForm.setNotifications(notifications);
 
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

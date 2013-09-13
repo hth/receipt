@@ -83,9 +83,14 @@ public final class ReceiptOCRValidator implements Validator {
                 BigDecimal submittedSubTotal = Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getSubTotal());
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
-                    errors.rejectValue("receiptOCR.subTotal", "field.currency.match.first", new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal()}, "Summation not adding up");
+                    errors.rejectValue("receiptOCR.subTotal", "field.currency.match.first",
+                            new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal},
+                            "Summation not adding up");
+
                 } else if (comparedValue < 0) {
-                    errors.rejectValue("receiptOCR.subTotal", "field.currency.match.second", new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal()}, "Summation not adding up");
+                    errors.rejectValue("receiptOCR.subTotal", "field.currency.match.second",
+                            new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal},
+                            "Summation not adding up");
                 }
             } catch (ParseException e) {
                 errors.rejectValue("receiptOCR.subTotal", "field.currency", new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal()}, "Unsupported currency format");

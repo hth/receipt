@@ -42,6 +42,8 @@ import com.tholix.web.form.UserProfilePreferenceForm;
 import com.tholix.web.validator.ExpenseTypeValidator;
 
 /**
+ * Note: Follow PRG model with support for result binding
+ *
  * @author hitender
  * @since Jan 14, 2013 11:06:41 PM
  *

@@ -10,13 +10,15 @@ import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -36,6 +38,8 @@ import com.tholix.web.validator.ReceiptOCRValidator;
  * Class manages first processing of a receipt. That includes loading of a receipts by technician.
  * Updating of a receipt by technician. Same is true for recheck of receipt by technician.
  *
+ * This same class is used for showing the pending receipt to user
+ *
  * @author hitender
  * @since Jan 7, 2013 2:13:22 AM
  */
@@ -45,15 +49,16 @@ import com.tholix.web.validator.ReceiptOCRValidator;
 public class ReceiptUpdateController {
     private static final Logger log = Logger.getLogger(ReceiptUpdateController.class);
 
-	private static final String nextPage = "/update";
-    private static final String nextPageRecheck = "/recheck";
+	private static final String NEXT_PAGE_UPDATE        = "/update";
+    private static final String NEXT_PAGE_RECHECK       = "/recheck";
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
     @Autowired private ReceiptOCRValidator receiptOCRValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
 
     /**
-     * Loads the receipts for technician.
+     * For Technician: Loads new receipts.
+     * For User :Method helps user to load either pending new receipt or pending recheck receipt.
      *
      * Added logic to make sure only the user of the receipt or technician can see the receipt.
      *
@@ -62,28 +67,47 @@ public class ReceiptUpdateController {
      * @param receiptOCRForm
      * @return
      */
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public ModelAndView update(@ModelAttribute("userSession") UserSession userSession, @RequestParam("id") String receiptOCRId, @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
-        DateTime time = DateUtil.now();
-        ReceiptEntityOCR receipt = receiptUpdateService.loadReceiptOCRById(receiptOCRId);
-        if(receipt == null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                log.info("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
-            } else {
-                log.warn("No such receipt exists. Request made by: " + userSession.getUserProfileId());
-            }
-        } else if(userSession.getUserProfileId().equalsIgnoreCase(receipt.getUserProfileId()) || (userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue())) {
-            receiptOCRForm.setReceiptOCR(receipt);
+	@RequestMapping(value = "/update/{receiptOCRId}", method = RequestMethod.GET)
+	public ModelAndView update(@PathVariable String receiptOCRId, @ModelAttribute("userSession") UserSession userSession,
+                               @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm,
+                               final Model model) {
 
-            List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
-            receiptOCRForm.setItems(items);
-        } else {
-            log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
+        DateTime time = DateUtil.now();
+        loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
+
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.receiptOCRForm", model.asMap().get("result"));
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return new ModelAndView(nextPage);
+        return new ModelAndView(NEXT_PAGE_UPDATE);
 	}
+
+    /**
+     * For Technician: Loads recheck receipt
+     *
+     * @param userSession
+     * @param receiptOCRId
+     * @param receiptOCRForm
+     * @return
+     */
+    @RequestMapping(value = "/recheck/{receiptOCRId}", method = RequestMethod.GET)
+    public ModelAndView recheck(@PathVariable String receiptOCRId, @ModelAttribute("userSession") UserSession userSession,
+                                @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm,
+                                final Model model) {
+
+        DateTime time = DateUtil.now();
+        loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
+
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.receiptOCRForm", model.asMap().get("result"));
+        }
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return new ModelAndView(NEXT_PAGE_RECHECK);
+    }
 
     /**
      * Process receipt after submitted by technician
@@ -93,13 +117,17 @@ public class ReceiptUpdateController {
      * @return
      */
 	@RequestMapping(value = "/submit", method = RequestMethod.POST, params= "submit")
-	public String submit(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
+	public ModelAndView submit(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm,
+                         BindingResult result,
+                         final RedirectAttributes redirectAttrs) {
+
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptOCRForm.getReceiptOCR().getId() + " ; Title : " + receiptOCRForm.getReceiptOCR().getBizName().getName());
 		receiptOCRValidator.validate(receiptOCRForm, result);
 		if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
-            return nextPage;
+            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
 		}
 
         try {
@@ -111,12 +139,13 @@ public class ReceiptUpdateController {
 
             receiptUpdateService.turkReceipt(receipt, items, receiptOCR);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-            return REDIRECT_EMP_LANDING_HTM;
+            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
-            result.rejectValue("receipt", "", exce.getLocalizedMessage());
+            result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("result", result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
-            return nextPage;
+            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
         }
 	}
 
@@ -126,10 +155,10 @@ public class ReceiptUpdateController {
      * @param receiptOCRForm
      * @return
      */
-    @RequestMapping(value = "/update", method = RequestMethod.POST, params="reject")
+    @RequestMapping(value = "/submit", method = RequestMethod.POST, params="reject")
     public ModelAndView reject(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
-        log.info("Staring of Rejecting Receipt OCR: " + receiptOCRForm.getReceiptOCR().getId());
+        log.info("Beginning of Rejecting Receipt OCR: " + receiptOCRForm.getReceiptOCR().getId());
         try {
             ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
             receiptUpdateService.turkReject(receiptOCR);
@@ -141,24 +170,8 @@ public class ReceiptUpdateController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt reject");
 
             receiptOCRForm.setErrorMessage("Receipt could not be processed for Reject. Contact administrator with Receipt OCR # " + receiptOCRForm.getReceiptOCR().getId());
-            return new ModelAndView(nextPage);
+            return new ModelAndView(NEXT_PAGE_UPDATE);
         }
-    }
-
-    /**
-     * Loads receipt for recheck for technician
-     *
-     * @param userSession
-     * @param receiptOCRId
-     * @param receiptOCRForm
-     * @return
-     */
-    @RequestMapping(value = "/recheck", method = RequestMethod.GET)
-    public ModelAndView recheck(@ModelAttribute("userSession") UserSession userSession, @RequestParam("id") String receiptOCRId, @ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
-        DateTime time = DateUtil.now();
-        this.update(userSession, receiptOCRId, receiptOCRForm);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return new ModelAndView(nextPageRecheck);
     }
 
     /**
@@ -169,13 +182,17 @@ public class ReceiptUpdateController {
      * @return
      */
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
-    public String recheck(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm, BindingResult result) {
+    public ModelAndView recheck(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm,
+                                BindingResult result,
+                                final RedirectAttributes redirectAttrs) {
+
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptOCRForm.getReceiptOCR().getId() + " ; Title : " + receiptOCRForm.getReceiptOCR().getBizName().getName());
         receiptOCRValidator.validate(receiptOCRForm, result);
         if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
-            return nextPageRecheck;
+            return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
         }
 
         try {
@@ -187,12 +204,13 @@ public class ReceiptUpdateController {
 
             receiptUpdateService.turkReceiptReCheck(receipt, items, receiptOCR);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-            return REDIRECT_EMP_LANDING_HTM;
+            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
-            result.rejectValue("receipt", "", exce.getLocalizedMessage());
+            result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("result", result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt recheck save");
-            return nextPageRecheck;
+            return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
         }
     }
 
@@ -210,5 +228,23 @@ public class ReceiptUpdateController {
             receiptUpdateService.deletePendingReceiptOCR(receiptOCRForm.getReceiptOCR());
         }
         return "redirect:/pending.htm";
+    }
+
+    private void loadBasedOnAppropriateUserLevel(String receiptOCRId, UserSession userSession, ReceiptOCRForm receiptOCRForm) {
+        ReceiptEntityOCR receipt = receiptUpdateService.loadReceiptOCRById(receiptOCRId);
+        if(receipt == null) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
+                log.info("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
+            } else {
+                log.warn("No such receipt exists. Request made by: " + userSession.getUserProfileId());
+            }
+        } else if(userSession.getUserProfileId().equalsIgnoreCase(receipt.getUserProfileId()) || (userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue())) {
+            receiptOCRForm.setReceiptOCR(receipt);
+
+            List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
+            receiptOCRForm.setItems(items);
+        } else {
+            log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
+        }
     }
 }

@@ -107,7 +107,7 @@
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptEntityOCR.id}">
+                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptEntityOCR.id}.htm">
                                     ${receipt.fileName}
                                     </a>
                                 </td>
@@ -145,7 +145,7 @@
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptEntityOCR.id}">
+                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptEntityOCR.id}.htm">
                                     ${receipt.fileName}
                                     </a>
                                 </td>

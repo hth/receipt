@@ -120,7 +120,7 @@
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptOCRId}.htm">
                             Open
                         </a>
                     </td>
@@ -156,7 +156,7 @@
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/update.htm?id=${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptOCRId}.htm">
                             Open
                         </a>
                     </td>
@@ -192,7 +192,7 @@
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.receiptOCRId}.htm">
                             Open
                         </a>
                     </td>
@@ -228,7 +228,7 @@
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
                     <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck.htm?id=${receipt.receiptOCRId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.receiptOCRId}.htm">
                             Open
                         </a>
                     </td>

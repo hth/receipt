@@ -7,17 +7,17 @@
 <head>
     <title><fmt:message key="receipt.update" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
 
-    <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href='../../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+    <link rel='stylesheet' type='text/css' href='../../jquery/css/receipt.css'>
 
-    <script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/raphael/raphael-min.js"></script>
-    <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <script>
         /* add background color to holder in tr tag */
@@ -189,7 +189,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="../../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
                 <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
@@ -208,7 +208,7 @@
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <img src="../../images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
@@ -229,6 +229,19 @@
 
     <h2 class="demoHeaders">Pending receipt recheck</h2>
 
+    <c:if test="${!empty receiptOCRForm.errorMessage}">
+        <div class="ui-widget">
+            <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                    <span style="display:block; width: auto">
+                        ${receiptOCRForm.errorMessage}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </c:if>
+
     <table>
         <tr>
             <td style="vertical-align: top;">
@@ -240,7 +253,8 @@
                         Oops! Seems like user has deleted this receipt recently.
                     </c:when>
                     <c:otherwise>
-                    <form:form method="post" action="recheck.htm" modelAttribute="receiptOCRForm">
+                    <form:form method="post" action="../recheck.htm" modelAttribute="receiptOCRForm">
+                        <form:errors path="errorMessage" cssClass="error" />
                         <form:errors path="receiptOCR" cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
                         <form:hidden path="receiptOCR.id" id="receiptId"/>
@@ -329,15 +343,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: right;">
+                                <td colspan="3" style="text-align: right; vertical-align: top">
                                     <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
                                     <form:input path="receiptOCR.tax" id="tax" size="5"/>
                                 </td>
-                                <td colspan="1">
+                                <td colspan="1" style="vertical-align: top">
                                     <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
                                     <form:errors path="receiptOCR.subTotal" cssClass="error" />
                                 </td>
-                                <td colspan="1">
+                                <td colspan="1" style="vertical-align: top">
                                     <form:input path="receiptOCR.total" id="total" size="8"/>
                                     <form:errors path="receiptOCR.total" cssClass="error" />
                                 </td>
