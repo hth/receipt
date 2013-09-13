@@ -103,9 +103,9 @@ public class NotificationEntity extends BaseEntity {
             case MESSAGE:
                 return getMessage();
             case RECEIPT_OCR:
-                return "<a href=\"" + "./emp/update/" + getReferenceId() + ".htm" + "\">" + getMessage4Display() + "</a>";
+                return getReceiptUpdateURL(getReferenceId(), getMessage4Display());
             case RECEIPT:
-                return "<a href=\"" + "./receipt/" + getReferenceId() + ".htm" + "\">" + getMessage4Display() + "</a>";
+                return getReceiptURL(getReferenceId(), getMessage4Display());
             default:
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
@@ -116,12 +116,22 @@ public class NotificationEntity extends BaseEntity {
             case MESSAGE:
                 return getMessage();
             case RECEIPT_OCR:
-                return "<a href=\"" + "./emp/update/" + getReferenceId() + ".htm" + "\">" + getMessage() + "</a>";
+                return getReceiptUpdateURL(getReferenceId(), getMessage());
             case RECEIPT:
-                return "<a href=\"" + "./receipt/" + getReferenceId() + ".htm" + "\">" + getMessage() + "</a>";
+                return getReceiptURL(getReferenceId(), getMessage());
             default:
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
+    }
+
+    @Transient
+    private String getReceiptUpdateURL(String referenceId, String message) {
+        return "<a href=\"" + "./emp/update/" + referenceId + ".htm" + "\">" + message + "</a>";
+    }
+
+    @Transient
+    private String getReceiptURL(String referenceId, String message) {
+        return "<a href=\"" + "./receipt/" + referenceId + ".htm" + "\">" + message + "</a>";
     }
 
     /**
