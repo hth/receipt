@@ -40,6 +40,9 @@ public final class AccountService {
     @Value("${grandPassword}")
     private String grandPassword;
 
+    @Value("${domain}")
+    private String domain;
+
     public UserProfileEntity findIfUserExists(String emailId) {
         return userProfileManager.findOneByEmail(emailId);
     }
@@ -67,8 +70,11 @@ public final class AccountService {
 
         try {
             userProfile = userRegistrationForm.newUserProfileEntity(userAuthentication);
-            //TODO For now de-activate all registration. Currently registration is by invitation only.
-            userProfile.inActive();
+
+            if(!domain.startsWith("localhost")) {
+                //TODO For now de-activate all registration. Currently registration is by invitation only.
+                userProfile.inActive();
+            }
 
             userProfileManager.save(userProfile);
         } catch (Exception e) {

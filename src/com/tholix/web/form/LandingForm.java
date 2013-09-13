@@ -3,6 +3,7 @@ package com.tholix.web.form;
 import java.util.Iterator;
 import java.util.List;
 
+import com.tholix.domain.NotificationEntity;
 import com.tholix.domain.value.ReceiptGrouped;
 import com.tholix.domain.value.ReceiptGroupedByBizLocation;
 import com.tholix.web.helper.ReceiptForMonth;
@@ -23,6 +24,8 @@ public final class LandingForm {
     private Iterator<ReceiptGrouped> receiptGrouped;
     private List<LandingDonutChart> bizByExpenseTypes;
     private String bizNames;
+
+    List<NotificationEntity> notifications;
 
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
@@ -76,6 +79,14 @@ public final class LandingForm {
 
     public void setBizNames(String bizNames) {
         this.bizNames = bizNames;
+    }
+
+    public List<NotificationEntity> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<NotificationEntity> notifications) {
+        this.notifications = notifications;
     }
 }
 

@@ -291,14 +291,14 @@
 			    </div>
 			</td>
             <td style="vertical-align: top;" style="width: 250px">
-                <c:if test="${!empty notifications}">
+                <c:if test="${!empty landingForm.notifications}">
                 <div>
                     <section class="chunk">
                         <fieldset>
                             <legend class="hd">
                                 <span class="text"><fmt:message key="notification.title" /></span>
                             </legend>
-                            <c:forEach var="notification" items="${notifications}" varStatus="status">
+                            <c:forEach var="notification" items="${landingForm.notifications}" varStatus="status">
                             <div class="bd">
                                 <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.notificationMessage4Display}</div>
                             </div>

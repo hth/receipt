@@ -103,9 +103,9 @@ public class NotificationEntity extends BaseEntity {
             case MESSAGE:
                 return getMessage();
             case RECEIPT_OCR:
-                return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage4Display() + "</a>";
+                return "<a href=\"" + "./emp/update/" + getReferenceId() + ".htm" + "\">" + getMessage4Display() + "</a>";
             case RECEIPT:
-                return "<a href=\"" + "./receipt.htm?id=" + getReferenceId() + "\">" + getMessage4Display() + "</a>";
+                return "<a href=\"" + "./receipt/" + getReferenceId() + ".htm" + "\">" + getMessage4Display() + "</a>";
             default:
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
@@ -116,9 +116,9 @@ public class NotificationEntity extends BaseEntity {
             case MESSAGE:
                 return getMessage();
             case RECEIPT_OCR:
-                return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
+                return "<a href=\"" + "./emp/update.htm?id=" + getReferenceId() + ".htm" + "\">" + getMessage() + "</a>";
             case RECEIPT:
-                return "<a href=\"" + "./receipt.htm?id=" + getReferenceId() + "\">" + getMessage() + "</a>";
+                return "<a href=\"" + "./receipt/" + getReferenceId() + ".htm" + "\">" + getMessage() + "</a>";
             default:
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
