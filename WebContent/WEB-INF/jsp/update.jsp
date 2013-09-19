@@ -288,7 +288,7 @@
                                     </div>
                                     <div class="rightAlign">
                                         <form:label for="receiptOCR.receiptDate" path="receiptOCR.receiptDate" cssErrorClass="error">Date</form:label>
-                                        <form:input path="receiptOCR.receiptDate" id="date" size="32"/>
+                                        <form:input path="receiptOCR.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
                                     </div>
                                 </td>
                             </tr>
@@ -485,6 +485,34 @@
             rowAddedListener : rowAdded
         };
         new DynamicListHelper(config);
+    });
+</script>
+
+<script>
+    $(function () {
+        $('.tooltip').each(function () {
+            var $this, id, t;
+
+            $this = $(this);
+            id = this.id;
+            t = $('<span />', {
+                title: $this.attr('title')
+            }).appendTo($this.parent()).tooltip({
+                position: {
+                    of: '#' + id,
+                    my: "left+250 center",
+                    at: "left center",
+                    collision: "fit"
+                }
+            });
+            // remove the title from the real element.
+            $this.attr('title', '');
+            $('#' + id).focusin(function () {
+                t.tooltip('open');
+            }).focusout(function () {
+                t.tooltip('close');
+            });
+        });
     });
 </script>
 

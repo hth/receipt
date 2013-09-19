@@ -145,6 +145,10 @@ public final class Maths {
         return multiply(new BigDecimal(value.toString()), new BigDecimal(withThis));
     }
 
+    public static BigDecimal multiply(Double value, Double withThis) {
+        return multiply(new BigDecimal(value.toString()), new BigDecimal(withThis.toString()));
+    }
+
     public static  BigDecimal multiply(String value, String withThis) {
         return  multiply(new BigDecimal(value), new BigDecimal(withThis));
     }

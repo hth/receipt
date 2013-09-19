@@ -84,12 +84,12 @@ public final class ReceiptOCRValidator implements Validator {
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
                     errors.rejectValue("receiptOCR.subTotal", "field.currency.match.first",
-                            new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal},
+                            new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal.toString()},
                             "Summation not adding up");
 
                 } else if (comparedValue < 0) {
                     errors.rejectValue("receiptOCR.subTotal", "field.currency.match.second",
-                            new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal},
+                            new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal.toString()},
                             "Summation not adding up");
                 }
             } catch (ParseException e) {

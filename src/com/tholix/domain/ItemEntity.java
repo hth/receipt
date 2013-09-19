@@ -48,7 +48,7 @@ public class ItemEntity extends BaseEntity {
     private Double tax;
 
     @Field("QUANTITY")
-    private int quantity = 1;
+    private Double quantity = 1.00;
 
 	@NotNull
     @Field("TAX_ENUM")
@@ -144,11 +144,11 @@ public class ItemEntity extends BaseEntity {
         return Maths.multiply(tax, quantity);
     }
 
-    public int getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
