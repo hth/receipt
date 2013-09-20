@@ -162,6 +162,12 @@
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
+                        Profile Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.id" /></b>
+                    </div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600">
                     Registration:
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.registration}" type="both" /></b></div>
