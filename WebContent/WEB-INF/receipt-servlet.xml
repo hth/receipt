@@ -57,9 +57,9 @@
 
         <property name="mediaTypes">
             <map>
-                <entry key="html" value="text/html" />
-                <entry key="json" value="application/json" />
-                <entry key="xml" value="application/xml" />
+                <entry key="html"   value="text/html" />
+                <entry key="json"   value="application/json" />
+                <entry key="xml"    value="application/xml" />
             </map>
         </property>
     </bean>
@@ -277,4 +277,11 @@
         <property name="cache"  value="true" />
         <property name="order"  value="1" />
     </bean>
+
+    <!--
+    If a compatible view cannot be supplied by the ViewResolver chain, then the list of views specified through the
+    DefaultViews property will be consulted
+    http://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/mvc.html 17.5.4
+    -->
+    <!--<bean id="defaultViews" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />-->
 </beans>
