@@ -50,6 +50,12 @@ public final class LandingView extends Base {
         return new LandingView(userId, emailId, header);
     }
 
+    /** Required for JSON */
+    @SuppressWarnings("unused")
+    public String getUserId() {
+        return userId;
+    }
+
     public String getEmailId() {
         return emailId;
     }
@@ -58,7 +64,19 @@ public final class LandingView extends Base {
         this.pendingCount = pendingCount;
     }
 
+    /** Required for JSON */
+    @SuppressWarnings("unused")
+    public long getPendingCount() {
+        return pendingCount;
+    }
+
     public void setReceipts(List<ReceiptEntity> receipts) {
         this.receipts = receipts;
+    }
+
+    /** Required for JSON */
+    @SuppressWarnings("unused")
+    public List<ReceiptEntity> getReceipts() {
+        return receipts;
     }
 }

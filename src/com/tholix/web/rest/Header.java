@@ -52,6 +52,8 @@ public final class Header extends Base {
         return new Header(authId);
     }
 
+    /** Required for JSON */
+    @SuppressWarnings("unused")
     public String getAuthId() {
         return authId;
     }
@@ -60,7 +62,19 @@ public final class Header extends Base {
         this.status = status;
     }
 
+    /** Required for JSON */
+    @SuppressWarnings("unused")
+    public RESULT getStatus() {
+        return status;
+    }
+
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /** Required for JSON */
+    @SuppressWarnings("unused")
+    public String getMessage() {
+        return message;
     }
 }

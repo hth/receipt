@@ -3,6 +3,9 @@
  */
 package com.tholix.web.controller;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -283,7 +286,10 @@ public class LandingController extends BaseController {
     Base loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
         log.info("Web Service : " + profileId);
+        return landingView(profileId, authKey, time);
+    }
 
+    private Base landingView(String profileId, String authKey, DateTime time) {
         UserProfileEntity userProfile = authenticate(profileId, authKey);
         if(userProfile != null) {
             long pendingCount = landingService.pendingReceipt(profileId);
@@ -294,7 +300,7 @@ public class LandingController extends BaseController {
             landingView.setReceipts(receipts);
             landingView.setStatus(Header.RESULT.SUCCESS);
 
-            log.info("Web Service returned : " + profileId + ", Email ID: " + userProfile.getEmailId());
+            log.info("Rest/JSON Service returned : " + profileId + ", Email ID: " + userProfile.getEmailId());
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             return landingView;
@@ -303,6 +309,33 @@ public class LandingController extends BaseController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return header;
         }
+    }
+
+    /**
+     * Provides user information of home page through a JSON URL
+     *
+     * @param profileId
+     * @param authKey
+     * @return
+     */
+    @RequestMapping(value = "/user/{profileId}/auth/{authKey}.json", method = RequestMethod.GET, produces="application/json")
+    public @ResponseBody
+    String loadJSON(@PathVariable String profileId, @PathVariable String authKey) {
+        DateTime time = DateUtil.now();
+        log.info("JSON : " + profileId);
+        Base landingView = landingView(profileId, authKey, time);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+
+        String json = "";
+        try {
+            json = ow.writeValueAsString(landingView);
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage());
+        }
+
+        return json;
     }
 
     @RequestMapping(value = "/report/{monthYear}", method = RequestMethod.GET)
