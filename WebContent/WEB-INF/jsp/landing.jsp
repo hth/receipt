@@ -606,7 +606,7 @@
             tooltip: {
                 valueSuffix: '$',
                 formatter: function() {
-                    return this.point.name + ": " + this.point.y + "$";
+                    return this.point.name + ": " + '$' + Highcharts.numberFormat(this.y, 2);
                 }
             },
             series: [
@@ -615,6 +615,7 @@
                     data: bizNames,
                     size: '60%',
                     dataLabels: {
+                        enabled: false,
                         formatter: function () {
                             return this.y > 1 ? this.point.name : null;
                         },
@@ -646,9 +647,10 @@
                     size: '80%',
                     innerSize: '60%',
                     dataLabels: {
+                        enabled: false,
                         formatter: function () {
                             // display only if larger than 1
-                            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + this.y + '$' : null;
+                            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + '$' + Highcharts.numberFormat(this.y, 2) : null;
                         }
                     },
                     point: {
