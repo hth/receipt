@@ -197,7 +197,8 @@ public class LandingController extends BaseController {
         StringBuilder bizNames_sb = new StringBuilder();
         Map<String, Map<String, BigDecimal>> bizByExpenseTypeMap = landingService.allBusinessByExpenseType(receipts);
         for(String bizName : bizByExpenseTypeMap.keySet()) {
-            bizNames_sb.append("'").append(StringUtils.abbreviate(bizName, LandingDonutChart.OFF_SET, LandingDonutChart.MAX_WIDTH)).append("',");
+            //bizNames_sb.append("'").append(StringUtils.abbreviate(bizName, LandingDonutChart.OFF_SET, LandingDonutChart.MAX_WIDTH)).append("',");
+            bizNames_sb.append("'").append(bizName).append("',");
 
             LandingDonutChart landingDonutChart = LandingDonutChart.newInstance(bizName);
 
