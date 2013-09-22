@@ -37,7 +37,7 @@ import com.tholix.web.rest.ReportView;
  */
 @Service
 public final class ReportService {
-    private static final Logger log = Logger.getLogger(ReportService.class.getName());
+    private static final Logger log = Logger.getLogger(ReportService.class);
 
     @Autowired LandingService landingService;
 
@@ -75,7 +75,7 @@ public final class ReportService {
     private String monthlyReport(ReportView reportView) {
         File file = null;
         try {
-            file = File.createTempFile("XML-Report", ".xml");
+            file = File.createTempFile("Receiptofi-XML-Report-", ".xml");
         } catch (IOException e) {
             log.error("Error creating time file to save XML output from JAXB: " + e.getLocalizedMessage());
         }

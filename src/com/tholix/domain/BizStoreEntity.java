@@ -26,7 +26,7 @@ import com.tholix.utils.Formatter;
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public class BizStoreEntity extends BaseEntity {
-    private static final Logger log = Logger.getLogger(BizStoreEntity.class.getName());
+    private static final Logger log = Logger.getLogger(BizStoreEntity.class);
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     private static final String PHONE_BLANK = "000_000_0000";
