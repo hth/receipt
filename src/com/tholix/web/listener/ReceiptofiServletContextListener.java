@@ -23,34 +23,34 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     @Override
     public void contextInitialized(ServletContextEvent arg0) {
         log.info("Receiptofi context initialized");
-        deleteTempFiles();
+        try {
+            deleteTempFiles();
+        } catch (IOException e) {
+            log.error("Failure in deleting temp files: " + e.getLocalizedMessage());
+        }
     }
 
-    private void deleteTempFiles() {
-        try {
-            File file = File.createTempFile("Receiptofi-delete-", ".xml");
-            File directory = file.getParentFile();
+    private void deleteTempFiles() throws IOException {
+        File file = CreateTempFile.file("delete", ".xml");
+        File directory = file.getParentFile();
 
-            if(!directory.exists()) {
-                log.info(directory + " Directory doesn't exists");
-            } else {
-                FilenameFilter textFilter = new FilenameFilter() {
-                    public boolean accept(File dir, String name) {
-                        return name.startsWith("XML-Report") || name.startsWith("Receiptofi");
-                    }
-                };
-
-                int numberOfFiles = directory.listFiles(textFilter).length;
-                for(File f : directory.listFiles(textFilter)) {
-                    log.debug("File: " + directory + File.separator + f.getName());
-                    f.delete();
+        if(!directory.exists()) {
+            log.info(directory + " Directory doesn't exists");
+        } else {
+            FilenameFilter textFilter = new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    return name.startsWith("XML-Report") || name.startsWith("Receiptofi");
                 }
-                log.info("Deleted total number of '" + numberOfFiles + "' files");
-            }
+            };
 
-            file.delete();
-        } catch (IOException e) {
-            log.error(e.getLocalizedMessage());
+            int numberOfFiles = directory.listFiles(textFilter).length;
+            for(File f : directory.listFiles(textFilter)) {
+                log.debug("File: " + directory + File.separator + f.getName());
+                f.delete();
+            }
+            log.info("Deleted total number of '" + numberOfFiles + "' files");
         }
+
+        file.delete();
     }
 }

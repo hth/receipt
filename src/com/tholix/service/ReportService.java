@@ -28,6 +28,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.ReceiptEntity;
+import com.tholix.web.listener.CreateTempFile;
 import com.tholix.web.rest.Header;
 import com.tholix.web.rest.ReportView;
 
@@ -73,13 +74,6 @@ public final class ReportService {
     }
 
     private String monthlyReport(ReportView reportView) {
-        File file = null;
-        try {
-            file = File.createTempFile("Receiptofi-XML-Report-", ".xml");
-        } catch (IOException e) {
-            log.error("Error creating time file to save XML output from JAXB: " + e.getLocalizedMessage());
-        }
-
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(ReportView.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -87,6 +81,7 @@ public final class ReportService {
             // output pretty printed
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 
+            File file = CreateTempFile.file("XML-Report", ".xml");
             jaxbMarshaller.marshal(reportView, file);
             jaxbMarshaller.marshal(reportView, System.out);
 
