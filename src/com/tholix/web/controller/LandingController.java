@@ -57,6 +57,7 @@ import com.tholix.service.LandingService;
 import com.tholix.service.MailService;
 import com.tholix.service.NotificationService;
 import com.tholix.service.ReportService;
+import com.tholix.service.mobile.LandingViewService;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Maths;
 import com.tholix.utils.PerformanceProfiling;
@@ -84,6 +85,7 @@ public class LandingController extends BaseController {
     @Autowired AccountService accountService;
     @Autowired NotificationService notificationService;
     @Autowired ReportService reportService;
+    @Autowired LandingViewService landingViewService;
 
 	/**
 	 * Refers to landing.jsp
@@ -284,32 +286,10 @@ public class LandingController extends BaseController {
      */
     @RequestMapping(value = "/user/{profileId}/auth/{authKey}.xml", method = RequestMethod.GET, produces="application/xml")
     public @ResponseBody
-    Base loadRest(@PathVariable String profileId, @PathVariable String authKey) {
+    LandingView loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
         log.info("Web Service : " + profileId);
         return landingView(profileId, authKey, time);
-    }
-
-    private Base landingView(String profileId, String authKey, DateTime time) {
-        UserProfileEntity userProfile = authenticate(profileId, authKey);
-        if(userProfile != null) {
-            long pendingCount = landingService.pendingReceipt(profileId);
-            List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(profileId, DateUtil.now());
-
-            LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId(), Header.newInstance(getAuth(profileId)));
-            landingView.setPendingCount(pendingCount);
-            landingView.setReceipts(receipts);
-            landingView.setStatus(Header.RESULT.SUCCESS);
-
-            log.info("Rest/JSON Service returned : " + profileId + ", Email ID: " + userProfile.getEmailId());
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
-            return landingView;
-        } else {
-            Header header = getHeaderForProfileOrAuthFailure();
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-            return header;
-        }
     }
 
     /**
@@ -337,6 +317,55 @@ public class LandingController extends BaseController {
         }
 
         return json;
+    }
+
+    /**
+     * Provides user information of home page through a JSON URL
+     *
+     * @param profileId
+     * @param authKey
+     * @return
+     */
+    @RequestMapping(value = "/user/{profileId}/auth/{authKey}.html", method = RequestMethod.GET, produces="text/html")
+    public @ResponseBody
+    String loadHTML(@PathVariable String profileId, @PathVariable String authKey) {
+        DateTime time = DateUtil.now();
+        log.info("HTML : " + profileId);
+        LandingView landingView = landingView(profileId, authKey, time);
+        String html = landingViewService.landingViewHTMLString(landingView);
+        return html;
+    }
+
+    /**
+     * Populate Landing View object
+     *
+     * @param profileId
+     * @param authKey
+     * @param time
+     * @return
+     */
+    private LandingView landingView(String profileId, String authKey, DateTime time) {
+        UserProfileEntity userProfile = authenticate(profileId, authKey);
+        if(userProfile != null) {
+            long pendingCount = landingService.pendingReceipt(profileId);
+            List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(profileId, DateUtil.now());
+
+            LandingView landingView = LandingView.newInstance(userProfile.getId(), userProfile.getEmailId(), Header.newInstance(getAuth(profileId)));
+            landingView.setPendingCount(pendingCount);
+            landingView.setReceipts(receipts);
+            landingView.setStatus(Header.RESULT.SUCCESS);
+
+            log.info("Rest/JSON Service returned : " + profileId + ", Email ID: " + userProfile.getEmailId());
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+            return landingView;
+        } else {
+            Header header = getHeaderForProfileOrAuthFailure();
+            LandingView landingView = LandingView.newInstance("", "", header);
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+            return landingView;
+        }
     }
 
     @RequestMapping(value = "/report/{monthYear}", method = RequestMethod.GET)

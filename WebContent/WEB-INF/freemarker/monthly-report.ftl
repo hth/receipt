@@ -1,4 +1,5 @@
 [#ftl]
+[#--Line above is required else the freemarker complains--]
 
 <html>
 <head>

@@ -45,6 +45,11 @@
         <url-pattern>*.json</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>receipt</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
     <!--http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html-->
     <!--16.3.3.11 Working with "application/x-www-form-urlencoded" data-->
     <filter>
