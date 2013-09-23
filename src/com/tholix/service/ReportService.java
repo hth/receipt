@@ -28,7 +28,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.joda.time.DateTime;
 
 import com.tholix.domain.ReceiptEntity;
-import com.tholix.web.listener.CreateTempFile;
+import com.tholix.utils.CreateTempFile;
 import com.tholix.web.rest.Header;
 import com.tholix.web.rest.ReportView;
 

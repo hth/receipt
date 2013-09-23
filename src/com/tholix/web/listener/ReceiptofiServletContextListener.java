@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import com.tholix.utils.CreateTempFile;
+
 /**
  * User: hitender
  * Date: 9/21/13 8:15 PM
@@ -39,7 +41,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         } else {
             FilenameFilter textFilter = new FilenameFilter() {
                 public boolean accept(File dir, String name) {
-                    return name.startsWith("XML-Report") || name.startsWith("Receiptofi");
+                    return name.startsWith(CreateTempFile.TEMP_FILE_START_WITH);
                 }
             };
 
