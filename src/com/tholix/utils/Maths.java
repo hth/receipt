@@ -1,6 +1,7 @@
 package com.tholix.utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -180,5 +181,15 @@ public final class Maths {
         }
         BigDecimal fraction = divide(taxedAmount, withoutTaxedAmount);
         return fraction;
+    }
+
+    /**
+     * Adjust scale to two decimal place and round half up
+     *
+     * @param thisNumber
+     * @return
+     */
+    public static BigDecimal adjustScale(BigDecimal thisNumber) {
+        return thisNumber.setScale(2, RoundingMode.HALF_UP);
     }
 }

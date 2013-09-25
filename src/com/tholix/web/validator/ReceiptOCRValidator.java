@@ -81,6 +81,7 @@ public final class ReceiptOCRValidator implements Validator {
         if (StringUtils.isNotEmpty(receiptOCRForm.getReceiptOCR().getSubTotal())) {
             try {
                 BigDecimal submittedSubTotal = Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getSubTotal());
+                subTotal = Maths.adjustScale(subTotal);
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
                     errors.rejectValue("receiptOCR.subTotal", "field.currency.match.first",
