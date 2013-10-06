@@ -1,8 +1,7 @@
 package com.tholix.repository;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -90,12 +89,12 @@ public final class BizNameManagerImpl implements BizNameManager {
         return mongoTemplate.find(Query.query(Criteria.where("NAME").regex("^" + bizName, "i")), BizNameEntity.class, TABLE);
     }
 
-    public Set<String> findAllDistinctBizStr(String bizName) {
-        Set<String> set = new HashSet<>();
+    public List<String> findAllBizStr(String bizName) {
+        List<String> list = new ArrayList<>();
         for (BizNameEntity bizNameEntity : findAllBiz(bizName)) {
-            set.add(bizNameEntity.getName());
+            list.add(bizNameEntity.getName());
         }
-        return set;
+        return list;
     }
 
     @Override

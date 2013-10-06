@@ -116,7 +116,4 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     long countAllReceiptForABizName(BizNameEntity bizNameEntity);
-
-
-    boolean existCheckSum(ReceiptEntity receiptEntity);
 }

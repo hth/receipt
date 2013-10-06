@@ -16,7 +16,6 @@
 
 	<script type="text/javascript" src="jquery/js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type="text/javascript" src="jquery/js/angular.min.js"></script>
 
 </head>
 <body>

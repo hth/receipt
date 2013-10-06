@@ -270,8 +270,8 @@
                 <c:choose>
                     <c:when test="${isValid}">
                     <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
-                        <form:errors path="errorMessage"    cssClass="error" />
-                        <form:errors path="receiptOCR"      cssClass="error" />
+                        <form:errors path="errorMessage" cssClass="error" />
+                        <form:errors path="receiptOCR" cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
                         <form:hidden path="receiptOCR.id"/>
                         <form:hidden path="receiptOCR.userProfileId"/>

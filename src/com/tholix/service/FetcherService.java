@@ -1,8 +1,7 @@
 package com.tholix.service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -40,10 +39,10 @@ public final class FetcherService {
      * @param bizName
      * @return
      */
-    public Set<String> findDistinctBizName(String bizName) {
+    public List<String> findBizName(String bizName) {
         DateTime time = DateUtil.now();
         log.info("Search for Biz Name: " + bizName);
-        Set<String> titles = bizNameManager.findAllDistinctBizStr(bizName);
+        List<String> titles = bizNameManager.findAllBizStr(bizName);
         log.info("found business.. total size " + titles.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return titles;
@@ -55,10 +54,10 @@ public final class FetcherService {
      * @param bizName
      * @return
      */
-    public Set<String> findDistinctBizAddress(String bizAddress, String bizName) {
+    public List<String> findBizAddress(String bizAddress, String bizName) {
         DateTime time = DateUtil.now();
         log.info("Search for Biz address: " + bizAddress + ", within Biz Name: " + bizName);
-        Set<String> address = new HashSet<>();
+        List<String> address = new ArrayList<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if(bizNameEntity != null) {
@@ -80,10 +79,10 @@ public final class FetcherService {
      * @param bizName
      * @return
      */
-    public Set<String> findDistinctBizPhone(String bizPhone, String bizAddress, String bizName) {
+    public List<String> findBizPhone(String bizPhone, String bizAddress, String bizName) {
         DateTime time = DateUtil.now();
         log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
-        Set<String> phone = new HashSet<>();
+        List<String> phone = new ArrayList<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if(bizNameEntity != null) {
@@ -108,18 +107,18 @@ public final class FetcherService {
      * @param bizName
      * @return
      */
-    public Set<String> findDistinctItems(String itemName, String bizName) {
+    public List<String> findItems(String itemName, String bizName) {
         DateTime time = DateUtil.now();
         log.info("Search for item name: " + itemName + ", within Biz Name: " + bizName);
-        List<ItemEntity> itemList = itemManager.findItems(itemName, bizName);
+        List<ItemEntity> items = itemManager.findItems(itemName, bizName);
 
-        Set<String> items = new HashSet<>();
-        for(ItemEntity re : itemList) {
-            items.add(re.getName());
+        List<String> names = new ArrayList<>();
+        for(ItemEntity re : items) {
+            names.add(re.getName());
         }
 
         log.info("found item.. total size " + items.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return items;
+        return names;
     }
 }

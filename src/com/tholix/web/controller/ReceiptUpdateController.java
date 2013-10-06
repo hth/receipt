@@ -131,14 +131,6 @@ public class ReceiptUpdateController {
 		}
 
         try {
-            if(receiptUpdateService.checkIfDuplicate(receiptOCRForm.getReceiptEntity())) {
-                log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
-                result.rejectValue("errorMessage", "", "Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
-                redirectAttrs.addFlashAttribute("result", result);
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
-                return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
-            }
-
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
             ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
             List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);
@@ -204,14 +196,6 @@ public class ReceiptUpdateController {
         }
 
         try {
-            if(receiptUpdateService.checkIfDuplicate(receiptOCRForm.getReceiptEntity())) {
-                log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
-                result.rejectValue("errorMessage", "", "Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
-                redirectAttrs.addFlashAttribute("result", result);
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
-                return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
-            }
-
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
             ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
             List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);

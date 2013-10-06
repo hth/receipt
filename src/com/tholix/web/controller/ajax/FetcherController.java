@@ -2,7 +2,7 @@ package com.tholix.web.controller.ajax;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
@@ -48,13 +48,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_company", method = RequestMethod.GET)
     public @ResponseBody
-    Set<String> searchBiz(@RequestParam("term") String bizName,
+    List<String> searchBiz(@RequestParam("term") String bizName,
                            @ModelAttribute("userSession") UserSession userSession,
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizName(bizName);
+                return fetcherService.findBizName(bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -78,13 +78,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_address", method = RequestMethod.GET)
     public @ResponseBody
-    Set<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String bizName,
+    List<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String bizName,
                            @ModelAttribute("userSession") UserSession userSession,
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizAddress(bizAddress, bizName);
+                return fetcherService.findBizAddress(bizAddress, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -109,13 +109,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_phone", method = RequestMethod.GET)
     public @ResponseBody
-    Set<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String bizName, @RequestParam("addressParam") String bizAddress,
+    List<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String bizName, @RequestParam("addressParam") String bizAddress,
                              @ModelAttribute("userSession") UserSession userSession,
                              HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizPhone(bizPhone, bizAddress, bizName);
+                return fetcherService.findBizPhone(bizPhone, bizAddress, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -139,13 +139,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_item", method = RequestMethod.GET)
     public @ResponseBody
-    Set<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String bizName,
+    List<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String bizName,
                             @ModelAttribute("userSession") UserSession userSession,
                             HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctItems(itemName, bizName);
+                return fetcherService.findItems(itemName, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
