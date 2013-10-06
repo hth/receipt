@@ -326,7 +326,7 @@ public class LandingController extends BaseController {
      * @param authKey
      * @return
      */
-    @RequestMapping(value = "/user/{profileId}/auth/{authKey}.html", method = RequestMethod.GET, produces="text/html")
+    @RequestMapping(value = "/user/{profileId}/auth/{authKey}.htm", method = RequestMethod.GET, produces="text/html")
     public @ResponseBody
     String loadHTML(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();

@@ -65,6 +65,7 @@ public final class Formatter {
     public static String phone(String phone) {
         try {
             //Currently defaults to US
+            //TODO set using locale
             Phonenumber.PhoneNumber numberPrototype = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
             return FormatterSingleton.INSTANCE.phoneInstance().format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {

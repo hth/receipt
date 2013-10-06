@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -87,9 +88,9 @@ public class LoginController {
      * @return
      */
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm(HttpServletRequest request) {
+	public String loadForm(Locale locale, HttpServletRequest request) {
         DateTime time = DateUtil.now();
-		log.info("LoginController login");
+		log.info("LoginController login: Locale Type: " + locale);
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();
