@@ -1,35 +1,6 @@
 [#ftl]
 [#--Line above is required else the freemarker complains--]
 
-<html>
-<head>
-	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/jquery/css/receipt.css' />
-	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
-
-	<script type="text/javascript">
-		function toggle2(showHideDiv, switchTextDiv) {
-			var ele = document.getElementById(showHideDiv);
-			var text = document.getElementById(switchTextDiv);
-			if(ele.style.display == "block") {
-				ele.style.display = "none";
-				text.innerHTML =
-						'<ul id="icons" class="ui-widget ui-helper-clearfix">' +
-								'<li class="ui-state-default ui-corner-all" title="Show"><span class="ui-icon ui-icon-circle-triangle-s"></span></li>' +
-								'</ul>';
-			} else {
-				ele.style.display = "block";
-				text.innerHTML =
-						'<ul id="icons" class="ui-widget ui-helper-clearfix">' +
-								'<li class="ui-state-default ui-corner-all" title="Hide"><span class="ui-icon ui-icon-circle-triangle-n"></span></li>' +
-								'</ul>';
-			}
-		}
-	</script>
-</head>
-<body>
-
 [#if doc.landingView.header.status?contains('FAILURE')]
 <div class="ui-widget">
 	<div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
@@ -43,38 +14,40 @@
 </div>
 [#elseif doc.landingView.receipts.receipt?has_content]
 [#assign counter = 1]
+<!-- Refer css in mobile app -->
 <div id="wrapper">
 	<div id="scroller">
-		<div style="padding:15px 30px;"> <!-- padding for content -->
-			<table style="width: 100%" class="etable">
-				<tr>
-					<th style="padding: 3px;"></th>
-					<th style="padding: 3px;">Business</th>
-					<th style="padding: 3px;">Receipt Date</th>
-					<th style="padding: 3px;">Tax</th>
-					<th style="padding: 3px;">Total</th>
-				</tr>
+		<div class="table">
+			<div class="tbody">
+				<div class="tr">
+					<div class="td"></div>
+					<div class="td">Business</div>
+					<div class="td">Date</div>
+					<div class="td">Total</div>
+				</div>
 				[#foreach receipt in doc.landingView.receipts.receipt]
-					<tr>
-						<td style="padding: 1px; text-align: right; vertical-align: top;">
+				<div class="tr">
+					<div class="td">
 						${counter}.
-							[#assign counter=counter + 1]
-						</td>
-						<td style="padding: 1px; vertical-align: top;">
+					</div>
+					<div class="td">
+						[#--<#if ${receipt.bizName.name?length} &lt; 27>--]
+							[#----]
+						[#--<#else>--]
+							[#--${receipt.bizName.name?substring(0,26)} ...--]
+						[#--</#if>--]
 						${receipt.bizName.name}
-						</td>
-						<td style="padding: 1px; vertical-align: top;">
+					</div>
+					<div class="td">
 						${receipt.receiptDate?datetime("yyyy-MM-dd'T'HH:mm:ssXXX")?date}
-						</td>
-						<td style="padding: 1px; text-align: right; vertical-align: top;">
-						${receipt.tax}
-						</td>
-						<td style="padding: 1px; text-align: right; vertical-align: top;">
+					</div>
+					<div class="td">
 						${receipt.total}
-						</td>
-					</tr>
-				[/#foreach]
-			</table>
+					</div>
+				</div>
+				[#assign counter=counter + 1]
+			[/#foreach]
+			</div>
 		</div>
 	</div>
 </div>
@@ -94,5 +67,3 @@
 <script type="text/javascript">
 	var myScroll = new iScroll('wrapper');
 </script>
-</body>
-</html>

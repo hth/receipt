@@ -1,6 +1,7 @@
 package com.tholix.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -39,5 +40,5 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
      * @param bizName
      * @return
      */
-    List<String> findAllBizStr(String bizName);
+    Set<String> findAllDistinctBizStr(String bizName);
 }

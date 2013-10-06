@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,10 +25,12 @@ import org.joda.time.DateTime;
 
 import net.sf.uadetector.ReadableUserAgent;
 
+import com.tholix.domain.ReceiptEntity;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
+import com.tholix.repository.ReceiptManager;
 import com.tholix.service.LoginService;
 import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
@@ -53,6 +56,7 @@ public class LoginController {
     @Autowired private UserLoginValidator userLoginValidator;
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    @Autowired private ReceiptManager receiptManager;
 
 	// TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
@@ -91,6 +95,16 @@ public class LoginController {
 	public String loadForm(Locale locale, HttpServletRequest request) {
         DateTime time = DateUtil.now();
 		log.info("LoginController login: Locale Type: " + locale);
+
+        List<ReceiptEntity> list = receiptManager.getAllObjects();
+        for(ReceiptEntity receiptEntity : list) {
+            receiptEntity.checkSum();
+            try {
+                receiptManager.save(receiptEntity);
+            } catch (Exception e) {
+                log.error(e.getLocalizedMessage());
+            }
+        }
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();

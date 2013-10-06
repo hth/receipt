@@ -286,4 +286,10 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE");
         return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
     }
+
+    @Override
+    public boolean existCheckSum(ReceiptEntity receiptEntity) {
+        Criteria criteria = Criteria.where("CHECK_SUM").is(receiptEntity.getCheckSum());
+        return mongoTemplate.find(Query.query(criteria), ReceiptEntity.class, TABLE).size() > 0 ? true : false;
+    }
 }
