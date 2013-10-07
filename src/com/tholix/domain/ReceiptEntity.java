@@ -24,6 +24,7 @@ import org.joda.time.DateTime;
 
 import com.tholix.domain.types.ReceiptOfEnum;
 import com.tholix.domain.types.ReceiptStatusEnum;
+import com.tholix.utils.SHAHashing;
 
 /**
  * @author hitender
@@ -31,7 +32,10 @@ import com.tholix.domain.types.ReceiptStatusEnum;
  *
  */
 @Document(collection = "RECEIPT")
-@CompoundIndexes({ @CompoundIndex(name = "user_receipt_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
+@CompoundIndexes(value = {
+        @CompoundIndex(name = "user_receipt_idx",           def = "{'RECEIPT_BLOB_ID': -1, 'USER_PROFILE_ID': -1}"),
+        @CompoundIndex(name = "user_receipt_unique_idx",    def = "{'CHECK_SUM': -1}", unique = true)
+} )
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
@@ -102,6 +106,12 @@ public class ReceiptEntity extends BaseEntity {
     @DBRef
     @Field("COMMENT_NOTES")
     private CommentEntity notes;
+
+    /**
+     * Used to flush or avoid duplicate receipt entry
+     */
+    @Field("CHECK_SUM")
+    private String checkSum;
 
     /** To keep bean happy */
 	public ReceiptEntity() {}
@@ -286,6 +296,17 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setNotes(CommentEntity notes) {
         this.notes = notes;
+    }
+
+    public String getCheckSum() {
+        return checkSum;
+    }
+
+    /**
+     * Create for making sure no duplicate receipt could be entered for
+     */
+    public void checkSum() {
+        this.checkSum = SHAHashing.calculateCheckSum(userProfileId, receiptDate, total, isDeleted());
     }
 
     @Override

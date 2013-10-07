@@ -170,6 +170,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
             if(object.getId() != null) {
                 object.setUpdated();
             }
+            object.checkSum();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntity: " + e.getLocalizedMessage());
@@ -240,8 +241,23 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteSoft(ReceiptEntity object) {
+        //Deleted check sum need re-calculation
+        object.markAsDeleted();
+
+        //Re-calculate check sum for deleted object
+        object.checkSum();
+        String checkSum = object.getCheckSum();
+
+        if(existCheckSum(checkSum)) {
+            Criteria criteria = Criteria.where("CHECK_SUM").is(checkSum);
+            List<ReceiptEntity> duplicateDeletedReceipts = mongoTemplate.find(Query.query(criteria), ReceiptEntity.class, TABLE);
+            for(ReceiptEntity receiptEntity : duplicateDeletedReceipts) {
+                deleteHard(receiptEntity);
+            }
+        }
+
         Query query = Query.query(Criteria.where("id").is(object.getId()));
-        Update update = Update.update("DELETE", true);
+        Update update = Update.update("DELETE", true).set("CHECK_SUM", checkSum);
         mongoTemplate.updateFirst(query, update(update), ReceiptEntity.class);
     }
 
@@ -285,5 +301,11 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE");
         return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
+    }
+
+    @Override
+    public boolean existCheckSum(String checkSum) {
+        Criteria criteria = Criteria.where("CHECK_SUM").is(checkSum);
+        return mongoTemplate.find(Query.query(criteria), ReceiptEntity.class, TABLE).size() > 0 ? true : false;
     }
 }

@@ -116,4 +116,12 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     long countAllReceiptForABizName(BizNameEntity bizNameEntity);
+
+    /**
+     * Check if duplicate receipt exists
+     *
+     * @param checkSum
+     * @return
+     */
+    boolean existCheckSum(String checkSum);
 }

@@ -349,4 +349,14 @@ public final class ReceiptUpdateService {
             item.setExpenseType(expenseType);
         }
     }
+
+    /**
+     * Condition to check if the record already exists
+     *
+     * @param checkSum
+     * @return
+     */
+    public boolean checkIfDuplicate(String checkSum) {
+        return receiptManager.existCheckSum(checkSum);
+    }
 }

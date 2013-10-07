@@ -1,2 +1,12 @@
-#27
+#Build - 63
+db.RECEIPT.getIndexes();
+db.RECEIPT.dropIndexes();
+db.RECEIPT.ensureIndex({"RECEIPT_BLOB_ID": -1, "USER_PROFILE_ID": -1}, {name : 'user_receipt_idx'});
+db.RECEIPT.ensureIndex({"CHECK_SUM": -1}, {'unique': true, 'dropDups': true}, {name : 'user_receipt_unique_idx'});
+//Above will ensure no duplicate in the database. Will force to delete the record if exists.
+
+//Allows duplicate data
+//db.RECEIPT.ensureIndex({"CHECK_SUM": -1}, {name : 'user_receipt_unique_idx'}, {'unique': true});
+
+#Build - 27
 db.INVITE.update({}, { $set: {COUNT: NumberInt(1)} }, {multi: true});

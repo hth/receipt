@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,6 +56,11 @@ public class ReceiptUpdateController {
 
     @Autowired private ReceiptOCRValidator receiptOCRValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
+
+    //TODO fix this to get the data from properties file
+    @Value("${duplicate.receipt}")
+    private static String duplicateReceiptMessage = "Found pre-existing receipt with similar information for the " +
+            "selected date. Suggestion: Confirm the receipt data or else mark as duplicate by rejecting this receipt.";
 
     /**
      * For Technician: Loads new receipts.
@@ -131,6 +137,14 @@ public class ReceiptUpdateController {
 		}
 
         try {
+            if(receiptUpdateService.checkIfDuplicate(receiptOCRForm.getReceiptEntity().getCheckSum())) {
+                log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
+                result.rejectValue("errorMessage", "", duplicateReceiptMessage);
+                redirectAttrs.addFlashAttribute("result", result);
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
+                return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
+            }
+
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
             ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
             List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);
@@ -196,6 +210,16 @@ public class ReceiptUpdateController {
         }
 
         try {
+            //TODO: Note should not happen as the condition to check for duplicate has already been satisfied when receipt was first processed.
+            // Unless Technician has changed the date or some data. Date change should be exclude during re-check. Something to think about.
+            if(receiptUpdateService.checkIfDuplicate(receiptOCRForm.getReceiptEntity().getCheckSum())) {
+                log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
+                result.rejectValue("errorMessage", "", duplicateReceiptMessage);
+                redirectAttrs.addFlashAttribute("result", result);
+                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
+                return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
+            }
+
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
             ReceiptEntity receipt = receiptOCRForm.getReceiptEntity();
             List<ItemEntity> items = receiptOCRForm.getItemEntity(receipt);

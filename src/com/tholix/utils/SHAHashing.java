@@ -5,10 +5,16 @@ package com.tholix.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
 import org.joda.time.DateTime;
+
+import com.google.common.base.Charsets;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 
 /**
  * @author hitender
@@ -68,4 +74,36 @@ public final class SHAHashing {
 		}
 	}
 
+    /**
+     * This condition is used through Ajax call to validated if a receipt of similar value exist in db
+     *
+     * @param userProfileId
+     * @param date
+     * @param total
+     * @return
+     */
+    public static String calculateCheckSum(String userProfileId, Date date, Double total) {
+        return calculateCheckSum(userProfileId, date, total, false);
+    }
+
+    /**
+     *
+     * @param userProfileId
+     * @param date
+     * @param total
+     * @param deleted
+     * @return
+     */
+    public static String calculateCheckSum(String userProfileId, Date date, Double total, boolean deleted) {
+        //This is considered to be thread safe
+        HashFunction hf = Hashing.md5();
+        HashCode hc = hf.newHasher()
+                .putString(userProfileId,    Charsets.UTF_8)
+                .putString(date.toString(),  Charsets.UTF_8)
+                .putDouble(total)
+                .putBoolean(deleted)
+                .hash();
+
+        return hc.toString();
+    }
 }

@@ -131,6 +131,48 @@
             });
 
         });
+
+        $(document).ready(function() {
+            $( "#total" ).autocomplete({
+                source: function (request, response) {
+                    $('#existingErrorMessage').hide();
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/fetcher/check_for_duplicate.htm',
+                        data: {
+                            date:  $("#date").val(),
+                            total: $("#total").val(),
+                            userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
+                        },
+                        contentType: "*/*",
+                        dataTypes: "application/json",
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data) {
+                                var html = '';
+                                html = html +
+                                        "<div class='ui-state-highlight ui-corner-all alert-error' style='margin-top: 0px; padding: 0 .7em;'>" +
+                                            "<p>" +
+                                                "<span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span>" +
+                                                "<span style='display:block; width: auto'>" +
+                                                    "Found pre-existing receipt with similar information for the " +
+                                                    "selected date. Suggestion: Confirm the receipt data or else mark " +
+                                                    "as duplicate by rejecting this receipt." +
+                                                "</span>" +
+                                            "</p>" +
+                                        "</div>";
+
+                                var errorMessage = document.getElementById('errorMessage');
+                                errorMessage.innerHTML = html;
+                            } else {
+                                var errorMessage = document.getElementById('errorMessage');
+                                errorMessage.innerHTML = "";
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
     </script>
 
     <!-- For drop down menu -->
@@ -250,8 +292,10 @@
     </c:choose>
     </c:if>
 
-    <c:if test="${!empty receiptOCRForm.errorMessage}">
-        <div class="ui-widget">
+    <c:choose>
+    <c:when test="${!empty receiptOCRForm.errorMessage}">
+        <%--Currently this section of code is not executed unless the error message is added to the form directly without using 'result' --%>
+        <div class="ui-widget" id="existingErrorMessage">
             <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
                 <p>
                     <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
@@ -261,7 +305,13 @@
                 </p>
             </div>
         </div>
-    </c:if>
+    </c:when>
+    <c:otherwise>
+        <div class="ui-widget" id="errorMessage">
+
+        </div>
+    </c:otherwise>
+    </c:choose>
 
     <table>
         <tr>
@@ -270,8 +320,8 @@
                 <c:choose>
                     <c:when test="${isValid}">
                     <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
-                        <form:errors path="errorMessage" cssClass="error" />
-                        <form:errors path="receiptOCR" cssClass="error" />
+                        <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
+                        <form:errors path="receiptOCR"      cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
                         <form:hidden path="receiptOCR.id"/>
                         <form:hidden path="receiptOCR.userProfileId"/>

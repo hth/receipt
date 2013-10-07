@@ -2,7 +2,9 @@ package com.tholix.web.controller.ajax;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Set;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
@@ -21,6 +23,10 @@ import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
 import com.tholix.service.FetcherService;
 import com.tholix.service.LandingService;
+import com.tholix.service.ReceiptUpdateService;
+import com.tholix.utils.DateUtil;
+import com.tholix.utils.Formatter;
+import com.tholix.utils.SHAHashing;
 
 /**
  * User: hitender
@@ -35,6 +41,7 @@ public class FetcherController {
 
     @Autowired FetcherService fetcherService;
     @Autowired LandingService landingService;
+    @Autowired ReceiptUpdateService receiptUpdateService;
 
     /**
      * Note: UserSession parameter is to make sure no outside get requests are processed.
@@ -48,13 +55,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_company", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> searchBiz(@RequestParam("term") String bizName,
+    Set<String> searchBiz(@RequestParam("term") String bizName,
                            @ModelAttribute("userSession") UserSession userSession,
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findBizName(bizName);
+                return fetcherService.findDistinctBizName(bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -78,13 +85,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_address", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String bizName,
+    Set<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String bizName,
                            @ModelAttribute("userSession") UserSession userSession,
                            HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findBizAddress(bizAddress, bizName);
+                return fetcherService.findDistinctBizAddress(bizAddress, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -109,13 +116,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_phone", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String bizName, @RequestParam("addressParam") String bizAddress,
+    Set<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String bizName, @RequestParam("addressParam") String bizAddress,
                              @ModelAttribute("userSession") UserSession userSession,
                              HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findBizPhone(bizPhone, bizAddress, bizName);
+                return fetcherService.findDistinctBizPhone(bizPhone, bizAddress, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -139,13 +146,13 @@ public class FetcherController {
      */
     @RequestMapping(value = "/find_item", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String bizName,
+    Set<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String bizName,
                             @ModelAttribute("userSession") UserSession userSession,
                             HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findItems(itemName, bizName);
+                return fetcherService.findDistinctItems(itemName, bizName);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -178,9 +185,7 @@ public class FetcherController {
     }
 
     /**
-     *
-     *
-     * For dev make the values come from properties file
+     * Check if a duplicate receipt exists for the user
      *
      * @param date
      * @param total
@@ -190,13 +195,27 @@ public class FetcherController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/duplicate_check", method = RequestMethod.POST)
+    @RequestMapping(value = "/check_for_duplicate", method = RequestMethod.GET)
     public @ResponseBody
-    boolean checkForDuplicate(@RequestParam("term") String date, @RequestParam("total") String total,
+    boolean checkForDuplicate(@RequestParam("date") String date, @RequestParam("total") String total,
                               @RequestParam("userProfileId") String userProfileId,
                               @ModelAttribute("userSession") UserSession userSession,
-                              HttpServletResponse httpServletResponse) throws IOException {
-        return false;
+                              HttpServletResponse httpServletResponse) throws IOException, ParseException {
 
+        if(userSession != null) {
+            try {
+                Date receiptDate = DateUtil.getDateFromString(date);
+                Double receiptTotal = Formatter.getCurrencyFormatted(total).doubleValue();
+
+                String checkSum = SHAHashing.calculateCheckSum(userProfileId, receiptDate, receiptTotal);
+                return receiptUpdateService.checkIfDuplicate(checkSum);
+            } catch(ParseException parseException) {
+                log.error("Ajax checkForDuplicate failed to parse total: " + parseException.getLocalizedMessage());
+                throw parseException;
+            }
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return true;
+        }
     }
 }

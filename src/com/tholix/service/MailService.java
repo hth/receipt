@@ -46,7 +46,7 @@ public final class MailService {
     private static Logger log = Logger.getLogger(MailService.class);
 
     private static final String MAIL_RECOVER_SUBJECT = "How to reset your Receiptofi ID password";
-    private static final String MAIL_INVITE_SUBJECT = "Invites you on behalf of";
+    private static final String MAIL_INVITE_SUBJECT  = "Invites you on behalf of";
 
     @Autowired private AccountService accountService;
     @Autowired private InviteService inviteService;
