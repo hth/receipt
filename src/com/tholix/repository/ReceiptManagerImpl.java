@@ -306,6 +306,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     @Override
     public boolean existCheckSum(String checkSum) {
         Criteria criteria = Criteria.where("CHECK_SUM").is(checkSum);
-        return mongoTemplate.find(Query.query(criteria), ReceiptEntity.class, TABLE).size() > 0 ? true : false;
+        //Active condition is required for re-check criteria
+        return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()), ReceiptEntity.class, TABLE).size() > 0 ? true : false;
     }
 }
