@@ -57,10 +57,8 @@ public class ReceiptUpdateController {
     @Autowired private ReceiptOCRValidator receiptOCRValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
 
-    //TODO fix this to get the data from properties file
     @Value("${duplicate.receipt}")
-    private static String duplicateReceiptMessage = "Found pre-existing receipt with similar information for the " +
-            "selected date. Suggestion: Confirm the receipt data or else mark as duplicate by rejecting this receipt.";
+    private String duplicateReceiptMessage;
 
     /**
      * For Technician: Loads new receipts.
@@ -155,7 +153,7 @@ public class ReceiptUpdateController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
-            log.error(exce.getLocalizedMessage());
+            log.error("Error in Submit Process: " + exce.getLocalizedMessage());
             result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
@@ -230,7 +228,7 @@ public class ReceiptUpdateController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
-            log.error(exce.getLocalizedMessage());
+            log.error("Error in Recheck process: " + exce.getLocalizedMessage());
             result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt recheck save");

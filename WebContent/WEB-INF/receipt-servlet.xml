@@ -29,13 +29,15 @@
 
     <!-- Currently not being used -->
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/redis.properties"  order="1" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/redis.properties"                   order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/config.properties" order="2" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/config.properties"                  order="2" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/pass.properties"   order="3" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/pass.properties"                    order="3" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/dev.properties"    order="4" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/dev.properties"                     order="4" ignore-unresolvable="true" />
+    <!--suppress SpringModelInspection -->
+    <context:property-placeholder location="classpath:/conf/application-messages.properties"    order="5" ignore-unresolvable="true" />
 
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
