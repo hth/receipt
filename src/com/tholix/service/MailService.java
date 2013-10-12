@@ -45,9 +45,6 @@ import com.tholix.utils.SHAHashing;
 public final class MailService {
     private static Logger log = Logger.getLogger(MailService.class);
 
-    private static final String MAIL_RECOVER_SUBJECT = "How to reset your Receiptofi ID password";
-    private static final String MAIL_INVITE_SUBJECT  = "Invites you on behalf of";
-
     @Autowired private AccountService accountService;
     @Autowired private InviteService inviteService;
     @Autowired private JavaMailSenderImpl mailSender;
@@ -77,6 +74,12 @@ public final class MailService {
 
     @Value("${https}")
     private String https;
+
+    @Value("${mail.invite.subject}")
+    private String mailInviteSubject;
+
+    @Value("${mail.recover.subject}")
+    private String mailRecoverSubject;
 
     /**
      * Send recover email to user of provided email id
@@ -117,10 +120,11 @@ public final class MailService {
 
                     // use the true flag to indicate the text included is HTML
                     helper.setText(text, true);
-                    helper.setSubject(userProfileEntity.getName() + ": " + MAIL_RECOVER_SUBJECT);
+                    helper.setSubject(userProfileEntity.getName() + ": " + mailRecoverSubject);
 
                     //Attach image always at the end
                     URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
+                    assert url != null;
                     FileSystemResource res = new FileSystemResource(url.getPath());
                     helper.addInline("receiptofi.logo", res);
 
@@ -140,8 +144,8 @@ public final class MailService {
     /**
      * Used in sending the invitation for the first time
      *
-     * @param emailId
-     * @param userProfileEmailId
+     * @param emailId Invited users email address
+     * @param userProfileEmailId Existing users email address
      * @return
      */
     public boolean sendInvitation(String emailId, String userProfileEmailId) {
@@ -166,8 +170,8 @@ public final class MailService {
     /**
      * Helps in re-sending the invitation or to send new invitation to existing (pending) invitation by a new user.
      *
-     * @param emailId
-     * @param userProfileEmailId
+     * @param emailId Invited users email address
+     * @param userProfileEmailId Existing users email address
      * @return
      */
     public boolean reSendInvitation(String emailId, String userProfileEmailId) {
@@ -237,10 +241,11 @@ public final class MailService {
 
             // use the true flag to indicate the text included is HTML
             helper.setText(text, true);
-            helper.setSubject(MAIL_INVITE_SUBJECT + " - " + userProfileEntity.getName());
+            helper.setSubject(mailInviteSubject + " - " + userProfileEntity.getName());
 
             //Attach image always at the end
             URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
+            assert url != null;
             FileSystemResource res = new FileSystemResource(url.getPath());
             helper.addInline("receiptofi.logo", res);
 
