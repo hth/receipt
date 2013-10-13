@@ -84,14 +84,28 @@ public final class ReceiptOCRValidator implements Validator {
                 subTotal = Maths.adjustScale(subTotal);
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
-                    errors.rejectValue("receiptOCR.subTotal", "field.currency.match.first",
-                            new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal.toString()},
-                            "Summation not adding up");
+                    if(!Maths.withInRange(submittedSubTotal, subTotal)) {
+                        errors.rejectValue("receiptOCR.subTotal", "field.currency.match.first",
+                                new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal.toString()},
+                                "Summation not adding up");
+                    } else {
+                        log.warn("Found difference in Calculated subTotal: " + subTotal +
+                                ", submittedSubTotal: " + submittedSubTotal +
+                                ". Which is less than application specified diff of " +
+                                Maths.ACCEPTED_RANGE_IN_LOWEST_DENOMINATION);
+                    }
 
                 } else if (comparedValue < 0) {
-                    errors.rejectValue("receiptOCR.subTotal", "field.currency.match.second",
+                    if(!Maths.withInRange(submittedSubTotal, subTotal)) {
+                        errors.rejectValue("receiptOCR.subTotal", "field.currency.match.second",
                             new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal(), subTotal.toString()},
                             "Summation not adding up");
+                    } else {
+                        log.warn("Found difference in Calculated subTotal: " + subTotal +
+                                ", submittedSubTotal: " + submittedSubTotal +
+                                ". Which is less than application specified diff of " +
+                                Maths.ACCEPTED_RANGE_IN_LOWEST_DENOMINATION);
+                    }
                 }
             } catch (ParseException e) {
                 errors.rejectValue("receiptOCR.subTotal", "field.currency", new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal()}, "Unsupported currency format");

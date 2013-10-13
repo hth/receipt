@@ -18,6 +18,9 @@ import org.apache.log4j.Logger;
 public final class Maths {
     private static volatile Logger log = Logger.getLogger(Maths.class);
 
+    /** Accepted range in lowest denomination in cents here or any other currency */
+    public static double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
+
     /**
      * Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places.
      */
@@ -191,5 +194,16 @@ public final class Maths {
      */
     public static BigDecimal adjustScale(BigDecimal thisNumber) {
         return thisNumber.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * This method is normally used for calculating something within acceptable range specified and accepted by system
+     *
+     * @param from
+     * @param value
+     * @return
+     */
+    public static boolean withInRange(BigDecimal from, BigDecimal value) {
+        return Math.abs(from.doubleValue() - value.doubleValue()) <= ACCEPTED_RANGE_IN_LOWEST_DENOMINATION;
     }
 }
