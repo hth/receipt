@@ -30,4 +30,12 @@ public final class EmpLandingService {
     public List<MessageReceiptEntityOCR> recheck(String emailId, String profileId) {
         return messageManager.findUpdateWithLimit(emailId, profileId, ReceiptStatusEnum.TURK_REQUEST);
     }
+
+    public List<MessageReceiptEntityOCR> findAll() {
+        return messageManager.getAllObjects();
+    }
+
+    public void delete(MessageReceiptEntityOCR messageReceiptEntityOCR) {
+        messageManager.deleteHard(messageReceiptEntityOCR);
+    }
 }
