@@ -1,6 +1,7 @@
 package com.tholix.utils;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -204,6 +205,9 @@ public final class Maths {
      * @return
      */
     public static boolean withInRange(BigDecimal from, BigDecimal value) {
-        return Math.abs(from.doubleValue() - value.doubleValue()) <= ACCEPTED_RANGE_IN_LOWEST_DENOMINATION;
+        Double diff = Math.abs(from.doubleValue() - value.doubleValue());
+        //MathContext of '1' results in two decimal places, and '2' would result in three decimal places
+        BigDecimal range = new BigDecimal(diff, new MathContext(1));
+        return range.doubleValue() <= ACCEPTED_RANGE_IN_LOWEST_DENOMINATION;
     }
 }
