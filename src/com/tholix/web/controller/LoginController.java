@@ -7,11 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -28,14 +24,10 @@ import org.joda.time.DateTime;
 
 import net.sf.uadetector.ReadableUserAgent;
 
-import com.google.common.collect.Ordering;
-
-import com.tholix.domain.MessageReceiptEntityOCR;
 import com.tholix.domain.UserAuthenticationEntity;
 import com.tholix.domain.UserProfileEntity;
 import com.tholix.domain.UserSession;
 import com.tholix.domain.types.UserLevelEnum;
-import com.tholix.service.EmpLandingService;
 import com.tholix.service.LoginService;
 import com.tholix.service.UserProfilePreferenceService;
 import com.tholix.utils.DateUtil;
@@ -61,7 +53,6 @@ public class LoginController {
     @Autowired private UserLoginValidator userLoginValidator;
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
-    @Autowired private EmpLandingService empLandingService;
 
 	// TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
@@ -91,12 +82,6 @@ public class LoginController {
         parser = null;
     }
 
-    static Ordering<MessageReceiptEntityOCR> descendingOrder = new Ordering<MessageReceiptEntityOCR>() {
-        public int compare(MessageReceiptEntityOCR left, MessageReceiptEntityOCR right) {
-            return Long.compare(left.getCreated().getTime(), right.getCreated().getTime());
-        }
-    };
-
     /**
      * Loads initial form
      *
@@ -106,36 +91,6 @@ public class LoginController {
 	public String loadForm(Locale locale, HttpServletRequest request) {
         DateTime time = DateUtil.now();
 		log.info("LoginController login: Locale Type: " + locale);
-
-        Map<String, List<MessageReceiptEntityOCR>> map = new HashMap<>();
-        List<MessageReceiptEntityOCR> list = empLandingService.findAll();
-        log.info("Total list: " + list.size());
-        for(MessageReceiptEntityOCR messageReceiptEntityOCR : list) {
-            if(map.containsKey(messageReceiptEntityOCR.getReceiptOCRId())) {
-                List<MessageReceiptEntityOCR> sub = map.get(messageReceiptEntityOCR.getReceiptOCRId());
-                sub.add(messageReceiptEntityOCR);
-            } else {
-                List<MessageReceiptEntityOCR> o = new ArrayList<>();
-                o.add(messageReceiptEntityOCR);
-                map.put(messageReceiptEntityOCR.getReceiptOCRId(), o);
-            }
-        }
-
-        for(String key : map.keySet()) {
-            List<MessageReceiptEntityOCR> sub = map.get(key);
-            if(sub.size() > 1) {
-                List<MessageReceiptEntityOCR> sortedList = descendingOrder.sortedCopy(sub);
-                List<MessageReceiptEntityOCR> deleteList = sortedList.subList(0, sortedList.size() -1);
-                List<MessageReceiptEntityOCR> subListSave = sortedList.subList(sortedList.size() -1, sortedList.size());
-
-                for(MessageReceiptEntityOCR messageReceiptEntityOCR : deleteList) {
-                    empLandingService.delete(messageReceiptEntityOCR);
-                }
-                map.put(key, subListSave);
-            }
-        }
-
-        log.info("Final remaining : " + map.size());
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();

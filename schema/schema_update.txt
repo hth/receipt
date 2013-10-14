@@ -1,13 +1,59 @@
-#Build - 64
+#Build - 68
 db.RECEIPT.getIndexes();
 db.RECEIPT.dropIndexes();
 db.RECEIPT.ensureIndex({"RECEIPT_BLOB_ID": -1, "USER_PROFILE_ID": -1}, {name : 'user_receipt_idx'});
 db.RECEIPT.ensureIndex({"CHECK_SUM": -1, 'unique': true, 'dropDups': true}, {name : 'user_receipt_unique_idx'});
-//Above will ensure no duplicate in the database. Will force to delete the record if exists.
-//Please use the next query to ascertain duplicates before running above query
+//Above will ensure no duplicate in the database. Will force (without warning) to delete the record if exists.
+//Please use the next query to ascertain duplicates before running the above query
 
 //Allows duplicate data
 //db.RECEIPT.ensureIndex({"CHECK_SUM": -1}, {name : 'user_receipt_unique_idx'}, {'unique': true});
 
 #Build - 27
 db.INVITE.update({}, { $set: {COUNT: NumberInt(1)} }, {multi: true});
+
+*** Use with caution **
+//Note: This is to recover data from RECEIPT_OCR & MESSAGE_RECEIPT_OCR in the event of data lost in RECEIPT. Was last used in #Build - 68
+db.MESSAGE_RECEIPT_OCR.update({RECEIPT_STATUS_ENUM: 'TURK_PROCESSED'}, { $set: {ACTIVE: true, LOCKED: false, RECEIPT_STATUS_ENUM: 'OCR_PROCESSED'} }, {multi: true});
+db.RECEIPT_OCR.update({RECEIPT_STATUS_ENUM: 'TURK_PROCESSED'}, { $set: {"RECEIPT_ID": "", RECEIPT_STATUS_ENUM: 'OCR_PROCESSED', ACTIVE: true} }, {multi: true});
+db.RECEIPT_OCR.update({},{$unset: {RECEIPT_ID:1}}, false, true)
+db.RECEIPT.drop();
+db.ITEM.drop();
+
+//After running the above query add the following in LoginController and don't forget to run query from #Build - 68
+
+static Ordering<MessageReceiptEntityOCR> descendingOrder = new Ordering<MessageReceiptEntityOCR>() {
+	public int compare(MessageReceiptEntityOCR left, MessageReceiptEntityOCR right) {
+		return Long.compare(left.getCreated().getTime(), right.getCreated().getTime());
+	}
+};
+
+Map<String, List<MessageReceiptEntityOCR>> map = new HashMap<>();
+List<MessageReceiptEntityOCR> list = empLandingService.findAll();
+log.info("Total list: " + list.size());
+for(MessageReceiptEntityOCR messageReceiptEntityOCR : list) {
+	if(map.containsKey(messageReceiptEntityOCR.getReceiptOCRId())) {
+		List<MessageReceiptEntityOCR> sub = map.get(messageReceiptEntityOCR.getReceiptOCRId());
+		sub.add(messageReceiptEntityOCR);
+	} else {
+		List<MessageReceiptEntityOCR> o = new ArrayList<>();
+		o.add(messageReceiptEntityOCR);
+		map.put(messageReceiptEntityOCR.getReceiptOCRId(), o);
+	}
+}
+
+for(String key : map.keySet()) {
+	List<MessageReceiptEntityOCR> sub = map.get(key);
+	if(sub.size() > 1) {
+		List<MessageReceiptEntityOCR> sortedList = descendingOrder.sortedCopy(sub);
+		List<MessageReceiptEntityOCR> deleteList = sortedList.subList(0, sortedList.size() -1);
+		List<MessageReceiptEntityOCR> subListSave = sortedList.subList(sortedList.size() -1, sortedList.size());
+
+		for(MessageReceiptEntityOCR messageReceiptEntityOCR : deleteList) {
+			empLandingService.delete(messageReceiptEntityOCR);
+		}
+		map.put(key, subListSave);
+	}
+}
+
+log.info("Final remaining : " + map.size());
