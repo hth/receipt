@@ -396,6 +396,7 @@
                                 <td colspan="3" style="text-align: right; vertical-align: top">
                                     <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
                                     <form:input path="receiptOCR.tax" id="tax" size="5"/>
+                                    <form:errors path="receiptOCR.tax" cssClass="error" />
                                 </td>
                                 <td colspan="1" style="vertical-align: top">
                                     <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>

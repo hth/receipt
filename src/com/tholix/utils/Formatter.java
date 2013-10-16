@@ -33,7 +33,7 @@ public final class Formatter {
 
     //Refer bug #3
     //TODO may be change this method to support just item format and net format. Means have two method with scale of 2 and 4. 2 scale for total; and 4 scale for
-	public static BigDecimal getCurrencyFormatted(String value) throws ParseException {
+	public static BigDecimal getCurrencyFormatted(String value) throws ParseException, NumberFormatException {
 		BigDecimal d;
         try {
             if(value.startsWith("$")) {

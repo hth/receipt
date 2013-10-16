@@ -119,7 +119,7 @@ public final class ReceiptOCRForm {
 	 * @return
 	 * @throws ParseException
 	 */
-	public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException {
+	public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException, NumberFormatException {
 		List<ItemEntity> listOfItems = new ArrayList<>();
 
 		for(ItemEntityOCR itemOCR : items) {

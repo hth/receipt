@@ -200,7 +200,7 @@ public class FetcherController {
     boolean checkForDuplicate(@RequestParam("date") String date, @RequestParam("total") String total,
                               @RequestParam("userProfileId") String userProfileId,
                               @ModelAttribute("userSession") UserSession userSession,
-                              HttpServletResponse httpServletResponse) throws IOException, ParseException {
+                              HttpServletResponse httpServletResponse) throws IOException, ParseException, NumberFormatException {
 
         if(userSession != null) {
             try {

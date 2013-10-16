@@ -78,9 +78,10 @@ public final class ReceiptOCRValidator implements Validator {
             errors.rejectValue("receiptOCR", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
         }
 
+        BigDecimal submittedSubTotal = null;
         if (StringUtils.isNotEmpty(receiptOCRForm.getReceiptOCR().getSubTotal())) {
             try {
-                BigDecimal submittedSubTotal = Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getSubTotal());
+                submittedSubTotal = Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getSubTotal());
                 subTotal = Maths.adjustScale(subTotal);
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
@@ -107,16 +108,35 @@ public final class ReceiptOCRValidator implements Validator {
                                 Maths.ACCEPTED_RANGE_IN_LOWEST_DENOMINATION);
                     }
                 }
-            } catch (ParseException e) {
+            } catch (ParseException | NumberFormatException e) {
                 errors.rejectValue("receiptOCR.subTotal", "field.currency", new Object[]{receiptOCRForm.getReceiptOCR().getSubTotal()}, "Unsupported currency format");
             }
         }
 
+        /** Compute total = tax + subtotal with provided total */
+        BigDecimal total = null;
         if (StringUtils.isNotEmpty(receiptOCRForm.getReceiptOCR().getTotal())) {
             try {
-                Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getTotal());
-            } catch (ParseException e) {
+                total = Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getTotal());
+            } catch (ParseException | NumberFormatException e) {
                 errors.rejectValue("receiptOCR.total", "field.currency", new Object[]{receiptOCRForm.getReceiptOCR().getTotal()}, "Unsupported currency format");
+            }
+
+            try {
+                if(submittedSubTotal != null && total != null) {
+                    BigDecimal tax = Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getTax());
+                    BigDecimal calculatedTotal = Maths.add(submittedSubTotal, tax);
+                    if(calculatedTotal.compareTo(total) != 0) {
+                        errors.rejectValue("receiptOCR.total", "field.receipt.total",
+                                new Object[]{receiptOCRForm.getReceiptOCR().getTotal(), calculatedTotal.toString()},
+                                "Summation not adding up");
+                    }
+                } else {
+                    errors.rejectValue("receiptOCR.total", "field.currency.cannot.compute", new Object[]{receiptOCRForm.getReceiptOCR().getTotal()}, "Cannot compute because of previous error(s)");
+                }
+            } catch (ParseException | NumberFormatException exception) {
+                log.error("Exception during update of receipt: " + receiptOCRForm.getReceiptOCR().getId() + ", with error message: " + exception.getLocalizedMessage());
+                errors.rejectValue("receiptOCR.tax", "field.currency", new Object[]{receiptOCRForm.getReceiptOCR().getTax()}, "Unsupported currency format");
             }
         }
     }

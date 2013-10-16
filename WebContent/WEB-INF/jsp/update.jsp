@@ -416,6 +416,7 @@
                                 <td colspan="4" style="text-align: right; width: 300px; vertical-align: top">
                                     <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
                                     <form:input path="receiptOCR.tax" id="tax" size="5"/>
+                                    <form:errors path="receiptOCR.tax" cssClass="error" />
                                 </td>
                                 <td colspan="1" style="vertical-align: top">
                                     <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
@@ -519,7 +520,7 @@
 <script type="text/javascript">
 //    http://outbottle.com/spring-3-mvc-adding-objects-to-a-list-element-on-the-fly-at-form-submit-generic-method/
     function rowAdded(rowElement) {
-        //clear the imput fields for the row
+        //clear the input fields for the row
         $(rowElement).find("input").val('');
     }
 
