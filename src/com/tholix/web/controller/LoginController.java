@@ -129,7 +129,7 @@ public class LoginController {
 				userLoginForm.setPassword(SHAHashing.hashCodeSHA512(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
 				if (user.getPassword().equals(userLoginForm.getPassword()) || user.getGrandPassword().equals(userLoginForm.getPassword())) {
-					log.info("Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
+					log.info("Login Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
 
 					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
 					redirectAttrs.addFlashAttribute("userSession", userSession);
@@ -139,14 +139,14 @@ public class LoginController {
 					return path;
 				} else {
 					userLoginForm.setPassword("");
-					log.error("Password not matching for user : " + userLoginForm.getEmailId());
+					log.warn("Password not matching for user : " + userLoginForm.getEmailId());
 					result.rejectValue("emailId", "field.emailId.notMatching");
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
 					return LOGIN_PAGE;
 				}
 			} else {
 				userLoginForm.setPassword("");
-				log.error("No Email Id found in record : " + userLoginForm.getEmailId());
+				log.warn("No Email Id found in record : " + userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
 				return LOGIN_PAGE;
