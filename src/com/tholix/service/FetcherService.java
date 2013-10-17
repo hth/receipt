@@ -82,7 +82,7 @@ public final class FetcherService {
      */
     public Set<String> findDistinctBizPhone(String bizPhone, String bizAddress, String bizName) {
         DateTime time = DateUtil.now();
-        log.info("Search for Biz address: " + bizAddress + ", within Biz Name" + bizName);
+        log.info("Search for Biz address: " + bizAddress + ", within Biz Name: " + bizName);
         Set<String> phone = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);

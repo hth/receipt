@@ -22,6 +22,9 @@ public final class Maths {
     /** Accepted range in lowest denomination in cents here or any other currency */
     public static double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
 
+    /** Scale for Display is always two */
+    public static final int SCALE_TWO = 2;
+
     /**
      * Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places.
      */

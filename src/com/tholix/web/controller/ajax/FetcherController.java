@@ -8,6 +8,7 @@ import java.util.Set;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class FetcherController {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizName(bizName);
+                return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(bizName));
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -91,7 +92,7 @@ public class FetcherController {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizAddress(bizAddress, bizName);
+                return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(bizName));
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -122,7 +123,7 @@ public class FetcherController {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizPhone(bizPhone, bizAddress, bizName);
+                return fetcherService.findDistinctBizPhone(StringUtils.stripToEmpty(bizPhone), StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(bizName));
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -152,7 +153,7 @@ public class FetcherController {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctItems(itemName, bizName);
+                return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(bizName));
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -204,10 +205,10 @@ public class FetcherController {
 
         if(userSession != null) {
             try {
-                Date receiptDate = DateUtil.getDateFromString(date);
-                Double receiptTotal = Formatter.getCurrencyFormatted(total).doubleValue();
+                Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
+                Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
 
-                String checkSum = SHAHashing.calculateCheckSum(userProfileId, receiptDate, receiptTotal);
+                String checkSum = SHAHashing.calculateCheckSum(StringUtils.stripToEmpty(userProfileId), receiptDate, receiptTotal);
                 return receiptUpdateService.checkIfDuplicate(checkSum);
             } catch(ParseException parseException) {
                 log.error("Ajax checkForDuplicate failed to parse total: " + parseException.getLocalizedMessage());

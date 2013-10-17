@@ -125,7 +125,8 @@ public final class ReceiptOCRValidator implements Validator {
             try {
                 if(submittedSubTotal != null && total != null) {
                     BigDecimal tax = Formatter.getCurrencyFormatted(receiptOCRForm.getReceiptOCR().getTax());
-                    BigDecimal calculatedTotal = Maths.add(submittedSubTotal, tax);
+                    //Since this is going to be displayed to user setting the scale to two.
+                    BigDecimal calculatedTotal = Maths.add(submittedSubTotal, tax).setScale(Maths.SCALE_TWO);
                     if(calculatedTotal.compareTo(total) != 0) {
                         errors.rejectValue("receiptOCR.total", "field.receipt.total",
                                 new Object[]{receiptOCRForm.getReceiptOCR().getTotal(), calculatedTotal.toString()},
