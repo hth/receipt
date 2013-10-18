@@ -105,11 +105,14 @@ public class ReceiptUpdateController {
                                 final Model model) {
 
         DateTime time = DateUtil.now();
-        loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
 
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.receiptOCRForm", model.asMap().get("result"));
+            receiptOCRForm = (ReceiptOCRForm) model.asMap().get("receiptOCRForm");
+            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
+        } else {
+            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
