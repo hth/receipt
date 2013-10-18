@@ -77,11 +77,14 @@ public class ReceiptUpdateController {
                                final Model model) {
 
         DateTime time = DateUtil.now();
-        loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
 
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.receiptOCRForm", model.asMap().get("result"));
+            receiptOCRForm = (ReceiptOCRForm) model.asMap().get("receiptOCRForm");
+            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
+        } else {
+            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptOCRForm);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -120,7 +123,7 @@ public class ReceiptUpdateController {
      * @param result
      * @return
      */
-	@RequestMapping(value = "/submit", method = RequestMethod.POST, params= "submit")
+	@RequestMapping(value = "/submit", method = RequestMethod.POST, params= "receipt-submit")
 	public ModelAndView submit(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm,
                          BindingResult result,
                          final RedirectAttributes redirectAttrs) {
@@ -130,6 +133,7 @@ public class ReceiptUpdateController {
 		receiptOCRValidator.validate(receiptOCRForm, result);
 		if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
+            redirectAttrs.addFlashAttribute("receiptOCRForm", receiptOCRForm);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
 		}
@@ -167,7 +171,7 @@ public class ReceiptUpdateController {
      * @param receiptOCRForm
      * @return
      */
-    @RequestMapping(value = "/submit", method = RequestMethod.POST, params="reject")
+    @RequestMapping(value = "/submit", method = RequestMethod.POST, params="receipt-reject")
     public ModelAndView reject(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm) {
         DateTime time = DateUtil.now();
         log.info("Beginning of Rejecting Receipt OCR: " + receiptOCRForm.getReceiptOCR().getId());
@@ -181,7 +185,8 @@ public class ReceiptUpdateController {
             log.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt reject");
 
-            receiptOCRForm.setErrorMessage("Receipt could not be processed for Reject. Contact administrator with Receipt OCR # " + receiptOCRForm.getReceiptOCR().getId());
+            receiptOCRForm.setErrorMessage("Receipt could not be processed for Reject. " +
+                    "Contact administrator with Receipt OCR # " + receiptOCRForm.getReceiptOCR().getId());
             return new ModelAndView(NEXT_PAGE_UPDATE);
         }
     }
@@ -203,6 +208,7 @@ public class ReceiptUpdateController {
         receiptOCRValidator.validate(receiptOCRForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
+            redirectAttrs.addFlashAttribute("receiptOCRForm", receiptOCRForm);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptOCRForm.getReceiptOCR().getId() + ".htm");
         }
@@ -261,10 +267,13 @@ public class ReceiptUpdateController {
                 log.warn("No such receipt exists. Request made by: " + userSession.getUserProfileId());
             }
         } else if(userSession.getUserProfileId().equalsIgnoreCase(receipt.getUserProfileId()) || (userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue())) {
-            receiptOCRForm.setReceiptOCR(receipt);
+            //Important: The condition below makes sure when validation fails it does not over write the item list
+            if(receiptOCRForm.getReceiptOCR() == null && receiptOCRForm.getItems() == null) {
+                receiptOCRForm.setReceiptOCR(receipt);
 
-            List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
-            receiptOCRForm.setItems(items);
+                List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
+                receiptOCRForm.setItems(items);
+            }
         } else {
             log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
         }

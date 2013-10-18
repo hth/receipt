@@ -429,10 +429,10 @@
                             </tr>
                             <tr style="height: 6em;">
                                 <td colspan="4">
-                                    <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="reject" id="reject"/>
+                                    <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="receipt-reject" id="reject" />
                                 </td>
                                 <td colspan="2">
-                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="submit" id="submit"/>
+                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="receipt-submit" id="submit" />
                                 </td>
                             </tr>
                         </table>
@@ -518,10 +518,16 @@
 </script>
 
 <script type="text/javascript">
-//    http://outbottle.com/spring-3-mvc-adding-objects-to-a-list-element-on-the-fly-at-form-submit-generic-method/
+    // http://outbottle.com/spring-3-mvc-adding-objects-to-a-list-element-on-the-fly-at-form-submit-generic-method/
     function rowAdded(rowElement) {
         //clear the input fields for the row
         $(rowElement).find("input").val('');
+
+        saveNeeded();
+    }
+
+    function saveNeeded() {
+        //Currently does nothing
     }
 
     $(document).ready( function() {
