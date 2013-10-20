@@ -8,10 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
+import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 
 import com.tholix.domain.UserSession;
 import com.tholix.service.FileDBService;
 import com.tholix.utils.DateUtil;
+import com.tholix.utils.ImageSplit;
 import com.tholix.utils.PerformanceProfiling;
 
 /**
@@ -67,7 +73,15 @@ public class ReceiptImageController {
 				ImageIO.write(bi, "gif", out);
 				out.close();
 			} else {
-				gridFSDBFile.writeTo(response.getOutputStream());
+                DBObject dbObject = gridFSDBFile.getMetaData();
+                String fileName = (String) dbObject.get("EMAIL_AND_FILENAME");
+                File file = File.createTempFile(fileName, ".png");
+                gridFSDBFile.writeTo(file);
+                File reduced = ImageSplit.decreaseResolution(file);
+                InputStream fis = new FileInputStream(reduced);
+                IOUtils.copy(fis, response.getOutputStream());
+
+				//gridFSDBFile.writeTo(response.getOutputStream());
 				response.setContentType(gridFSDBFile.getContentType());
 			}
 
