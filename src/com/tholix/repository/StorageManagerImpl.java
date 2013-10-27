@@ -37,7 +37,13 @@ public final class StorageManagerImpl implements StorageManager {
 	private final GridFS gridFs;
 
 	public StorageManagerImpl(DB gridfsDb) {
-		gridFs = new GridFS(gridfsDb);
+        try {
+		    gridFs = new GridFS(gridfsDb);
+        } catch(com.mongodb.MongoException exception) {
+            log.fatal("Error in initializing MongoDB: Issue with getting the connection during server startup. " + exception.getLocalizedMessage());
+            log.fatal("Receiptofi Mongo DB: " + exception.getMessage());
+            throw exception;
+        }
 	}
 
 	@Override
