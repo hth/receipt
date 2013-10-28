@@ -83,7 +83,9 @@ public final class ReportService {
 
             File file = CreateTempFile.file("XML-Report", ".xml");
             jaxbMarshaller.marshal(reportView, file);
-            jaxbMarshaller.marshal(reportView, System.out);
+
+            //Commenting console output
+            //jaxbMarshaller.marshal(reportView, System.out);
 
             Map rootMap = new HashMap();
             rootMap.put("doc", freemarker.ext.dom.NodeModel.parse(file));
@@ -109,7 +111,6 @@ public final class ReportService {
         Configuration cfg = freemarkerConfiguration.createConfiguration();
         Template template = cfg.getTemplate("monthly-report.ftl");
         final String text = processTemplateIntoString(template, rootMap);
-        log.debug(text);
         return text;
     }
 
