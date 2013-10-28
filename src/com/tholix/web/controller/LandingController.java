@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
@@ -250,10 +249,9 @@ public class LandingController extends BaseController {
             /*
              * process files
              */
-            for (MultipartFile file : files) {
+            for (MultipartFile multipartFile : files) {
                 UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
-                CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) file;
-                uploadReceiptImage.setFileData(commonsMultipartFile);
+                uploadReceiptImage.setFileData(multipartFile);
                 uploadReceiptImage.setEmailId(userSession.getEmailId());
                 uploadReceiptImage.setUserProfileId(userSession.getUserProfileId());
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
