@@ -1,15 +1,25 @@
 package com.tholix.utils;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
+
+import com.tholix.web.form.UploadReceiptImage;
 
 /**
  * User: hitender
  * Date: 10/18/13 10:58 PM
  */
-public class ImageSplit {
+public final class ImageSplit {
+    private static final Logger log = Logger.getLogger(ImageSplit.class);
+
+    //TODO remove main
     public static void main(String[] args) throws IOException {
 
         File file = new File("/Users/hitender/Downloads/" + "20130429_171952.jpg"); // I have bear.jpg in my working directory
@@ -20,7 +30,7 @@ public class ImageSplit {
     public static void splitImage(File file) throws IOException {
         FileInputStream fis = new FileInputStream(file);
         BufferedImage image = ImageIO.read(fis); //reading the image file
-        System.out.println("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
+        log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
 
         splitImage(image);
     }
@@ -45,33 +55,44 @@ public class ImageSplit {
                 gr.dispose();
             }
         }
-        System.out.println("Splitting done");
+        log.debug("Splitting done");
 
         //writing mini images into image files
         for (int i = 0; i < imgs.length; i++) {
-            ImageIO.write(imgs[i], "png", File.createTempFile("receiptofi-img-" + i + "-", ".png"));
+            ImageIO.write(imgs[i], "png", CreateTempFile.file("image_" + i + "-", "png"));
         }
-        System.out.println("Mini images created");
+        log.debug("Mini images created");
     }
 
+    /**
+     * Decrease the resolution of the receipt image with PNG file format for better resolution
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static File decreaseResolution(File file) throws IOException {
         FileInputStream fis = new FileInputStream(file);
-        BufferedImage image = ImageIO.read(fis); //reading the image file
+        BufferedImage image = ImageIO.read(fis);
 
-        System.out.println("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
+        log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
         double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
 
-        BufferedImage tempPNG = resizeImage(image, 750, (int) (750/aspectRatio));
-        File newFilePNG = File.createTempFile(file.getName() + "-receiptofi-image-", ".png");
-        ImageIO.write(tempPNG, "png", newFilePNG);
-        return newFilePNG;
+        BufferedImage bufferedImage = resizeImage(image, 750, (int) (750/aspectRatio));
+        File scaled = CreateTempFile.file(FilenameUtils.getBaseName(file.getName()) + UploadReceiptImage.SCALED, FilenameUtils.getExtension(file.getName()));
+        ImageIO.write(bufferedImage, "png", scaled);
+        return scaled;
     }
-
 
     /**
      * This function resize the image file and returns the BufferedImage object that can be saved to file system.
+     *
+     * @param image
+     * @param width
+     * @param height
+     * @return
      */
-    public static BufferedImage resizeImage(final Image image, int width, int height) {
+    private static BufferedImage resizeImage(final Image image, int width, int height) {
         final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         final Graphics2D graphics2D = bufferedImage.createGraphics();
         graphics2D.setComposite(AlphaComposite.Src);
