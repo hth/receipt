@@ -1,5 +1,7 @@
 package com.tholix.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,11 +9,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
@@ -41,6 +52,8 @@ import com.tholix.repository.ReceiptManager;
 import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.repository.UserProfileManager;
 import com.tholix.service.routes.ReceiptSenderJMS;
+import com.tholix.utils.CreateTempFile;
+import com.tholix.utils.ImageSplit;
 import com.tholix.utils.Maths;
 import com.tholix.utils.ReceiptParser;
 import com.tholix.web.form.UploadReceiptImage;
@@ -232,6 +245,7 @@ public final class LandingService {
      */
     public void uploadReceipt(String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
         String receiptBlobId = null;
+        String receiptScaledBlobId = null;
         ReceiptEntityOCR receiptOCR = null;
         List<ItemEntityOCR> items;
         try {
@@ -245,9 +259,21 @@ public final class LandingService {
             receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
             log.info("File Id: " + receiptBlobId);
 
+            MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
+            File original = CreateTempFile.file(new StringBuilder()
+                    .append("image_")
+                    .append(FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()))
+                    .toString(),
+                    FilenameUtils.getExtension(commonsMultipartFile.getOriginalFilename()));
+            commonsMultipartFile.transferTo(original);
+            File scaled = ImageSplit.decreaseResolution(original);
+            uploadReceiptImage.setFile(scaled);
+            receiptScaledBlobId = fileDBService.saveFile(uploadReceiptImage);
+
             receiptOCR = ReceiptEntityOCR.newInstance();
             receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
             receiptOCR.setReceiptBlobId(receiptBlobId);
+            receiptOCR.setReceiptScaledBlobId(receiptScaledBlobId);
             receiptOCR.setUserProfileId(userProfileId);
             receiptOCR.setReceiptOCRTranslation(receiptOCRTranslation);
             receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
@@ -271,6 +297,9 @@ public final class LandingService {
             int sizeFSInitial = fileDBService.getFSDBSize();
             if(receiptBlobId != null) {
                 fileDBService.deleteHard(receiptBlobId);
+            }
+            if(receiptScaledBlobId != null) {
+                fileDBService.deleteHard(receiptScaledBlobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
             log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);

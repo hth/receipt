@@ -136,7 +136,7 @@
 			<div style="clear:both;"></div>
 			<div id="contentDiv">
 				<div id="myContent" style="display: block;">
-					<img src="${protocol}://${host}:${port}/${appname}/receiptimage.htm?id=${receipt.receiptBlobId}" style="width: 200px; height: 200px"/>
+					<img src="${protocol}://${host}:${port}/${appname}/receiptimage.htm?id=${receipt.receiptScaledBlobId}" style="width: 200px; height: 200px"/>
 				</div>
 			</div>
 		</td>

@@ -323,6 +323,7 @@
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
                         <form:errors path="receiptOCR"      cssClass="error" />
                         <form:hidden path="receiptOCR.receiptBlobId"/>
+                        <form:hidden path="receiptOCR.receiptScaledBlobId"/>
                         <form:hidden path="receiptOCR.id"/>
                         <form:hidden path="receiptOCR.userProfileId"/>
                         <form:hidden path="receiptOCR.version"/>
@@ -451,7 +452,7 @@
                         &nbsp;
                     </c:when>
                     <c:otherwise>
-                        <div src="" style="width: 700px; height: 700px" id="receiptOCR.image"></div>
+                        <div src="" id="receiptOCR.image"></div>
                     </c:otherwise>
                     </c:choose>
                 </div>

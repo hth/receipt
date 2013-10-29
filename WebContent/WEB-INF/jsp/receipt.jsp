@@ -30,14 +30,27 @@
 	</style>
 
     <script>
+        <c:set var="isScaledImg" value="false" scope="page" />
 		/* add background color to holder in tr tag */
         window.onload = function () {
-            var src = document.getElementById("receipt.image").src,
-                angle = 90;
+            <c:choose>
+            <c:when test="${!empty receiptForm.receipt.receiptScaledBlobId}">
+                <c:set var="isScaledImg" value="true" />
+                fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptScaledBlobId}');
+            </c:when>
+            <c:otherwise>
+                fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}');
+            </c:otherwise>
+            </c:choose>
+        };
+
+        function fetchReceiptImage(location) {
+            var src     = document.getElementById("receipt.image").src,
+                angle   = 90;
             document.getElementById("holder").innerHTML = "";
             var R = Raphael("holder", 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
-            var img = R.image('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}', 80, 20, 750, 750);
+            var img = R.image(location, 80, 20, 750, 750);
             var butt1 = R.set(),
                 butt2 = R.set();
             butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
@@ -67,12 +80,13 @@
             // setTimeout(function () {R.safari();});
 
             img.rotate(90);
-        };
+        }
 	</script>
 
     <!-- For drop down menu -->
     <script>
         $(document).ready(function () {
+            "use strict";
 
             $(".account").click(function () {
                 var X = $(this).attr('id');
@@ -107,6 +121,8 @@
 
     <script>
         $(document).focusout(function() {
+            "use strict";
+
             $( "#notes" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -131,6 +147,8 @@
         });
 
         $(document).focusout(function() {
+            "use strict";
+
             $( "#recheckComment" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -155,6 +173,8 @@
         });
 
         $(document).ready(function () {
+            "use strict";
+
             $('#notes').NobleCount('#notesCount', {
                 on_negative: 'error',
                 on_positive: 'okay',
@@ -168,6 +188,8 @@
         });
 
         $(document).ready(function () {
+            "use strict";
+
             $('.timestamp').cuteTime({ refresh: 10000 });
         });
     </script>
@@ -399,9 +421,17 @@
                 </form:form>
             </td>
             <td style="width: 6px;">&nbsp;</td>
-            <td style="vertical-align: top;">
-                <div id="holder" style="height: 850px">
-                    <div src="" style="width: 700px; height: 700px" id="receipt.image"></div>
+            <td style="vertical-align: top; text-align: center">
+                <c:choose>
+                    <c:when test="${isScaledImg eq true}">
+                        <div id="imageTypeId">Displayed Scaled Image, <a id="originalImageId" href="#">Show Original Image</a></div>
+                    </c:when>
+                    <c:otherwise>
+                        <div id="imageTypeId">Displayed Original Image, <a id="scaledImageId" href="#">Show Scaled Image</a></div>
+                    </c:otherwise>
+                </c:choose>
+                <div id="holder" style="height: 850px; border-color:#ff0000 #0000ff;">
+                    <div src="" id="receipt.image"></div>
                 </div>
             </td>
         </tr>
@@ -434,7 +464,39 @@
 
 <script>
     $(function() {
+        "use strict";
+
         $("#itemId").focus();
+    });
+</script>
+
+<script>
+    $(document).on('click', '#scaledImageId', function(event) {
+        "use strict";
+
+        event.preventDefault();
+        $('#holder').html(
+                "<div id='holder' style='height: 850px; border-color:#ff0000 #0000ff;'>" +
+                    "<div src='' id='receipt.image'></div>" +
+                "</div>"
+        ).show();
+
+        fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptScaledBlobId}');
+        $('#imageTypeId').html("Displayed Scaled Image, <a id='originalImageId' href='#'>Show Original Image</a>").show();
+    });
+
+    $(document).on('click', '#originalImageId', function(event) {
+        "use strict";
+
+        event.preventDefault();
+        $('#holder').html(
+                "<div id='holder' style='height: 850px; border-color:#ff0000 #0000ff;'>" +
+                    "<div src='' id='receipt.image'></div>" +
+                "</div>"
+        ).show();
+
+        fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}');
+        $('#imageTypeId').html("Displayed Original Image, <a id='scaledImageId' href='#'>Show Scaled Image</a>").show();
     });
 </script>
 

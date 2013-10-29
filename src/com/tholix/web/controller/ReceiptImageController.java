@@ -64,6 +64,8 @@ public class ReceiptImageController {
 
 		try {
 			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
+            log.debug("Length: " + gridFSDBFile.getLength() + ", MetaData: " + gridFSDBFile.getMetaData());
+
 			if(gridFSDBFile == null) {
 				response.setContentType("image/gif");
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
@@ -73,15 +75,7 @@ public class ReceiptImageController {
 				ImageIO.write(bi, "gif", out);
 				out.close();
 			} else {
-                DBObject dbObject = gridFSDBFile.getMetaData();
-                String fileName = (String) dbObject.get("EMAIL_AND_FILENAME");
-                File file = File.createTempFile(fileName, ".png");
-                gridFSDBFile.writeTo(file);
-                File reduced = ImageSplit.decreaseResolution(file);
-                InputStream fis = new FileInputStream(reduced);
-                IOUtils.copy(fis, response.getOutputStream());
-
-				//gridFSDBFile.writeTo(response.getOutputStream());
+				gridFSDBFile.writeTo(response.getOutputStream());
 				response.setContentType(gridFSDBFile.getContentType());
 			}
 

@@ -280,6 +280,7 @@ public final class ReceiptUpdateService {
             itemOCRManager.deleteWhereReceipt(receiptOCR);
 
             storageManager.deleteSoft(receiptOCR.getReceiptBlobId());
+            storageManager.deleteSoft(receiptOCR.getReceiptScaledBlobId());
             GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId());
             DBObject dbObject =  gridFSDBFile.getMetaData();
 
@@ -318,6 +319,7 @@ public final class ReceiptUpdateService {
             itemOCRManager.deleteWhereReceipt(receiptEntityOCR);
             messageManager.deleteAllForReceiptOCR(receiptEntityOCR.getId());
             storageManager.deleteHard(receiptEntityOCR.getReceiptBlobId());
+            storageManager.deleteHard(receiptEntityOCR.getReceiptScaledBlobId());
         } else {
             log.warn("User trying to delete processed Receipt OCR #: " + receiptEntityOCR.getId() + ", Receipt Id #:" + receiptEntityOCR.getReceiptId());
         }

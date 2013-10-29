@@ -26,6 +26,7 @@
     <!-- For drop down menu -->
     <script>
         $(document).ready(function () {
+            "use strict";
 
             $(".account").click(function () {
                 var X = $(this).attr('id');
@@ -60,6 +61,8 @@
 
     <script>
         function runCounter(max) {
+            "use strict";
+
             var runTill = max;
             incCounter();
 
@@ -75,6 +78,8 @@
 
     <script>
         $(document).ready(function () {
+            "use strict";
+
             var errorHandler = function (event, id, fileName, reason) {
                 qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
             };
@@ -144,6 +149,8 @@
     <!-- For dashboard tabs -->
     <script>
         $(function () {
+            "use strict";
+
             $('#tabs').css('width','1025px');
             $("#tabs").tabs();
         });
@@ -249,6 +256,7 @@
 				<div>
 					<script type='text/javascript'>
 						$(document).ready(function() {
+                            "use strict";
 
 							$('#calendar').fullCalendar({
 								header : {
@@ -530,6 +538,7 @@
 <!-- Biz by expense -->
 <script>
     $(function () {
+        "use strict";
 
         var colors = Highcharts.getOptions().colors,
             categories = [${landingForm.bizNames}],
@@ -682,6 +691,8 @@
 <!-- Monthly expense graph -->
 <script>
     $(function () {
+        "use strict";
+
         $('#monthly').highcharts({
             chart: {
                 type: 'column',
@@ -760,6 +771,8 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
+        "use strict";
+
         var bounds = new google.maps.LatLngBounds ();
         var map, infowindow;
 
@@ -887,6 +900,8 @@
 <!-- Expense by Item types -->
 <script>
     $(function () {
+        "use strict";
+
         $('#allExpenseTypes').highcharts({
             chart: {
                 plotBackgroundColor: null,
@@ -982,10 +997,14 @@
 
 <script>
     function setInviteBackGroundColor(color) {
+        "use strict";
+
         document.getElementById("inviteEmailId").style.background=color
     }
 
     function submitInvitationForm() {
+        "use strict";
+
         var inviteEmailId = jQuery("#inviteEmailId").val();
         var object = {emailId: inviteEmailId};
 

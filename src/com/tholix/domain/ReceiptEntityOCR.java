@@ -38,6 +38,10 @@ public class ReceiptEntityOCR extends BaseEntity {
     @Field("RECEIPT_BLOB_ID")
 	private String receiptBlobId;
 
+    @NotNull
+    @Field("RECEIPT_SCALED_BLOB_ID")
+    private String receiptScaledBlobId;
+
 	@NotNull
     @Field("RECEIPT_DATE")
 	private String receiptDate;
@@ -112,7 +116,15 @@ public class ReceiptEntityOCR extends BaseEntity {
 		this.receiptBlobId = receiptBlobId;
 	}
 
-	public String getReceiptDate() {
+    public String getReceiptScaledBlobId() {
+        return receiptScaledBlobId;
+    }
+
+    public void setReceiptScaledBlobId(String receiptScaledBlobId) {
+        this.receiptScaledBlobId = receiptScaledBlobId;
+    }
+
+    public String getReceiptDate() {
 		return receiptDate;
 	}
 

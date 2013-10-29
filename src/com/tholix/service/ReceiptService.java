@@ -96,6 +96,7 @@ public final class ReceiptService {
             if(receipt.isActive()) {
                 itemManager.deleteSoft(receipt);
                 storageManager.deleteSoft(receipt.getReceiptBlobId());
+                storageManager.deleteSoft(receipt.getReceiptScaledBlobId());
 
                 if(receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
                     commentManager.deleteHard(receipt.getRecheckComment());

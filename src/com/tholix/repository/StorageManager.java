@@ -26,29 +26,29 @@ public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
 	 * @return String - bolbId
 	 * @throws IOException
 	 */
-	public String saveFile(UploadReceiptImage object) throws IOException;
+	String saveFile(UploadReceiptImage object) throws IOException;
 
-	public GridFSDBFile get(String id);
+	GridFSDBFile get(String id);
 
-	public GridFSDBFile getByFilename(String filename);
+	GridFSDBFile getByFilename(String filename);
 
     /**
      * Removes the file from db
      *
      * @param id
      */
-	public void deleteHard(String id);
+	void deleteHard(String id);
 
     /**
      * Add a field delete and set the value to true
      *
      * @param id
      */
-    public void deleteSoft(String id);
+    void deleteSoft(String id);
 
 	/**
 	 * Gets size of the GridFs
 	 * @return
 	 */
-	public int getSize();
+	int getSize();
 }

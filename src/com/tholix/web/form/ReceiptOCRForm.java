@@ -91,6 +91,7 @@ public final class ReceiptOCRForm {
         receipt.setTax(Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue());
         receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
         receipt.setReceiptBlobId(receiptOCR.getReceiptBlobId());
+        receipt.setReceiptScaledBlobId(receiptOCR.getReceiptScaledBlobId());
         receipt.setUserProfileId(receiptOCR.getUserProfileId());
 		receipt.setCreated(receiptOCR.getCreated());
         receipt.setUpdated();

@@ -51,6 +51,10 @@ public class ReceiptEntity extends BaseEntity {
     @Field("RECEIPT_BLOB_ID")
 	private String receiptBlobId;
 
+    @NotNull
+    @Field("RECEIPT_SCALED_BLOB_ID")
+    private String receiptScaledBlobId;
+
 	@NotNull
     @DateTimeFormat(iso = ISO.DATE_TIME)
     @Field("RECEIPT_DATE")
@@ -171,7 +175,15 @@ public class ReceiptEntity extends BaseEntity {
 		this.receiptBlobId = receiptBlobId;
 	}
 
-	public Date getReceiptDate() {
+    public String getReceiptScaledBlobId() {
+        return receiptScaledBlobId;
+    }
+
+    public void setReceiptScaledBlobId(String receiptScaledBlobId) {
+        this.receiptScaledBlobId = receiptScaledBlobId;
+    }
+
+    public Date getReceiptDate() {
 		return receiptDate;
 	}
 
