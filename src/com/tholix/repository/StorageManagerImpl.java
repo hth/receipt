@@ -5,7 +5,9 @@ package com.tholix.repository;
 
 import org.bson.types.ObjectId;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public final class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public List<UploadReceiptImage> getAllObjects() {
-		List<UploadReceiptImage> list = new ArrayList<UploadReceiptImage>();
+		List<UploadReceiptImage> list = new ArrayList<>();
 		DBCursor dbCursor = gridFs.getFileList();
 		while(dbCursor.hasNext()) {
 			DBObject dbObject = dbCursor.next();
@@ -119,18 +121,28 @@ public final class StorageManagerImpl implements StorageManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	private String persist(UploadReceiptImage uploadReceiptImage) throws IOException {
 		boolean closeStreamOnPersist = true;
-		GridFSInputFile receiptBlob = gridFs.createFile(
-                uploadReceiptImage.getFileData().getInputStream(),
-                uploadReceiptImage.getFileName(),
-                closeStreamOnPersist);
+		GridFSInputFile receiptBlob;
+        if(!uploadReceiptImage.containsFile()) {
+            receiptBlob = gridFs.createFile(
+                    uploadReceiptImage.getFileData().getInputStream(),
+                    uploadReceiptImage.getFileName(),
+                    closeStreamOnPersist);
+        } else {
+            InputStream is = new FileInputStream(uploadReceiptImage.getFile());
+            receiptBlob = gridFs.createFile(is, uploadReceiptImage.getFileName(), closeStreamOnPersist);
+        }
 
-        receiptBlob.put("DELETE", false);
-        receiptBlob.put("FILE_TYPE", uploadReceiptImage.getFileType().getName());
-		receiptBlob.setContentType(uploadReceiptImage.getFileData().getContentType());
-        receiptBlob.setMetaData(uploadReceiptImage.getMetaData());
+        if(receiptBlob != null) {
+            receiptBlob.put("DELETE", false);
+            receiptBlob.put("FILE_TYPE", uploadReceiptImage.getFileType().getName());
+            receiptBlob.setContentType(uploadReceiptImage.getFileData().getContentType());
+            receiptBlob.setMetaData(uploadReceiptImage.getMetaData());
 
-		receiptBlob.save();
-		return receiptBlob.getId().toString();
+            receiptBlob.save();
+            return receiptBlob.getId().toString();
+        } else {
+            return null;
+        }
 	}
 
 	@Override

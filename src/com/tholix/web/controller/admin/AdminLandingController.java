@@ -52,6 +52,38 @@ public class AdminLandingController {
                                  @ModelAttribute("userSearchForm") UserSearchForm userSearchForm) {
 
         if(userSession.getLevel() == UserLevelEnum.ADMIN) {
+
+//            List<UserProfileEntity> users = userProfileManager.getAllObjects();
+//            for(UserProfileEntity userProfileEntity : users) {
+//                log.info(userProfileEntity.getName());
+//                List<ReceiptEntity> receipts = receiptManager.getAllReceipts(userProfileEntity.getId());
+//                for(ReceiptEntity receiptEntity : receipts) {
+//                    if(receiptEntity.getReceiptScaledBlobId() == null) {
+//                        GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntity.getReceiptBlobId());
+//                        DBObject dbObject = gridFSDBFile.getMetaData();
+//                        String fileName = (String) dbObject.get("ORIGINAL_FILENAME");
+//                        try {
+//                            File file = CreateTempFile.file(FilenameUtils.getBaseName(fileName), FilenameUtils.getExtension(fileName));
+//                            gridFSDBFile.writeTo(file);
+//
+//                            File reduced = ImageSplit.decreaseResolution(file);
+//                            UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
+//                            uploadReceiptImage.setFile(reduced, fileName, gridFSDBFile.getContentType());
+//                            uploadReceiptImage.setEmailId(userProfileEntity.getEmailId());
+//                            uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
+//                            uploadReceiptImage.setUserProfileId(userProfileEntity.getId());
+//
+//                            String receiptScaledBlobId = fileDBService.saveFile(uploadReceiptImage);
+//                            receiptEntity.setReceiptScaledBlobId(receiptScaledBlobId);
+//
+//                            receiptManager.save(receiptEntity);
+//                        } catch (Exception e) {
+//                            log.error(e.getLocalizedMessage());
+//                        }
+//                    }
+//                }
+//            }
+
             ModelAndView modelAndView = new ModelAndView(nextPage);
             modelAndView.addObject("userSearchForm", userSearchForm);
             return modelAndView;

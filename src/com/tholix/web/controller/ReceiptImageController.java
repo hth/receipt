@@ -8,14 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +25,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 
 import com.tholix.domain.UserSession;
 import com.tholix.service.FileDBService;
 import com.tholix.utils.DateUtil;
-import com.tholix.utils.ImageSplit;
 import com.tholix.utils.PerformanceProfiling;
 
 /**
