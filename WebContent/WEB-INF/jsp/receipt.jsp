@@ -45,8 +45,7 @@
         };
 
         function fetchReceiptImage(location) {
-            var src     = document.getElementById("receipt.image").src,
-                angle   = 90;
+            var angle = 0;
             document.getElementById("holder").innerHTML = "";
             var R = Raphael("holder", 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
@@ -78,8 +77,6 @@
                 butt2[1].stop().attr({fill: "#000"});
             });
             // setTimeout(function () {R.safari();});
-
-            img.rotate(90);
         }
 	</script>
 
