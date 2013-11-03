@@ -85,6 +85,10 @@ public class ReceiptEntityOCR extends BaseEntity {
     @Field("COMMENT_NOTES")
     private CommentEntity notes;
 
+    @NotNull
+    @Field("ORIENTATION")
+    private int imageOrientation = 0;
+
     /** To keep bean happy */
 	public ReceiptEntityOCR() {}
 
@@ -210,6 +214,14 @@ public class ReceiptEntityOCR extends BaseEntity {
 
     public void setNotes(CommentEntity notes) {
         this.notes = notes;
+    }
+
+    public int getImageOrientation() {
+        return imageOrientation;
+    }
+
+    public void setImageOrientation(int imageOrientation) {
+        this.imageOrientation = imageOrientation;
     }
 
     @Override

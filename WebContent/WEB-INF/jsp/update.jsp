@@ -22,7 +22,7 @@
 	<script>
 		/* add background color to holder in tr tag */
         window.onload = function () {
-            var angle = 0;
+            var angle = '${receiptOCRForm.receiptOCR.imageOrientation}';
             document.getElementById("holder").innerHTML = "";
             var R = Raphael("holder", 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
@@ -40,6 +40,7 @@
             butt1[2].click(function () {
                 angle -= 90;
                 img.stop().animate({transform: "r" + angle}, 1000, "<>");
+                orientation(-90);
             }).mouseover(function () {
                 butt1[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
@@ -48,13 +49,35 @@
             butt2[2].click(function () {
                 angle += 90;
                 img.animate({transform: "r" + angle}, 1000, "<>");
+                orientation(90);
             }).mouseover(function () {
                 butt2[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
                 butt2[1].stop().attr({fill: "#000"});
             });
             // setTimeout(function () {R.safari();});
+
+            img.rotate(angle);
         };
+
+        function orientation(angle) {
+            $.ajax({
+                url: '${pageContext. request. contextPath}/fetcher/change_ocr_image_orientation.htm',
+                data: {
+                    receiptOCRId: '${receiptOCRForm.receiptOCR.id}',
+                    orientation: angle,
+                    userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
+                },
+                type: "POST",
+                success: function (data) {
+                    if(data == true) {
+                        console.log("Success: Receipt_ Image Orientation Updated");
+                    } else {
+                        console.log("Failed: Receipt_ Image Orientation Updated");
+                    }
+                }
+            });
+        }
 	</script>
 
     <script type="text/javascript">
@@ -327,6 +350,8 @@
                         <form:hidden path="receiptOCR.receiptStatus"/>
                         <form:hidden path="receiptOCR.receiptId"/>
                         <form:hidden path="receiptOCR.receiptOCRTranslation"/>
+                        <form:hidden path="receiptOCR.receiptOf"/>
+
                         <table border="0" style="width: 550px" class="etable">
                             <tr>
                                 <td colspan="6">

@@ -111,6 +111,10 @@ public class ReceiptEntity extends BaseEntity {
     @Field("COMMENT_NOTES")
     private CommentEntity notes;
 
+    @NotNull
+    @Field("ORIENTATION")
+    private int imageOrientation = 0;
+
     /**
      * Used to flush or avoid duplicate receipt entry
      */
@@ -319,6 +323,14 @@ public class ReceiptEntity extends BaseEntity {
      */
     public void checkSum() {
         this.checkSum = SHAHashing.calculateCheckSum(userProfileId, receiptDate, total, isDeleted());
+    }
+
+    public int getImageOrientation() {
+        return imageOrientation;
+    }
+
+    public void setImageOrientation(int imageOrientation) {
+        this.imageOrientation = imageOrientation;
     }
 
     @Override

@@ -68,6 +68,13 @@ public final class ReceiptUpdateService {
     @Transactional(rollbackFor={Exception.class})
     public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         try {
+            ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+            receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
+
+            //update the version number as the value could have changed by rotating receipt image through ajax
+            receiptOCR.setVersion(receiptEntityOCR.getVersion());
+
             bizService.saveNewBusinessAndOrStore(receipt);
             receiptManager.save(receipt);
 
@@ -145,6 +152,13 @@ public final class ReceiptUpdateService {
     public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         ReceiptEntity fetchedReceipt = null;
         try {
+            ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+            receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
+
+            //update the version number as the value could have changed by rotating receipt image through ajax
+            receiptOCR.setVersion(receiptEntityOCR.getVersion());
+
             bizService.saveNewBusinessAndOrStore(receipt);
             if(StringUtils.isNotEmpty(receipt.getId())) {
                 fetchedReceipt = receiptManager.findOne(receipt.getId());

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,13 @@ import org.joda.time.DateTime;
 import com.tholix.domain.BizNameEntity;
 import com.tholix.domain.BizStoreEntity;
 import com.tholix.domain.ItemEntity;
+import com.tholix.domain.ReceiptEntity;
+import com.tholix.domain.ReceiptEntityOCR;
 import com.tholix.repository.BizNameManager;
 import com.tholix.repository.BizStoreManager;
 import com.tholix.repository.ItemManager;
+import com.tholix.repository.ReceiptManager;
+import com.tholix.repository.ReceiptOCRManager;
 import com.tholix.utils.DateUtil;
 import com.tholix.utils.Formatter;
 import com.tholix.utils.PerformanceProfiling;
@@ -33,6 +38,8 @@ public final class FetcherService {
     @Autowired private ItemManager itemManager;
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;
+    @Autowired private ReceiptManager receiptManager;
+    @Autowired private ReceiptOCRManager receiptOCRManager;
 
     /**
      * This method is called from AJAX to get the matching list of users in the system
@@ -121,5 +128,35 @@ public final class FetcherService {
         log.info("found item.. total size " + itemList.size() + ", but unique items size: " + items.size());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return items;
+    }
+
+    /**
+     *
+     * @param receiptId
+     * @param imageOrientation
+     * @param userProfileId
+     */
+    public void changeImageOrientation(String receiptId, int imageOrientation, String userProfileId) throws Exception {
+        DateTime time = DateUtil.now();
+        ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
+        receiptEntity.setImageOrientation(receiptEntity.getImageOrientation() + imageOrientation);
+        receiptManager.save(receiptEntity);
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
+
+    /**
+     *
+     * @param receiptOCRId
+     * @param imageOrientation
+     * @param userProfileId
+     */
+    public void changeReceiptOCRImageOrientation(String receiptOCRId, int imageOrientation, String userProfileId) throws Exception {
+        DateTime time = DateUtil.now();
+        ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCRId);
+        if(receiptEntityOCR.getUserProfileId().equalsIgnoreCase(userProfileId)) {
+            receiptEntityOCR.setImageOrientation(receiptEntityOCR.getImageOrientation() + imageOrientation);
+            receiptOCRManager.save(receiptEntityOCR);
+        }
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
     }
 }

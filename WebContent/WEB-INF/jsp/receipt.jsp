@@ -45,7 +45,7 @@
         };
 
         function fetchReceiptImage(location) {
-            var angle = 0;
+            var angle = '${receiptForm.receipt.imageOrientation}';
             document.getElementById("holder").innerHTML = "";
             var R = Raphael("holder", 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
@@ -63,6 +63,7 @@
             butt1[2].click(function () {
                 angle -= 90;
                 img.stop().animate({transform: "r" + angle}, 1000, "<>");
+                orientation(-90);
             }).mouseover(function () {
                 butt1[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
@@ -71,12 +72,34 @@
             butt2[2].click(function () {
                 angle += 90;
                 img.animate({transform: "r" + angle}, 1000, "<>");
+                orientation(90);
             }).mouseover(function () {
                 butt2[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
                 butt2[1].stop().attr({fill: "#000"});
             });
             // setTimeout(function () {R.safari();});
+
+            img.rotate(angle);
+        }
+
+        function orientation(angle) {
+            $.ajax({
+                url: '${pageContext. request. contextPath}/fetcher/change_image_orientation.htm',
+                data: {
+                    receiptId: '${receiptForm.receipt.id}',
+                    orientation: angle,
+                    userProfileId: '${receiptForm.receipt.userProfileId}'
+                },
+                type: "POST",
+                success: function (data) {
+                    if(data == true) {
+                        console.log("Success: Receipt Image Orientation Updated");
+                    } else {
+                        console.log("Failed: Receipt Image Orientation Updated");
+                    }
+                }
+            });
         }
 	</script>
 

@@ -1,3 +1,10 @@
+#Build - 75
+db.RECEIPT.update({}, { $set: {ORIENTATION: 0} }, {multi: true});
+db.RECEIPT_OCR.update({}, { $set: {ORIENTATION: 0} }, {multi: true});
+
+db.RECEIPT.update({}, { $set: {RECEIPT_OF_ENUM : "EXPENSE"} }, {multi: true});
+db.RECEIPT_OCR.update({}, { $set: {RECEIPT_OF_ENUM : "EXPENSE"} }, {multi: true});
+
 #Build - 68
 db.RECEIPT.getIndexes();
 db.RECEIPT.dropIndexes();

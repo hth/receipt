@@ -196,6 +196,7 @@ public class FetcherController {
      * @return
      * @throws IOException
      */
+    //TODO make this post
     @RequestMapping(value = "/check_for_duplicate", method = RequestMethod.GET)
     public @ResponseBody
     boolean checkForDuplicate(@RequestParam("date") String date, @RequestParam("total") String total,
@@ -217,6 +218,86 @@ public class FetcherController {
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return true;
+        }
+    }
+
+    /**
+     * Update the orientation of the image
+     *
+     * @param receiptId
+     * @param imageOrientation
+     * @param userProfileId
+     * @param userSession
+     * @param httpServletResponse
+     */
+    @RequestMapping(value = "/change_image_orientation", method = RequestMethod.POST)
+    public @ResponseBody
+    boolean changeImageOrientation(@RequestParam("receiptId") String receiptId, @RequestParam("orientation") String imageOrientation,
+                                   @RequestParam("userProfileId") String userProfileId,
+                                   @ModelAttribute("userSession") UserSession userSession,
+                                   HttpServletResponse httpServletResponse) throws IOException {
+
+        if(userSession != null) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue() || userProfileId.equalsIgnoreCase(userSession.getUserProfileId())) {
+                try {
+                    fetcherService.changeImageOrientation(
+                            StringUtils.stripToEmpty(receiptId),
+                            Integer.parseInt(StringUtils.stripToEmpty(imageOrientation)),
+                            StringUtils.stripToEmpty(userProfileId)
+                    );
+                    return true;
+                } catch (Exception e) {
+                    //Eat the error message
+                    log.error("Failed to change orientation of the image: " + e.getLocalizedMessage());
+                    return false;
+                }
+            } else {
+                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+                return false;
+            }
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return false;
+        }
+    }
+
+    /**
+     * Update the orientation of the image
+     *
+     * @param receiptOCRId
+     * @param imageOrientation
+     * @param userProfileId
+     * @param userSession
+     * @param httpServletResponse
+     */
+    @RequestMapping(value = "/change_ocr_image_orientation", method = RequestMethod.POST)
+    public @ResponseBody
+    boolean changeReceiptOCRImageOrientation(@RequestParam("receiptOCRId") String receiptOCRId, @RequestParam("orientation") String imageOrientation,
+                                             @RequestParam("userProfileId") String userProfileId,
+                                             @ModelAttribute("userSession") UserSession userSession,
+                                             HttpServletResponse httpServletResponse) throws IOException {
+
+        if(userSession != null) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
+                try {
+                    fetcherService.changeReceiptOCRImageOrientation(
+                            StringUtils.stripToEmpty(receiptOCRId),
+                            Integer.parseInt(StringUtils.stripToEmpty(imageOrientation)),
+                            StringUtils.stripToEmpty(userProfileId)
+                    );
+                    return true;
+                } catch (Exception e) {
+                    //Eat the error message
+                    log.error("Failed to change orientation of the image: " + e.getLocalizedMessage());
+                    return false;
+                }
+            } else {
+                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+                return false;
+            }
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return false;
         }
     }
 }
