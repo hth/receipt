@@ -66,27 +66,28 @@
 <!-- Biz by expense -->
 <script>
 $(function () {
+    "use strict";
 
     var colors = Highcharts.getOptions().colors,
-        categories = [${landingForm.bizNames}],
-        data = [
-            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
-            {
-                y: ${item.total},
-                color: colors[${status.count-1}],
-                url: 'receipt/biz/${item.bizName}.htm',
-                id: '${item.bizNameForId}',
-                drilldown: {
-                    name: '${item.bizName}',
-                    categories: [${item.expenseTypes}],
-                    data: [${item.expenseValues}],
+            categories = [${landingForm.bizNames}],
+            data = [
+                <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
+                {
+                    y: ${item.total},
                     color: colors[${status.count-1}],
                     url: 'receipt/biz/${item.bizName}.htm',
-                    id: '${item.bizNameForId}'
-                }
-            },
-            </c:forEach>
-        ];
+                    id: '${item.bizNameForId}',
+                    drilldown: {
+                        name: '${item.bizName}',
+                        categories: [${item.expenseTypes}],
+                        data: [${item.expenseValues}],
+                        color: colors[${status.count-1}],
+                        url: 'receipt/biz/${item.bizName}.htm',
+                        id: '${item.bizNameForId}'
+                    }
+                },
+                </c:forEach>
+            ];
 
 
     // Build the data arrays
@@ -142,7 +143,7 @@ $(function () {
         tooltip: {
             valueSuffix: '$',
             formatter: function() {
-                return this.point.name + ": " + this.point.y + "$";
+                return this.point.name + ": " + '$' + Highcharts.numberFormat(this.y, 2);
             }
         },
         series: [
@@ -151,6 +152,7 @@ $(function () {
                 data: bizNames,
                 size: '60%',
                 dataLabels: {
+                    enabled: false,
                     formatter: function () {
                         return this.y > 1 ? this.point.name : null;
                     },
@@ -182,9 +184,10 @@ $(function () {
                 size: '80%',
                 innerSize: '60%',
                 dataLabels: {
+                    enabled: false,
                     formatter: function () {
                         // display only if larger than 1
-                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + this.y + '$' : null;
+                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + '$' + Highcharts.numberFormat(this.y, 2) : null;
                     }
                 },
                 point: {
