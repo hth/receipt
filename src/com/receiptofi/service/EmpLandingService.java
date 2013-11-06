@@ -1,0 +1,41 @@
+package com.receiptofi.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.receiptofi.domain.MessageReceiptEntityOCR;
+import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.repository.MessageManager;
+
+/**
+ * User: hitender
+ * Date: 4/28/13
+ * Time: 8:12 PM
+ */
+@Service
+public final class EmpLandingService {
+
+    @Autowired private MessageManager messageManager;
+
+    public List<MessageReceiptEntityOCR> pendingReceipts(String emailId, String profileId, ReceiptStatusEnum status) {
+        return messageManager.findPending(emailId, profileId, status);
+    }
+
+    public List<MessageReceiptEntityOCR> queuedReceipts(String emailId, String profileId) {
+        return messageManager.findUpdateWithLimit(emailId, profileId, ReceiptStatusEnum.OCR_PROCESSED);
+    }
+
+    public List<MessageReceiptEntityOCR> recheck(String emailId, String profileId) {
+        return messageManager.findUpdateWithLimit(emailId, profileId, ReceiptStatusEnum.TURK_REQUEST);
+    }
+
+    public List<MessageReceiptEntityOCR> findAll() {
+        return messageManager.getAllObjects();
+    }
+
+    public void delete(MessageReceiptEntityOCR messageReceiptEntityOCR) {
+        messageManager.deleteHard(messageReceiptEntityOCR);
+    }
+}

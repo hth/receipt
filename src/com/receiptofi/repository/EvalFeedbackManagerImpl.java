@@ -1,0 +1,67 @@
+package com.receiptofi.repository;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
+import com.mongodb.WriteResult;
+
+import com.receiptofi.domain.EvalFeedbackEntity;
+
+/**
+ * User: hitender
+ * Date: 7/20/13
+ * Time: 5:37 PM
+ */
+public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
+    private static final Logger log = Logger.getLogger(EvalFeedbackManagerImpl.class);
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Override
+    public List<EvalFeedbackEntity> getAllObjects() {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public void save(EvalFeedbackEntity object) throws Exception {
+        if(object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
+    }
+
+    @Override
+    public EvalFeedbackEntity findOne(String id) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public WriteResult updateObject(String id, String name) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public void deleteHard(EvalFeedbackEntity object) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public void createCollection() {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public void dropCollection() {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
+}

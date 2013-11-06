@@ -186,7 +186,7 @@
                         <spring:eval expression="item.price" />
                     </td>
                     <td style="padding:3px; text-align: right; width: 70px;">
-                        <spring:eval expression="item.taxed == T(com.tholix.domain.types.TaxEnum).TAXED" var="isValid" />
+                        <spring:eval expression="item.taxed == T(com.receiptofi.domain.types.TaxEnum).TAXED" var="isValid" />
                         <c:choose>
                             <c:when test="${!isValid}">
                                 &nbsp;

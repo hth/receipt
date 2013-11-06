@@ -322,7 +322,7 @@
 		</tr>
 	</table>
 
-    <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
+    <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
     <div id="off_screen">
         <div id="map-canvas"></div>
     </div>

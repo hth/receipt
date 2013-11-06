@@ -199,7 +199,7 @@
                 ** <b>Auth Code</b> is like password. Keep it secure.
             </p>
 
-            <spring:eval expression="userSession.level eq T(com.tholix.domain.types.UserLevelEnum).ADMIN" var="isAdmin" />
+            <spring:eval expression="userSession.level eq T(com.receiptofi.domain.types.UserLevelEnum).ADMIN" var="isAdmin" />
             <c:if test="${isAdmin}">
             <!-- If changing the access level here then update the condition check in POST method -->
 

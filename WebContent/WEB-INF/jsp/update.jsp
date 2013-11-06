@@ -239,7 +239,7 @@
                 <img src="../../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
-                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
+                <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
                         <h3><a href="${pageContext.request.contextPath}/emp/landing.htm" style="color: #065c14">Home</a></h3>
@@ -277,7 +277,7 @@
     <c:choose>
     <c:when test="${!empty receiptOCRForm.receiptOCR}">
 
-    <spring:eval expression="receiptOCRForm.receiptOCR.receiptStatus == T(com.tholix.domain.types.ReceiptStatusEnum).TURK_RECEIPT_REJECT" var="isValid" />
+    <spring:eval expression="receiptOCRForm.receiptOCR.receiptStatus == T(com.receiptofi.domain.types.ReceiptStatusEnum).TURK_RECEIPT_REJECT" var="isValid" />
     <c:choose>
         <c:when test="${!isValid}">
             <h2 class="demoHeaders">Pending receipt</h2>
@@ -287,7 +287,7 @@
         </c:otherwise>
     </c:choose>
 
-    <spring:eval expression="userSession.level lt T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
+    <spring:eval expression="userSession.level lt T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
     <c:if test="${isValid}">
     <c:choose>
         <c:when test="${empty receiptOCRForm.receiptOCR.receiptId}">
@@ -336,7 +336,7 @@
     <table>
         <tr>
             <td style="vertical-align: top;">
-                <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
+                <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
                     <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
@@ -488,7 +488,7 @@
             <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
             <span style="display:block; width:700px;">
-            <spring:eval expression="userSession.level ge T(com.tholix.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
+            <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
             <c:choose>
                 <c:when test="${isValid}">
                 Oops! Seems like user has deleted this receipt recently.
