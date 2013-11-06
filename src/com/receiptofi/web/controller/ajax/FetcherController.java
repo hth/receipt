@@ -278,7 +278,7 @@ public class FetcherController {
                                              HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue() || userProfileId.equalsIgnoreCase(userSession.getUserProfileId())) {
                 try {
                     fetcherService.changeReceiptOCRImageOrientation(
                             StringUtils.stripToEmpty(receiptOCRId),
