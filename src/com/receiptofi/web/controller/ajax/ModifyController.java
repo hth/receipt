@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.TextInputScrubber;
 
 /**
  * Update for all Ajax Calls
@@ -54,7 +55,7 @@ public class ModifyController {
 
         if(userSession != null) {
             log.info("Receipt notes updated by userProfileId: " + userSession.getUserProfileId());
-            return receiptService.updateNotes(notes, receiptId, userSession.getUserProfileId());
+            return receiptService.updateNotes(TextInputScrubber.scrub(notes), receiptId, userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
@@ -80,7 +81,7 @@ public class ModifyController {
 
         if(userSession != null) {
             log.info("Receipt recheck comment updated by userProfileId: " + userSession.getUserProfileId());
-            return receiptService.updateComment(comment, receiptId, userSession.getUserProfileId());
+            return receiptService.updateComment(TextInputScrubber.scrub(comment), receiptId, userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
@@ -107,7 +108,7 @@ public class ModifyController {
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 log.info("Receipt OCR recheck comment updated by userProfileId: " + userSession.getUserProfileId());
-                return receiptService.updateOCRComment(comment, receiptOCRId);
+                return receiptService.updateOCRComment(TextInputScrubber.scrub(comment), receiptOCRId);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return false;

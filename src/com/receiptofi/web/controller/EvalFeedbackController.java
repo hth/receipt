@@ -21,6 +21,7 @@ import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.EvalFeedbackService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.utils.TextInputScrubber;
 import com.receiptofi.web.form.EvalFeedbackForm;
 import com.receiptofi.web.validator.EvalFeedbackValidator;
 
@@ -67,7 +68,7 @@ public class EvalFeedbackController {
             return modelAndView;
         }
 
-        evalFeedbackService.addFeedback(evalFeedbackForm.getComment(), evalFeedbackForm.getRating(), evalFeedbackForm.getFileData(), userSession);
+        evalFeedbackService.addFeedback(TextInputScrubber.scrub(evalFeedbackForm.getComment()), evalFeedbackForm.getRating(), evalFeedbackForm.getFileData(), userSession);
         log.info("Feedback saved successfully");
 
         httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, true);
