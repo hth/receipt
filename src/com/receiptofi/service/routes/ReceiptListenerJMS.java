@@ -3,18 +3,19 @@
  */
 package com.receiptofi.service.routes;
 
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.receiptofi.domain.MessageReceiptEntityOCR;
 import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.MessageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author hitender
@@ -23,7 +24,7 @@ import com.receiptofi.repository.MessageManager;
  */
 @Component
 public final class ReceiptListenerJMS {
-	private static final Logger log = Logger.getLogger(ReceiptListenerJMS.class);
+	private static final Logger log = LoggerFactory.getLogger(ReceiptListenerJMS.class);
 
     @Autowired private MessageManager messageManager;
 

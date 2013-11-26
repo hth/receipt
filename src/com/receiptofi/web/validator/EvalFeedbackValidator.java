@@ -1,12 +1,13 @@
 package com.receiptofi.web.validator;
 
+import com.receiptofi.web.form.EvalFeedbackForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-import com.receiptofi.web.form.EvalFeedbackForm;
 
 
 /**
@@ -15,7 +16,7 @@ import com.receiptofi.web.form.EvalFeedbackForm;
  * Time: 8:29 PM
  */
 public final class EvalFeedbackValidator implements  Validator {
-    private static final Logger log = Logger.getLogger(EvalFeedbackValidator.class);
+    private static final Logger log = LoggerFactory.getLogger(EvalFeedbackValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {

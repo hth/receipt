@@ -1,10 +1,5 @@
 package com.receiptofi.service;
 
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.AccountTypeEnum;
@@ -13,6 +8,11 @@ import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.form.UserRegistrationForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * User: hitender
@@ -21,7 +21,7 @@ import com.receiptofi.web.form.UserRegistrationForm;
  */
 @Service
 public final class InviteService {
-    private static Logger log = Logger.getLogger(InviteService.class);
+    private static Logger log = LoggerFactory.getLogger(InviteService.class);
 
     @Autowired private AccountService accountService;
     @Autowired private InviteManager inviteManager;

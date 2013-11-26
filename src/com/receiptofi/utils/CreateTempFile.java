@@ -1,16 +1,19 @@
 package com.receiptofi.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+
 
 /**
  * User: hitender
  * Date: 9/21/13 10:16 PM
  */
 public final class CreateTempFile {
-    private static final Logger log = Logger.getLogger(CreateTempFile.class);
+    private static final Logger log = LoggerFactory.getLogger(CreateTempFile.class);
 
     public static final String TEMP_FILE_START_WITH = "Receiptofi";
 

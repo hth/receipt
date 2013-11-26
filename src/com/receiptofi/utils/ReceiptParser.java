@@ -3,16 +3,16 @@
  */
 package com.receiptofi.utils;
 
+import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.ReceiptEntityOCR;
+import com.receiptofi.domain.types.TaxEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
-
-import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.domain.types.TaxEnum;
 
 /**
  * Parses the data from OCR
@@ -22,7 +22,7 @@ import com.receiptofi.domain.types.TaxEnum;
  *
  */
 public final class ReceiptParser {
-	private static final Logger log = Logger.getLogger(ReceiptParser.class);
+	private static final Logger log = LoggerFactory.getLogger(ReceiptParser.class);
 	private static Pattern item = Pattern.compile("[-+]?[$]?[-+]?[0-9]*\\.[0-9]{2}[\\s]?[\\w{1}]?$"); // PP I $246456.99 $2.99
 	private static Pattern date = Pattern.compile("[0-9]{1,2}[/|-|\\.][0-9]{1,2}[/|-|\\.][19|20]?[0-9]{2}"); // DATETIME: 12/26/2012 5:29:44 PM
 

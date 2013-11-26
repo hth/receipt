@@ -1,16 +1,5 @@
 package com.receiptofi.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import org.joda.time.DateTime;
-
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ItemEntity;
@@ -24,6 +13,17 @@ import com.receiptofi.repository.ReceiptOCRManager;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.PerformanceProfiling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import org.joda.time.DateTime;
 
 /**
  * User: hitender
@@ -32,7 +32,7 @@ import com.receiptofi.utils.PerformanceProfiling;
  */
 @Service
 public final class FetcherService {
-    private static final Logger log = Logger.getLogger(FetcherService.class);
+    private static final Logger log = LoggerFactory.getLogger(FetcherService.class);
 
     @Autowired private ItemManager itemManager;
     @Autowired private BizNameManager bizNameManager;

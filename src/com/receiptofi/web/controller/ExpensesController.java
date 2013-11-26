@@ -1,9 +1,18 @@
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.service.ExpensesService;
+import com.receiptofi.service.ItemService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.form.ExpenseForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,15 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.service.ExpensesService;
-import com.receiptofi.service.ItemService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.form.ExpenseForm;
-
 /**
  * Lists out expenses related items. Call made from Pie chart on Tab 2
  *
@@ -36,7 +36,7 @@ import com.receiptofi.web.form.ExpenseForm;
 @RequestMapping(value = "/expenses")
 @SessionAttributes({"userSession"})
 public class ExpensesController {
-    private static final Logger log = Logger.getLogger(ExpensesController.class);
+    private static final Logger log = LoggerFactory.getLogger(ExpensesController.class);
     private static final String nextPage = "/expenses";
 
     @Autowired private ItemService itemService;

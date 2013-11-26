@@ -3,28 +3,29 @@
  */
 package com.receiptofi.web.validator;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
-
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.ReceiptOCRForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 
 /**
  * @author hitender
  * @since Jan 10, 2013 10:00:24 PM
  */
 public final class ReceiptOCRValidator implements Validator {
-    private static final Logger log = Logger.getLogger(ReceiptOCRValidator.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceiptOCRValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {

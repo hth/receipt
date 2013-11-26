@@ -3,7 +3,13 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ReceiptEntity;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,7 +19,6 @@ import java.util.StringTokenizer;
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,11 +37,6 @@ import org.joda.time.DateTime;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ReceiptEntity;
-
 /**
  * @author hitender
  * @since Dec 26, 2012 9:16:44 PM
@@ -45,7 +45,7 @@ import com.receiptofi.domain.ReceiptEntity;
 @Repository
 @Transactional(readOnly = true)
 public final class ItemManagerImpl implements ItemManager {
-	private static final Logger log = Logger.getLogger(ItemManagerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ItemManagerImpl.class);
 
 	private static final long serialVersionUID = 5734660649481504610L;
 

@@ -1,29 +1,5 @@
 package com.receiptofi.service;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
-
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -35,6 +11,30 @@ import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.SHAHashing;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 /**
  * User: hitender
@@ -43,7 +43,7 @@ import com.receiptofi.utils.SHAHashing;
  */
 @Service
 public final class MailService {
-    private static Logger log = Logger.getLogger(MailService.class);
+    private static Logger log = LoggerFactory.getLogger(MailService.class);
 
     @Autowired private AccountService accountService;
     @Autowired private InviteService inviteService;

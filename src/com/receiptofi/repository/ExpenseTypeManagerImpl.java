@@ -1,12 +1,13 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.ExpenseTypeEntity;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,15 +19,13 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.ExpenseTypeEntity;
-
 /**
  * User: hitender
  * Date: 5/13/13
  * Time: 11:59 PM
  */
 public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
-    private static final Logger log = Logger.getLogger(ExpenseTypeManagerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ExpenseTypeManagerImpl.class);
 
     @Autowired private MongoTemplate mongoTemplate;
 
@@ -99,7 +98,7 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
         //TODO try using writeResult to check for condition
         WriteResult writeResult = mongoTemplate.updateFirst(query, update(update), ExpenseTypeEntity.class);
-        log.info(writeResult);
+        log.info("changeVisibility WriteResult: ", writeResult);
     }
 
     @Override

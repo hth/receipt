@@ -1,17 +1,17 @@
 package com.receiptofi.service;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.NotificationManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * User: hitender
@@ -20,7 +20,7 @@ import com.receiptofi.repository.NotificationManager;
  */
 @Service
 public final class NotificationService {
-    private static final Logger log = Logger.getLogger(NotificationService.class);
+    private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
 
     @Autowired private NotificationManager notificationManager;
 

@@ -3,10 +3,12 @@
  */
 package com.receiptofi.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -20,7 +22,7 @@ import org.joda.time.format.DateTimeFormatter;
  *
  */
 public final class DateUtil {
-	private static final Logger log = Logger.getLogger(DateUtil.class);
+	private static final Logger log = LoggerFactory.getLogger(DateUtil.class);
 
     public static final int MINUTE_IN_SECONDS   = 60;
     public static final int HOUR_IN_SECONDS     = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;

@@ -1,17 +1,5 @@
 package com.receiptofi.service;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
-
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -19,6 +7,19 @@ import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.web.form.BizForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
 
 /**
  * User: hitender
@@ -27,7 +28,7 @@ import com.receiptofi.web.form.BizForm;
  */
 @Service
 public final class BizService {
-    private static final Logger log = Logger.getLogger(BizService.class);
+    private static final Logger log = LoggerFactory.getLogger(BizService.class);
 
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;

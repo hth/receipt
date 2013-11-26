@@ -1,10 +1,12 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.Formatter;
+import org.slf4j.LoggerFactory;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -13,8 +15,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
-
-import com.receiptofi.utils.Formatter;
 
 /**
  * User: hitender
@@ -26,7 +26,7 @@ import com.receiptofi.utils.Formatter;
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public class BizStoreEntity extends BaseEntity {
-    private static final Logger log = Logger.getLogger(BizStoreEntity.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(BizStoreEntity.class);
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     private static final String PHONE_BLANK = "000_000_0000";

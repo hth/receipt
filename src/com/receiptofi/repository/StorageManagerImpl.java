@@ -3,15 +3,16 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.web.form.UploadReceiptImage;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +25,6 @@ import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 
-import com.receiptofi.web.form.UploadReceiptImage;
-
 /**
  * @author hitender
  * @since Jan 3, 2013 3:09:08 AM
@@ -34,7 +33,7 @@ import com.receiptofi.web.form.UploadReceiptImage;
 @Transactional(readOnly = true)
 public final class StorageManagerImpl implements StorageManager {
 	private static final long serialVersionUID = -5264258042433041673L;
-	private static final Logger log = Logger.getLogger(StorageManagerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(StorageManagerImpl.class);
 
 	private final GridFS gridFs;
 
@@ -42,8 +41,8 @@ public final class StorageManagerImpl implements StorageManager {
         try {
 		    gridFs = new GridFS(gridfsDb);
         } catch(com.mongodb.MongoException exception) {
-            log.fatal("Error in initializing MongoDB: Issue with getting the connection during server startup. " + exception.getLocalizedMessage());
-            log.fatal("Receiptofi Mongo DB: " + exception.getMessage());
+            log.error("Error in initializing MongoDB: Issue with getting the connection during server startup. " + exception.getLocalizedMessage());
+            log.error("Receiptofi Mongo DB: " + exception.getMessage());
             throw exception;
         }
 	}

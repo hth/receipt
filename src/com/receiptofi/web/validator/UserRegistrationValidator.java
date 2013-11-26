@@ -3,13 +3,13 @@
  */
 package com.receiptofi.web.validator;
 
-import org.apache.log4j.Logger;
+import com.receiptofi.web.form.UserRegistrationForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import com.receiptofi.web.form.UserRegistrationForm;
 
 /**
  * @author hitender
@@ -17,7 +17,7 @@ import com.receiptofi.web.form.UserRegistrationForm;
  *
  */
 public final class UserRegistrationValidator implements Validator {
-	private static final Logger log = Logger.getLogger(UserRegistrationValidator.class);
+	private static final Logger log = LoggerFactory.getLogger(UserRegistrationValidator.class);
 
 	public static final String EMAIL_REGEX = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
 

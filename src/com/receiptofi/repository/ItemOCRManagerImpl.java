@@ -3,13 +3,15 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.ReceiptEntityOCR;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.update;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,9 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.ReceiptEntityOCR;
-
 /**
  * @author hitender
  * @since Jan 6, 2013 1:35:47 PM
@@ -38,7 +37,7 @@ import com.receiptofi.domain.ReceiptEntityOCR;
 @Transactional(readOnly = true)
 public final class ItemOCRManagerImpl implements ItemOCRManager {
 	private static final long serialVersionUID = -6094519223354771552L;
-	private static final Logger log = Logger.getLogger(ItemOCRManagerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ItemOCRManagerImpl.class);
 
 	@Autowired private MongoTemplate mongoTemplate;
 

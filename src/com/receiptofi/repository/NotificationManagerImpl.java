@@ -1,11 +1,13 @@
 package com.receiptofi.repository;
 
 
+import com.receiptofi.domain.NotificationEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.NotificationEntity;
-
 /**
  * User: hitender
  * Date: 6/30/13
@@ -27,7 +27,7 @@ import com.receiptofi.domain.NotificationEntity;
 @Repository
 @Transactional(readOnly = true)
 public final class NotificationManagerImpl implements NotificationManager {
-    private static final Logger log = Logger.getLogger(NotificationManagerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(NotificationManagerImpl.class);
 
     @Autowired
     private MongoTemplate mongoTemplate;

@@ -3,13 +3,21 @@
  */
 package com.receiptofi.web.controller.admin;
 
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.AdminLandingService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.controller.LoginController;
+import com.receiptofi.web.form.UserSearchForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,14 +32,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.service.AdminLandingService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.controller.LoginController;
-import com.receiptofi.web.form.UserSearchForm;
-
 /**
  * Redirect to prevent re-submit.
  *
@@ -42,7 +42,7 @@ import com.receiptofi.web.form.UserSearchForm;
 @RequestMapping(value = "/admin")
 @SessionAttributes({"userSession"})
 public class AdminLandingController {
-	private static final Logger log = Logger.getLogger(AdminLandingController.class);
+	private static final Logger log = LoggerFactory.getLogger(AdminLandingController.class);
 	private static final String nextPage = "/admin/landing";
 
     @Autowired private AdminLandingService adminLandingService;

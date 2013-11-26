@@ -3,7 +3,13 @@
  */
 package com.receiptofi.web.controller;
 
-import org.apache.log4j.Logger;
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.service.ReceiptPendingService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.form.PendingReceiptForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.service.ReceiptPendingService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.form.PendingReceiptForm;
-
 /**
  * @author hitender
  * @since Jan 6, 2013 4:33:23 PM
@@ -30,7 +30,7 @@ import com.receiptofi.web.form.PendingReceiptForm;
 @RequestMapping(value = "/pending")
 @SessionAttributes({"userSession"})
 public class ReceiptPendingController {
-	private static final Logger log = Logger.getLogger(ReceiptPendingController.class);
+	private static final Logger log = LoggerFactory.getLogger(ReceiptPendingController.class);
 
 	private String RECEIPT_PENDING = "/pending";
 

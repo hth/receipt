@@ -1,8 +1,9 @@
 package com.receiptofi.web.cache;
 
-import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.concurrent.TimeUnit;
 
 import net.sf.uadetector.ReadableUserAgent;
 import net.sf.uadetector.UserAgentStringParser;
@@ -19,7 +20,7 @@ import com.google.common.cache.CacheBuilder;
  * @see http://uadetector.sourceforge.net/usage.html#usage_in_a_servlet
  */
 public final class CachedUserAgentStringParser implements UserAgentStringParser {
-    private static final Logger log = Logger.getLogger(CachedUserAgentStringParser.class);
+    private static final Logger log = LoggerFactory.getLogger(CachedUserAgentStringParser.class);
 
     private static UserAgentStringParser parser = UADetectorServiceFactory.getCachingAndUpdatingParser();
 

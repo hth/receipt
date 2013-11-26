@@ -3,6 +3,9 @@
  */
 package com.receiptofi.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -10,8 +13,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-
-import org.apache.log4j.Logger;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -23,7 +24,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
  *
  */
 public final class Formatter {
-	private static final Logger log = Logger.getLogger(Formatter.class);
+	private static final Logger log = LoggerFactory.getLogger(Formatter.class);
 
     //Defaults to US
     private static final String FORMAT_TO_US = "US";

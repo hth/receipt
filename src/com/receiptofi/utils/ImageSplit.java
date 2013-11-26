@@ -1,5 +1,9 @@
 package com.receiptofi.utils;
 
+import com.receiptofi.web.form.UploadReceiptImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,16 +12,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
-
-import com.receiptofi.web.form.UploadReceiptImage;
 
 /**
  * User: hitender
  * Date: 10/18/13 10:58 PM
  */
 public final class ImageSplit {
-    private static final Logger log = Logger.getLogger(ImageSplit.class);
+    private static final Logger log = LoggerFactory.getLogger(ImageSplit.class);
 
     //TODO remove main
     public static void main(String[] args) throws IOException {

@@ -3,11 +3,11 @@
  */
 package com.receiptofi.utils;
 
-import static org.junit.Assert.assertEquals;
-
-import org.apache.log4j.Logger;
-
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author hitender
@@ -15,7 +15,7 @@ import org.junit.Test;
  *
  */
 public class HashMeTest {
-	private static final Logger log = Logger.getLogger(HashMeTest.class);
+	private static final Logger log = LoggerFactory.getLogger(HashMeTest.class);
 
 	/**
 	 * Test method for {@link com.receiptofi.utils.HashMe#code(java.lang.String)}.

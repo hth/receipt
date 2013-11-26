@@ -3,20 +3,20 @@
  */
 package com.receiptofi.service.routes;
 
+import com.receiptofi.domain.ReceiptEntityOCR;
+import com.receiptofi.domain.UserProfileEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
 
-import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
-
-import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.domain.UserProfileEntity;
 
 /**
  * @author hitender
@@ -24,7 +24,7 @@ import com.receiptofi.domain.UserProfileEntity;
  *
  */
 public final class ReceiptSenderJMS {
-	private static final Logger log = Logger.getLogger(ReceiptSenderJMS.class);
+	private static final Logger log = LoggerFactory.getLogger(ReceiptSenderJMS.class);
 
 	@Autowired private JmsTemplate jmsSenderTemplate;
 

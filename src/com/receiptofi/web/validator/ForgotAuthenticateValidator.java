@@ -1,12 +1,12 @@
 package com.receiptofi.web.validator;
 
-import org.apache.log4j.Logger;
+import com.receiptofi.web.form.ForgotAuthenticateForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import com.receiptofi.web.form.ForgotAuthenticateForm;
 
 /**
  * User: hitender
@@ -14,7 +14,7 @@ import com.receiptofi.web.form.ForgotAuthenticateForm;
  * Time: 3:11 AM
  */
 public final class ForgotAuthenticateValidator implements Validator {
-    private static final Logger log = Logger.getLogger(ForgotAuthenticateValidator.class);
+    private static final Logger log = LoggerFactory.getLogger(ForgotAuthenticateValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {

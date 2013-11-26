@@ -1,12 +1,12 @@
 package com.receiptofi.web.validator;
 
-import org.apache.log4j.Logger;
+import com.receiptofi.web.form.InviteAuthenticateForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import com.receiptofi.web.form.InviteAuthenticateForm;
 
 /**
  * User: hitender
@@ -14,7 +14,7 @@ import com.receiptofi.web.form.InviteAuthenticateForm;
  * Time: 5:39 PM
  */
 public final class InviteAuthenticateValidator implements Validator {
-    private static final Logger log = Logger.getLogger(InviteAuthenticateValidator.class);
+    private static final Logger log = LoggerFactory.getLogger(InviteAuthenticateValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {

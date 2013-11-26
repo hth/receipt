@@ -1,12 +1,14 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.InviteEntity;
+import com.receiptofi.domain.UserProfileEntity;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,9 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.InviteEntity;
-import com.receiptofi.domain.UserProfileEntity;
-
 /**
  * User: hitender
  * Date: 6/9/13
@@ -29,7 +28,7 @@ import com.receiptofi.domain.UserProfileEntity;
 @Repository
 @Transactional(readOnly = true)
 public final class InviteManagerImpl implements InviteManager {
-    private final static Logger log = Logger.getLogger(InviteManagerImpl.class);
+    private final static Logger log = LoggerFactory.getLogger(InviteManagerImpl.class);
 
     @Autowired private MongoTemplate mongoTemplate;
 

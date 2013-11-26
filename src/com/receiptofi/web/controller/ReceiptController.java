@@ -3,27 +3,6 @@
  */
 package com.receiptofi.web.controller;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
-
-import org.joda.time.DateTime;
-
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTypeEntity;
 import com.receiptofi.domain.ItemEntity;
@@ -38,6 +17,27 @@ import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.form.ReceiptForm;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.rest.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
+
+import org.joda.time.DateTime;
 
 /**
  * @author hitender
@@ -48,7 +48,7 @@ import com.receiptofi.web.rest.Header;
 @RequestMapping(value = "/receipt")
 @SessionAttributes({"userSession"})
 public class ReceiptController extends BaseController {
-	private static final Logger log = Logger.getLogger(ReceiptController.class);
+	private static final Logger log = LoggerFactory.getLogger(ReceiptController.class);
 
 	private static String NEXT_PAGE = "/receipt";
     private static String NEXT_PAGE_BY_BIZ = "/receiptByBiz";

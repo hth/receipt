@@ -1,5 +1,11 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,8 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.stereotype.Service;
 
@@ -18,10 +22,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-
 /**
  * User: hitender
  * Date: 5/9/13
@@ -29,7 +29,7 @@ import com.receiptofi.utils.PerformanceProfiling;
  */
 @Service
 public final class ExternalService {
-    private static final Logger log = Logger.getLogger(ExternalService.class);
+    private static final Logger log = LoggerFactory.getLogger(ExternalService.class);
 
     private static final String ADDRESS_DECODE_URL = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
 

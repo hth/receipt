@@ -3,6 +3,13 @@
  */
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.service.FileDBService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +19,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,11 +33,6 @@ import org.joda.time.DateTime;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.service.FileDBService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-
 /**
  * @author hitender
  * @since Jan 6, 2013 8:21:54 PM
@@ -41,7 +42,7 @@ import com.receiptofi.utils.PerformanceProfiling;
 @RequestMapping(value = "/receiptimage")
 @SessionAttributes({"userSession"})
 public class ReceiptImageController {
-	private static final Logger log = Logger.getLogger(ReceiptImageController.class);
+	private static final Logger log = LoggerFactory.getLogger(ReceiptImageController.class);
 
 	@Autowired private FileDBService fileDBService;
 

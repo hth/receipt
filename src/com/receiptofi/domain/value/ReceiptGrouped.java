@@ -3,17 +3,17 @@
  */
 package com.receiptofi.domain.value;
 
+import com.receiptofi.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
-
 import org.joda.time.DateTime;
 
 import com.google.common.base.Objects;
-
-import com.receiptofi.utils.DateUtil;
 
 /**
  * @author hitender
@@ -22,7 +22,7 @@ import com.receiptofi.utils.DateUtil;
  */
 public final class ReceiptGrouped implements Serializable {
 	private static final long serialVersionUID = 291731832249108585L;
-    private static volatile Logger log = Logger.getLogger(ReceiptGrouped.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceiptGrouped.class);
 
     private BigDecimal total;
     private int year;

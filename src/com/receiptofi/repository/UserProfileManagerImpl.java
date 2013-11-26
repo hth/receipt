@@ -3,14 +3,17 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.UserAuthenticationEntity;
+import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.UserLevelEnum;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.update;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,10 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.UserAuthenticationEntity;
-import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.UserLevelEnum;
-
 /**
  * @author hitender
  * @since Dec 23, 2012 3:45:47 AM
@@ -38,7 +37,7 @@ import com.receiptofi.domain.types.UserLevelEnum;
 @Transactional(readOnly = true)
 public final class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
-	private static final Logger log = Logger.getLogger(UserProfileManagerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(UserProfileManagerImpl.class);
 
 	@Autowired private MongoTemplate mongoTemplate;
 

@@ -1,17 +1,5 @@
 package com.receiptofi.service;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.mongodb.DBObject;
-import com.mongodb.gridfs.GridFSDBFile;
-
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.ExpenseTypeEntity;
 import com.receiptofi.domain.ItemEntity;
@@ -27,6 +15,19 @@ import com.receiptofi.repository.MessageManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.ReceiptOCRManager;
 import com.receiptofi.repository.StorageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFSDBFile;
 
 /**
  * User: hitender
@@ -35,7 +36,7 @@ import com.receiptofi.repository.StorageManager;
  */
 @Service
 public final class ReceiptUpdateService {
-    private static final Logger log = Logger.getLogger(ReceiptUpdateService.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceiptUpdateService.class);
 
     @Autowired private ReceiptOCRManager receiptOCRManager;
     @Autowired private ItemOCRManager itemOCRManager;

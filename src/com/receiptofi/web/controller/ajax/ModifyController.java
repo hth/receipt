@@ -1,11 +1,16 @@
 package com.receiptofi.web.controller.ajax;
 
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.TextInputScrubber;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.TextInputScrubber;
 
 /**
  * Update for all Ajax Calls
@@ -32,7 +32,7 @@ import com.receiptofi.utils.TextInputScrubber;
 @RequestMapping(value = "/modify")
 @SessionAttributes({"userSession"})
 public class ModifyController {
-     private static final Logger log = Logger.getLogger(ModifyController.class);
+     private static final Logger log = LoggerFactory.getLogger(ModifyController.class);
 
     @Autowired ReceiptService receiptService;
 

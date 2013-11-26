@@ -3,10 +3,23 @@
  */
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.ReceiptEntityOCR;
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.ReceiptUpdateService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.form.ReceiptOCRForm;
+import com.receiptofi.web.validator.ReceiptOCRValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,18 +36,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.service.ReceiptUpdateService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.form.ReceiptOCRForm;
-import com.receiptofi.web.validator.ReceiptOCRValidator;
-
 /**
  * Class manages first processing of a receipt. That includes loading of a receipts by technician.
  * Updating of a receipt by technician. Same is true for recheck of receipt by technician.
@@ -48,7 +49,7 @@ import com.receiptofi.web.validator.ReceiptOCRValidator;
 @RequestMapping(value = "/emp")
 @SessionAttributes({"userSession"})
 public class ReceiptUpdateController {
-    private static final Logger log = Logger.getLogger(ReceiptUpdateController.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceiptUpdateController.class);
 
 	private static final String NEXT_PAGE_UPDATE        = "/update";
     private static final String NEXT_PAGE_RECHECK       = "/recheck";

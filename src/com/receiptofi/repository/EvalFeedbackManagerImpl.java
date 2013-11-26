@@ -1,15 +1,15 @@
 package com.receiptofi.repository;
 
-import java.util.List;
+import com.receiptofi.domain.EvalFeedbackEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.EvalFeedbackEntity;
 
 /**
  * User: hitender
@@ -17,7 +17,7 @@ import com.receiptofi.domain.EvalFeedbackEntity;
  * Time: 5:37 PM
  */
 public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
-    private static final Logger log = Logger.getLogger(EvalFeedbackManagerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(EvalFeedbackManagerImpl.class);
 
     @Autowired
     private MongoTemplate mongoTemplate;

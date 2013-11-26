@@ -1,30 +1,5 @@
 package com.receiptofi.service;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import com.google.common.primitives.Longs;
-
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
@@ -51,6 +26,32 @@ import com.receiptofi.utils.ReceiptParser;
 import com.receiptofi.web.form.UploadReceiptImage;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Longs;
 
 /**
  * User: hitender
@@ -59,7 +60,7 @@ import com.receiptofi.web.helper.ReceiptLandingView;
  */
 @Service
 public final class LandingService {
-    private static final Logger log = Logger.getLogger(LandingService.class);
+    private static final Logger log = LoggerFactory.getLogger(LandingService.class);
 
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ReceiptOCRManager receiptOCRManager;

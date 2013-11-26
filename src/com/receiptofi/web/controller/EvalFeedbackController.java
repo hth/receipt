@@ -1,10 +1,18 @@
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.service.EvalFeedbackService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.utils.TextInputScrubber;
+import com.receiptofi.web.form.EvalFeedbackForm;
+import com.receiptofi.web.validator.EvalFeedbackValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Enumeration;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,14 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.service.EvalFeedbackService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.utils.TextInputScrubber;
-import com.receiptofi.web.form.EvalFeedbackForm;
-import com.receiptofi.web.validator.EvalFeedbackValidator;
-
 /**
  * User: hitender
  * Date: 7/19/13
@@ -34,7 +34,7 @@ import com.receiptofi.web.validator.EvalFeedbackValidator;
 @RequestMapping(value = "/eval")
 @SessionAttributes({"userSession"})
 public class EvalFeedbackController {
-    private static final Logger log = Logger.getLogger(EvalFeedbackController.class);
+    private static final Logger log = LoggerFactory.getLogger(EvalFeedbackController.class);
 
     /* Refers to feedback.jsp and next one to feedbackConfirm.jsp */
     private static final String NEXT_PAGE_IS_CALLED_FEEDBACK            = "/eval/feedback";

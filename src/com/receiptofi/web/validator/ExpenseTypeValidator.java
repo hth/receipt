@@ -1,13 +1,13 @@
 package com.receiptofi.web.validator;
 
-import org.apache.log4j.Logger;
+import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.web.form.ExpenseTypeForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.web.form.ExpenseTypeForm;
 
 /**
  * User: hitender
@@ -15,7 +15,7 @@ import com.receiptofi.web.form.ExpenseTypeForm;
  * Time: 7:08 PM
  */
 public final class ExpenseTypeValidator implements Validator {
-    private static final Logger log = Logger.getLogger(ExpenseTypeValidator.class);
+    private static final Logger log = LoggerFactory.getLogger(ExpenseTypeValidator.class);
     private static int EXPENSE_TYPE_MAX_CHAR = 6;
 
     @Override

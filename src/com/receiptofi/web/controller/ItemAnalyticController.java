@@ -3,10 +3,19 @@
  */
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.service.ExpensesService;
+import com.receiptofi.service.ItemAnalyticService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.form.ItemAnalyticForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,15 +28,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.service.ExpensesService;
-import com.receiptofi.service.ItemAnalyticService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.form.ItemAnalyticForm;
-
 /**
  * @author hitender
  * @since Jan 9, 2013 10:23:55 PM
@@ -37,7 +37,7 @@ import com.receiptofi.web.form.ItemAnalyticForm;
 @RequestMapping(value = "/itemanalytic")
 @SessionAttributes({"userSession"})
 public class ItemAnalyticController {
-	private static final Logger log = Logger.getLogger(ItemAnalyticController.class);
+	private static final Logger log = LoggerFactory.getLogger(ItemAnalyticController.class);
 	private static final String nextPage = "/itemanalytic";
 
     private static final int NINETY_DAYS = 90;

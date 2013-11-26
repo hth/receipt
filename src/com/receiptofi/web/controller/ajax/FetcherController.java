@@ -1,5 +1,16 @@
 package com.receiptofi.web.controller.ajax;
 
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.FetcherService;
+import com.receiptofi.service.LandingService;
+import com.receiptofi.service.ReceiptUpdateService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.Formatter;
+import com.receiptofi.utils.SHAHashing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
@@ -9,7 +20,6 @@ import java.util.Set;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,15 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.service.FetcherService;
-import com.receiptofi.service.LandingService;
-import com.receiptofi.service.ReceiptUpdateService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.Formatter;
-import com.receiptofi.utils.SHAHashing;
-
 /**
  * User: hitender
  * Date: 4/19/13
@@ -38,7 +39,7 @@ import com.receiptofi.utils.SHAHashing;
 @RequestMapping(value = "/fetcher")
 @SessionAttributes({"userSession"})
 public class FetcherController {
-    private static final Logger log = Logger.getLogger(FetcherController.class);
+    private static final Logger log = LoggerFactory.getLogger(FetcherController.class);
 
     @Autowired FetcherService fetcherService;
     @Autowired LandingService landingService;

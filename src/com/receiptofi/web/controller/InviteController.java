@@ -1,18 +1,5 @@
 package com.receiptofi.web.controller;
 
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import org.joda.time.DateTime;
-
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -25,6 +12,19 @@ import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.form.InviteAuthenticateForm;
 import com.receiptofi.web.validator.InviteAuthenticateValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import org.joda.time.DateTime;
 
 /**
  * User: hitender
@@ -34,7 +34,7 @@ import com.receiptofi.web.validator.InviteAuthenticateValidator;
 @Controller
 @RequestMapping(value = "/invite")
 public class InviteController {
-    private static final Logger log = Logger.getLogger(ForgotController.class);
+    private static final Logger log = LoggerFactory.getLogger(ForgotController.class);
 
     private static final String INVITE_AUTH         = "/invite/authenticate";
     private static final String INVITE_AUTH_CONFIRM = "/invite/authenticateConfirm";

@@ -1,15 +1,15 @@
 package com.receiptofi.service;
 
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.receiptofi.domain.BrowserEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.BrowserManager;
 import com.receiptofi.repository.UserAuthenticationManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * User: hitender
@@ -18,7 +18,7 @@ import com.receiptofi.repository.UserAuthenticationManager;
  */
 @Service
 public final class LoginService {
-    private static Logger log = Logger.getLogger(LoginService.class);
+    private static Logger log = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;
     @Autowired private BrowserManager browserManager;

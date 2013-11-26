@@ -3,11 +3,13 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.UserAuthenticationEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.update;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,8 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.UserAuthenticationEntity;
-
 /**
  * @author hitender
  * @since Dec 16, 2012 1:20:53 PM
@@ -31,7 +31,7 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 @Repository
 @Transactional(readOnly = true)
 public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
-	private static final Logger log = Logger.getLogger(UserAuthenticationManagerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
 
 	private static final long serialVersionUID = 5745317401200234475L;
 

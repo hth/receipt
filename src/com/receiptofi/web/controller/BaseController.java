@@ -3,17 +3,18 @@
  */
 package com.receiptofi.web.controller;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.ValidateObjectID;
 import com.receiptofi.web.rest.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author hitender
@@ -21,7 +22,7 @@ import com.receiptofi.web.rest.Header;
  *
  */
 public abstract class BaseController {
-	private static final Logger log = Logger.getLogger(BaseController.class);
+	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
     @Autowired UserAuthenticationManager userAuthenticationManager;
     @Autowired UserProfileManager userProfileManager;

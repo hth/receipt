@@ -1,5 +1,8 @@
 package com.receiptofi.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -8,7 +11,6 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * User: hitender
@@ -17,7 +19,7 @@ import org.apache.log4j.Logger;
  * {@link http://java-performance.info/bigdecimal-vs-double-in-financial-calculations/}
  */
 public final class Maths {
-    private static volatile Logger log = Logger.getLogger(Maths.class);
+    private static volatile Logger log = LoggerFactory.getLogger(Maths.class);
 
     /** Accepted range in lowest denomination in cents here or any other currency */
     public static double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;

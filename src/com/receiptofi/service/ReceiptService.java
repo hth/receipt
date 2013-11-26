@@ -1,16 +1,5 @@
 package com.receiptofi.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import org.joda.time.DateTime;
-
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CommentEntity;
@@ -30,6 +19,18 @@ import com.receiptofi.repository.StorageManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.ReceiptSenderJMS;
 import com.receiptofi.web.form.ReceiptForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import org.joda.time.DateTime;
 
 /**
  * User: hitender
@@ -38,7 +39,7 @@ import com.receiptofi.web.form.ReceiptForm;
  */
 @Service
 public final class ReceiptService {
-    private static Logger log = Logger.getLogger(ReceiptService.class);
+    private static Logger log = LoggerFactory.getLogger(ReceiptService.class);
 
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ReceiptOCRManager receiptOCRManager;

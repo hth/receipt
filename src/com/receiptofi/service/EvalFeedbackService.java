@@ -1,17 +1,18 @@
 package com.receiptofi.service;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
 import com.receiptofi.domain.EvalFeedbackEntity;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.repository.EvalFeedbackManager;
 import com.receiptofi.web.form.UploadReceiptImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * User: hitender
@@ -20,7 +21,7 @@ import com.receiptofi.web.form.UploadReceiptImage;
  */
 @Service
 public final class EvalFeedbackService {
-    private static final Logger log = Logger.getLogger(EvalFeedbackService.class);
+    private static final Logger log = LoggerFactory.getLogger(EvalFeedbackService.class);
 
     @Autowired EvalFeedbackManager evalFeedbackManager;
     @Autowired FileDBService fileDBService;

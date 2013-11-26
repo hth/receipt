@@ -1,6 +1,13 @@
 package com.receiptofi.web.controller;
 
-import org.apache.log4j.Logger;
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.repository.NotificationManager;
+import com.receiptofi.service.NotificationService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.form.NotificationForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.repository.NotificationManager;
-import com.receiptofi.service.NotificationService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.form.NotificationForm;
-
 /**
  * User: hitender
  * Date: 7/1/13
@@ -28,7 +28,7 @@ import com.receiptofi.web.form.NotificationForm;
 @RequestMapping(value = "/notification")
 @SessionAttributes({"userSession"})
 public class NotificationController {
-    private static final Logger log = Logger.getLogger(LandingController.class);
+    private static final Logger log = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired NotificationService notificationService;
 

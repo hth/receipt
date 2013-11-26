@@ -1,21 +1,21 @@
 package com.receiptofi.web.listener;
 
+import com.receiptofi.utils.CreateTempFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
-import com.receiptofi.utils.CreateTempFile;
-
 /**
  * User: hitender
  * Date: 9/21/13 8:15 PM
  */
 public class ReceiptofiServletContextListener implements ServletContextListener {
-    private static final Logger log = Logger.getLogger(ReceiptofiServletContextListener.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceiptofiServletContextListener.class);
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {

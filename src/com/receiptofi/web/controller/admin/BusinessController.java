@@ -1,10 +1,25 @@
 package com.receiptofi.web.controller.admin;
 
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.BizService;
+import com.receiptofi.service.ExternalService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.controller.LoginController;
+import com.receiptofi.web.form.BizForm;
+import com.receiptofi.web.validator.BizSearchValidator;
+import com.receiptofi.web.validator.BizValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,20 +35,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.service.BizService;
-import com.receiptofi.service.ExternalService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.controller.LoginController;
-import com.receiptofi.web.form.BizForm;
-import com.receiptofi.web.validator.BizSearchValidator;
-import com.receiptofi.web.validator.BizValidator;
-
 /**
  * User: hitender
  * Date: 7/30/13
@@ -43,7 +44,7 @@ import com.receiptofi.web.validator.BizValidator;
 @RequestMapping(value = "/admin")
 @SessionAttributes({"userSession"})
 public class BusinessController {
-    private static final Logger log = Logger.getLogger(BusinessController.class);
+    private static final Logger log = LoggerFactory.getLogger(BusinessController.class);
     private static final String NEXT_PAGE = "/admin/business";
     private static final String EDIT_PAGE = "/admin/businessEdit";
 

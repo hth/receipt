@@ -1,8 +1,14 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.web.rest.Header;
+import com.receiptofi.web.rest.ReportView;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
@@ -18,8 +24,6 @@ import java.util.Map;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
-import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,18 +31,13 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import org.joda.time.DateTime;
 
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.utils.CreateTempFile;
-import com.receiptofi.web.rest.Header;
-import com.receiptofi.web.rest.ReportView;
-
 /**
  * User: hitender
  * Date: 9/4/13 1:19 PM
  */
 @Service
 public final class ReportService {
-    private static final Logger log = Logger.getLogger(ReportService.class);
+    private static final Logger log = LoggerFactory.getLogger(ReportService.class);
 
     @Autowired LandingService landingService;
 

@@ -1,8 +1,13 @@
 package com.receiptofi.service.mobile;
 
+import com.receiptofi.service.LandingService;
+import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.web.rest.LandingView;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
@@ -17,16 +22,10 @@ import java.util.Map;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
-import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
-
-import com.receiptofi.service.LandingService;
-import com.receiptofi.utils.CreateTempFile;
-import com.receiptofi.web.rest.LandingView;
 
 /**
  * User: hitender
@@ -34,7 +33,7 @@ import com.receiptofi.web.rest.LandingView;
  */
 @Service
 public final class LandingViewService {
-    private static final Logger log = Logger.getLogger(LandingViewService.class);
+    private static final Logger log = LoggerFactory.getLogger(LandingViewService.class);
 
     @Autowired
     LandingService landingService;

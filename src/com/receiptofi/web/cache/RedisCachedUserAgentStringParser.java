@@ -1,6 +1,7 @@
 package com.receiptofi.web.cache;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.cache.annotation.Cacheable;
 
@@ -12,7 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
  * @deprecated could not use with Redis cacheable
  */
 public class RedisCachedUserAgentStringParser {
-    private static final Logger log = Logger.getLogger(RedisCachedUserAgentStringParser.class);
+    private static final Logger log = LoggerFactory.getLogger(RedisCachedUserAgentStringParser.class);
 
     @Cacheable(value="name", condition="'hitender'.equals(#name)")
     public String getName(String name) {

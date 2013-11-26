@@ -1,13 +1,5 @@
 package com.receiptofi.service;
 
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import org.joda.time.DateTime;
-
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
@@ -21,6 +13,14 @@ import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.form.UserRegistrationForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import org.joda.time.DateTime;
 
 /**
  * User: hitender
@@ -29,7 +29,7 @@ import com.receiptofi.web.form.UserRegistrationForm;
  */
 @Service
 public final class AccountService {
-    private static final Logger log = Logger.getLogger(AccountService.class);
+    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;
     @Autowired private UserProfileManager userProfileManager;

@@ -1,11 +1,14 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.MessageReceiptEntityOCR;
+import com.receiptofi.domain.types.ReceiptStatusEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.update;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,9 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.MessageReceiptEntityOCR;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
-
 /**
  * User: hitender
  * Date: 4/6/13
@@ -31,7 +31,7 @@ import com.receiptofi.domain.types.ReceiptStatusEnum;
 @Repository
 @Transactional(readOnly = true)
 public final class MessageManagerImpl implements MessageManager {
-    private static final Logger log = Logger.getLogger(MessageManagerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageManagerImpl.class);
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -1,20 +1,20 @@
 package com.receiptofi.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import org.joda.time.DateTime;
-
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.form.UserSearchForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import org.joda.time.DateTime;
 
 /**
  * User: hitender
@@ -23,7 +23,7 @@ import com.receiptofi.web.form.UserSearchForm;
  */
 @Service
 public final class AdminLandingService {
-    private static final Logger log = Logger.getLogger(AdminLandingService.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminLandingService.class);
 
     @Autowired private UserProfileManager userProfileManager;
 
@@ -39,7 +39,7 @@ public final class AdminLandingService {
         for(UserSearchForm userSearchForm : findAllUsers(name)) {
             users.add(userSearchForm.getUserName());
         }
-        log.info(users);
+        log.info("List of users: ", users);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return users;
     }

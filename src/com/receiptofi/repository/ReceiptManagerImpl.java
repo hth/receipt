@@ -3,15 +3,21 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.value.ReceiptGrouped;
+import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
+import com.receiptofi.utils.DateUtil;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,13 +38,6 @@ import org.joda.time.DateTime;
 
 import com.mongodb.WriteResult;
 
-import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.value.ReceiptGrouped;
-import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
-import com.receiptofi.utils.DateUtil;
-
 /**
  * @author hitender
  * @since Dec 26, 2012 9:17:04 PM
@@ -47,7 +46,7 @@ import com.receiptofi.utils.DateUtil;
 @Repository
 @Transactional(readOnly = true)
 public final class ReceiptManagerImpl implements ReceiptManager {
-	private static final Logger log = Logger.getLogger(ReceiptManagerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
 
 	private static final long serialVersionUID = -8812261440000722447L;
 

@@ -1,9 +1,10 @@
 package com.receiptofi.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 import java.util.Date;
-
-import org.apache.log4j.Logger;
 
 import org.joda.time.DateTime;
 
@@ -15,7 +16,7 @@ import org.joda.time.DateTime;
  * Time: 11:39 AM
  */
 public final class PerformanceProfiling {
-    private static final Logger log = Logger.getLogger(PerformanceProfiling.class);
+    private static final Logger log = LoggerFactory.getLogger(PerformanceProfiling.class);
     private static final int QUARTER_SECOND = 250;
     private static final int HALF_SECOND = 500;
 

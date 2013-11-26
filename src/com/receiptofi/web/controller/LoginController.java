@@ -3,6 +3,21 @@
  */
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.UserAuthenticationEntity;
+import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.UserSession;
+import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.LoginService;
+import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.utils.SHAHashing;
+import com.receiptofi.web.cache.CachedUserAgentStringParser;
+import com.receiptofi.web.form.UserLoginForm;
+import com.receiptofi.web.validator.UserLoginValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.Cookie;
@@ -10,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,19 +38,6 @@ import org.joda.time.DateTime;
 
 import net.sf.uadetector.ReadableUserAgent;
 
-import com.receiptofi.domain.UserAuthenticationEntity;
-import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.service.LoginService;
-import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.utils.SHAHashing;
-import com.receiptofi.web.cache.CachedUserAgentStringParser;
-import com.receiptofi.web.form.UserLoginForm;
-import com.receiptofi.web.validator.UserLoginValidator;
-
 /**
  * @author hitender
  * @since Dec 16, 2012 6:12:17 PM
@@ -44,7 +45,7 @@ import com.receiptofi.web.validator.UserLoginValidator;
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
-    private static final Logger log = Logger.getLogger(LoginController.class);
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     public static final String LOGIN_PAGE = "login";
 
     //private UserAgentStringParser parser;

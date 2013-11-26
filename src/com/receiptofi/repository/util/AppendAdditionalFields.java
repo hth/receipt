@@ -1,11 +1,11 @@
 package com.receiptofi.repository.util;
 
-import org.apache.log4j.Logger;
+import com.receiptofi.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Update;
-
-import com.receiptofi.utils.DateUtil;
 
 /**
  * User: hitender
@@ -13,7 +13,7 @@ import com.receiptofi.utils.DateUtil;
  * Time: 10:47 PM
  */
 public final class AppendAdditionalFields {
-    private static final Logger log = Logger.getLogger(AppendAdditionalFields.class);
+    private static final Logger log = LoggerFactory.getLogger(AppendAdditionalFields.class);
 
     public static Criteria isDeleted() {
         return Criteria.where("DELETE").is(true);
