@@ -1,5 +1,11 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.repository.ItemManager;
+import com.receiptofi.utils.Maths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -14,10 +20,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Longs;
 
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.repository.ItemManager;
-import com.receiptofi.utils.Maths;
-
 /**
  * User: hitender
  * Date: 4/28/13
@@ -25,6 +27,7 @@ import com.receiptofi.utils.Maths;
  */
 @Service
 public final class ItemAnalyticService {
+    private static final Logger log = LoggerFactory.getLogger(ItemAnalyticService.class);
 
     @Autowired private ItemManager itemManager;
 
@@ -131,10 +134,10 @@ public final class ItemAnalyticService {
 
     private Ordering<ItemEntity> descendingOrderForItems() {
         return new Ordering<ItemEntity>() {
-                public int compare(ItemEntity left, ItemEntity right) {
-                    return Longs.compare(right.getReceipt().getReceiptDate().getTime(), left.getReceipt().getReceiptDate().getTime());
-                }
-            };
+            public int compare(ItemEntity left, ItemEntity right) {
+                return Longs.compare(right.getReceipt().getReceiptDate().getTime(), left.getReceipt().getReceiptDate().getTime());
+            }
+        };
     }
 
     private List<ItemEntity> callAscendingOrdering(List<ItemEntity> items) {
