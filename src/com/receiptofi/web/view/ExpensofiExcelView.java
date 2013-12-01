@@ -101,18 +101,19 @@ public class ExpensofiExcelView extends AbstractExcelView {
         addToCell(row, 3, "TOTAL", NO_STYLE);
         addToCell(row, 4, "=sum(E2:E" + (nAccounts + 1) + ')', moneyStyle);
 
-        //Add image
-        //add picture data to this workbook.
-        byte[] bytes = (byte[]) model.get("image");
-        anchorReceiptImage(bytes, workbook, sheet, row);
+        //Add receipt image
+        byte[] imageBytes = (byte[]) model.get("image");
+        String imageContentType = (String) model.get("image-type");
+        anchorReceiptImage(imageBytes, imageContentType, workbook, sheet, row);
     }
 
-    private void anchorReceiptImage(byte[] imageBytes, HSSFWorkbook workbook, HSSFSheet sheet, HSSFRow row) {
-        int pictureIdx = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_JPEG);
+    //add picture data to this workbook.
+    private void anchorReceiptImage(byte[] imageBytes, String imageContentType, HSSFWorkbook workbook, HSSFSheet sheet, HSSFRow row) {
+        int pictureIdx = workbook.addPicture(imageBytes, !imageContentType.equalsIgnoreCase("image/jpeg") ? Workbook.PICTURE_TYPE_PNG : Workbook.PICTURE_TYPE_JPEG);
 
         CreationHelper helper = workbook.getCreationHelper();
 
-        // Create the drawing patriarch.  This is the top level container for all shapes.
+        // Create the drawing patriarch. This is the top level container for all shapes.
         Drawing drawing = sheet.createDrawingPatriarch();
 
         //add a picture shape
