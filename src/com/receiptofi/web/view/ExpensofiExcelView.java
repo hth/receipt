@@ -1,12 +1,15 @@
 package com.receiptofi.web.view;
 
+import com.receiptofi.domain.ItemEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -19,10 +22,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
 import org.springframework.web.servlet.view.document.AbstractExcelView;
-
-import com.receiptofi.domain.ItemEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This view generates an Excel report from Account objects.
@@ -54,18 +53,9 @@ public class ExpensofiExcelView extends AbstractExcelView {
         sheet.setColumnWidth((short) 4, (short) (unit * 2.4));
         sheet.setColumnWidth((short) 5, (short) (unit * 4.0));
 
-        // Heading style
-        HSSFCellStyle heading = workbook.createCellStyle();
-        heading.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        heading.setBottomBorderColor(HSSFColor.BLACK.index);
-        heading.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        heading.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
-        heading.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-
-        HSSFFont font = workbook.createFont();
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        font.setColor(HSSFColor.WHITE.index);
-        heading.setFont(font);
+        // Heading style and font
+        HSSFCellStyle heading = setHeadingStyle(workbook);
+        setHeadingFont(workbook, heading);
 
         // Other styles
         HSSFCellStyle dateStyle = workbook.createCellStyle();
@@ -105,6 +95,23 @@ public class ExpensofiExcelView extends AbstractExcelView {
         row = sheet.createRow(nAccounts + 2);
         addToCell(row, 3, "TOTAL", NO_STYLE);
         addToCell(row, 4, "=sum(E2:E" + (nAccounts + 1) + ')', moneyStyle);
+    }
+
+    private HSSFCellStyle setHeadingStyle(HSSFWorkbook workbook) {
+        HSSFCellStyle heading = workbook.createCellStyle();
+        heading.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        heading.setBottomBorderColor(HSSFColor.BLACK.index);
+        heading.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        heading.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
+        heading.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        return heading;
+    }
+
+    private void setHeadingFont(HSSFWorkbook workbook, HSSFCellStyle heading) {
+        HSSFFont font = workbook.createFont();
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setColor(HSSFColor.WHITE.index);
+        heading.setFont(font);
     }
 
     private HSSFCell addToCell(HSSFRow row, int index, Object value, HSSFCellStyle style) {
