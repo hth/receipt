@@ -17,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import com.receiptofi.domain.ItemEntity;
@@ -33,14 +34,12 @@ public class ExpensofiExcelView extends AbstractExcelView {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void buildExcelDocument(Map<String, Object> model,
-                                      HSSFWorkbook workbook, HttpServletRequest request,
-                                      HttpServletResponse response) throws Exception {
-        List<ItemEntity> items = (ArrayList) model.get("items");
-
+    protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook,
+                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
         HSSFSheet sheet = workbook.createSheet();
 
-        if (items == null) {
+        List<ItemEntity> items = (ArrayList) model.get("items");
+        if(items == null) {
             HSSFRow row = sheet.createRow(0);
             addToCell(row, 0, "Error creating spreadsheet", NO_STYLE);
             return;
@@ -76,17 +75,17 @@ public class ExpensofiExcelView extends AbstractExcelView {
 
         // Headings
         HSSFRow row = sheet.createRow(0);
-        addToCell(row, 0, "Customer Name", heading);
-        addToCell(row, 1, "Date of Birth", heading);
-        addToCell(row, 2, "Account Number", heading);
-        addToCell(row, 3, "Account Type", heading);
-        addToCell(row, 4, "Balance", heading);
-        addToCell(row, 5, "Credit Card", heading);
+        addToCell(row, 0, "Description", heading);
+        addToCell(row, 1, "Date", heading);
+        addToCell(row, 2, "Quantity", heading);
+        addToCell(row, 3, "Tax", heading);
+        addToCell(row, 4, "Price", heading);
+        addToCell(row, 5, "Expense Type", heading);
 
         int nAccounts = items.size();
 
         // Content
-        for (short i = 0; i < nAccounts; i++) {
+        for(short i = 0; i < nAccounts; i++) {
             ItemEntity item = items.get(i);
             row = sheet.createRow(i + 1);
             addToCell(row, 0, item.getName(), NO_STYLE);
@@ -105,35 +104,38 @@ public class ExpensofiExcelView extends AbstractExcelView {
         // Totals
         row = sheet.createRow(nAccounts + 2);
         addToCell(row, 3, "TOTAL", NO_STYLE);
-        addToCell(row, 4, "=sum(E2:E" + (nAccounts+1) + ')', moneyStyle);
+        addToCell(row, 4, "=sum(E2:E" + (nAccounts + 1) + ')', moneyStyle);
     }
 
-    private HSSFCell addToCell(HSSFRow row, int index, Object value,
-                               HSSFCellStyle style) {
+    private HSSFCell addToCell(HSSFRow row, int index, Object value, HSSFCellStyle style) {
         HSSFCell cell = row.createCell((short) index);
 
-        if (style == null)
+        if(style == null) {
             style = cell.getCellStyle();
+        }
 
-        if (value instanceof String) {
+        if(value instanceof String) {
             String str = (String) value;
             log.info("STRING: [" + str + ']');
-            if (str.startsWith("="))
+            if(str.startsWith("=")) {
                 cell.setCellFormula(str.substring(1));
-            else
+            } else {
                 cell.setCellValue(new HSSFRichTextString(str));
+            }
 
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        } else if (value instanceof Date) {
+        } else if(value instanceof Date) {
             log.info("DATE:  " + value);
             cell.setCellValue((Date) value);
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        } else if (value instanceof Double) {
+        } else if(value instanceof Double) {
             log.info("MONEY: " + value);
             cell.setCellValue(((Double) value));
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
-            if ( value == null) value = "";   // Ignore
+            if(value == null) {
+                value = "";   // Ignore
+            }
             log.info("OTHER: " + value + " (" + value.getClass() + ")");
             cell.setCellValue(new HSSFRichTextString(value.toString()));
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
