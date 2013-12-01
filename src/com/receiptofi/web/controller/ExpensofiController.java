@@ -38,7 +38,7 @@ public class ExpensofiController {
      */
     //http://localhost:8080/receipt/expensofi/52992ea430042887af1d0d3f.htm?output=excel to get excel output
     @RequestMapping(value = "/expensofi/{receiptId}", method = RequestMethod.GET)
-    public String list(@PathVariable String receiptId, @ModelAttribute("userSession") UserSession userSession, Model model) {
+    public String showExpenseExcel(@PathVariable String receiptId, @ModelAttribute("userSession") UserSession userSession, Model model) {
         DateTime time = DateUtil.now();
 
         ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, userSession.getUserProfileId());
