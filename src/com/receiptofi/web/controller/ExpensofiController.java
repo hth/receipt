@@ -3,13 +3,18 @@ package com.receiptofi.web.controller;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserSession;
+import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import org.joda.time.DateTime;
 
+import com.mongodb.gridfs.GridFSDBFile;
+
 /**
  * User: hitender
  * Date: 11/30/13 2:45 AM
@@ -32,6 +39,7 @@ public class ExpensofiController {
     private static final Logger log = LoggerFactory.getLogger(ExpensofiController.class);
 
     @Autowired private ReceiptService receiptService;
+    @Autowired private FileDBService fileDBService;
 
     /**
      * Handles requests to list all accounts for currently logged in user.
@@ -46,8 +54,18 @@ public class ExpensofiController {
             List<ItemEntity> items = receiptService.findItems(receiptEntity);
             model.addAttribute("items", items);
             assert(model.asMap().get("items") != null);
-            log.info("Logging");
-            //log.info("Items = " + model.asMap().get("items") );
+
+            GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntity.getReceiptBlobId());
+            InputStream is = null;
+            try {
+                is = gridFSDBFile.getInputStream();
+                byte[] bytes = IOUtils.toByteArray(is);
+                model.addAttribute("image", bytes);
+            } catch (IOException exce) {
+                log.error("Failed to load receipt image: " + exce.getLocalizedMessage());
+            } finally {
+                IOUtils.closeQuietly(is);
+            }
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());

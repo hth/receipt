@@ -6,11 +6,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -20,11 +22,16 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 /**
- * This view generates an Excel report from Account objects.
+ * This view generates an Excel report from receipt item objects.
  */
 public class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger log = LoggerFactory.getLogger(ExpensofiExcelView.class);
@@ -95,6 +102,27 @@ public class ExpensofiExcelView extends AbstractExcelView {
         row = sheet.createRow(nAccounts + 2);
         addToCell(row, 3, "TOTAL", NO_STYLE);
         addToCell(row, 4, "=sum(E2:E" + (nAccounts + 1) + ')', moneyStyle);
+
+        //Add image
+        //add picture data to this workbook.
+        byte[] bytes = (byte[]) model.get("image");
+        int pictureIdx = workbook.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+
+        CreationHelper helper = workbook.getCreationHelper();
+
+        // Create the drawing patriarch.  This is the top level container for all shapes.
+        Drawing drawing = sheet.createDrawingPatriarch();
+
+        //add a picture shape
+        ClientAnchor anchor = helper.createClientAnchor();
+        //set top-left corner of the picture,
+        //subsequent call of Picture#resize() will operate relative to it
+        anchor.setCol1(0);
+        anchor.setRow1(nAccounts + 4);
+        Picture pict = drawing.createPicture(anchor, pictureIdx);
+
+        //auto-size picture relative to its top-left corner
+        pict.resize();
     }
 
     private HSSFCellStyle setHeadingStyle(HSSFWorkbook workbook) {
