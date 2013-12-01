@@ -6,13 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -106,7 +104,11 @@ public class ExpensofiExcelView extends AbstractExcelView {
         //Add image
         //add picture data to this workbook.
         byte[] bytes = (byte[]) model.get("image");
-        int pictureIdx = workbook.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+        anchorReceiptImage(bytes, workbook, sheet, row);
+    }
+
+    private void anchorReceiptImage(byte[] imageBytes, HSSFWorkbook workbook, HSSFSheet sheet, HSSFRow row) {
+        int pictureIdx = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_JPEG);
 
         CreationHelper helper = workbook.getCreationHelper();
 
@@ -118,7 +120,7 @@ public class ExpensofiExcelView extends AbstractExcelView {
         //set top-left corner of the picture,
         //subsequent call of Picture#resize() will operate relative to it
         anchor.setCol1(0);
-        anchor.setRow1(nAccounts + 4);
+        anchor.setRow1(row.getRowNum() + 2);
         Picture pict = drawing.createPicture(anchor, pictureIdx);
 
         //auto-size picture relative to its top-left corner
