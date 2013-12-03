@@ -73,7 +73,9 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
             if(!file.createNewFile() && !file.canWrite() && !file.canRead()) {
                 throw new AccessDeniedException("Cannot create, read or write to location: " + EXPENSOFI_FILE_SYSTEM);
             }
-            file.delete();
+            if(!file.delete()) {
+                throw new AccessDeniedException("Could not delete file from location: " + EXPENSOFI_FILE_SYSTEM);
+            }
         } else {
             throw new AccessDeniedException("File system directory does not exists: " + EXPENSOFI_FILE_SYSTEM);
         }
