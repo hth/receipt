@@ -9,6 +9,7 @@ import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 /**
  * User: hitender
@@ -16,6 +17,7 @@ import java.io.IOException;
  */
 public class ReceiptofiServletContextListener implements ServletContextListener {
     private static final Logger log = LoggerFactory.getLogger(ReceiptofiServletContextListener.class);
+    private static final String EXPENSOFI_FILE_SYSTEM = "/opt/receiptofi/expensofi";
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
@@ -29,6 +31,14 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
             deleteTempFiles();
         } catch (IOException e) {
             log.error("Failure in deleting temp files: " + e.getLocalizedMessage());
+        }
+
+        try {
+            if(hasAccessToFileSystem(EXPENSOFI_FILE_SYSTEM)) {
+                log.info("Found and has access to directory: " + EXPENSOFI_FILE_SYSTEM);
+            }
+        } catch (IOException e) {
+            log.error("Failure in creating new files: " + e.getLocalizedMessage());
         }
     }
 
@@ -54,5 +64,19 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         }
 
         file.delete();
+    }
+
+    private boolean hasAccessToFileSystem(String directoryLocation) throws IOException {
+        File directory = new File(directoryLocation);
+        if(directory.exists() && directory.isDirectory()) {
+            File file = new File(directoryLocation + File.separator + "receiptofi-expensofi.temp.delete.me");
+            if(!file.createNewFile() && !file.canWrite() && !file.canRead()) {
+                throw new AccessDeniedException("Cannot create, read or write to location: " + EXPENSOFI_FILE_SYSTEM);
+            }
+            file.delete();
+        } else {
+            throw new AccessDeniedException("File system directory does not exists: " + EXPENSOFI_FILE_SYSTEM);
+        }
+        return true;
     }
 }
