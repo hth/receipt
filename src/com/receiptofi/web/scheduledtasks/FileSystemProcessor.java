@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.AgeFileFilter;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,7 +34,7 @@ public class FileSystemProcessor {
         File directory = new File(EXPENSOFI_FILE_SYSTEM);
         String[] files = directory.list(cutoff);
         for(String filename : files) {
-            new File(EXPENSOFI_FILE_SYSTEM + File.separator + filename).delete();
+            FileUtils.deleteQuietly(new File(EXPENSOFI_FILE_SYSTEM + File.separator + filename));
         }
         log.info("Removed expired excel files: count " + files.length);
     }
@@ -55,11 +56,11 @@ public class FileSystemProcessor {
             int numberOfFiles = directory.listFiles(textFilter).length;
             for(File f : directory.listFiles(textFilter)) {
                 log.debug("File: " + directory + File.separator + f.getName());
-                f.delete();
+                FileUtils.deleteQuietly(f);
             }
             log.info("Removed total temp files: count '" + numberOfFiles);
         }
 
-        file.delete();
+        FileUtils.deleteQuietly(file);
     }
 }
