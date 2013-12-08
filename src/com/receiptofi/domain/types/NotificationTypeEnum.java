@@ -9,7 +9,8 @@ public enum NotificationTypeEnum {
 
     MESSAGE("MESSAGE",          "Message"),
     RECEIPT("RECEIPT",          "Receipt"),
-    RECEIPT_OCR("RECEIPT_OCR",  "Receipt OCR");
+    RECEIPT_OCR("RECEIPT_OCR",  "Receipt OCR"),
+    EXPENSE_REPORT("EXP_REPORT","Exp Report");
 
     private final String description;
     private final String name;
