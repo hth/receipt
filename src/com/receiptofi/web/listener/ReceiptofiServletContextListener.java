@@ -19,6 +19,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
+        //TODO make clean shutdown for quartz. This prevent now from tomcat shutdown
         log.info("Receiptofi context destroyed");
     }
 
