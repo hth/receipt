@@ -34,9 +34,13 @@ public class FileSystemProcessor {
         File directory = new File(EXPENSOFI_FILE_SYSTEM);
         String[] files = directory.list(cutoff);
         for(String filename : files) {
-            FileUtils.deleteQuietly(new File(EXPENSOFI_FILE_SYSTEM + File.separator + filename));
+            removeExpiredExcel(filename);
         }
         log.info("Removed expired excel files: count " + files.length);
+    }
+
+    public void removeExpiredExcel(String file) {
+        FileUtils.deleteQuietly(new File(EXPENSOFI_FILE_SYSTEM + File.separator + file));
     }
 
     @Scheduled(cron="0 0 9 * * ?")
