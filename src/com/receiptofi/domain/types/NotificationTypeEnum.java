@@ -7,10 +7,10 @@ package com.receiptofi.domain.types;
  */
 public enum NotificationTypeEnum {
 
-    MESSAGE("MESSAGE",          "Message"),
-    RECEIPT("RECEIPT",          "Receipt"),
-    RECEIPT_OCR("RECEIPT_OCR",  "Receipt OCR"),
-    EXPENSE_REPORT("EXP_REPORT","Exp Report");
+    MESSAGE("MESSAGE",                  "Message"),
+    RECEIPT("RECEIPT",                  "Receipt"),
+    RECEIPT_OCR("RECEIPT_OCR",          "Receipt OCR"),
+    EXPENSE_REPORT("EXPENSE_REPORT",    "Expense Report");
 
     private final String description;
     private final String name;

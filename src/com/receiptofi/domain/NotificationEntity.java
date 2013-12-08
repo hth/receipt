@@ -1,5 +1,9 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.NotificationTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,8 +12,6 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.receiptofi.domain.types.NotificationTypeEnum;
-
 /**
  * User: hitender
  * Date: 6/30/13
@@ -17,6 +19,7 @@ import com.receiptofi.domain.types.NotificationTypeEnum;
  */
 @Document(collection = "NOTIFICATION")
 public class NotificationEntity extends BaseEntity {
+    private static final Logger log = LoggerFactory.getLogger(NotificationEntity.class);
     private static final int OFF_SET = 0;
     private static final int MAX_WIDTH = 45;
 
@@ -106,7 +109,10 @@ public class NotificationEntity extends BaseEntity {
                 return getReceiptUpdateURL(getReferenceId(), getMessage4Display());
             case RECEIPT:
                 return getReceiptURL(getReferenceId(), getMessage4Display());
+            case EXPENSE_REPORT:
+                return getReceiptURL(getReferenceId(), getMessage4Display());
             default:
+                log.error("Reached invalid condition in Notification");
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
     }
@@ -119,7 +125,10 @@ public class NotificationEntity extends BaseEntity {
                 return getReceiptUpdateURL(getReferenceId(), getMessage());
             case RECEIPT:
                 return getReceiptURL(getReferenceId(), getMessage());
+            case EXPENSE_REPORT:
+                return getReceiptURL(getReferenceId(), getMessage());
             default:
+                log.error("Reached invalid condition in Notification");
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
         }
     }

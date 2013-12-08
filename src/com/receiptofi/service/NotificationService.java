@@ -91,10 +91,15 @@ public final class NotificationService {
      * @param receiptEntity
      */
     public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, ReceiptEntity receiptEntity) {
-        if(notificationTypeEnum == NotificationTypeEnum.RECEIPT) {
-            addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
-        } else {
-            throw new UnsupportedOperationException("Incorrect method call for Notification Type");
+        switch (notificationTypeEnum) {
+            case EXPENSE_REPORT:
+                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                break;
+            case RECEIPT:
+                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                break;
+            default:
+                throw new UnsupportedOperationException("Incorrect method call for Notification Type");
         }
     }
 
