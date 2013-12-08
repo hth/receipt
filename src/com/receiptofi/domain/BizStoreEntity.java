@@ -1,6 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.utils.Formatter;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
@@ -26,7 +27,7 @@ import org.springframework.format.annotation.NumberFormat;
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public class BizStoreEntity extends BaseEntity {
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(BizStoreEntity.class);
+    private static final Logger log = LoggerFactory.getLogger(BizStoreEntity.class);
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     private static final String PHONE_BLANK = "000_000_0000";
