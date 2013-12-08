@@ -3,6 +3,10 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.ReceiptOfEnum;
+import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.utils.SHAHashing;
+
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
@@ -21,10 +25,6 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import org.joda.time.DateTime;
-
-import com.receiptofi.domain.types.ReceiptOfEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
-import com.receiptofi.utils.SHAHashing;
 
 /**
  * @author hitender
@@ -114,6 +114,9 @@ public class ReceiptEntity extends BaseEntity {
     @NotNull
     @Field("ORIENTATION")
     private int imageOrientation = 0;
+
+    @Field("EXP_FILENAME")
+    private String expenseReportInFS;
 
     /**
      * Used to flush or avoid duplicate receipt entry
@@ -331,6 +334,14 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setImageOrientation(int imageOrientation) {
         this.imageOrientation = imageOrientation;
+    }
+
+    public String getExpenseReportInFS() {
+        return expenseReportInFS;
+    }
+
+    public void setExpenseReportInFS(String expenseReportInFS) {
+        this.expenseReportInFS = expenseReportInFS;
     }
 
     @Override
