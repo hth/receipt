@@ -341,4 +341,20 @@ public final class ReceiptService {
     public long countAllReceiptForABizName(BizNameEntity bizNameEntity) {
         return receiptManager.countAllReceiptForABizName(bizNameEntity);
     }
+
+    /**
+     * Used for updating expense report info in the receipt
+     *
+     * @param receiptEntity
+     * @return
+     */
+    public boolean updateReceiptWithExpReportFilename(ReceiptEntity receiptEntity) {
+        try {
+            receiptManager.save(receiptEntity);
+        } catch (Exception e) {
+            log.error("Failed updating ReceiptEntity with Expense Report Filename: " + e.getLocalizedMessage(), e);
+            return false;
+        }
+        return true;
+    }
 }
