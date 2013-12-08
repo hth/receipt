@@ -199,6 +199,7 @@ public class FetcherController {
      */
     //TODO make this post
     @RequestMapping(value = "/check_for_duplicate", method = RequestMethod.GET)
+    //@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate Account")  // 409 //TODO something to think about
     public @ResponseBody
     boolean checkForDuplicate(@RequestParam("date") String date, @RequestParam("total") String total,
                               @RequestParam("userProfileId") String userProfileId,
