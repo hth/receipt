@@ -427,3 +427,24 @@ a.account {
     padding:0.5em 0.5em;
 }
 /* End of notification */
+
+/* spinner start */
+.spinner {
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 50%; /* Rounds out the halo */
+    opacity: .7; /* Some subtle opacity to help blend with variable background colors */
+}
+.spinner.small {
+    height: 18px; width: 18px; /* Pixel size of the GIF you download */
+    background: url("../../images/spiffygif_18x18.gif");
+}
+.spinner.medium {
+    height: 30px; width: 30px;
+    background: url("../../images/spiffygif_20x20.gif");
+}
+.spinner.large {
+    height: 64px; width: 64px;
+    background: url("../../images/spiffygif_22x22.gif");
+}
+/* spinner end */
