@@ -1,7 +1,5 @@
 package com.receiptofi.web.listener;
 
-import com.receiptofi.utils.CreateTempFile;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,13 +7,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
-
-import org.apache.commons.io.filefilter.AgeFileFilter;
-
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * User: hitender
@@ -40,8 +33,6 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
             log.error("Failure in creating new files: " + e.getLocalizedMessage());
         }
     }
-
-
 
     private boolean hasAccessToFileSystem() throws IOException {
         File directory = new File(FileSystemProcessor.EXPENSOFI_FILE_SYSTEM);

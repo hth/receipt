@@ -30,12 +30,6 @@
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
     <context:component-scan base-package="com.receiptofi" />
 
-    <!-- for setting up scheduling of task -->
-    <task:executor id="taskExecutor" pool-size="100" />
-    <task:scheduler id="scheduler" pool-size="5" />
-    <task:annotation-driven executor="taskExecutor" scheduler="scheduler"/>
-    <!-- for setting up scheduling of task ends -->
-
     <!-- Currently not being used -->
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/redis.properties"                   order="1" ignore-unresolvable="true" />
@@ -55,6 +49,12 @@
     <cache:annotation-driven />
 
     <!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
+
+    <!-- for setting up scheduling of task -->
+    <task:executor id="taskExecutor" pool-size="100" />
+    <task:scheduler id="scheduler" pool-size="5" />
+    <task:annotation-driven executor="taskExecutor" scheduler="scheduler"/>
+    <!-- for setting up scheduling of task ends -->
 
     <!-- Forwards requests to the "/" resource to the "welcome" view -->
     <!--suppress SpringModelInspection -->
