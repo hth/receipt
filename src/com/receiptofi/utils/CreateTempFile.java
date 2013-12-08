@@ -17,7 +17,7 @@ public final class CreateTempFile {
     private static final Logger log = LoggerFactory.getLogger(CreateTempFile.class);
 
     public enum FileTypeEnum {
-        XLS, TXT, JPEG, JPG, PNG
+        XLS, TXT, JPEG, JPG, PNG, PDF
     }
 
     public static final String TEMP_FILE_START_WITH = "Receiptofi";
@@ -35,21 +35,38 @@ public final class CreateTempFile {
         }
     }
 
-    public static String createRandomFilename(FileTypeEnum fileTypeEnum) {
-        String filename = RandomStringUtils.randomAlphanumeric(16);
-        switch(fileTypeEnum) {
-            case XLS:
-                return filename + ".xls";
-            case TXT:
-                return filename + ".txt";
-            case JPEG:
-                return filename + ".jpeg";
-            case JPG:
-                return filename + ".jpg";
-            case PNG:
-                return filename + ".png";
-            default:
-                return filename;
+    public static String createRandomFilename() {
+        return RandomStringUtils.randomAlphanumeric(16);
+    }
+
+    /**
+     * Avoid unless required on file system to save file with file extension. User can be presented with correct file
+     * extension when set with correct content type in the response header
+     *
+     * @param fileTypeEnum
+     * @return
+     */
+    private static String createRandomFilename(FileTypeEnum fileTypeEnum) {
+        return addFileExtension(createRandomFilename(), fileTypeEnum);
+    }
+
+    private static String addFileExtension(String filename, FileTypeEnum fileTypeEnum) {
+        if(fileTypeEnum != null) {
+            switch(fileTypeEnum) {
+                case XLS:
+                    return filename + ".xls";
+                case TXT:
+                    return filename + ".txt";
+                case JPEG:
+                    return filename + ".jpeg";
+                case JPG:
+                    return filename + ".jpg";
+                case PNG:
+                    return filename + ".png";
+                case PDF:
+                    return filename + ".pdf";
+            }
         }
+        return filename;
     }
 }
