@@ -1,11 +1,15 @@
 package com.receiptofi.web.view;
 
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,16 +34,29 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 /**
  * This view generates an Excel report from receipt item objects.
+ *
+ * User: hitender
+ * Date: 11/30/13 2:45 AM
  */
 public class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger log = LoggerFactory.getLogger(ExpensofiExcelView.class);
 
     public final HSSFCellStyle NO_STYLE = null;
 
+    private ExpensofiExcelView() {}
+
+    public static ExpensofiExcelView newInstance() {
+        return new ExpensofiExcelView();
+    }
+
+    public void generateExcel(Map<String, Object> model, HSSFWorkbook workbook) throws IOException {
+        buildExcelDocument(model, workbook, null, null);
+        persistWorkbookToFileSystem(workbook, (String) model.get("file-name"));
+    }
+
     @Override
     @SuppressWarnings("unchecked")
-    protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook,
-                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request, HttpServletResponse response) {
         HSSFSheet sheet = workbook.createSheet();
 
         List<ItemEntity> items = (ArrayList) model.get("items");
@@ -107,6 +124,21 @@ public class ExpensofiExcelView extends AbstractExcelView {
         anchorReceiptImage(imageBytes, imageContentType, workbook, sheet, row);
     }
 
+    protected void persistWorkbookToFileSystem(Workbook workbook, String filename) throws IOException {
+        FileOutputStream out = null;
+        try {
+			out = new FileOutputStream(new File(FileSystemProcessor.EXPENSOFI_FILE_SYSTEM + File.separator + filename));
+			workbook.write(out);
+        } catch (IOException e) {
+            log.error("Error while persisting file to file system: " + filename, e);
+        } finally {
+        	if(out != null) {
+                out.flush();
+                out.close();
+            }
+        }
+    }
+
     //add picture data to this workbook.
     private void anchorReceiptImage(byte[] imageBytes, String imageContentType, HSSFWorkbook workbook, HSSFSheet sheet, HSSFRow row) {
         int pictureIdx = workbook.addPicture(imageBytes, !imageContentType.equalsIgnoreCase("image/jpeg") ? Workbook.PICTURE_TYPE_PNG : Workbook.PICTURE_TYPE_JPEG);
@@ -154,7 +186,7 @@ public class ExpensofiExcelView extends AbstractExcelView {
 
         if(value instanceof String) {
             String str = (String) value;
-            log.info("STRING: [" + str + ']');
+            log.debug("STRING: [" + str + ']');
             if(str.startsWith("=")) {
                 cell.setCellFormula(str.substring(1));
             } else {
@@ -163,24 +195,24 @@ public class ExpensofiExcelView extends AbstractExcelView {
 
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         } else if(value instanceof Date) {
-            log.info("DATE:  " + value);
+            log.debug("DATE:  " + value);
             cell.setCellValue((Date) value);
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         } else if(value instanceof Double) {
-            log.info("MONEY: " + value);
+            log.debug("MONEY: " + value);
             cell.setCellValue(((Double) value));
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
             if(value == null) {
                 value = "";   // Ignore
             }
-            log.info("OTHER: " + value + " (" + value.getClass() + ")");
+            log.debug("OTHER: " + value + " (" + value.getClass() + ")");
             cell.setCellValue(new HSSFRichTextString(value.toString()));
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         }
 
         cell.setCellStyle(style);
-        log.info(" (" + style + ")");
+        log.debug(" (" + style + ")");
         return cell;
     }
 
