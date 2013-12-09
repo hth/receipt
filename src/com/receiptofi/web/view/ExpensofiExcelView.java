@@ -103,8 +103,8 @@ public class ExpensofiExcelView extends AbstractExcelView {
             addToCell(row, 0, item.getName(), NO_STYLE);
             addToCell(row, 1, item.getReceipt().getReceiptDate(), dateStyle);
             addToCell(row, 2, item.getQuantity(), NO_STYLE);
-            addToCell(row, 3, item.getTax(), moneyStyle);
-            addToCell(row, 4, item.getPrice(), moneyStyle);
+            addToCell(row, 3, item.getTotalTax().doubleValue(), moneyStyle);
+            addToCell(row, 4, item.getTotalPriceWithoutTax().doubleValue(), moneyStyle);
 
             String cc = null;
             if(item.getExpenseType() != null) {
@@ -115,8 +115,14 @@ public class ExpensofiExcelView extends AbstractExcelView {
 
         // Totals
         row = sheet.createRow(nAccounts + 2);
-        addToCell(row, 3, "TOTAL", NO_STYLE);
+        addToCell(row, 2, "SUM", NO_STYLE);
+        addToCell(row, 3, "=sum(D2:D" + (nAccounts + 1) + ')', moneyStyle);
         addToCell(row, 4, "=sum(E2:E" + (nAccounts + 1) + ')', moneyStyle);
+
+        row = sheet.createRow(nAccounts + 3);
+        addToCell(row, 3, "TOTAL", NO_STYLE);
+        addToCell(row, 4, "=sum(D" + (nAccounts + 3) + ":E" + (nAccounts + 3) + ')', moneyStyle);
+
 
         //Add receipt image
         byte[] imageBytes = (byte[]) model.get("image");
