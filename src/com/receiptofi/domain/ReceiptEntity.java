@@ -33,8 +33,9 @@ import org.joda.time.DateTime;
  */
 @Document(collection = "RECEIPT")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "user_receipt_idx",           def = "{'RECEIPT_BLOB_ID': -1, 'USER_PROFILE_ID': -1}"),
-        @CompoundIndex(name = "user_receipt_unique_idx",    def = "{'CHECK_SUM': -1}", unique = true)
+        @CompoundIndex(name = "receipt_idx",           def = "{'RECEIPT_BLOB_ID': -1, 'USER_PROFILE_ID': -1}"),
+        @CompoundIndex(name = "receipt_unique_idx",    def = "{'CHECK_SUM': -1}", unique = true),
+        @CompoundIndex(name = "receipt_expense_Report",def = "{'EXP_FILENAME': -1}")
 } )
 public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;

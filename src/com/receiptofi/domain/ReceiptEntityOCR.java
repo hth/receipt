@@ -3,6 +3,9 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.ReceiptOfEnum;
+import com.receiptofi.domain.types.ReceiptStatusEnum;
+
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -13,16 +16,13 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.receiptofi.domain.types.ReceiptOfEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
-
 /**
  * @author hitender
  * @since Jan 6, 2013 1:04:43 PM
  *
  */
 @Document(collection = "RECEIPT_OCR")
-@CompoundIndexes({ @CompoundIndex(name = "user_receipt_ocr_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "receipt_ocr_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
 public class ReceiptEntityOCR extends BaseEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
 
