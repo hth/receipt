@@ -392,7 +392,6 @@
                                     ${status.count}
                                 </td>
                                 <td style="text-align: center; width: 1px">
-                                    <%--<form:checkbox path="items[${status.index}].expensofi" id="items[${status.index}].expensofi" />--%>
                                     <input type="checkbox" value="${item.id}" class="expensofiItem" onclick="resetSelectItemExpenseAll();" />
                                 </td>
                                 <td>
@@ -408,8 +407,8 @@
                                             </a>
                                             <div style="margin-top: 5px">
                                                 ${item.quantity} @
-                                                <fmt:formatNumber value="${item.price}" type="currency" pattern="###,###.####" /> each</div>
-                                                <%--<spring:eval expression="item.price"/>--%>
+                                                <fmt:formatNumber value="${item.price}" type="currency" pattern="###,###.####" /> each
+                                            </div>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
