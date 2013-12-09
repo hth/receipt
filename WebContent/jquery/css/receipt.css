@@ -448,3 +448,7 @@ a.account {
     background: url("../../images/spiffygif_22x22.gif");
 }
 /* spinner end */
+
+.downloadIcon {
+    background-color: darkgreen;
+}

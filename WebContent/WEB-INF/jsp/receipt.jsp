@@ -140,6 +140,10 @@
     </script>
 
     <script>
+        $.ajaxSetup ({
+            cache: false
+        });
+
         $(document).focusout(function() {
             "use strict";
 
@@ -205,13 +209,93 @@
                 on_positive: 'okay',
                 max_chars: 250
             });
-        });
-
-        $(document).ready(function () {
-            "use strict";
 
             $('.timestamp').cuteTime({ refresh: 10000 });
+            blinkDownloadIcon();
         });
+
+        function blinkDownloadIcon(){
+            $('.downloadIcon').delay(100).fadeTo(100,0.5).delay(100).fadeTo(100,1, blinkDownloadIcon);
+        }
+
+        $(function(){
+            $('.expensofiItem').change(updateExpensofiItemList);
+        });
+
+        var items;
+        function updateExpensofiItemList() {
+            items = $('.expensofiItem:checked').map(function() {
+                return this.value
+            }).get();
+        }
+
+        $(function() {
+            $("#expensofi_button").click(
+                function() {
+                    if(items && items.length > 0) {
+                        var jsonItems = {items:items};
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '${pageContext. request. contextPath}/expensofi/items.htm',
+                            data: JSON.stringify(jsonItems),
+                            dataType: 'json',
+                            beforeSend: function() {
+                                $('#download_expense_excel').html(
+                                    "<div class='spinner small' id='spinner'></div>"
+                                ).show();
+                            },
+                            success: function(data) {
+                                console.log(data.filename);
+                                if(data.filename.length > 0) {
+                                    $('#download_expense_excel').html(
+                                        "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button'/>" +
+                                        "&nbsp;&nbsp;&nbsp;" +
+                                        "<a href='${pageContext.request.contextPath}/receiptimage/exp/${receiptForm.receipt.id}.htm'>" +
+                                            "<img src='../images/download_icon_lg.png' width='18' height='20' class='downloadIcon'>" +
+                                        "</a>"
+                                    ).show();
+                                }
+                            },
+                            complete: function() {
+                                $('#spinner').remove();
+                                blinkDownloadIcon();
+                            }
+                        });
+                    } else {
+                        alert("Please select a checkbox to generate expense report");
+                    }
+                }
+            );
+
+            $(document).ready(function () {
+                $('#select_expense_all').click(function () {
+                    $('.expensofiItem').prop('checked', isChecked('select_expense_all'));
+                    updateExpensofiItemList();
+                });
+            });
+        });
+
+        function isChecked(checkboxId) {
+            var id = '#' + checkboxId;
+            return $(id).is(":checked");
+        }
+
+        function resetSelectItemExpenseAll() {
+            if ($(".expensofiItem").length == $(".expensofiItem:checked").length) {
+                $("#select_expense_all").attr("checked", "checked");
+            } else {
+                $("#select_expense_all").removeAttr("checked");
+            }
+
+            if ($(".expensofiItem:checked").length > 0) {
+                $('#edit').attr("disabled", false);
+            } else {
+                $('#edit').attr("disabled", true);
+            }
+
+            updateExpensofiItemList();
+        }
     </script>
 
 </head>
@@ -276,14 +360,14 @@
 
                     <table style="width: 700px" class="etable">
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <div style="text-align: center; font-size: 15px">
                                     <b><spring:eval expression="receiptForm.receipt.bizName.name" /></b>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <div class="leftAlign">
                                     <b><spring:eval expression="receiptForm.receipt.bizStore.addressWrappedMore"/></b>
                                 </div>
@@ -295,6 +379,7 @@
                         </tr>
                         <tr>
                             <th></th>
+                            <th><input type="checkbox" id="select_expense_all"/></th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>Tax</th>
@@ -305,6 +390,10 @@
                             <tr>
                                 <td style="padding: 3px; text-align: right; width: 6px">
                                     ${status.count}
+                                </td>
+                                <td style="text-align: center; width: 1px">
+                                    <%--<form:checkbox path="items[${status.index}].expensofi" id="items[${status.index}].expensofi" />--%>
+                                    <input type="checkbox" value="${item.id}" class="expensofiItem" onclick="resetSelectItemExpenseAll();" />
                                 </td>
                                 <td>
                                     <c:choose>
@@ -347,7 +436,7 @@
                             </tr>
                         </c:forEach>
                         <tr>
-                            <td style="text-align: right;" colspan="2">
+                            <td style="text-align: right;" colspan="3">
                                 Sub Total
                             </td>
                             <td style="text-align: right;"><fmt:formatNumber value="${receiptForm.receipt.total - receiptForm.receipt.tax}" type="currency" /></td>
@@ -355,7 +444,7 @@
                             <td style="text-align: right;">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td style="text-align: right; white-space: nowrap;" colspan="2">
+                            <td style="text-align: right; white-space: nowrap;" colspan="3">
                                 <label style="font-size: 11px">
                                     { Calculated Tax Rate : <b><spring:eval expression="receiptForm.receipt.percentTax4Display" /></b> }
                                 </label>&nbsp;&nbsp;&nbsp;
@@ -370,7 +459,16 @@
                             <td style="text-align: right;">&nbsp;</td>
                         </tr>
                         <tr style="height: 6em;">
-                            <td colspan="4">
+                            <td colspan="5">
+                                <div class="leftAlign" id="download_expense_excel">
+                                    <input type="button" value="Expensofi" name="expensofi" id="expensofi_button"/>
+                                    &nbsp;
+                                    <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
+                                        <a href="${pageContext.request.contextPath}/receiptimage/exp/${receiptForm.receipt.id}.htm">
+                                            <img src="../images/download_icon_lg.png" style="background-color: darkgreen; vertical-align: top" width="18" height="20">
+                                        </a>
+                                    </c:if>
+                                </div>
                                 <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check"/></div>
                                 <div class="rightAlign">&nbsp;&nbsp;</div>
                                 <div class="rightAlign"><input type="submit" value="Delete" name="delete"/></div>
@@ -380,14 +478,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <form:label for="receipt.notes.text" path="receipt.notes.text" cssErrorClass="error">
                                     Receipt Notes:
                                 </form:label>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <form:textarea path="receipt.notes.text" id="notes" size="250" cols="50" rows="4" />
                                 <br/>
                                 <span id='notesCount'></span> characters remaining.
@@ -404,19 +502,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <form:errors path="receipt.notes.text" cssClass="error" />
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <form:label for="receipt.recheckComment.text" path="receipt.recheckComment.text" cssErrorClass="error">
                                     Re-Check message:
                                 </form:label>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <form:textarea path="receipt.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" />
                                 <br/>
                                 <span id='recheckCount'></span> characters remaining.
@@ -433,7 +531,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <form:errors path="receipt.recheckComment.text" cssClass="error" />
                             </td>
                         </tr>
