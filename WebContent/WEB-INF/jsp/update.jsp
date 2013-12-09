@@ -26,7 +26,7 @@
             document.getElementById("holder").innerHTML = "";
             var R = Raphael("holder", 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
-            var img = R.image('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptOCRForm.receiptOCR.receiptBlobId}', 80, 20, 750, 750);
+            var img = R.image('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptOCRForm.receiptOCR.receiptBlobId}.htm', 80, 20, 750, 750);
             var butt1 = R.set(),
                 butt2 = R.set();
             butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),

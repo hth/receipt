@@ -36,10 +36,10 @@
             <c:choose>
             <c:when test="${!empty receiptForm.receipt.receiptScaledBlobId}">
                 <c:set var="isScaledImg" value="true" />
-                fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptScaledBlobId}');
+                fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptForm.receipt.receiptScaledBlobId}.htm');
             </c:when>
             <c:otherwise>
-                fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}');
+                fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptForm.receipt.receiptBlobId}.htm');
             </c:otherwise>
             </c:choose>
         };
@@ -251,7 +251,7 @@
                                     $('#download_expense_excel').html(
                                         "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button'/>" +
                                         "&nbsp;&nbsp;&nbsp;" +
-                                        "<a href='${pageContext.request.contextPath}/receiptimage/exp/${receiptForm.receipt.id}.htm'>" +
+                                        "<a href='${pageContext.request.contextPath}/filedownload/exp/${receiptForm.receipt.id}.htm'>" +
                                             "<img src='../images/download_icon_lg.png' width='18' height='20' class='downloadIcon'>" +
                                         "</a>"
                                     ).show();
@@ -464,7 +464,7 @@
                                     <input type="button" value="Expensofi" name="expensofi" id="expensofi_button"/>
                                     &nbsp;
                                     <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
-                                        <a href="${pageContext.request.contextPath}/receiptimage/exp/${receiptForm.receipt.id}.htm">
+                                        <a href="${pageContext.request.contextPath}/filedownload/exp/${receiptForm.receipt.id}.htm">
                                             <img src="../images/download_icon_lg.png" style="background-color: darkgreen; vertical-align: top" width="18" height="20">
                                         </a>
                                     </c:if>
@@ -599,7 +599,7 @@
                 "</div>"
         ).show();
 
-        fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptScaledBlobId}');
+        fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptForm.receipt.receiptScaledBlobId}.htm');
         $('#imageTypeId').html("Displayed Scaled Image, <a id='originalImageId' href='#'>Show Original Image</a>").show();
     });
 
@@ -613,7 +613,7 @@
                 "</div>"
         ).show();
 
-        fetchReceiptImage('${pageContext.request.contextPath}/receiptimage.htm?id=${receiptForm.receipt.receiptBlobId}');
+        fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptForm.receipt.receiptBlobId}.htm');
         $('#imageTypeId').html("Displayed Original Image, <a id='scaledImageId' href='#'>Show Scaled Image</a>").show();
     });
 </script>

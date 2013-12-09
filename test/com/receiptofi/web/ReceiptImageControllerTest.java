@@ -23,7 +23,7 @@ import org.springframework.validation.BindingResult;
 import com.receiptofi.repository.StorageManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.web.controller.ReceiptImageController;
+import com.receiptofi.web.controller.FileDownloadController;
 
 /**
  * @author hitender
@@ -43,14 +43,14 @@ public class ReceiptImageControllerTest {
 	private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
-	private ReceiptImageController controller;
+	private FileDownloadController controller;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		controller = new ReceiptImageController();
+		controller = new FileDownloadController();
 		request = new MockHttpServletRequest();
 	    response = new MockHttpServletResponse();
 
@@ -71,7 +71,7 @@ public class ReceiptImageControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.receiptofi.web.controller.ReceiptImageController#getReceipt(String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.http.HttpSession)}.
+	 * Test method for {@link com.receiptofi.web.controller.FileDownloadController#getReceipt(String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.http.HttpSession)}.
 	 * @throws IOException
 	 */
 	@Test

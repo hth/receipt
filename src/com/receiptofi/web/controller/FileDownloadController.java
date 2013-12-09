@@ -46,10 +46,10 @@ import com.mongodb.gridfs.GridFSDBFile;
  *
  */
 @Controller
-@RequestMapping(value = "/receiptimage")
+@RequestMapping(value = "/filedownload")
 @SessionAttributes({"userSession"})
-public class ReceiptImageController {
-	private static final Logger log = LoggerFactory.getLogger(ReceiptImageController.class);
+public class FileDownloadController {
+	private static final Logger log = LoggerFactory.getLogger(FileDownloadController.class);
 
 	@Autowired private FileDBService fileDBService;
     @Autowired private FileSystemProcessor fileSystemProcessor;
@@ -62,8 +62,8 @@ public class ReceiptImageController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public void getReceipt(@RequestParam("id") String imageId, @ModelAttribute("userSession") UserSession userSession, HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(method = RequestMethod.GET, value = "/receiptimage/{imageId}")
+	public void getReceipt(@PathVariable String imageId, @ModelAttribute("userSession") UserSession userSession, HttpServletRequest request, HttpServletResponse response) {
         DateTime time = DateUtil.now();
 
 		try {
