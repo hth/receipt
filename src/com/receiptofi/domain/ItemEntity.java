@@ -3,6 +3,9 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.TaxEnum;
+import com.receiptofi.utils.Maths;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -15,9 +18,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
-
-import com.receiptofi.domain.types.TaxEnum;
-import com.receiptofi.utils.Maths;
 
 /**
  * Represents each individual item on a receipt.
@@ -214,6 +214,6 @@ public class ItemEntity extends BaseEntity {
 
     @Override
 	public String toString() {
-		return "ItemEntity [name=" + name + ", price=" + price + ", taxed=" + taxed + "]";
+		return new StringBuilder().append("ItemEntity [name=").append(name).append(", price=").append(price).append(", taxed=").append(taxed).append(", receipt=").append(receipt).append("]").toString();
 	}
 }
