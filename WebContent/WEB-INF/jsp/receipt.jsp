@@ -251,7 +251,7 @@
                                     $('#download_expense_excel').html(
                                         "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button'/>" +
                                         "&nbsp;&nbsp;&nbsp;" +
-                                        "<a href='${pageContext.request.contextPath}/filedownload/exp/${receiptForm.receipt.id}.htm'>" +
+                                        "<a href='${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
                                             "<img src='../images/download_icon_lg.png' width='18' height='20' class='downloadIcon'>" +
                                         "</a>"
                                     ).show();
@@ -464,7 +464,7 @@
                                     <input type="button" value="Expensofi" name="expensofi" id="expensofi_button"/>
                                     &nbsp;
                                     <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
-                                        <a href="${pageContext.request.contextPath}/filedownload/exp/${receiptForm.receipt.id}.htm">
+                                        <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm">
                                             <img src="../images/download_icon_lg.png" style="background-color: darkgreen; vertical-align: top" width="18" height="20">
                                         </a>
                                     </c:if>

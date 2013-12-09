@@ -91,7 +91,7 @@ public class FileDownloadController {
 		}
 	}
 
-    @RequestMapping(method = RequestMethod.GET, value = "/exp/{receiptId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/expensofi/{receiptId}")
     public void getReport(@PathVariable String receiptId, @ModelAttribute("userSession") UserSession userSession, HttpServletResponse response) {
         DateTime time = DateUtil.now();
 
