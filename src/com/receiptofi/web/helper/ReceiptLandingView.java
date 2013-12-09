@@ -16,25 +16,25 @@ import com.receiptofi.domain.ReceiptEntity;
  */
 public final class ReceiptLandingView {
 
-    String id;
-    String name;
+    private String id;
+    private String name;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    Date date;
+    private Date date;
 
     @NumberFormat(style = NumberFormat.Style.CURRENCY)
-    Double tax;
+    private Double tax;
 
     @NumberFormat(style = NumberFormat.Style.CURRENCY)
-    Double total;
+    private Double total;
 
-    String userProfileId;
-
-    String bizNameForId;
+    private String userProfileId;
+    private String bizNameForId;
+    private String expenseReportInFS;
 
     private ReceiptLandingView() {}
 
-    public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
+    public static ReceiptLandingView newInstance(final ReceiptEntity receiptEntity) {
         ReceiptLandingView receiptLandingView = new ReceiptLandingView();
         receiptLandingView.setId(receiptEntity.getId());
         receiptLandingView.setName(receiptEntity.getBizName().getName());
@@ -42,6 +42,7 @@ public final class ReceiptLandingView {
         receiptLandingView.setTax(receiptEntity.getTax());
         receiptLandingView.setTotal(receiptEntity.getTotal());
         receiptLandingView.setUserProfileId(receiptEntity.getUserProfileId());
+        receiptLandingView.setExpenseReportInFS(receiptEntity.getExpenseReportInFS());
 
         /** Remove all alpha numeric characters as it creates issues with 'id' */
         receiptLandingView.setBizNameForId(StringUtils.deleteWhitespace(receiptEntity.getBizName().getName()).replaceAll("[^a-zA-Z0-9]", ""));
@@ -102,5 +103,13 @@ public final class ReceiptLandingView {
 
     public void setBizNameForId(String bizNameForId) {
         this.bizNameForId = bizNameForId;
+    }
+
+    public String getExpenseReportInFS() {
+        return expenseReportInFS;
+    }
+
+    public void setExpenseReportInFS(String expenseReportInFS) {
+        this.expenseReportInFS = expenseReportInFS;
     }
 }

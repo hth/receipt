@@ -14,6 +14,7 @@
                     <table style="width: 470px" class="etable" id="tableReceiptForMonth">
                         <tr>
                             <th style="padding: 3px;"></th>
+                            <th style="padding: 3px;"></th>
                             <th style="padding: 3px;">Business</th>
                             <th style="padding: 3px;">Receipt Date</th>
                             <th style="padding: 3px;">Tax</th>
@@ -23,6 +24,13 @@
                         <tr id="${receipt.bizNameForId}">
                             <td style="padding: 3px; text-align: right">
                                 <fmt:formatNumber value="${status.count}" pattern="00"/>.
+                            </td>
+                            <td style="padding: 3px; text-align: center">
+                                <c:if test="${!empty receipt.expenseReportInFS}">
+                                    <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receipt.id}.htm">
+                                        <img src="images/download_icon_lg.png" style="background-color: darkgreen; vertical-align: top" width="14" height="14">
+                                    </a>
+                                </c:if>
                             </td>
                             <td style="padding: 3px;">
                                 <spring:eval expression="receipt.name" />
