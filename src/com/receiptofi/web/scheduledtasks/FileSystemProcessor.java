@@ -1,5 +1,6 @@
 package com.receiptofi.web.scheduledtasks;
 
+import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.AgeFileFilter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -28,19 +30,31 @@ public class FileSystemProcessor {
     //File system location;
     public static final String EXPENSOFI_FILE_SYSTEM = "/opt/receiptofi/expensofi";
 
+    @Autowired private ReceiptService receiptService;
+
+    //for every two second use */2 * * * * ? where as cron string blow run every day at 12:00 AM
     @Scheduled(cron="0 0 0 * * ?")
     public void removeExpiredExcelFiles() {
         AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(EXPIRY_TIME).toDate());
         File directory = new File(EXPENSOFI_FILE_SYSTEM);
         String[] files = directory.list(cutoff);
         for(String filename : files) {
-            removeExpiredExcel(filename);
+            removeExpiredExcel(getExcelFile(filename));
+            receiptService.removeExpenseFilenameReference(filename);
         }
         log.info("Removed expired excel files: count " + files.length);
     }
 
-    public void removeExpiredExcel(String file) {
-        FileUtils.deleteQuietly(new File(EXPENSOFI_FILE_SYSTEM + File.separator + file));
+    public File getExcelFile(String filename) {
+        return new File(EXPENSOFI_FILE_SYSTEM + File.separator + filename);
+    }
+
+    public void removeExpiredExcel(File file) {
+        FileUtils.deleteQuietly(file);
+    }
+
+    public void removeExpiredExcel(String filename) {
+        removeExpiredExcel(getExcelFile(filename));
     }
 
     @Scheduled(cron="0 0 9 * * ?")

@@ -308,4 +308,10 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         //Active condition is required for re-check criteria
         return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()), ReceiptEntity.class, TABLE).size() > 0;
     }
+
+    @Override
+    public void removeExpenseFilenameReference(String filename) {
+        ReceiptEntity receiptEntity = mongoTemplate.findAndModify(Query.query(Criteria.where("EXP_FILENAME").is(filename)), Update.update("EXP_FILENAME", ""), ReceiptEntity.class);
+        log.debug("nothing", receiptEntity);
+    }
 }

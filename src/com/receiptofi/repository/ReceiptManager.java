@@ -124,4 +124,11 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     boolean existCheckSum(String checkSum);
+
+    /**
+     * Removes reference to file name in file system
+     *
+     * @param filename
+     */
+    void removeExpenseFilenameReference(String filename);
 }
