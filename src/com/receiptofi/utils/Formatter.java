@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -31,6 +33,8 @@ public final class Formatter {
 
 	/** For double */
 	public static DecimalFormat df = new DecimalFormat("#.##");
+
+    public static SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
 
     //Refer bug #3
     //TODO may be change this method to support just item format and net format. Means have two method with scale of 2 and 4. 2 scale for total; and 4 scale for
@@ -73,6 +77,10 @@ public final class Formatter {
             log.error("NumberParseException was thrown while parsing the phone number : " + e.toString());
             return "";
         }
+    }
+
+    public static String toSmallDate(Date date) {
+        return SDF_SMALL.format(date);
     }
 }
 
