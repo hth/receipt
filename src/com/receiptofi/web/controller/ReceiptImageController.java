@@ -111,7 +111,7 @@ public class ReceiptImageController {
     }
 
     private void setHeaderForExcel(ReceiptEntity receiptEntity, HttpServletResponse response) {
-        response.addHeader("Content-Disposition", "inline; filename=" + receiptEntity.getBizName().getName() + "-" + Formatter.dateSmall(receiptEntity.getReceiptDate()));
+        response.addHeader("Content-Disposition", "inline; filename=" + receiptEntity.getBizName().getName() + "-" + Formatter.toSmallDate(receiptEntity.getReceiptDate()));
         response.setContentType("application/vnd.ms-excel");
     }
 }
