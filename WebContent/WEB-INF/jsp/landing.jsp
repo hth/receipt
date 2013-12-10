@@ -534,9 +534,17 @@
                 monthView: date,
                 buttonClick: clicked
             },
-            success: function (response) {
+            beforeSend: function() {
                 $('#onLoadReceiptForMonthId').hide();
+                $('#refreshReceiptForMonthId').html(
+                        "<div class='spinner large' id='spinner'></div>"
+                ).show();
+            },
+            success: function (response) {
                 $('#refreshReceiptForMonthId').html(response).show();
+            },
+            complete: function() {
+                //do nothing as load removes spinner
             }
         });
     }
