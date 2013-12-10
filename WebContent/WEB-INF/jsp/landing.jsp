@@ -349,7 +349,7 @@
                                 <th style="padding: 3px;"></th>
                                 <th style="padding: 3px;"></th>
                                 <th style="padding: 3px;">Business</th>
-                                <th style="padding: 3px;">Receipt Date</th>
+                                <th style="padding: 3px;">Date</th>
                                 <th style="padding: 3px;">Tax</th>
                                 <th style="padding: 3px;">Total</th>
                             </tr>
@@ -361,7 +361,7 @@
                                 <td style="padding: 3px; text-align: center">
                                     <c:if test="${!empty receipt.expenseReportInFS}">
                                         <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receipt.id}.htm">
-                                            <img src="images/download_icon_lg.png" style="background-color: darkgreen; vertical-align: top" width="14" height="14">
+                                            <img src="images/download_icon_lg.png" class="downloadIcon" width="14" height="14">
                                         </a>
                                     </c:if>
                                 </td>
@@ -369,7 +369,7 @@
                                     <spring:eval expression="receipt.name" />
                                 </td>
                                 <td style="padding: 3px;">
-                                    <fmt:formatDate value="${receipt.date}" type="date"/>
+                                    <fmt:formatDate value="${receipt.date}" pattern="dd, MMM" />
                                 </td>
                                 <td style="padding: 3px; text-align: right">
                                     <spring:eval expression="receipt.tax" />

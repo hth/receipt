@@ -16,7 +16,7 @@
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;">Business</th>
-                            <th style="padding: 3px;">Receipt Date</th>
+                            <th style="padding: 3px;">Date</th>
                             <th style="padding: 3px;">Tax</th>
                             <th style="padding: 3px;">Total</th>
                         </tr>
@@ -36,7 +36,7 @@
                                 <spring:eval expression="receipt.name" />
                             </td>
                             <td style="padding: 3px;">
-                                <fmt:formatDate value="${receipt.date}" type="date"/>
+                                <fmt:formatDate value="${receipt.date}" pattern="dd, MMM" />
                             </td>
                             <td style="padding: 3px; text-align: right">
                                 <spring:eval expression="receipt.tax" />
