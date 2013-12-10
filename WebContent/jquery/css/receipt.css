@@ -449,6 +449,11 @@ a.account {
 }
 /* spinner end */
 
+.downloadIconBlink {
+    background-color: darkgreen;
+    vertical-align: top
+}
 .downloadIcon {
     background-color: darkgreen;
+    vertical-align: top
 }

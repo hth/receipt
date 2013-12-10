@@ -215,7 +215,7 @@
         });
 
         function blinkDownloadIcon(){
-            $('.downloadIcon').delay(100).fadeTo(100,0.5).delay(100).fadeTo(100,1, blinkDownloadIcon);
+            $('.downloadIconBlink').delay(100).fadeTo(100,0.5).delay(100).fadeTo(100,1, blinkDownloadIcon);
         }
 
         $(function(){
@@ -252,7 +252,7 @@
                                         "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button'/>" +
                                         "&nbsp;&nbsp;&nbsp;" +
                                         "<a href='${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
-                                            "<img src='../images/download_icon_lg.png' width='18' height='20' class='downloadIcon'>" +
+                                            "<img src='../images/download_icon_lg.png' width='18' height='20' class='downloadIconBlink'>" +
                                         "</a>"
                                     ).show();
                                 }
@@ -464,7 +464,7 @@
                                     &nbsp;
                                     <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
                                         <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm">
-                                            <img src="../images/download_icon_lg.png" style="background-color: darkgreen; vertical-align: top" width="18" height="20">
+                                            <img src="../images/download_icon_lg.png" class="downloadIcon" width="18" height="20">
                                         </a>
                                     </c:if>
                                 </div>
