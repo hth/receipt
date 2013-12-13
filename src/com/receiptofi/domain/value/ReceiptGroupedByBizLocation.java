@@ -8,6 +8,8 @@ import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 
 /**
+ * TODO this class can be further extended to individually list out the expense in that store on a particular date.
+ *
  * User: hitender
  * Date: 8/27/13 8:04 PM
  */
