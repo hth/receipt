@@ -258,7 +258,7 @@
                                 }
                             },
                             complete: function() {
-                                $('#spinner').remove();
+                                //no need to remove spinner as it is removed during show $('#spinner').remove();
                                 blinkDownloadIcon();
                             }
                         });

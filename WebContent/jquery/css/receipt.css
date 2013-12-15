@@ -440,12 +440,14 @@ a.account {
     background: url("../../images/spiffygif_18x18.gif");
 }
 .spinner.medium {
-    height: 30px; width: 30px;
+    height: 20px; width: 20px;
     background: url("../../images/spiffygif_20x20.gif");
 }
 .spinner.large {
-    height: 64px; width: 64px;
-    background: url("../../images/spiffygif_22x22.gif");
+    height: 112px; width: 112px;
+    margin-left: auto;
+    margin-right: auto;
+    background: url("../../images/spiffygif_112x112.gif");
 }
 /* spinner end */
 
