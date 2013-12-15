@@ -36,7 +36,7 @@ public final class ImageSplit {
         splitImage(image);
     }
 
-    public static void splitImage(BufferedImage image) throws IOException {
+    private static void splitImage(BufferedImage image) throws IOException {
         int rows = 4; //You should decide the values for rows and cols variables
         int cols = 4;
         int chunks = rows * cols;
