@@ -17,7 +17,7 @@ import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.ReceiptOCRManager;
 import com.receiptofi.repository.StorageManager;
 import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.service.routes.FileUploadSenderJMS;
+import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.web.form.ReceiptForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public final class ReceiptService {
     @Autowired private ItemManager itemManager;
     @Autowired private ItemOCRManager itemOCRManager;
     @Autowired private UserProfileManager userProfileManager;
-    @Autowired private FileUploadSenderJMS senderJMS;
+    @Autowired private FileUploadDocumentSenderJMS senderJMS;
     @Autowired private CommentManager commentManager;
 
     /**

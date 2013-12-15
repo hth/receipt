@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.MessageReceiptEntityOCR;
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.ReceiptStatusEnum;
 
 /**
@@ -17,21 +17,21 @@ import com.receiptofi.domain.types.ReceiptStatusEnum;
  * Date: 4/6/13
  * Time: 7:28 PM
  */
-public interface MessageManager extends RepositoryManager<MessageReceiptEntityOCR> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(MessageReceiptEntityOCR.class, Document.class, "collection");
+public interface MessageManager extends RepositoryManager<MessageDocumentEntity> {
+    static String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
     static final int QUERY_LIMIT = 10;
 
-    List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status);
+    List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status);
 
-    List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status, int limit);
+    List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status, int limit);
 
-    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status);
+    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status);
 
-    List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit);
+    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit);
 
-    List<MessageReceiptEntityOCR> findAllPending();
+    List<MessageDocumentEntity> findAllPending();
 
-    List<MessageReceiptEntityOCR> findPending(String emailId, String userProfileId, ReceiptStatusEnum status);
+    List<MessageDocumentEntity> findPending(String emailId, String userProfileId, ReceiptStatusEnum status);
 
     WriteResult updateObject(String receiptOCRId, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
 

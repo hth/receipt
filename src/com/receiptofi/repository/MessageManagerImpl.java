@@ -1,6 +1,6 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.MessageReceiptEntityOCR;
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.ReceiptStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,17 +36,17 @@ public final class MessageManagerImpl implements MessageManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<MessageReceiptEntityOCR> getAllObjects() {
-        return mongoTemplate.findAll(MessageReceiptEntityOCR.class, TABLE);
+    public List<MessageDocumentEntity> getAllObjects() {
+        return mongoTemplate.findAll(MessageDocumentEntity.class, TABLE);
     }
 
     @Override
-    public List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status) {
         return findWithLimit(status, QUERY_LIMIT);
     }
 
     @Override
-    public List<MessageReceiptEntityOCR> findWithLimit(ReceiptStatusEnum status, int limit) {
+    public List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status, int limit) {
         Query query = Query.query(Criteria.where("LOCKED").is(false))
                 .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(status));
 
@@ -56,18 +56,18 @@ public final class MessageManagerImpl implements MessageManager {
         Sort sort = new Sort(orders);
 
         query.with(sort).limit(limit);
-        return mongoTemplate.find(query, MessageReceiptEntityOCR.class, TABLE);
+        return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status) {
         return findUpdateWithLimit(emailId, userProfileId, status, QUERY_LIMIT);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<MessageReceiptEntityOCR> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit) {
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
 //                    "{" +
@@ -84,8 +84,8 @@ public final class MessageManagerImpl implements MessageManager {
 //                .append("recordLocked", false)
 //                .append("RECEIPT_STATUS_ENUM", "OCR_PROCESSED");
 
-        List<MessageReceiptEntityOCR> list = findWithLimit(status);
-        for(MessageReceiptEntityOCR object : list) {
+        List<MessageDocumentEntity> list = findWithLimit(status);
+        for(MessageDocumentEntity object : list) {
             object.setEmailId(emailId);
             object.setUserProfileId(userProfileId);
             object.setRecordLocked(true);
@@ -107,7 +107,7 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<MessageReceiptEntityOCR> findPending(String emailId, String userProfileId, ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, ReceiptStatusEnum status) {
         Query query = Query.query(Criteria.where("LOCKED").is(true))
                 .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(status))
                 .addCriteria(Criteria.where("EMAIL").is(emailId))
@@ -119,11 +119,11 @@ public final class MessageManagerImpl implements MessageManager {
         Sort sort = new Sort(orders);
 
         query.with(sort);
-        return mongoTemplate.find(query, MessageReceiptEntityOCR.class, TABLE);
+        return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
     @Override
-    public List<MessageReceiptEntityOCR> findAllPending() {
+    public List<MessageDocumentEntity> findAllPending() {
         Query query = Query.query(Criteria.where("LOCKED").is(true))
                 .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(ReceiptStatusEnum.OCR_PROCESSED));
 
@@ -133,12 +133,12 @@ public final class MessageManagerImpl implements MessageManager {
         Sort sort = new Sort(orders);
 
         query.with(sort);
-        return mongoTemplate.find(query, MessageReceiptEntityOCR.class, TABLE);
+        return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(MessageReceiptEntityOCR object) throws Exception {
+    public void save(MessageDocumentEntity object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if(object.getId() != null) {
             object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
@@ -147,7 +147,7 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public MessageReceiptEntityOCR findOne(String id) {
+    public MessageDocumentEntity findOne(String id) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
@@ -167,7 +167,7 @@ public final class MessageManagerImpl implements MessageManager {
 
         Update update = Update.update("RECEIPT_STATUS_ENUM", statusSet).set("ACTIVE", false);
 
-        return mongoTemplate.updateFirst(query, update(update), MessageReceiptEntityOCR.class);
+        return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);
     }
 
     @Override
@@ -183,19 +183,19 @@ public final class MessageManagerImpl implements MessageManager {
                 .set("ACTIVE", true)
                 .set("RECEIPT_STATUS_ENUM", statusSet);
 
-        return mongoTemplate.updateFirst(query, update(update), MessageReceiptEntityOCR.class);
+        return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteHard(MessageReceiptEntityOCR object) {
+    public void deleteHard(MessageDocumentEntity object) {
         mongoTemplate.remove(object, TABLE);
     }
 
     @Override
     public void deleteAllForReceiptOCR(String receiptOCRId) {
         Query query = Query.query(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
-        mongoTemplate.remove(query, MessageReceiptEntityOCR.class);
+        mongoTemplate.remove(query, MessageDocumentEntity.class);
     }
 
     @Override

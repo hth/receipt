@@ -3,7 +3,7 @@
  */
 package com.receiptofi.service.routes;
 
-import com.receiptofi.domain.MessageReceiptEntityOCR;
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.MessageManager;
@@ -23,8 +23,8 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public final class FileUploadListenerJMS {
-	private static final Logger log = LoggerFactory.getLogger(FileUploadListenerJMS.class);
+public final class FileUploadDocumentListenerJMS {
+	private static final Logger log = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);
 
     @Autowired private MessageManager messageManager;
 
@@ -50,7 +50,7 @@ public final class FileUploadListenerJMS {
         /** Required to match the name for User Level */
         String matchingName = StringUtils.replace(level, " ", "_");
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(matchingName.toUpperCase());
-        MessageReceiptEntityOCR object = MessageReceiptEntityOCR.newInstance(id, levelEnum, receiptStatusEnum);
+        MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, receiptStatusEnum);
         messageManager.save(object);
 
 		log.info("Message received: " + id + ", user level: " + level + ", and persisted with id: " + object.getId());

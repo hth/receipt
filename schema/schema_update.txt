@@ -38,14 +38,14 @@ static Ordering<MessageReceiptEntityOCR> descendingOrder = new Ordering<MessageR
 Map<String, List<MessageReceiptEntityOCR>> map = new HashMap<>();
 List<MessageReceiptEntityOCR> list = empLandingService.findAll();
 log.info("Total list: " + list.size());
-for(MessageReceiptEntityOCR messageReceiptEntityOCR : list) {
-	if(map.containsKey(messageReceiptEntityOCR.getReceiptOCRId())) {
-		List<MessageReceiptEntityOCR> sub = map.get(messageReceiptEntityOCR.getReceiptOCRId());
-		sub.add(messageReceiptEntityOCR);
+for(MessageReceiptEntityOCR messageDocumentEntity : list) {
+	if(map.containsKey(messageDocumentEntity.getReceiptOCRId())) {
+		List<MessageReceiptEntityOCR> sub = map.get(messageDocumentEntity.getReceiptOCRId());
+		sub.add(messageDocumentEntity);
 	} else {
 		List<MessageReceiptEntityOCR> o = new ArrayList<>();
-		o.add(messageReceiptEntityOCR);
-		map.put(messageReceiptEntityOCR.getReceiptOCRId(), o);
+		o.add(messageDocumentEntity);
+		map.put(messageDocumentEntity.getReceiptOCRId(), o);
 	}
 }
 
@@ -56,8 +56,8 @@ for(String key : map.keySet()) {
 		List<MessageReceiptEntityOCR> deleteList = sortedList.subList(0, sortedList.size() -1);
 		List<MessageReceiptEntityOCR> subListSave = sortedList.subList(sortedList.size() -1, sortedList.size());
 
-		for(MessageReceiptEntityOCR messageReceiptEntityOCR : deleteList) {
-			empLandingService.delete(messageReceiptEntityOCR);
+		for(MessageReceiptEntityOCR messageDocumentEntity : deleteList) {
+			empLandingService.delete(messageDocumentEntity);
 		}
 		map.put(key, subListSave);
 	}

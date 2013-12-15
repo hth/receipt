@@ -18,7 +18,7 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.ReceiptOCRManager;
 import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.service.routes.FileUploadSenderJMS;
+import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.ImageSplit;
 import com.receiptofi.utils.Maths;
@@ -69,7 +69,7 @@ public final class LandingService {
     @Autowired private BizStoreManager bizStoreManager;
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private FileDBService fileDBService;
-    @Autowired private FileUploadSenderJMS senderJMS;
+    @Autowired private FileUploadDocumentSenderJMS senderJMS;
     @Autowired private ItemManager itemManager;
     @Autowired private ItemService itemService;
     @Autowired private NotificationService notificationService;
