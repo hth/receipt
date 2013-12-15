@@ -167,11 +167,11 @@
     </bean>
 
     <jms:listener-container connection-factory="connectionFactory">
-        <jms:listener destination="${queue-name}" ref="receiptListenerJMS" method="receive" />
+        <jms:listener destination="${queue-name}" ref="fileUploadListenerJMS" method="receive" />
     </jms:listener-container>
 
-    <bean id="receiptSenderJMS" class="com.tholix.service.routes.ReceiptSenderJMS" />
-    <bean id="receiptListenerJMS" class="com.tholix.service.routes.ReceiptListenerJMS" />    -->
+    <bean id="fileUploadSenderJMS" class="com.tholix.service.routes.FileUploadSenderJMS" />
+    <bean id="fileUploadListenerJMS" class="com.tholix.service.routes.FileUploadListenerJMS" />    -->
     <!-- ===================================== -->
     <!-- JMS configuration end                 -->
     <!-- ===================================== -->
@@ -208,12 +208,12 @@
         <property name="defaultDestination" ref="destination" />
     </bean>
 
-    <bean id="receiptSenderJMS" class="com.receiptofi.service.routes.ReceiptSenderJMS" />
-    <bean id="receiptListenerJMS" class="com.receiptofi.service.routes.ReceiptListenerJMS" />
+    <bean id="fileUploadSenderJMS" class="com.receiptofi.service.routes.FileUploadSenderJMS" />
+    <bean id="fileUploadListenerJMS" class="com.receiptofi.service.routes.FileUploadListenerJMS" />
 
     <jms:listener-container connection-factory="connectionFactory">
         <!--suppress SpringModelInspection -->
-        <jms:listener destination="${queue-name}" ref="receiptListenerJMS" method="receive" />
+        <jms:listener destination="${queue-name}" ref="fileUploadListenerJMS" method="receive" />
     </jms:listener-container>
     <!-- ===================================== -->
     <!-- JSM bean End                          -->
