@@ -1,6 +1,6 @@
 package com.receiptofi.web.controller;
 
-import com.receiptofi.domain.MessageReceiptEntityOCR;
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -44,16 +44,16 @@ public class EmpLandingController {
             modelAndView = new ModelAndView(nextPage);
 
             //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
-            List<MessageReceiptEntityOCR> pending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.OCR_PROCESSED);
+            List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.OCR_PROCESSED);
             modelAndView.addObject("pending", pending);
 
-            List<MessageReceiptEntityOCR> queue = empLandingService.queuedReceipts(userSession.getEmailId(), userSession.getUserProfileId());
+            List<MessageDocumentEntity> queue = empLandingService.queuedReceipts(userSession.getEmailId(), userSession.getUserProfileId());
             modelAndView.addObject("queue", queue);
 
-            List<MessageReceiptEntityOCR> recheckPending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.TURK_REQUEST);
+            List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.TURK_REQUEST);
             modelAndView.addObject("recheckPending", recheckPending);
 
-            List<MessageReceiptEntityOCR> recheck = empLandingService.recheck(userSession.getEmailId(), userSession.getUserProfileId());
+            List<MessageDocumentEntity> recheck = empLandingService.recheck(userSession.getEmailId(), userSession.getUserProfileId());
             modelAndView.addObject("recheck", recheck);
         }  else {
             //Re-direct user to his home page because user tried accessing UN-Authorized page

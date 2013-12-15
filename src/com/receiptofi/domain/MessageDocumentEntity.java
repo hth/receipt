@@ -15,8 +15,8 @@ import com.receiptofi.domain.types.UserLevelEnum;
  * Date: 4/6/13
  * Time: 6:48 PM
  */
-@Document(collection = "MESSAGE_RECEIPT_OCR")
-public class MessageReceiptEntityOCR extends BaseEntity {
+@Document(collection = "MESSAGE_DOCUMENT")
+public class MessageDocumentEntity extends BaseEntity {
 
     @NotNull
     @Field("RECEIPT_OCR_ID")
@@ -42,16 +42,16 @@ public class MessageReceiptEntityOCR extends BaseEntity {
     @Field("RECEIPT_STATUS_ENUM")
     private ReceiptStatusEnum receiptStatus;
 
-    private MessageReceiptEntityOCR() {}
+    private MessageDocumentEntity() {}
 
-    private MessageReceiptEntityOCR(String receiptOCRId, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
+    private MessageDocumentEntity(String receiptOCRId, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
         this.receiptOCRId = receiptOCRId;
         this.level = level;
         this.receiptStatus = receiptStatus;
     }
 
-    public static MessageReceiptEntityOCR newInstance(String idReceiptOCR, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
-        return new MessageReceiptEntityOCR(idReceiptOCR, level, receiptStatus);
+    public static MessageDocumentEntity newInstance(String idReceiptOCR, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
+        return new MessageDocumentEntity(idReceiptOCR, level, receiptStatus);
     }
 
     public String getReceiptOCRId() {
@@ -96,7 +96,7 @@ public class MessageReceiptEntityOCR extends BaseEntity {
 
     @Override
     public String toString() {
-        return "MessageReceiptEntityOCR{" +
+        return "MessageDocumentEntity{" +
                 "id='" + id + '\'' +
                 ", receiptOCRId='" + receiptOCRId + '\'' +
                 ", level=" + level +

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.receiptofi.domain.MessageReceiptEntityOCR;
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.repository.MessageManager;
 
@@ -19,23 +19,23 @@ public final class EmpLandingService {
 
     @Autowired private MessageManager messageManager;
 
-    public List<MessageReceiptEntityOCR> pendingReceipts(String emailId, String profileId, ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> pendingReceipts(String emailId, String profileId, ReceiptStatusEnum status) {
         return messageManager.findPending(emailId, profileId, status);
     }
 
-    public List<MessageReceiptEntityOCR> queuedReceipts(String emailId, String profileId) {
+    public List<MessageDocumentEntity> queuedReceipts(String emailId, String profileId) {
         return messageManager.findUpdateWithLimit(emailId, profileId, ReceiptStatusEnum.OCR_PROCESSED);
     }
 
-    public List<MessageReceiptEntityOCR> recheck(String emailId, String profileId) {
+    public List<MessageDocumentEntity> recheck(String emailId, String profileId) {
         return messageManager.findUpdateWithLimit(emailId, profileId, ReceiptStatusEnum.TURK_REQUEST);
     }
 
-    public List<MessageReceiptEntityOCR> findAll() {
+    public List<MessageDocumentEntity> findAll() {
         return messageManager.getAllObjects();
     }
 
-    public void delete(MessageReceiptEntityOCR messageReceiptEntityOCR) {
-        messageManager.deleteHard(messageReceiptEntityOCR);
+    public void delete(MessageDocumentEntity messageDocumentEntity) {
+        messageManager.deleteHard(messageDocumentEntity);
     }
 }
