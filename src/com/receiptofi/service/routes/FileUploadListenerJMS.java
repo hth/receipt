@@ -23,8 +23,8 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public final class ReceiptListenerJMS {
-	private static final Logger log = LoggerFactory.getLogger(ReceiptListenerJMS.class);
+public final class FileUploadListenerJMS {
+	private static final Logger log = LoggerFactory.getLogger(FileUploadListenerJMS.class);
 
     @Autowired private MessageManager messageManager;
 

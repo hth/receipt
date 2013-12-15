@@ -23,8 +23,8 @@ import org.springframework.jms.core.MessageCreator;
  * @since Mar 30, 2013 2:42:21 AM
  *
  */
-public final class ReceiptSenderJMS {
-	private static final Logger log = LoggerFactory.getLogger(ReceiptSenderJMS.class);
+public final class FileUploadSenderJMS {
+	private static final Logger log = LoggerFactory.getLogger(FileUploadSenderJMS.class);
 
 	@Autowired private JmsTemplate jmsSenderTemplate;
 
