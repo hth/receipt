@@ -167,7 +167,7 @@
     </bean>
 
     <jms:listener-container connection-factory="connectionFactory">
-        <jms:listener destination="${queue-name}" ref="receiptListenerJMS" method="receive" />
+        <jms:listener destination="${queue-name}" ref="fileUploadListenerJMS" method="receive" />
     </jms:listener-container>
 
     <bean id="fileUploadSenderJMS" class="com.tholix.service.routes.FileUploadSenderJMS" />
@@ -213,7 +213,7 @@
 
     <jms:listener-container connection-factory="connectionFactory">
         <!--suppress SpringModelInspection -->
-        <jms:listener destination="${queue-name}" ref="receiptListenerJMS" method="receive" />
+        <jms:listener destination="${queue-name}" ref="fileUploadListenerJMS" method="receive" />
     </jms:listener-container>
     <!-- ===================================== -->
     <!-- JSM bean End                          -->
