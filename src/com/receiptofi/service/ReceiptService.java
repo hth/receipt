@@ -9,7 +9,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
@@ -139,7 +139,7 @@ public final class ReceiptService {
 
                     ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
                     receiptOCR.active();
-                    receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_REQUEST);
+                    receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_REQUEST);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());
                     receiptOCR.setNotes(receipt.getNotes());
 

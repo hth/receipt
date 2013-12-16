@@ -64,7 +64,7 @@
             $.ajax({
                 url: '${pageContext. request. contextPath}/fetcher/change_ocr_image_orientation.htm',
                 data: {
-                    receiptOCRId: '${receiptOCRForm.receiptOCR.id}',
+                    documentId: '${receiptOCRForm.receiptOCR.id}',
                     orientation: angle,
                     userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
                 },
@@ -277,7 +277,7 @@
     <c:choose>
     <c:when test="${!empty receiptOCRForm.receiptOCR}">
 
-    <spring:eval expression="receiptOCRForm.receiptOCR.receiptStatus == T(com.receiptofi.domain.types.ReceiptStatusEnum).TURK_RECEIPT_REJECT" var="isValid" />
+    <spring:eval expression="receiptOCRForm.receiptOCR.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).TURK_RECEIPT_REJECT" var="isValid" />
     <c:choose>
         <c:when test="${!isValid}">
             <h2 class="demoHeaders">Pending receipt</h2>
@@ -347,12 +347,30 @@
                         <form:hidden path="receiptOCR.id"/>
                         <form:hidden path="receiptOCR.userProfileId"/>
                         <form:hidden path="receiptOCR.version"/>
-                        <form:hidden path="receiptOCR.receiptStatus"/>
+                        <form:hidden path="receiptOCR.documentStatus"/>
                         <form:hidden path="receiptOCR.receiptId"/>
                         <form:hidden path="receiptOCR.receiptOCRTranslation"/>
                         <form:hidden path="receiptOCR.receiptOf"/>
 
                         <table border="0" style="width: 550px" class="etable">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="leftAlign">
+                                        <form:label for="receiptOCR.documentOfType" path="receiptOCR.documentOfType" cssErrorClass="error">Document: </form:label>
+                                        <form:select path="receiptOCR.documentOfType">
+                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:options itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                    </div>
+                                    <div class="rightAlign">
+                                        <form:label for="receiptOCR.receiptOf" path="receiptOCR.receiptOf" cssErrorClass="error">Receipt for</form:label>
+                                        <form:select path="receiptOCR.receiptOf">
+                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:options itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="6">
                                     <div class="leftAlign">

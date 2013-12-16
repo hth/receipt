@@ -7,7 +7,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
@@ -90,7 +90,7 @@ public final class ReceiptOCRForm {
         receipt.setReceiptDate(DateUtil.getDateFromString(receiptOCR.getReceiptDate()));
         receipt.setTotal(Formatter.getCurrencyFormatted(receiptOCR.getTotal()).doubleValue());
         receipt.setTax(Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue());
-        receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+        receipt.setReceiptStatus(DocumentStatusEnum.TURK_PROCESSED);
         receipt.setReceiptBlobId(receiptOCR.getReceiptBlobId());
         receipt.setReceiptScaledBlobId(receiptOCR.getReceiptScaledBlobId());
         receipt.setUserProfileId(receiptOCR.getUserProfileId());

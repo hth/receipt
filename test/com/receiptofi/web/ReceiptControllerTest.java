@@ -1,5 +1,6 @@
 package com.receiptofi.web;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,6 @@ import com.receiptofi.BaseTest;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ReceiptManager;
@@ -94,7 +94,7 @@ public class ReceiptControllerTest {
 		Double total = 100.00;
 		Double tax = 20.00;
 		String description = "Description";
-		ReceiptStatusEnum receiptStatus = ReceiptStatusEnum.TURK_PROCESSED;
+		DocumentStatusEnum receiptStatus = DocumentStatusEnum.TURK_PROCESSED;
 
 		/** Save the image */
 		InputStream inputStream = FileUtils.openInputStream(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/20130112_164807.jpg"));
@@ -140,7 +140,7 @@ public class ReceiptControllerTest {
 		Double total = 100.00;
 		Double tax = 20.00;
 		String description = "Description";
-		ReceiptStatusEnum receiptStatus = ReceiptStatusEnum.TURK_PROCESSED;
+		DocumentStatusEnum receiptStatus = DocumentStatusEnum.TURK_PROCESSED;
 
 		/** Save the image */
 		InputStream inputStream = FileUtils.openInputStream(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/20130112_164807.jpg"));

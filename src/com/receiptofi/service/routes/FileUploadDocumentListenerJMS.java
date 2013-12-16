@@ -4,7 +4,7 @@
 package com.receiptofi.service.routes;
 
 import com.receiptofi.domain.MessageDocumentEntity;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.MessageManager;
 import org.slf4j.Logger;
@@ -32,17 +32,17 @@ public final class FileUploadDocumentListenerJMS {
 		String id = (String) message.get("id");
 		String level = (String) message.get("level");
         int status = (Integer) message.get("status");
-        ReceiptStatusEnum receiptStatusEnum = ReceiptStatusEnum.OCR_PROCESSED;
+        DocumentStatusEnum documentStatusEnum = DocumentStatusEnum.OCR_PROCESSED;
 
         switch(status) {
             case 0:
-                receiptStatusEnum = ReceiptStatusEnum.OCR_PROCESSED;
+                documentStatusEnum = DocumentStatusEnum.OCR_PROCESSED;
                 break;
             case 1:
-                receiptStatusEnum = ReceiptStatusEnum.TURK_PROCESSED;
+                documentStatusEnum = DocumentStatusEnum.TURK_PROCESSED;
                 break;
             case 2:
-                receiptStatusEnum = ReceiptStatusEnum.TURK_REQUEST;
+                documentStatusEnum = DocumentStatusEnum.TURK_REQUEST;
                 break;
         }
 
@@ -50,7 +50,7 @@ public final class FileUploadDocumentListenerJMS {
         /** Required to match the name for User Level */
         String matchingName = StringUtils.replace(level, " ", "_");
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(matchingName.toUpperCase());
-        MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, receiptStatusEnum);
+        MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, documentStatusEnum);
         messageManager.save(object);
 
 		log.info("Message received: " + id + ", user level: " + level + ", and persisted with id: " + object.getId());

@@ -8,7 +8,7 @@ import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 
 /**
  * JMS Message Manager
@@ -21,19 +21,19 @@ public interface MessageManager extends RepositoryManager<MessageDocumentEntity>
     static String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
     static final int QUERY_LIMIT = 10;
 
-    List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status);
+    List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status);
 
-    List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status, int limit);
+    List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit);
 
-    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status);
+    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status);
 
-    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit);
+    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status, int limit);
 
     List<MessageDocumentEntity> findAllPending();
 
-    List<MessageDocumentEntity> findPending(String emailId, String userProfileId, ReceiptStatusEnum status);
+    List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status);
 
-    WriteResult updateObject(String receiptOCRId, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
+    WriteResult updateObject(String receiptOCRId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.
@@ -45,7 +45,7 @@ public interface MessageManager extends RepositoryManager<MessageDocumentEntity>
      * @param value
      * @return
      */
-    WriteResult undoUpdateObject(String receiptOCRId, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet);
+    WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * Delete all the messages that are associated with ReceiptEntityOCR.

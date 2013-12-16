@@ -4,7 +4,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,7 +113,7 @@ public final class ReceiptOCRManagerImpl implements ReceiptOCRManager {
     @Override
     public List<ReceiptEntityOCR> getAllRejected(String userProfileId) {
         Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria2 = Criteria.where("RECEIPT_STATUS_ENUM").is(ReceiptStatusEnum.TURK_RECEIPT_REJECT);
+        Criteria criteria2 = Criteria.where("DOCUMENT_STATUS_ENUM").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
         Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
 
         Sort sort = new Sort(Direction.ASC, "CREATE");

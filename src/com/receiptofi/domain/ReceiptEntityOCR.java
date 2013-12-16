@@ -3,8 +3,8 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.ReceiptOfEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -23,12 +23,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "RECEIPT_OCR")
 @CompoundIndexes({ @CompoundIndex(name = "receipt_ocr_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
-public class ReceiptEntityOCR extends BaseEntity {
+public class ReceiptEntityOCR extends DocumentEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
 
 	@NotNull
-    @Field("RECEIPT_STATUS_ENUM")
-	private ReceiptStatusEnum receiptStatus;
+    @Field("DOCUMENT_STATUS_ENUM")
+	private DocumentStatusEnum documentStatus;
 
     @NotNull
     @Field("RECEIPT_OF_ENUM")
@@ -96,12 +96,12 @@ public class ReceiptEntityOCR extends BaseEntity {
 		return new ReceiptEntityOCR();
 	}
 
-	public ReceiptStatusEnum getReceiptStatus() {
-		return receiptStatus;
+	public DocumentStatusEnum getDocumentStatus() {
+		return documentStatus;
 	}
 
-	public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
-		this.receiptStatus = receiptStatus;
+	public void setDocumentStatus(DocumentStatusEnum documentStatus) {
+		this.documentStatus = documentStatus;
 	}
 
     public ReceiptOfEnum getReceiptOf() {

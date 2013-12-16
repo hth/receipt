@@ -1,7 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.MessageDocumentEntity;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,14 +41,14 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status) {
         return findWithLimit(status, QUERY_LIMIT);
     }
 
     @Override
-    public List<MessageDocumentEntity> findWithLimit(ReceiptStatusEnum status, int limit) {
+    public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
         Query query = Query.query(Criteria.where("LOCKED").is(false))
-                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(status));
+                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(status));
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
@@ -61,13 +61,13 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status) {
         return findUpdateWithLimit(emailId, userProfileId, status, QUERY_LIMIT);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, ReceiptStatusEnum status, int limit) {
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
 //                    "{" +
@@ -82,7 +82,7 @@ public final class MessageManagerImpl implements MessageManager {
 
 //        BasicDBObject basicDBObject = new BasicDBObject()
 //                .append("recordLocked", false)
-//                .append("RECEIPT_STATUS_ENUM", "OCR_PROCESSED");
+//                .append("DOCUMENT_STATUS_ENUM", "OCR_PROCESSED");
 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for(MessageDocumentEntity object : list) {
@@ -107,9 +107,9 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(status))
+                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(status))
                 .addCriteria(Criteria.where("EMAIL").is(emailId))
                 .addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId));
 
@@ -125,7 +125,7 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public List<MessageDocumentEntity> findAllPending() {
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(ReceiptStatusEnum.OCR_PROCESSED));
+                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(DocumentStatusEnum.OCR_PROCESSED));
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
@@ -159,29 +159,29 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public WriteResult updateObject(String receiptOCRId, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet) {
+    public WriteResult updateObject(String receiptOCRId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(statusFind))
+                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(statusFind))
                 .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
-        Update update = Update.update("RECEIPT_STATUS_ENUM", statusSet).set("ACTIVE", false);
+        Update update = Update.update("DOCUMENT_STATUS_ENUM", statusSet).set("ACTIVE", false);
 
         return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public WriteResult undoUpdateObject(String receiptOCRId, boolean value, ReceiptStatusEnum statusFind, ReceiptStatusEnum statusSet) {
+    public WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("RECEIPT_STATUS_ENUM").is(statusFind))
+                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(statusFind))
                 .addCriteria(Criteria.where("ACTIVE").is(false))
                 .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
         Update update = Update.update("recordLocked", false)
                 .set("ACTIVE", true)
-                .set("RECEIPT_STATUS_ENUM", statusSet);
+                .set("DOCUMENT_STATUS_ENUM", statusSet);
 
         return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);
     }

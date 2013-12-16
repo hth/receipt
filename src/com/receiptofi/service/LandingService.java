@@ -7,8 +7,8 @@ import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.ReceiptOfEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.repository.BizNameManager;
@@ -264,7 +264,7 @@ public final class LandingService {
             receiptScaledBlobId = fileDBService.saveFile(uploadReceiptImage);
 
             receiptOCR = ReceiptEntityOCR.newInstance();
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+            receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
             receiptOCR.setReceiptBlobId(receiptBlobId);
             receiptOCR.setReceiptScaledBlobId(receiptScaledBlobId);
             receiptOCR.setUserProfileId(userProfileId);

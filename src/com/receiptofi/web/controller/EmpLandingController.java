@@ -2,7 +2,7 @@ package com.receiptofi.web.controller;
 
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.EmpLandingService;
 import com.receiptofi.utils.DateUtil;
@@ -44,13 +44,13 @@ public class EmpLandingController {
             modelAndView = new ModelAndView(nextPage);
 
             //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
-            List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.OCR_PROCESSED);
+            List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), DocumentStatusEnum.OCR_PROCESSED);
             modelAndView.addObject("pending", pending);
 
             List<MessageDocumentEntity> queue = empLandingService.queuedReceipts(userSession.getEmailId(), userSession.getUserProfileId());
             modelAndView.addObject("queue", queue);
 
-            List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), ReceiptStatusEnum.TURK_REQUEST);
+            List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(userSession.getEmailId(), userSession.getUserProfileId(), DocumentStatusEnum.TURK_REQUEST);
             modelAndView.addObject("recheckPending", recheckPending);
 
             List<MessageDocumentEntity> recheck = empLandingService.recheck(userSession.getEmailId(), userSession.getUserProfileId());

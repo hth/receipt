@@ -119,8 +119,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>
@@ -155,8 +155,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>
@@ -191,8 +191,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>
@@ -227,8 +227,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>

@@ -3,8 +3,8 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.ReceiptOfEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.utils.SHAHashing;
 
 import javax.validation.constraints.NotNull;
@@ -41,8 +41,8 @@ public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
 	@NotNull
-    @Field("RECEIPT_STATUS_ENUM")
-	private ReceiptStatusEnum receiptStatus;
+    @Field("DOCUMENT_STATUS_ENUM")
+	private DocumentStatusEnum receiptStatus;
 
     @NotNull
     @Field("RECEIPT_OF_ENUM")
@@ -129,7 +129,7 @@ public class ReceiptEntity extends BaseEntity {
 	public ReceiptEntity() {}
 
     @Deprecated
-	private ReceiptEntity(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
 		super();
 		this.receiptDate = receiptDate;
 		this.total = total;
@@ -151,7 +151,7 @@ public class ReceiptEntity extends BaseEntity {
 	 * @return
 	 */
     @Deprecated
-	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
 		return new ReceiptEntity(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 	}
 
@@ -159,11 +159,11 @@ public class ReceiptEntity extends BaseEntity {
 		return new ReceiptEntity();
 	}
 
-	public ReceiptStatusEnum getReceiptStatus() {
+	public DocumentStatusEnum getReceiptStatus() {
 		return receiptStatus;
 	}
 
-	public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
+	public void setReceiptStatus(DocumentStatusEnum receiptStatus) {
 		this.receiptStatus = receiptStatus;
 	}
 
