@@ -116,6 +116,10 @@ public class ReceiptEntity extends BaseEntity {
     @Field("ORIENTATION")
     private int imageOrientation = 0;
 
+    /**
+     * Note: During recheck of a receipt EXP_FILENAME is dropped as this is
+     * not persisted between the two event
+     */
     @Field("EXP_FILENAME")
     private String expenseReportInFS;
 
