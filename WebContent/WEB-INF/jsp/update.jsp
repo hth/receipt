@@ -356,24 +356,6 @@
                             <tr>
                                 <td colspan="6">
                                     <div class="leftAlign">
-                                        <form:label for="receiptOCR.documentOfType" path="receiptOCR.documentOfType" cssErrorClass="error">Document: </form:label>
-                                        <form:select path="receiptOCR.documentOfType">
-                                            <form:option value="NONE" label="--- Select ---"/>
-                                            <form:options itemValue="name" itemLabel="description" />
-                                        </form:select>
-                                    </div>
-                                    <div class="rightAlign">
-                                        <form:label for="receiptOCR.receiptOf" path="receiptOCR.receiptOf" cssErrorClass="error">Receipt for</form:label>
-                                        <form:select path="receiptOCR.receiptOf">
-                                            <form:option value="NONE" label="--- Select ---"/>
-                                            <form:options itemValue="name" itemLabel="description" />
-                                        </form:select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">
-                                    <div class="leftAlign">
                                         <form:label for="receiptOCR.bizName.name" path="receiptOCR.bizName.name" cssErrorClass="error">Biz Name</form:label>
                                         <form:input path="receiptOCR.bizName.name" id="bizName" size="52"/>
                                     </div>
