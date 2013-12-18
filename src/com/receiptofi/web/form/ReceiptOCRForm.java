@@ -5,6 +5,7 @@ package com.receiptofi.web.form;
 
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -33,6 +34,7 @@ public final class ReceiptOCRForm {
     private static final Logger log = LoggerFactory.getLogger(ReceiptOCRForm.class);
 
 	ReceiptEntityOCR receiptOCR;
+    MileageEntity mileage;
 	List<ItemEntityOCR> items;
 
     /** Used for showing error messages to user when the request action fails to execute */
@@ -71,6 +73,14 @@ public final class ReceiptOCRForm {
 	public void setItems(List<ItemEntityOCR> items) {
 		this.items = items;
 	}
+
+    public MileageEntity getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(MileageEntity mileage) {
+        this.mileage = mileage;
+    }
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;

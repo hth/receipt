@@ -98,6 +98,12 @@ public final class NotificationService {
             case RECEIPT:
                 addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
                 break;
+            case INVOICE:
+                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                break;
+            case MILEAGE:
+                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                break;
             default:
                 throw new UnsupportedOperationException("Incorrect method call for Notification Type");
         }

@@ -280,10 +280,10 @@
     <spring:eval expression="receiptOCRForm.receiptOCR.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).TURK_RECEIPT_REJECT" var="isValid" />
     <c:choose>
         <c:when test="${!isValid}">
-            <h2 class="demoHeaders">Pending receipt</h2>
+            <h2 class="demoHeaders">Document pending</h2>
         </c:when>
         <c:otherwise>
-            <h2 class="demoHeaders">Rejected receipt</h2>
+            <h2 class="demoHeaders">Document rejected</h2>
         </c:otherwise>
     </c:choose>
 
@@ -333,12 +333,21 @@
     </c:otherwise>
     </c:choose>
 
+    <div class="leftAlign">
+        <form:label for="receiptOCRForm.receiptOCR.documentOfType" path="receiptOCRForm.receiptOCR.documentOfType" cssErrorClass="error">Document Type:</form:label>
+        <form:select path="receiptOCRForm.receiptOCR.documentOfType" id="documentId">
+            <form:option value="NONE" label="--- Select ---"/>
+            <form:options itemValue="name" itemLabel="description" />
+        </form:select>
+    </div>
+
     <table>
         <tr>
             <td style="vertical-align: top;">
                 <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
                     <c:when test="${isValid}">
+                    <div id="activeReceipt" class="hidden">
                     <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
                         <form:errors path="receiptOCR"      cssClass="error" />
@@ -350,7 +359,8 @@
                         <form:hidden path="receiptOCR.documentStatus"/>
                         <form:hidden path="receiptOCR.receiptId"/>
                         <form:hidden path="receiptOCR.receiptOCRTranslation"/>
-                        <form:hidden path="receiptOCR.receiptOf"/>
+                        <form:hidden path="receiptOCR.receiptOf" value="EXPENSE"/>
+                        <form:hidden path="receiptOCR.documentOfType" value="RECEIPT"/>
 
                         <table border="0" style="width: 550px" class="etable">
                             <tr>
@@ -460,7 +470,48 @@
                             </tr>
                         </table>
                     </form:form>
-                </c:when>
+                    </div>
+
+                    <div id="activeMileage" class="hidden">
+                    <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                        <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
+                        <form:errors path="receiptOCR"      cssClass="error" />
+                        <form:hidden path="receiptOCR.receiptBlobId"/>
+                        <form:hidden path="receiptOCR.receiptScaledBlobId"/>
+                        <form:hidden path="receiptOCR.id"/>
+                        <form:hidden path="receiptOCR.userProfileId"/>
+                        <form:hidden path="receiptOCR.version"/>
+                        <form:hidden path="receiptOCR.documentStatus"/>
+                        <form:hidden path="receiptOCR.receiptId"/>
+                        <form:hidden path="receiptOCR.receiptOCRTranslation"/>
+                        <form:hidden path="receiptOCR.receiptOf"/>
+                        <form:hidden path="receiptOCR.documentOfType" value="MILEAGE"/>
+
+                        <table border="0" style="width: 550px" class="etable">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="leftAlign">
+                                        <form:label for="mileage.start" path="mileage.start" cssErrorClass="error">Begin</form:label>
+                                        <form:input path="mileage.start" id="startMileage" size="25" class="tooltip" title="Mile before starting the trip"/>
+                                    </div>
+                                    <div class="rightAlign">
+                                        <form:label for="mileage.end" path="mileage.end" cssErrorClass="error">End</form:label>
+                                        <form:input path="mileage.end" id="endMileage" size="25" class="tooltip" title="Miles driven during this trip"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="height: 6em;">
+                                <td colspan="4">
+                                    <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="mileage-reject" id="rejectMileage" />
+                                </td>
+                                <td colspan="2">
+                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="mileage-submit" id="submitMileage" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form:form>
+                    </div>
+                    </c:when>
                 <c:otherwise>
                     &nbsp;
                 </c:otherwise>
@@ -537,6 +588,29 @@
 <script>
     $(function() {
         $("#submit").focus();
+    });
+
+    $(document).ready(function() {
+        $('#documentId').on('change', function (e) {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            if(valueSelected == 'RECEIPT') {
+                $('#activeReceipt').removeClass('hidden');
+                $('#activeMileage').hide();
+            }
+
+            if(valueSelected == 'INVOICE') {
+                $('#activeReceipt').removeClass('hidden');
+                $('#activeMileage').hide();
+            }
+
+            if(valueSelected == 'MILEAGE') {
+                $('#activeMileage').removeClass('hidden');
+                $('#activeReceipt').hide();
+            }
+
+            $('#documentId').prop('disabled', true);
+        });
     });
 </script>
 

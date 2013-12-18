@@ -16,6 +16,7 @@ public class DocumentEntity extends BaseEntity {
     @Field("DOCUMENT_TYPE")
     private DocumentOfTypeEnum documentOfType;
 
+    @SuppressWarnings("unused")
     public DocumentOfTypeEnum getDocumentOfType() {
         return documentOfType;
     }

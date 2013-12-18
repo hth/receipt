@@ -170,6 +170,27 @@ public class ReceiptUpdateController {
 	}
 
     /**
+     * Process receipt after submitted by technician
+     *
+     * @param receiptOCRForm
+     * @param result
+     * @return
+     */
+    @RequestMapping(value = "/submitMileage", method = RequestMethod.POST, params= "mileage-submit")
+    public ModelAndView submitMileage(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm,
+                               BindingResult result,
+                               final RedirectAttributes redirectAttrs) {
+
+        DateTime time = DateUtil.now();
+        switch(receiptOCRForm.getReceiptOCR().getDocumentOfType()) {
+            case MILEAGE:
+                log.info("Mileage : ");
+                break;
+        }
+        return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+    }
+
+    /**
      * Reject receipt since it can't be processed or its not a receipt
      *
      * @param receiptOCRForm

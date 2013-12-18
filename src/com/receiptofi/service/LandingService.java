@@ -269,7 +269,8 @@ public final class LandingService {
             receiptOCR.setReceiptScaledBlobId(receiptScaledBlobId);
             receiptOCR.setUserProfileId(userProfileId);
             receiptOCR.setReceiptOCRTranslation(receiptOCRTranslation);
-            receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
+            //Cannot pre-select it for now
+            //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
             setEmptyBiz(receiptOCR);
 

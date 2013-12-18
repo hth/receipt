@@ -459,3 +459,5 @@ a.account {
     background-color: darkgreen;
     vertical-align: top
 }
+
+.hidden { display: none; }
