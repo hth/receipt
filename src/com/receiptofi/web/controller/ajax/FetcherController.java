@@ -274,7 +274,7 @@ public class FetcherController {
      */
     @RequestMapping(value = "/change_ocr_image_orientation", method = RequestMethod.POST)
     public @ResponseBody
-    boolean changeReceiptOCRImageOrientation(@RequestParam("receiptOCRId") String receiptOCRId, @RequestParam("orientation") String imageOrientation,
+    boolean changeReceiptOCRImageOrientation(@RequestParam("documentId") String receiptOCRId, @RequestParam("orientation") String imageOrientation,
                                              @RequestParam("userProfileId") String userProfileId,
                                              @ModelAttribute("userSession") UserSession userSession,
                                              HttpServletResponse httpServletResponse) throws IOException {
