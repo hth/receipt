@@ -13,72 +13,75 @@
 
 	<link rel='stylesheet' type='text/css' href='../../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='../../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href="../../jquery/fineuploader/fineuploader-3.6.3.css" />
 
 	<script type="text/javascript" src="../../jquery/js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type="text/javascript" src="../../jquery/js/raphael/raphael-min.js"></script>
     <script type="text/javascript" src="../../jquery/js/dynamic_list_helper2.js"></script>
+    <script type="text/javascript" src="../../jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <script type="text/javascript" src="../../jquery/js/beatak-imageloader/jquery.imageloader.js"></script>
 
-	<script>
-		/* add background color to holder in tr tag */
-        window.onload = function () {
-            var angle = '${receiptOCRForm.receiptOCR.imageOrientation}';
-            document.getElementById("holder").innerHTML = "";
-            var R = Raphael("holder", 930, 800);
-            /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
-            var img = R.image('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptOCRForm.receiptOCR.receiptBlobId}.htm', 80, 20, 750, 750);
-            var butt1 = R.set(),
-                butt2 = R.set();
-            butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
-                       R.path("M12.582,9.551C3.251,16.237,0.921,29.021,7.08,38.564l-2.36,1.689l4.893,2.262l4.893,2.262l-0.568-5.36l-0.567-5.359l-2.365,1.694c-4.657-7.375-2.83-17.185,4.352-22.33c7.451-5.338,17.817-3.625,23.156,3.824c5.337,7.449,3.625,17.813-3.821,23.152l2.857,3.988c9.617-6.893,11.827-20.277,4.935-29.896C35.591,4.87,22.204,2.658,12.582,9.551z").attr({stroke: "none", fill: "#000"}),
-                       R.circle(24.833, 26.917, 26.667).attr({fill: "#fff", opacity: 0}));
-            butt2.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
-                       R.path("M37.566,9.551c9.331,6.686,11.661,19.471,5.502,29.014l2.36,1.689l-4.893,2.262l-4.893,2.262l0.568-5.36l0.567-5.359l2.365,1.694c4.657-7.375,2.83-17.185-4.352-22.33c-7.451-5.338-17.817-3.625-23.156,3.824C6.3,24.695,8.012,35.06,15.458,40.398l-2.857,3.988C2.983,37.494,0.773,24.109,7.666,14.49C14.558,4.87,27.944,2.658,37.566,9.551z").attr({stroke: "none", fill: "#000"}),
-                       R.circle(24.833, 26.917, 26.667).attr({fill: "#fff", opacity: 0}));
-            butt1.translate(10, 181);
-            butt2.translate(10, 245);
-            butt1[2].click(function () {
-                angle -= 90;
-                img.stop().animate({transform: "r" + angle}, 1000, "<>");
-                orientation(-90);
-            }).mouseover(function () {
-                butt1[1].animate({fill: "#fc0"}, 300);
-            }).mouseout(function () {
-                butt1[1].stop().attr({fill: "#000"});
-            });
-            butt2[2].click(function () {
-                angle += 90;
-                img.animate({transform: "r" + angle}, 1000, "<>");
-                orientation(90);
-            }).mouseover(function () {
-                butt2[1].animate({fill: "#fc0"}, 300);
-            }).mouseout(function () {
-                butt2[1].stop().attr({fill: "#000"});
-            });
-            // setTimeout(function () {R.safari();});
+	<%--<script>--%>
+		<%--/* add background color to holder in tr tag */--%>
+        <%--window.onload = function () {--%>
+            <%--var angle = '${receiptOCRForm.receiptOCR.imageOrientation}';--%>
+            <%--document.getElementById("holder").innerHTML = "";--%>
+            <%--var R = Raphael("holder", 930, 800);--%>
+            <%--/* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */--%>
+            <%--var img = R.image('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptOCRForm.receiptOCR.receiptBlobId}.htm', 80, 20, 750, 750);--%>
+            <%--var butt1 = R.set(),--%>
+                <%--butt2 = R.set();--%>
+            <%--butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),--%>
+                       <%--R.path("M12.582,9.551C3.251,16.237,0.921,29.021,7.08,38.564l-2.36,1.689l4.893,2.262l4.893,2.262l-0.568-5.36l-0.567-5.359l-2.365,1.694c-4.657-7.375-2.83-17.185,4.352-22.33c7.451-5.338,17.817-3.625,23.156,3.824c5.337,7.449,3.625,17.813-3.821,23.152l2.857,3.988c9.617-6.893,11.827-20.277,4.935-29.896C35.591,4.87,22.204,2.658,12.582,9.551z").attr({stroke: "none", fill: "#000"}),--%>
+                       <%--R.circle(24.833, 26.917, 26.667).attr({fill: "#fff", opacity: 0}));--%>
+            <%--butt2.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),--%>
+                       <%--R.path("M37.566,9.551c9.331,6.686,11.661,19.471,5.502,29.014l2.36,1.689l-4.893,2.262l-4.893,2.262l0.568-5.36l0.567-5.359l2.365,1.694c4.657-7.375,2.83-17.185-4.352-22.33c-7.451-5.338-17.817-3.625-23.156,3.824C6.3,24.695,8.012,35.06,15.458,40.398l-2.857,3.988C2.983,37.494,0.773,24.109,7.666,14.49C14.558,4.87,27.944,2.658,37.566,9.551z").attr({stroke: "none", fill: "#000"}),--%>
+                       <%--R.circle(24.833, 26.917, 26.667).attr({fill: "#fff", opacity: 0}));--%>
+            <%--butt1.translate(10, 181);--%>
+            <%--butt2.translate(10, 245);--%>
+            <%--butt1[2].click(function () {--%>
+                <%--angle -= 90;--%>
+                <%--img.stop().animate({transform: "r" + angle}, 1000, "<>");--%>
+                <%--orientation(-90);--%>
+            <%--}).mouseover(function () {--%>
+                <%--butt1[1].animate({fill: "#fc0"}, 300);--%>
+            <%--}).mouseout(function () {--%>
+                <%--butt1[1].stop().attr({fill: "#000"});--%>
+            <%--});--%>
+            <%--butt2[2].click(function () {--%>
+                <%--angle += 90;--%>
+                <%--img.animate({transform: "r" + angle}, 1000, "<>");--%>
+                <%--orientation(90);--%>
+            <%--}).mouseover(function () {--%>
+                <%--butt2[1].animate({fill: "#fc0"}, 300);--%>
+            <%--}).mouseout(function () {--%>
+                <%--butt2[1].stop().attr({fill: "#000"});--%>
+            <%--});--%>
+            <%--// setTimeout(function () {R.safari();});--%>
 
-            img.rotate(angle);
-        };
+            <%--img.rotate(angle);--%>
+        <%--};--%>
 
-        function orientation(angle) {
-            $.ajax({
-                url: '${pageContext. request. contextPath}/fetcher/change_ocr_image_orientation.htm',
-                data: {
-                    documentId: '${receiptOCRForm.receiptOCR.id}',
-                    orientation: angle,
-                    userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
-                },
-                type: "POST",
-                success: function (data) {
-                    if(data == true) {
-                        console.log("Success: Receipt_ Image Orientation Updated");
-                    } else {
-                        console.log("Failed: Receipt_ Image Orientation Updated");
-                    }
-                }
-            });
-        }
-	</script>
+        <%--function orientation(angle) {--%>
+            <%--$.ajax({--%>
+                <%--url: '${pageContext. request. contextPath}/fetcher/change_ocr_image_orientation.htm',--%>
+                <%--data: {--%>
+                    <%--documentId: '${receiptOCRForm.receiptOCR.id}',--%>
+                    <%--orientation: angle,--%>
+                    <%--userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'--%>
+                <%--},--%>
+                <%--type: "POST",--%>
+                <%--success: function (data) {--%>
+                    <%--if(data == true) {--%>
+                        <%--console.log("Success: Receipt_ Image Orientation Updated");--%>
+                    <%--} else {--%>
+                        <%--console.log("Failed: Receipt_ Image Orientation Updated");--%>
+                    <%--}--%>
+                <%--}--%>
+            <%--});--%>
+        <%--}--%>
+	<%--</script>--%>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -239,9 +242,9 @@
                 <img src="../../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
-                <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
+                <spring:eval var="isTech" expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" />
                 <c:choose>
-                    <c:when test="${isValid}">
+                    <c:when test="${isTech}">
                         <h3><a href="${pageContext.request.contextPath}/emp/landing.htm" style="color: #065c14">Home</a></h3>
                     </c:when>
                     <c:otherwise>
@@ -277,9 +280,9 @@
     <c:choose>
     <c:when test="${!empty receiptOCRForm.receiptOCR}">
 
-    <spring:eval expression="receiptOCRForm.receiptOCR.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).TURK_RECEIPT_REJECT" var="isValid" />
+    <spring:eval var="documentStat" expression="receiptOCRForm.receiptOCR.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).TURK_RECEIPT_REJECT" />
     <c:choose>
-        <c:when test="${!isValid}">
+        <c:when test="${!documentStat}">
             <h2 class="demoHeaders">Document pending</h2>
         </c:when>
         <c:otherwise>
@@ -287,8 +290,8 @@
         </c:otherwise>
     </c:choose>
 
-    <spring:eval expression="userSession.level lt T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
-    <c:if test="${isValid}">
+    <spring:eval var="isNotTech" expression="userSession.level lt T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" />
+    <c:if test="${isNotTech}">
     <c:choose>
         <c:when test="${empty receiptOCRForm.receiptOCR.receiptId}">
         <form:form method="post" action="../delete.htm" modelAttribute="receiptOCRForm">
@@ -333,6 +336,7 @@
     </c:otherwise>
     </c:choose>
 
+    <c:if test="${isTech}">
     <div class="leftAlign">
         <form:label for="receiptOCRForm.receiptOCR.documentOfType" path="receiptOCRForm.receiptOCR.documentOfType" cssErrorClass="error">Document Type:</form:label>
         <form:select path="receiptOCRForm.receiptOCR.documentOfType" id="documentId">
@@ -340,13 +344,13 @@
             <form:options itemValue="name" itemLabel="description" />
         </form:select>
     </div>
+    </c:if>
 
     <table>
         <tr>
             <td style="vertical-align: top;">
-                <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
                 <c:choose>
-                    <c:when test="${isValid}">
+                    <c:when test="${isTech}">
                     <div id="activeReceipt" class="hidden">
                     <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
@@ -510,6 +514,10 @@
                             </tr>
                         </table>
                     </form:form>
+
+                    <div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+                    <div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em" class="hidden"></div>
+
                     </div>
                     </c:when>
                 <c:otherwise>
@@ -519,16 +527,14 @@
             </td>
             <td>&nbsp;</td>
             <td style="vertical-align: top;">
-                <div id="holder" style="height: 850px">
-                    <c:choose>
-                    <c:when test="${empty receiptOCRForm.receiptOCR}">
-                        &nbsp;
-                    </c:when>
-                    <c:otherwise>
-                        <div src="" id="receiptOCR.image"></div>
-                    </c:otherwise>
-                    </c:choose>
-                </div>
+                <c:choose>
+                <c:when test="${empty receiptOCRForm.receiptOCR}">
+                    &nbsp;
+                </c:when>
+                <c:otherwise>
+                    <div id="container" style="height: 850px"></div>
+                </c:otherwise>
+                </c:choose>
             </td>
         </tr>
     </table>
@@ -539,9 +545,8 @@
             <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
             <span style="display:block; width:700px;">
-            <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" var="isValid" />
             <c:choose>
-                <c:when test="${isValid}">
+            <c:when test="${isTech}">
                 Oops! Seems like user has deleted this receipt recently.
             </c:when>
             <c:otherwise>
@@ -597,15 +602,18 @@
             if(valueSelected == 'RECEIPT') {
                 $('#activeReceipt').removeClass('hidden');
                 $('#activeMileage').hide();
+                $('#restricted-fine-uploader').hide();
             }
 
             if(valueSelected == 'INVOICE') {
                 $('#activeReceipt').removeClass('hidden');
                 $('#activeMileage').hide();
+                $('#restricted-fine-uploader').hide();
             }
 
             if(valueSelected == 'MILEAGE') {
                 $('#activeMileage').removeClass('hidden');
+                $('#restricted-fine-uploader').removeClass('hidden');
                 $('#activeReceipt').hide();
             }
 
@@ -668,6 +676,68 @@
             });
         });
     });
+</script>
+
+<script>
+    Object.prototype.measurement = function() {
+        if (this instanceof String) {
+            if (this.indexOf("%") != -1) {
+                return this;
+            }
+        }
+        return this + "px";
+    };
+    Object.prototype.rotate = function(d) {
+        var s = "rotate(" + d + "deg)";
+        if (this.style) { // regular DOM Object
+            this.style.MozTransform = s;
+            this.style.WebkitTransform = s;
+            this.style.OTransform = s;
+            this.style.transform = s;
+        } else if (this.css) { // JQuery Object
+            this.css("-moz-transform", s);
+            this.css("-webkit-transform", s);
+            this.css("-o-transform", s);
+            this.css("transform", s);
+        }
+        this.setAttribute("rotation", d);
+    };
+    function calculateTop(imageHeight) {
+        if (topHeight == 0 ) {
+            return topHeight + 5;
+        }
+        return topHeight + imageHeight + 5;
+    }
+
+    // JSON data
+    var topHeight = 0,
+        info = [
+            <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+            {
+                src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
+                pos: {
+                    top: topHeight = calculateTop(${arr.height}),
+                    left: 185
+                },
+                rotate: ${arr.imageOrientation},
+                zIndex: 0
+            },
+            </c:forEach>
+        ]
+    ;
+
+    var df = document.createDocumentFragment();
+    for (var i = 0, j = info.length; i < j; i++) {
+        var el = document.createElement("img");
+        el.src = info[i].src;
+        el.className = "img";
+        el.style.left = info[i].pos.left.measurement();
+        el.style.top = info[i].pos.top.measurement();
+        el.style.zIndex = info[i].zIndex;
+        el.rotate(info[i].rotate);
+        df.appendChild(el);
+    }
+    document.getElementById("container").appendChild(df);
 </script>
 
 </body>
