@@ -338,7 +338,9 @@
 
     <c:if test="${isTech}">
     <div class="leftAlign">
-        <form:label for="receiptOCRForm.receiptOCR.documentOfType" path="receiptOCRForm.receiptOCR.documentOfType" cssErrorClass="error">Document Type:</form:label>
+        <form:label for="receiptOCRForm.receiptOCR.documentOfType" path="receiptOCRForm.receiptOCR.documentOfType" cssErrorClass="error">
+            Document Type:
+        </form:label>
         <form:select path="receiptOCRForm.receiptOCR.documentOfType" id="documentId">
             <form:option value="NONE" label="--- Select ---"/>
             <form:options itemValue="name" itemLabel="description" />
@@ -679,28 +681,28 @@
 </script>
 
 <script>
-    Object.prototype.measurement = function() {
-        if (this instanceof String) {
-            if (this.indexOf("%") != -1) {
-                return this;
+    function measurement(position) {
+        if (position instanceof String) {
+            if (position.indexOf("%") != -1) {
+                return position;
             }
         }
-        return this + "px";
-    };
-    Object.prototype.rotate = function(d) {
+        return position + "px";
+    }
+    function rotate(el, d) {
         var s = "rotate(" + d + "deg)";
-        if (this.style) { // regular DOM Object
-            this.style.MozTransform = s;
-            this.style.WebkitTransform = s;
-            this.style.OTransform = s;
-            this.style.transform = s;
-        } else if (this.css) { // JQuery Object
-            this.css("-moz-transform", s);
-            this.css("-webkit-transform", s);
-            this.css("-o-transform", s);
-            this.css("transform", s);
+        if (el.style) { // regular DOM Object
+            el.style.MozTransform = s;
+            el.style.WebkitTransform = s;
+            el.style.OTransform = s;
+            el.style.transform = s;
+        } else if (el.css) { // JQuery Object
+            el.css("-moz-transform", s);
+            el.css("-webkit-transform", s);
+            el.css("-o-transform", s);
+            el.css("transform", s);
         }
-        this.setAttribute("rotation", d);
+        el.setAttribute("rotation", d);
     };
     function calculateTop(imageHeight) {
         if (topHeight == 0 ) {
@@ -731,10 +733,10 @@
         var el = document.createElement("img");
         el.src = info[i].src;
         el.className = "img";
-        el.style.left = info[i].pos.left.measurement();
-        el.style.top = info[i].pos.top.measurement();
+        el.style.left = measurement(info[i].pos.left);
+        el.style.top = measurement(info[i].pos.top);
         el.style.zIndex = info[i].zIndex;
-        el.rotate(info[i].rotate);
+        rotate(el, info[i].rotate);
         df.appendChild(el);
     }
     document.getElementById("container").appendChild(df);
