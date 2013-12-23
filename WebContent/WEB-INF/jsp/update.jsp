@@ -275,8 +275,6 @@
         </div>
     </div>
 
-    <p>&nbsp;</p>
-
     <c:choose>
     <c:when test="${!empty receiptOCRForm.receiptOCR}">
 
@@ -337,7 +335,7 @@
     </c:choose>
 
     <c:if test="${isTech}">
-    <div class="leftAlign">
+    <div>
         <form:label for="receiptOCRForm.receiptOCR.documentOfType" path="receiptOCRForm.receiptOCR.documentOfType" cssErrorClass="error">
             Document Type:
         </form:label>
@@ -703,7 +701,7 @@
             el.css("transform", s);
         }
         el.setAttribute("rotation", d);
-    };
+    }
     function calculateTop(imageHeight) {
         if (topHeight == 0 ) {
             return topHeight + 5;
@@ -719,7 +717,7 @@
                 src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
                 pos: {
                     top: topHeight = calculateTop(${arr.height}),
-                    left: 185
+                    left: 0
                 },
                 rotate: ${arr.imageOrientation},
                 zIndex: 0
