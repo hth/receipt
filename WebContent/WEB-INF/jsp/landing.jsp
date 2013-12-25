@@ -331,10 +331,11 @@
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-1">Receipts</a></li>
-			<li><a href="#tabs-2">Expense Analysis</a></li>
-            <li><a href="#tabs-3">Reports</a></li>
+			<li><a href="#tabs-2">Mileage</a></li>
+			<li><a href="#tabs-3">Expense Analysis</a></li>
+            <li><a href="#tabs-4">Reports</a></li>
             <c:if test="${isValidForMap}">
-            <li><a href="#tabs-4">Geographical</a></li>
+            <li><a href="#tabs-5">Geographical</a></li>
             </c:if>
 		</ul>
 		<div id="tabs-1" style="height: 500px">
@@ -406,7 +407,10 @@
 
             <div id="refreshReceiptForMonthId"></div>
 		</div>
-		<div id="tabs-2" style="height: 500px">
+        <div id="tabs-2" style="height: 500px">
+
+        </div>
+		<div id="tabs-3" style="height: 500px">
             <c:choose>
             <c:when test="${!empty months}">
             <table>
@@ -452,7 +456,7 @@
             </c:otherwise>
             </c:choose>
 		</div>
-        <div id="tabs-3" style="height: 500px">
+        <div id="tabs-4" style="height: 500px">
             <c:choose>
                 <c:when test="${!empty landingForm.receiptGroupedByMonths}">
                     <p>
@@ -488,7 +492,7 @@
             </c:choose>
         </div>
         <c:if test="${isValidForMap}">
-		<div id="tabs-4" style="height: 500px">
+		<div id="tabs-5" style="height: 500px">
             <c:choose>
             <c:when test="${!empty months}">
             <div id="map-placeholder"></div>
