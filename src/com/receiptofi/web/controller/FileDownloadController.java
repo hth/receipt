@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,12 +71,13 @@ public class FileDownloadController {
             log.debug("Length: " + gridFSDBFile.getLength() + ", MetaData: " + gridFSDBFile.getMetaData());
 
 			if(gridFSDBFile == null) {
-				response.setContentType("image/gif");
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
-				File file = FileUtils.getFile(pathToWeb + "/images/no_image.gif");
+//				File file = FileUtils.getFile(pathToWeb + "/images/no_image.gif");
+                File file = FileUtils.getFile(pathToWeb + "/images/no_image_found.jpg");
 				BufferedImage bi = ImageIO.read(file);
+                setContentType(file, response);
 				OutputStream out = response.getOutputStream();
-				ImageIO.write(bi, "gif", out);
+				ImageIO.write(bi, getFormatForFile(file), out);
 				out.close();
 			} else {
 				gridFSDBFile.writeTo(response.getOutputStream());
@@ -112,5 +114,29 @@ public class FileDownloadController {
     private void setHeaderForExcel(ReceiptEntity receiptEntity, HttpServletResponse response) {
         response.addHeader("Content-Disposition", "inline; filename=" + receiptEntity.getBizName().getName() + "-" + Formatter.toSmallDate(receiptEntity.getReceiptDate()));
         response.setContentType("application/vnd.ms-excel");
+    }
+
+    private void setContentType(File file, HttpServletResponse response) {
+        String extension = FilenameUtils.getExtension(file.getName());
+        if(extension.endsWith("jpg") || extension.endsWith("jpeg")) {
+            response.setContentType("image/jpeg");
+            return;
+        }
+        if(extension.endsWith("gif")) {
+            response.setContentType("image/gif");
+            return;
+        }
+        response.setContentType("image/png");
+    }
+
+    private String getFormatForFile(File file) {
+        String extension = FilenameUtils.getExtension(file.getName());
+        if(extension.endsWith("jpg") || extension.endsWith("jpeg")) {
+            return "jpg";
+        }
+        if(extension.endsWith("gif")) {
+            return "gif";
+        }
+        return "png";
     }
 }
