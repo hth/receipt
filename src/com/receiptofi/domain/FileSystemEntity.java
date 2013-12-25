@@ -1,8 +1,7 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.DocumentOfTypeEnum;
-
 import javax.validation.constraints.NotNull;
+import java.awt.image.BufferedImage;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -19,6 +18,14 @@ public class FileSystemEntity extends BaseEntity {
     private String blobId;
 
     @NotNull
+    @Field("H")
+    private int height;
+
+    @NotNull
+    @Field("W")
+    private int width;
+
+    @NotNull
     @Field("ORIENTATION")
     private int imageOrientation = 0;
 
@@ -29,8 +36,10 @@ public class FileSystemEntity extends BaseEntity {
     /** To keep bean happy */
     public FileSystemEntity() {}
 
-    public FileSystemEntity(String blobId, int imageOrientation, int sequence) {
+    public FileSystemEntity(String blobId, BufferedImage bufferedImage, int imageOrientation, int sequence) {
         this.blobId = blobId;
+        this.height = bufferedImage.getHeight();
+        this.width = bufferedImage.getWidth();
         this.imageOrientation = imageOrientation;
         this.sequence = sequence;
     }
@@ -41,6 +50,22 @@ public class FileSystemEntity extends BaseEntity {
 
     public void setBlobId(String blobId) {
         this.blobId = blobId;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public int getImageOrientation() {

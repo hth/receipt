@@ -352,171 +352,169 @@
                 <c:choose>
                     <c:when test="${isTech}">
                     <div id="activeReceipt" class="hidden">
-                    <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
-                        <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
-                        <form:errors path="receiptOCR"      cssClass="error" />
-                        <form:hidden path="receiptOCR.receiptBlobId"/>
-                        <form:hidden path="receiptOCR.receiptScaledBlobId"/>
-                        <form:hidden path="receiptOCR.id"/>
-                        <form:hidden path="receiptOCR.userProfileId"/>
-                        <form:hidden path="receiptOCR.version"/>
-                        <form:hidden path="receiptOCR.documentStatus"/>
-                        <form:hidden path="receiptOCR.receiptId"/>
-                        <form:hidden path="receiptOCR.receiptOCRTranslation"/>
-                        <form:hidden path="receiptOCR.receiptOf" value="EXPENSE"/>
-                        <form:hidden path="receiptOCR.documentOfType" value="RECEIPT"/>
+                        <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                            <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
+                            <form:errors path="receiptOCR"      cssClass="error" />
+                            <form:hidden path="receiptOCR.id"/>
+                            <form:hidden path="receiptOCR.userProfileId"/>
+                            <form:hidden path="receiptOCR.version"/>
+                            <form:hidden path="receiptOCR.documentStatus"/>
+                            <form:hidden path="receiptOCR.receiptId"/>
+                            <form:hidden path="receiptOCR.receiptOCRTranslation"/>
+                            <form:hidden path="receiptOCR.receiptOf" value="EXPENSE"/>
+                            <form:hidden path="receiptOCR.documentOfType" value="RECEIPT"/>
 
-                        <table border="0" style="width: 550px" class="etable">
-                            <tr>
-                                <td colspan="6">
-                                    <div class="leftAlign">
-                                        <form:label for="receiptOCR.bizName.name" path="receiptOCR.bizName.name" cssErrorClass="error">Biz Name</form:label>
-                                        <form:input path="receiptOCR.bizName.name" id="bizName" size="52"/>
-                                    </div>
-                                    <div class="rightAlign">
-                                        <form:label for="receiptOCR.receiptDate" path="receiptOCR.receiptDate" cssErrorClass="error">Date</form:label>
-                                        <form:input path="receiptOCR.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">
-                                    <div class="leftAlign"><form:errors path="receiptOCR.bizName.name" cssClass="error" /></div>
-                                    <div class="rightAlign"><form:errors path="receiptOCR.receiptDate" cssClass="error" /></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">
-                                    <div class="leftAlign">
-                                        <form:label for="receiptOCR.bizStore.address" path="receiptOCR.bizStore.address" cssErrorClass="error">Address : </form:label>
-                                        <form:input path="receiptOCR.bizStore.address" id="address" size="70"/>
-                                    </div>
-                                    <div class="rightAlign">
-                                        <form:label for="receiptOCR.bizStore.phone" path="receiptOCR.bizStore.phone" cssErrorClass="error">Phone: </form:label>
-                                        <form:input path="receiptOCR.bizStore.phone" id="phone" size="20"/>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                                <th style="text-align: left">&nbsp;Name</th>
-                                <th style="text-align: left">&nbsp;Quantity</th>
-                                <th style="text-align: left">&nbsp;Price</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                            <tbody id="itemListContainer">
-                            <c:forEach items="${receiptOCRForm.items}" varStatus="status">
-                                <tr class="itemRow">
-                                    <td style="text-align: left">
-                                        <a href="#" class="removeItem">X</a>
-                                    </td>
-                                    <td style="text-align: left">
-                                        ${status.index + 1}
-                                    </td>
-                                    <td style="text-align: left">
-                                        <form:input path="items[${status.index}].name" cssClass="items" size="64"/>
-                                    </td>
-                                    <td style="text-align: left">
-                                        <form:input path="items[${status.index}].quantity" size="4" />
-                                    </td>
-                                    <td style="text-align: right">
-                                        <form:input path="items[${status.index}].price" size="8"/>
-                                        <form:errors path="items[${status.index}].price" cssClass="error" />
-                                    </td>
-                                    <td>
-                                        <form:select path="items[${status.index}].taxed">
-                                            <form:option value="NONE" label="--- Select ---"/>
-                                            <form:options itemValue="name" itemLabel="description" />
-                                        </form:select>
+                            <table border="0" style="width: 550px" class="etable">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="leftAlign">
+                                            <form:label for="receiptOCR.bizName.name" path="receiptOCR.bizName.name" cssErrorClass="error">Biz Name</form:label>
+                                            <form:input path="receiptOCR.bizName.name" id="bizName" size="52"/>
+                                        </div>
+                                        <div class="rightAlign">
+                                            <form:label for="receiptOCR.receiptDate" path="receiptOCR.receiptDate" cssErrorClass="error">Date</form:label>
+                                            <form:input path="receiptOCR.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
+                                        </div>
                                     </td>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                            <tr>
-                                <td colspan="6">
-                                    <a href="#" id="addItemRow">Add Item Row</a>&nbsp;&nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" style="text-align: right; font-size: 12px; font-weight: bold">
-                                    <span>&nbsp;&nbsp;Tax &nbsp;</span>
-                                </td>
-                                <td colspan="1" style="font-size: 12px; font-weight: bold">
-                                    <span class="leftAlign">&nbsp;&nbsp;Sub Total &nbsp;</span>
-                                </td>
-                                <td colspan="1" style="font-size: 12px; font-weight: bold">
-                                    <span class="leftAlign">&nbsp;&nbsp;Total &nbsp;</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" style="text-align: right; width: 300px; vertical-align: top">
-                                    <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
-                                    <form:input path="receiptOCR.tax" id="tax" size="5"/>
-                                    <form:errors path="receiptOCR.tax" cssClass="error" />
-                                </td>
-                                <td colspan="1" style="vertical-align: top">
-                                    <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
-                                    <form:errors path="receiptOCR.subTotal" cssClass="error" />
-                                </td>
-                                <td colspan="1" style="vertical-align: top">
-                                    <form:input path="receiptOCR.total" id="total" size="8"/>
-                                    <form:errors path="receiptOCR.total" cssClass="error" />
-                                </td>
-                            </tr>
-                            <tr style="height: 6em;">
-                                <td colspan="4">
-                                    <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="receipt-reject" id="reject" />
-                                </td>
-                                <td colspan="2">
-                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="receipt-submit" id="submit" />
-                                </td>
-                            </tr>
-                        </table>
-                    </form:form>
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="leftAlign"><form:errors path="receiptOCR.bizName.name" cssClass="error" /></div>
+                                        <div class="rightAlign"><form:errors path="receiptOCR.receiptDate" cssClass="error" /></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="leftAlign">
+                                            <form:label for="receiptOCR.bizStore.address" path="receiptOCR.bizStore.address" cssErrorClass="error">Address : </form:label>
+                                            <form:input path="receiptOCR.bizStore.address" id="address" size="70"/>
+                                        </div>
+                                        <div class="rightAlign">
+                                            <form:label for="receiptOCR.bizStore.phone" path="receiptOCR.bizStore.phone" cssErrorClass="error">Phone: </form:label>
+                                            <form:input path="receiptOCR.bizStore.phone" id="phone" size="20"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th style="text-align: left">&nbsp;Name</th>
+                                    <th style="text-align: left">&nbsp;Quantity</th>
+                                    <th style="text-align: left">&nbsp;Price</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                                <tbody id="itemListContainer">
+                                <c:forEach items="${receiptOCRForm.items}" varStatus="status">
+                                    <tr class="itemRow">
+                                        <td style="text-align: left">
+                                            <a href="#" class="removeItem">X</a>
+                                        </td>
+                                        <td style="text-align: left">
+                                            ${status.index + 1}
+                                        </td>
+                                        <td style="text-align: left">
+                                            <form:input path="items[${status.index}].name" cssClass="items" size="64"/>
+                                        </td>
+                                        <td style="text-align: left">
+                                            <form:input path="items[${status.index}].quantity" size="4" />
+                                        </td>
+                                        <td style="text-align: right">
+                                            <form:input path="items[${status.index}].price" size="8"/>
+                                            <form:errors path="items[${status.index}].price" cssClass="error" />
+                                        </td>
+                                        <td>
+                                            <form:select path="items[${status.index}].taxed">
+                                                <form:option value="NONE" label="--- Select ---"/>
+                                                <form:options itemValue="name" itemLabel="description" />
+                                            </form:select>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                                <tr>
+                                    <td colspan="6">
+                                        <a href="#" id="addItemRow">Add Item Row</a>&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: right; font-size: 12px; font-weight: bold">
+                                        <span>&nbsp;&nbsp;Tax &nbsp;</span>
+                                    </td>
+                                    <td colspan="1" style="font-size: 12px; font-weight: bold">
+                                        <span class="leftAlign">&nbsp;&nbsp;Sub Total &nbsp;</span>
+                                    </td>
+                                    <td colspan="1" style="font-size: 12px; font-weight: bold">
+                                        <span class="leftAlign">&nbsp;&nbsp;Total &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: right; width: 300px; vertical-align: top">
+                                        <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
+                                        <form:input path="receiptOCR.tax" id="tax" size="5"/>
+                                        <form:errors path="receiptOCR.tax" cssClass="error" />
+                                    </td>
+                                    <td colspan="1" style="vertical-align: top">
+                                        <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
+                                        <form:errors path="receiptOCR.subTotal" cssClass="error" />
+                                    </td>
+                                    <td colspan="1" style="vertical-align: top">
+                                        <form:input path="receiptOCR.total" id="total" size="8"/>
+                                        <form:errors path="receiptOCR.total" cssClass="error" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 6em;">
+                                    <td colspan="4">
+                                        <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="receipt-reject" id="reject" />
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="receipt-submit" id="submit" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </form:form>
                     </div>
 
                     <div id="activeMileage" class="hidden">
-                    <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
-                        <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
-                        <form:errors path="receiptOCR"      cssClass="error" />
-                        <form:hidden path="receiptOCR.receiptBlobId"/>
-                        <form:hidden path="receiptOCR.receiptScaledBlobId"/>
-                        <form:hidden path="receiptOCR.id"/>
-                        <form:hidden path="receiptOCR.userProfileId"/>
-                        <form:hidden path="receiptOCR.version"/>
-                        <form:hidden path="receiptOCR.documentStatus"/>
-                        <form:hidden path="receiptOCR.receiptId"/>
-                        <form:hidden path="receiptOCR.receiptOCRTranslation"/>
-                        <form:hidden path="receiptOCR.receiptOf"/>
-                        <form:hidden path="receiptOCR.documentOfType" value="MILEAGE"/>
+                        <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                            <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
+                            <form:errors path="receiptOCR"      cssClass="error" />
+                            <form:hidden path="receiptOCR.receiptBlobId"/>
+                            <form:hidden path="receiptOCR.receiptScaledBlobId"/>
+                            <form:hidden path="receiptOCR.id"/>
+                            <form:hidden path="receiptOCR.userProfileId"/>
+                            <form:hidden path="receiptOCR.version"/>
+                            <form:hidden path="receiptOCR.documentStatus"/>
+                            <form:hidden path="receiptOCR.receiptId"/>
+                            <form:hidden path="receiptOCR.receiptOCRTranslation"/>
+                            <form:hidden path="receiptOCR.receiptOf"/>
+                            <form:hidden path="receiptOCR.documentOfType" value="MILEAGE"/>
 
-                        <table border="0" style="width: 550px" class="etable">
-                            <tr>
-                                <td colspan="6">
-                                    <div class="leftAlign">
-                                        <form:label for="mileage.start" path="mileage.start" cssErrorClass="error">Begin</form:label>
-                                        <form:input path="mileage.start" id="startMileage" size="25" class="tooltip" title="Mile before starting the trip"/>
-                                    </div>
-                                    <div class="rightAlign">
-                                        <form:label for="mileage.end" path="mileage.end" cssErrorClass="error">End</form:label>
-                                        <form:input path="mileage.end" id="endMileage" size="25" class="tooltip" title="Miles driven during this trip"/>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr style="height: 6em;">
-                                <td colspan="4">
-                                    <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="mileage-reject" id="rejectMileage" />
-                                </td>
-                                <td colspan="2">
-                                    <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="mileage-submit" id="submitMileage" />
-                                </td>
-                            </tr>
-                        </table>
-                    </form:form>
+                            <table border="0" style="width: 550px" class="etable">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="leftAlign">
+                                            <form:label for="mileage.start" path="mileage.start" cssErrorClass="error">Begin</form:label>
+                                            <form:input path="mileage.start" id="startMileage" size="25" class="tooltip" title="Mile before starting the trip"/>
+                                        </div>
+                                        <div class="rightAlign">
+                                            <form:label for="mileage.end" path="mileage.end" cssErrorClass="error">End</form:label>
+                                            <form:input path="mileage.end" id="endMileage" size="25" class="tooltip" title="Miles driven during this trip"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 6em;">
+                                    <td colspan="4">
+                                        <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="mileage-reject" id="rejectMileage" />
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="mileage-submit" id="submitMileage" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </form:form>
 
-                    <div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
-                    <div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em" class="hidden"></div>
+                        <%--<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>--%>
+                        <%--<div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em" class="hidden"></div>--%>
 
                     </div>
                     </c:when>
@@ -592,6 +590,30 @@
 
 <script>
     $(function() {
+        <spring:eval var="isReceipt" expression="receiptOCRForm.receiptOCR.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).RECEIPT" />
+        <c:if test="${isReceipt}">
+            $('#activeReceipt').removeClass('hidden');
+            $('#activeMileage').hide();
+            $('#restricted-fine-uploader').hide();
+            $('#documentId').prop('disabled', true);
+        </c:if>
+
+        <spring:eval var="isInvoice" expression="receiptOCRForm.receiptOCR.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).INVOICE" />
+        <c:if test="${isInvoice}">
+            $('#activeReceipt').removeClass('hidden');
+            $('#activeMileage').hide();
+            $('#restricted-fine-uploader').hide();
+            $('#documentId').prop('disabled', true);
+        </c:if>
+
+        <spring:eval var="isMileage" expression="receiptOCRForm.receiptOCR.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).MILEAGE" />
+        <c:if test="${isMileage}">
+            $('#activeReceipt').hide();
+            $('#activeMileage').removeClass('hidden');
+            $('#restricted-fine-uploader').removeClass('hidden');
+            $('#documentId').prop('disabled', true);
+        </c:if>
+
         $("#submit").focus();
     });
 
@@ -612,9 +634,9 @@
             }
 
             if(valueSelected == 'MILEAGE') {
+                $('#activeReceipt').hide();
                 $('#activeMileage').removeClass('hidden');
                 $('#restricted-fine-uploader').removeClass('hidden');
-                $('#activeReceipt').hide();
             }
 
             $('#documentId').prop('disabled', true);
@@ -739,6 +761,76 @@
     }
     document.getElementById("container").appendChild(df);
 </script>
+
+<%--<script>--%>
+    <%--$(document).ready(function () {--%>
+        <%--"use strict";--%>
+
+        <%--var errorHandler = function (event, id, fileName, reason) {--%>
+            <%--qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);--%>
+        <%--};--%>
+
+        <%--&lt;%&ndash; TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html &ndash;%&gt;--%>
+        <%--var restricteduploader = new qq.FineUploader({--%>
+            <%--element: $('#restricted-fine-uploader')[0],--%>
+            <%--callbacks: {--%>
+                <%--onError: errorHandler,--%>
+                <%--onComplete: function (id, fileName, responseJSON) {--%>
+                    <%--if (responseJSON.success == true) {--%>
+                        <%--$(this.getItemByFileId(id)).hide('slow');--%>
+
+                        <%--$.ajax({--%>
+                            <%--type: 'POST',--%>
+                            <%--url:  '${pageContext. request. contextPath}/fetcher/pending.htm',--%>
+                            <%--success: function(response) {--%>
+                                <%--if(response > 0) {--%>
+                                    <%--var html = '';--%>
+                                    <%--html = html + "<div class='ui-widget'>" +--%>
+                                            <%--"<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +--%>
+                                            <%--"<p>" +--%>
+                                            <%--"<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +--%>
+                                            <%--"<span style='width:280px;'>";--%>
+                                    <%--if (response == 1) {--%>
+                                        <%--html = html + "Pending receipt to be processed: ";--%>
+                                    <%--} else {--%>
+                                        <%--html = html + "Pending receipts to be processed: ";--%>
+                                    <%--}--%>
+                                    <%--html = html + "<a href='${pageContext.request.contextPath}/pending.htm' style='text-decoration: none;'>" +--%>
+                                            <%--"<strong class='pendingCounter' id='pendingCountValue'>" +--%>
+                                            <%--0 +--%>
+                                            <%--"</strong>" +--%>
+                                            <%--"</a>";--%>
+                                    <%--html = html + "</span>" +--%>
+                                            <%--"</p>" +--%>
+                                            <%--"</div>" +--%>
+                                            <%--"</div>";--%>
+                                    <%--$('#pendingCountInitial').hide();--%>
+                                    <%--$('#pendingCountId').html(html).show();--%>
+                                    <%--$(runCounter(response));--%>
+                                <%--}--%>
+                            <%--}--%>
+                        <%--});--%>
+                    <%--}--%>
+                <%--}--%>
+            <%--},--%>
+            <%--request: {--%>
+                <%--endpoint: '${pageContext. request. contextPath}/landing/upload.htm',--%>
+                <%--customHeaders: { Accept: 'multipart/form-data' }--%>
+            <%--},--%>
+            <%--multiple: true,--%>
+            <%--validation: {--%>
+                <%--allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],--%>
+                <%--sizeLimit: 10485760 // 10 MB in bytes--%>
+            <%--},--%>
+            <%--text: {--%>
+                <%--uploadButton: '&uarr; &nbsp; Click or Drop to upload Receipt(s)'--%>
+            <%--},--%>
+            <%--showMessage: function (message) {--%>
+                <%--$('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');--%>
+            <%--}--%>
+        <%--});--%>
+    <%--});--%>
+<%--</script>--%>
 
 </body>
 </html>

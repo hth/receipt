@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.web.form.UploadReceiptImage;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -86,11 +88,17 @@ public final class StorageManagerImpl implements StorageManager {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
-    @Override
-    public void deleteSoft(String id) {
+    private void deleteSoft(String id) {
         GridFSDBFile receiptBlob = get(id);
         receiptBlob.put("DELETE", true);
         receiptBlob.save();
+    }
+
+    @Override
+    public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {
+        for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
+            deleteSoft(fileSystemEntity.getBlobId());
+        }
     }
 
 	@Override
@@ -105,6 +113,15 @@ public final class StorageManagerImpl implements StorageManager {
 		log.debug("deleted GridFs object - " + id);
 		gridFs.remove(new ObjectId(id));
 	}
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
+        for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
+            log.debug("deleted GridFs object - " + fileSystemEntity.getBlobId());
+            gridFs.remove(new ObjectId(fileSystemEntity.getBlobId()));
+        }
+    }
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

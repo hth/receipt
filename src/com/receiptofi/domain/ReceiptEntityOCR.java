@@ -7,6 +7,8 @@ import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.ReceiptOfEnum;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Transient;
@@ -34,13 +36,13 @@ public class ReceiptEntityOCR extends DocumentEntity {
     @Field("RECEIPT_OF_ENUM")
     private ReceiptOfEnum receiptOf;
 
-	@NotNull
+    @DBRef
     @Field("RECEIPT_BLOB_ID")
-	private String receiptBlobId;
+	private Collection<FileSystemEntity> receiptBlobId;        //TODO sorted
 
-    @NotNull
+    @DBRef
     @Field("RECEIPT_SCALED_BLOB_ID")
-    private String receiptScaledBlobId;
+    private Collection<FileSystemEntity> receiptScaledBlobId;
 
 	@NotNull
     @Field("RECEIPT_DATE")
@@ -112,19 +114,33 @@ public class ReceiptEntityOCR extends DocumentEntity {
         this.receiptOf = receiptOf;
     }
 
-    public String getReceiptBlobId() {
+    public Collection<FileSystemEntity> getReceiptBlobId() {
 		return receiptBlobId;
 	}
 
-	public void setReceiptBlobId(String receiptBlobId) {
-		this.receiptBlobId = receiptBlobId;
+	public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
+        if(this.receiptBlobId == null) {
+            this.receiptBlobId = new ArrayList<>();
+        }
+		this.receiptBlobId.add(receiptBlobId);
 	}
 
-    public String getReceiptScaledBlobId() {
+    public Collection<FileSystemEntity> getReceiptScaledBlobId() {
         return receiptScaledBlobId;
     }
 
-    public void setReceiptScaledBlobId(String receiptScaledBlobId) {
+    public void setReceiptBlobId(Collection<FileSystemEntity> receiptBlobId) {
+        this.receiptBlobId = receiptBlobId;
+    }
+
+    public void addReceiptScaledBlobId(FileSystemEntity receiptScaledBlobId) {
+        if(this.receiptScaledBlobId == null) {
+            this.receiptScaledBlobId = new ArrayList<>();
+        }
+        this.receiptScaledBlobId.add(receiptScaledBlobId);
+    }
+
+    public void setReceiptScaledBlobId(Collection<FileSystemEntity> receiptScaledBlobId) {
         this.receiptScaledBlobId = receiptScaledBlobId;
     }
 
@@ -220,6 +236,7 @@ public class ReceiptEntityOCR extends DocumentEntity {
         return imageOrientation;
     }
 
+    @Deprecated
     public void setImageOrientation(int imageOrientation) {
         this.imageOrientation = imageOrientation;
     }

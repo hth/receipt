@@ -1,6 +1,7 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.NotificationEntity;
@@ -8,7 +9,6 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.domain.types.ReceiptOfEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.repository.BizNameManager;
@@ -73,7 +73,7 @@ public final class LandingService {
     @Autowired private ItemManager itemManager;
     @Autowired private ItemService itemService;
     @Autowired private NotificationService notificationService;
-    @Autowired private ReceiptService receiptService;
+    @Autowired private FileSystemService fileSystemService;
 
     static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
         public int compare(ReceiptGrouped left, ReceiptGrouped right) {
@@ -240,6 +240,8 @@ public final class LandingService {
         String receiptBlobId = null;
         String receiptScaledBlobId = null;
         ReceiptEntityOCR receiptOCR = null;
+        FileSystemEntity fileSystemEntityUnScaled = null;
+        FileSystemEntity fileSystemEntityScaled = null;
         List<ItemEntityOCR> items;
         try {
             //No more using OCR
@@ -265,8 +267,15 @@ public final class LandingService {
 
             receiptOCR = ReceiptEntityOCR.newInstance();
             receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
-            receiptOCR.setReceiptBlobId(receiptBlobId);
-            receiptOCR.setReceiptScaledBlobId(receiptScaledBlobId);
+
+            fileSystemEntityUnScaled = new FileSystemEntity(receiptScaledBlobId, ImageSplit.bufferedImage(original), 0, 0);
+            fileSystemService.save(fileSystemEntityUnScaled);
+            receiptOCR.addReceiptBlobId(fileSystemEntityUnScaled);
+
+            fileSystemEntityScaled = new FileSystemEntity(receiptBlobId, ImageSplit.bufferedImage(scaled), 0, 0);
+            fileSystemService.save(fileSystemEntityScaled);
+            receiptOCR.addReceiptScaledBlobId(fileSystemEntityScaled);
+
             receiptOCR.setUserProfileId(userProfileId);
             receiptOCR.setReceiptOCRTranslation(receiptOCRTranslation);
             //Cannot pre-select it for now
@@ -298,6 +307,14 @@ public final class LandingService {
             int sizeFSFinal = fileDBService.getFSDBSize();
             log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
 
+            if(fileSystemEntityUnScaled != null) {
+                fileSystemService.deleteHard(fileSystemEntityUnScaled);
+            }
+
+            if(fileSystemEntityScaled != null) {
+                fileSystemService.deleteHard(fileSystemEntityScaled);
+            }
+
             long sizeReceiptInitial = receiptOCRManager.collectionSize();
             long sizeItemInitial = itemOCRManager.collectionSize();
             if(receiptOCR != null) {
@@ -322,6 +339,19 @@ public final class LandingService {
             log.info("Complete with rollback: throwing exception");
             throw new Exception(exce.getLocalizedMessage());
         }
+    }
+
+
+
+    /**
+     * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS
+     *
+     * @param userProfileId
+     * @param uploadReceiptImage
+     * @throws Exception
+     */
+    public void appendMileage(String documentId, String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
+        throw new UnsupportedOperationException("");
     }
 
     /**

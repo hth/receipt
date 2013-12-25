@@ -49,6 +49,7 @@ public final class ReceiptService {
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private FileUploadDocumentSenderJMS senderJMS;
     @Autowired private CommentManager commentManager;
+    @Autowired private FileSystemService fileSystemService;
 
     /**
      * Find receipt for a receipt id for a specific user profile id
@@ -96,6 +97,8 @@ public final class ReceiptService {
         if(receipt != null) {
             if(receipt.isActive()) {
                 itemManager.deleteSoft(receipt);
+                fileSystemService.deleteSoft(receipt.getReceiptBlobId());
+                fileSystemService.deleteSoft(receipt.getReceiptScaledBlobId());
                 storageManager.deleteSoft(receipt.getReceiptBlobId());
                 storageManager.deleteSoft(receipt.getReceiptScaledBlobId());
 

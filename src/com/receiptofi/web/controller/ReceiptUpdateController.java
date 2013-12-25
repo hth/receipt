@@ -299,6 +299,9 @@ public class ReceiptUpdateController {
                 List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
                 receiptOCRForm.setItems(items);
             }
+            //helps load the image on failure
+            receiptOCRForm.getReceiptOCR().setReceiptBlobId(receipt.getReceiptBlobId());
+            receiptOCRForm.getReceiptOCR().setReceiptScaledBlobId(receipt.getReceiptScaledBlobId());
         } else {
             log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
         }

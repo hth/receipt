@@ -1,6 +1,7 @@
 package com.receiptofi.web.view;
 
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -123,11 +125,13 @@ public class ExpensofiExcelView extends AbstractExcelView {
         addToCell(row, 3, "TOTAL", NO_STYLE);
         addToCell(row, 4, "=sum(D" + (nAccounts + 3) + ":E" + (nAccounts + 3) + ')', moneyStyle);
 
-
-        //Add receipt image
-        byte[] imageBytes = (byte[]) model.get("image");
-        String imageContentType = (String) model.get("image-type");
-        anchorReceiptImage(imageBytes, imageContentType, workbook, sheet, row);
+        Collection<AnchorFileInExcel> anchorFileInExcelCollection = (Collection) model.get("to_be_anchored_files");
+        for(AnchorFileInExcel anchorFileInExcel : anchorFileInExcelCollection) {
+            //Add receipt image
+            byte[] imageBytes = anchorFileInExcel.getBytes();
+            String imageContentType =  anchorFileInExcel.getContentType();
+            anchorReceiptImage(imageBytes, imageContentType, workbook, sheet, row);
+        }
     }
 
     protected void persistWorkbookToFileSystem(Workbook workbook, String filename) throws IOException {

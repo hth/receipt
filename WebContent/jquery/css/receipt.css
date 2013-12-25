@@ -461,3 +461,22 @@ a.account {
 }
 
 .hidden { display: none; }
+
+/* to show images of receipt */
+.img {
+    position: absolute; border: 3px solid #fff;
+    -moz-box-shadow: 0 0 1em #31688E;
+    -webkit-box-shadow: 0 0 1em #31688E;
+    -o-box-shadow: 0 0 1em #31688E;
+    box-shadow: 0 0 1em #31688E;
+}
+#container {
+    position: relative;
+    background-image: -moz-radial-gradient(center 45deg, circle cover, rgb(0, 0, 255) 1%, rgb(0, 0, 0) 100%);
+    background-image: -webkit-radial-gradient(center 45deg, circle cover, rgb(0, 0, 255) 1%, rgb(0, 0, 0) 100%);
+    display: block;
+    /*height: 480px;*/
+    /*width: 640px;*/
+}
+/* end to show images of receipt */
+

@@ -49,6 +49,7 @@ public final class ReceiptUpdateService {
     @Autowired private CommentManager commentManager;
     @Autowired private NotificationService notificationService;
     @Autowired private StorageManager storageManager;
+    @Autowired private FileSystemService fileSystemService;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -70,8 +71,14 @@ public final class ReceiptUpdateService {
     public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         try {
             ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+
             receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receipt.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receipt.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
+
             receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receiptOCR.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receiptOCR.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             receiptOCR.setVersion(receiptEntityOCR.getVersion());
@@ -154,8 +161,14 @@ public final class ReceiptUpdateService {
         ReceiptEntity fetchedReceipt = null;
         try {
             ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+
             receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receipt.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receipt.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
+
             receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receiptOCR.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receiptOCR.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             receiptOCR.setVersion(receiptEntityOCR.getVersion());
@@ -278,6 +291,7 @@ public final class ReceiptUpdateService {
     @Transactional(rollbackFor={Exception.class})
     public void turkReject(ReceiptEntityOCR receiptOCR) throws Exception {
         try {
+            receiptOCR = receiptOCRManager.findOne(receiptOCR.getId());
             receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
             receiptOCR.setBizName(null);
             receiptOCR.setBizStore(null);
@@ -294,9 +308,11 @@ public final class ReceiptUpdateService {
             }
             itemOCRManager.deleteWhereReceipt(receiptOCR);
 
+            fileSystemService.deleteSoft(receiptOCR.getReceiptBlobId());
+            fileSystemService.deleteSoft(receiptOCR.getReceiptScaledBlobId());
             storageManager.deleteSoft(receiptOCR.getReceiptBlobId());
             storageManager.deleteSoft(receiptOCR.getReceiptScaledBlobId());
-            GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId());
+            GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId().iterator().next().getBlobId());
             DBObject dbObject =  gridFSDBFile.getMetaData();
 
             StringBuilder sb = new StringBuilder();
@@ -335,6 +351,8 @@ public final class ReceiptUpdateService {
             messageManager.deleteAllForReceiptOCR(receiptEntityOCR.getId());
             storageManager.deleteHard(receiptEntityOCR.getReceiptBlobId());
             storageManager.deleteHard(receiptEntityOCR.getReceiptScaledBlobId());
+            fileSystemService.deleteHard(receiptEntityOCR.getReceiptBlobId());
+            fileSystemService.deleteHard(receiptEntityOCR.getReceiptScaledBlobId());
         } else {
             log.warn("User trying to delete processed Receipt OCR #: " + receiptEntityOCR.getId() + ", Receipt Id #:" + receiptEntityOCR.getReceiptId());
         }

@@ -1,6 +1,18 @@
 package com.receiptofi.web;
 
+import com.receiptofi.BaseTest;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.TaxEnum;
+import com.receiptofi.repository.ItemManager;
+import com.receiptofi.repository.ReceiptManager;
+import com.receiptofi.repository.StorageManager;
+import com.receiptofi.repository.UserProfileManager;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.web.controller.ReceiptController;
+import com.receiptofi.web.form.ReceiptForm;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,19 +36,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.receiptofi.BaseTest;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.TaxEnum;
-import com.receiptofi.repository.ItemManager;
-import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.repository.StorageManager;
-import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.controller.ReceiptController;
-import com.receiptofi.web.form.ReceiptForm;
 
 /**
  * @author hitender
@@ -101,7 +100,7 @@ public class ReceiptControllerTest {
 //		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
         String receiptBlobId = "45745745764457";
 
-		ReceiptEntity receipt = ReceiptEntity.newInstance(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
+		ReceiptEntity receipt = ReceiptEntity.newInstance(receiptDate, total, tax, receiptStatus, null, userProfileId);
 		receiptManager.save(receipt);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receipt, "test@test.com");
@@ -147,7 +146,7 @@ public class ReceiptControllerTest {
 //		String receiptBlobId = storageManager.save(inputStream, "text/html", "20130112_164807.jpg");
         String receiptBlobId = "4534755675476";
 
-		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
+		ReceiptEntity receiptEntity = ReceiptEntity.newInstance(receiptDate, total, tax, receiptStatus, null, userProfileId);
 		receiptManager.save(receiptEntity);
 
 		ItemEntity item = ItemEntity.newInstance("Item1", 80.00, TaxEnum.TAXED, 1, receiptEntity, "test@test.com");

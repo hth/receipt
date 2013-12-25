@@ -74,7 +74,7 @@ public class AdminLandingController {
 //                            uploadReceiptImage.setUserProfileId(userProfileEntity.getId());
 //
 //                            String receiptScaledBlobId = fileDBService.saveFile(uploadReceiptImage);
-//                            receiptEntity.setReceiptScaledBlobId(receiptScaledBlobId);
+//                            receiptEntity.addReceiptScaledBlobId(receiptScaledBlobId);
 //
 //                            receiptManager.save(receiptEntity);
 //                        } catch (Exception e) {
