@@ -95,13 +95,7 @@ public final class ReceiptUpdateService {
             receiptOCR.inActive();
             receiptOCRManager.save(receiptOCR);
 
-            try {
-                messageManager.updateObject(receiptOCR.getId(), DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
-            } catch(Exception exce) {
-                log.error(exce.getLocalizedMessage());
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.OCR_PROCESSED);
-                throw exce;
-            }
+            updateMessageManager(receiptOCR, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
@@ -229,13 +223,7 @@ public final class ReceiptUpdateService {
             receiptManager.save(receipt);
             receiptOCRManager.save(receiptOCR);
 
-            try {
-                messageManager.updateObject(receiptOCR.getId(), DocumentStatusEnum.TURK_REQUEST, DocumentStatusEnum.TURK_PROCESSED);
-            } catch(Exception exce) {
-                log.error(exce.getLocalizedMessage());
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.TURK_REQUEST);
-                throw exce;
-            }
+            updateMessageManager(receiptOCR, DocumentStatusEnum.TURK_REQUEST, DocumentStatusEnum.TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
@@ -279,6 +267,16 @@ public final class ReceiptUpdateService {
                 log.info("Complete with rollback: throwing exception");
             }
             throw new Exception(exce.getLocalizedMessage());
+        }
+    }
+
+    private void updateMessageManager(ReceiptEntityOCR receiptOCR, DocumentStatusEnum from, DocumentStatusEnum to) {
+        try {
+            messageManager.updateObject(receiptOCR.getId(), from, to);
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
+            messageManager.undoUpdateObject(receiptOCR.getId(), false, to, from);
+            throw exce;
         }
     }
 
