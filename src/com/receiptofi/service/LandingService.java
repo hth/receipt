@@ -172,12 +172,12 @@ public final class LandingService {
                 for(ItemEntity itemEntity : itemEntities) {
                     BigDecimal sum = BigDecimal.ZERO;
                     sum = itemService.calculateTotalCost(sum, itemEntity);
-                    if(itemEntity.getExpenseType() != null) {
-                        if(itemMaps.containsKey(itemEntity.getExpenseType().getExpName())) {
-                            BigDecimal out = itemMaps.get(itemEntity.getExpenseType().getExpName());
-                            itemMaps.put(itemEntity.getExpenseType().getExpName(), Maths.add(out, sum));
+                    if(itemEntity.getExpenseTag() != null) {
+                        if(itemMaps.containsKey(itemEntity.getExpenseTag().getTagName())) {
+                            BigDecimal out = itemMaps.get(itemEntity.getExpenseTag().getTagName());
+                            itemMaps.put(itemEntity.getExpenseTag().getTagName(), Maths.add(out, sum));
                         } else {
-                            itemMaps.put(itemEntity.getExpenseType().getExpName(), sum);
+                            itemMaps.put(itemEntity.getExpenseTag().getTagName(), sum);
                         }
                     } else {
                         if(itemMaps.containsKey("Un-Assigned")) {

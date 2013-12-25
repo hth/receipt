@@ -72,7 +72,7 @@ public class ItemEntity extends BaseEntity {
 
     @DBRef
     @Field("EXPENSE_TYPE")
-    private ExpenseTypeEntity expenseType;
+    private ExpenseTagEntity expenseTag;
 
 	public ItemEntity() {}
 
@@ -204,12 +204,12 @@ public class ItemEntity extends BaseEntity {
         this.bizName = bizName;
     }
 
-    public ExpenseTypeEntity getExpenseType() {
-        return expenseType;
+    public ExpenseTagEntity getExpenseTag() {
+        return expenseTag;
     }
 
-    public void setExpenseType(ExpenseTypeEntity expenseType) {
-        this.expenseType = expenseType;
+    public void setExpenseTag(ExpenseTagEntity expenseTag) {
+        this.expenseTag = expenseTag;
     }
 
     @Override

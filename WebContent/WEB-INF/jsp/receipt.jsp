@@ -427,9 +427,9 @@
                                     </c:choose>
                                 </td>
                                 <td style="text-align: left;">
-                                    <form:select path="items[${status.index}].expenseType.id" id="itemId">
+                                    <form:select path="items[${status.index}].expenseTag.id" id="itemId">
                                         <form:option value="NONE" label="--- Select ---" />
-                                        <form:options items="${receiptForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                                        <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                                     </form:select>
                                 </td>
                             </tr>

@@ -1,16 +1,16 @@
 package com.receiptofi.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ExpenseTypeManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * User: hitender
@@ -46,7 +46,7 @@ public final class UserProfilePreferenceService {
      * @param userProfileId
      * @return
      */
-    public List<ExpenseTypeEntity> allExpenseTypes(String userProfileId) {
+    public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
         return expenseTypeManager.allExpenseTypes(userProfileId);
     }
 
@@ -56,15 +56,15 @@ public final class UserProfilePreferenceService {
      * @param userProfileId
      * @return
      */
-    public List<ExpenseTypeEntity> activeExpenseTypes(String userProfileId) {
+    public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
         return expenseTypeManager.activeExpenseTypes(userProfileId);
     }
 
-    public ExpenseTypeEntity getExpenseType(String expenseTypeId) {
+    public ExpenseTagEntity getExpenseType(String expenseTypeId) {
         return expenseTypeManager.findOne(expenseTypeId);
     }
 
-    public void addExpenseType(ExpenseTypeEntity expenseType) throws Exception {
+    public void addExpenseType(ExpenseTagEntity expenseType) throws Exception {
         try {
             expenseTypeManager.save(expenseType);
         } catch (Exception e) {

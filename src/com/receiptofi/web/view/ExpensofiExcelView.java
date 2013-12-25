@@ -109,8 +109,8 @@ public class ExpensofiExcelView extends AbstractExcelView {
             addToCell(row, 4, item.getTotalPriceWithoutTax().doubleValue(), moneyStyle);
 
             String cc = null;
-            if(item.getExpenseType() != null) {
-                cc = item.getExpenseType().getExpName();
+            if(item.getExpenseTag() != null) {
+                cc = item.getExpenseTag().getTagName();
             }
             addToCell(row, 5, cc == null ? "N/A" : cc, NO_STYLE);
         }

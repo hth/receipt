@@ -326,8 +326,6 @@
                     <form:form method="post" action="../recheck.htm" modelAttribute="receiptOCRForm">
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage" />
                         <form:errors path="receiptOCR"      cssClass="error" />
-                        <form:hidden path="receiptOCR.receiptBlobId"/>
-                        <form:hidden path="receiptOCR.receiptScaledBlobId"/>
                         <form:hidden path="receiptOCR.id" id="receiptId"/>
                         <form:hidden path="receiptOCR.userProfileId"/>
                         <form:hidden path="receiptOCR.version"/>
@@ -380,7 +378,7 @@
                                 <th>&nbsp;</th>
                             </tr>
                             <c:forEach items="${receiptOCRForm.items}" varStatus="status">
-                                <form:hidden path="items[${status.index}].expenseType.id"/>
+                                <form:hidden path="items[${status.index}].expenseTag.id"/>
                                 <tr>
                                     <td style="text-align: left">
                                         ${status.index + 1}

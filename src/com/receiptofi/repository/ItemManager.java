@@ -3,6 +3,11 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ReceiptEntity;
+
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,11 +15,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.joda.time.DateTime;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ReceiptEntity;
 
 /**
  * @author hitender
@@ -106,7 +106,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      */
     long countItemsUsingExpenseType(String expenseTypeId, String userProfileId);
 
-    List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseType);
+    List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTagEntity expenseType);
 
     List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId);
 }

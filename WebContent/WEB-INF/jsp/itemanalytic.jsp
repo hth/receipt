@@ -197,9 +197,9 @@
                         </c:choose>
                     </td>
                     <td style="padding:3px; text-align: left; width: 100px">
-                        <form:select path="yourHistoricalItems[${status.index}].expenseType.id">
+                        <form:select path="yourHistoricalItems[${status.index}].expenseTag.id">
                             <form:option value="NONE" label="--- Select ---" />
-                            <form:options items="${itemAnalyticForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                            <form:options items="${itemAnalyticForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                         </form:select>
                     </td>
                 </tr>

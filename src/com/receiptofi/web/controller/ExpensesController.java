@@ -1,6 +1,6 @@
 package com.receiptofi.web.controller;
 
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.ExpensesService;
@@ -42,26 +42,26 @@ public class ExpensesController {
     @Autowired private ItemService itemService;
     @Autowired private ExpensesService expensesService;
 
-    @RequestMapping(value = "{expenseType}", method = RequestMethod.GET)
-    public ModelAndView forExpenseType(@PathVariable String expenseType, @ModelAttribute("expenseForm") ExpenseForm expenseForm, @ModelAttribute("userSession") UserSession userSession) {
+    @RequestMapping(value = "{tag}", method = RequestMethod.GET)
+    public ModelAndView forExpenseType(@PathVariable String tag, @ModelAttribute("expenseForm") ExpenseForm expenseForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
 
-        List<ExpenseTypeEntity> expenseTypes = expensesService.activeExpenseTypes(userSession.getUserProfileId());
+        List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(userSession.getUserProfileId());
         List<ItemEntity> items = new ArrayList<>();
 
-        if(!expenseType.equalsIgnoreCase("Un-Assigned")) {
-            for(ExpenseTypeEntity expenseTypeEntity : expenseTypes) {
-                if(expenseTypeEntity.getExpName().equalsIgnoreCase(expenseType)) {
-                    items = itemService.itemsForExpenseType(expenseTypeEntity);
+        if(!tag.equalsIgnoreCase("Un-Assigned")) {
+            for(ExpenseTagEntity expenseTagEntity : expenseTypes) {
+                if(expenseTagEntity.getTagName().equalsIgnoreCase(tag)) {
+                    items = itemService.itemsForExpenseType(expenseTagEntity);
                     break;
                 }
             }
-        } else if(expenseType.equalsIgnoreCase("Un-Assigned")) {
+        } else if(tag.equalsIgnoreCase("Un-Assigned")) {
             items = itemService.itemsForUnAssignedExpenseType(userSession.getUserProfileId());
         }
 
-        expenseForm.setName(expenseType);
-        expenseForm.setExpenseTypes(expenseTypes);
+        expenseForm.setName(tag);
+        expenseForm.setExpenseTags(expenseTypes);
         expenseForm.setItems(items);
 
         ModelAndView modelAndView = new ModelAndView(nextPage);

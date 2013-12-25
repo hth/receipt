@@ -1,5 +1,11 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.repository.ExpenseTypeManager;
+import com.receiptofi.repository.ItemManager;
+import com.receiptofi.utils.Maths;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +13,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.repository.ExpenseTypeManager;
-import com.receiptofi.repository.ItemManager;
-import com.receiptofi.utils.Maths;
 
 /**
  * User: hitender
@@ -29,8 +29,8 @@ public final class ItemService {
         return itemManager.countItemsUsingExpenseType(expenseTypeId, userProfileId);
     }
 
-    public List<ItemEntity> itemsForExpenseType(ExpenseTypeEntity expenseTypeEntity) {
-        return itemManager.getItemEntitiesForSpecificExpenseType(expenseTypeEntity);
+    public List<ItemEntity> itemsForExpenseType(ExpenseTagEntity expenseTagEntity) {
+        return itemManager.getItemEntitiesForSpecificExpenseType(expenseTagEntity);
     }
 
     public List<ItemEntity> itemsForUnAssignedExpenseType(String userProfileId) {
@@ -48,15 +48,15 @@ public final class ItemService {
         BigDecimal netSum = BigDecimal.ZERO;
 
         //Find sum of all items for particular expense
-        List<ExpenseTypeEntity> expenseTypeEntities = expenseTypeManager.activeExpenseTypes(profileId);
-        for(ExpenseTypeEntity expenseTypeEntity : expenseTypeEntities) {
+        List<ExpenseTagEntity> expenseTypeEntities = expenseTypeManager.activeExpenseTypes(profileId);
+        for(ExpenseTagEntity expenseTagEntity : expenseTypeEntities) {
 
             BigDecimal sum = BigDecimal.ZERO;
             //Todo this query take a long time. Optimize it. Almost 150ms through this loop
-            List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseType(expenseTypeEntity);
+            List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseType(expenseTagEntity);
             sum = calculateSum(sum, items);
             netSum = Maths.add(netSum, sum);
-            expenseItems.put(expenseTypeEntity.getExpName(), sum);
+            expenseItems.put(expenseTagEntity.getTagName(), sum);
         }
 
         netSum = populateWithUnAssignedItems(expenseItems, netSum, profileId);

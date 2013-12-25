@@ -1,7 +1,7 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.CommentEntity;
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
@@ -379,9 +379,9 @@ public final class ReceiptUpdateService {
      * @param item
      */
     private void populateWithExpenseType(ItemEntity item) {
-        if(item.getExpenseType() != null && item.getExpenseType().getId() != null) {
-            ExpenseTypeEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseType().getId());
-            item.setExpenseType(expenseType);
+        if(item.getExpenseTag() != null && item.getExpenseTag().getId() != null) {
+            ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseTag().getId());
+            item.setExpenseTag(expenseType);
         }
     }
 

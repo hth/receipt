@@ -4,7 +4,7 @@
 package com.receiptofi.web.controller;
 
 import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -65,11 +65,11 @@ public class ReceiptController extends BaseController {
         ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, userSession.getUserProfileId());
         if(receiptEntity != null) {
             List<ItemEntity> items = receiptService.findItems(receiptEntity);
-            List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(userSession.getUserProfileId());
+            List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(userSession.getUserProfileId());
 
             receiptForm.setReceipt(receiptEntity);
             receiptForm.setItems(items);
-            receiptForm.setExpenseTypes(expenseTypes);
+            receiptForm.setExpenseTags(expenseTypes);
         } else {
             //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
             //Possible condition of bookmark or trying to gain access to some unknown receipt
@@ -127,12 +127,12 @@ public class ReceiptController extends BaseController {
         log.info("Initiating Expense Type update on receipt " + receiptForm.getReceipt().getId());
 
         for(ItemEntity item : receiptForm.getItems()) {
-            ExpenseTypeEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseType().getId());
-            item.setExpenseType(expenseType);
+            ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseTag().getId());
+            item.setExpenseTag(expenseType);
             try {
                 receiptService.updateItemWithExpenseType(item);
             } catch (Exception e) {
-                log.error("Error updating ExpenseType '" + item.getExpenseType().getId() + "', " +
+                log.error("Error updating ExpenseType '" + item.getExpenseTag().getId() + "', " +
                         "for ItemEntity '" + item.getId() + "'. Error Message: " + e.getLocalizedMessage());
 
                 //TODO send error message back saying update unsuccessful.

@@ -1,12 +1,12 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.repository.ExpenseTypeManager;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.repository.ExpenseTypeManager;
 
 /**
  * User: hitender
@@ -18,7 +18,7 @@ public final class ExpensesService {
 
     @Autowired private ExpenseTypeManager expenseTypeManager;
 
-    public List<ExpenseTypeEntity> activeExpenseTypes(String userProfileId) {
+    public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
         return expenseTypeManager.activeExpenseTypes(userProfileId);
     }
 }

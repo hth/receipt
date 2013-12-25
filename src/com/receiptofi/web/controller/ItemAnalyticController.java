@@ -3,7 +3,7 @@
  */
 package com.receiptofi.web.controller;
 
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.ExpensesService;
@@ -81,8 +81,8 @@ public class ItemAnalyticController {
             itemAnalyticForm.setYourHistoricalItems(yourItems);
 
             /** Loads expense types */
-            List<ExpenseTypeEntity> expenseTypes = expensesService.activeExpenseTypes(item.getUserProfileId());
-            itemAnalyticForm.setExpenseTypes(expenseTypes);
+            List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(item.getUserProfileId());
+            itemAnalyticForm.setExpenseTags(expenseTypes);
         }
 
         ModelAndView modelAndView = new ModelAndView(nextPage);

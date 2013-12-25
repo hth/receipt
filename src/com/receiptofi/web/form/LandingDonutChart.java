@@ -18,7 +18,7 @@ public final class LandingDonutChart {
     private String bizName;
     private String bizNameForId;
     private BigDecimal total;
-    private String expenseTypes;
+    private String expenseTags;
     private String expenseValues;
 
     @SuppressWarnings("unused")
@@ -55,12 +55,12 @@ public final class LandingDonutChart {
         this.total = total;
     }
 
-    public String getExpenseTypes() {
-        return expenseTypes;
+    public String getExpenseTags() {
+        return expenseTags;
     }
 
-    public void setExpenseTypes(String expenseTypes) {
-        this.expenseTypes = expenseTypes;
+    public void setExpenseTags(String expenseTags) {
+        this.expenseTags = expenseTags;
     }
 
     public String getExpenseValues() {

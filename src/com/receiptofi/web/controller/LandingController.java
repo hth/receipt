@@ -216,7 +216,7 @@ public class LandingController extends BaseController {
                 expenseTypes.append("'").append(name).append("',");
                 expenseValues.append(map.get(name)).append(",");
             }
-            landingDonutChart.setExpenseTypes(expenseTypes.toString().substring(0, expenseTypes.toString().length() - 1));
+            landingDonutChart.setExpenseTags(expenseTypes.toString().substring(0, expenseTypes.toString().length() - 1));
             landingDonutChart.setExpenseValues(expenseValues.toString().substring(0, expenseValues.toString().length() - 1));
 
             bizByExpenseTypes.add(landingDonutChart);

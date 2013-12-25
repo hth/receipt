@@ -87,7 +87,7 @@ $(function () {
                     id: '${item.bizNameForId}',
                     drilldown: {
                         name: '${item.bizName}',
-                        categories: [${item.expenseTypes}],
+                        categories: [${item.expenseTags}],
                         data: [${item.expenseValues}],
                         color: colors[${status.count-1}],
                         url: 'receipt/biz/${item.bizName}.htm',
@@ -100,7 +100,7 @@ $(function () {
 
     // Build the data arrays
     var bizNames = [];
-    var expenseTypes = [];
+    var expenseTags = [];
     for (var i = 0; i < data.length; i++) {
 
         // add browser data
@@ -115,7 +115,7 @@ $(function () {
         // add version data
         for (var j = 0; j < data[i].drilldown.data.length; j++) {
             var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
-            expenseTypes.push({
+            expenseTags.push({
                 name: data[i].drilldown.categories[j],
                 y: data[i].drilldown.data[j],
                 color: Highcharts.Color(data[i].color).brighten(brightness).get(),
@@ -188,7 +188,7 @@ $(function () {
             },
             {
                 name: 'Total',
-                data: expenseTypes,
+                data: expenseTags,
                 size: '80%',
                 innerSize: '60%',
                 dataLabels: {

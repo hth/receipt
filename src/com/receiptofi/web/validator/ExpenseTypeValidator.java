@@ -1,6 +1,6 @@
 package com.receiptofi.web.validator;
 
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,22 +16,22 @@ import org.springframework.validation.Validator;
  */
 public final class ExpenseTypeValidator implements Validator {
     private static final Logger log = LoggerFactory.getLogger(ExpenseTypeValidator.class);
-    private static int EXPENSE_TYPE_MAX_CHAR = 6;
+    private static int EXPENSE_TAG_MAX_CHAR = 6;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return ExpenseTypeEntity.class.equals(clazz);
+        return ExpenseTagEntity.class.equals(clazz);
     }
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.info("Executing validation for new ExpenseTypeEntity");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "expName", "field.required", new Object[] { "Expense Name" });
+        log.info("Executing validation for new ExpenseTagEntity");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[] { "Tag Name" });
 
         ExpenseTypeForm expenseTypeForm = (ExpenseTypeForm) obj;
-        if(expenseTypeForm.getExpName() != null && expenseTypeForm.getExpName().length() > EXPENSE_TYPE_MAX_CHAR) {
-            log.error("Size of the Expense Type larger than " + EXPENSE_TYPE_MAX_CHAR + " : " + expenseTypeForm.getExpName());
-            errors.rejectValue("expName", "expenseType.expName", new Object[] { EXPENSE_TYPE_MAX_CHAR }, "Expense Name cannot extend " + EXPENSE_TYPE_MAX_CHAR + " characters ");
+        if(expenseTypeForm.getTagName() != null && expenseTypeForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
+            log.error("Size of the Expense Tag Name larger than " + EXPENSE_TAG_MAX_CHAR + " : " + expenseTypeForm.getTagName());
+            errors.rejectValue("tagName", "expenseTag.tagName", new Object[] {EXPENSE_TAG_MAX_CHAR}, "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters ");
         }
     }
 }

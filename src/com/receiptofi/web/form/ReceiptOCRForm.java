@@ -146,7 +146,7 @@ public final class ReceiptOCRForm {
                 item.setSequence(itemOCR.getSequence());
                 item.setReceipt(receipt);
                 item.setUserProfileId(receipt.getUserProfileId());
-				item.setExpenseType(itemOCR.getExpenseType());
+				item.setExpenseTag(itemOCR.getExpenseTag());
                 item.setCreated(itemOCR.getCreated());
 				item.setUpdated();
 

@@ -128,9 +128,9 @@
                             ${item.taxed.description}
                         </td>
                         <td style="padding: 3px; text-align: left;">
-                            <form:select path="items[${status.index}].expenseType.id">
+                            <form:select path="items[${status.index}].expenseTag.id">
                                 <form:option value="NONE" label="--- Select ---" />
-                                <form:options items="${expenseForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                                <form:options items="${expenseForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                             </form:select>
                         </td>
                     </tr>

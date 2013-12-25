@@ -3,7 +3,7 @@
  */
 package com.receiptofi.web.controller;
 
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.UserSession;
@@ -126,7 +126,7 @@ public class UserProfilePreferenceController {
         }
 
         try {
-            ExpenseTypeEntity expenseType = ExpenseTypeEntity.newInstance(expenseTypeForm.getExpName(), userSession.getUserProfileId());
+            ExpenseTagEntity expenseType = ExpenseTagEntity.newInstance(expenseTypeForm.getTagName(), userSession.getUserProfileId());
             userProfilePreferenceService.addExpenseType(expenseType);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -143,22 +143,22 @@ public class UserProfilePreferenceController {
      * To Show and Hide the expense type
      * //TODO convert to ajax call instead
      *
-     * @param expenseTypeId
+     * @param expenseTagId
      * @param changeStatTo
      * @param userSession
      * @return
      */
-    @RequestMapping(value="/expenseTypeVisible", method = RequestMethod.GET)
+    @RequestMapping(value="/expenseTagVisible", method = RequestMethod.GET)
     public ModelAndView changeExpenseTypeVisibleStatus(@ModelAttribute("userSession") UserSession userSession,
-                                                       @RequestParam(value="id") String expenseTypeId,
+                                                       @RequestParam(value="id") String expenseTagId,
                                                        @RequestParam(value="status") String changeStatTo,
                                                        @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
                                                        @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm) {
         DateTime time = DateUtil.now();
 
         //Secondary check. In case some one tries to be smart by passing parameters in URL :)
-        if(itemService.countItemsUsingExpenseType(expenseTypeId, userSession.getUserProfileId()) == 0) {
-            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTypeId, changeStatTo, userSession.getUserProfileId());
+        if(itemService.countItemsUsingExpenseType(expenseTagId, userSession.getUserProfileId()) == 0) {
+            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTagId, changeStatTo, userSession.getUserProfileId());
         }
         UserProfileEntity userProfile = userProfilePreferenceService.findById(userSession.getUserProfileId());
         userProfilePreferenceForm.setUserProfile(userProfile);
@@ -277,24 +277,24 @@ public class UserProfilePreferenceController {
             modelAndView.addObject("expenseTypeForm", expenseTypeForm);
         }
 
-        List<ExpenseTypeEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfilePreferenceForm.getUserProfile().getId());
-        userProfilePreferenceForm.setExpenseTypes(expenseTypes);
+        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfilePreferenceForm.getUserProfile().getId());
+        userProfilePreferenceForm.setExpenseTags(expenseTypes);
 
         Map<String, Long> expenseTypeCount = new HashMap<>();
         int count = 0;
-        for(ExpenseTypeEntity expenseType : expenseTypes) {
+        for(ExpenseTagEntity expenseType : expenseTypes) {
             if(expenseType.isActive()) {
                 count++;
             }
 
             expenseTypeCount.put(
-                    expenseType.getExpName(),
+                    expenseType.getTagName(),
                     itemService.countItemsUsingExpenseType(expenseType.getId(), userProfilePreferenceForm.getUserProfile().getId())
             );
         }
 
-        userProfilePreferenceForm.setExpenseTypeCount(expenseTypeCount);
-        userProfilePreferenceForm.setVisibleExpenseTypes(count);
+        userProfilePreferenceForm.setExpenseTagCount(expenseTypeCount);
+        userProfilePreferenceForm.setVisibleExpenseTags(count);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;

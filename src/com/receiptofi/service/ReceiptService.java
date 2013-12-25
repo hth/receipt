@@ -195,7 +195,7 @@ public final class ReceiptService {
                 itemOCR.setSequence(item.getSequence());
                 itemOCR.setReceipt(receiptOCR);
                 itemOCR.setUserProfileId(receiptOCR.getUserProfileId());
-                itemOCR.setExpenseType(item.getExpenseType());
+                itemOCR.setExpenseTag(item.getExpenseTag());
                 itemOCR.setCreated(item.getCreated());
                 itemOCR.setQuantity(item.getQuantity());
                 itemOCR.setUpdated();
