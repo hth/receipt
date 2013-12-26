@@ -480,3 +480,23 @@ a.account {
 }
 /* end to show images of receipt */
 
+/** Show loading page before page is loaded */
+.loadingOverlay {
+    background:  #fff url('../css/claro/loadingAnimation.gif') no-repeat 10px 23px;
+    position: absolute;
+    z-index: 1001;
+    display: none;
+}
+
+.pageOverlay {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.loadingMessage {
+    padding: 25px 40px;
+    color: #999;
+}
+/** End of show loading page before page is loaded */

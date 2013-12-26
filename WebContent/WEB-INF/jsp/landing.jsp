@@ -11,6 +11,47 @@
     <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
+    <!-- load dojo and provide config via data attribute -->
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"
+            data-dojo-config="isDebug: true, parseOnLoad: true">
+    </script>
+    <script>
+        var loadingOverlay = (function(){
+            // the overlay object with its methods are the return value
+            // of this anonymous function
+
+            var overlayNode;
+            return {
+                init: function(){
+                    // create the container element for the overlay
+                    // We store the reference in the overlayNode closure variable
+                    overlayNode = dojo.create('div', {
+                        id: 'loadingOverlay',
+                        'class': 'loadingOverlay pageOverlay',
+                        innerHTML: '<div class="loadingMessage">Loading...</div>'
+                    }, dojo.body());
+
+                    return this;
+                },
+                show: function(){
+                    // show the overlay
+                    dojo.style( overlayNode, {
+                        display: 'block'
+                    });
+                },
+                hide: function(){
+                    // hide the overlay
+                    dojo.fadeOut({
+                        node: overlayNode,
+                        onEnd: function(){
+                            dojo.style(overlayNode, "display", "none");
+                        }
+                    }).play();
+                }
+            };
+        })();
+    </script>
+
     <link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
@@ -157,6 +198,16 @@
     </script>
 </head>
 <body>
+<script>
+    // put up the loading overlay while the page initializes
+    loadingOverlay.init().show();
+
+    dojo.ready(function(){
+        // take down the loading overlay when the page is ready
+        loadingOverlay.hide();
+    })
+</script>
+
 <div class="wrapper">
  	<div class="divTable" style="width: 810px">
 		<div class="divRow">
