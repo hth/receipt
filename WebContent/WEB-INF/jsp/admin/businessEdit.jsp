@@ -15,7 +15,7 @@
     <link rel='stylesheet' type='text/css' href='../../jquery/css/receipt.css'>
     <link rel='stylesheet' type='text/css' href='../../jquery/js/alpixel/jMenu.jquery.css'  />
 
-    <script type="text/javascript" src="../../jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="../../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../../jquery/js/alpixel/jMenu.jquery.js"></script>
 
