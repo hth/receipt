@@ -12,8 +12,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
     <!-- load dojo and provide config via data attribute -->
-    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"
-            data-dojo-config="isDebug: true, parseOnLoad: true">
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
+            data-dojo-config="isDebug: false, parseOnLoad: true">
     </script>
     <script>
         var loadingOverlay = (function(){
