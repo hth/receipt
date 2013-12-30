@@ -3,6 +3,8 @@ package com.receiptofi.service;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.repository.StorageManager;
 import com.receiptofi.web.form.UploadReceiptImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -19,6 +21,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  */
 @Service
 public final class FileDBService {
+    private static final Logger log = LoggerFactory.getLogger(FileDBService.class);
 
     @Autowired private StorageManager storageManager;
 
