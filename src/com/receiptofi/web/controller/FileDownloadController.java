@@ -68,18 +68,18 @@ public class FileDownloadController {
 
 		try {
 			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
-            log.debug("Length: " + gridFSDBFile.getLength() + ", MetaData: " + gridFSDBFile.getMetaData());
 
 			if(gridFSDBFile == null) {
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
-//				File file = FileUtils.getFile(pathToWeb + "/images/no_image.gif");
-                File file = FileUtils.getFile(pathToWeb + "/images/no_image_found.jpg");
+    			File file = FileUtils.getFile(pathToWeb + "/images/no_image.gif");
+//                File file = FileUtils.getFile(pathToWeb + "/images/no_image_found.jpg");
 				BufferedImage bi = ImageIO.read(file);
                 setContentType(file, response);
 				OutputStream out = response.getOutputStream();
 				ImageIO.write(bi, getFormatForFile(file), out);
 				out.close();
 			} else {
+                log.debug("Length: " + gridFSDBFile.getLength() + ", MetaData: " + gridFSDBFile.getMetaData());
 				gridFSDBFile.writeTo(response.getOutputStream());
 				response.setContentType(gridFSDBFile.getContentType());
 			}
