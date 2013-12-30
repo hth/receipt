@@ -11,11 +11,6 @@
     <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
-    <!-- load dojo and provide config via data attribute -->
-    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
-            data-dojo-config="isDebug: false, parseOnLoad: true">
-    </script>
-
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
 
@@ -109,6 +104,11 @@
     $(function () {
         $(document).tooltip();
     });
+</script>
+
+<!-- load dojo and provide config via data attribute -->
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
+        data-dojo-config="isDebug: false, parseOnLoad: true">
 </script>
 
 </body>
