@@ -5,6 +5,7 @@ package com.receiptofi.web.controller;
 
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.UserSession;
@@ -187,6 +188,11 @@ public class ReceiptUpdateController {
                 log.info("Mileage : ");
                 break;
         }
+
+        MileageEntity mileage = receiptOCRForm.getMileageEntity();
+        ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
+        receiptUpdateService.turkMileage(mileage, receiptOCR);
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
         return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
     }
 

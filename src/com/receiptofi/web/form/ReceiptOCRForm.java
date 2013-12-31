@@ -158,6 +158,14 @@ public final class ReceiptOCRForm {
 		return listOfItems;
 	}
 
+    public MileageEntity getMileageEntity() {
+        MileageEntity mileageEntity = new MileageEntity();
+        mileageEntity.setUserProfileId(receiptOCR.getUserProfileId());
+        mileageEntity.setStart(mileage.getStart());
+        mileageEntity.setEnd(mileage.getEnd());
+        return mileageEntity;
+    }
+
     /**
      * Used for calculating individual item tax calculation
      *

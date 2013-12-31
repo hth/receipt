@@ -2,6 +2,7 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
@@ -39,6 +40,7 @@ public final class FetcherService {
     @Autowired private BizStoreManager bizStoreManager;
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ReceiptOCRManager receiptOCRManager;
+    @Autowired private FileSystemService fileSystemService;
 
     /**
      * This method is called from AJAX to get the matching list of users in the system
@@ -145,6 +147,7 @@ public final class FetcherService {
 
     /**
      *
+     * @deprecated
      * @param receiptOCRId
      * @param imageOrientation
      * @param userProfileId
@@ -155,6 +158,18 @@ public final class FetcherService {
         if(receiptEntityOCR.getUserProfileId().equalsIgnoreCase(userProfileId)) {
             receiptEntityOCR.setImageOrientation(receiptEntityOCR.getImageOrientation() + imageOrientation);
             receiptOCRManager.save(receiptEntityOCR);
+        }
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
+
+
+    public void changeFSImageOrientation(String fileSystemId, int imageOrientation, String blobId) throws Exception {
+        DateTime time = DateUtil.now();
+        FileSystemEntity fileSystemEntity = fileSystemService.findById(fileSystemId);
+        if(blobId.equalsIgnoreCase(fileSystemEntity.getBlobId())) {
+            fileSystemEntity.setImageOrientation(fileSystemEntity.getImageOrientation() + imageOrientation);
+            fileSystemEntity.switchHeightAndWidth();
+            fileSystemService.save(fileSystemEntity);
         }
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
     }

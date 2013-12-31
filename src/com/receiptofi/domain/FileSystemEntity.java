@@ -2,6 +2,7 @@ package com.receiptofi.domain;
 
 import javax.validation.constraints.NotNull;
 import java.awt.image.BufferedImage;
+import java.beans.Transient;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -82,5 +83,12 @@ public class FileSystemEntity extends BaseEntity {
 
     public void setSequence(int sequence) {
         this.sequence = sequence;
+    }
+
+    @Transient
+    public void switchHeightAndWidth() {
+        int tempHeight = this.height;
+        this.height = this.width;
+        this.width = tempHeight;
     }
 }

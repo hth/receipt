@@ -16,6 +16,7 @@ import com.receiptofi.service.AccountService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
+import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
 import com.receiptofi.service.mobile.LandingViewService;
@@ -85,6 +86,7 @@ public class LandingController extends BaseController {
     @Autowired NotificationService notificationService;
     @Autowired ReportService reportService;
     @Autowired LandingViewService landingViewService;
+    @Autowired MileageService mileageService;
 
 	/**
 	 * Refers to landing.jsp
@@ -102,8 +104,8 @@ public class LandingController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
         modelAndView.addObject("userSession", userSession);
 
-		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId(), DateUtil.now());
-        ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, DateUtil.now());
+		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId(), time);
+        ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, time);
         modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
@@ -140,6 +142,9 @@ public class LandingController extends BaseController {
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(userSession.getUserProfileId());
         landingForm.setNotifications(notifications);
+
+        /** Mileage */
+        landingForm.setMileageEntities(mileageService.getMileageForThisMonth(userSession.getUserProfileId(), time));
 
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

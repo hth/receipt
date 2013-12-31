@@ -3,6 +3,7 @@ package com.receiptofi.web.form;
 import java.util.Iterator;
 import java.util.List;
 
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
@@ -26,6 +27,7 @@ public final class LandingForm {
     private String bizNames;
 
     List<NotificationEntity> notifications;
+    List<MileageEntity> mileageEntities;
 
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
@@ -87,6 +89,14 @@ public final class LandingForm {
 
     public void setNotifications(List<NotificationEntity> notifications) {
         this.notifications = notifications;
+    }
+
+    public List<MileageEntity> getMileageEntities() {
+        return mileageEntities;
+    }
+
+    public void setMileageEntities(List<MileageEntity> mileageEntities) {
+        this.mileageEntities = mileageEntities;
     }
 }
 

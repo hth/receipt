@@ -4,6 +4,7 @@ import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -24,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -50,6 +50,7 @@ public final class ReceiptUpdateService {
     @Autowired private NotificationService notificationService;
     @Autowired private StorageManager storageManager;
     @Autowired private FileSystemService fileSystemService;
+    @Autowired private MileageService mileageService;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -67,7 +68,6 @@ public final class ReceiptUpdateService {
      * @param receiptOCR
      * @throws Exception
      */
-    @Transactional(rollbackFor={Exception.class})
     public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         try {
             ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
@@ -150,7 +150,6 @@ public final class ReceiptUpdateService {
      * @param receiptOCR
      * @throws Exception
      */
-    @Transactional(rollbackFor={Exception.class})
     public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         ReceiptEntity fetchedReceipt = null;
         try {
@@ -286,7 +285,6 @@ public final class ReceiptUpdateService {
      * @param receiptOCR
      * @throws Exception
      */
-    @Transactional(rollbackFor={Exception.class})
     public void turkReject(ReceiptEntityOCR receiptOCR) throws Exception {
         try {
             receiptOCR = receiptOCRManager.findOne(receiptOCR.getId());
@@ -391,5 +389,16 @@ public final class ReceiptUpdateService {
      */
     public boolean checkIfDuplicate(String checkSum) {
         return receiptManager.existCheckSum(checkSum);
+    }
+
+    public void turkMileage(MileageEntity mileageEntity, ReceiptEntityOCR receiptOCR) {
+        ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+        mileageEntity.setFileSystemEntities(receiptEntityOCR.getReceiptBlobId());
+        try {
+            mileageService.save(mileageEntity);
+            updateMessageManager(receiptOCR, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+        }
     }
 }
