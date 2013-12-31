@@ -5,6 +5,8 @@ package com.receiptofi.domain.types;
  * Date: 7/12/13
  * Time: 9:06 PM
  */
+//TODO should be deleted
+@Deprecated
 public enum ReceiptOfEnum {
     INCOME("INCOME", "Income"),
     EXPENSE("EXPENSE", "Expense");

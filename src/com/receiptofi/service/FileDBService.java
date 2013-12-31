@@ -1,14 +1,18 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.repository.StorageManager;
+import com.receiptofi.web.form.UploadReceiptImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.gridfs.GridFSDBFile;
-
-import com.receiptofi.repository.StorageManager;
-import com.receiptofi.web.form.UploadReceiptImage;
 
 /**
  * User: hitender
@@ -17,6 +21,7 @@ import com.receiptofi.web.form.UploadReceiptImage;
  */
 @Service
 public final class FileDBService {
+    private static final Logger log = LoggerFactory.getLogger(FileDBService.class);
 
     @Autowired private StorageManager storageManager;
 
@@ -42,7 +47,7 @@ public final class FileDBService {
         storageManager.deleteHard(fileId);
     }
 
-    public void deleteSoft(String fileId)  {
-        storageManager.deleteSoft(fileId);
+    public void deleteHard(Collection<FileSystemEntity> fileId) {
+        storageManager.deleteHard(fileId);
     }
 }

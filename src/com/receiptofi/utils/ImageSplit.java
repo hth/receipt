@@ -29,8 +29,7 @@ public final class ImageSplit {
     }
 
     public static void splitImage(File file) throws IOException {
-        FileInputStream fis = new FileInputStream(file);
-        BufferedImage image = ImageIO.read(fis); //reading the image file
+        BufferedImage image = bufferedImage(file);
         log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
 
         splitImage(image);
@@ -73,8 +72,7 @@ public final class ImageSplit {
      * @throws IOException
      */
     public static File decreaseResolution(File file) throws IOException {
-        FileInputStream fis = new FileInputStream(file);
-        BufferedImage image = ImageIO.read(fis);
+        BufferedImage image = bufferedImage(file);
 
         log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
         double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
@@ -83,6 +81,18 @@ public final class ImageSplit {
         File scaled = CreateTempFile.file(FilenameUtils.getBaseName(file.getName()) + UploadReceiptImage.SCALED, FilenameUtils.getExtension(file.getName()));
         ImageIO.write(bufferedImage, "png", scaled);
         return scaled;
+    }
+
+    /**
+     * Can be used for calculating height and width of an image
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static BufferedImage bufferedImage(File file) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+        return ImageIO.read(fis);
     }
 
     /**

@@ -7,7 +7,7 @@ package com.receiptofi.domain.types;
  * @author hitender
  * @since Jan 5, 2013 7:37:02 PM
  */
-public enum ReceiptStatusEnum {
+public enum DocumentStatusEnum {
 
     /** Note: Do not change the order. New ENUM should be appended at the bottom */
     OCR_PROCESSED("PROCESSED",                      "OCR Processed"),
@@ -21,7 +21,7 @@ public enum ReceiptStatusEnum {
     private final String description;
     private final String name;
 
-    private ReceiptStatusEnum(String name, String description) {
+    private DocumentStatusEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

@@ -9,6 +9,8 @@ package com.receiptofi.domain.types;
  */
 public enum FileTypeEnum {
     RECEIPT("RECEIPT", "Receipt"),
+    INVOICE("INVOICE", "Invoice"),
+    MILEAGE("MILEAGE", "Mileage"),
     FEEDBACK("FEEDBACK", "Feedback");
 
     private final String description;

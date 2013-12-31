@@ -3,10 +3,12 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.ReceiptOfEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Transient;
@@ -23,24 +25,24 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "RECEIPT_OCR")
 @CompoundIndexes({ @CompoundIndex(name = "receipt_ocr_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
-public class ReceiptEntityOCR extends BaseEntity {
+public class ReceiptEntityOCR extends DocumentEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
 
 	@NotNull
-    @Field("RECEIPT_STATUS_ENUM")
-	private ReceiptStatusEnum receiptStatus;
+    @Field("DOCUMENT_STATUS_ENUM")
+	private DocumentStatusEnum documentStatus;
 
     @NotNull
     @Field("RECEIPT_OF_ENUM")
     private ReceiptOfEnum receiptOf;
 
-	@NotNull
+    @DBRef
     @Field("RECEIPT_BLOB_ID")
-	private String receiptBlobId;
+	private Collection<FileSystemEntity> receiptBlobId;        //TODO sorted
 
-    @NotNull
+    @DBRef
     @Field("RECEIPT_SCALED_BLOB_ID")
-    private String receiptScaledBlobId;
+    private Collection<FileSystemEntity> receiptScaledBlobId;
 
 	@NotNull
     @Field("RECEIPT_DATE")
@@ -96,12 +98,12 @@ public class ReceiptEntityOCR extends BaseEntity {
 		return new ReceiptEntityOCR();
 	}
 
-	public ReceiptStatusEnum getReceiptStatus() {
-		return receiptStatus;
+	public DocumentStatusEnum getDocumentStatus() {
+		return documentStatus;
 	}
 
-	public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
-		this.receiptStatus = receiptStatus;
+	public void setDocumentStatus(DocumentStatusEnum documentStatus) {
+		this.documentStatus = documentStatus;
 	}
 
     public ReceiptOfEnum getReceiptOf() {
@@ -112,19 +114,33 @@ public class ReceiptEntityOCR extends BaseEntity {
         this.receiptOf = receiptOf;
     }
 
-    public String getReceiptBlobId() {
+    public Collection<FileSystemEntity> getReceiptBlobId() {
 		return receiptBlobId;
 	}
 
-	public void setReceiptBlobId(String receiptBlobId) {
-		this.receiptBlobId = receiptBlobId;
+	public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
+        if(this.receiptBlobId == null) {
+            this.receiptBlobId = new ArrayList<>();
+        }
+		this.receiptBlobId.add(receiptBlobId);
 	}
 
-    public String getReceiptScaledBlobId() {
+    public Collection<FileSystemEntity> getReceiptScaledBlobId() {
         return receiptScaledBlobId;
     }
 
-    public void setReceiptScaledBlobId(String receiptScaledBlobId) {
+    public void setReceiptBlobId(Collection<FileSystemEntity> receiptBlobId) {
+        this.receiptBlobId = receiptBlobId;
+    }
+
+    public void addReceiptScaledBlobId(FileSystemEntity receiptScaledBlobId) {
+        if(this.receiptScaledBlobId == null) {
+            this.receiptScaledBlobId = new ArrayList<>();
+        }
+        this.receiptScaledBlobId.add(receiptScaledBlobId);
+    }
+
+    public void setReceiptScaledBlobId(Collection<FileSystemEntity> receiptScaledBlobId) {
         this.receiptScaledBlobId = receiptScaledBlobId;
     }
 
@@ -220,6 +236,7 @@ public class ReceiptEntityOCR extends BaseEntity {
         return imageOrientation;
     }
 
+    @Deprecated
     public void setImageOrientation(int imageOrientation) {
         this.imageOrientation = imageOrientation;
     }

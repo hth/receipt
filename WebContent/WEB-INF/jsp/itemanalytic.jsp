@@ -14,7 +14,7 @@
 	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
-	<script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type='text/javascript' src="../jquery/js/highcharts.js"></script>
 
@@ -197,9 +197,9 @@
                         </c:choose>
                     </td>
                     <td style="padding:3px; text-align: left; width: 100px">
-                        <form:select path="yourHistoricalItems[${status.index}].expenseType.id">
+                        <form:select path="yourHistoricalItems[${status.index}].expenseTag.id">
                             <form:option value="NONE" label="--- Select ---" />
-                            <form:options items="${itemAnalyticForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                            <form:options items="${itemAnalyticForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                         </form:select>
                     </td>
                 </tr>

@@ -8,10 +8,9 @@ import static org.junit.Assert.assertNull;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 
 /**
  * @author hitender
@@ -27,7 +26,7 @@ public class BaseTest {
 	public final static String total = "80.00";
 	public final static String tax = "20.00";
 	public final static String description = "Test Description";
-	public final static ReceiptStatusEnum receiptStatus = ReceiptStatusEnum.TURK_PROCESSED;
+	public final static DocumentStatusEnum receiptStatus = DocumentStatusEnum.TURK_PROCESSED;
 	public final static String receiptBlobId = "507f1f77bcf86cd799439011";
 	public final static String userProfileId = "test@test.com";
 

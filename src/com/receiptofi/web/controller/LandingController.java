@@ -16,6 +16,7 @@ import com.receiptofi.service.AccountService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
+import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
 import com.receiptofi.service.mobile.LandingViewService;
@@ -85,6 +86,7 @@ public class LandingController extends BaseController {
     @Autowired NotificationService notificationService;
     @Autowired ReportService reportService;
     @Autowired LandingViewService landingViewService;
+    @Autowired MileageService mileageService;
 
 	/**
 	 * Refers to landing.jsp
@@ -102,8 +104,8 @@ public class LandingController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
         modelAndView.addObject("userSession", userSession);
 
-		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId(), DateUtil.now());
-        ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, DateUtil.now());
+		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(userSession.getUserProfileId(), time);
+        ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, time);
         modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
@@ -140,6 +142,9 @@ public class LandingController extends BaseController {
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(userSession.getUserProfileId());
         landingForm.setNotifications(notifications);
+
+        /** Mileage */
+        landingForm.setMileageEntities(mileageService.getMileageForThisMonth(userSession.getUserProfileId(), time));
 
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
@@ -216,7 +221,7 @@ public class LandingController extends BaseController {
                 expenseTypes.append("'").append(name).append("',");
                 expenseValues.append(map.get(name)).append(",");
             }
-            landingDonutChart.setExpenseTypes(expenseTypes.toString().substring(0, expenseTypes.toString().length() - 1));
+            landingDonutChart.setExpenseTags(expenseTypes.toString().substring(0, expenseTypes.toString().length() - 1));
             landingDonutChart.setExpenseValues(expenseValues.toString().substring(0, expenseValues.toString().length() - 1));
 
             bizByExpenseTypes.add(landingDonutChart);
@@ -257,6 +262,55 @@ public class LandingController extends BaseController {
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
                     landingService.uploadReceipt(userSession.getUserProfileId(), uploadReceiptImage);
+                    outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+                } catch (Exception exce) {
+                    outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
+                    log.error("Receipt upload exception: " + exce.getLocalizedMessage() + ", for user: " + userSession.getUserProfileId());
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+                }
+            }
+        } else {
+            //TODO test with IE
+            //http://skillshared.blogspot.com/2012/08/java-class-for-valums-ajax-file.html
+            log.warn("Look like IE file upload");
+            String filename = httpServletRequest.getHeader("X-File-Name");
+            InputStream is = httpServletRequest.getInputStream();
+        }
+        return outcome;
+    }
+
+    /**
+     * For uploading Receipts
+     *
+     * @param userSession
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "uploadmileage")
+    public @ResponseBody
+    String uploadMileage(@PathVariable String documentId, @ModelAttribute UserSession userSession, HttpServletRequest httpServletRequest) throws IOException {
+        DateTime time = DateUtil.now();
+        log.info("Upload a mileage");
+        String outcome = "{\"success\" : false}";
+
+        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+        if(isMultipart) {
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+            final List<MultipartFile> files = multipartHttpServletRequest.getFiles("qqfile");
+            Assert.state(files.size() > 0, "0 files exist");
+
+            /*
+             * process files
+             */
+            for (MultipartFile multipartFile : files) {
+                UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
+                uploadReceiptImage.setFileData(multipartFile);
+                uploadReceiptImage.setEmailId(userSession.getEmailId());
+                uploadReceiptImage.setUserProfileId(userSession.getUserProfileId());
+                uploadReceiptImage.setFileType(FileTypeEnum.MILEAGE);
+                try {
+                    landingService.appendMileage(documentId, userSession.getUserProfileId(), uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {

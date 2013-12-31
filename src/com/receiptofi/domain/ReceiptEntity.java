@@ -3,11 +3,12 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.ReceiptOfEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.utils.SHAHashing;
 
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
@@ -41,20 +42,20 @@ public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
 	@NotNull
-    @Field("RECEIPT_STATUS_ENUM")
-	private ReceiptStatusEnum receiptStatus;
+    @Field("DOCUMENT_STATUS_ENUM")
+	private DocumentStatusEnum receiptStatus;
 
     @NotNull
     @Field("RECEIPT_OF_ENUM")
     private ReceiptOfEnum receiptOf;
 
-	@NotNull
+    @DBRef
     @Field("RECEIPT_BLOB_ID")
-	private String receiptBlobId;
+	private Collection<FileSystemEntity> receiptBlobId;
 
-    @NotNull
+    @DBRef
     @Field("RECEIPT_SCALED_BLOB_ID")
-    private String receiptScaledBlobId;
+    private Collection<FileSystemEntity> receiptScaledBlobId;
 
 	@NotNull
     @DateTimeFormat(iso = ISO.DATE_TIME)
@@ -116,6 +117,10 @@ public class ReceiptEntity extends BaseEntity {
     @Field("ORIENTATION")
     private int imageOrientation = 0;
 
+    /**
+     * Note: During recheck of a receipt EXP_FILENAME is dropped as this is
+     * not persisted between the two event
+     */
     @Field("EXP_FILENAME")
     private String expenseReportInFS;
 
@@ -129,13 +134,13 @@ public class ReceiptEntity extends BaseEntity {
 	public ReceiptEntity() {}
 
     @Deprecated
-	private ReceiptEntity(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity receiptBlobId, String userProfileId) {
 		super();
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
 		this.receiptStatus = receiptStatus;
-		this.receiptBlobId = receiptBlobId;
+		this.receiptBlobId.add(receiptBlobId);
 		this.userProfileId = userProfileId;
 	}
 
@@ -151,7 +156,7 @@ public class ReceiptEntity extends BaseEntity {
 	 * @return
 	 */
     @Deprecated
-	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, ReceiptStatusEnum receiptStatus, String receiptBlobId, String userProfileId) {
+	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity receiptBlobId, String userProfileId) {
 		return new ReceiptEntity(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
 	}
 
@@ -159,11 +164,11 @@ public class ReceiptEntity extends BaseEntity {
 		return new ReceiptEntity();
 	}
 
-	public ReceiptStatusEnum getReceiptStatus() {
+	public DocumentStatusEnum getReceiptStatus() {
 		return receiptStatus;
 	}
 
-	public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
+	public void setReceiptStatus(DocumentStatusEnum receiptStatus) {
 		this.receiptStatus = receiptStatus;
 	}
 
@@ -175,19 +180,19 @@ public class ReceiptEntity extends BaseEntity {
         this.receiptOf = receiptOf;
     }
 
-	public String getReceiptBlobId() {
+	public Collection<FileSystemEntity> getReceiptBlobId() {
 		return receiptBlobId;
 	}
 
-	public void setReceiptBlobId(String receiptBlobId) {
-		this.receiptBlobId = receiptBlobId;
-	}
+    public void setReceiptBlobId(Collection<FileSystemEntity> receiptBlobId) {
+        this.receiptBlobId = receiptBlobId;
+    }
 
-    public String getReceiptScaledBlobId() {
+    public Collection<FileSystemEntity> getReceiptScaledBlobId() {
         return receiptScaledBlobId;
     }
 
-    public void setReceiptScaledBlobId(String receiptScaledBlobId) {
+    public void setReceiptScaledBlobId(Collection<FileSystemEntity> receiptScaledBlobId) {
         this.receiptScaledBlobId = receiptScaledBlobId;
     }
 
@@ -333,6 +338,7 @@ public class ReceiptEntity extends BaseEntity {
         return imageOrientation;
     }
 
+    @Deprecated
     public void setImageOrientation(int imageOrientation) {
         this.imageOrientation = imageOrientation;
     }

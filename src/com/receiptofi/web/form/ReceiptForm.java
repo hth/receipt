@@ -1,10 +1,10 @@
 package com.receiptofi.web.form;
 
-import java.util.List;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -15,7 +15,7 @@ public final class ReceiptForm {
 
     ReceiptEntity receipt;
     List<ItemEntity> items;
-    List<ExpenseTypeEntity> expenseTypes;
+    List<ExpenseTagEntity> expenseTags;
 
     /** Used for showing error messages to user when the request action fails to execute */
     String errorMessage;
@@ -25,11 +25,11 @@ public final class ReceiptForm {
      */
     private ReceiptForm() {}
 
-    public static ReceiptForm newInstance(ReceiptEntity receipt, List<ItemEntity> items, List<ExpenseTypeEntity> expenseTypes) {
+    public static ReceiptForm newInstance(ReceiptEntity receipt, List<ItemEntity> items, List<ExpenseTagEntity> expenseTypes) {
         ReceiptForm receiptForm = new ReceiptForm();
         receiptForm.setReceipt(receipt);
         receiptForm.setItems(items);
-        receiptForm.setExpenseTypes(expenseTypes);
+        receiptForm.setExpenseTags(expenseTypes);
         return receiptForm;
     }
 
@@ -49,12 +49,12 @@ public final class ReceiptForm {
         this.items = items;
     }
 
-    public List<ExpenseTypeEntity> getExpenseTypes() {
-        return expenseTypes;
+    public List<ExpenseTagEntity> getExpenseTags() {
+        return expenseTags;
     }
 
-    public void setExpenseTypes(List<ExpenseTypeEntity> expenseTypes) {
-        this.expenseTypes = expenseTypes;
+    public void setExpenseTags(List<ExpenseTagEntity> expenseTags) {
+        this.expenseTags = expenseTags;
     }
 
     public void setErrorMessage(String errorMessage) {

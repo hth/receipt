@@ -13,7 +13,7 @@
     <link rel='stylesheet' type='text/css' href='../../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
     <link rel='stylesheet' type='text/css' href='../../jquery/css/receipt.css'>
 
-    <script type="text/javascript" src="../../jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="../../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../../jquery/js/raphael/raphael-min.js"></script>
     <script type="text/javascript" src="../../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
@@ -64,7 +64,7 @@
             $.ajax({
                 url: '${pageContext. request. contextPath}/fetcher/change_ocr_image_orientation.htm',
                 data: {
-                    receiptOCRId: '${receiptOCRForm.receiptOCR.id}',
+                    documentId: '${receiptOCRForm.receiptOCR.id}',
                     orientation: angle,
                     userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
                 },
@@ -326,12 +326,10 @@
                     <form:form method="post" action="../recheck.htm" modelAttribute="receiptOCRForm">
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage" />
                         <form:errors path="receiptOCR"      cssClass="error" />
-                        <form:hidden path="receiptOCR.receiptBlobId"/>
-                        <form:hidden path="receiptOCR.receiptScaledBlobId"/>
                         <form:hidden path="receiptOCR.id" id="receiptId"/>
                         <form:hidden path="receiptOCR.userProfileId"/>
                         <form:hidden path="receiptOCR.version"/>
-                        <form:hidden path="receiptOCR.receiptStatus"/>
+                        <form:hidden path="receiptOCR.documentStatus"/>
                         <form:hidden path="receiptOCR.receiptId"/>
                         <form:hidden path="receiptOCR.notes.id"/>
                         <form:hidden path="receiptOCR.notes.version"/>
@@ -380,7 +378,7 @@
                                 <th>&nbsp;</th>
                             </tr>
                             <c:forEach items="${receiptOCRForm.items}" varStatus="status">
-                                <form:hidden path="items[${status.index}].expenseType.id"/>
+                                <form:hidden path="items[${status.index}].expenseTag.id"/>
                                 <tr>
                                     <td style="text-align: left">
                                         ${status.index + 1}

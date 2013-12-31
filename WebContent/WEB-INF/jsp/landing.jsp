@@ -11,13 +11,54 @@
     <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
+    <!-- load dojo and provide config via data attribute -->
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
+            data-dojo-config="isDebug: false, parseOnLoad: true">
+    </script>
+    <script>
+        var loadingOverlay = (function(){
+            // the overlay object with its methods are the return value
+            // of this anonymous function
+
+            var overlayNode;
+            return {
+                init: function(){
+                    // create the container element for the overlay
+                    // We store the reference in the overlayNode closure variable
+                    overlayNode = dojo.create('div', {
+                        id: 'loadingOverlay',
+                        'class': 'loadingOverlay pageOverlay',
+                        innerHTML: '<div class="loadingMessage">Loading...</div>'
+                    }, dojo.body());
+
+                    return this;
+                },
+                show: function(){
+                    // show the overlay
+                    dojo.style( overlayNode, {
+                        display: 'block'
+                    });
+                },
+                hide: function(){
+                    // hide the overlay
+                    dojo.fadeOut({
+                        node: overlayNode,
+                        onEnd: function(){
+                            dojo.style(overlayNode, "display", "none");
+                        }
+                    }).play();
+                }
+            };
+        })();
+    </script>
+
     <link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
     <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
 
-	<script type="text/javascript" src="jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type="text/javascript" src="jquery/fullcalendar/fullcalendar.min.js"></script>
     <script type="text/javascript" src="jquery/js/highcharts.js"></script>
@@ -99,25 +140,25 @@
                                 success: function(response) {
                                     if(response > 0) {
                                         var html = '';
-                                        html = html +   "<div class='ui-widget'>" +
-                                                            "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
-                                                                "<p>" +
-                                                                    "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
-                                                                    "<span style='width:280px;'>";
-                                        if(response == 1) {
-                                            html = html +               "Pending receipt to be processed: ";
+                                        html = html + "<div class='ui-widget'>" +
+                                                "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
+                                                "<p>" +
+                                                "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
+                                                "<span style='width:280px;'>";
+                                        if (response == 1) {
+                                            html = html + "Pending receipt to be processed: ";
                                         } else {
-                                            html = html +               "Pending receipts to be processed: ";
+                                            html = html + "Pending receipts to be processed: ";
                                         }
-                                        html = html +                   "<a href='${pageContext.request.contextPath}/pending.htm' style='text-decoration: none;'>" +
-                                                                            "<strong class='pendingCounter' id='pendingCountValue'>" +
-                                                                                0 +
-                                                                            "</strong>" +
-                                                                        "</a>";
-                                        html = html +               "</span>" +
-                                                                "</p>" +
-                                                            "</div>" +
-                                                        "</div>";
+                                        html = html + "<a href='${pageContext.request.contextPath}/pending.htm' style='text-decoration: none;'>" +
+                                                "<strong class='pendingCounter' id='pendingCountValue'>" +
+                                                0 +
+                                                "</strong>" +
+                                                "</a>";
+                                        html = html + "</span>" +
+                                                "</p>" +
+                                                "</div>" +
+                                                "</div>";
                                         $('#pendingCountInitial').hide();
                                         $('#pendingCountId').html(html).show();
                                         $(runCounter(response));
@@ -157,6 +198,16 @@
     </script>
 </head>
 <body>
+<script>
+    // put up the loading overlay while the page initializes
+    loadingOverlay.init().show();
+
+    dojo.ready(function(){
+        // take down the loading overlay when the page is ready
+        loadingOverlay.hide();
+    })
+</script>
+
 <div class="wrapper">
  	<div class="divTable" style="width: 810px">
 		<div class="divRow">
@@ -331,10 +382,11 @@
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-1">Receipts</a></li>
-			<li><a href="#tabs-2">Expense Analysis</a></li>
-            <li><a href="#tabs-3">Reports</a></li>
+			<li><a href="#tabs-2">Mileage</a></li>
+			<li><a href="#tabs-3">Expense Analysis</a></li>
+            <li><a href="#tabs-4">Reports</a></li>
             <c:if test="${isValidForMap}">
-            <li><a href="#tabs-4">Geographical</a></li>
+            <li><a href="#tabs-5">Geographical</a></li>
             </c:if>
 		</ul>
 		<div id="tabs-1" style="height: 500px">
@@ -406,7 +458,10 @@
 
             <div id="refreshReceiptForMonthId"></div>
 		</div>
-		<div id="tabs-2" style="height: 500px">
+        <div id="tabs-2" style="height: 500px">
+
+        </div>
+		<div id="tabs-3" style="height: 500px">
             <c:choose>
             <c:when test="${!empty months}">
             <table>
@@ -452,7 +507,7 @@
             </c:otherwise>
             </c:choose>
 		</div>
-        <div id="tabs-3" style="height: 500px">
+        <div id="tabs-4" style="height: 500px">
             <c:choose>
                 <c:when test="${!empty landingForm.receiptGroupedByMonths}">
                     <p>
@@ -488,7 +543,7 @@
             </c:choose>
         </div>
         <c:if test="${isValidForMap}">
-		<div id="tabs-4" style="height: 500px">
+		<div id="tabs-5" style="height: 500px">
             <c:choose>
             <c:when test="${!empty months}">
             <div id="map-placeholder"></div>
@@ -567,7 +622,7 @@
                     id: '${item.bizNameForId}',
                     drilldown: {
                         name: '${item.bizName}',
-                        categories: [${item.expenseTypes}],
+                        categories: [${item.expenseTags}],
                         data: [${item.expenseValues}],
                         color: colors[${status.count-1}],
                         url: 'receipt/biz/${item.bizName}.htm',
@@ -580,7 +635,7 @@
 
         // Build the data arrays
         var bizNames = [];
-        var expenseTypes = [];
+        var expenseTags = [];
         for (var i = 0; i < data.length; i++) {
 
             // add browser data
@@ -595,7 +650,7 @@
             // add version data
             for (var j = 0; j < data[i].drilldown.data.length; j++) {
                 var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
-                expenseTypes.push({
+                expenseTags.push({
                     name: data[i].drilldown.categories[j],
                     y: data[i].drilldown.data[j],
                     color: Highcharts.Color(data[i].color).brighten(brightness).get(),
@@ -668,7 +723,7 @@
                 },
                 {
                     name: 'Total',
-                    data: expenseTypes,
+                    data: expenseTags,
                     size: '80%',
                     innerSize: '60%',
                     dataLabels: {

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.receiptofi.domain.MessageDocumentEntity;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.repository.MessageManager;
 
 /**
@@ -19,16 +19,16 @@ public final class EmpLandingService {
 
     @Autowired private MessageManager messageManager;
 
-    public List<MessageDocumentEntity> pendingReceipts(String emailId, String profileId, ReceiptStatusEnum status) {
+    public List<MessageDocumentEntity> pendingReceipts(String emailId, String profileId, DocumentStatusEnum status) {
         return messageManager.findPending(emailId, profileId, status);
     }
 
     public List<MessageDocumentEntity> queuedReceipts(String emailId, String profileId) {
-        return messageManager.findUpdateWithLimit(emailId, profileId, ReceiptStatusEnum.OCR_PROCESSED);
+        return messageManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.OCR_PROCESSED);
     }
 
     public List<MessageDocumentEntity> recheck(String emailId, String profileId) {
-        return messageManager.findUpdateWithLimit(emailId, profileId, ReceiptStatusEnum.TURK_REQUEST);
+        return messageManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.TURK_REQUEST);
     }
 
     public List<MessageDocumentEntity> findAll() {

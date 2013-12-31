@@ -6,6 +6,7 @@ package com.receiptofi.domain.types;
  */
 public enum DocumentOfTypeEnum {
     RECEIPT("RECEIPT", "Receipt"),
+    INVOICE("INVOICE", "Invoice"),
     MILEAGE("MILEAGE", "Mileage");
 
     private final String description;

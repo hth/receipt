@@ -271,10 +271,11 @@ public class FetcherController {
      * @param userProfileId
      * @param userSession
      * @param httpServletResponse
+     * @deprecated
      */
     @RequestMapping(value = "/change_ocr_image_orientation", method = RequestMethod.POST)
     public @ResponseBody
-    boolean changeReceiptOCRImageOrientation(@RequestParam("receiptOCRId") String receiptOCRId, @RequestParam("orientation") String imageOrientation,
+    boolean changeReceiptOCRImageOrientation(@RequestParam("documentId") String receiptOCRId, @RequestParam("orientation") String imageOrientation,
                                              @RequestParam("userProfileId") String userProfileId,
                                              @ModelAttribute("userSession") UserSession userSession,
                                              HttpServletResponse httpServletResponse) throws IOException {
@@ -286,6 +287,51 @@ public class FetcherController {
                             StringUtils.stripToEmpty(receiptOCRId),
                             Integer.parseInt(StringUtils.stripToEmpty(imageOrientation)),
                             StringUtils.stripToEmpty(userProfileId)
+                    );
+                    return true;
+                } catch (Exception e) {
+                    //Eat the error message
+                    log.error("Failed to change orientation of the image: " + e.getLocalizedMessage());
+                    return false;
+                }
+            } else {
+                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+                return false;
+            }
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return false;
+        }
+    }
+
+    /**
+     * Update the orientation of the image
+     *
+     * @param fileSystemId
+     * @param imageOrientation
+     * @param blobId
+     * @param userProfileId
+     * @param userSession
+     * @param httpServletResponse
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/change_fs_image_orientation", method = RequestMethod.POST)
+    public @ResponseBody
+    boolean changeFSImageOrientation(@RequestParam("fileSystemId") String fileSystemId,
+                                     @RequestParam("orientation") String imageOrientation,
+                                     @RequestParam("blobId") String blobId,
+                                     @RequestParam("userProfileId") String userProfileId,
+                                     @ModelAttribute("userSession") UserSession userSession,
+                                     HttpServletResponse httpServletResponse) throws IOException {
+
+        if(userSession != null) {
+            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue() || userProfileId.equalsIgnoreCase(userSession.getUserProfileId())) {
+                try {
+                    fetcherService.changeFSImageOrientation(
+                            StringUtils.stripToEmpty(fileSystemId),
+                            Integer.parseInt(StringUtils.stripToEmpty(imageOrientation)),
+                            blobId
                     );
                     return true;
                 } catch (Exception e) {

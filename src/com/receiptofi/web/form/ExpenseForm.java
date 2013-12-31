@@ -1,9 +1,9 @@
 package com.receiptofi.web.form;
 
-import java.util.List;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
+
+import java.util.List;
 
 /**
  * Used in displaying items with specific expense type
@@ -15,7 +15,7 @@ import com.receiptofi.domain.ItemEntity;
 public final class ExpenseForm {
 
     String name;
-    List<ExpenseTypeEntity> expenseTypes;
+    List<ExpenseTagEntity> expenseTags;
     List<ItemEntity> items;
 
     public String getName() {
@@ -26,12 +26,12 @@ public final class ExpenseForm {
         this.name = name;
     }
 
-    public List<ExpenseTypeEntity> getExpenseTypes() {
-        return expenseTypes;
+    public List<ExpenseTagEntity> getExpenseTags() {
+        return expenseTags;
     }
 
-    public void setExpenseTypes(List<ExpenseTypeEntity> expenseTypes) {
-        this.expenseTypes = expenseTypes;
+    public void setExpenseTags(List<ExpenseTagEntity> expenseTags) {
+        this.expenseTags = expenseTags;
     }
 
     public List<ItemEntity> getItems() {

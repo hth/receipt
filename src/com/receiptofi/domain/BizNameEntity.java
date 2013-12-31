@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -44,7 +45,7 @@ public class BizNameEntity extends BaseEntity {
      */
     public void setName(String name) {
         //this.name = WordUtils.capitalize(WordUtils.capitalizeFully(StringUtils.strip(name)), '.', '(', ')');
-        this.name = name;
+        this.name = StringUtils.trim(name);
     }
 
     /**

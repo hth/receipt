@@ -130,6 +130,8 @@
     <bean id="evalFeedbackManager"          class="com.receiptofi.repository.EvalFeedbackManagerImpl" />
     <bean id="bizNameManager"               class="com.receiptofi.repository.BizNameManagerImpl" />
     <bean id="bizStoreManager"              class="com.receiptofi.repository.BizStoreManagerImpl" />
+    <bean id="fileSystemManager"            class="com.receiptofi.repository.FileSystemManagerImpl" />
+    <bean id="mileageManager"               class="com.receiptofi.repository.MileageManagerImpl" />
 
     <bean id="userRegistrationValidator"    class="com.receiptofi.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.receiptofi.web.validator.UserLoginValidator" />

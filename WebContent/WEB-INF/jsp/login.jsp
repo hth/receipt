@@ -14,7 +14,7 @@
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
 
-	<script type="text/javascript" src="jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
 </head>
@@ -104,6 +104,11 @@
     $(function () {
         $(document).tooltip();
     });
+</script>
+
+<!-- load dojo and provide config via data attribute -->
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
+        data-dojo-config="isDebug: false, parseOnLoad: true">
 </script>
 
 </body>

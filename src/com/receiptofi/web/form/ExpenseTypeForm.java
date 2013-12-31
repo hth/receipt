@@ -10,17 +10,17 @@ import org.apache.commons.lang3.StringUtils;
  * Time: 7:17 PM
  */
 public final class ExpenseTypeForm {
-    private String expName;
+    private String tagName;
 
     public static ExpenseTypeForm newInstance() {
         return new ExpenseTypeForm();
     }
 
-    public String getExpName() {
-        return expName;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setExpName(String expName) {
-        this.expName = StringUtils.trim(expName);
+    public void setTagName(String tagName) {
+        this.tagName = StringUtils.trim(tagName);
     }
 }

@@ -14,7 +14,7 @@
     <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
     <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
-    <script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
@@ -119,8 +119,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>
@@ -155,8 +155,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>
@@ -191,8 +191,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>
@@ -227,8 +227,8 @@
                     <td style="padding:3px;">
                         <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                     </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.receiptOCRId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.receiptOCRId}.htm">
+                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
+                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
                             Open
                         </a>
                     </td>

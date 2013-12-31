@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
@@ -7,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 /**
@@ -18,9 +18,10 @@ import com.receiptofi.domain.types.UserLevelEnum;
 @Document(collection = "MESSAGE_DOCUMENT")
 public class MessageDocumentEntity extends BaseEntity {
 
+    //TODO change to document id
     @NotNull
     @Field("RECEIPT_OCR_ID")
-    private String receiptOCRId;
+    private String documentId;
 
     @NotNull
     @Field("USER_LEVEL_ENUM")
@@ -39,23 +40,23 @@ public class MessageDocumentEntity extends BaseEntity {
     private boolean recordLocked = false;
 
     @NotNull
-    @Field("RECEIPT_STATUS_ENUM")
-    private ReceiptStatusEnum receiptStatus;
+    @Field("DOCUMENT_STATUS_ENUM")
+    private DocumentStatusEnum documentStatus;
 
     private MessageDocumentEntity() {}
 
-    private MessageDocumentEntity(String receiptOCRId, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
-        this.receiptOCRId = receiptOCRId;
+    private MessageDocumentEntity(String documentId, UserLevelEnum level, DocumentStatusEnum documentStatus) {
+        this.documentId = documentId;
         this.level = level;
-        this.receiptStatus = receiptStatus;
+        this.documentStatus = documentStatus;
     }
 
-    public static MessageDocumentEntity newInstance(String idReceiptOCR, UserLevelEnum level, ReceiptStatusEnum receiptStatus) {
+    public static MessageDocumentEntity newInstance(String idReceiptOCR, UserLevelEnum level, DocumentStatusEnum receiptStatus) {
         return new MessageDocumentEntity(idReceiptOCR, level, receiptStatus);
     }
 
-    public String getReceiptOCRId() {
-        return receiptOCRId;
+    public String getDocumentId() {
+        return documentId;
     }
 
     public UserLevelEnum getLevel() {
@@ -86,24 +87,24 @@ public class MessageDocumentEntity extends BaseEntity {
         this.recordLocked = recordLocked;
     }
 
-    public ReceiptStatusEnum getReceiptStatus() {
-        return receiptStatus;
+    public DocumentStatusEnum getDocumentStatus() {
+        return documentStatus;
     }
 
-    public void setReceiptStatus(ReceiptStatusEnum receiptStatus) {
-        this.receiptStatus = receiptStatus;
+    public void setDocumentStatus(DocumentStatusEnum documentStatus) {
+        this.documentStatus = documentStatus;
     }
 
     @Override
     public String toString() {
         return "MessageDocumentEntity{" +
                 "id='" + id + '\'' +
-                ", receiptOCRId='" + receiptOCRId + '\'' +
+                ", documentId='" + documentId + '\'' +
                 ", level=" + level +
                 ", emailId='" + emailId + '\'' +
                 ", userProfileId='" + userProfileId + '\'' +
                 ", recordLocked=" + recordLocked +
-                ", receiptStatus=" + receiptStatus +
+                ", documentStatus=" + documentStatus +
                 '}';
     }
 }

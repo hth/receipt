@@ -27,8 +27,8 @@ public class ReceiptStatusEnumTest {
 
     @Test
     public void testOrdinal() throws Exception {
-        assertEquals(0, ReceiptStatusEnum.OCR_PROCESSED.ordinal());
-        assertEquals(1, ReceiptStatusEnum.TURK_PROCESSED.ordinal());
-        assertEquals(2, ReceiptStatusEnum.TURK_REQUEST.ordinal());
+        assertEquals(0, DocumentStatusEnum.OCR_PROCESSED.ordinal());
+        assertEquals(1, DocumentStatusEnum.TURK_PROCESSED.ordinal());
+        assertEquals(2, DocumentStatusEnum.TURK_REQUEST.ordinal());
     }
 }

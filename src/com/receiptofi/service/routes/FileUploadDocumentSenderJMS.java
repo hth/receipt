@@ -39,7 +39,7 @@ public final class FileUploadDocumentSenderJMS {
 						MapMessage mapMessage = session.createMapMessage();
 						mapMessage.setString("id", receiptOCR.getId());
 						mapMessage.setString("level", userProfile.getLevel().getDescription());
-                        mapMessage.setInt("status", receiptOCR.getReceiptStatus().ordinal());
+                        mapMessage.setInt("status", receiptOCR.getDocumentStatus().ordinal());
 
 						//This does not work since this values has to be set after sending the message. It will always default to 4.
 						mapMessage.setJMSPriority(userProfile.getLevel().getMessagePriorityJMS());

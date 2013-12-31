@@ -5,9 +5,10 @@ package com.receiptofi.web.form;
 
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
@@ -33,6 +34,7 @@ public final class ReceiptOCRForm {
     private static final Logger log = LoggerFactory.getLogger(ReceiptOCRForm.class);
 
 	ReceiptEntityOCR receiptOCR;
+    MileageEntity mileage;
 	List<ItemEntityOCR> items;
 
     /** Used for showing error messages to user when the request action fails to execute */
@@ -72,6 +74,14 @@ public final class ReceiptOCRForm {
 		this.items = items;
 	}
 
+    public MileageEntity getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(MileageEntity mileage) {
+        this.mileage = mileage;
+    }
+
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
@@ -90,9 +100,7 @@ public final class ReceiptOCRForm {
         receipt.setReceiptDate(DateUtil.getDateFromString(receiptOCR.getReceiptDate()));
         receipt.setTotal(Formatter.getCurrencyFormatted(receiptOCR.getTotal()).doubleValue());
         receipt.setTax(Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue());
-        receipt.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
-        receipt.setReceiptBlobId(receiptOCR.getReceiptBlobId());
-        receipt.setReceiptScaledBlobId(receiptOCR.getReceiptScaledBlobId());
+        receipt.setReceiptStatus(DocumentStatusEnum.TURK_PROCESSED);
         receipt.setUserProfileId(receiptOCR.getUserProfileId());
 		receipt.setCreated(receiptOCR.getCreated());
         receipt.setUpdated();
@@ -138,7 +146,7 @@ public final class ReceiptOCRForm {
                 item.setSequence(itemOCR.getSequence());
                 item.setReceipt(receipt);
                 item.setUserProfileId(receipt.getUserProfileId());
-				item.setExpenseType(itemOCR.getExpenseType());
+				item.setExpenseTag(itemOCR.getExpenseTag());
                 item.setCreated(itemOCR.getCreated());
 				item.setUpdated();
 
@@ -149,6 +157,14 @@ public final class ReceiptOCRForm {
 
 		return listOfItems;
 	}
+
+    public MileageEntity getMileageEntity() {
+        MileageEntity mileageEntity = new MileageEntity();
+        mileageEntity.setUserProfileId(receiptOCR.getUserProfileId());
+        mileageEntity.setStart(mileage.getStart());
+        mileageEntity.setEnd(mileage.getEnd());
+        return mileageEntity;
+    }
 
     /**
      * Used for calculating individual item tax calculation

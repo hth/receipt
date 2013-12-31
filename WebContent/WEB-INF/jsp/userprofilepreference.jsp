@@ -14,7 +14,7 @@
 	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
 	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
-	<script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="../jquery/js/clip/jquery.zclip.min.js"></script>
@@ -78,7 +78,7 @@
         });
 
         $(document).ready(function () {
-            $('#expenseTypeId').NobleCount('#expenseTypeIdCount', {
+            $('#expenseTagId').NobleCount('#expenseTagIdCount', {
                 on_negative: 'error',
                 on_positive: 'okay',
                 max_chars: 6
@@ -255,20 +255,20 @@
                     <section class="chunk">
                         <fieldset>
                             <legend class="hd">
-                                <span class="text">Add New Expense Type</span>
+                                <span class="text">Add New Expense Tag</span>
                             </legend>
                             <div class="bd">
                                 <div class="text">
-                                    Expense Name:
-                                    <form:input class="tooltip" path="expName" size="6" title="Help's mark an item with specific expense type." id="expenseTypeId"/>
+                                    Expense Tag:
+                                    <form:input class="tooltip" path="tagName" size="6" title="Help's mark an item with specific expense tag." id="expenseTagId"/>
                                     <input type="submit" value=" Add " name="Add" style="text-align: right;" <c:out value="${(isSameUser) ? '' : 'disabled'}"/> />&nbsp;
                                     <br/><br/>
                                 </div>
                                 <div class="text">
-                                    <form:errors path="expName" cssClass="error" />
+                                    <form:errors path="tagName" cssClass="error" />
                                 </div>
                                 <div class="text">
-                                    <span id='expenseTypeIdCount'></span> characters remaining.
+                                    <span id='expenseTagIdCount'></span> characters remaining.
                                 </div>
                             </div>
                         </fieldset>
@@ -276,40 +276,40 @@
                 </div>
             </form:form>
 
-            <c:if test="${!empty userProfilePreferenceForm.expenseTypes}">
+            <c:if test="${!empty userProfilePreferenceForm.expenseTags}">
             <br/>
             <!-- Used in displaying all the Expense Tags for the user -->
             <c:choose>
-                <c:when test="${userProfilePreferenceForm.visibleExpenseTypes eq 1}">
-                    <p>${userProfilePreferenceForm.visibleExpenseTypes} - Expense Type is available in selection </p>
+                <c:when test="${userProfilePreferenceForm.visibleExpenseTags eq 1}">
+                    <p>${userProfilePreferenceForm.visibleExpenseTags} - Expense Tag is available in selection </p>
                 </c:when>
-                <c:when test="${userProfilePreferenceForm.visibleExpenseTypes gt 1}">
-                    <p>${userProfilePreferenceForm.visibleExpenseTypes} - Expense Types are available in selection</p>
+                <c:when test="${userProfilePreferenceForm.visibleExpenseTags gt 1}">
+                    <p>${userProfilePreferenceForm.visibleExpenseTags} - Expense Tags are available in selection</p>
                 </c:when>
                 <c:otherwise>
-                    <p>No Expense Type visible</p>
+                    <p>No Expense Tag visible</p>
                 </c:otherwise>
             </c:choose>
             <table style="width: 325px" class="etable">
                 <tr>
                     <th style="padding:3px;"># Used</th>
                     <th style="padding:3px;">Show</th>
-                    <th style="padding:3px;">Expense Type</th>
+                    <th style="padding:3px;">Expense Tag</th>
                     <th style="padding:3px;">Since</th>
                 </tr>
-                <c:forEach var="expenseType" items="${userProfilePreferenceForm.expenseTypes}" varStatus="status">
+                <c:forEach var="expenseTag" items="${userProfilePreferenceForm.expenseTags}" varStatus="status">
                 <tr>
                     <td style="padding:3px;">
                         <c:choose>
-                            <c:when test="${expenseType.active eq true}">
+                            <c:when test="${expenseTag.active eq true}">
                                 <c:choose>
                                     <c:when test="${isSameUser}">
-                                        <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
-                                            <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
+                                        <a href="${pageContext.request.contextPath}/expenses/${expenseTag.tagName}.htm">
+                                            <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />
                                         </a>
                                     </c:when>
                                     <c:otherwise>
-                                        <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
+                                        <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>
@@ -317,14 +317,14 @@
                                 <c:choose>
                                     <c:when test="${isSameUser}">
                                         <del>
-                                            <a href="${pageContext.request.contextPath}/expenses.htm?type=${expenseType.expName}">
-                                                <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
+                                            <a href="${pageContext.request.contextPath}/expenses/${expenseTag.tagName}.htm">
+                                                <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />
                                             </a>
                                         </del>
                                     </c:when>
                                     <c:otherwise>
                                         <del>
-                                            <spring:eval expression="userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName)" />
+                                            <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />
                                         </del>
                                     </c:otherwise>
                                 </c:choose>
@@ -333,12 +333,12 @@
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
-                        <c:when test="${userProfilePreferenceForm.expenseTypeCount.get(expenseType.expName) eq 0}">
+                        <c:when test="${userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName) eq 0}">
                             <c:choose>
                                 <c:when test="${isSameUser}">
-                                    <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTypeVisible.htm?id=${expenseType.id}&status=${expenseType.active}">
+                                    <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTagVisible.htm?id=${expenseTag.id}&status=${expenseTag.active}">
                                         <c:choose>
-                                            <c:when test="${expenseType.active eq true}">
+                                            <c:when test="${expenseTag.active eq true}">
                                                 Hide
                                             </c:when>
                                             <c:otherwise>
@@ -349,7 +349,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <c:choose>
-                                        <c:when test="${expenseType.active eq true}">
+                                        <c:when test="${expenseTag.active eq true}">
                                             Hide
                                         </c:when>
                                         <c:otherwise>
@@ -366,21 +366,21 @@
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
-                            <c:when test="${expenseType.active eq true}">
-                                <spring:eval expression="expenseType.expName" />
+                            <c:when test="${expenseTag.active eq true}">
+                                <spring:eval expression="expenseTag.tagName" />
                             </c:when>
                             <c:otherwise>
-                                <del><spring:eval expression="expenseType.expName" /></del>
+                                <del><spring:eval expression="expenseTag.tagName" /></del>
                             </c:otherwise>
                         </c:choose>
                     </td>
                     <td style="padding:3px;">
                         <c:choose>
-                            <c:when test="${expenseType.active eq true}">
-                                <spring:eval expression="expenseType.forYear" />
+                            <c:when test="${expenseTag.active eq true}">
+                                <spring:eval expression="expenseTag.forYear" />
                             </c:when>
                             <c:otherwise>
-                                <del><spring:eval expression="expenseType.forYear" /></del>
+                                <del><spring:eval expression="expenseTag.forYear" /></del>
                             </c:otherwise>
                         </c:choose>
                     </td>
@@ -388,9 +388,9 @@
                 </c:forEach>
             </table>
             <br/>
-            Show - &nbsp;To un-hide the Expense Type click on Show <br/>
-            Hide - &nbsp;&nbsp;&nbsp;To hide the Expense Type click on Hide <br/>
-            Always Shown - This will be shown when the Expense Type is being used by at least one item
+            Show - &nbsp;To un-hide the Expense Tag click on Show <br/>
+            Hide - &nbsp;&nbsp;&nbsp;To hide the Expense Tag click on Hide <br/>
+            Always Shown - This will be shown when the Expense Tag is being used by at least one item
 
             </c:if>
 

@@ -5,6 +5,7 @@ package com.receiptofi.web.controller;
 
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.UserSession;
@@ -170,6 +171,32 @@ public class ReceiptUpdateController {
 	}
 
     /**
+     * Process receipt after submitted by technician
+     *
+     * @param receiptOCRForm
+     * @param result
+     * @return
+     */
+    @RequestMapping(value = "/submitMileage", method = RequestMethod.POST, params= "mileage-submit")
+    public ModelAndView submitMileage(@ModelAttribute("receiptOCRForm") ReceiptOCRForm receiptOCRForm,
+                               BindingResult result,
+                               final RedirectAttributes redirectAttrs) {
+
+        DateTime time = DateUtil.now();
+        switch(receiptOCRForm.getReceiptOCR().getDocumentOfType()) {
+            case MILEAGE:
+                log.info("Mileage : ");
+                break;
+        }
+
+        MileageEntity mileage = receiptOCRForm.getMileageEntity();
+        ReceiptEntityOCR receiptOCR = receiptOCRForm.getReceiptOCR();
+        receiptUpdateService.turkMileage(mileage, receiptOCR);
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+    }
+
+    /**
      * Reject receipt since it can't be processed or its not a receipt
      *
      * @param receiptOCRForm
@@ -278,6 +305,9 @@ public class ReceiptUpdateController {
                 List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
                 receiptOCRForm.setItems(items);
             }
+            //helps load the image on failure
+            receiptOCRForm.getReceiptOCR().setReceiptBlobId(receipt.getReceiptBlobId());
+            receiptOCRForm.getReceiptOCR().setReceiptScaledBlobId(receipt.getReceiptScaledBlobId());
         } else {
             log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
         }

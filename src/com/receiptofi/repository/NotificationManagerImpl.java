@@ -29,8 +29,7 @@ import com.mongodb.WriteResult;
 public final class NotificationManagerImpl implements NotificationManager {
     private static final Logger log = LoggerFactory.getLogger(NotificationManagerImpl.class);
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    @Autowired private MongoTemplate mongoTemplate;
 
     @Override
     public List<NotificationEntity> getAllObjects() {

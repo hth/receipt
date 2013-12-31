@@ -4,7 +4,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import org.bson.types.ObjectId;
@@ -265,7 +265,7 @@ public final class ItemManagerImpl implements ItemManager {
     public void updateItemWithExpenseType(ItemEntity item) throws Exception {
         ItemEntity foundItem = findOne(item.getId());
         if(foundItem != null) {
-            foundItem.setExpenseType(item.getExpenseType());
+            foundItem.setExpenseTag(item.getExpenseTag());
             save(foundItem);
         } else {
             log.error("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
@@ -289,7 +289,7 @@ public final class ItemManagerImpl implements ItemManager {
      * @return
      */
     @Override
-    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTypeEntity expenseType) {
+    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTagEntity expenseType) {
         Criteria criteria = Criteria.where("EXPENSE_TYPE.$id").is(new ObjectId(expenseType.getId()));
         Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query, ItemEntity.class);

@@ -3,11 +3,13 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.web.form.UploadReceiptImage;
+
 import java.io.IOException;
+import java.util.Collection;
 
 import com.mongodb.gridfs.GridFSDBFile;
-
-import com.receiptofi.web.form.UploadReceiptImage;
 
 /**
  * @author hitender
@@ -38,13 +40,14 @@ public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
      * @param id
      */
 	void deleteHard(String id);
+    void deleteHard(Collection<FileSystemEntity> fileSystemEntities);
 
     /**
      * Add a field delete and set the value to true
      *
-     * @param id
+     * @param fileSystemEntities
      */
-    void deleteSoft(String id);
+    void deleteSoft(Collection<FileSystemEntity> fileSystemEntities);
 
 	/**
 	 * Gets size of the GridFs

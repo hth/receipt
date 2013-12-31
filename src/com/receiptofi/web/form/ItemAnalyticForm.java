@@ -1,10 +1,10 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.ItemEntity;
+
 import java.math.BigDecimal;
 import java.util.List;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.domain.ItemEntity;
 
 /**
  * User: hitender
@@ -16,7 +16,7 @@ public final class ItemAnalyticForm {
     private ItemEntity item;
     private BigDecimal yourAveragePrice;
     private BigDecimal siteAveragePrice;
-    private List<ExpenseTypeEntity> expenseTypes;
+    private List<ExpenseTagEntity> expenseTags;
     private List<ItemEntity> siteAverageItems;
     private List<ItemEntity> yourAverageItems;
     private List<ItemEntity> yourHistoricalItems;
@@ -53,12 +53,12 @@ public final class ItemAnalyticForm {
         this.yourAveragePrice = yourAveragePrice;
     }
 
-    public List<ExpenseTypeEntity> getExpenseTypes() {
-        return expenseTypes;
+    public List<ExpenseTagEntity> getExpenseTags() {
+        return expenseTags;
     }
 
-    public void setExpenseTypes(List<ExpenseTypeEntity> expenseTypes) {
-        this.expenseTypes = expenseTypes;
+    public void setExpenseTags(List<ExpenseTagEntity> expenseTags) {
+        this.expenseTags = expenseTags;
     }
 
     public Iterable<ItemEntity> getSiteAverageItems() {

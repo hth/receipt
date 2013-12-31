@@ -1,13 +1,14 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.CommentEntity;
-import com.receiptofi.domain.ExpenseTypeEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptEntityOCR;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
-import com.receiptofi.domain.types.ReceiptStatusEnum;
 import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
@@ -24,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -49,6 +49,8 @@ public final class ReceiptUpdateService {
     @Autowired private CommentManager commentManager;
     @Autowired private NotificationService notificationService;
     @Autowired private StorageManager storageManager;
+    @Autowired private FileSystemService fileSystemService;
+    @Autowired private MileageService mileageService;
 
     public ReceiptEntityOCR loadReceiptOCRById(String id) {
         return receiptOCRManager.findOne(id);
@@ -66,12 +68,17 @@ public final class ReceiptUpdateService {
      * @param receiptOCR
      * @throws Exception
      */
-    @Transactional(rollbackFor={Exception.class})
     public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         try {
             ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+
             receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receipt.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receipt.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
+
             receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receiptOCR.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receiptOCR.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             receiptOCR.setVersion(receiptEntityOCR.getVersion());
@@ -83,18 +90,12 @@ public final class ReceiptUpdateService {
             itemManager.saveObjects(items);
 
             bizService.saveNewBusinessAndOrStore(receiptOCR);
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+            receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
             receiptOCR.setReceiptId(receipt.getId());
             receiptOCR.inActive();
             receiptOCRManager.save(receiptOCR);
 
-            try {
-                messageManager.updateObject(receiptOCR.getId(), ReceiptStatusEnum.OCR_PROCESSED, ReceiptStatusEnum.TURK_PROCESSED);
-            } catch(Exception exce) {
-                log.error(exce.getLocalizedMessage());
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.OCR_PROCESSED);
-                throw exce;
-            }
+            updateMessageManager(receiptOCR, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
@@ -128,11 +129,11 @@ public final class ReceiptUpdateService {
                     log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
                 }
 
-                receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+                receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
                 receiptOCRManager.save(receiptOCR);
                 //log.error("Failed to rollback Receipt OCR: " + receiptOCR.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.OCR_PROCESSED);
+                messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.OCR_PROCESSED);
                 //End of roll back
 
                 log.info("Complete with rollback: throwing exception");
@@ -149,13 +150,18 @@ public final class ReceiptUpdateService {
      * @param receiptOCR
      * @throws Exception
      */
-    @Transactional(rollbackFor={Exception.class})
     public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, ReceiptEntityOCR receiptOCR) throws Exception {
         ReceiptEntity fetchedReceipt = null;
         try {
             ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+
             receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receipt.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receipt.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
+
             receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
+            receiptOCR.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
+            receiptOCR.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             receiptOCR.setVersion(receiptEntityOCR.getVersion());
@@ -176,7 +182,7 @@ public final class ReceiptUpdateService {
             itemManager.saveObjects(items);
 
             bizService.saveNewBusinessAndOrStore(receiptOCR);
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_PROCESSED);
+            receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
             receiptOCR.inActive();
 
             //Only recheck comments are updated by technician. Receipt notes are never modified
@@ -216,13 +222,7 @@ public final class ReceiptUpdateService {
             receiptManager.save(receipt);
             receiptOCRManager.save(receiptOCR);
 
-            try {
-                messageManager.updateObject(receiptOCR.getId(), ReceiptStatusEnum.TURK_REQUEST, ReceiptStatusEnum.TURK_PROCESSED);
-            } catch(Exception exce) {
-                log.error(exce.getLocalizedMessage());
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.TURK_REQUEST);
-                throw exce;
-            }
+            updateMessageManager(receiptOCR, DocumentStatusEnum.TURK_REQUEST, DocumentStatusEnum.TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
@@ -256,16 +256,26 @@ public final class ReceiptUpdateService {
                     log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
                 }
 
-                receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+                receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
                 receiptOCRManager.save(receiptOCR);
                 //log.error("Failed to rollback Receipt OCR: " + receiptOCR.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_PROCESSED, ReceiptStatusEnum.TURK_REQUEST);
+                messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.TURK_REQUEST);
                 //End of roll back
 
                 log.info("Complete with rollback: throwing exception");
             }
             throw new Exception(exce.getLocalizedMessage());
+        }
+    }
+
+    private void updateMessageManager(ReceiptEntityOCR receiptOCR, DocumentStatusEnum from, DocumentStatusEnum to) {
+        try {
+            messageManager.updateObject(receiptOCR.getId(), from, to);
+        } catch(Exception exce) {
+            log.error(exce.getLocalizedMessage());
+            messageManager.undoUpdateObject(receiptOCR.getId(), false, to, from);
+            throw exce;
         }
     }
 
@@ -275,10 +285,10 @@ public final class ReceiptUpdateService {
      * @param receiptOCR
      * @throws Exception
      */
-    @Transactional(rollbackFor={Exception.class})
     public void turkReject(ReceiptEntityOCR receiptOCR) throws Exception {
         try {
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.TURK_RECEIPT_REJECT);
+            receiptOCR = receiptOCRManager.findOne(receiptOCR.getId());
+            receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
             receiptOCR.setBizName(null);
             receiptOCR.setBizStore(null);
             receiptOCR.inActive();
@@ -286,17 +296,19 @@ public final class ReceiptUpdateService {
             receiptOCRManager.save(receiptOCR);
 
             try {
-                messageManager.updateObject(receiptOCR.getId(), ReceiptStatusEnum.OCR_PROCESSED, ReceiptStatusEnum.TURK_RECEIPT_REJECT);
+                messageManager.updateObject(receiptOCR.getId(), DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_RECEIPT_REJECT);
             } catch(Exception exce) {
                 log.error(exce.getLocalizedMessage());
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_RECEIPT_REJECT, ReceiptStatusEnum.OCR_PROCESSED);
+                messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
                 throw exce;
             }
             itemOCRManager.deleteWhereReceipt(receiptOCR);
 
+            fileSystemService.deleteSoft(receiptOCR.getReceiptBlobId());
+            fileSystemService.deleteSoft(receiptOCR.getReceiptScaledBlobId());
             storageManager.deleteSoft(receiptOCR.getReceiptBlobId());
             storageManager.deleteSoft(receiptOCR.getReceiptScaledBlobId());
-            GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId());
+            GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId().iterator().next().getBlobId());
             DBObject dbObject =  gridFSDBFile.getMetaData();
 
             StringBuilder sb = new StringBuilder();
@@ -307,12 +319,12 @@ public final class ReceiptUpdateService {
             log.error("Rejection of a receipt failed: " + exce.getLocalizedMessage());
             log.warn("Revert all the transaction for ReceiptOCR: " + receiptOCR.getId());
 
-            receiptOCR.setReceiptStatus(ReceiptStatusEnum.OCR_PROCESSED);
+            receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
             receiptOCR.active();
             receiptOCRManager.save(receiptOCR);
             //log.error("Failed to rollback Receipt OCR: " + receiptOCR.getId() + ", error message: " + e.getLocalizedMessage());
 
-            messageManager.undoUpdateObject(receiptOCR.getId(), false, ReceiptStatusEnum.TURK_RECEIPT_REJECT, ReceiptStatusEnum.OCR_PROCESSED);
+            messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
             //End of roll back
 
             log.info("Complete with rollback: throwing exception");
@@ -335,6 +347,8 @@ public final class ReceiptUpdateService {
             messageManager.deleteAllForReceiptOCR(receiptEntityOCR.getId());
             storageManager.deleteHard(receiptEntityOCR.getReceiptBlobId());
             storageManager.deleteHard(receiptEntityOCR.getReceiptScaledBlobId());
+            fileSystemService.deleteHard(receiptEntityOCR.getReceiptBlobId());
+            fileSystemService.deleteHard(receiptEntityOCR.getReceiptScaledBlobId());
         } else {
             log.warn("User trying to delete processed Receipt OCR #: " + receiptEntityOCR.getId() + ", Receipt Id #:" + receiptEntityOCR.getReceiptId());
         }
@@ -361,9 +375,9 @@ public final class ReceiptUpdateService {
      * @param item
      */
     private void populateWithExpenseType(ItemEntity item) {
-        if(item.getExpenseType() != null && item.getExpenseType().getId() != null) {
-            ExpenseTypeEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseType().getId());
-            item.setExpenseType(expenseType);
+        if(item.getExpenseTag() != null && item.getExpenseTag().getId() != null) {
+            ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseTag().getId());
+            item.setExpenseTag(expenseType);
         }
     }
 
@@ -375,5 +389,16 @@ public final class ReceiptUpdateService {
      */
     public boolean checkIfDuplicate(String checkSum) {
         return receiptManager.existCheckSum(checkSum);
+    }
+
+    public void turkMileage(MileageEntity mileageEntity, ReceiptEntityOCR receiptOCR) {
+        ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCR.getId());
+        mileageEntity.setFileSystemEntities(receiptEntityOCR.getReceiptBlobId());
+        try {
+            mileageService.save(mileageEntity);
+            updateMessageManager(receiptOCR, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+        }
     }
 }

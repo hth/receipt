@@ -1,35 +1,34 @@
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.NotificationTypeEnum;
-import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
 import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
 import com.receiptofi.web.view.ExpensofiExcelView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -37,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,25 +79,31 @@ public class ExpensofiController {
             assert(model.asMap().get("items") != null);
 
             ReceiptEntity receiptEntity = items.get(0).getReceipt();
-            GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntity.getReceiptBlobId());
-            InputStream is = null;
-            String filename = CreateTempFile.createRandomFilename();
-            try {
-                is = gridFSDBFile.getInputStream();
-                byte[] bytes = IOUtils.toByteArray(is);
-                model.addAttribute("image", bytes);
-                model.addAttribute("image-type", gridFSDBFile.getContentType());
-                model.addAttribute("file-name", filename);
-            } catch (IOException exce) {
-                log.error("Failed to load receipt image: " + exce.getLocalizedMessage());
-            } finally {
-                IOUtils.closeQuietly(is);
+            Collection<AnchorFileInExcel> anchorFileInExcels = new LinkedList<>();
+            for(FileSystemEntity fileId : receiptEntity.getReceiptBlobId()) {
+                GridFSDBFile gridFSDBFile = fileDBService.getFile(fileId.getBlobId());
+                InputStream is = null;
+                try {
+                    is = gridFSDBFile.getInputStream();
+                    AnchorFileInExcel anchorFileInExcel = new AnchorFileInExcel(IOUtils.toByteArray(is), gridFSDBFile.getContentType());
+                    anchorFileInExcels.add(anchorFileInExcel);
+                } catch (IOException exce) {
+                    log.error("Failed to load receipt image: " + exce.getLocalizedMessage());
+                } finally {
+                    IOUtils.closeQuietly(is);
+                }
             }
+            model.addAttribute("to_be_anchored_files", anchorFileInExcels);
 
             try {
+                String filename = CreateTempFile.createRandomFilename();
+                model.addAttribute("file-name", filename);
+
                 ExpensofiExcelView.newInstance().generateExcel(model.asMap(), new HSSFWorkbook());
+
                 updateReceiptWithExcelFilename(receiptEntity, filename);
                 notificationService.addNotification(receiptEntity.getBizName().getName() + " expense report created", NotificationTypeEnum.EXPENSE_REPORT, receiptEntity);
+
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
                 return new ExcelFileName(filename).asJson();
             } catch (IOException e) {

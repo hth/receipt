@@ -1,14 +1,14 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.UserPreferenceEntity;
+import com.receiptofi.domain.UserProfileEntity;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.receiptofi.domain.ExpenseTypeEntity;
-import com.receiptofi.domain.UserPreferenceEntity;
-import com.receiptofi.domain.UserProfileEntity;
 
 /**
  * User: hitender
@@ -19,9 +19,9 @@ public final class UserProfilePreferenceForm {
 
     private UserProfileEntity userProfile;
     private UserPreferenceEntity userPreference;
-    private List<ExpenseTypeEntity> expenseTypes;
-    private Map<String, Long> expenseTypeCount = new HashMap<>();
-    private int visibleExpenseTypes = 0;
+    private List<ExpenseTagEntity> expenseTags;
+    private Map<String, Long> expenseTagCount = new HashMap<>();
+    private int visibleExpenseTags = 0;
     private boolean isActive = false;
 
     private String errorMessage;
@@ -50,28 +50,28 @@ public final class UserProfilePreferenceForm {
         this.userPreference = userPreference;
     }
 
-    public List<ExpenseTypeEntity> getExpenseTypes() {
-        return expenseTypes;
+    public List<ExpenseTagEntity> getExpenseTags() {
+        return expenseTags;
     }
 
-    public void setExpenseTypes(List<ExpenseTypeEntity> expenseTypes) {
-        this.expenseTypes = expenseTypes;
+    public void setExpenseTags(List<ExpenseTagEntity> expenseTags) {
+        this.expenseTags = expenseTags;
     }
 
-    public Map<String, Long> getExpenseTypeCount() {
-        return expenseTypeCount;
+    public Map<String, Long> getExpenseTagCount() {
+        return expenseTagCount;
     }
 
-    public void setExpenseTypeCount(Map<String, Long> expenseTypeCount) {
-        this.expenseTypeCount = expenseTypeCount;
+    public void setExpenseTagCount(Map<String, Long> expenseTagCount) {
+        this.expenseTagCount = expenseTagCount;
     }
 
-    public int getVisibleExpenseTypes() {
-        return visibleExpenseTypes;
+    public int getVisibleExpenseTags() {
+        return visibleExpenseTags;
     }
 
-    public void setVisibleExpenseTypes(int visibleExpenseTypes) {
-        this.visibleExpenseTypes = visibleExpenseTypes;
+    public void setVisibleExpenseTags(int visibleExpenseTags) {
+        this.visibleExpenseTags = visibleExpenseTags;
     }
 
     public boolean isActive() {

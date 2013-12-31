@@ -14,7 +14,7 @@
     <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
     <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
 
-    <script type="text/javascript" src="../jquery/js/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
     <!-- For drop down menu -->
@@ -128,9 +128,9 @@
                             ${item.taxed.description}
                         </td>
                         <td style="padding: 3px; text-align: left;">
-                            <form:select path="items[${status.index}].expenseType.id">
+                            <form:select path="items[${status.index}].expenseTag.id">
                                 <form:option value="NONE" label="--- Select ---" />
-                                <form:options items="${expenseForm.expenseTypes}" itemValue="id" itemLabel="expName" />
+                                <form:options items="${expenseForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                             </form:select>
                         </td>
                     </tr>
