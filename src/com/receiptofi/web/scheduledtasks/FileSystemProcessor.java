@@ -37,14 +37,22 @@ public class FileSystemProcessor {
     //for every two second use */2 * * * * ? where as cron string blow run every day at 12:00 AM
     @Scheduled(cron="0 0 0 * * ?")
     public void removeExpiredExcelFiles() {
-        AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(deleteExcelFileAfterDay).toDate());
-        File directory = new File(expensofiFileSystem);
-        String[] files = directory.list(cutoff);
-        for(String filename : files) {
-            removeExpiredExcel(getExcelFile(filename));
-            receiptService.removeExpenseFilenameReference(filename);
+        log.info("FileSystemProcessor.removeExpiredExcelFiles begins");
+        int count = 0, found = 0;
+        try {
+            AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(deleteExcelFileAfterDay).toDate());
+            File directory = new File(expensofiFileSystem);
+            String[] files = directory.list(cutoff);
+            found = files.length;
+            for(String filename : files) {
+                removeExpiredExcel(getExcelFile(filename));
+                receiptService.removeExpenseFilenameReference(filename);
+                count++;
+            }
+        } finally {
+            log.info("FileSystemProcessor.removeExpiredExcelFiles : deletedExcelFile=" + count + ", foundExcelFile=" + found);
         }
-        log.info("Removed expired excel files: count " + files.length);
+
     }
 
     public File getExcelFile(String filename) {
