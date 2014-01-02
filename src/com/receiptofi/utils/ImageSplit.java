@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -84,6 +86,22 @@ public final class ImageSplit {
     }
 
     /**
+     * Decrease the resolution of the receipt image with PNG file format for better resolution
+     *
+     * @return
+     * @throws IOException
+     */
+    public static void decreaseResolution(InputStream is, OutputStream os) throws IOException {
+        BufferedImage image = bufferedImage(is);
+
+        log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
+        double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
+
+        BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
+        ImageIO.write(bufferedImage, "png", os);
+    }
+
+    /**
      * Can be used for calculating height and width of an image
      *
      * @param file
@@ -91,8 +109,11 @@ public final class ImageSplit {
      * @throws IOException
      */
     public static BufferedImage bufferedImage(File file) throws IOException {
-        FileInputStream fis = new FileInputStream(file);
-        return ImageIO.read(fis);
+        return bufferedImage(new FileInputStream(file));
+    }
+
+    public static BufferedImage bufferedImage(InputStream is) throws IOException {
+        return ImageIO.read(is);
     }
 
     /**
