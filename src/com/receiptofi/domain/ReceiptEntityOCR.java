@@ -38,11 +38,7 @@ public class ReceiptEntityOCR extends DocumentEntity {
 
     @DBRef
     @Field("RECEIPT_BLOB_ID")
-	private Collection<FileSystemEntity> receiptBlobId;        //TODO sorted
-
-    @DBRef
-    @Field("RECEIPT_SCALED_BLOB_ID")
-    private Collection<FileSystemEntity> receiptScaledBlobId;
+	private Collection<FileSystemEntity> receiptBlobId;
 
 	@NotNull
     @Field("RECEIPT_DATE")
@@ -125,23 +121,8 @@ public class ReceiptEntityOCR extends DocumentEntity {
 		this.receiptBlobId.add(receiptBlobId);
 	}
 
-    public Collection<FileSystemEntity> getReceiptScaledBlobId() {
-        return receiptScaledBlobId;
-    }
-
     public void setReceiptBlobId(Collection<FileSystemEntity> receiptBlobId) {
         this.receiptBlobId = receiptBlobId;
-    }
-
-    public void addReceiptScaledBlobId(FileSystemEntity receiptScaledBlobId) {
-        if(this.receiptScaledBlobId == null) {
-            this.receiptScaledBlobId = new ArrayList<>();
-        }
-        this.receiptScaledBlobId.add(receiptScaledBlobId);
-    }
-
-    public void setReceiptScaledBlobId(Collection<FileSystemEntity> receiptScaledBlobId) {
-        this.receiptScaledBlobId = receiptScaledBlobId;
     }
 
     public String getReceiptDate() {

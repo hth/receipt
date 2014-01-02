@@ -485,7 +485,6 @@
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
                             <form:errors path="receiptOCR"      cssClass="error" />
                             <form:hidden path="receiptOCR.receiptBlobId"/>
-                            <form:hidden path="receiptOCR.receiptScaledBlobId"/>
                             <form:hidden path="receiptOCR.id"/>
                             <form:hidden path="receiptOCR.userProfileId"/>
                             <form:hidden path="receiptOCR.version"/>

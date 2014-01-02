@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -238,10 +239,8 @@ public final class LandingService {
      */
     public void uploadReceipt(String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
         String receiptBlobId = null;
-        String receiptScaledBlobId = null;
         ReceiptEntityOCR receiptOCR = null;
         FileSystemEntity fileSystemEntityUnScaled = null;
-        FileSystemEntity fileSystemEntityScaled = null;
         List<ItemEntityOCR> items;
         try {
             //No more using OCR
@@ -251,30 +250,16 @@ public final class LandingService {
             //String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
             log.info("Translation: " + receiptOCRTranslation);
 
-            receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
-            log.info("File Id: " + receiptBlobId);
-
-            MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
-            File original = CreateTempFile.file(new StringBuilder()
-                    .append("image_")
-                    .append(FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()))
-                    .toString(),
-                    FilenameUtils.getExtension(commonsMultipartFile.getOriginalFilename()));
-            commonsMultipartFile.transferTo(original);
-            File scaled = ImageSplit.decreaseResolution(original);
+            File scaled = scaleImage(uploadReceiptImage);
             uploadReceiptImage.setFile(scaled);
-            receiptScaledBlobId = fileDBService.saveFile(uploadReceiptImage);
+            receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
 
             receiptOCR = ReceiptEntityOCR.newInstance();
             receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
 
-            fileSystemEntityUnScaled = new FileSystemEntity(receiptScaledBlobId, ImageSplit.bufferedImage(original), 0, 0);
+            fileSystemEntityUnScaled = new FileSystemEntity(receiptBlobId, ImageSplit.bufferedImage(scaled), 0, 0);
             fileSystemService.save(fileSystemEntityUnScaled);
             receiptOCR.addReceiptBlobId(fileSystemEntityUnScaled);
-
-            fileSystemEntityScaled = new FileSystemEntity(receiptBlobId, ImageSplit.bufferedImage(scaled), 0, 0);
-            fileSystemService.save(fileSystemEntityScaled);
-            receiptOCR.addReceiptScaledBlobId(fileSystemEntityScaled);
 
             receiptOCR.setUserProfileId(userProfileId);
             receiptOCR.setReceiptOCRTranslation(receiptOCRTranslation);
@@ -301,18 +286,11 @@ public final class LandingService {
             if(receiptBlobId != null) {
                 fileDBService.deleteHard(receiptBlobId);
             }
-            if(receiptScaledBlobId != null) {
-                fileDBService.deleteHard(receiptScaledBlobId);
-            }
             int sizeFSFinal = fileDBService.getFSDBSize();
             log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
 
             if(fileSystemEntityUnScaled != null) {
                 fileSystemService.deleteHard(fileSystemEntityUnScaled);
-            }
-
-            if(fileSystemEntityScaled != null) {
-                fileSystemService.deleteHard(fileSystemEntityScaled);
             }
 
             long sizeReceiptInitial = receiptOCRManager.collectionSize();
@@ -339,6 +317,21 @@ public final class LandingService {
             log.info("Complete with rollback: throwing exception");
             throw new Exception(exce.getLocalizedMessage());
         }
+    }
+
+    private File scaleImage(UploadReceiptImage uploadReceiptImage) throws IOException {
+//        receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
+//        log.info("File Id: " + receiptBlobId);
+
+        MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
+        File original = CreateTempFile.file(new StringBuilder()
+                .append("image_")
+                .append(FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()))
+                .toString(),
+                FilenameUtils.getExtension(commonsMultipartFile.getOriginalFilename()));
+
+        commonsMultipartFile.transferTo(original);
+        return ImageSplit.decreaseResolution(original);
     }
 
 

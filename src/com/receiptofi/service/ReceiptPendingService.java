@@ -32,7 +32,7 @@ public final class ReceiptPendingService {
     public void getAllPending(String userProfileId, PendingReceiptForm pendingReceiptForm) {
         List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllPending(userProfileId);
         for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
-            for(FileSystemEntity scaledId : receiptEntityOCR.getReceiptScaledBlobId()) {
+            for(FileSystemEntity scaledId : receiptEntityOCR.getReceiptBlobId()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                 String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
                 pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
@@ -49,7 +49,7 @@ public final class ReceiptPendingService {
     public void getAllRejected(String userProfileId, PendingReceiptForm pendingReceiptForm) {
         List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllRejected(userProfileId);
         for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
-            for(FileSystemEntity scaledId : receiptEntityOCR.getReceiptScaledBlobId()) {
+            for(FileSystemEntity scaledId : receiptEntityOCR.getReceiptBlobId()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                 String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
                 pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
