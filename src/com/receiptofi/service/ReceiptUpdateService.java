@@ -74,11 +74,9 @@ public final class ReceiptUpdateService {
 
             receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
             receipt.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
-            receipt.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
             receiptOCR.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
-            receiptOCR.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             receiptOCR.setVersion(receiptEntityOCR.getVersion());
@@ -157,11 +155,9 @@ public final class ReceiptUpdateService {
 
             receipt.setImageOrientation(receiptEntityOCR.getImageOrientation());
             receipt.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
-            receipt.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             receiptOCR.setImageOrientation(receiptEntityOCR.getImageOrientation());
             receiptOCR.setReceiptBlobId(receiptEntityOCR.getReceiptBlobId());
-            receiptOCR.setReceiptScaledBlobId(receiptEntityOCR.getReceiptScaledBlobId());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             receiptOCR.setVersion(receiptEntityOCR.getVersion());
@@ -305,9 +301,7 @@ public final class ReceiptUpdateService {
             itemOCRManager.deleteWhereReceipt(receiptOCR);
 
             fileSystemService.deleteSoft(receiptOCR.getReceiptBlobId());
-            fileSystemService.deleteSoft(receiptOCR.getReceiptScaledBlobId());
             storageManager.deleteSoft(receiptOCR.getReceiptBlobId());
-            storageManager.deleteSoft(receiptOCR.getReceiptScaledBlobId());
             GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId().iterator().next().getBlobId());
             DBObject dbObject =  gridFSDBFile.getMetaData();
 
@@ -346,9 +340,7 @@ public final class ReceiptUpdateService {
             itemOCRManager.deleteWhereReceipt(receiptEntityOCR);
             messageManager.deleteAllForReceiptOCR(receiptEntityOCR.getId());
             storageManager.deleteHard(receiptEntityOCR.getReceiptBlobId());
-            storageManager.deleteHard(receiptEntityOCR.getReceiptScaledBlobId());
             fileSystemService.deleteHard(receiptEntityOCR.getReceiptBlobId());
-            fileSystemService.deleteHard(receiptEntityOCR.getReceiptScaledBlobId());
         } else {
             log.warn("User trying to delete processed Receipt OCR #: " + receiptEntityOCR.getId() + ", Receipt Id #:" + receiptEntityOCR.getReceiptId());
         }

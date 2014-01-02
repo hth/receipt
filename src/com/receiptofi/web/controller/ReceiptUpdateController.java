@@ -307,7 +307,6 @@ public class ReceiptUpdateController {
             }
             //helps load the image on failure
             receiptOCRForm.getReceiptOCR().setReceiptBlobId(receipt.getReceiptBlobId());
-            receiptOCRForm.getReceiptOCR().setReceiptScaledBlobId(receipt.getReceiptScaledBlobId());
         } else {
             log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
         }
