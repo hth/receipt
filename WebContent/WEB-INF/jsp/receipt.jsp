@@ -543,21 +543,7 @@
             </td>
             <td style="width: 6px;">&nbsp;</td>
             <td style="vertical-align: top; text-align: center">
-                <%--<c:forEach items="${receiptForm.receipt.receiptScaledBlobId}" var="arr" varStatus="status">--%>
-                    <%--<c:choose>--%>
-                        <%--<c:when test="${isScaledImg eq true}">--%>
-                            <%--<div id="imageTypeId">Displayed Scaled Image, <a id="originalImageId" href="#">Show Original Image</a></div>--%>
-                        <%--</c:when>--%>
-                        <%--<c:otherwise>--%>
-                            <%--<div id="imageTypeId">Displayed Original Image, <a id="scaledImageId" href="#">Show Scaled Image</a></div>--%>
-                        <%--</c:otherwise>--%>
-                    <%--</c:choose>--%>
-                    <%--&lt;%&ndash;<div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<div src="" id="receipt.image"></div>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                    <%----%>
-                <%--</c:forEach>--%>
-                    <div id="container" style="height: 850px"></div>
+                <div id="container" style="height: 850px"></div>
             </td>
         </tr>
     </table>
@@ -592,36 +578,6 @@
         "use strict";
 
         $("#itemId").focus();
-    });
-</script>
-
-<script>
-    $(document).on('click', '#scaledImageId', function(event) {
-        "use strict";
-
-        event.preventDefault();
-        $('#holder').html(
-                "<div id='holder' style='height: 850px; border-color:#ff0000 #0000ff;'>" +
-                    "<div src='' id='receipt.image'></div>" +
-                "</div>"
-        ).show();
-
-        fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptForm.receipt.receiptScaledBlobId}.htm');
-        $('#imageTypeId').html("Displayed Scaled Image, <a id='originalImageId' href='#'>Show Original Image</a>").show();
-    });
-
-    $(document).on('click', '#originalImageId', function(event) {
-        "use strict";
-
-        event.preventDefault();
-        $('#holder').html(
-                "<div id='holder' style='height: 850px; border-color:#ff0000 #0000ff;'>" +
-                    "<div src='' id='receipt.image'></div>" +
-                "</div>"
-        ).show();
-
-        fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptForm.receipt.receiptBlobId}.htm');
-        $('#imageTypeId').html("Displayed Original Image, <a id='scaledImageId' href='#'>Show Scaled Image</a>").show();
     });
 </script>
 
