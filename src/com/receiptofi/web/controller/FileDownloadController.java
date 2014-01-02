@@ -29,6 +29,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,9 @@ public class FileDownloadController {
     @Autowired private FileSystemProcessor fileSystemProcessor;
     @Autowired private ReceiptService receiptService;
 
+    @Value("${imageNotFoundPlaceHolder:/images/no_image.gif}")
+    private String imageNotFound;
+
 	/**
 	 * This is used only to serve images of Receipt
 	 *
@@ -70,8 +74,9 @@ public class FileDownloadController {
 			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
 
 			if(gridFSDBFile == null) {
+                log.warn("GridFSDBFile is null; failedToFindImage="+ imageId);
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
-    			File file = FileUtils.getFile(pathToWeb + "/images/no_image.gif");
+    			File file = FileUtils.getFile(pathToWeb + imageNotFound);
 //                File file = FileUtils.getFile(pathToWeb + "/images/no_image_found.jpg");
 				BufferedImage bi = ImageIO.read(file);
                 setContentType(file, response);
