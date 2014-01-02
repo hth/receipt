@@ -26,6 +26,8 @@ import org.springframework.stereotype.Component;
 public class FileSystemProcessor {
     private static final Logger log = LoggerFactory.getLogger(FileSystemProcessor.class);
 
+    public static final String EXPENSOFI_FILE_SYSTEM = "/opt/receiptofi/expensofi";
+
     @Value("${deleteExcelFileAfterDay:7}")
     private int deleteExcelFileAfterDay;
 
