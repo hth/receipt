@@ -6,6 +6,7 @@
 <html>
 <head>
     <title><fmt:message key="receipt.update" /></title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <link rel="icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
@@ -22,11 +23,16 @@
     <script>
         /* add background color to holder in tr tag */
         window.onload = function () {
-            var angle = '${receiptOCRForm.receiptOCR.imageOrientation}';
-            document.getElementById("holder").innerHTML = "";
-            var R = Raphael("holder", 930, 800);
+            <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+            fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptOCRForm.receiptOCR.userProfileId}');
+            </c:forEach>
+        };
+
+        function fetchReceiptImage(location, holder, id, angle, blobId, userProfileId) {
+            document.getElementById(holder).innerHTML = "";
+            var R = Raphael(holder, 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
-            var img = R.image('${pageContext.request.contextPath}/filedownload/receiptimage/${receiptOCRForm.receiptOCR.receiptBlobId}.htm', 80, 20, 750, 750);
+            var img = R.image(location, 80, 20, 750, 750);
             var butt1 = R.set(),
                     butt2 = R.set();
             butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
@@ -40,7 +46,7 @@
             butt1[2].click(function () {
                 angle -= 90;
                 img.stop().animate({transform: "r" + angle}, 1000, "<>");
-                orientation(-90);
+                orientation(id, -90, blobId, userProfileId);
             }).mouseover(function () {
                 butt1[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
@@ -49,7 +55,7 @@
             butt2[2].click(function () {
                 angle += 90;
                 img.animate({transform: "r" + angle}, 1000, "<>");
-                orientation(90);
+                orientation(id, 90, blobId, userProfileId);
             }).mouseover(function () {
                 butt2[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
@@ -58,15 +64,16 @@
             // setTimeout(function () {R.safari();});
 
             img.rotate(angle);
-        };
+        }
 
-        function orientation(angle) {
+        function orientation(id, angle, blobId, userProfileId) {
             $.ajax({
-                url: '${pageContext. request. contextPath}/fetcher/change_ocr_image_orientation.htm',
+                url: '${pageContext. request. contextPath}/fetcher/change_fs_image_orientation.htm',
                 data: {
-                    documentId: '${receiptOCRForm.receiptOCR.id}',
+                    fileSystemId: id,
                     orientation: angle,
-                    userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
+                    blobId: blobId,
+                    userProfileId: userProfileId
                 },
                 type: "POST",
                 success: function (data) {
@@ -78,41 +85,6 @@
                 }
             });
         }
-    </script>
-
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
     </script>
 
     <script type="text/javascript">
@@ -245,6 +217,41 @@
         });
     </script>
 
+    <!-- For drop down menu -->
+    <script>
+        $(document).ready(function () {
+
+            $(".account").click(function () {
+                var X = $(this).attr('id');
+                if (X == 1) {
+                    $(".submenu").hide();
+                    $(this).attr('id', '0');
+                }
+                else {
+                    $(".submenu").show();
+                    $(this).attr('id', '1');
+                }
+
+            });
+
+            //Mouse click on sub menu
+            $(".submenu").mouseup(function () {
+                return false
+            });
+
+            //Mouse click on my account link
+            $(".account").mouseup(function () {
+                return false
+            });
+
+            //Document Click
+            $(document).mouseup(function () {
+                $(".submenu").hide();
+                $(".account").attr('id', '');
+            });
+        });
+    </script>
+
 </head>
 <body>
 <div class="wrapper">
@@ -286,8 +293,6 @@
             </div>
         </div>
     </div>
-
-    <p>&nbsp;</p>
 
     <h2 class="demoHeaders">Pending receipt recheck</h2>
 
@@ -492,16 +497,23 @@
             </td>
             <td>&nbsp;</td>
             <td style="vertical-align: top;">
-                <div id="holder" style="height: 850px">
-                    <c:choose>
-                    <c:when test="${empty receiptOCRForm.receiptOCR}">
-                        &nbsp;
-                    </c:when>
-                    <c:otherwise>
-                        <div src="" id="receiptOCR.image"></div>
-                    </c:otherwise>
-                    </c:choose>
-                </div>
+                <%--<div id="holder" style="height: 850px">--%>
+                    <%--<c:choose>--%>
+                    <%--<c:when test="${empty receiptOCRForm.receiptOCR}">--%>
+                        <%--&nbsp;--%>
+                    <%--</c:when>--%>
+                    <%--<c:otherwise>--%>
+                        <%--<div src="" id="receiptOCR.image"></div>--%>
+                    <%--</c:otherwise>--%>
+                    <%--</c:choose>--%>
+                <%--</div>--%>
+
+                <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+                    <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
+                            <%--<div src="" id="receipt.image"></div>--%>
+                    </div>
+                    <%--<div id="container" style="height: 850px"></div>--%>
+                </c:forEach>
             </td>
         </tr>
     </table>
@@ -568,6 +580,68 @@
             });
         });
     });
+</script>
+
+<script>
+    function measurement(position) {
+        if (position instanceof String) {
+            if (position.indexOf("%") != -1) {
+                return position;
+            }
+        }
+        return position + "px";
+    }
+    function rotate(el, d) {
+        var s = "rotate(" + d + "deg)";
+        if (el.style) { // regular DOM Object
+            el.style.MozTransform = s;
+            el.style.WebkitTransform = s;
+            el.style.OTransform = s;
+            el.style.transform = s;
+        } else if (el.css) { // JQuery Object
+            el.css("-moz-transform", s);
+            el.css("-webkit-transform", s);
+            el.css("-o-transform", s);
+            el.css("transform", s);
+        }
+        el.setAttribute("rotation", d);
+    }
+    function calculateTop(imageHeight) {
+        if (topHeight == 0 ) {
+            return topHeight + 5;
+        }
+        return topHeight + imageHeight + 5;
+    }
+
+    // JSON data
+    var topHeight = 0,
+        info = [
+            <c:forEach items="${receiptForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+            {
+                src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
+                pos: {
+                    top: topHeight = calculateTop(${arr.height}),
+                    left: 0
+                },
+                rotate: ${arr.imageOrientation},
+                zIndex: 0
+            },
+            </c:forEach>
+        ]
+    ;
+
+    var df = document.createDocumentFragment();
+    for (var i = 0, j = info.length; i < j; i++) {
+        var el = document.createElement("img");
+        el.src = info[i].src;
+        el.className = "img";
+        el.style.left = measurement(info[i].pos.left);
+        el.style.top = measurement(info[i].pos.top);
+        el.style.zIndex = info[i].zIndex;
+        rotate(el, info[i].rotate);
+        df.appendChild(el);
+    }
+    document.getElementById("container").appendChild(df);
 </script>
 
 </body>
