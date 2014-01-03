@@ -1,14 +1,14 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.MessageDocumentEntity;
+import com.receiptofi.domain.types.DocumentStatusEnum;
+
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.MessageDocumentEntity;
-import com.receiptofi.domain.types.DocumentStatusEnum;
 
 /**
  * JMS Message Manager
@@ -48,7 +48,7 @@ public interface MessageManager extends RepositoryManager<MessageDocumentEntity>
     WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
-     * Delete all the messages that are associated with ReceiptEntityOCR.
+     * Delete all the messages that are associated with DocumentEntity.
      * Process will include current and previous re-check request messages for the receipt
      *
      * @param receiptOCRId

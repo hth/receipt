@@ -1,8 +1,8 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.repository.ReceiptOCRManager;
+import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.web.form.PendingReceiptForm;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 @Service
 public final class ReceiptPendingService {
 
-    @Autowired private ReceiptOCRManager receiptOCRManager;
+    @Autowired private DocumentManager documentManager;
     @Autowired private FileDBService fileDBService;
 
     /**
@@ -30,12 +30,12 @@ public final class ReceiptPendingService {
      * @return
      */
     public void getAllPending(String userProfileId, PendingReceiptForm pendingReceiptForm) {
-        List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllPending(userProfileId);
-        for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
-            for(FileSystemEntity scaledId : receiptEntityOCR.getReceiptBlobId()) {
+        List<DocumentEntity> documentEntityList = documentManager.getAllPending(userProfileId);
+        for(DocumentEntity documentEntity : documentEntityList) {
+            for(FileSystemEntity scaledId : documentEntity.getReceiptBlobId()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                 String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
-                pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
+                pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), documentEntity);
             }
         }
     }
@@ -47,12 +47,12 @@ public final class ReceiptPendingService {
      * @return
      */
     public void getAllRejected(String userProfileId, PendingReceiptForm pendingReceiptForm) {
-        List<ReceiptEntityOCR> receiptEntityOCRList = receiptOCRManager.getAllRejected(userProfileId);
-        for(ReceiptEntityOCR receiptEntityOCR : receiptEntityOCRList) {
-            for(FileSystemEntity scaledId : receiptEntityOCR.getReceiptBlobId()) {
+        List<DocumentEntity> documentEntityList = documentManager.getAllRejected(userProfileId);
+        for(DocumentEntity documentEntity : documentEntityList) {
+            for(FileSystemEntity scaledId : documentEntity.getReceiptBlobId()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                 String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
-                pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), receiptEntityOCR);
+                pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), documentEntity);
             }
         }
     }

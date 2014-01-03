@@ -1,10 +1,10 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.web.helper.ReceiptOCRHelper;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.receiptofi.domain.ReceiptEntityOCR;
-import com.receiptofi.web.helper.ReceiptOCRHelper;
 
 /**
  * User: hitender
@@ -26,15 +26,15 @@ public final class PendingReceiptForm {
         return pending;
     }
 
-    public void addPending(String fileName, long fileSize, ReceiptEntityOCR receiptEntityOCR) {
-        this.pending.add(ReceiptOCRHelper.newInstance(fileName, fileSize, receiptEntityOCR));
+    public void addPending(String fileName, long fileSize, DocumentEntity documentEntity) {
+        this.pending.add(ReceiptOCRHelper.newInstance(fileName, fileSize, documentEntity));
     }
 
     public List<ReceiptOCRHelper> getRejected() {
         return rejected;
     }
 
-    public void addRejected(String fileName, long fileSize, ReceiptEntityOCR receiptEntityOCR) {
-        this.rejected.add(ReceiptOCRHelper.newInstance(fileName, fileSize, receiptEntityOCR));
+    public void addRejected(String fileName, long fileSize, DocumentEntity documentEntity) {
+        this.rejected.add(ReceiptOCRHelper.newInstance(fileName, fileSize, documentEntity));
     }
 }

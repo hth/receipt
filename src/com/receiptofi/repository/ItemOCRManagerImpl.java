@@ -3,8 +3,8 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +77,7 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 	}
 
 	@Override
-	public List<ItemEntityOCR> getWhereReceipt(ReceiptEntityOCR receipt) {
+	public List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt) {
 		Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
 		Sort sort = new Sort(Direction.ASC, "SEQUENCE");
 		return mongoTemplate.find(query.with(sort), ItemEntityOCR.class, TABLE);
@@ -97,7 +97,7 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteWhereReceipt(ReceiptEntityOCR receipt) {
+	public void deleteWhereReceipt(DocumentEntity receipt) {
 		Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
 		mongoTemplate.remove(query, ItemEntityOCR.class);
 	}

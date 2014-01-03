@@ -3,7 +3,7 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.ReceiptEntityOCR;
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,21 +33,21 @@ import com.mongodb.WriteResult;
  */
 @Repository
 @Transactional(readOnly = true)
-public final class ReceiptOCRManagerImpl implements ReceiptOCRManager {
+public final class DocumentManagerImpl implements DocumentManager {
 	private static final long serialVersionUID = 8740416340416509290L;
 	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
 
 	@Autowired private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<ReceiptEntityOCR> getAllObjects() {
-		return mongoTemplate.findAll(ReceiptEntityOCR.class, TABLE);
+	public List<DocumentEntity> getAllObjects() {
+		return mongoTemplate.findAll(DocumentEntity.class, TABLE);
 	}
 
 	//TODO invoke transaction here
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(ReceiptEntityOCR object) throws Exception {
+	public void save(DocumentEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			// Cannot use insert because insert does not perform update like save.
@@ -59,15 +59,15 @@ public final class ReceiptOCRManagerImpl implements ReceiptOCRManager {
             }
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ReceiptEntityOCR: " + e.getLocalizedMessage());
-			log.error("Duplicate record entry for ReceiptEntityOCR: " + object);
+			log.error("Duplicate record entry for DocumentEntity: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for DocumentEntity: " + object);
 			throw new Exception(e.getMessage());
 		}
 	}
 
 	@Override
-	public ReceiptEntityOCR findOne(String id) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ReceiptEntityOCR.class, TABLE);
+	public DocumentEntity findOne(String id) {
+		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), DocumentEntity.class, TABLE);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public final class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteHard(ReceiptEntityOCR object) {
+	public void deleteHard(DocumentEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
@@ -102,22 +102,22 @@ public final class ReceiptOCRManagerImpl implements ReceiptOCRManager {
 	}
 
 	@Override
-	public List<ReceiptEntityOCR> getAllPending(String userProfileId) {
+	public List<DocumentEntity> getAllPending(String userProfileId) {
         Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
 
         Sort sort = new Sort(Direction.ASC, "CREATE");
-		return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
+		return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);
 	}
 
     @Override
-    public List<ReceiptEntityOCR> getAllRejected(String userProfileId) {
+    public List<DocumentEntity> getAllRejected(String userProfileId) {
         Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Criteria criteria2 = Criteria.where("DOCUMENT_STATUS_ENUM").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
         Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
 
         Sort sort = new Sort(Direction.ASC, "CREATE");
-        return mongoTemplate.find(query.with(sort), ReceiptEntityOCR.class, TABLE);
+        return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);
     }
 
     @Override

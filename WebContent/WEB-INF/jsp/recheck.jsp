@@ -23,8 +23,8 @@
     <script>
         /* add background color to holder in tr tag */
         window.onload = function () {
-            <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
-            fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptOCRForm.receiptOCR.userProfileId}');
+            <c:forEach items="${receiptDocumentForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
+            fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
             </c:forEach>
         };
 
@@ -142,7 +142,7 @@
                         data: {
                             date:  $("#date").val(),
                             total: $("#total").val(),
-                            userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
+                            userProfileId: '${receiptDocumentForm.receiptDocument.userProfileId}'
                         },
                         contentType: "*/*",
                         dataTypes: "application/json",
@@ -297,14 +297,14 @@
     <h2 class="demoHeaders">Pending receipt recheck</h2>
 
     <c:choose>
-        <c:when test="${!empty receiptOCRForm.errorMessage}">
+        <c:when test="${!empty receiptDocumentForm.errorMessage}">
             <%--Currently this section of code is not executed unless the error message is added to the form directly without using 'result' --%>
             <div class="ui-widget" id="existingErrorMessage">
                 <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
                     <p>
                         <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
                         <span style="display:block; width: auto">
-                            ${receiptOCRForm.errorMessage}
+                            ${receiptDocumentForm.errorMessage}
                         </span>
                     </p>
                 </div>
@@ -324,54 +324,54 @@
                 <c:choose>
                     <c:when test="${isValid}">
                     <c:choose>
-                    <c:when test="${empty receiptOCRForm.receiptOCR}">
+                    <c:when test="${empty receiptDocumentForm.receiptDocument}">
                         Oops! Seems like user has deleted this receipt recently.
                     </c:when>
                     <c:otherwise>
-                    <form:form method="post" action="../recheck.htm" modelAttribute="receiptOCRForm">
+                    <form:form method="post" action="../recheck.htm" modelAttribute="receiptDocumentForm">
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage" />
-                        <form:errors path="receiptOCR"      cssClass="error" />
-                        <form:hidden path="receiptOCR.id" id="receiptId"/>
-                        <form:hidden path="receiptOCR.userProfileId"/>
-                        <form:hidden path="receiptOCR.version"/>
-                        <form:hidden path="receiptOCR.documentStatus"/>
-                        <form:hidden path="receiptOCR.receiptId"/>
-                        <form:hidden path="receiptOCR.notes.id"/>
-                        <form:hidden path="receiptOCR.notes.version"/>
-                        <form:hidden path="receiptOCR.notes.text"/>
-                        <form:hidden path="receiptOCR.recheckComment.id"/>
-                        <form:hidden path="receiptOCR.recheckComment.version"/>
-                        <form:hidden path="receiptOCR.receiptOf"/>
+                        <form:errors path="receiptDocument"      cssClass="error" />
+                        <form:hidden path="receiptDocument.id" id="receiptId"/>
+                        <form:hidden path="receiptDocument.userProfileId"/>
+                        <form:hidden path="receiptDocument.version"/>
+                        <form:hidden path="receiptDocument.documentStatus"/>
+                        <form:hidden path="receiptDocument.receiptId"/>
+                        <form:hidden path="receiptDocument.notes.id"/>
+                        <form:hidden path="receiptDocument.notes.version"/>
+                        <form:hidden path="receiptDocument.notes.text"/>
+                        <form:hidden path="receiptDocument.recheckComment.id"/>
+                        <form:hidden path="receiptDocument.recheckComment.version"/>
+                        <form:hidden path="receiptDocument.receiptOf"/>
 
-                        <form:hidden path="receiptOCR.receiptOCRTranslation"/>
+                        <form:hidden path="receiptDocument.receiptOCRTranslation"/>
                         <table border="0" style="width: 550px" class="etable">
                             <tr>
                                 <td colspan="5">
                                     <div class="leftAlign">
-                                        <form:label for="receiptOCR.bizName.name" path="receiptOCR.bizName.name" cssErrorClass="error">Biz Name</form:label>
-                                        <form:input path="receiptOCR.bizName.name" id="bizName" size="52"/>
+                                        <form:label for="receiptDocument.bizName.name" path="receiptDocument.bizName.name" cssErrorClass="error">Biz Name</form:label>
+                                        <form:input path="receiptDocument.bizName.name" id="bizName" size="52"/>
                                     </div>
                                     <div class="rightAlign">
-                                        <form:label for="receiptOCR.receiptDate" path="receiptOCR.receiptDate" cssErrorClass="error">Date</form:label>
-                                        <form:input path="receiptOCR.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
+                                        <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date</form:label>
+                                        <form:input path="receiptDocument.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <div class="leftAlign"><form:errors path="receiptOCR.bizName.name" cssClass="error" /></div>
-                                    <div class="rightAlign"><form:errors path="receiptOCR.receiptDate" cssClass="error" /></div>
+                                    <div class="leftAlign"><form:errors path="receiptDocument.bizName.name" cssClass="error" /></div>
+                                    <div class="rightAlign"><form:errors path="receiptDocument.receiptDate" cssClass="error" /></div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5">
                                     <div class="leftAlign">
-                                        <form:label for="receiptOCR.bizStore.address" path="receiptOCR.bizStore.address" cssErrorClass="error">Address : </form:label>
-                                        <form:input path="receiptOCR.bizStore.address" id="address" size="70"/>
+                                        <form:label for="receiptDocument.bizStore.address" path="receiptDocument.bizStore.address" cssErrorClass="error">Address : </form:label>
+                                        <form:input path="receiptDocument.bizStore.address" id="address" size="70"/>
                                     </div>
                                     <div class="rightAlign">
-                                        <form:label for="receiptOCR.bizStore.phone" path="receiptOCR.bizStore.phone" cssErrorClass="error">Phone: </form:label>
-                                        <form:input path="receiptOCR.bizStore.phone" id="phone" size="20"/>
+                                        <form:label for="receiptDocument.bizStore.phone" path="receiptDocument.bizStore.phone" cssErrorClass="error">Phone: </form:label>
+                                        <form:input path="receiptDocument.bizStore.phone" id="phone" size="20"/>
                                     </div>
                                 </td>
                             </tr>
@@ -382,7 +382,7 @@
                                 <th style="text-align: left">&nbsp;Price</th>
                                 <th>&nbsp;</th>
                             </tr>
-                            <c:forEach items="${receiptOCRForm.items}" varStatus="status">
+                            <c:forEach items="${receiptDocumentForm.items}" varStatus="status">
                                 <form:hidden path="items[${status.index}].expenseTag.id"/>
                                 <tr>
                                     <td style="text-align: left">
@@ -420,16 +420,16 @@
                             <tr>
                                 <td colspan="3" style="text-align: right; vertical-align: top">
                                     <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
-                                    <form:input path="receiptOCR.tax" id="tax" size="5"/>
-                                    <form:errors path="receiptOCR.tax" cssClass="error" />
+                                    <form:input path="receiptDocument.tax" id="tax" size="5"/>
+                                    <form:errors path="receiptDocument.tax" cssClass="error" />
                                 </td>
                                 <td colspan="1" style="vertical-align: top">
-                                    <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
-                                    <form:errors path="receiptOCR.subTotal" cssClass="error" />
+                                    <form:input path="receiptDocument.subTotal" id="subTotal" size="8"/>
+                                    <form:errors path="receiptDocument.subTotal" cssClass="error" />
                                 </td>
                                 <td colspan="1" style="vertical-align: top">
-                                    <form:input path="receiptOCR.total" id="total" size="8"/>
-                                    <form:errors path="receiptOCR.total" cssClass="error" />
+                                    <form:input path="receiptDocument.total" id="total" size="8"/>
+                                    <form:errors path="receiptDocument.total" cssClass="error" />
                                 </td>
                             </tr>
                             <tr style="height: 6em;">
@@ -438,39 +438,39 @@
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:label for="receiptOCR.notes.text" path="receiptOCR.notes.text" cssErrorClass="error">
+                                    <form:label for="receiptDocument.notes.text" path="receiptDocument.notes.text" cssErrorClass="error">
                                         Receipt Notes:
                                     </form:label>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:textarea path="receiptOCR.notes.text" id="notes" size="250" cols="50" rows="4" disabled="true"/>
+                                    <form:textarea path="receiptDocument.notes.text" id="notes" size="250" cols="50" rows="4" disabled="true"/>
                                     <br/>
                                     <span id='notesCount'></span> characters remaining.
-                                    <span id="savedNotes" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptOCRForm.receiptOCR.notes.updated}" type="both"/></span></span>
+                                    <span id="savedNotes" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptDocumentForm.receiptDocument.notes.updated}" type="both"/></span></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:errors path="receiptOCR.notes.text" cssClass="error" />
+                                    <form:errors path="receiptDocument.notes.text" cssClass="error" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:label for="receiptOCR.recheckComment.text" path="receiptOCR.recheckComment.text" cssErrorClass="error">
+                                    <form:label for="receiptDocument.recheckComment.text" path="receiptDocument.recheckComment.text" cssErrorClass="error">
                                         Re-Check message:
                                     </form:label>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:textarea path="receiptOCR.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" disabled="false"/>
+                                    <form:textarea path="receiptDocument.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" disabled="false"/>
                                     <br/>
                                     <span id='recheckCount'></span> characters remaining.
                                     <c:choose>
-                                        <c:when test="${!empty receiptOCRForm.receiptOCR.recheckComment.id}">
-                                            <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptOCRForm.receiptOCR.recheckComment.updated}" type="both"/></span></span>
+                                        <c:when test="${!empty receiptDocumentForm.receiptDocument.recheckComment.id}">
+                                            <span id="savedRecheckComment" class="okay">Saved - <span class="timestamp"><fmt:formatDate value="${receiptDocumentForm.receiptDocument.recheckComment.updated}" type="both"/></span></span>
                                         </c:when>
                                         <c:otherwise>
                                             <span id="savedRecheckComment" class="okay"></span>
@@ -480,7 +480,7 @@
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:errors path="receiptOCR.recheckComment.text" cssClass="error" />
+                                    <form:errors path="receiptDocument.recheckComment.text" cssClass="error" />
                                 </td>
                             </tr>
                         </table>
@@ -499,16 +499,16 @@
             <td style="vertical-align: top;">
                 <%--<div id="holder" style="height: 850px">--%>
                     <%--<c:choose>--%>
-                    <%--<c:when test="${empty receiptOCRForm.receiptOCR}">--%>
+                    <%--<c:when test="${empty receiptDocumentForm.receiptDocument}">--%>
                         <%--&nbsp;--%>
                     <%--</c:when>--%>
                     <%--<c:otherwise>--%>
-                        <%--<div src="" id="receiptOCR.image"></div>--%>
+                        <%--<div src="" id="receiptDocument.image"></div>--%>
                     <%--</c:otherwise>--%>
                     <%--</c:choose>--%>
                 <%--</div>--%>
 
-                <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+                <c:forEach items="${receiptDocumentForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
                     <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
                             <%--<div src="" id="receipt.image"></div>--%>
                     </div>
@@ -616,7 +616,7 @@
     // JSON data
     var topHeight = 0,
         info = [
-            <c:forEach items="${receiptForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+            <c:forEach items="${receiptForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
             {
                 src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
                 pos: {

@@ -2,15 +2,15 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
+import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.repository.ReceiptOCRManager;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -39,7 +39,7 @@ public final class FetcherService {
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;
     @Autowired private ReceiptManager receiptManager;
-    @Autowired private ReceiptOCRManager receiptOCRManager;
+    @Autowired private DocumentManager documentManager;
     @Autowired private FileSystemService fileSystemService;
 
     /**
@@ -154,10 +154,10 @@ public final class FetcherService {
      */
     public void changeReceiptOCRImageOrientation(String receiptOCRId, int imageOrientation, String userProfileId) throws Exception {
         DateTime time = DateUtil.now();
-        ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCRId);
-        if(receiptEntityOCR.getUserProfileId().equalsIgnoreCase(userProfileId)) {
-            receiptEntityOCR.setImageOrientation(receiptEntityOCR.getImageOrientation() + imageOrientation);
-            receiptOCRManager.save(receiptEntityOCR);
+        DocumentEntity documentEntity = documentManager.findOne(receiptOCRId);
+        if(documentEntity.getUserProfileId().equalsIgnoreCase(userProfileId)) {
+            documentEntity.setImageOrientation(documentEntity.getImageOrientation() + imageOrientation);
+            documentManager.save(documentEntity);
         }
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
     }

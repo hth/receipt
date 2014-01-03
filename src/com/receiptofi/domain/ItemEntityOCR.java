@@ -47,7 +47,7 @@ public class ItemEntityOCR extends BaseEntity {
 
 	@DBRef
     @Field("RECEIPT")
-	private ReceiptEntityOCR receipt;
+	private DocumentEntity receipt;
 
 	@NotNull
     @Field("USER_PROFILE_ID")
@@ -111,11 +111,11 @@ public class ItemEntityOCR extends BaseEntity {
 		this.sequence = sequence;
 	}
 
-	public ReceiptEntityOCR getReceipt() {
+	public DocumentEntity getReceipt() {
 		return this.receipt;
 	}
 
-	public void setReceipt(ReceiptEntityOCR receipt) {
+	public void setReceipt(DocumentEntity receipt) {
 		this.receipt = receipt;
 	}
 

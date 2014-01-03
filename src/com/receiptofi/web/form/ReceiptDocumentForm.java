@@ -3,11 +3,11 @@
  */
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.utils.DateUtil;
@@ -30,10 +30,10 @@ import org.apache.commons.lang3.text.WordUtils;
  *
  * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
-public final class ReceiptOCRForm {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptOCRForm.class);
+public final class ReceiptDocumentForm {
+    private static final Logger log = LoggerFactory.getLogger(ReceiptDocumentForm.class);
 
-	ReceiptEntityOCR receiptOCR;
+	DocumentEntity receiptDocument;
     MileageEntity mileage;
 	List<ItemEntityOCR> items;
 
@@ -43,27 +43,27 @@ public final class ReceiptOCRForm {
 	/**
 	 * Need for bean instantiation in ReceiptUpdateForm
 	 */
-	private ReceiptOCRForm() {}
+	private ReceiptDocumentForm() {}
 
-	private ReceiptOCRForm(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
-		this.receiptOCR = receipt;
+	private ReceiptDocumentForm(DocumentEntity receiptDocument, List<ItemEntityOCR> items) {
+		this.receiptDocument = receiptDocument;
 		this.items = items;
 	}
 
-	public static ReceiptOCRForm newInstance(ReceiptEntityOCR receipt, List<ItemEntityOCR> items) {
-		return new ReceiptOCRForm(receipt, items);
+	public static ReceiptDocumentForm newInstance(DocumentEntity receipt, List<ItemEntityOCR> items) {
+		return new ReceiptDocumentForm(receipt, items);
 	}
 
-	public static ReceiptOCRForm newInstance() {
-		return new ReceiptOCRForm();
+	public static ReceiptDocumentForm newInstance() {
+		return new ReceiptDocumentForm();
 	}
 
-	public ReceiptEntityOCR getReceiptOCR() {
-		return receiptOCR;
+	public DocumentEntity getReceiptDocument() {
+		return receiptDocument;
 	}
 
-	public void setReceiptOCR(ReceiptEntityOCR receiptOCR) {
-		this.receiptOCR = receiptOCR;
+	public void setReceiptDocument(DocumentEntity receiptDocument) {
+		this.receiptDocument = receiptDocument;
 	}
 
 	public List<ItemEntityOCR> getItems() {
@@ -92,32 +92,32 @@ public final class ReceiptOCRForm {
 
 	@Override
 	public String toString() {
-		return "ReceiptOCRForm [receiptOCR=" + receiptOCR + ", items=" + items + "]";
+		return "ReceiptDocumentForm [receiptDocument=" + receiptDocument + ", items=" + items + "]";
 	}
 
 	public ReceiptEntity getReceiptEntity() throws NumberFormatException, ParseException {
         ReceiptEntity receipt = ReceiptEntity.newInstance();
-        receipt.setReceiptDate(DateUtil.getDateFromString(receiptOCR.getReceiptDate()));
-        receipt.setTotal(Formatter.getCurrencyFormatted(receiptOCR.getTotal()).doubleValue());
-        receipt.setTax(Formatter.getCurrencyFormatted(receiptOCR.getTax()).doubleValue());
+        receipt.setReceiptDate(DateUtil.getDateFromString(receiptDocument.getReceiptDate()));
+        receipt.setTotal(Formatter.getCurrencyFormatted(receiptDocument.getTotal()).doubleValue());
+        receipt.setTax(Formatter.getCurrencyFormatted(receiptDocument.getTax()).doubleValue());
         receipt.setReceiptStatus(DocumentStatusEnum.TURK_PROCESSED);
-        receipt.setUserProfileId(receiptOCR.getUserProfileId());
-		receipt.setCreated(receiptOCR.getCreated());
+        receipt.setUserProfileId(receiptDocument.getUserProfileId());
+		receipt.setCreated(receiptDocument.getCreated());
         receipt.setUpdated();
-        receipt.setBizName(receiptOCR.getBizName());
-        receipt.setBizStore(receiptOCR.getBizStore());
-        receipt.setReceiptOf(receiptOCR.getReceiptOf());
+        receipt.setBizName(receiptDocument.getBizName());
+        receipt.setBizStore(receiptDocument.getBizStore());
+        receipt.setReceiptOf(receiptDocument.getReceiptOf());
         receipt.checkSum();
 
         //If this is not set then user cannot reopen the a receipt for re-check.
-        //TODO When deleting historical receiptOCR make sure to remove this id from receipt referencing receipt OCR
-        receipt.setReceiptOCRId(receiptOCR.getId());
-        receipt.setRecheckComment(receiptOCR.getRecheckComment());
-        receipt.setNotes(receiptOCR.getNotes());
+        //TODO When deleting historical receiptDocument make sure to remove this id from receipt referencing receipt OCR
+        receipt.setReceiptOCRId(receiptDocument.getId());
+        receipt.setRecheckComment(receiptDocument.getRecheckComment());
+        receipt.setNotes(receiptDocument.getNotes());
 
         //This condition is mostly true for receipt when re-checked
-        if(StringUtils.isNotEmpty(receiptOCR.getReceiptId())) {
-            receipt.setId(receiptOCR.getReceiptId());
+        if(StringUtils.isNotEmpty(receiptDocument.getReceiptId())) {
+            receipt.setId(receiptDocument.getReceiptId());
         }
 
 		return receipt;
@@ -160,7 +160,7 @@ public final class ReceiptOCRForm {
 
     public MileageEntity getMileageEntity() {
         MileageEntity mileageEntity = new MileageEntity();
-        mileageEntity.setUserProfileId(receiptOCR.getUserProfileId());
+        mileageEntity.setUserProfileId(receiptDocument.getUserProfileId());
         mileageEntity.setStart(mileage.getStart());
         mileageEntity.setEnd(mileage.getEnd());
         return mileageEntity;

@@ -1,6 +1,6 @@
 package com.receiptofi.web.helper;
 
-import com.receiptofi.domain.ReceiptEntityOCR;
+import com.receiptofi.domain.DocumentEntity;
 
 /**
  * User: hitender
@@ -10,15 +10,15 @@ import com.receiptofi.domain.ReceiptEntityOCR;
 public final class ReceiptOCRHelper {
     private String fileName;
     private long fileSize;
-    private ReceiptEntityOCR receiptEntityOCR;
+    private DocumentEntity documentEntity;
 
     private ReceiptOCRHelper() {}
 
-    public static ReceiptOCRHelper newInstance(String fileName, long fileSize, ReceiptEntityOCR receiptEntityOCR) {
+    public static ReceiptOCRHelper newInstance(String fileName, long fileSize, DocumentEntity documentEntity) {
         ReceiptOCRHelper receiptOCRHelper = new ReceiptOCRHelper();
         receiptOCRHelper.setFileName(fileName);
         receiptOCRHelper.setFileSize(fileSize);
-        receiptOCRHelper.setReceiptEntityOCR(receiptEntityOCR);
+        receiptOCRHelper.setDocumentEntity(documentEntity);
         return receiptOCRHelper;
     }
 
@@ -38,11 +38,11 @@ public final class ReceiptOCRHelper {
         this.fileSize = fileSize;
     }
 
-    public ReceiptEntityOCR getReceiptEntityOCR() {
-        return receiptEntityOCR;
+    public DocumentEntity getDocumentEntity() {
+        return documentEntity;
     }
 
-    public void setReceiptEntityOCR(ReceiptEntityOCR receiptEntityOCR) {
-        this.receiptEntityOCR = receiptEntityOCR;
+    public void setDocumentEntity(DocumentEntity documentEntity) {
+        this.documentEntity = documentEntity;
     }
 }
