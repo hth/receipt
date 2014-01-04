@@ -41,7 +41,7 @@ public class ReceiptEntity extends BaseEntity {
 	private static final long serialVersionUID = -7218588762395325831L;
 
 	@NotNull
-    @Field("DOCUMENT_STATUS_ENUM")
+    @Field("DS_E")
 	private DocumentStatusEnum receiptStatus;
 
     @DBRef

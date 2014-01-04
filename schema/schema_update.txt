@@ -21,8 +21,8 @@ db.INVITE.update({}, { $set: {COUNT: NumberInt(1)} }, {multi: true});
 
 *** Use with caution **
 //Note: This is to recover data from RECEIPT_OCR & MESSAGE_RECEIPT_OCR in the event of data lost in RECEIPT. Was last used in #Build - 68
-db.MESSAGE_RECEIPT_OCR.update({DOCUMENT_STATUS_ENUM: 'TURK_PROCESSED'}, { $set: {ACTIVE: true, LOCKED: false, DOCUMENT_STATUS_ENUM: 'OCR_PROCESSED'} }, {multi: true});
-db.RECEIPT_OCR.update({DOCUMENT_STATUS_ENUM: 'TURK_PROCESSED'}, { $set: {"RECEIPT_ID": "", DOCUMENT_STATUS_ENUM: 'OCR_PROCESSED', ACTIVE: true} }, {multi: true});
+db.MESSAGE_RECEIPT_OCR.update({DS_E: 'TURK_PROCESSED'}, { $set: {ACTIVE: true, LOCKED: false, DS_E: 'OCR_PROCESSED'} }, {multi: true});
+db.RECEIPT_OCR.update({DS_E: 'TURK_PROCESSED'}, { $set: {"RECEIPT_ID": "", DS_E: 'OCR_PROCESSED', ACTIVE: true} }, {multi: true});
 db.RECEIPT_OCR.update({},{$unset: {RECEIPT_ID:1}}, false, true)
 db.RECEIPT.drop();
 db.ITEM.drop();

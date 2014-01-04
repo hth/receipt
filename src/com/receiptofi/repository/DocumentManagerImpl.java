@@ -113,7 +113,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public List<DocumentEntity> getAllRejected(String userProfileId) {
         Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria2 = Criteria.where("DOCUMENT_STATUS_ENUM").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
+        Criteria criteria2 = Criteria.where("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
         Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
 
         Sort sort = new Sort(Direction.ASC, "C");

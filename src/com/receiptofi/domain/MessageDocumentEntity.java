@@ -40,7 +40,7 @@ public class MessageDocumentEntity extends BaseEntity {
     private boolean recordLocked = false;
 
     @NotNull
-    @Field("DOCUMENT_STATUS_ENUM")
+    @Field("DS_E")
     private DocumentStatusEnum documentStatus;
 
     private MessageDocumentEntity() {}
