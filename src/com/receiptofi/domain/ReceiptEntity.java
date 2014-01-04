@@ -104,10 +104,6 @@ public class ReceiptEntity extends BaseEntity {
     @Field("COMMENT_NOTES")
     private CommentEntity notes;
 
-    @NotNull
-    @Field("ORIENTATION")
-    private int imageOrientation = 0;
-
     /**
      * Note: During recheck of a receipt EXP_FILENAME is dropped as this is
      * not persisted between the two event
@@ -307,15 +303,6 @@ public class ReceiptEntity extends BaseEntity {
      */
     public void checkSum() {
         this.checkSum = SHAHashing.calculateCheckSum(userProfileId, receiptDate, total, isDeleted());
-    }
-
-    public int getImageOrientation() {
-        return imageOrientation;
-    }
-
-    @Deprecated
-    public void setImageOrientation(int imageOrientation) {
-        this.imageOrientation = imageOrientation;
     }
 
     public String getExpenseReportInFS() {

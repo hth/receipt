@@ -80,10 +80,6 @@ public class DocumentEntity extends BaseEntity {
     private CommentEntity notes;
 
     @NotNull
-    @Field("ORIENTATION")
-    private int imageOrientation = 0;
-
-    @NotNull
     @Field("DOCUMENT_TYPE")
     private DocumentOfTypeEnum documentOfType;
 
@@ -203,15 +199,6 @@ public class DocumentEntity extends BaseEntity {
 
     public void setNotes(CommentEntity notes) {
         this.notes = notes;
-    }
-
-    public int getImageOrientation() {
-        return imageOrientation;
-    }
-
-    @Deprecated
-    public void setImageOrientation(int imageOrientation) {
-        this.imageOrientation = imageOrientation;
     }
 
     @SuppressWarnings("unused")

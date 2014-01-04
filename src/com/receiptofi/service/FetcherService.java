@@ -38,8 +38,6 @@ public final class FetcherService {
     @Autowired private ItemManager itemManager;
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;
-    @Autowired private ReceiptManager receiptManager;
-    @Autowired private DocumentManager documentManager;
     @Autowired private FileSystemService fileSystemService;
 
     /**
@@ -130,38 +128,6 @@ public final class FetcherService {
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return items;
     }
-
-    /**
-     *
-     * @param receiptId
-     * @param imageOrientation
-     * @param userProfileId
-     */
-    public void changeImageOrientation(String receiptId, int imageOrientation, String userProfileId) throws Exception {
-        DateTime time = DateUtil.now();
-        ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
-        receiptEntity.setImageOrientation(receiptEntity.getImageOrientation() + imageOrientation);
-        receiptManager.save(receiptEntity);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-    }
-
-    /**
-     *
-     * @deprecated
-     * @param receiptOCRId
-     * @param imageOrientation
-     * @param userProfileId
-     */
-    public void changeReceiptOCRImageOrientation(String receiptOCRId, int imageOrientation, String userProfileId) throws Exception {
-        DateTime time = DateUtil.now();
-        DocumentEntity documentEntity = documentManager.findOne(receiptOCRId);
-        if(documentEntity.getUserProfileId().equalsIgnoreCase(userProfileId)) {
-            documentEntity.setImageOrientation(documentEntity.getImageOrientation() + imageOrientation);
-            documentManager.save(documentEntity);
-        }
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-    }
-
 
     public void changeFSImageOrientation(String fileSystemId, int imageOrientation, String blobId) throws Exception {
         DateTime time = DateUtil.now();
