@@ -56,10 +56,6 @@ public class DocumentEntity extends BaseEntity {
     @Field("USER_PROFILE_ID")
 	private String userProfileId;
 
-	@NotNull
-    @Field("OCR_TRANSLATION")
-	private String receiptOCRTranslation;
-
     @DBRef
     @Field("BIZ_NAME")
     private BizNameEntity bizName;
@@ -151,14 +147,6 @@ public class DocumentEntity extends BaseEntity {
 
 	public void setUserProfileId(String userProfileId) {
 		this.userProfileId = userProfileId;
-	}
-
-	public String getReceiptOCRTranslation() {
-		return receiptOCRTranslation;
-	}
-
-	public void setReceiptOCRTranslation(String receiptOCRTranslation) {
-		this.receiptOCRTranslation = receiptOCRTranslation;
 	}
 
     public BizNameEntity getBizName() {

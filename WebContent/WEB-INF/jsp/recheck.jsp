@@ -342,7 +342,6 @@
                         <form:hidden path="receiptDocument.recheckComment.id"/>
                         <form:hidden path="receiptDocument.recheckComment.version"/>
 
-                        <form:hidden path="receiptDocument.receiptOCRTranslation"/>
                         <table border="0" style="width: 550px" class="etable">
                             <tr>
                                 <td colspan="5">

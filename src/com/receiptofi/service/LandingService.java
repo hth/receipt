@@ -262,7 +262,6 @@ public final class LandingService {
             documentEntity.addReceiptBlobId(fileSystemEntityUnScaled);
 
             documentEntity.setUserProfileId(userProfileId);
-            documentEntity.setReceiptOCRTranslation(receiptOCRTranslation);
             //Cannot pre-select it for now
             //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
