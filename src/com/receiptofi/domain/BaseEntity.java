@@ -29,21 +29,21 @@ public abstract class BaseEntity implements Serializable {
 	protected String id;
 
 	@Version
-    @Field("VERSION")
+    @Field("V")
 	private Integer version;
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-    @Field("UPDATE")
+    @Field("U")
 	private Date updated = DateUtil.nowTime();
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-    @Field("CREATE")
+    @Field("C")
 	private Date created = DateUtil.nowTime();
 
-    @Field("ACTIVE")
+    @Field("A")
     private boolean active = true;
 
-    @Field("DELETE")
+    @Field("D")
     private boolean deleted = false;
 
 	public BaseEntity() {

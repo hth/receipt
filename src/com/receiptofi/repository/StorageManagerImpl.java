@@ -90,7 +90,7 @@ public final class StorageManagerImpl implements StorageManager {
 
     private void deleteSoft(String id) {
         GridFSDBFile receiptBlob = get(id);
-        receiptBlob.put("DELETE", true);
+        receiptBlob.put("D", true);
         receiptBlob.save();
     }
 
@@ -149,7 +149,7 @@ public final class StorageManagerImpl implements StorageManager {
         }
 
         if(receiptBlob != null) {
-            receiptBlob.put("DELETE", false);
+            receiptBlob.put("D", false);
             receiptBlob.put("FILE_TYPE", uploadReceiptImage.getFileType().getName());
             receiptBlob.setContentType(uploadReceiptImage.getFileData().getContentType());
             receiptBlob.setMetaData(uploadReceiptImage.getMetaData());

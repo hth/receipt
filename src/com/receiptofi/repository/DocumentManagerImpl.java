@@ -106,7 +106,7 @@ public final class DocumentManagerImpl implements DocumentManager {
         Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
 
-        Sort sort = new Sort(Direction.ASC, "CREATE");
+        Sort sort = new Sort(Direction.ASC, "C");
 		return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);
 	}
 
@@ -116,7 +116,7 @@ public final class DocumentManagerImpl implements DocumentManager {
         Criteria criteria2 = Criteria.where("DOCUMENT_STATUS_ENUM").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
         Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
 
-        Sort sort = new Sort(Direction.ASC, "CREATE");
+        Sort sort = new Sort(Direction.ASC, "C");
         return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);
     }
 

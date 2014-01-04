@@ -232,7 +232,7 @@ public final class ItemManagerImpl implements ItemManager {
     public void deleteSoft(ReceiptEntity receipt) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
-        Update update = Update.update("DELETE", true);
+        Update update = Update.update("D", true);
         mongoTemplate.updateMulti(query, update(update), ItemEntity.class);
     }
 

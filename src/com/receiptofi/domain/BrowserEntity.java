@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "BROWSER")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "browser_idx", def = "{'UPDATE': 1}", unique=true),
+        @CompoundIndex(name = "browser_idx", def = "{'U': 1}", unique=true),
 } )
 public class BrowserEntity extends BaseEntity {
 
