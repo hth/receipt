@@ -29,7 +29,7 @@ public class DocumentEntity extends BaseEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
 
 	@NotNull
-    @Field("DOCUMENT_STATUS_ENUM")
+    @Field("DS_E")
 	private DocumentStatusEnum documentStatus;
 
     @DBRef

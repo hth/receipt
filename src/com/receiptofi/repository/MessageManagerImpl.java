@@ -48,7 +48,7 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
         Query query = Query.query(Criteria.where("LOCKED").is(false))
-                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(status));
+                .addCriteria(Criteria.where("DS_E").is(status));
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
@@ -82,7 +82,7 @@ public final class MessageManagerImpl implements MessageManager {
 
 //        BasicDBObject basicDBObject = new BasicDBObject()
 //                .append("recordLocked", false)
-//                .append("DOCUMENT_STATUS_ENUM", "OCR_PROCESSED");
+//                .append("DS_E", "OCR_PROCESSED");
 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for(MessageDocumentEntity object : list) {
@@ -109,7 +109,7 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(status))
+                .addCriteria(Criteria.where("DS_E").is(status))
                 .addCriteria(Criteria.where("EMAIL").is(emailId))
                 .addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId));
 
@@ -125,7 +125,7 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public List<MessageDocumentEntity> findAllPending() {
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(DocumentStatusEnum.OCR_PROCESSED));
+                .addCriteria(Criteria.where("DS_E").is(DocumentStatusEnum.OCR_PROCESSED));
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
@@ -162,10 +162,10 @@ public final class MessageManagerImpl implements MessageManager {
     public WriteResult updateObject(String receiptOCRId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(statusFind))
+                .addCriteria(Criteria.where("DS_E").is(statusFind))
                 .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
-        Update update = Update.update("DOCUMENT_STATUS_ENUM", statusSet).set("A", false);
+        Update update = Update.update("DS_E", statusSet).set("A", false);
 
         return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);
     }
@@ -175,13 +175,13 @@ public final class MessageManagerImpl implements MessageManager {
     public WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("LOCKED").is(true))
-                .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(statusFind))
+                .addCriteria(Criteria.where("DS_E").is(statusFind))
                 .addCriteria(Criteria.where("A").is(false))
                 .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
         Update update = Update.update("recordLocked", false)
                 .set("A", true)
-                .set("DOCUMENT_STATUS_ENUM", statusSet);
+                .set("DS_E", statusSet);
 
         return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);
     }
