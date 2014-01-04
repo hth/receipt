@@ -72,10 +72,8 @@ public final class ReceiptUpdateService {
         try {
             DocumentEntity documentEntity = documentManager.findOne(documentForm.getId());
 
-            receipt.setImageOrientation(documentEntity.getImageOrientation());
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
-            documentForm.setImageOrientation(documentEntity.getImageOrientation());
             documentForm.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
@@ -145,22 +143,20 @@ public final class ReceiptUpdateService {
      *
      * @param receipt
      * @param items
-     * @param receiptOCR
+     * @param receiptDocument
      * @throws Exception
      */
-    public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptOCR) throws Exception {
+    public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptDocument) throws Exception {
         ReceiptEntity fetchedReceipt = null;
         try {
-            DocumentEntity documentEntity = documentManager.findOne(receiptOCR.getId());
+            DocumentEntity documentEntity = documentManager.findOne(receiptDocument.getId());
 
-            receipt.setImageOrientation(documentEntity.getImageOrientation());
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
-            receiptOCR.setImageOrientation(documentEntity.getImageOrientation());
-            receiptOCR.setFileSystemEntities(documentEntity.getFileSystemEntities());
+            receiptDocument.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
-            receiptOCR.setVersion(documentEntity.getVersion());
+            receiptDocument.setVersion(documentEntity.getVersion());
 
             bizService.saveNewBusinessAndOrStore(receipt);
             if(StringUtils.isNotEmpty(receipt.getId())) {
@@ -177,13 +173,13 @@ public final class ReceiptUpdateService {
             populateItemsWithBizName(items, receipt);
             itemManager.saveObjects(items);
 
-            bizService.saveNewBusinessAndOrStore(receiptOCR);
-            receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
-            receiptOCR.inActive();
+            bizService.saveNewBusinessAndOrStore(receiptDocument);
+            receiptDocument.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
+            receiptDocument.inActive();
 
             //Only recheck comments are updated by technician. Receipt notes are never modified
-            if(!StringUtils.isEmpty(receiptOCR.getRecheckComment().getText())) {
-                CommentEntity comment = receiptOCR.getRecheckComment();
+            if(!StringUtils.isEmpty(receiptDocument.getRecheckComment().getText())) {
+                CommentEntity comment = receiptDocument.getRecheckComment();
                 if(StringUtils.isEmpty(comment.getId())) {
                     comment.setId(null);
                 }
@@ -200,25 +196,25 @@ public final class ReceiptUpdateService {
                     comment.setUpdated();
                     commentManager.save(comment);
                 }
-                receiptOCR.setRecheckComment(comment);
+                receiptDocument.setRecheckComment(comment);
                 receipt.setRecheckComment(comment);
             } else {
-                CommentEntity comment = receiptOCR.getRecheckComment();
+                CommentEntity comment = receiptDocument.getRecheckComment();
                 commentManager.deleteHard(comment);
-                receiptOCR.setRecheckComment(null);
+                receiptDocument.setRecheckComment(null);
                 receipt.setRecheckComment(null);
             }
 
             //Since Technician cannot change notes at least we gotta make sure we are not adding one when the Id for notes are missing
-            if(StringUtils.isEmpty(receiptOCR.getNotes().getId())) {
-                receiptOCR.setNotes(null);
+            if(StringUtils.isEmpty(receiptDocument.getNotes().getId())) {
+                receiptDocument.setNotes(null);
                 receipt.setNotes(null);
             }
 
             receiptManager.save(receipt);
-            documentManager.save(receiptOCR);
+            documentManager.save(receiptDocument);
 
-            updateMessageManager(receiptOCR, DocumentStatusEnum.TURK_REQUEST, DocumentStatusEnum.TURK_PROCESSED);
+            updateMessageManager(receiptDocument, DocumentStatusEnum.TURK_REQUEST, DocumentStatusEnum.TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
@@ -228,7 +224,7 @@ public final class ReceiptUpdateService {
 
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
-            log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptOCR.getId());
+            log.warn("Revert all the transaction for Receipt: " + receipt.getId() + ", ReceiptOCR: " + receiptDocument.getId());
 
             //For rollback
             if(StringUtils.isNotEmpty(receipt.getId())) {
@@ -252,11 +248,11 @@ public final class ReceiptUpdateService {
                     log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
                 }
 
-                receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
-                documentManager.save(receiptOCR);
+                receiptDocument.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
+                documentManager.save(receiptDocument);
                 //log.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.TURK_REQUEST);
+                messageManager.undoUpdateObject(receiptDocument.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.TURK_REQUEST);
                 //End of roll back
 
                 log.info("Complete with rollback: throwing exception");
