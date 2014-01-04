@@ -366,7 +366,6 @@
                             <form:hidden path="receiptDocument.version"/>
                             <form:hidden path="receiptDocument.documentStatus"/>
                             <form:hidden path="receiptDocument.receiptId"/>
-                            <form:hidden path="receiptDocument.receiptOCRTranslation"/>
                             <form:hidden path="receiptDocument.documentOfType" value="RECEIPT"/>
 
                             <table border="0" style="width: 550px" class="etable">
@@ -489,7 +488,6 @@
                             <form:hidden path="receiptDocument.version"/>
                             <form:hidden path="receiptDocument.documentStatus"/>
                             <form:hidden path="receiptDocument.receiptId"/>
-                            <form:hidden path="receiptDocument.receiptOCRTranslation"/>
                             <form:hidden path="receiptDocument.documentOfType" value="MILEAGE"/>
 
                             <table border="0" style="width: 550px" class="etable">
