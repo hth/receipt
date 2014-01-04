@@ -59,7 +59,7 @@ public class AdminLandingController {
 //                List<ReceiptEntity> receipts = receiptManager.getAllReceipts(userProfileEntity.getId());
 //                for(ReceiptEntity receiptEntity : receipts) {
 //                    if(receiptEntity.getReceiptScaledBlobId() == null) {
-//                        GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntity.getReceiptBlobId());
+//                        GridFSDBFile gridFSDBFile = fileDBService.getFile(receiptEntity.getFileSystemEntities());
 //                        DBObject dbObject = gridFSDBFile.getMetaData();
 //                        String fileName = (String) dbObject.get("ORIGINAL_FILENAME");
 //                        try {

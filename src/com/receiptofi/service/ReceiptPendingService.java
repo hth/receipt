@@ -32,7 +32,7 @@ public final class ReceiptPendingService {
     public void getAllPending(String userProfileId, PendingReceiptForm pendingReceiptForm) {
         List<DocumentEntity> documentEntityList = documentManager.getAllPending(userProfileId);
         for(DocumentEntity documentEntity : documentEntityList) {
-            for(FileSystemEntity scaledId : documentEntity.getReceiptBlobId()) {
+            for(FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                 String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
                 pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), documentEntity);
@@ -49,7 +49,7 @@ public final class ReceiptPendingService {
     public void getAllRejected(String userProfileId, PendingReceiptForm pendingReceiptForm) {
         List<DocumentEntity> documentEntityList = documentManager.getAllRejected(userProfileId);
         for(DocumentEntity documentEntity : documentEntityList) {
-            for(FileSystemEntity scaledId : documentEntity.getReceiptBlobId()) {
+            for(FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                 String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
                 pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), documentEntity);

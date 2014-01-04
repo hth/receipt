@@ -136,7 +136,9 @@
 			<div style="clear:both;"></div>
 			<div id="contentDiv">
 				<div id="myContent" style="display: block;">
-					<img src="${protocol}://${host}:${port}/${appname}/receiptimage.htm?id=${receipt.receiptBlobId}" style="width: 200px; height: 200px"/>
+					[#foreach fileSystemEntity in receipt.fileSystemEntities]
+					<img src="${protocol}://${host}:${port}/${appname}/filedownload/receiptimage/${fileSystemEntity.blobId}.htm" style="width: 200px; height: 200px"/>
+					[/#foreach]
 				</div>
 			</div>
 		</td>

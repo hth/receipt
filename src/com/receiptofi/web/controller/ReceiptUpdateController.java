@@ -306,7 +306,7 @@ public class ReceiptUpdateController {
                 receiptDocumentForm.setItems(items);
             }
             //helps load the image on failure
-            receiptDocumentForm.getReceiptDocument().setReceiptBlobId(receipt.getReceiptBlobId());
+            receiptDocumentForm.getReceiptDocument().setFileSystemEntities(receipt.getFileSystemEntities());
         } else {
             log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
         }

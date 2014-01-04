@@ -73,10 +73,10 @@ public final class ReceiptUpdateService {
             DocumentEntity documentEntity = documentManager.findOne(documentForm.getId());
 
             receipt.setImageOrientation(documentEntity.getImageOrientation());
-            receipt.setReceiptBlobId(documentEntity.getReceiptBlobId());
+            receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
             documentForm.setImageOrientation(documentEntity.getImageOrientation());
-            documentForm.setReceiptBlobId(documentEntity.getReceiptBlobId());
+            documentForm.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             documentForm.setVersion(documentEntity.getVersion());
@@ -154,10 +154,10 @@ public final class ReceiptUpdateService {
             DocumentEntity documentEntity = documentManager.findOne(receiptOCR.getId());
 
             receipt.setImageOrientation(documentEntity.getImageOrientation());
-            receipt.setReceiptBlobId(documentEntity.getReceiptBlobId());
+            receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
             receiptOCR.setImageOrientation(documentEntity.getImageOrientation());
-            receiptOCR.setReceiptBlobId(documentEntity.getReceiptBlobId());
+            receiptOCR.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             receiptOCR.setVersion(documentEntity.getVersion());
@@ -300,9 +300,9 @@ public final class ReceiptUpdateService {
             }
             itemOCRManager.deleteWhereReceipt(receiptOCR);
 
-            fileSystemService.deleteSoft(receiptOCR.getReceiptBlobId());
-            storageManager.deleteSoft(receiptOCR.getReceiptBlobId());
-            GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getReceiptBlobId().iterator().next().getBlobId());
+            fileSystemService.deleteSoft(receiptOCR.getFileSystemEntities());
+            storageManager.deleteSoft(receiptOCR.getFileSystemEntities());
+            GridFSDBFile gridFSDBFile = storageManager.get(receiptOCR.getFileSystemEntities().iterator().next().getBlobId());
             DBObject dbObject =  gridFSDBFile.getMetaData();
 
             StringBuilder sb = new StringBuilder();
@@ -339,8 +339,8 @@ public final class ReceiptUpdateService {
             documentManager.deleteHard(documentEntity);
             itemOCRManager.deleteWhereReceipt(documentEntity);
             messageManager.deleteAllForReceiptOCR(documentEntity.getId());
-            storageManager.deleteHard(documentEntity.getReceiptBlobId());
-            fileSystemService.deleteHard(documentEntity.getReceiptBlobId());
+            storageManager.deleteHard(documentEntity.getFileSystemEntities());
+            fileSystemService.deleteHard(documentEntity.getFileSystemEntities());
         } else {
             log.warn("User trying to delete processed Document #: " + documentEntity.getId() + ", Receipt Id #:" + documentEntity.getReceiptId());
         }
@@ -385,7 +385,7 @@ public final class ReceiptUpdateService {
 
     public void turkMileage(MileageEntity mileageEntity, DocumentEntity receiptOCR) {
         DocumentEntity documentEntity = documentManager.findOne(receiptOCR.getId());
-        mileageEntity.setFileSystemEntities(documentEntity.getReceiptBlobId());
+        mileageEntity.setFileSystemEntities(documentEntity.getFileSystemEntities());
         try {
             mileageService.save(mileageEntity);
             updateMessageManager(receiptOCR, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);

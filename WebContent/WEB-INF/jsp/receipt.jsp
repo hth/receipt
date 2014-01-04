@@ -536,7 +536,7 @@
     // JSON data
     var topHeight = 0,
         info = [
-            <c:forEach items="${receiptForm.receipt.receiptBlobId}" var="arr" varStatus="status">
+            <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
             {
                 src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
                 pos: {
