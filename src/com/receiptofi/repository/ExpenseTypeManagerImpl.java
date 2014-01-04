@@ -94,7 +94,7 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
         Criteria criteria1 = Criteria.where("id").is(new ObjectId(expenseTypeId));
         Criteria criteria2 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(criteria2);
-        Update update = Update.update("ACTIVE", changeTo);
+        Update update = Update.update("A", changeTo);
 
         //TODO try using writeResult to check for condition
         WriteResult writeResult = mongoTemplate.updateFirst(query, update(update), ExpenseTagEntity.class);

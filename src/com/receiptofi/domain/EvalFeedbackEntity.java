@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "EVAL_FEEDBACK")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "eval_feedback_idx",    def = "{'USER_PROFILE_ID': 1, 'CREATE': 1}",  unique=true),
+        @CompoundIndex(name = "eval_feedback_idx",    def = "{'USER_PROFILE_ID': 1, 'C': 1}",  unique=true),
 } )
 public class EvalFeedbackEntity extends BaseEntity {
 

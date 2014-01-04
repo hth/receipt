@@ -65,7 +65,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     private void deleteSoft(FileSystemEntity fileSystemEntity) {
         mongoTemplate.updateMulti(
                 Query.query(Criteria.where("id").is(new ObjectId(fileSystemEntity.getId()))),
-                update(Update.update("DELETE", true)),
+                update(Update.update("D", true)),
                 FileSystemEntity.class
         );
     }

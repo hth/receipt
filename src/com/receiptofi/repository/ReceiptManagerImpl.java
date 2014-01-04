@@ -63,7 +63,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     public List<ReceiptEntity> getAllReceipts(String userProfileId) {
         Criteria criteria = Criteria.where("USER_PROFILE_ID").is(userProfileId);
 
-		Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "CREATE"));
+		Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "C"));
 		return mongoTemplate.find(Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
 	}
 
@@ -74,7 +74,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         Criteria criteria1 = Criteria.where("MONTH").is(monthYear.getMonthOfYear());
         Criteria criteria2 = Criteria.where("YEAR").is(monthYear.getYear());
 
-        Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "CREATE"));
+        Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "C"));
         Query query = Query.query(criteria).addCriteria(criteria1).addCriteria(criteria2).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query.with(sort), ReceiptEntity.class, TABLE);
     }
@@ -256,7 +256,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         }
 
         Query query = Query.query(Criteria.where("id").is(object.getId()));
-        Update update = Update.update("DELETE", true).set("CHECK_SUM", checkSum);
+        Update update = Update.update("D", true).set("CHECK_SUM", checkSum);
         mongoTemplate.updateFirst(query, update(update), ReceiptEntity.class);
     }
 

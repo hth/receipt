@@ -52,7 +52,7 @@ public final class MessageManagerImpl implements MessageManager {
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "CREATE"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "C"));
         Sort sort = new Sort(orders);
 
         query.with(sort).limit(limit);
@@ -115,7 +115,7 @@ public final class MessageManagerImpl implements MessageManager {
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "CREATE"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "C"));
         Sort sort = new Sort(orders);
 
         query.with(sort);
@@ -129,7 +129,7 @@ public final class MessageManagerImpl implements MessageManager {
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "USER_LEVEL_ENUM"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "CREATE"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "C"));
         Sort sort = new Sort(orders);
 
         query.with(sort);
@@ -165,7 +165,7 @@ public final class MessageManagerImpl implements MessageManager {
                 .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(statusFind))
                 .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
-        Update update = Update.update("DOCUMENT_STATUS_ENUM", statusSet).set("ACTIVE", false);
+        Update update = Update.update("DOCUMENT_STATUS_ENUM", statusSet).set("A", false);
 
         return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);
     }
@@ -176,11 +176,11 @@ public final class MessageManagerImpl implements MessageManager {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = Query.query(Criteria.where("LOCKED").is(true))
                 .addCriteria(Criteria.where("DOCUMENT_STATUS_ENUM").is(statusFind))
-                .addCriteria(Criteria.where("ACTIVE").is(false))
+                .addCriteria(Criteria.where("A").is(false))
                 .addCriteria(Criteria.where("RECEIPT_OCR_ID").is(receiptOCRId));
 
         Update update = Update.update("recordLocked", false)
-                .set("ACTIVE", true)
+                .set("A", true)
                 .set("DOCUMENT_STATUS_ENUM", statusSet);
 
         return mongoTemplate.updateFirst(query, update(update), MessageDocumentEntity.class);

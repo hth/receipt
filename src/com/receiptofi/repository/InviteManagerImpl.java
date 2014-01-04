@@ -42,7 +42,7 @@ public final class InviteManagerImpl implements InviteManager {
     @Override
     public void invalidateAllEntries(InviteEntity object) {
         Criteria criteria = Criteria.where("USER_PROFILE_INVITED.$id").is(new ObjectId(object.getInvited().getId()));
-        WriteResult writeResult = mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("ACTIVE", false)), InviteEntity.class);
+        WriteResult writeResult = mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("A", false)), InviteEntity.class);
         log.info(writeResult.toString());
     }
 

@@ -43,7 +43,7 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     @Override
     public void invalidateAllEntries(ForgotRecoverEntity object) {
         Criteria criteria = Criteria.where("USER_PROFILE_ID").is(object.getUserProfileId());
-        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("ACTIVE", false)), ForgotRecoverEntity.class);
+        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("A", false)), ForgotRecoverEntity.class);
     }
 
     @Override

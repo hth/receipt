@@ -173,7 +173,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
-        Sort sort = new Sort(Sort.Direction.DESC, "CREATE");
+        Sort sort = new Sort(Sort.Direction.DESC, "C");
         return mongoTemplate.find(Query.query(Criteria.where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))).with(sort).limit(limit), BizStoreEntity.class, TABLE);
     }
 
