@@ -367,7 +367,6 @@
                             <form:hidden path="receiptDocument.documentStatus"/>
                             <form:hidden path="receiptDocument.receiptId"/>
                             <form:hidden path="receiptDocument.receiptOCRTranslation"/>
-                            <form:hidden path="receiptDocument.receiptOf" value="EXPENSE"/>
                             <form:hidden path="receiptDocument.documentOfType" value="RECEIPT"/>
 
                             <table border="0" style="width: 550px" class="etable">
@@ -483,7 +482,7 @@
                     <div id="activeMileage" class="hidden">
                         <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptDocumentForm" id="receiptUpdateForm">
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
-                            <form:errors path="receiptDocument"      cssClass="error" />
+                            <form:errors path="receiptDocument" cssClass="error" />
                             <form:hidden path="receiptDocument.receiptBlobId"/>
                             <form:hidden path="receiptDocument.id"/>
                             <form:hidden path="receiptDocument.userProfileId"/>
@@ -491,7 +490,6 @@
                             <form:hidden path="receiptDocument.documentStatus"/>
                             <form:hidden path="receiptDocument.receiptId"/>
                             <form:hidden path="receiptDocument.receiptOCRTranslation"/>
-                            <form:hidden path="receiptDocument.receiptOf"/>
                             <form:hidden path="receiptDocument.documentOfType" value="MILEAGE"/>
 
                             <table border="0" style="width: 550px" class="etable">

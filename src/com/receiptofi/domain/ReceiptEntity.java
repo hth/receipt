@@ -45,10 +45,6 @@ public class ReceiptEntity extends BaseEntity {
     @Field("DOCUMENT_STATUS_ENUM")
 	private DocumentStatusEnum receiptStatus;
 
-    @NotNull
-    @Field("RECEIPT_OF_ENUM")
-    private ReceiptOfEnum receiptOf;
-
     @DBRef
     @Field("RECEIPT_BLOB_ID")
 	private Collection<FileSystemEntity> receiptBlobId;
@@ -167,14 +163,6 @@ public class ReceiptEntity extends BaseEntity {
 	public void setReceiptStatus(DocumentStatusEnum receiptStatus) {
 		this.receiptStatus = receiptStatus;
 	}
-
-    public ReceiptOfEnum getReceiptOf() {
-        return receiptOf;
-    }
-
-    public void setReceiptOf(ReceiptOfEnum receiptOf) {
-        this.receiptOf = receiptOf;
-    }
 
 	public Collection<FileSystemEntity> getReceiptBlobId() {
 		return receiptBlobId;

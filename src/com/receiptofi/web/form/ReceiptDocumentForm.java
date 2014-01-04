@@ -106,7 +106,6 @@ public final class ReceiptDocumentForm {
         receipt.setUpdated();
         receipt.setBizName(receiptDocument.getBizName());
         receipt.setBizStore(receiptDocument.getBizStore());
-        receipt.setReceiptOf(receiptDocument.getReceiptOf());
         receipt.checkSum();
 
         //If this is not set then user cannot reopen the a receipt for re-check.

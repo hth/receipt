@@ -330,7 +330,7 @@
                     <c:otherwise>
                     <form:form method="post" action="../recheck.htm" modelAttribute="receiptDocumentForm">
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage" />
-                        <form:errors path="receiptDocument"      cssClass="error" />
+                        <form:errors path="receiptDocument" cssClass="error" />
                         <form:hidden path="receiptDocument.id" id="receiptId"/>
                         <form:hidden path="receiptDocument.userProfileId"/>
                         <form:hidden path="receiptDocument.version"/>
@@ -341,7 +341,6 @@
                         <form:hidden path="receiptDocument.notes.text"/>
                         <form:hidden path="receiptDocument.recheckComment.id"/>
                         <form:hidden path="receiptDocument.recheckComment.version"/>
-                        <form:hidden path="receiptDocument.receiptOf"/>
 
                         <form:hidden path="receiptDocument.receiptOCRTranslation"/>
                         <table border="0" style="width: 550px" class="etable">

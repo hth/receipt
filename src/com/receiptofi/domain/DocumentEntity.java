@@ -24,17 +24,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
  *
  */
 @Document(collection = "DOCUMENT")
-@CompoundIndexes({ @CompoundIndex(name = "receipt_ocr_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "document_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
 public class DocumentEntity extends DocumentBaseEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
 
 	@NotNull
     @Field("DOCUMENT_STATUS_ENUM")
 	private DocumentStatusEnum documentStatus;
-
-    @NotNull
-    @Field("RECEIPT_OF_ENUM")
-    private ReceiptOfEnum receiptOf;
 
     @DBRef
     @Field("RECEIPT_BLOB_ID")
@@ -101,14 +97,6 @@ public class DocumentEntity extends DocumentBaseEntity {
 	public void setDocumentStatus(DocumentStatusEnum documentStatus) {
 		this.documentStatus = documentStatus;
 	}
-
-    public ReceiptOfEnum getReceiptOf() {
-        return receiptOf;
-    }
-
-    public void setReceiptOf(ReceiptOfEnum receiptOf) {
-        this.receiptOf = receiptOf;
-    }
 
     public Collection<FileSystemEntity> getReceiptBlobId() {
 		return receiptBlobId;
