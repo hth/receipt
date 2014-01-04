@@ -3,6 +3,10 @@
  */
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.ReceiptEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,20 +17,15 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
-
 /**
  * @author hitender
  * @since Mar 19, 2013 7:02:05 PM
  *
  */
-public class ReceiptOCRFormTest {
-	private ReceiptEntityOCR receipt;
+public class ReceiptDocumentFormTest {
+	private DocumentEntity receipt;
 	private List<ItemEntityOCR> items;
-	private ReceiptOCRForm receiptOCRForm;
+	private ReceiptDocumentForm receiptDocumentForm;
 	private ReceiptEntity receiptEntity;
 
 	/**
@@ -42,8 +41,8 @@ public class ReceiptOCRFormTest {
 		items.add(ItemEntityOCR.newInstance());
 
 
-		receiptOCRForm = ReceiptOCRForm.newInstance(receipt, items);
-		receiptEntity = receiptOCRForm.getReceiptEntity();
+		receiptDocumentForm = ReceiptDocumentForm.newInstance(receipt, items);
+		receiptEntity = receiptDocumentForm.getReceiptEntity();
 	}
 
 	/**
@@ -54,80 +53,80 @@ public class ReceiptOCRFormTest {
 		items.clear();
 		items = null;
 		receipt = null;
-		receiptOCRForm = null;
+		receiptDocumentForm = null;
 		receiptEntity = null;
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#newInstance(com.receiptofi.domain.ReceiptEntityOCR, java.util.List)}.
+	 * Test method for {@link ReceiptDocumentForm#newInstance(com.receiptofi.domain.DocumentEntity, java.util.List)}.
 	 */
 	@Test
 	public void testNewInstanceReceiptEntityOCRListOfItemEntityOCR() {
-		assertNotNull(ReceiptOCRForm.newInstance(null, null));
+		assertNotNull(ReceiptDocumentForm.newInstance(null, null));
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#newInstance()}.
+	 * Test method for {@link ReceiptDocumentForm#newInstance()}.
 	 */
 	@Test
 	public void testNewInstance() {
-		assertNotNull(ReceiptOCRForm.newInstance());
+		assertNotNull(ReceiptDocumentForm.newInstance());
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#getReceiptOCR()}.
+	 * Test method for {@link ReceiptDocumentForm#getReceiptDocument()}.
 	 */
 	@Test
 	public void testGetReceipt() {
-		assertNotNull(receiptOCRForm.getReceiptOCR());
+		assertNotNull(receiptDocumentForm.getReceiptDocument());
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#setReceiptOCR(com.receiptofi.domain.ReceiptEntityOCR)}.
+	 * Test method for {@link ReceiptDocumentForm#setReceiptDocument(com.receiptofi.domain.DocumentEntity)}.
 	 */
 	@Test
 	public void testSetReceipt() {
-		ReceiptOCRForm form = ReceiptOCRForm.newInstance(null, null);
-		assertNull(form.getReceiptOCR());
-		form.setReceiptOCR(receipt);
-		assertNotNull(form.getReceiptOCR());
+		ReceiptDocumentForm form = ReceiptDocumentForm.newInstance(null, null);
+		assertNull(form.getReceiptDocument());
+		form.setReceiptDocument(receipt);
+		assertNotNull(form.getReceiptDocument());
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#getItems()}.
+	 * Test method for {@link ReceiptDocumentForm#getItems()}.
 	 */
 	@Test
 	public void testGetItems() {
-		assertNotNull(receiptOCRForm.getItems());
+		assertNotNull(receiptDocumentForm.getItems());
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#setItems(java.util.List)}.
+	 * Test method for {@link ReceiptDocumentForm#setItems(java.util.List)}.
 	 */
 	@Test
 	public void testSetItems() {
-		ReceiptOCRForm form = ReceiptOCRForm.newInstance(null, null);
+		ReceiptDocumentForm form = ReceiptDocumentForm.newInstance(null, null);
 		assertNull(form.getItems());
 		form.setItems(items);
 		assertNotNull(form.getItems());
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#toString()}.
+	 * Test method for {@link ReceiptDocumentForm#toString()}.
 	 */
 	@Test
 	public void testToString() {
-		String expected = "ReceiptOCRForm [receipt=ReceiptEntityOCR [description=Test Description, title=Receipt Title, receiptStatus=Turk Processed, receiptBlobId=507f1f77bcf86cd799439011, receiptDate=01/01/13 12:01, total=80.00, tax=20.00, userProfileId=test@test.com, receiptOCRTranslation=null], items=[ItemEntity [name=Item1, price=80.00, taxed=Taxed]]]";
-		assertEquals(expected, receiptOCRForm.toString());
+		String expected = "ReceiptDocumentForm [receipt=DocumentEntity [description=Test Description, title=Receipt Title, receiptStatus=Turk Processed, receiptBlobId=507f1f77bcf86cd799439011, receiptDate=01/01/13 12:01, total=80.00, tax=20.00, userProfileId=test@test.com, receiptOCRTranslation=null], items=[ItemEntity [name=Item1, price=80.00, taxed=Taxed]]]";
+		assertEquals(expected, receiptDocumentForm.toString());
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#getReceiptEntity()}.
+	 * Test method for {@link ReceiptDocumentForm#getReceiptEntity()}.
 	 */
 	@Test
 	public void testGetReceiptEntity() {
 		try {
-			ReceiptEntity receiptEntity = receiptOCRForm.getReceiptEntity();
+			ReceiptEntity receiptEntity = receiptDocumentForm.getReceiptEntity();
 			assertNotNull(receiptEntity);
 			assertEquals(this.receiptEntity.toString(), receiptEntity.toString());
 		} catch (NumberFormatException e) {
@@ -140,12 +139,12 @@ public class ReceiptOCRFormTest {
 	}
 
 	/**
-	 * Test method for {@link ReceiptOCRForm#getItemEntity(com.receiptofi.domain.ReceiptEntity)}.
+	 * Test method for {@link ReceiptDocumentForm#getItemEntity(com.receiptofi.domain.ReceiptEntity)}.
 	 */
 	@Test
 	public void testGetItemEntity() {
 		try {
-			List<ItemEntity> listOfItems = receiptOCRForm.getItemEntity(receiptEntity);
+			List<ItemEntity> listOfItems = receiptDocumentForm.getItemEntity(receiptEntity);
 			assertNotNull(listOfItems);
 			assertEquals(items.size(), listOfItems.size());
 			assertEquals(items.iterator().next().getName(), listOfItems.iterator().next().getName());

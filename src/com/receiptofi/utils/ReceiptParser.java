@@ -3,8 +3,8 @@
  */
 package com.receiptofi.utils;
 
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.types.TaxEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public final class ReceiptParser {
 	private static Pattern item = Pattern.compile("[-+]?[$]?[-+]?[0-9]*\\.[0-9]{2}[\\s]?[\\w{1}]?$"); // PP I $246456.99 $2.99
 	private static Pattern date = Pattern.compile("[0-9]{1,2}[/|-|\\.][0-9]{1,2}[/|-|\\.][19|20]?[0-9]{2}"); // DATETIME: 12/26/2012 5:29:44 PM
 
-	public static void read(String receiptOCRTranslation, ReceiptEntityOCR receiptOCR, List<ItemEntityOCR> items) {
+	public static void read(String receiptOCRTranslation, DocumentEntity documentEntity, List<ItemEntityOCR> items) {
 		StringTokenizer st = new StringTokenizer(receiptOCRTranslation, "\n");
 		String save = "";
 		int sequence = 1;
@@ -37,25 +37,25 @@ public final class ReceiptParser {
 			if (itemMatcher.find()) {
 				save = save + s;
 				log.debug(save);
-				items.add(processItem(save, sequence, receiptOCR));
+				items.add(processItem(save, sequence, documentEntity));
 				s = "";
 			} else if (dateMatcher.find()) {
 				// http://stackoverflow.com/questions/600733/using-java-to-find-substring-of-a-bigger-string-using-regular-expression
 				// String date = d.group(1);
 
 				log.debug("Found date - " + s);
-				receiptOCR.setReceiptDate(s.trim());
+				documentEntity.setReceiptDate(s.trim());
 			}
 			save = s;
 		}
 
         //At least have one item added for place holder. This will help is cloning for more items later.
         if(items.size() == 0) {
-            items.add(processItem("", 1, receiptOCR));
+            items.add(processItem("", 1, documentEntity));
         }
 	}
 
-	private static ItemEntityOCR processItem(String itemString, int sequence, ReceiptEntityOCR receiptOCR) {
+	private static ItemEntityOCR processItem(String itemString, int sequence, DocumentEntity documentEntity) {
 		String name = itemString.substring(0, itemString.lastIndexOf("\t") + 1);
 
 		//Used for global name. This is hidden from user.
@@ -70,9 +70,9 @@ public final class ReceiptParser {
         itemOCR.setPrice(price.trim());
         itemOCR.setTaxed(TaxEnum.NOT_TAXED);
         itemOCR.setSequence(sequence);
-        itemOCR.setReceipt(receiptOCR);
-        itemOCR.setUserProfileId(receiptOCR.getUserProfileId());
-        itemOCR.setBizName(receiptOCR.getBizName());
+        itemOCR.setReceipt(documentEntity);
+        itemOCR.setUserProfileId(documentEntity.getUserProfileId());
+        itemOCR.setBizName(documentEntity.getBizName());
 		return itemOCR;
 	}
 }

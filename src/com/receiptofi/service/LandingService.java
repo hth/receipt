@@ -1,22 +1,22 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
+import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.repository.ReceiptOCRManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.CreateTempFile;
@@ -64,7 +64,7 @@ public final class LandingService {
     private static final Logger log = LoggerFactory.getLogger(LandingService.class);
 
     @Autowired private ReceiptManager receiptManager;
-    @Autowired private ReceiptOCRManager receiptOCRManager;
+    @Autowired private DocumentManager documentManager;
     @Autowired private ItemOCRManager itemOCRManager;
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;
@@ -83,7 +83,7 @@ public final class LandingService {
     };
 
     public long pendingReceipt(String profileId) {
-        return receiptOCRManager.numberOfPendingReceipts(profileId);
+        return documentManager.numberOfPendingReceipts(profileId);
     }
 
     @SuppressWarnings("unused")
@@ -239,7 +239,7 @@ public final class LandingService {
      */
     public void uploadReceipt(String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
         String receiptBlobId = null;
-        ReceiptEntityOCR receiptOCR = null;
+        DocumentEntity documentEntity = null;
         FileSystemEntity fileSystemEntityUnScaled = null;
         List<ItemEntityOCR> items;
         try {
@@ -254,30 +254,30 @@ public final class LandingService {
             uploadReceiptImage.setFile(scaled);
             receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
 
-            receiptOCR = ReceiptEntityOCR.newInstance();
-            receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
+            documentEntity = DocumentEntity.newInstance();
+            documentEntity.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
 
             fileSystemEntityUnScaled = new FileSystemEntity(receiptBlobId, ImageSplit.bufferedImage(scaled), 0, 0);
             fileSystemService.save(fileSystemEntityUnScaled);
-            receiptOCR.addReceiptBlobId(fileSystemEntityUnScaled);
+            documentEntity.addReceiptBlobId(fileSystemEntityUnScaled);
 
-            receiptOCR.setUserProfileId(userProfileId);
-            receiptOCR.setReceiptOCRTranslation(receiptOCRTranslation);
+            documentEntity.setUserProfileId(userProfileId);
+            documentEntity.setReceiptOCRTranslation(receiptOCRTranslation);
             //Cannot pre-select it for now
             //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
-            setEmptyBiz(receiptOCR);
+            setEmptyBiz(documentEntity);
 
             items = new LinkedList<>();
-            ReceiptParser.read(receiptOCRTranslation, receiptOCR, items);
+            ReceiptParser.read(receiptOCRTranslation, documentEntity, items);
 
-            //Save Receipt OCR, Items and the Send JMS
-            receiptOCRManager.save(receiptOCR);
+            //Save Document, Items and the Send JMS
+            documentManager.save(documentEntity);
             itemOCRManager.saveObjects(items);
 
-            log.info("ReceiptEntityOCR @Id after save: " + receiptOCR.getId());
-            UserProfileEntity userProfile = userProfileManager.findOne(receiptOCR.getUserProfileId());
-            senderJMS.send(receiptOCR, userProfile);
+            log.info("DocumentEntity @Id after save: " + documentEntity.getId());
+            UserProfileEntity userProfile = userProfileManager.findOne(documentEntity.getUserProfileId());
+            senderJMS.send(documentEntity, userProfile);
         } catch (Exception exce) {
             log.error("Exception occurred during saving receipt: " + exce.getLocalizedMessage());
             log.warn("Undo all the saves");
@@ -293,17 +293,17 @@ public final class LandingService {
                 fileSystemService.deleteHard(fileSystemEntityUnScaled);
             }
 
-            long sizeReceiptInitial = receiptOCRManager.collectionSize();
+            long sizeReceiptInitial = documentManager.collectionSize();
             long sizeItemInitial = itemOCRManager.collectionSize();
-            if(receiptOCR != null) {
-                itemOCRManager.deleteWhereReceipt(receiptOCR);
-                receiptOCRManager.deleteHard(receiptOCR);
+            if(documentEntity != null) {
+                itemOCRManager.deleteWhereReceipt(documentEntity);
+                documentManager.deleteHard(documentEntity);
             }
-            long sizeReceiptFinal = receiptOCRManager.collectionSize();
+            long sizeReceiptFinal = documentManager.collectionSize();
             long sizeItemFinal = itemOCRManager.collectionSize();
 
             if(sizeReceiptInitial != sizeReceiptFinal) {
-                log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed ReceiptOCR: " + receiptOCR.getId());
+                log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Document: " + documentEntity.getId());
             } else {
                 log.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
             }
@@ -350,11 +350,11 @@ public final class LandingService {
     /**
      * Can be deleted as DBRef for Biz is not annotated @NotNull. To be considered if DBRef has to be annotated with @NotNull
      *
-     * @param receiptEntityOCR
+     * @param documentEntity
      */
-    public void setEmptyBiz(ReceiptEntityOCR receiptEntityOCR) {
-        receiptEntityOCR.setBizName(bizNameManager.noName());
-        receiptEntityOCR.setBizStore(bizStoreManager.noStore());
+    public void setEmptyBiz(DocumentEntity documentEntity) {
+        documentEntity.setBizName(bizNameManager.noName());
+        documentEntity.setBizStore(bizStoreManager.noStore());
     }
 
     public List<NotificationEntity> notifications(String userProfileId) {

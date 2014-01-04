@@ -1,14 +1,11 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.MileageEntity;
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -18,7 +15,6 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import org.joda.time.DateTime;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.WriteResult;
 
 /**

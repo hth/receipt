@@ -25,8 +25,8 @@
 	<script>
 		/* add background color to holder in tr tag */
         window.onload = function () {
-            <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
-                fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptOCRForm.receiptOCR.userProfileId}');
+            <c:forEach items="${receiptDocumentForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
+                fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
             </c:forEach>
         };
 
@@ -170,7 +170,7 @@
                         data: {
                             date:  $("#date").val(),
                             total: $("#total").val(),
-                            userProfileId: '${receiptOCRForm.receiptOCR.userProfileId}'
+                            userProfileId: '${receiptDocumentForm.receiptDocument.userProfileId}'
                         },
                         contentType: "*/*",
                         dataTypes: "application/json",
@@ -282,9 +282,9 @@
     </div>
 
     <c:choose>
-    <c:when test="${!empty receiptOCRForm.receiptOCR}">
+    <c:when test="${!empty receiptDocumentForm.receiptDocument}">
 
-    <spring:eval var="documentStat" expression="receiptOCRForm.receiptOCR.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).TURK_RECEIPT_REJECT" />
+    <spring:eval var="documentStat" expression="receiptDocumentForm.receiptDocument.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).TURK_RECEIPT_REJECT" />
     <c:choose>
         <c:when test="${!documentStat}">
             <h2 class="demoHeaders">Document pending</h2>
@@ -297,10 +297,10 @@
     <spring:eval var="isNotTech" expression="userSession.level lt T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" />
     <c:if test="${isNotTech}">
     <c:choose>
-        <c:when test="${empty receiptOCRForm.receiptOCR.receiptId}">
-        <form:form method="post" action="../delete.htm" modelAttribute="receiptOCRForm">
-            <form:hidden path="receiptOCR.receiptId"/>
-            <form:hidden path="receiptOCR.id"/>
+        <c:when test="${empty receiptDocumentForm.receiptDocument.receiptId}">
+        <form:form method="post" action="../delete.htm" modelAttribute="receiptDocumentForm">
+            <form:hidden path="receiptDocument.receiptId"/>
+            <form:hidden path="receiptDocument.id"/>
             <input type="submit" value="Delete" name="delete" id="deleteId"/>
         </form:form>
         </c:when>
@@ -320,14 +320,14 @@
     </c:if>
 
     <c:choose>
-    <c:when test="${!empty receiptOCRForm.errorMessage}">
+    <c:when test="${!empty receiptDocumentForm.errorMessage}">
         <%--Currently this section of code is not executed unless the error message is added to the form directly without using 'result' --%>
         <div class="ui-widget" id="existingErrorMessage">
             <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
                 <p>
                     <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
                     <span style="display:block; width: auto">
-                        ${receiptOCRForm.errorMessage}
+                        ${receiptDocumentForm.errorMessage}
                     </span>
                 </p>
             </div>
@@ -342,10 +342,10 @@
 
     <c:if test="${isTech}">
     <div>
-        <form:label for="receiptOCRForm.receiptOCR.documentOfType" path="receiptOCRForm.receiptOCR.documentOfType" cssErrorClass="error">
+        <form:label for="receiptDocumentForm.receiptDocument.documentOfType" path="receiptDocumentForm.receiptDocument.documentOfType" cssErrorClass="error">
             Document Type:
         </form:label>
-        <form:select path="receiptOCRForm.receiptOCR.documentOfType" id="documentId">
+        <form:select path="receiptDocumentForm.receiptDocument.documentOfType" id="documentId">
             <form:option value="NONE" label="--- Select ---"/>
             <form:options itemValue="name" itemLabel="description" />
         </form:select>
@@ -358,46 +358,45 @@
                 <c:choose>
                     <c:when test="${isTech}">
                     <div id="activeReceipt" class="hidden">
-                        <form:form method="post" action="../submit.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                        <form:form method="post" action="../submit.htm" modelAttribute="receiptDocumentForm" id="receiptUpdateForm">
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
-                            <form:errors path="receiptOCR"      cssClass="error" />
-                            <form:hidden path="receiptOCR.id"/>
-                            <form:hidden path="receiptOCR.userProfileId"/>
-                            <form:hidden path="receiptOCR.version"/>
-                            <form:hidden path="receiptOCR.documentStatus"/>
-                            <form:hidden path="receiptOCR.receiptId"/>
-                            <form:hidden path="receiptOCR.receiptOCRTranslation"/>
-                            <form:hidden path="receiptOCR.receiptOf" value="EXPENSE"/>
-                            <form:hidden path="receiptOCR.documentOfType" value="RECEIPT"/>
+                            <form:errors path="receiptDocument"      cssClass="error" />
+                            <form:hidden path="receiptDocument.id"/>
+                            <form:hidden path="receiptDocument.userProfileId"/>
+                            <form:hidden path="receiptDocument.version"/>
+                            <form:hidden path="receiptDocument.documentStatus"/>
+                            <form:hidden path="receiptDocument.receiptId"/>
+                            <form:hidden path="receiptDocument.receiptOCRTranslation"/>
+                            <form:hidden path="receiptDocument.documentOfType" value="RECEIPT"/>
 
                             <table border="0" style="width: 550px" class="etable">
                                 <tr>
                                     <td colspan="6">
                                         <div class="leftAlign">
-                                            <form:label for="receiptOCR.bizName.name" path="receiptOCR.bizName.name" cssErrorClass="error">Biz Name</form:label>
-                                            <form:input path="receiptOCR.bizName.name" id="bizName" size="52"/>
+                                            <form:label for="receiptDocument.bizName.name" path="receiptDocument.bizName.name" cssErrorClass="error">Biz Name</form:label>
+                                            <form:input path="receiptDocument.bizName.name" id="bizName" size="52"/>
                                         </div>
                                         <div class="rightAlign">
-                                            <form:label for="receiptOCR.receiptDate" path="receiptOCR.receiptDate" cssErrorClass="error">Date</form:label>
-                                            <form:input path="receiptOCR.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
+                                            <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date</form:label>
+                                            <form:input path="receiptDocument.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6">
-                                        <div class="leftAlign"><form:errors path="receiptOCR.bizName.name" cssClass="error" /></div>
-                                        <div class="rightAlign"><form:errors path="receiptOCR.receiptDate" cssClass="error" /></div>
+                                        <div class="leftAlign"><form:errors path="receiptDocument.bizName.name" cssClass="error" /></div>
+                                        <div class="rightAlign"><form:errors path="receiptDocument.receiptDate" cssClass="error" /></div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6">
                                         <div class="leftAlign">
-                                            <form:label for="receiptOCR.bizStore.address" path="receiptOCR.bizStore.address" cssErrorClass="error">Address : </form:label>
-                                            <form:input path="receiptOCR.bizStore.address" id="address" size="70"/>
+                                            <form:label for="receiptDocument.bizStore.address" path="receiptDocument.bizStore.address" cssErrorClass="error">Address : </form:label>
+                                            <form:input path="receiptDocument.bizStore.address" id="address" size="70"/>
                                         </div>
                                         <div class="rightAlign">
-                                            <form:label for="receiptOCR.bizStore.phone" path="receiptOCR.bizStore.phone" cssErrorClass="error">Phone: </form:label>
-                                            <form:input path="receiptOCR.bizStore.phone" id="phone" size="20"/>
+                                            <form:label for="receiptDocument.bizStore.phone" path="receiptDocument.bizStore.phone" cssErrorClass="error">Phone: </form:label>
+                                            <form:input path="receiptDocument.bizStore.phone" id="phone" size="20"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -410,7 +409,7 @@
                                     <th>&nbsp;</th>
                                 </tr>
                                 <tbody id="itemListContainer">
-                                <c:forEach items="${receiptOCRForm.items}" varStatus="status">
+                                <c:forEach items="${receiptDocumentForm.items}" varStatus="status">
                                     <tr class="itemRow">
                                         <td style="text-align: left">
                                             <a href="#" class="removeItem">X</a>
@@ -456,16 +455,16 @@
                                 <tr>
                                     <td colspan="4" style="text-align: right; width: 300px; vertical-align: top">
                                         <b><label id="expectedTax" style="font-size: 14px"></label></b> &nbsp;&nbsp;
-                                        <form:input path="receiptOCR.tax" id="tax" size="5"/>
-                                        <form:errors path="receiptOCR.tax" cssClass="error" />
+                                        <form:input path="receiptDocument.tax" id="tax" size="5"/>
+                                        <form:errors path="receiptDocument.tax" cssClass="error" />
                                     </td>
                                     <td colspan="1" style="vertical-align: top">
-                                        <form:input path="receiptOCR.subTotal" id="subTotal" size="8"/>
-                                        <form:errors path="receiptOCR.subTotal" cssClass="error" />
+                                        <form:input path="receiptDocument.subTotal" id="subTotal" size="8"/>
+                                        <form:errors path="receiptDocument.subTotal" cssClass="error" />
                                     </td>
                                     <td colspan="1" style="vertical-align: top">
-                                        <form:input path="receiptOCR.total" id="total" size="8"/>
-                                        <form:errors path="receiptOCR.total" cssClass="error" />
+                                        <form:input path="receiptDocument.total" id="total" size="8"/>
+                                        <form:errors path="receiptDocument.total" cssClass="error" />
                                     </td>
                                 </tr>
                                 <tr style="height: 6em;">
@@ -481,18 +480,17 @@
                     </div>
 
                     <div id="activeMileage" class="hidden">
-                        <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptOCRForm" id="receiptUpdateForm">
+                        <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptDocumentForm" id="receiptUpdateForm">
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
-                            <form:errors path="receiptOCR"      cssClass="error" />
-                            <form:hidden path="receiptOCR.receiptBlobId"/>
-                            <form:hidden path="receiptOCR.id"/>
-                            <form:hidden path="receiptOCR.userProfileId"/>
-                            <form:hidden path="receiptOCR.version"/>
-                            <form:hidden path="receiptOCR.documentStatus"/>
-                            <form:hidden path="receiptOCR.receiptId"/>
-                            <form:hidden path="receiptOCR.receiptOCRTranslation"/>
-                            <form:hidden path="receiptOCR.receiptOf"/>
-                            <form:hidden path="receiptOCR.documentOfType" value="MILEAGE"/>
+                            <form:errors path="receiptDocument" cssClass="error" />
+                            <form:hidden path="receiptDocument.receiptBlobId"/>
+                            <form:hidden path="receiptDocument.id"/>
+                            <form:hidden path="receiptDocument.userProfileId"/>
+                            <form:hidden path="receiptDocument.version"/>
+                            <form:hidden path="receiptDocument.documentStatus"/>
+                            <form:hidden path="receiptDocument.receiptId"/>
+                            <form:hidden path="receiptDocument.receiptOCRTranslation"/>
+                            <form:hidden path="receiptDocument.documentOfType" value="MILEAGE"/>
 
                             <table border="0" style="width: 550px" class="etable">
                                 <tr>
@@ -528,7 +526,7 @@
             <td style="vertical-align: top;">
                 <%--<div id="holder" style="height: 850px">--%>
                 <%--<c:choose>--%>
-                <%--<c:when test="${empty receiptOCRForm.receiptOCR}">--%>
+                <%--<c:when test="${empty receiptDocumentForm.receiptDocument}">--%>
                     <%--&nbsp;--%>
                 <%--</c:when>--%>
                 <%--<c:otherwise>--%>
@@ -537,7 +535,7 @@
                 <%--</c:choose>--%>
                 <%--</div>--%>
 
-                <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+                <c:forEach items="${receiptDocumentForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
                     <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
                         <%--<div src="" id="receipt.image"></div>--%>
                     </div>
@@ -600,7 +598,7 @@
 
 <script>
     $(function() {
-        <spring:eval var="isReceipt" expression="receiptOCRForm.receiptOCR.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).RECEIPT" />
+        <spring:eval var="isReceipt" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).RECEIPT" />
         <c:if test="${isReceipt}">
             $('#activeReceipt').removeClass('hidden');
             $('#activeMileage').hide();
@@ -608,7 +606,7 @@
             $('#documentId').prop('disabled', true);
         </c:if>
 
-        <spring:eval var="isInvoice" expression="receiptOCRForm.receiptOCR.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).INVOICE" />
+        <spring:eval var="isInvoice" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).INVOICE" />
         <c:if test="${isInvoice}">
             $('#activeReceipt').removeClass('hidden');
             $('#activeMileage').hide();
@@ -616,7 +614,7 @@
             $('#documentId').prop('disabled', true);
         </c:if>
 
-        <spring:eval var="isMileage" expression="receiptOCRForm.receiptOCR.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).MILEAGE" />
+        <spring:eval var="isMileage" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).MILEAGE" />
         <c:if test="${isMileage}">
             $('#activeReceipt').hide();
             $('#activeMileage').removeClass('hidden');
@@ -744,7 +742,7 @@
     // JSON data
     var topHeight = 0,
         info = [
-            <c:forEach items="${receiptOCRForm.receiptOCR.receiptBlobId}" var="arr" varStatus="status">
+            <c:forEach items="${receiptDocumentForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
             {
                 src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
                 pos: {

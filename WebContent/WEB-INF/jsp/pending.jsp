@@ -107,12 +107,12 @@
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptEntityOCR.id}.htm">
+                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentEntity.id}.htm">
                                     ${receipt.fileName}
                                     </a>
                                 </td>
                                 <td style="padding: 3px; text-align: left;">
-                                    <fmt:formatDate value="${receipt.receiptEntityOCR.created}" type="both"/>
+                                    <fmt:formatDate value="${receipt.documentEntity.created}" type="both"/>
                                 </td>
                             </tr>
                             </c:forEach>
@@ -145,12 +145,12 @@
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.receiptEntityOCR.id}.htm">
+                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentEntity.id}.htm">
                                     ${receipt.fileName}
                                     </a>
                                 </td>
                                 <td style="padding: 3px; text-align: left;">
-                                    <fmt:formatDate value="${receipt.receiptEntityOCR.created}" type="both"/>
+                                    <fmt:formatDate value="${receipt.documentEntity.created}" type="both"/>
                                 </td>
                             </tr>
                             </c:forEach>

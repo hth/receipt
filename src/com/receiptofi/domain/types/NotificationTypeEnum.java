@@ -11,7 +11,7 @@ public enum NotificationTypeEnum {
     RECEIPT("RECEIPT",                  "Receipt"),
     INVOICE("INVOICE",                  "Invoice"),
     MILEAGE("MILEAGE",                  "Mileage"),
-    RECEIPT_OCR("RECEIPT_OCR",          "Receipt OCR"),
+    DOCUMENT("DOCUMENT",                "Document"),
     EXPENSE_REPORT("EXPENSE_REPORT",    "Expense Report");
 
     private final String description;

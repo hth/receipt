@@ -2,8 +2,8 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.web.form.BizForm;
@@ -132,11 +132,11 @@ public final class BizService {
     /**
      * This method is being used by Admin to create new Business and Stores. Also this method is being used by receipt update to do the same.
      *
-     * @param receiptEntity
+     * @param document
      */
-    public void saveNewBusinessAndOrStore(ReceiptEntityOCR receiptEntity) throws Exception {
-        BizNameEntity bizNameEntity = receiptEntity.getBizName();
-        BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
+    public void saveNewBusinessAndOrStore(DocumentEntity document) throws Exception {
+        BizNameEntity bizNameEntity = document.getBizName();
+        BizStoreEntity bizStoreEntity = document.getBizStore();
 
         BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getName());
         if(bizName == null) {
@@ -147,8 +147,8 @@ public final class BizService {
                 externalService.decodeAddress(bizStoreEntity);
                 bizStoreManager.save(bizStoreEntity);
 
-                receiptEntity.setBizName(bizNameEntity);
-                receiptEntity.setBizStore(bizStoreEntity);
+                document.setBizName(bizNameEntity);
+                document.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException e) {
                 log.error(e.getLocalizedMessage());
 
@@ -166,16 +166,16 @@ public final class BizService {
                     externalService.decodeAddress(bizStoreEntity);
                     bizStoreManager.save(bizStoreEntity);
 
-                    receiptEntity.setBizName(bizName);
-                    receiptEntity.setBizStore(bizStoreEntity);
+                    document.setBizName(bizName);
+                    document.setBizStore(bizStoreEntity);
                 } catch (DuplicateKeyException e) {
                     log.error(e.getLocalizedMessage());
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
                 }
             } else {
-                receiptEntity.setBizName(bizName);
-                receiptEntity.setBizStore(bizStore);
+                document.setBizName(bizName);
+                document.setBizStore(bizStore);
             }
         }
     }

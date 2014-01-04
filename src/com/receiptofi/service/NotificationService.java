@@ -1,8 +1,8 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.NotificationManager;
 import org.slf4j.Logger;
@@ -74,11 +74,11 @@ public final class NotificationService {
      *
      * @param message
      * @param notificationTypeEnum
-     * @param receiptEntityOCR
+     * @param documentEntity
      */
-    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, ReceiptEntityOCR receiptEntityOCR) {
-        if(notificationTypeEnum == NotificationTypeEnum.RECEIPT_OCR) {
-            addNotification(message, notificationTypeEnum, receiptEntityOCR.getId(), receiptEntityOCR.getUserProfileId(), true);
+    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, DocumentEntity documentEntity) {
+        if(notificationTypeEnum == NotificationTypeEnum.DOCUMENT) {
+            addNotification(message, notificationTypeEnum, documentEntity.getId(), documentEntity.getUserProfileId(), true);
         } else {
             throw new UnsupportedOperationException("Incorrect method call for Notification Type");
         }

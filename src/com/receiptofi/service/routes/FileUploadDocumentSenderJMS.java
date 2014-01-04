@@ -3,7 +3,7 @@
  */
 package com.receiptofi.service.routes;
 
-import com.receiptofi.domain.ReceiptEntityOCR;
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,24 +31,24 @@ public final class FileUploadDocumentSenderJMS {
     @Value("${queue-name}")
     private String queueName;
 
-	public void send(final ReceiptEntityOCR receiptOCR, final UserProfileEntity userProfile) {
+	public void send(final DocumentEntity documentEntity, final UserProfileEntity userProfile) {
         assert(queueName.length() > 0);
         jmsSenderTemplate.send(queueName,
 				new MessageCreator() {
 					public Message createMessage(Session session) throws JMSException {
 						MapMessage mapMessage = session.createMapMessage();
-						mapMessage.setString("id", receiptOCR.getId());
+						mapMessage.setString("id", documentEntity.getId());
 						mapMessage.setString("level", userProfile.getLevel().getDescription());
-                        mapMessage.setInt("status", receiptOCR.getDocumentStatus().ordinal());
+                        mapMessage.setInt("status", documentEntity.getDocumentStatus().ordinal());
 
 						//This does not work since this values has to be set after sending the message. It will always default to 4.
 						mapMessage.setJMSPriority(userProfile.getLevel().getMessagePriorityJMS());
 
-						mapMessage.setJMSTimestamp(receiptOCR.getUpdated().getTime());
+						mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
 						return mapMessage;
 					}
 				}
 				);
-		log.info("Message sent ReceiptOCR - id: "+ receiptOCR.getId()  + ". With level: " + userProfile.getLevel().getDescription());
+		log.info("Message sent ReceiptOCR - id: "+ documentEntity.getId() + ". With level: " + userProfile.getLevel().getDescription());
     }
 }

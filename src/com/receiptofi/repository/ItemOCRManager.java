@@ -3,15 +3,15 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.ItemEntityOCR;
+
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.ReceiptEntityOCR;
 
 /**
  * @author hitender
@@ -26,7 +26,7 @@ public interface ItemOCRManager extends RepositoryManager<ItemEntityOCR> {
 
 	public WriteResult updateObject(ItemEntityOCR object);
 
-	public List<ItemEntityOCR> getWhereReceipt(ReceiptEntityOCR receipt);
+	public List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt);
 
-	public void deleteWhereReceipt(ReceiptEntityOCR receipt);
+	public void deleteWhereReceipt(DocumentEntity receipt);
 }

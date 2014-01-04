@@ -3,21 +3,21 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.DocumentEntity;
+
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 
 /**
  * @author hitender
  * @since Jan 6, 2013 1:29:22 PM
  *
  */
-public interface ReceiptOCRManager extends RepositoryManager<ReceiptEntityOCR> {
+public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
-	static String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntityOCR.class, Document.class, "collection");
+	static String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
 
 	long numberOfPendingReceipts(String userProfileId);
 
@@ -27,7 +27,7 @@ public interface ReceiptOCRManager extends RepositoryManager<ReceiptEntityOCR> {
      * @param userProfileId
      * @return
      */
-	List<ReceiptEntityOCR> getAllPending(String userProfileId);
+	List<DocumentEntity> getAllPending(String userProfileId);
 
     /**
      * Get all the rejected receipts
@@ -35,5 +35,5 @@ public interface ReceiptOCRManager extends RepositoryManager<ReceiptEntityOCR> {
      * @param userProfileId
      * @return
      */
-    List<ReceiptEntityOCR> getAllRejected(String userProfileId);
+    List<DocumentEntity> getAllRejected(String userProfileId);
 }

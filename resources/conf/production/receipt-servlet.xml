@@ -121,7 +121,7 @@
     <bean id="userPreferenceManager"        class="com.receiptofi.repository.UserPreferenceManagerImpl" />
     <bean id="receiptManager"               class="com.receiptofi.repository.ReceiptManagerImpl" />
     <bean id="itemManager"                  class="com.receiptofi.repository.ItemManagerImpl" />
-    <bean id="receiptOCRManager"            class="com.receiptofi.repository.ReceiptOCRManagerImpl" />
+    <bean id="documentManager"              class="com.receiptofi.repository.DocumentManagerImpl" />
     <bean id="itemOCRManager"               class="com.receiptofi.repository.ItemOCRManagerImpl" />
     <bean id="itemFeatureManager"           class="com.receiptofi.repository.ItemFeatureManagerImpl" />
     <bean id="messageManager"               class="com.receiptofi.repository.MessageManagerImpl" />
@@ -131,10 +131,11 @@
     <bean id="bizNameManager"               class="com.receiptofi.repository.BizNameManagerImpl" />
     <bean id="bizStoreManager"              class="com.receiptofi.repository.BizStoreManagerImpl" />
     <bean id="fileSystemManager"            class="com.receiptofi.repository.FileSystemManagerImpl" />
+    <bean id="mileageManager"               class="com.receiptofi.repository.MileageManagerImpl" />
 
     <bean id="userRegistrationValidator"    class="com.receiptofi.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.receiptofi.web.validator.UserLoginValidator" />
-    <bean id="receiptOCRValidator"          class="com.receiptofi.web.validator.ReceiptOCRValidator" />
+    <bean id="receiptDocumentValidator"     class="com.receiptofi.web.validator.ReceiptDocumentValidator" />
     <bean id="bizValidator"                 class="com.receiptofi.web.validator.BizValidator" />
     <bean id="bizSearchValidator"           class="com.receiptofi.web.validator.BizSearchValidator" />
     <bean id="expenseTypeValidator"         class="com.receiptofi.web.validator.ExpenseTypeValidator" />

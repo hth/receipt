@@ -3,18 +3,18 @@ package com.receiptofi.service;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CommentEntity;
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptEntityOCR;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.repository.CommentManager;
+import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.repository.ReceiptOCRManager;
 import com.receiptofi.repository.StorageManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
@@ -42,7 +42,7 @@ public final class ReceiptService {
     private static Logger log = LoggerFactory.getLogger(ReceiptService.class);
 
     @Autowired private ReceiptManager receiptManager;
-    @Autowired private ReceiptOCRManager receiptOCRManager;
+    @Autowired private DocumentManager documentManager;
     @Autowired private StorageManager storageManager;
     @Autowired private ItemManager itemManager;
     @Autowired private ItemOCRManager itemOCRManager;
@@ -108,10 +108,10 @@ public final class ReceiptService {
                 }
 
                 if(!StringUtils.isEmpty(receipt.getReceiptOCRId())) {
-                    ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
-                    if(receiptEntityOCR != null) {
-                        itemOCRManager.deleteWhereReceipt(receiptEntityOCR);
-                        receiptOCRManager.deleteHard(receiptEntityOCR);
+                    DocumentEntity documentEntity = documentManager.findOne(receipt.getReceiptOCRId());
+                    if(documentEntity != null) {
+                        itemOCRManager.deleteWhereReceipt(documentEntity);
+                        documentManager.deleteHard(documentEntity);
                         receipt.setReceiptOCRId(null);
                     }
                 }
@@ -138,7 +138,7 @@ public final class ReceiptService {
                     receipt.inActive();
                     List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
 
-                    ReceiptEntityOCR receiptOCR = receiptOCRManager.findOne(receipt.getReceiptOCRId());
+                    DocumentEntity receiptOCR = documentManager.findOne(receipt.getReceiptOCRId());
                     receiptOCR.active();
                     receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_REQUEST);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());
@@ -146,14 +146,14 @@ public final class ReceiptService {
 
                     /** All activity at the end is better because you never know what could go wrong during populating other data */
                     receiptManager.save(receipt);
-                    receiptOCRManager.save(receiptOCR);
+                    documentManager.save(receiptOCR);
                     itemOCRManager.deleteWhereReceipt(receiptOCR);
 
                     List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
                     itemOCRManager.saveObjects(ocrItems);
                     itemManager.deleteWhereReceipt(receipt);
 
-                    log.info("ReceiptEntityOCR @Id after save: " + receiptOCR.getId());
+                    log.info("DocumentEntity @Id after save: " + receiptOCR.getId());
                     UserProfileEntity userProfile = userProfileManager.findOne(receiptOCR.getUserProfileId());
                     senderJMS.send(receiptOCR, userProfile);
                 } else {
@@ -181,7 +181,7 @@ public final class ReceiptService {
      * @param receiptOCR
      * @return
      */
-    public List<ItemEntityOCR> getItemEntityFromItemEntityOCR(List<ItemEntity> items, ReceiptEntityOCR receiptOCR) {
+    public List<ItemEntityOCR> getItemEntityFromItemEntityOCR(List<ItemEntity> items, DocumentEntity receiptOCR) {
         List<ItemEntityOCR> listOfItems = new ArrayList<>();
 
         for(ItemEntity item : items) {
@@ -282,15 +282,15 @@ public final class ReceiptService {
     }
 
     /**
-     * Saves recheck comment to receipt OCR
+     * Saves recheck comment to Document
      *
      * @param comment
      * @param receiptOCRId
      * @return
      */
     public boolean updateOCRComment(String comment, String receiptOCRId) {
-        ReceiptEntityOCR receiptEntityOCR = receiptOCRManager.findOne(receiptOCRId);
-        CommentEntity commentEntity = receiptEntityOCR.getRecheckComment();
+        DocumentEntity documentEntity = documentManager.findOne(receiptOCRId);
+        CommentEntity commentEntity = documentEntity.getRecheckComment();
         boolean commentEntityBoolean = false;
         if(commentEntity == null) {
             commentEntityBoolean = true;
@@ -303,8 +303,8 @@ public final class ReceiptService {
             commentEntity.setUpdated();
             commentManager.save(commentEntity);
             if(commentEntityBoolean) {
-                receiptEntityOCR.setRecheckComment(commentEntity);
-                receiptOCRManager.save(receiptEntityOCR);
+                documentEntity.setRecheckComment(commentEntity);
+                documentManager.save(documentEntity);
             }
             return true;
         } catch (Exception exce) {
