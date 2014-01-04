@@ -4,7 +4,6 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.domain.types.ReceiptOfEnum;
 import com.receiptofi.utils.SHAHashing;
 
 import javax.validation.constraints.NotNull;
@@ -34,7 +33,7 @@ import org.joda.time.DateTime;
  */
 @Document(collection = "RECEIPT")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "receipt_idx",           def = "{'RECEIPT_BLOB_ID': -1, 'USER_PROFILE_ID': -1}"),
+        @CompoundIndex(name = "receipt_idx",           def = "{'FS': -1, 'USER_PROFILE_ID': -1}"),
         @CompoundIndex(name = "receipt_unique_idx",    def = "{'CHECK_SUM': -1}", unique = true),
         @CompoundIndex(name = "receipt_expense_Report",def = "{'EXP_FILENAME': -1}")
 } )
@@ -46,8 +45,8 @@ public class ReceiptEntity extends BaseEntity {
 	private DocumentStatusEnum receiptStatus;
 
     @DBRef
-    @Field("RECEIPT_BLOB_ID")
-	private Collection<FileSystemEntity> receiptBlobId;
+    @Field("FS")
+	private Collection<FileSystemEntity> fileSystemEntities;
 
 	@NotNull
     @DateTimeFormat(iso = ISO.DATE_TIME)
@@ -126,13 +125,13 @@ public class ReceiptEntity extends BaseEntity {
 	public ReceiptEntity() {}
 
     @Deprecated
-	private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity receiptBlobId, String userProfileId) {
+	private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity fileSystemEntities, String userProfileId) {
 		super();
 		this.receiptDate = receiptDate;
 		this.total = total;
 		this.tax = tax;
 		this.receiptStatus = receiptStatus;
-		this.receiptBlobId.add(receiptBlobId);
+		this.fileSystemEntities.add(fileSystemEntities);
 		this.userProfileId = userProfileId;
 	}
 
@@ -164,12 +163,12 @@ public class ReceiptEntity extends BaseEntity {
 		this.receiptStatus = receiptStatus;
 	}
 
-	public Collection<FileSystemEntity> getReceiptBlobId() {
-		return receiptBlobId;
+	public Collection<FileSystemEntity> getFileSystemEntities() {
+		return fileSystemEntities;
 	}
 
-    public void setReceiptBlobId(Collection<FileSystemEntity> receiptBlobId) {
-        this.receiptBlobId = receiptBlobId;
+    public void setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
+        this.fileSystemEntities = fileSystemEntities;
     }
 
     public Date getReceiptDate() {

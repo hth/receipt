@@ -5,7 +5,6 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.domain.types.ReceiptOfEnum;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  *
  */
 @Document(collection = "DOCUMENT")
-@CompoundIndexes({ @CompoundIndex(name = "document_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
+@CompoundIndexes({ @CompoundIndex(name = "document_idx", def = "{'FS': 1, 'USER_PROFILE_ID': 1}") })
 public class DocumentEntity extends BaseEntity {
 	private static final long serialVersionUID = 5258538763598321136L;
 
@@ -34,8 +33,8 @@ public class DocumentEntity extends BaseEntity {
 	private DocumentStatusEnum documentStatus;
 
     @DBRef
-    @Field("RECEIPT_BLOB_ID")
-	private Collection<FileSystemEntity> receiptBlobId;
+    @Field("FS")
+	private Collection<FileSystemEntity> fileSystemEntities;
 
 	@NotNull
     @Field("RECEIPT_DATE")
@@ -103,19 +102,19 @@ public class DocumentEntity extends BaseEntity {
 		this.documentStatus = documentStatus;
 	}
 
-    public Collection<FileSystemEntity> getReceiptBlobId() {
-		return receiptBlobId;
+    public Collection<FileSystemEntity> getFileSystemEntities() {
+		return fileSystemEntities;
 	}
 
 	public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
-        if(this.receiptBlobId == null) {
-            this.receiptBlobId = new ArrayList<>();
+        if(this.fileSystemEntities == null) {
+            this.fileSystemEntities = new ArrayList<>();
         }
-		this.receiptBlobId.add(receiptBlobId);
+		this.fileSystemEntities.add(receiptBlobId);
 	}
 
-    public void setReceiptBlobId(Collection<FileSystemEntity> receiptBlobId) {
-        this.receiptBlobId = receiptBlobId;
+    public void setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
+        this.fileSystemEntities = fileSystemEntities;
     }
 
     public String getReceiptDate() {

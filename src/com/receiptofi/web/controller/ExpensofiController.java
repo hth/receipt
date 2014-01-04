@@ -80,7 +80,7 @@ public class ExpensofiController {
 
             ReceiptEntity receiptEntity = items.get(0).getReceipt();
             Collection<AnchorFileInExcel> anchorFileInExcels = new LinkedList<>();
-            for(FileSystemEntity fileId : receiptEntity.getReceiptBlobId()) {
+            for(FileSystemEntity fileId : receiptEntity.getFileSystemEntities()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(fileId.getBlobId());
                 InputStream is = null;
                 try {

@@ -23,7 +23,7 @@
     <script>
         /* add background color to holder in tr tag */
         window.onload = function () {
-            <c:forEach items="${receiptDocumentForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
+            <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
             fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
             </c:forEach>
         };
@@ -507,7 +507,7 @@
                     <%--</c:choose>--%>
                 <%--</div>--%>
 
-                <c:forEach items="${receiptDocumentForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
+                <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
                     <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
                             <%--<div src="" id="receipt.image"></div>--%>
                     </div>
@@ -615,7 +615,7 @@
     // JSON data
     var topHeight = 0,
         info = [
-            <c:forEach items="${receiptForm.receiptDocument.receiptBlobId}" var="arr" varStatus="status">
+            <c:forEach items="${receiptForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
             {
                 src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
                 pos: {
