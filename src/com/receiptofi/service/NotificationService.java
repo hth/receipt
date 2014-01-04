@@ -77,7 +77,7 @@ public final class NotificationService {
      * @param documentEntity
      */
     public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, DocumentEntity documentEntity) {
-        if(notificationTypeEnum == NotificationTypeEnum.RECEIPT_OCR) {
+        if(notificationTypeEnum == NotificationTypeEnum.DOCUMENT) {
             addNotification(message, notificationTypeEnum, documentEntity.getId(), documentEntity.getUserProfileId(), true);
         } else {
             throw new UnsupportedOperationException("Incorrect method call for Notification Type");

@@ -205,7 +205,7 @@ public class ReceiptUpdateController {
     @RequestMapping(value = "/submit", method = RequestMethod.POST, params="receipt-reject")
     public ModelAndView reject(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
         DateTime time = DateUtil.now();
-        log.info("Beginning of Rejecting Receipt OCR: " + receiptDocumentForm.getReceiptDocument().getId());
+        log.info("Beginning of Rejecting Document: " + receiptDocumentForm.getReceiptDocument().getId());
         try {
             DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
             receiptUpdateService.turkReject(receiptOCR);
@@ -217,7 +217,7 @@ public class ReceiptUpdateController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt reject");
 
             receiptDocumentForm.setErrorMessage("Receipt could not be processed for Reject. " +
-                    "Contact administrator with Receipt OCR # " + receiptDocumentForm.getReceiptDocument().getId());
+                    "Contact administrator with Document # " + receiptDocumentForm.getReceiptDocument().getId());
             return new ModelAndView(NEXT_PAGE_UPDATE);
         }
     }

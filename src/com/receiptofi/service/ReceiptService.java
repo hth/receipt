@@ -282,7 +282,7 @@ public final class ReceiptService {
     }
 
     /**
-     * Saves recheck comment to receipt OCR
+     * Saves recheck comment to Document
      *
      * @param comment
      * @param receiptOCRId

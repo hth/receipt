@@ -110,7 +110,7 @@ public final class ReceiptDocumentForm {
         receipt.checkSum();
 
         //If this is not set then user cannot reopen the a receipt for re-check.
-        //TODO When deleting historical receiptDocument make sure to remove this id from receipt referencing receipt OCR
+        //TODO When deleting historical receiptDocument make sure to remove this id from receipt referencing Document
         receipt.setReceiptOCRId(receiptDocument.getId());
         receipt.setRecheckComment(receiptDocument.getRecheckComment());
         receipt.setNotes(receiptDocument.getNotes());

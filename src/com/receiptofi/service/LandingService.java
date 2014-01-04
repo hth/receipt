@@ -271,7 +271,7 @@ public final class LandingService {
             items = new LinkedList<>();
             ReceiptParser.read(receiptOCRTranslation, documentEntity, items);
 
-            //Save Receipt OCR, Items and the Send JMS
+            //Save Document, Items and the Send JMS
             documentManager.save(documentEntity);
             itemOCRManager.saveObjects(items);
 

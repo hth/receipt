@@ -129,7 +129,7 @@ public final class ReceiptUpdateService {
 
                 documentForm.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
                 documentManager.save(documentForm);
-                //log.error("Failed to rollback Receipt OCR: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
+                //log.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
                 messageManager.undoUpdateObject(documentForm.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.OCR_PROCESSED);
                 //End of roll back
@@ -254,7 +254,7 @@ public final class ReceiptUpdateService {
 
                 receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
                 documentManager.save(receiptOCR);
-                //log.error("Failed to rollback Receipt OCR: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
+                //log.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
                 messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.TURK_REQUEST);
                 //End of roll back
@@ -307,7 +307,7 @@ public final class ReceiptUpdateService {
 
             StringBuilder sb = new StringBuilder();
             sb.append("Could not process receipt '").append(dbObject.get("ORIGINAL_FILENAME")).append("'");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT_OCR, receiptOCR);
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.DOCUMENT, receiptOCR);
 
         } catch(Exception exce) {
             log.error("Rejection of a receipt failed: " + exce.getLocalizedMessage());
@@ -316,7 +316,7 @@ public final class ReceiptUpdateService {
             receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
             receiptOCR.active();
             documentManager.save(receiptOCR);
-            //log.error("Failed to rollback Receipt OCR: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
+            //log.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
             messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
             //End of roll back
@@ -326,8 +326,8 @@ public final class ReceiptUpdateService {
     }
 
     /**
-     * Delete all the associated data with Receipt OCR like Item OCR, and
-     * Message Receipt Entity OCR including deletion of with Receipt OCR
+     * Delete all the associated data with Document like Item OCR, and
+     * Message Receipt Entity OCR including deletion of with Document
      * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check
      *
      *
@@ -342,7 +342,7 @@ public final class ReceiptUpdateService {
             storageManager.deleteHard(documentEntity.getReceiptBlobId());
             fileSystemService.deleteHard(documentEntity.getReceiptBlobId());
         } else {
-            log.warn("User trying to delete processed Receipt OCR #: " + documentEntity.getId() + ", Receipt Id #:" + documentEntity.getReceiptId());
+            log.warn("User trying to delete processed Document #: " + documentEntity.getId() + ", Receipt Id #:" + documentEntity.getReceiptId());
         }
     }
 

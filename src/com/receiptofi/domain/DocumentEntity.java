@@ -23,7 +23,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @since Jan 6, 2013 1:04:43 PM
  *
  */
-@Document(collection = "RECEIPT_OCR")
+@Document(collection = "DOCUMENT")
 @CompoundIndexes({ @CompoundIndex(name = "receipt_ocr_idx", def = "{'RECEIPT_BLOB_ID': 1, 'USER_PROFILE_ID': 1}") })
 public class DocumentEntity extends DocumentBaseEntity {
 	private static final long serialVersionUID = 5258538763598321136L;

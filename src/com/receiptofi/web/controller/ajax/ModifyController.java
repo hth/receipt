@@ -107,7 +107,7 @@ public class ModifyController {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                log.info("Receipt OCR recheck comment updated by userProfileId: " + userSession.getUserProfileId());
+                log.info("Document recheck comment updated by userProfileId: " + userSession.getUserProfileId());
                 return receiptService.updateOCRComment(TextInputScrubber.scrub(comment), receiptOCRId);
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");

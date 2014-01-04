@@ -40,7 +40,7 @@ public class NotificationEntity extends BaseEntity {
     private NotificationTypeEnum notificationType;
 
     /**
-     * Could be a receipt id or receipt ocr id
+     * Could be a receipt id or Document id
      */
     private String referenceId;
 
@@ -105,7 +105,7 @@ public class NotificationEntity extends BaseEntity {
         switch(notificationType) {
             case MESSAGE:
                 return getMessage();
-            case RECEIPT_OCR:
+            case DOCUMENT:
                 return getReceiptUpdateURL(getReferenceId(), getMessage4Display());
             case RECEIPT:
                 return getReceiptURL(getReferenceId(), getMessage4Display());
@@ -121,7 +121,7 @@ public class NotificationEntity extends BaseEntity {
         switch(notificationType) {
             case MESSAGE:
                 return getMessage();
-            case RECEIPT_OCR:
+            case DOCUMENT:
                 return getReceiptUpdateURL(getReferenceId(), getMessage());
             case RECEIPT:
                 return getReceiptURL(getReferenceId(), getMessage());
