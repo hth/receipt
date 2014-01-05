@@ -202,7 +202,7 @@
     // put up the loading overlay while the page initializes
     loadingOverlay.init().show();
 
-    dojo.ready(function(){
+    dojo.ready(function () {
         // take down the loading overlay when the page is ready
         loadingOverlay.hide();
     })
