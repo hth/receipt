@@ -482,7 +482,7 @@ a.account {
 
 /** Show loading page before page is loaded */
 .loadingOverlay {
-    background:  #fff url('../css/claro/loadingAnimation.gif') no-repeat 10px 23px;
+    background:  #fff url('../css/dojo/claro/loadingAnimation.gif') no-repeat 10px 23px;
     position: absolute;
     z-index: 1001;
     display: none;
