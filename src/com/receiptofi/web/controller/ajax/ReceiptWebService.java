@@ -38,8 +38,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 @RequestMapping(value = "/fetcher")
 @SessionAttributes({"userSession"})
-public class FetcherController {
-    private static final Logger log = LoggerFactory.getLogger(FetcherController.class);
+public class ReceiptWebService {
+    private static final Logger log = LoggerFactory.getLogger(ReceiptWebService.class);
 
     @Autowired FetcherService fetcherService;
     @Autowired LandingService landingService;
