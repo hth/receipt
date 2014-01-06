@@ -31,8 +31,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 @RequestMapping(value = "/modify")
 @SessionAttributes({"userSession"})
-public class UpdateController {
-     private static final Logger log = LoggerFactory.getLogger(UpdateController.class);
+public class NotesAndCommentsWebService {
+     private static final Logger log = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
     @Autowired ReceiptService receiptService;
 
