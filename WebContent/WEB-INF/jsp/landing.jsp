@@ -3,7 +3,7 @@
 
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html>
-<html>
+<html ng-app="App">
 <head>
 	<title><fmt:message key="title" /></title>
 
@@ -57,12 +57,17 @@
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
     <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
+    <link rel='stylesheet' type='text/css' href="jquery/css/_m/animate-custom.css" />
+    <link rel='stylesheet' type='text/css' href="jquery/css/_m/bootstrap.min.css" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script type="text/javascript" src="jquery/fullcalendar/fullcalendar.min.js"></script>
     <script type="text/javascript" src="jquery/js/highcharts.js"></script>
     <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+    <script type="text/javascript" src="jquery/js/_m/angular-animate.min.js"></script>
+    <script type="text/javascript" src="jquery/js/_m/underscore-min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -194,6 +199,172 @@
 
             $('#tabs').css('width','1025px');
             $("#tabs").tabs();
+        });
+    </script>
+    <script>
+        var App = angular.module('App', ['ngAnimate']);
+        App.constant('SERVICE', {
+            'LOAD':  'jquery/data/load.css',
+            'MERGE': 'jquery/data/merge.css',
+            'SPLIT': 'jquery/data/split.css',
+            'TIMEOUT': 0
+        });
+
+        App.controller('FooCtrl', function($scope, Server, SERVICE, $timeout) {
+            $scope.merging = $scope.splitting = false;
+            $scope.draggables = [];
+
+            $scope.mergeText = function() {
+                return $scope.merging ? 'Merging...' : 'Merge';
+            };
+
+            $scope.splitText = function() {
+                return $scope.splitting ? 'Splitting...' : 'Split';
+            };
+
+            Server.load().success(function(data) {
+                $scope.records = data;
+            }).error(function(data) {
+                // @todo handle error
+            });
+
+            $scope.grab = function(grabbed, index) {
+                var record = $scope.records[index],
+                    alreadyGrabbed = _.where($scope.draggables, {id: record.id}).length !== 0,
+                    isSplitIn = $scope.draggables[0] && $scope.draggables[0].option === 'split', // assuming split alone will be in the house
+                    limitReached = $scope.draggables.length === 2;
+
+                // If 2 records are already selected and the current one is `merge`
+                // then undo the first and insert the current one
+                if (limitReached && record.option === 'merge') {
+                    $scope.records[_.indexOf($scope.records, $scope.draggables[0])].grabbed = false;
+                    $scope.draggables.shift();
+                }
+
+                // If already selected, undo it
+                if (alreadyGrabbed) {
+                    $scope.draggables = _.reject($scope.draggables, function(draggable) { return draggable.id === record.id; });
+                } else if (grabbed) {
+                    // If the current one is `split` or `split` in the house already
+                    // then undo/uncheck all and insert the current one
+                    if (record.option === 'split' || isSplitIn) {
+                        $scope.draggables.forEach(function(draggable) {
+                            $scope.records[_.indexOf($scope.records, draggable)].grabbed = false;
+                        });
+                        $scope.draggables.length = 0;
+                    }
+                    $scope.draggables.push(record);
+                }
+            };
+
+            $scope.merge = function() {
+                var merger = '', newRecord = {}, ids = [];
+
+                $scope.saveSnapshot();
+
+                $scope.draggables.forEach(function(draggable, i) {
+                    // remove the original grabbed records
+                    $scope.records = _.reject($scope.records, function(record) {
+                        return record.id === draggable.id;
+                    });
+                    // and merge them into a single draggable
+                    merger+=  ( i > 0 ? ' ' : '' ) + draggable.name;
+
+                    ids.push(draggable.id);
+                });
+
+                // finally update both records and draggables
+                newRecord = {id: new Date().getTime(), name: merger, option: 'split', grabbed: true};
+                $scope.draggables = [newRecord];
+                $scope.records.push(newRecord);
+
+                // initiate a server call for updates
+                $scope.merging = true;
+                Server.merge(ids).success(function(data) {
+                    $timeout(function() {
+                        if (data.success) {
+                            // this also updates id in $scope.draggables, magical??
+                            // Not at All. Because of ng-change below
+                            $scope.records[_.indexOf($scope.records, newRecord)].id = data.id;
+                            $scope.merging = false;
+                        } else {
+                            $scope.loadSnapshot();
+                        }
+                    }, SERVICE.TIMEOUT);
+                }).error(function(data) {
+                    $timeout(function() {
+                        $scope.loadSnapshot();
+                    }, SERVICE.TIMEOUT);
+                });
+            };
+
+            $scope.split = function() {
+                var newRecords = [], id = $scope.draggables[0].id;
+
+                $scope.saveSnapshot();
+
+                // remove the original grabbed record
+                $scope.records = _.reject($scope.records, function(record) {
+                    return record.id === id;
+                });
+                // and split the record in two separate records
+                $scope.draggables[0].name.split(' ').forEach(function(name, i) {
+                    newRecords.push({id: new Date().getTime() + (i + 1), name: name, option: 'merge', grabbed: true});
+                });
+
+                // finally update both records and draggables
+                $scope.records = $scope.records.concat(newRecords);
+                $scope.draggables = newRecords;
+
+                // initiate a server call for updates
+                $scope.splitting = true;
+                Server.split(id).success(function(data) {
+                    $timeout(function() {
+                        if (data.success) {
+                            // this also updates id in $scope.draggables, magical??
+                            // Not at All. Because of ng-change below
+                            $scope.records[_.indexOf($scope.records, newRecords[0])].id = data.id;
+                            $scope.records[_.indexOf($scope.records, newRecords[1])].id = data.otherId;
+                            $scope.splitting = false;
+                        } else {
+                            $scope.loadSnapshot();
+                        }
+                    }, SERVICE.TIMEOUT);
+                }).error(function(data) {
+                    $timeout(function() {
+                        $scope.loadSnapshot();
+                    }, SERVICE.TIMEOUT);
+                });
+            };
+
+            $scope.saveSnapshot = function() {
+                $scope.recordsSnapshot = $scope.records;
+                $scope.draggablesSnapshot = $scope.draggables;
+            };
+
+            $scope.loadSnapshot = function() {
+                $scope.records = $scope.recordsSnapshot;
+                $scope.draggables = $scope.draggablesSnapshot;
+                $scope.merging = $scope.splitting = false;
+            };
+        });
+
+        App.service('Server', function($http, SERVICE) {
+            return {
+                load: function() {
+                    return $http.get(SERVICE.LOAD).success(function(data) {
+                        return data.forEach(function(item, i) {
+                            data[i].option = data[i].name.split(' ').length === 1 ? 'merge' : 'split';
+                        });
+                    });
+                },
+                merge: function(ids) {
+                    return $http.get(SERVICE.MERGE + '?id=' + ids[0] + '&otherId=' + ids[1]);
+                },
+                split: function(id) {
+                    return $http.get(SERVICE.SPLIT + '?id=' + id);
+                }
+            }
         });
     </script>
 </head>
@@ -458,8 +629,28 @@
 
             <div id="refreshReceiptForMonthId"></div>
 		</div>
-        <div id="tabs-2" style="height: 500px">
-
+        <div id="tabs-2" style="height: 500px; padding: 30px">
+            <div class="row" ng-controller="FooCtrl">
+                <div class="col-xs-6">
+                    <table class="table">
+                        <tr class='record-animation' ng-repeat="record in records">
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.name}}
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xs-6">
+                    <button class="btn btn-success" ng-show="(draggables.length == 2 && !splitting) || merging" ng-click="merge()" ng-disabled="merging" ng-bind="mergeText()"></button>
+                    <button class="btn btn-danger" ng-show="(draggables[0].option == 'split' && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
+                    <br><br>
+                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">{{draggable.name}}</div>
+                </div>
+            </div>
         </div>
 		<div id="tabs-3" style="height: 500px">
             <c:choose>
@@ -1118,7 +1309,7 @@
                 }else if(exception=='abort'){
                     message="Request was aborted by the server";
                 }else {
-                    message="Unknow Error \n.";
+                    message="Unknown Error \n.";
                 }
                 $(this).css("display","inline");
                 $(this).html(message);
