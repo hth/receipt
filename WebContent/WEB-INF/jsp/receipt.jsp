@@ -75,7 +75,7 @@
             $( "#notes" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/modify/receipt_notes.htm',
+                        url: '${pageContext. request. contextPath}/ncws/receipt_notes.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#receiptId").val()
@@ -101,7 +101,7 @@
             $( "#recheckComment" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/modify/receipt_recheckComment.htm',
+                        url: '${pageContext. request. contextPath}/ncws/receipt_recheckComment.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#receiptId").val()

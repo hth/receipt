@@ -1,16 +1,14 @@
 [{
-  "id": 1,
-  "name": "Orange"  
+"id": "52cac9313004f9ee983e641f",
+"name": "Orange",
+"c": false
 }, {
-  "id": 2,
-  "name": "Mango Shake"  
+"id": "52cac92a3004f9ee983e641e",
+"name": "Mango Shake",
+"c": true
 }, {
-  "id": 3,
-  "name": "Juice"  
-}, {
-  "id": 4,
-  "name": "Coconut Water"  
-}, {
-  "id": 5,
-  "name": "Pineapple"  
-}]
+"id": "52cac9203004f9ee983e641d",
+"name": "Juice",
+"c": false
+}
+]
