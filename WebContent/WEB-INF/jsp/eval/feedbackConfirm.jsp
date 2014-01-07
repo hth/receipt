@@ -76,7 +76,7 @@
 
                             $.ajax({
                                 type: 'POST',
-                                url:  '${pageContext. request. contextPath}/fetcher/pending.htm',
+                                url:  '${pageContext. request. contextPath}/rws/pending.htm',
                                 success: function(response) {
                                     if(response > 0) {
                                         var html = '';

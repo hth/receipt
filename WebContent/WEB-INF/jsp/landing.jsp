@@ -141,7 +141,7 @@
 
                             $.ajax({
                                 type: 'POST',
-                                url:  '${pageContext. request. contextPath}/fetcher/pending.htm',
+                                url:  '${pageContext. request. contextPath}/rws/pending.htm',
                                 success: function(response) {
                                     if(response > 0) {
                                         var html = '';
@@ -354,7 +354,7 @@
                 load: function() {
                     return $http.get(SERVICE.LOAD).success(function(data) {
                         return data.forEach(function(item, i) {
-                            data[i].option = data[i].name.split(' ').length === 1 ? 'merge' : 'split';
+                            data[i].option = data[i].c === false ? 'merge' : 'split';
                         });
                     });
                 },

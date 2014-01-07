@@ -70,7 +70,7 @@
 
         function orientation(id, angle, blobId, userProfileId) {
             $.ajax({
-                url: '${pageContext. request. contextPath}/fetcher/change_fs_image_orientation.htm',
+                url: '${pageContext. request. contextPath}/rws/change_fs_image_orientation.htm',
                 data: {
                     fileSystemId: id,
                     orientation: angle,
@@ -92,7 +92,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $( "#bizName" ).autocomplete({
-                source: "${pageContext. request. contextPath}/fetcher/find_company.htm"
+                source: "${pageContext. request. contextPath}/rws/find_company.htm"
             });
 
         });
@@ -101,7 +101,7 @@
             $( "#address" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/fetcher/find_address.htm',
+                        url: '${pageContext. request. contextPath}/rws/find_address.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#bizName").val()
@@ -122,7 +122,7 @@
             $( "#phone" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/fetcher/find_phone.htm',
+                        url: '${pageContext. request. contextPath}/rws/find_phone.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#bizName").val(),
@@ -144,7 +144,7 @@
             $( ".items" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/fetcher/find_item.htm',
+                        url: '${pageContext. request. contextPath}/rws/find_item.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#bizName").val()
@@ -166,7 +166,7 @@
                 source: function (request, response) {
                     $('#existingErrorMessage').hide();
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/fetcher/check_for_duplicate.htm',
+                        url: '${pageContext. request. contextPath}/rws/check_for_duplicate.htm',
                         data: {
                             date:  $("#date").val(),
                             total: $("#total").val(),
@@ -787,7 +787,7 @@
 
                         <%--$.ajax({--%>
                             <%--type: 'POST',--%>
-                            <%--url:  '${pageContext. request. contextPath}/fetcher/pending.htm',--%>
+                            <%--url:  '${pageContext. request. contextPath}/rws/pending.htm',--%>
                             <%--success: function(response) {--%>
                                 <%--if(response > 0) {--%>
                                     <%--var html = '';--%>

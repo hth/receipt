@@ -278,7 +278,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $( "#name" ).autocomplete({
-            source: "${pageContext. request. contextPath}/fetcher/find_company.htm"
+            source: "${pageContext. request. contextPath}/rws/find_company.htm"
         });
 
     });
@@ -287,7 +287,7 @@
         $( "#address" ).autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '${pageContext. request. contextPath}/fetcher/find_address.htm',
+                    url: '${pageContext. request. contextPath}/rws/find_address.htm',
                     data: {
                         term: request.term,
                         nameParam: $("#name").val()
@@ -306,7 +306,7 @@
         $( "#phone" ).autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '${pageContext. request. contextPath}/fetcher/find_phone.htm',
+                    url: '${pageContext. request. contextPath}/rws/find_phone.htm',
                     data: {
                         term: request.term,
                         nameParam: $("#name").val(),

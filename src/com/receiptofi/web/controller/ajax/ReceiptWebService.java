@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * Time: 11:44 PM
  */
 @Controller
-@RequestMapping(value = "/fetcher")
+@RequestMapping(value = "/rws")
 @SessionAttributes({"userSession"})
 public class ReceiptWebService {
     private static final Logger log = LoggerFactory.getLogger(ReceiptWebService.class);

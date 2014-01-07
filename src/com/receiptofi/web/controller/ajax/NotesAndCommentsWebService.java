@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * Time: 8:57 PM
  */
 @Controller
-@RequestMapping(value = "/modify")
+@RequestMapping(value = "/ncws")
 @SessionAttributes({"userSession"})
 public class NotesAndCommentsWebService {
      private static final Logger log = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
