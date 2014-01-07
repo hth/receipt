@@ -1,4 +1,4 @@
-package com.receiptofi.scheduledtasks;
+package com.receiptofi.web.scheduledtasks;
 
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CreateTempFile;

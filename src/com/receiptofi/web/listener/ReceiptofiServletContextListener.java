@@ -1,6 +1,6 @@
 package com.receiptofi.web.listener;
 
-import com.receiptofi.scheduledtasks.FileSystemProcessor;
+import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
