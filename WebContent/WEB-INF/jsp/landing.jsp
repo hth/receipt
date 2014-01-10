@@ -143,7 +143,8 @@
                                 success: function(response) {
                                     if(response > 0) {
                                         var html = '';
-                                        html = html + "<div class='ui-widget'>" +
+                                        html = html +
+                                                "<div class='ui-widget'>" +
                                                 "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
                                                 "<p>" +
                                                 "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
@@ -153,12 +154,14 @@
                                         } else {
                                             html = html + "Pending receipts to be processed: ";
                                         }
-                                        html = html + "<a href='${pageContext.request.contextPath}/pending.htm' style='text-decoration: none;'>" +
+                                        html = html +
+                                                "<a href='${pageContext.request.contextPath}/pending.htm' style='text-decoration: none;'>" +
                                                 "<strong class='pendingCounter' id='pendingCountValue'>" +
                                                 0 +
                                                 "</strong>" +
                                                 "</a>";
-                                        html = html + "</span>" +
+                                        html = html +
+                                                "</span>" +
                                                 "</p>" +
                                                 "</div>" +
                                                 "</div>";
@@ -401,7 +404,7 @@
                     </div>
                 </h3>
             </div>
-		    <div class="divOfCell300" id="active-tab-2" style="height: 46px"><h3>Total Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
+		    <div class="divOfCell300" id="active-tab-3" style="height: 46px"><h3>Total Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
    	</div>
 
@@ -764,8 +767,8 @@
 </div>
 
 <script>
-    $("#active-tab-2").click(function() {
-        $( "#tabs" ).tabs({ active: 1 });
+    $("#active-tab-3").click(function() {
+        $( "#tabs" ).tabs({ active: 2 });
     });
 </script>
 
