@@ -108,15 +108,13 @@
     <script>
         function runCounter(max) {
             "use strict";
-
-            var runTill = max;
             incCounter();
 
             function incCounter() {
                 var currCount = parseInt($('#pendingCountValue').html());
-                $('#pendingCountValue').text(currCount + 1);
-                if (currCount + 1 != runTill) {
-                    setTimeout(incCounter, 50);
+                if (currCount < max) {
+                    $('#pendingCountValue').text(currCount + 1);
+                    setTimeout(incCounter, 1);
                 }
             }
         }
