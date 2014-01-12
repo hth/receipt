@@ -44,13 +44,18 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
+    public MileageEntity findOne(String id, String userProfileId) {
+        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)).addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId)), MileageEntity.class, TABLE);
+    }
+
+    @Override
     public WriteResult updateObject(String id, String name) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void deleteHard(MileageEntity object) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        mongoTemplate.remove(object);
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,8 +26,22 @@ public final class Mileages {
 
     public void setMileages(List<MileageEntity> mileages) {
         for(MileageEntity mileageEntity : mileages) {
-            this.mileages.add(Mileage.newInstance(mileageEntity.getId(), mileageEntity.getTotal(), mileageEntity.isComplete()));
+            this.mileages.add(Mileage.newInstance(mileageEntity.getId(),
+                    mileageEntity.getStart(),
+                    mileageEntity.getEnd(),
+                    mileageEntity.getStartDate(),
+                    mileageEntity.getTotal(), mileageEntity.isComplete())
+            );
         }
+    }
+
+    public void setMileages(MileageEntity mileageEntity) {
+        this.mileages.add(Mileage.newInstance(mileageEntity.getId(),
+                mileageEntity.getStart(),
+                mileageEntity.getEnd(),
+                mileageEntity.getStartDate(),
+                mileageEntity.getTotal(), mileageEntity.isComplete())
+        );
     }
 
     //Converts this object to JSON representation
@@ -47,6 +62,15 @@ class Mileage {
     @JsonProperty("i")
     private String id;
 
+    @JsonProperty("s")
+    private int start;
+
+    @JsonProperty("e")
+    private int end;
+
+    @JsonProperty("sd")
+    private Date startDate;
+
     @JsonProperty("t")
     private int total;
 
@@ -56,18 +80,33 @@ class Mileage {
     @SuppressWarnings("unused")
     public Mileage() {}
 
-    private Mileage(String id, int total, boolean complete) {
+    private Mileage(String id, int start, int end, Date startDate, int total, boolean complete) {
         this.id = id;
+        this.start = start;
+        this.end = end;
+        this.startDate = startDate;
         this.total = total;
         this.complete = complete;
     }
 
-    public static Mileage newInstance(String id, int total, boolean valid) {
-        return new Mileage(id, total, valid);
+    public static Mileage newInstance(String id, int start, int end, Date startDate, int total, boolean complete) {
+        return new Mileage(id, start, end, startDate, total, complete);
     }
 
     public String getId() {
         return id;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public Date getStartDate() {
+        return startDate;
     }
 
     public int getTotal() {

@@ -28,6 +28,7 @@ public final class LandingForm {
 
     List<NotificationEntity> notifications;
     List<MileageEntity> mileageEntities;
+    private String mileages;
 
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
@@ -97,6 +98,14 @@ public final class LandingForm {
 
     public void setMileageEntities(List<MileageEntity> mileageEntities) {
         this.mileageEntities = mileageEntities;
+    }
+
+    public void setMileages(String mileages) {
+        this.mileages = mileages;
+    }
+
+    public String getMileages() {
+        return this.mileages;
     }
 }
 
