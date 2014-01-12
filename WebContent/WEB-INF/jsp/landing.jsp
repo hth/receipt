@@ -207,9 +207,9 @@
     <script>
         var App = angular.module('App', ['ngAnimate']);
         App.constant('SERVICE', {
-            'LOAD':  '${pageContext.request.contextPath}/mws/f.json',
-            'MERGE': '${pageContext.request.contextPath}/mws/m.json',
-            'SPLIT': '${pageContext.request.contextPath}/mws/s.json',
+            'F': '${pageContext.request.contextPath}/mws/f.json',
+            'M': '${pageContext.request.contextPath}/mws/m.json',
+            'S': '${pageContext.request.contextPath}/mws/s.json',
             'TIMEOUT': 0
         });
 
@@ -360,13 +360,13 @@
         App.service('Server', function($http, SERVICE) {
             return {
                 load: function() {
-                    return $http.post(SERVICE.LOAD);
+                    return $http.post(SERVICE.F);
                 },
                 merge: function(ids) {
-                    return $http.post(SERVICE.MERGE, {id1: ids[0], id2: ids[1]});
+                    return $http.post(SERVICE.M, {id1: ids[0], id2: ids[1]});
                 },
                 split: function(id) {
-                    return $http.post(SERVICE.SPLIT, {id: id});
+                    return $http.post(SERVICE.S, {id: id});
                 }
             }
         });
@@ -636,6 +636,9 @@
         <div id="tabs-2" style="height: 500px; padding: 30px">
             <div class="row" ng-controller="FooCtrl">
                 <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
+                <div>
+                    <h1>Monthly miles driven</h1>
+                </div>
                 <div class="col-xs-6">
                     <table class="table">
                         <tr class='record-animation' ng-repeat="record in records">
@@ -643,15 +646,19 @@
                                 <span ng-switch on="record.c">
                                     <div ng-switch-when="true">
                                     <div class="checkbox">
-                                        <label style="color: #065c14;">
-                                            <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.t | number}} Miles driven
+                                        <label>
+                                            <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                                            <a href="www.yahoo.com" style="color: #065c14;">{{record.t | number}} Miles driven</a>
+                                            <img src="images/cars.png" style="height: 18px; width: 25px"/>
                                         </label>
                                     </div>
                                     </div>
                                     <div ng-switch-when="false">
                                         <div class="checkbox">
-                                            <label style="color: darkred">
-                                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.t | number}} Starting miles
+                                            <label>
+                                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                                                <a href="dm/{{record.i}}" style="color: darkred">{{record.t | number}}</a>
+                                                <img src="images/odometers.png" />
                                             </label>
                                         </div>
                                     </div>
@@ -664,7 +671,7 @@
                     <button class="btn btn-success" ng-show="(draggables.length == 2 && !splitting) || merging" ng-click="merge()" ng-disabled="merging" ng-bind="mergeText()"></button>
                     <button class="btn btn-danger" ng-show="(draggables[0].c && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
                     <br><br>
-                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">{{draggable.t}} Miles</div>
+                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">{{draggable.t | number}} Miles</div>
                 </div>
             </div>
         </div>
