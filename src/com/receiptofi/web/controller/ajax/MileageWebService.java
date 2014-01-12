@@ -76,7 +76,7 @@ public class MileageWebService {
 
         if(userSession != null && ids.length() > 0) {
             try {
-                Map<String, String> map = new ObjectMapper().readValue(ids, new TypeReference<HashMap<String,String>>() {});
+                Map<String, String> map = jsonStringToMap(ids);
                 MileageEntity mileageEntity = mileageService.merge(map.get("id1"), map.get("id2"), userSession.getUserProfileId());
                 Mileages mileages = new Mileages();
                 mileages.setMileages(mileageEntity);
@@ -90,6 +90,10 @@ public class MileageWebService {
         }
     }
 
+    private Map<String, String> jsonStringToMap(String ids) throws IOException {
+        return new ObjectMapper().readValue(ids, new TypeReference<HashMap<String,String>>() {});
+    }
+
     @RequestMapping(value = "/s.json", method = RequestMethod.POST, produces="application/json")
     public @ResponseBody
     String split(@RequestBody String id,
@@ -98,8 +102,7 @@ public class MileageWebService {
 
         if(userSession != null && id.length() > 0) {
             try {
-                Map<String, String> map = new ObjectMapper().readValue(id, new TypeReference<HashMap<String,String>>() {});
-                List<MileageEntity> mileageEntities = mileageService.split(map.get("id"), userSession.getUserProfileId());
+                List<MileageEntity> mileageEntities = mileageService.split(jsonStringToMap(id).get("id"), userSession.getUserProfileId());
                 Mileages mileages = new Mileages();
                 mileages.setMileages(mileageEntities);
                 return mileages.asJson();
