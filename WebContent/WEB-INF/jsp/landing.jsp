@@ -57,17 +57,19 @@
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
     <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
-    <link rel='stylesheet' type='text/css' href="jquery/css/_m/animate-custom.css" />
-    <link rel='stylesheet' type='text/css' href="jquery/css/_m/bootstrap.min.css" />
+    <link rel='stylesheet' type='text/css' href="jquery/css/_angular/animate-custom.css" />
+    <link rel='stylesheet' type='text/css' href="jquery/css/_angular/bootstrap.min.css" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type="text/javascript" src="jquery/fullcalendar/fullcalendar.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js" />
     <script type="text/javascript" src="jquery/js/highcharts.js"></script>
     <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-    <script type="text/javascript" src="jquery/js/_m/angular-animate.min.js"></script>
-    <script type="text/javascript" src="jquery/js/_m/underscore-min.js"></script>
+    <script type="text/javascript" src="jquery/js/_angular/angular-animate.min.js"></script>
+    <script type="text/javascript" src="jquery/js/_angular/angular-animate.min.js.map"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -205,9 +207,9 @@
     <script>
         var App = angular.module('App', ['ngAnimate']);
         App.constant('SERVICE', {
-            'LOAD':  'jquery/data/load.css',
-            'MERGE': 'jquery/data/merge.css',
-            'SPLIT': 'jquery/data/split.css',
+            'LOAD':  '${pageContext.request.contextPath}/mws/f.json',
+            'MERGE': '${pageContext.request.contextPath}/mws/m.json',
+            'SPLIT': '${pageContext.request.contextPath}/mws/s.json',
             'TIMEOUT': 0
         });
 
@@ -358,7 +360,7 @@
         App.service('Server', function($http, SERVICE) {
             return {
                 load: function() {
-                    return $http.get(SERVICE.LOAD);
+                    return $http.post(SERVICE.LOAD);
                 },
                 merge: function(ids) {
                     return $http.post(SERVICE.MERGE, {id1: ids[0], id2: ids[1]});
