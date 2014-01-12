@@ -640,11 +640,22 @@
                     <table class="table">
                         <tr class='record-animation' ng-repeat="record in records">
                             <td>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.t}} Miles
-                                    </label>
-                                </div>
+                                <span ng-switch on="record.c">
+                                    <div ng-switch-when="true">
+                                    <div class="checkbox">
+                                        <label style="color: #065c14;">
+                                            <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.t | number}} Miles driven
+                                        </label>
+                                    </div>
+                                    </div>
+                                    <div ng-switch-when="false">
+                                        <div class="checkbox">
+                                            <label style="color: darkred">
+                                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.t | number}} Starting miles
+                                            </label>
+                                        </div>
+                                    </div>
+                                </span>
                             </td>
                         </tr>
                     </table>

@@ -46,11 +46,11 @@ public final class MileageService {
                     return m1;
                 } else if(Integer.compare(m1.getStart(), m2.getStart()) == 0) {
                     //There should not be a duplicate data; it should have been rejected
-                    throw new RuntimeException("Merge failed as both the start point are equal");
+                    throw new RuntimeException("as starting mileage are equal");
                 }
             }
         } catch(Exception exception) {
-            throw new RuntimeException("Merge failed to save");
+            throw new RuntimeException("Merge failed to save " + exception.getMessage());
         }
         throw new RuntimeException("Merge failed as one or both could not be merged");
     }
