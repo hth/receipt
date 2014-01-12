@@ -224,31 +224,31 @@
             };
 
             Server.load().success(function(data) {
-                $scope.records = data;
+                $scope.records = data.ms;
             }).error(function(data) {
                 // @todo handle error
             });
 
             $scope.grab = function(grabbed, index) {
                 var record = $scope.records[index],
-                    alreadyGrabbed = _.where($scope.draggables, {id: record.id}).length !== 0,
-                    isSplitIn = $scope.draggables[0] && $scope.draggables[0].option === 'split', // assuming split alone will be in the house
-                    limitReached = $scope.draggables.length === 2;
+                        alreadyGrabbed = _.where($scope.draggables, {i: record.i}).length !== 0,
+                        isSplitIn = $scope.draggables[0] && $scope.draggables[0].c, // assuming split alone will be in the house
+                        limitReached = $scope.draggables.length === 2;
 
                 // If 2 records are already selected and the current one is `merge`
                 // then undo the first and insert the current one
-                if (limitReached && record.option === 'merge') {
+                if (limitReached && !record.c) {
                     $scope.records[_.indexOf($scope.records, $scope.draggables[0])].grabbed = false;
                     $scope.draggables.shift();
                 }
 
                 // If already selected, undo it
                 if (alreadyGrabbed) {
-                    $scope.draggables = _.reject($scope.draggables, function(draggable) { return draggable.id === record.id; });
+                    $scope.draggables = _.reject($scope.draggables, function(draggable) { return draggable.i === record.i; });
                 } else if (grabbed) {
                     // If the current one is `split` or `split` in the house already
                     // then undo/uncheck all and insert the current one
-                    if (record.option === 'split' || isSplitIn) {
+                    if (record.c || isSplitIn) {
                         $scope.draggables.forEach(function(draggable) {
                             $scope.records[_.indexOf($scope.records, draggable)].grabbed = false;
                         });
@@ -256,26 +256,28 @@
                     }
                     $scope.draggables.push(record);
                 }
+
+                $scope.errorMessage = '';
             };
 
             $scope.merge = function() {
-                var merger = '', newRecord = {}, ids = [];
+                var merger = 0, newRecord = {}, ids = [];
 
                 $scope.saveSnapshot();
 
                 $scope.draggables.forEach(function(draggable, i) {
                     // remove the original grabbed records
                     $scope.records = _.reject($scope.records, function(record) {
-                        return record.id === draggable.id;
+                        return record.i === draggable.i;
                     });
                     // and merge them into a single draggable
-                    merger+=  ( i > 0 ? ' ' : '' ) + draggable.name;
+                    merger = Math.abs(merger) - draggable.t;
 
-                    ids.push(draggable.id);
+                    ids.push(draggable.i);
                 });
 
                 // finally update both records and draggables
-                newRecord = {id: new Date().getTime(), name: merger, option: 'split', grabbed: true};
+                newRecord = {i: new Date().getTime(), t: Math.abs(merger), c: true, grabbed: true};
                 $scope.draggables = [newRecord];
                 $scope.records.push(newRecord);
 
@@ -283,13 +285,14 @@
                 $scope.merging = true;
                 Server.merge(ids).success(function(data) {
                     $timeout(function() {
-                        if (data.success) {
+                        if (data.success === false) {
+                            $scope.loadSnapshot();
+                            $scope.errorMessage = data.message;
+                        } else {
                             // this also updates id in $scope.draggables, magical??
                             // Not at All. Because of ng-change below
-                            $scope.records[_.indexOf($scope.records, newRecord)].id = data.id;
+                            angular.extend($scope.records[_.indexOf($scope.records, newRecord)], data.ms[0]);
                             $scope.merging = false;
-                        } else {
-                            $scope.loadSnapshot();
                         }
                     }, SERVICE.TIMEOUT);
                 }).error(function(data) {
@@ -297,21 +300,22 @@
                         $scope.loadSnapshot();
                     }, SERVICE.TIMEOUT);
                 });
+
+                $scope.errorMessage = '';
             };
 
             $scope.split = function() {
-                var newRecords = [], id = $scope.draggables[0].id;
+                var newRecords = [], i = $scope.draggables[0].i;
 
                 $scope.saveSnapshot();
 
                 // remove the original grabbed record
                 $scope.records = _.reject($scope.records, function(record) {
-                    return record.id === id;
+                    return record.i === i;
                 });
                 // and split the record in two separate records
-                $scope.draggables[0].name.split(' ').forEach(function(name, i) {
-                    newRecords.push({id: new Date().getTime() + (i + 1), name: name, option: 'merge', grabbed: true});
-                });
+                newRecords.push({i: new Date().getTime() + 1, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false});
+                newRecords.push({i: new Date().getTime() + 2, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false});
 
                 // finally update both records and draggables
                 $scope.records = $scope.records.concat(newRecords);
@@ -319,16 +323,17 @@
 
                 // initiate a server call for updates
                 $scope.splitting = true;
-                Server.split(id).success(function(data) {
+                Server.split(i).success(function(data) {
                     $timeout(function() {
-                        if (data.success) {
+                        if (data.success === false) {
+                            $scope.loadSnapshot();
+                            $scope.errorMessage = data.message;
+                        } else {
                             // this also updates id in $scope.draggables, magical??
                             // Not at All. Because of ng-change below
-                            $scope.records[_.indexOf($scope.records, newRecords[0])].id = data.id;
-                            $scope.records[_.indexOf($scope.records, newRecords[1])].id = data.otherId;
+                            $scope.records[_.indexOf($scope.records, newRecords[0])].i = data.ms[0].i;
+                            $scope.records[_.indexOf($scope.records, newRecords[1])].i = data.ms[1].i;
                             $scope.splitting = false;
-                        } else {
-                            $scope.loadSnapshot();
                         }
                     }, SERVICE.TIMEOUT);
                 }).error(function(data) {
@@ -353,17 +358,13 @@
         App.service('Server', function($http, SERVICE) {
             return {
                 load: function() {
-                    return $http.get(SERVICE.LOAD).success(function(data) {
-                        return data.forEach(function(item, i) {
-                            data[i].option = data[i].c === false ? 'merge' : 'split';
-                        });
-                    });
+                    return $http.get(SERVICE.LOAD);
                 },
                 merge: function(ids) {
-                    return $http.get(SERVICE.MERGE + '?id=' + ids[0] + '&otherId=' + ids[1]);
+                    return $http.post(SERVICE.MERGE, {id1: ids[0], id2: ids[1]});
                 },
                 split: function(id) {
-                    return $http.get(SERVICE.SPLIT + '?id=' + id);
+                    return $http.post(SERVICE.SPLIT, {id: id});
                 }
             }
         });
@@ -632,13 +633,14 @@
 		</div>
         <div id="tabs-2" style="height: 500px; padding: 30px">
             <div class="row" ng-controller="FooCtrl">
+                <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
                 <div class="col-xs-6">
                     <table class="table">
                         <tr class='record-animation' ng-repeat="record in records">
                             <td>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.name}}
+                                        <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting"> {{record.t}} Miles
                                     </label>
                                 </div>
                             </td>
@@ -647,9 +649,9 @@
                 </div>
                 <div class="col-xs-6">
                     <button class="btn btn-success" ng-show="(draggables.length == 2 && !splitting) || merging" ng-click="merge()" ng-disabled="merging" ng-bind="mergeText()"></button>
-                    <button class="btn btn-danger" ng-show="(draggables[0].option == 'split' && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
+                    <button class="btn btn-danger" ng-show="(draggables[0].c && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
                     <br><br>
-                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">{{draggable.name}}</div>
+                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">{{draggable.t}} Miles</div>
                 </div>
             </div>
         </div>
