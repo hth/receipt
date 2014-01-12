@@ -20,7 +20,7 @@
 	<script type="text/javascript" src="../../jquery/js/raphael/raphael-min.js"></script>
     <script type="text/javascript" src="../../jquery/js/dynamic_list_helper2.js"></script>
     <script type="text/javascript" src="../../jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
-    <script type="text/javascript" src="../../jquery/js/beatak-imageloader/jquery.imageloader.js"></script>
+    <%--<script type="text/javascript" src="../../jquery/js/beatak-imageloader/jquery.imageloader.js"></script>--%>
 
 	<script>
 		/* add background color to holder in tr tag */
