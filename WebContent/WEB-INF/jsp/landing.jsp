@@ -52,8 +52,8 @@
         })();
     </script>
 
-    <link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.css' />
-	<link rel='stylesheet' type='text/css' href='jquery/fullcalendar/fullcalendar.print.css' media='print' />
+    <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css' />
+	<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
     <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
@@ -61,9 +61,9 @@
     <link rel='stylesheet' type='text/css' href="jquery/css/_angular/bootstrap.min.css" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js" />
-    <script type="text/javascript" src="jquery/js/highcharts.js"></script>
+    <script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/3.0.7/highcharts.js"></script>
     <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
@@ -218,11 +218,11 @@
             $scope.draggables = [];
 
             $scope.mergeText = function() {
-                return $scope.merging ? 'Merging...' : 'Merge';
+                return $scope.merging ? 'Merging...' : 'Merge to compute miles driven';
             };
 
             $scope.splitText = function() {
-                return $scope.splitting ? 'Splitting...' : 'Split';
+                return $scope.splitting ? 'Splitting...' : 'Split to odometer reading';
             };
 
             Server.load().success(function(data) {
@@ -647,18 +647,18 @@
                                     <div ng-switch-when="true">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                            <a href="www.yahoo.com" style="color: #065c14;">{{record.t | number}} Miles driven</a>
                                             <img src="images/cars.png" style="height: 18px; width: 25px"/>
+                                            <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                                            <a href="www.yahoo.com" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
                                         </label>
                                     </div>
                                     </div>
                                     <div ng-switch-when="false">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                                <a href="dm/{{record.i}}" style="color: darkred">{{record.t | number}}</a>
                                                 <img src="images/odometers.png" />
+                                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                                                <a href="dm/{{record.i}}" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
                                             </label>
                                         </div>
                                     </div>
@@ -671,7 +671,15 @@
                     <button class="btn btn-success" ng-show="(draggables.length == 2 && !splitting) || merging" ng-click="merge()" ng-disabled="merging" ng-bind="mergeText()"></button>
                     <button class="btn btn-danger" ng-show="(draggables[0].c && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
                     <br><br>
-                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">{{draggable.t | number}} Miles</div>
+                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">
+                        <span ng-switch on="draggable.c">
+                            <div ng-switch-when="true">
+                                <img src="images/cars.png" style="height: 18px; width: 25px"/> {{draggable.t | number:2}} Miles driven
+                            </div>
+                            <div ng-switch-when="false">
+                                <img src="images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
