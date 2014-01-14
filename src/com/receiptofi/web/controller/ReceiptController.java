@@ -57,7 +57,7 @@ public class ReceiptController extends BaseController {
     @Autowired private BizNameManager bizNameManager;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
-	@RequestMapping(value = "{receiptId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{receiptId}", method = RequestMethod.GET)
 	public ModelAndView loadForm(@PathVariable String receiptId, @ModelAttribute("receiptForm") ReceiptForm receiptForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
         log.info("Loading Receipt Item with id: " + receiptId);
@@ -76,11 +76,8 @@ public class ReceiptController extends BaseController {
             log.warn("User " + userSession.getUserProfileId() + ", tried submitting an invalid receipt id: " + receiptId);
         }
 
-        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
-        modelAndView.addObject("receiptForm", receiptForm);
-
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return modelAndView;
+        return new ModelAndView(NEXT_PAGE);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params="delete")
