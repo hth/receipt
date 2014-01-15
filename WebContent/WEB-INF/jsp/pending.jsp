@@ -1,7 +1,4 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
-<%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html>
 <html>
 <head>
