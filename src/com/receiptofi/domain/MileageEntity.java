@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -19,6 +21,11 @@ import org.springframework.format.annotation.DateTimeFormat;
  * Date: 12/13/13 12:38 AM
  */
 @Document(collection = "MILEAGE")
+@CompoundIndexes({
+        @CompoundIndex(name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'USER_PROFILE_ID': -1}", unique = true),
+        @CompoundIndex(name = "mileage_s_idx", def = "{'S': -1, 'USER_PROFILE_ID': -1}", unique = true),
+        @CompoundIndex(name = "mileage_e_idx", def = "{'E': -1, 'USER_PROFILE_ID': -1}", unique = true)
+})
 public class MileageEntity extends BaseEntity {
 
     @NotNull
