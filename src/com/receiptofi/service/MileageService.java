@@ -36,7 +36,7 @@ public final class MileageService {
         int total = 0;
         for(MileageEntity mileageEntity : mileageEntities) {
             if(mileageEntity.isComplete()) {
-                total =+ mileageEntity.getTotal();
+                total += mileageEntity.getTotal();
             }
         }
         return total;

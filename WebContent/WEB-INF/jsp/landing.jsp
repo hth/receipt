@@ -637,7 +637,7 @@
             <div class="row" ng-controller="FooCtrl">
                 <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
                 <div>
-                    <h1>Monthly miles driven</h1>
+                    <h1>Monthly miles driven ${landingForm.mileageMonthlyTotal}</h1>
                 </div>
                 <div class="col-xs-6">
                     <table class="table">
