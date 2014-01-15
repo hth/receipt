@@ -17,15 +17,6 @@
     <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
-    <style type="text/css">
-        .leftAlign {
-            float: left;
-        }
-        .rightAlign {
-            float: right;
-        }
-    </style>
-
     <!-- For drop down menu -->
     <script>
         $(document).ready(function () {
