@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <!DOCTYPE html>
 <html>
-<head></head>
+<head>
+    <meta charset="utf-8">
+</head>
 <body>
 <c:choose>
     <c:when test="${!empty landingForm.receiptForMonth.receipts}">

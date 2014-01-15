@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html ng-app="App">
 <head>
+    <meta charset="utf-8">
 	<title><fmt:message key="title" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
