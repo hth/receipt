@@ -52,13 +52,13 @@
         })();
     </script>
 
+    <%--<link rel='stylesheet' type='text/css' href="jquery/css/_angular/bootstrap.min.css" />--%>
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
-	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
     <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
     <link rel='stylesheet' type='text/css' href="jquery/css/_angular/animate-custom.css" />
-    <link rel='stylesheet' type='text/css' href="jquery/css/_angular/bootstrap.min.css" />
+    <link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
