@@ -3,6 +3,7 @@
  */
 package com.receiptofi.web.controller;
 
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -27,6 +28,7 @@ import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
 import com.receiptofi.web.form.UploadReceiptImage;
 import com.receiptofi.web.helper.ReceiptForMonth;
+import com.receiptofi.web.helper.json.Mileages;
 import com.receiptofi.web.rest.Base;
 import com.receiptofi.web.rest.Header;
 import com.receiptofi.web.rest.LandingView;
@@ -144,7 +146,13 @@ public class LandingController extends BaseController {
         landingForm.setNotifications(notifications);
 
         /** Mileage */
-        landingForm.setMileageEntities(mileageService.getMileageForThisMonth(userSession.getUserProfileId(), time));
+        List<MileageEntity> mileageEntityList = mileageService.getMileageForThisMonth(userSession.getUserProfileId(), time);
+        landingForm.setMileageEntities(mileageEntityList);
+        landingForm.setMileageMonthlyTotal(mileageService.mileageTotal(mileageEntityList));
+
+        Mileages mileages = new Mileages();
+        mileages.setMileages(mileageService.getMileageForThisMonth(userSession.getUserProfileId(), time));
+        landingForm.setMileages(mileages.asJson());
 
 		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

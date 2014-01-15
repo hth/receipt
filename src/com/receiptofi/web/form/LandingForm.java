@@ -29,6 +29,7 @@ public final class LandingForm {
     List<NotificationEntity> notifications;
     List<MileageEntity> mileageEntities;
     private String mileages;
+    private int mileageMonthlyTotal;
 
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
@@ -106,6 +107,14 @@ public final class LandingForm {
 
     public String getMileages() {
         return this.mileages;
+    }
+
+    public int getMileageMonthlyTotal() {
+        return mileageMonthlyTotal;
+    }
+
+    public void setMileageMonthlyTotal(int mileageMonthlyTotal) {
+        this.mileageMonthlyTotal = mileageMonthlyTotal;
     }
 }
 
