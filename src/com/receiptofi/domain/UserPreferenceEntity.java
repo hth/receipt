@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.receiptofi.domain.types.AccountTypeEnum;
 
+import static com.receiptofi.domain.types.AccountTypeEnum.PERSONAL;
+
 /**
  * @author hitender
  * @since Dec 23, 2012 1:48:36 AM
@@ -29,7 +31,7 @@ public class UserPreferenceEntity extends BaseEntity {
 
 	@NotNull
     @Field("ACCOUNT_ENUM")
-	private AccountTypeEnum accountType = AccountTypeEnum.PERSONAL;
+	private AccountTypeEnum accountType = PERSONAL;
 
 	/** To make bean happy */
 	private UserPreferenceEntity() {
