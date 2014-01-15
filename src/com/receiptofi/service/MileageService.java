@@ -28,6 +28,20 @@ public final class MileageService {
         return mileageManager.getMileageForThisMonth(profileId, monthYear);
     }
 
+    public int monthltyTotal(String userProfileId, DateTime monthYear) {
+        return mileageTotal(getMileageForThisMonth(userProfileId, monthYear));
+    }
+
+    public int mileageTotal(List<MileageEntity> mileageEntities) {
+        int total = 0;
+        for(MileageEntity mileageEntity : mileageEntities) {
+            if(mileageEntity.isComplete()) {
+                total =+ mileageEntity.getTotal();
+            }
+        }
+        return total;
+    }
+
     public MileageEntity merge(String id1, String id2, String userProfileId) {
         MileageEntity m1 = mileageManager.findOne(id1, userProfileId);
         MileageEntity m2 = mileageManager.findOne(id2, userProfileId);
@@ -72,5 +86,9 @@ public final class MileageService {
             throw new RuntimeException("During split failed to save");
         }
         throw new RuntimeException("Could not process split");
+    }
+
+    public MileageEntity getMileage(String mileageId, String userProfileId) {
+        return mileageManager.findOne(mileageId, userProfileId);
     }
 }

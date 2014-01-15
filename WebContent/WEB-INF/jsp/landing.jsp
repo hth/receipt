@@ -649,7 +649,7 @@
                                         <label>
                                             <img src="images/cars.png" style="height: 18px; width: 25px"/>
                                             <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                            <a href="www.yahoo.com" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
+                                            <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
                                         </label>
                                     </div>
                                     </div>
@@ -658,7 +658,7 @@
                                             <label>
                                                 <img src="images/odometers.png" />
                                                 <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                                <a href="dm/{{record.i}}" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
+                                                <a href="modv/{{record.i}}.htm" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
                                             </label>
                                         </div>
                                     </div>
