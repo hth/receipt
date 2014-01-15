@@ -1,7 +1,4 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
-<%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 <!DOCTYPE html>
 <html ng-app="App">
 <head>
@@ -637,7 +634,7 @@
             <div class="row" ng-controller="FooCtrl">
                 <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
                 <div>
-                    <h1>Monthly miles driven</h1>
+                    <h1>Monthly miles driven ${landingForm.mileageMonthlyTotal}</h1>
                 </div>
                 <div class="col-xs-6">
                     <table class="table">
