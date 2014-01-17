@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html ng-app="App">
 <head>
+    <meta charset="utf-8">
 	<title><fmt:message key="title" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -210,7 +211,7 @@
             'TIMEOUT': 0
         });
 
-        App.controller('FooCtrl', function($scope, Server, SERVICE, $timeout) {
+        App.controller('mileageCtrl', function($scope, Server, SERVICE, $timeout) {
             $scope.merging = $scope.splitting = false;
             $scope.draggables = [];
 
@@ -630,9 +631,8 @@
 
             <div id="refreshReceiptForMonthId"></div>
 		</div>
-        <div id="tabs-2" style="height: 500px; padding: 30px">
-            <div class="row" ng-controller="FooCtrl">
-                <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
+        <div id="tabs-2" style="height: 500px;">
+            <div ng-controller="mileageCtrl">
                 <div>
                     <h1>Monthly miles driven ${landingForm.mileageMonthlyTotal}</h1>
                 </div>
@@ -676,6 +676,7 @@
                             <div ng-switch-when="false">
                                 <img src="images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
                             </div>
+                        </span>
                     </div>
                 </div>
             </div>

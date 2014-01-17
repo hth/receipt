@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
 	<title><fmt:message key="receipt.title" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -15,15 +16,6 @@
 	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
-
-	<style type="text/css">
-		.leftAlign {
-	    	float: left;
-		}
-		.rightAlign {
-	    	float: right;
-		}
-	</style>
 
     <!-- For drop down menu -->
     <script>
