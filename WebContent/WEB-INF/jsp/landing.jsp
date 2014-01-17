@@ -50,7 +50,6 @@
         })();
     </script>
 
-    <%--<link rel='stylesheet' type='text/css' href="jquery/css/_angular/bootstrap.min.css" />--%>
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
@@ -634,34 +633,56 @@
         <div id="tabs-2" style="height: 500px;">
             <div ng-controller="mileageCtrl">
                 <div>
-                    <h1>Monthly miles driven ${landingForm.mileageMonthlyTotal}</h1>
+                    <span style="display:block; width:410px;">
+                        <c:choose>
+                            <c:when test="${landingForm.mileageMonthlyTotal gt 0}">
+                                <h5>Monthly miles driven: ${landingForm.mileageMonthlyTotal} Miles</h5>
+                            </c:when>
+                            <c:otherwise>
+                                <h5>No mileage has been computed for this month</h5>
+                            </c:otherwise>
+                        </c:choose>
+                    </span>
+                </div>
+                <div class="ui-widget" id="existingErrorMessage" ng-bind="errorMessage" >
+                    <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+                        <p>
+                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                            <span style="display:block; width: auto">
+                                <div ng-show="errorMessage"></div>
+                            </span>
+                        </p>
+                    </div>
                 </div>
                 <div class="col-xs-6">
-                    <table class="table">
-                        <tr class='record-animation' ng-repeat="record in records">
-                            <td>
-                                <span ng-switch on="record.c">
-                                    <div ng-switch-when="true">
-                                    <div class="checkbox">
-                                        <label>
-                                            <img src="images/cars.png" style="height: 18px; width: 25px"/>
-                                            <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                            <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
-                                        </label>
-                                    </div>
-                                    </div>
-                                    <div ng-switch-when="false">
-                                        <div class="checkbox">
-                                            <label>
-                                                <img src="images/odometers.png" />
-                                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                                <a href="modv/{{record.i}}.htm" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </span>
+                    <table style="width: 470px" class="etable" id="tableMileageForMonth">
+                        <tr>
+                            <th style="padding: 3px;"></th>
+                            <th style="padding: 3px;"></th>
+                            <th style="padding: 3px;">Odometer reading / Miles driven</th>
+                        </tr>
+                        <tbody ng-repeat="record in records">
+                        <tr ng-switch on="record.c">
+                            <td style="padding: 3px; text-align: center" ng-switch-when="true">
+                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                            </td>
+                            <td style="padding: 3px; text-align: center" ng-switch-when="false">
+                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                            </td>
+                            <td style="padding: 3px; text-align: center" ng-switch-when="true">
+                                <img src="images/cars.png" style="height: 18px; width: 25px"/>
+                            </td>
+                            <td style="padding: 3px; text-align: center" ng-switch-when="false">
+                                <img src="images/odometers.png" />
+                            </td>
+                            <td style="padding: 3px; text-align: left" ng-switch-when="true">
+                                <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
+                            </td>
+                            <td style="padding: 3px; text-align: left" ng-switch-when="false">
+                                <a href="modv/{{record.i}}.htm" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
                 <div class="col-xs-6">
