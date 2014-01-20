@@ -53,6 +53,57 @@
         });
     </script>
 
+    <script>
+        $(function() {
+            $( "#datePickerStart").datepicker({
+                onSelect: function(request) {
+                    $.ajax({
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/mws/msd.htm',
+                        data: JSON.stringify({
+                            id: '${mileageForm.mileage.id}',
+                            msd: $("#datePickerStart").val()
+                        }),
+                        dataType:'json',
+                        contentType: 'application/json;charset=utf-8',
+                        mimeType: 'application/json',
+                        success: function (data) {
+                            console.log(data);
+                            if(data.s === true) {
+                                $("#days").text(data.d);
+                            }
+                        }
+                    }).fail(function(xhr, status, error){
+                        console.log('error:' + status + ':' + error + ':' + xhr.responseText);
+                    });
+                }
+                });
+            $( "#datePickerEnd" ).datepicker({
+                onSelect: function(request) {
+                    $.ajax({
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/mws/med.htm',
+                        data: JSON.stringify({
+                            id: '${mileageForm.mileage.id}',
+                            med: $("#datePickerEnd").val()
+                        }),
+                        dataType:'json',
+                        contentType: 'application/json;charset=utf-8',
+                        mimeType: 'application/json',
+                        success: function (data) {
+                            if(data.s === true) {
+                                console.log(data);
+                                $("#days").text(data.d);
+                            }
+                        }
+                    }).fail(function(xhr, status, error){
+                        console.log('error:' + status + ':' + error + ':' + xhr.responseText);
+                    });
+                }
+                });
+        });
+    </script>
+
 </head>
 <body>
 <div class="wrapper">
@@ -117,25 +168,31 @@
                                 </tr>
                                 <tr>
                                     <td style="font-size: 16px">
-                                        <spring:eval expression='mileageForm.mileage.start' />
-                                        &nbsp;&nbsp;
+                                        <b><spring:eval expression='mileageForm.mileage.start' /></b>
+                                        &nbsp;&nbsp; Miles
                                         <img src="../images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
                                     </td>
                                     <td style="font-size: 16px">
-                                        <spring:eval expression='mileageForm.mileage.end' />
-                                        &nbsp;&nbsp;
+                                        <b><spring:eval expression='mileageForm.mileage.end' /></b>
+                                        &nbsp;&nbsp;Miles
                                         <img src="../images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
                                     </td>
                                     <td style="font-size: 16px">
-                                        <spring:eval expression='mileageForm.mileage.total' />
-                                        &nbsp;&nbsp;
+                                        <b><spring:eval expression='mileageForm.mileage.total' /></b>
+                                        &nbsp;&nbsp; Miles Driven
                                         <img src="../images/car-front.png" style="height: 20px; width: 20px; vertical-align: top"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><spring:eval expression='mileageForm.mileage.startDate' /></td>
-                                    <td><spring:eval expression='mileageForm.mileage.endDate' /></td>
-                                    <td></td>
+                                    <td>
+                                        <b>Trip Start Date:</b>
+                                        <input type="text" id="datePickerStart" value="<fmt:formatDate value='${mileageForm.mileage.startDate}' type="both" pattern="MM/dd/yyyy"/>" style="width: 90px">
+                                    </td>
+                                    <td>
+                                        <b>Trip End Date:</b>
+                                        <input type="text" id="datePickerEnd" value="<fmt:formatDate value='${mileageForm.mileage.endDate}' type="both" pattern="MM/dd/yyyy"/>" style="width: 90px">
+                                    </td>
+                                    <td><span id="days"><spring:eval expression='mileageForm.mileage.tripDays()'/></span></td>
                                 </tr>
                             </table>
                         </form:form>
