@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 /**
  * User: hitender
@@ -90,5 +91,21 @@ public final class MileageService {
 
     public MileageEntity getMileage(String mileageId, String userProfileId) {
         return mileageManager.findOne(mileageId, userProfileId);
+    }
+
+    public boolean updateStartDate(String mileageId, String date, String userProfileId) {
+        try {
+            return mileageManager.updateStartDate(mileageId, DateTime.parse(date, DateTimeFormat.forPattern("MM/dd/yyyy")), userProfileId);
+        } catch(IllegalArgumentException iae) {
+            throw iae;
+        }
+    }
+
+    public boolean updateEndDate(String mileageId, String date, String userProfileId) {
+        try {
+            return mileageManager.updateEndDate(mileageId, DateTime.parse(date, DateTimeFormat.forPattern("MM/dd/yyyy")), userProfileId);
+        } catch(IllegalArgumentException iae) {
+            throw iae;
+        }
     }
 }

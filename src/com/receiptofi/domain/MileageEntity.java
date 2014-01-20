@@ -1,5 +1,7 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.DateUtil;
+
 import javax.validation.constraints.NotNull;
 
 import java.util.ArrayList;
@@ -15,6 +17,10 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 /**
  * User: hitender
@@ -156,5 +162,29 @@ public class MileageEntity extends BaseEntity {
     @Transient
     public boolean isComplete() {
         return (start != 0) && (end != 0) && (fileSystemEntities.size() > 0);
+    }
+
+    @Transient
+    public String tripDays() {
+        if(startDate != null) {
+            DateTime dayStart = DateUtil.toDateTime(startDate);
+            DateTime dayEnd = DateUtil.toDateTime(endDate);
+
+            int days = Days.daysBetween(dayStart.withTimeAtStartOfDay() , dayEnd.withTimeAtStartOfDay()).getDays();
+
+            if(days == 0) {
+                return "Same Day Trip";
+            } else if(days == 1) {
+                return "1 day trip";
+            } else if(days > 0) {
+                return days + " days trip";
+            } else if(days < 0) {
+                return "Trip end day greater";
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
     }
 }

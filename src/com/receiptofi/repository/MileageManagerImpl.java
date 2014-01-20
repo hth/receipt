@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import org.joda.time.DateTime;
 
@@ -81,5 +82,23 @@ public class MileageManagerImpl implements MileageManager {
         Sort sort = new Sort(Sort.Direction.DESC, "S");
         Query query = Query.query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query.with(sort), MileageEntity.class, TABLE);
+    }
+
+    @Override
+    public boolean updateStartDate(String mileageId, DateTime startDate, String userProfileId) {
+        return updateDateInRecord(mileageId, "SD", startDate, userProfileId).getLastError().ok();
+    }
+
+    @Override
+    public boolean updateEndDate(String mileageId, DateTime endDate, String userProfileId) {
+        return updateDateInRecord(mileageId, "ED", endDate, userProfileId).getLastError().ok();
+    }
+
+    private WriteResult updateDateInRecord(String mileageId, String fieldName, DateTime dateTime, String userProfileId) {
+        return mongoTemplate.updateFirst(
+                Query.query(Criteria.where("id").is(mileageId)).addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId)),
+                Update.update(fieldName, dateTime.toDate()),
+                MileageEntity.class
+        );
     }
 }
