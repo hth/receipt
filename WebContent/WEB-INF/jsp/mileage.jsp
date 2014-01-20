@@ -64,9 +64,9 @@
                             id: '${mileageForm.mileage.id}',
                             msd: $("#datePickerStart").val()
                         }),
-                        dataType:'json',
                         contentType: 'application/json;charset=utf-8',
                         mimeType: 'application/json',
+                        dataType:'json',
                         success: function (data) {
                             console.log(data);
                             if(data.s === true) {
@@ -87,9 +87,9 @@
                             id: '${mileageForm.mileage.id}',
                             med: $("#datePickerEnd").val()
                         }),
-                        dataType:'json',
                         contentType: 'application/json;charset=utf-8',
                         mimeType: 'application/json',
+                        dataType:'json',
                         success: function (data) {
                             if(data.s === true) {
                                 console.log(data);
