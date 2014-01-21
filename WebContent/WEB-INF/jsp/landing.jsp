@@ -292,6 +292,11 @@
                             // Not at All. Because of ng-change below
                             angular.extend($scope.records[_.indexOf($scope.records, newRecord)], data.ms[0]);
                             $scope.merging = false;
+                            if(data.mm > 0) {
+                                $("#mmText").text("Monthly miles driven: " + data.mm + " Miles");
+                            } else {
+                                $("#mmText").text("No mileage has been computed for this month");
+                            }
                         }
                     }, SERVICE.TIMEOUT);
                 }).error(function(data) {
@@ -333,6 +338,11 @@
                             $scope.records[_.indexOf($scope.records, newRecords[0])].i = data.ms[0].i;
                             $scope.records[_.indexOf($scope.records, newRecords[1])].i = data.ms[1].i;
                             $scope.splitting = false;
+                            if(data.mm > 0) {
+                                $("#mmText").text("Monthly miles driven: " + data.mm + " Miles");
+                            } else {
+                                $("#mmText").text("No mileage has been computed for this month");
+                            }
                         }
                     }, SERVICE.TIMEOUT);
                 }).error(function(data) {
@@ -633,16 +643,18 @@
         <div id="tabs-2" style="height: 500px;">
             <div ng-controller="mileageCtrl">
                 <div>
-                    <span style="display:block; width:410px;">
+                    <h5>
+                        <span style="display:block; width:410px;" id="mmText">
                         <c:choose>
                             <c:when test="${landingForm.mileageMonthlyTotal gt 0}">
-                                <h5>Monthly miles driven: ${landingForm.mileageMonthlyTotal} Miles</h5>
+                                Monthly miles driven: ${landingForm.mileageMonthlyTotal} Miles
                             </c:when>
                             <c:otherwise>
-                                <h5>No mileage has been computed for this month</h5>
+                                No mileage has been computed for this month
                             </c:otherwise>
                         </c:choose>
-                    </span>
+                        </span>
+                    </h5>
                 </div>
                 <div class="ui-widget" id="existingErrorMessage" ng-bind="errorMessage" >
                     <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
