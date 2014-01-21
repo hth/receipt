@@ -68,7 +68,6 @@
     });
 </script>
 
-<!--- For Text boxes -->
 <script>
     $(function () {
         $('.tooltip').each(function () {
@@ -95,10 +94,7 @@
             });
         });
     });
-</script>
 
-<!-- For http links -->
-<script>
     $(function () {
         $(document).tooltip();
     });

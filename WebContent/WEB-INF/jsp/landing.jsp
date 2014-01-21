@@ -595,7 +595,7 @@
                                 <td style="padding: 3px; text-align: center">
                                     <c:if test="${!empty receipt.expenseReportInFS}">
                                         <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receipt.id}.htm">
-                                            <img src="images/download_icon_lg.png" class="downloadIcon" width="14" height="14">
+                                            <img src="images/download_icon_lg.png" class="downloadIcon" width="14" height="14" title="Download expensed receipt">
                                         </a>
                                     </c:if>
                                 </td>
@@ -644,7 +644,7 @@
             <div ng-controller="mileageCtrl">
                 <div>
                     <h5>
-                        <span style="display:block; width:410px;" id="mmText">
+                    <span style="display:block; width:410px;" id="mmText">
                         <c:choose>
                             <c:when test="${landingForm.mileageMonthlyTotal gt 0}">
                                 Monthly miles driven: ${landingForm.mileageMonthlyTotal} Miles
@@ -653,7 +653,7 @@
                                 No mileage has been computed for this month
                             </c:otherwise>
                         </c:choose>
-                        </span>
+                    </span>
                     </h5>
                 </div>
                 <div class="ui-widget" id="existingErrorMessage" ng-bind="errorMessage" >
@@ -667,10 +667,11 @@
                     </div>
                 </div>
                 <div class="col-xs-6">
-                    <table style="width: 470px" class="etable" id="tableMileageForMonth">
+                    <table style="width: 460px" class="etable" id="tableMileageForMonth">
                         <tr>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;"></th>
+                            <th style="padding: 3px;">Date</th>
                             <th style="padding: 3px;">Odometer reading / Miles driven</th>
                         </tr>
                         <tbody ng-repeat="record in records">
@@ -686,6 +687,12 @@
                             </td>
                             <td style="padding: 3px; text-align: center" ng-switch-when="false">
                                 <img src="images/odometers.png" />
+                            </td>
+                            <td style="padding: 3px; text-align: left" ng-switch-when="false">
+                                {{record.sd | date:'dd MMM'}}
+                            </td>
+                            <td style="padding: 3px; text-align: left" ng-switch-when="true">
+                                {{record.sd | date:'dd MMM'}}
                             </td>
                             <td style="padding: 3px; text-align: left" ng-switch-when="true">
                                 <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
@@ -1377,6 +1384,38 @@
                 $(this).html(message);
             });
     }
+</script>
+
+<script>
+    $(function () {
+        $('.tooltip').each(function () {
+            var $this, id, t;
+
+            $this = $(this);
+            id = this.id;
+            t = $('<span />', {
+                title: $this.attr('title')
+            }).appendTo($this.parent()).tooltip({
+                position: {
+                    of: '#' + id,
+                    my: "left+190 center",
+                    at: "left center",
+                    collision: "fit"
+                }
+            });
+            // remove the title from the real element.
+            $this.attr('title', '');
+            $('#' + id).focusin(function () {
+                t.tooltip('open');
+            }).focusout(function () {
+                t.tooltip('close');
+            });
+        });
+    });
+
+    $(function () {
+        $(document).tooltip();
+    });
 </script>
 
 </body>

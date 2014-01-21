@@ -147,10 +147,7 @@
             });
         });
     });
-</script>
 
-<!-- For http links -->
-<script>
     $(function () {
         $(document).tooltip();
     });
