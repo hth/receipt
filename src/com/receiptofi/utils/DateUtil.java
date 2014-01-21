@@ -120,6 +120,14 @@ public final class DateUtil {
         return nowTime().toString();
     }
 
+    public static Date nowDate() {
+        return now().toDateMidnight().toDate();
+    }
+
+    public static String nowDateString() {
+        return now().toDateMidnight().toDate().toString();
+    }
+
     /**
      * Gets the current duration of the process
      * @param start

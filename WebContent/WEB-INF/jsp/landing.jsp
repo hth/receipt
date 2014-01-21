@@ -318,8 +318,8 @@
                     return record.i === i;
                 });
                 // and split the record in two separate records
-                newRecords.push({i: new Date().getTime() + 1, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false});
-                newRecords.push({i: new Date().getTime() + 2, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false});
+                newRecords.push({i: new Date().getTime() + 1, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false, sd: $scope.draggables[0].sd});
+                newRecords.push({i: new Date().getTime() + 2, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed});
 
                 // finally update both records and draggables
                 $scope.records = $scope.records.concat(newRecords);
@@ -671,7 +671,7 @@
                         <tr>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;"></th>
-                            <th style="padding: 3px;">Date</th>
+                            <th style="padding: 3px;">Day</th>
                             <th style="padding: 3px;">Odometer reading / Miles driven</th>
                         </tr>
                         <tbody ng-repeat="record in records">
@@ -692,7 +692,7 @@
                                 {{record.sd | date:'dd MMM'}}
                             </td>
                             <td style="padding: 3px; text-align: left" ng-switch-when="true">
-                                {{record.sd | date:'dd MMM'}}
+                                {{record.sd | date:'dd MMM'}} - {{record.ed | date:'dd MMM'}}
                             </td>
                             <td style="padding: 3px; text-align: left" ng-switch-when="true">
                                 <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
