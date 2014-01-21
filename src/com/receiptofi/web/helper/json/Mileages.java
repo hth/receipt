@@ -20,18 +20,16 @@ public final class Mileages {
     @JsonProperty("ms")
     private List<Mileage> mileages = new LinkedList<>();
 
+    @JsonProperty("mm")
+    private int monthlyMileage;
+
     public List<Mileage> getMileages() {
         return mileages;
     }
 
     public void setMileages(List<MileageEntity> mileages) {
         for(MileageEntity mileageEntity : mileages) {
-            this.mileages.add(Mileage.newInstance(mileageEntity.getId(),
-                    mileageEntity.getStart(),
-                    mileageEntity.getEnd(),
-                    mileageEntity.getStartDate(),
-                    mileageEntity.getTotal(), mileageEntity.isComplete())
-            );
+            this.setMileages(mileageEntity);
         }
     }
 
@@ -42,6 +40,14 @@ public final class Mileages {
                 mileageEntity.getStartDate(),
                 mileageEntity.getTotal(), mileageEntity.isComplete())
         );
+    }
+
+    public int getMonthlyMileage() {
+        return monthlyMileage;
+    }
+
+    public void setMonthlyMileage(int monthlyMileage) {
+        this.monthlyMileage = monthlyMileage;
     }
 
     //Converts this object to JSON representation

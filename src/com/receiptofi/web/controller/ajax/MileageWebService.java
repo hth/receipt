@@ -89,6 +89,7 @@ public class MileageWebService {
                 MileageEntity mileageEntity = mileageService.merge(map.get("id1"), map.get("id2"), userSession.getUserProfileId());
                 Mileages mileages = new Mileages();
                 mileages.setMileages(mileageEntity);
+                mileages.setMonthlyMileage(mileageService.monthltyTotal(userSession.getUserProfileId(), DateUtil.now()));
                 return mileages.asJson();
             } catch(Exception exception) {
                 return "{\"success\" : false, \"message\" : \"" + exception.getLocalizedMessage() + "\"}";
@@ -114,6 +115,7 @@ public class MileageWebService {
                 List<MileageEntity> mileageEntities = mileageService.split(jsonStringToMap(id).get("id"), userSession.getUserProfileId());
                 Mileages mileages = new Mileages();
                 mileages.setMileages(mileageEntities);
+                mileages.setMonthlyMileage(mileageService.monthltyTotal(userSession.getUserProfileId(), DateUtil.now()));
                 return mileages.asJson();
             } catch(Exception exception) {
                 return "{\"success\" : false, \"message\" : \"" + exception.getLocalizedMessage() + "\"}";
