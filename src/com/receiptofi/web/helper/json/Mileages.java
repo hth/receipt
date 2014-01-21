@@ -38,6 +38,7 @@ public final class Mileages {
                 mileageEntity.getStart(),
                 mileageEntity.getEnd(),
                 mileageEntity.getStartDate(),
+                mileageEntity.getEndDate(),
                 mileageEntity.getTotal(), mileageEntity.isComplete())
         );
     }
@@ -77,6 +78,9 @@ class Mileage {
     @JsonProperty("sd")
     private Date startDate;
 
+    @JsonProperty("ed")
+    private Date endDate;
+
     @JsonProperty("t")
     private int total;
 
@@ -86,17 +90,18 @@ class Mileage {
     @SuppressWarnings("unused")
     public Mileage() {}
 
-    private Mileage(String id, int start, int end, Date startDate, int total, boolean complete) {
+    private Mileage(String id, int start, int end, Date startDate, Date endDate, int total, boolean complete) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.startDate = startDate;
+        this.endDate = endDate;
         this.total = total;
         this.complete = complete;
     }
 
-    public static Mileage newInstance(String id, int start, int end, Date startDate, int total, boolean complete) {
-        return new Mileage(id, start, end, startDate, total, complete);
+    public static Mileage newInstance(String id, int start, int end, Date startDate, Date endDate, int total, boolean complete) {
+        return new Mileage(id, start, end, startDate, endDate, total, complete);
     }
 
     public String getId() {
@@ -113,6 +118,10 @@ class Mileage {
 
     public Date getStartDate() {
         return startDate;
+    }
+
+    Date getEndDate() {
+        return endDate;
     }
 
     public int getTotal() {

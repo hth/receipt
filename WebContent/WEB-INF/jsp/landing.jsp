@@ -671,7 +671,7 @@
                         <tr>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;"></th>
-                            <th style="padding: 3px;">Date</th>
+                            <th style="padding: 3px;">Day</th>
                             <th style="padding: 3px;">Odometer reading / Miles driven</th>
                         </tr>
                         <tbody ng-repeat="record in records">
@@ -692,7 +692,7 @@
                                 {{record.sd | date:'dd MMM'}}
                             </td>
                             <td style="padding: 3px; text-align: left" ng-switch-when="true">
-                                {{record.sd | date:'dd MMM'}}
+                                {{record.sd | date:'dd MMM'}} - {{record.ed | date:'dd MMM'}}
                             </td>
                             <td style="padding: 3px; text-align: left" ng-switch-when="true">
                                 <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
