@@ -576,6 +576,10 @@
             });
         });
     });
+
+    $(function () {
+        $(document).tooltip();
+    });
 </script>
 
 <script>
