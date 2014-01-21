@@ -318,8 +318,8 @@
                     return record.i === i;
                 });
                 // and split the record in two separate records
-                newRecords.push({i: new Date().getTime() + 1, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false});
-                newRecords.push({i: new Date().getTime() + 2, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false});
+                newRecords.push({i: new Date().getTime() + 1, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false, sd: $scope.draggables[0].sd});
+                newRecords.push({i: new Date().getTime() + 2, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed});
 
                 // finally update both records and draggables
                 $scope.records = $scope.records.concat(newRecords);
