@@ -2,19 +2,23 @@ package com.receiptofi.web.controller.ajax;
 
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.MileageService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.TextInputScrubber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +39,7 @@ public class NotesAndCommentsWebService {
      private static final Logger log = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
     @Autowired ReceiptService receiptService;
+    @Autowired MileageService mileageService;
 
     /**
      * Note: UserSession parameter is to make sure no outside get requests are processed.
@@ -55,7 +60,22 @@ public class NotesAndCommentsWebService {
 
         if(userSession != null) {
             log.info("Receipt notes updated by userProfileId: " + userSession.getUserProfileId());
-            return receiptService.updateNotes(TextInputScrubber.scrub(notes), receiptId, userSession.getUserProfileId());
+            return receiptService.updateReceiptNotes(TextInputScrubber.scrub(notes), receiptId, userSession.getUserProfileId());
+        } else {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            return false;
+        }
+    }
+
+    @RequestMapping(value ="/umn", method = RequestMethod.POST, headers = "Accept=application/json")
+    public @ResponseBody
+    boolean updateNote(@RequestBody String mileage,
+                       @ModelAttribute("userSession") UserSession userSession,
+                       HttpServletResponse httpServletResponse) throws IOException {
+        if(userSession != null && mileage.length() > 0) {
+            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileage);
+            log.info("Note updated by userProfileId: " + userSession.getUserProfileId());
+            return mileageService.updateMileageNotes(TextInputScrubber.scrub(map.get("notes")), map.get("mileageId"), userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
@@ -81,7 +101,7 @@ public class NotesAndCommentsWebService {
 
         if(userSession != null) {
             log.info("Receipt recheck comment updated by userProfileId: " + userSession.getUserProfileId());
-            return receiptService.updateComment(TextInputScrubber.scrub(comment), receiptId, userSession.getUserProfileId());
+            return receiptService.updateReceiptComment(TextInputScrubber.scrub(comment), receiptId, userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
@@ -101,9 +121,9 @@ public class NotesAndCommentsWebService {
      */
     @RequestMapping(value = "/receiptOCR_recheckComment", method = RequestMethod.GET)
     public @ResponseBody
-    boolean searchBiz(@RequestParam("term") String comment, @RequestParam("nameParam") String receiptOCRId,
-                           @ModelAttribute("userSession") UserSession userSession,
-                           HttpServletResponse httpServletResponse) throws IOException {
+    boolean receiptOCRRecheckComment(@RequestParam("term") String comment, @RequestParam("nameParam") String receiptOCRId,
+                                     @ModelAttribute("userSession") UserSession userSession,
+                                     HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {

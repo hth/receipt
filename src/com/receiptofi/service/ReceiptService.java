@@ -223,7 +223,7 @@ public final class ReceiptService {
      * @param userProfileId
      * @return
      */
-    public boolean updateNotes(String notes, String receiptId, String userProfileId) {
+    public boolean updateReceiptNotes(String notes, String receiptId, String userProfileId) {
         ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
         CommentEntity commentEntity = receiptEntity.getNotes();
         boolean commentEntityBoolean = false;
@@ -256,7 +256,7 @@ public final class ReceiptService {
      * @param userProfileId
      * @return
      */
-    public boolean updateComment(String comment, String receiptId, String userProfileId) {
+    public boolean updateReceiptComment(String comment, String receiptId, String userProfileId) {
         ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
         CommentEntity commentEntity = receiptEntity.getRecheckComment();
         boolean commentEntityBoolean = false;

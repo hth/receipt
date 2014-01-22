@@ -1,7 +1,12 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.MileageEntity;
+import com.receiptofi.domain.types.CommentTypeEnum;
+import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.MileageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +23,10 @@ import org.joda.time.format.DateTimeFormat;
  */
 @Service
 public final class MileageService {
+    private static Logger log = LoggerFactory.getLogger(MileageService.class);
 
     @Autowired private MileageManager mileageManager;
+    @Autowired private CommentManager commentManager;
 
     public void save(MileageEntity mileageEntity) throws Exception {
         mileageManager.save(mileageEntity);
@@ -108,4 +115,38 @@ public final class MileageService {
             throw iae;
         }
     }
+
+    /**
+     * Saves notes to receipt
+     *
+     * @param notes
+     * @param mileageId
+     * @param userProfileId
+     * @return
+     */
+    public boolean updateMileageNotes(String notes, String mileageId, String userProfileId) {
+        MileageEntity mileageEntity = mileageManager.findOne(mileageId, userProfileId);
+        CommentEntity commentEntity = mileageEntity.getMileageNotes();
+        boolean commentEntityBoolean = false;
+        if(commentEntity == null) {
+            commentEntityBoolean = true;
+            commentEntity = CommentEntity.newInstance(CommentTypeEnum.NOTES);
+            commentEntity.setText(notes);
+        } else {
+            commentEntity.setText(notes);
+        }
+        try {
+            commentEntity.setUpdated();
+            commentManager.save(commentEntity);
+            if(commentEntityBoolean) {
+                mileageEntity.setMileageNotes(commentEntity);
+                mileageManager.save(mileageEntity);
+            }
+            return true;
+        } catch (Exception exce) {
+            log.error("Failed updating notes for receipt: " + mileageId);
+            return false;
+        }
+    }
+
 }

@@ -104,6 +104,52 @@
         });
     </script>
 
+    <script>
+        $.ajaxSetup ({
+            cache: false
+        });
+
+        $(document).focusout(function() {
+            "use strict";
+
+            $( "#mileageNotes" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/ncws/umn.htm',
+                        data: JSON.stringify({
+                            notes: request.term,
+                            mileageId: $("#mileageId").val()
+                        }),
+                        contentType: 'application/json;charset=utf-8',
+                        mimeType: 'application/json',
+                        dataType:'json',
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data == true) {
+                                var html = '';
+                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
+                                $('#savedNotes').html(html).show();
+                                $('.timestamp').cuteTime({ refresh: 10000 });
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).ready(function () {
+            "use strict";
+
+            $('#mileageNotes').NobleCount('#notesCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
+            });
+        });
+    </script>
+
 </head>
 <body>
 <div class="wrapper">
@@ -159,12 +205,19 @@
                     <td style="vertical-align: top;">
                         <form:form method="post" action="../modv.htm" modelAttribute="mileageForm">
                             <form:hidden path="mileage.id" id="mileageId"/>
+                            <form:hidden path="mileage.mileageNotes.id"/>
 
                             <table style="width: 700px" class="etable">
                                 <tr>
                                     <th>Trip Starting Odometer</th>
-                                    <th>Trip Ending Odometer</th>
-                                    <th>Total Trip</th>
+                                    <c:if test="${mileageForm.mileage.complete eq true}">
+                                    <th>
+                                        Trip Ending Odometer
+                                    </th>
+                                    <th>
+                                        Total Trip
+                                    </th>
+                                    </c:if>
                                 </tr>
                                 <tr>
                                     <td style="font-size: 16px">
@@ -172,6 +225,7 @@
                                         &nbsp;&nbsp; Miles
                                         <img src="../images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
                                     </td>
+                                    <c:if test="${mileageForm.mileage.complete eq true}">
                                     <td style="font-size: 16px">
                                         <b><spring:eval expression='mileageForm.mileage.end' /></b>
                                         &nbsp;&nbsp;Miles
@@ -182,17 +236,49 @@
                                         &nbsp;&nbsp; Miles Driven
                                         <img src="../images/car-front.png" style="height: 20px; width: 20px; vertical-align: top"/>
                                     </td>
+                                    </c:if>
                                 </tr>
                                 <tr>
                                     <td>
                                         <b>Trip Start Date:</b>
                                         <input type="text" id="datePickerStart" value="<fmt:formatDate value='${mileageForm.mileage.startDate}' type="both" pattern="MM/dd/yyyy"/>" style="width: 90px">
                                     </td>
+                                    <c:if test="${mileageForm.mileage.complete eq true}">
                                     <td>
                                         <b>Trip End Date:</b>
                                         <input type="text" id="datePickerEnd" value="<fmt:formatDate value='${mileageForm.mileage.endDate}' type="both" pattern="MM/dd/yyyy"/>" style="width: 90px">
                                     </td>
                                     <td><span id="days"><spring:eval expression='mileageForm.mileage.tripDays()'/></span></td>
+                                    </c:if>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <form:label for="mileage.mileageNotes.text" path="mileage.mileageNotes.text" cssErrorClass="error">
+                                            Mileage Notes:
+                                        </form:label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <form:textarea path="mileage.mileageNotes.text" id="mileageNotes" size="250" cols="50" rows="4" />
+                                        <br/>
+                                        <span id='notesCount'></span> characters remaining.
+                                        <c:choose>
+                                            <c:when test="${!empty mileageForm.mileage.mileageNotes.id}">
+                                                <span id="savedNotes" class="okay">
+                                                    Saved - <span class="timestamp"><fmt:formatDate value="${mileageForm.mileage.mileageNotes.updated}" type="both"/></span>
+                                                </span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span id="savedNotes" class="okay"></span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <form:errors path="mileage.mileageNotes.text" cssClass="error" />
+                                    </td>
                                 </tr>
                             </table>
                         </form:form>
