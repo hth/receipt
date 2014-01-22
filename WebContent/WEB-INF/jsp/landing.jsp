@@ -647,7 +647,7 @@
                     <span style="display:block; width:410px;" id="mmText">
                         <c:choose>
                             <c:when test="${landingForm.mileageMonthlyTotal gt 0}">
-                                Monthly miles driven: ${landingForm.mileageMonthlyTotal} Miles
+                                Monthly miles driven: <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles
                             </c:when>
                             <c:otherwise>
                                 No mileage has been computed for this month
