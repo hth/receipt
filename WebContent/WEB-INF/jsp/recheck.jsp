@@ -177,11 +177,15 @@
             $( "#recheckComment" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/ncws/receiptOCR_recheckComment.htm',
-                        data: {
-                            term: request.term,
-                            nameParam: $("#receiptId").val()
-                        },
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/ncws/dc.htm',
+                        data: JSON.stringify({
+                            notes: request.term,
+                            documentId: $("#documentId").val()
+                        }),
+                        contentType: 'application/json;charset=utf-8',
+                        mimeType: 'application/json',
+                        dataType:'json',
                         success: function (data) {
                             console.log('response=', data);
                             if(data == true) {
@@ -329,7 +333,7 @@
                     <form:form method="post" action="../recheck.htm" modelAttribute="receiptDocumentForm">
                         <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage" />
                         <form:errors path="receiptDocument" cssClass="error" />
-                        <form:hidden path="receiptDocument.id" id="receiptId"/>
+                        <form:hidden path="receiptDocument.id" id="documentId"/>
                         <form:hidden path="receiptDocument.userProfileId"/>
                         <form:hidden path="receiptDocument.version"/>
                         <form:hidden path="receiptDocument.documentStatus"/>
@@ -546,7 +550,9 @@
 
 <script>
     $(function() {
-        $("#itemId").focus();
+        "use strict";
+
+        $("#notes").blur();
     });
 </script>
 

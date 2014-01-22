@@ -54,6 +54,10 @@
     </script>
 
     <script>
+        $.ajaxSetup ({
+            cache: false
+        });
+
         $(function() {
             $( "#datePickerStart").datepicker({
                 onSelect: function(request) {
@@ -105,10 +109,6 @@
     </script>
 
     <script>
-        $.ajaxSetup ({
-            cache: false
-        });
-
         $(document).focusout(function() {
             "use strict";
 
@@ -147,6 +147,10 @@
                 on_positive: 'okay',
                 max_chars: 250
             });
+        });
+
+        $(document).ready(function () {
+            $('.timestamp').cuteTime({ refresh: 10000 });
         });
     </script>
 
@@ -221,18 +225,18 @@
                                 </tr>
                                 <tr>
                                     <td style="font-size: 16px">
-                                        <b><spring:eval expression='mileageForm.mileage.start' /></b>
+                                        <b><fmt:formatNumber value="${mileageForm.mileage.start}" type="number" /></b>
                                         &nbsp;&nbsp; Miles
                                         <img src="../images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
                                     </td>
                                     <c:if test="${mileageForm.mileage.complete eq true}">
                                     <td style="font-size: 16px">
-                                        <b><spring:eval expression='mileageForm.mileage.end' /></b>
+                                        <b><fmt:formatNumber value="${mileageForm.mileage.end}" type="number" /></b>
                                         &nbsp;&nbsp;Miles
                                         <img src="../images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
                                     </td>
                                     <td style="font-size: 16px">
-                                        <b><spring:eval expression='mileageForm.mileage.total' /></b>
+                                        <b><fmt:formatNumber value="${mileageForm.mileage.total}" type="number" /></b>
                                         &nbsp;&nbsp; Miles Driven
                                         <img src="../images/car-front.png" style="height: 20px; width: 20px; vertical-align: top"/>
                                     </td>
@@ -319,7 +323,7 @@
     $(function() {
         "use strict";
 
-        $("#itemId").focus();
+        $("#mileageNotes").blur();
     });
 </script>
 
