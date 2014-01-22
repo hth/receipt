@@ -4,6 +4,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.helper.json.MileageDateUpdateResponse;
 import com.receiptofi.web.helper.json.Mileages;
@@ -85,7 +86,7 @@ public class MileageWebService {
 
         if(userSession != null && ids.length() > 0) {
             try {
-                Map<String, String> map = jsonStringToMap(ids);
+                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(ids);
                 MileageEntity mileageEntity = mileageService.merge(map.get("id1"), map.get("id2"), userSession.getUserProfileId());
                 Mileages mileages = new Mileages();
                 mileages.setMileages(mileageEntity);
@@ -100,10 +101,6 @@ public class MileageWebService {
         }
     }
 
-    private Map<String, String> jsonStringToMap(String ids) throws IOException {
-        return new ObjectMapper().readValue(ids, new TypeReference<HashMap<String,String>>() {});
-    }
-
     @RequestMapping(value = "/s.json", method = RequestMethod.POST, produces="application/json")
     public @ResponseBody
     String split(@RequestBody String id,
@@ -112,7 +109,7 @@ public class MileageWebService {
 
         if(userSession != null && id.length() > 0) {
             try {
-                List<MileageEntity> mileageEntities = mileageService.split(jsonStringToMap(id).get("id"), userSession.getUserProfileId());
+                List<MileageEntity> mileageEntities = mileageService.split(ParseJsonStringToMap.jsonStringToMap(id).get("id"), userSession.getUserProfileId());
                 Mileages mileages = new Mileages();
                 mileages.setMileages(mileageEntities);
                 mileages.setMonthlyMileage(mileageService.monthltyTotal(userSession.getUserProfileId(), DateUtil.now()));
@@ -133,7 +130,7 @@ public class MileageWebService {
 
         if(userSession != null && mileageInfo.length() > 0) {
             try {
-                Map<String, String> map = jsonStringToMap(mileageInfo);
+                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
                 boolean status = mileageService.updateStartDate(map.get("id"), StringUtils.remove(map.get("msd"), "\""), userSession.getUserProfileId());
                 MileageEntity mileageEntity = mileageService.getMileage(map.get("id"), userSession.getUserProfileId());
 
@@ -158,12 +155,12 @@ public class MileageWebService {
     String updateMileageEndDate(@RequestBody String mileageInfo, @ModelAttribute("userSession") UserSession userSession,
                                 HttpServletResponse httpServletResponse) throws IOException {
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        responseHeaders.add("Content-Type", "application/json; charset=utf-8");
 
         if(userSession != null && mileageInfo.length() > 0) {
             try {
-                Map<String, String> map = jsonStringToMap(mileageInfo);
+                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
                 boolean status = mileageService.updateEndDate(map.get("id"), StringUtils.remove(map.get("med"), "\""), userSession.getUserProfileId());
                 MileageEntity mileageEntity =  mileageService.getMileage(map.get("id"), userSession.getUserProfileId());
 
