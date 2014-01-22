@@ -64,11 +64,15 @@
             $( "#notes" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/ncws/receipt_notes.htm',
-                        data: {
-                            term: request.term,
-                            nameParam: $("#receiptId").val()
-                        },
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/ncws/rn.htm',
+                        data: JSON.stringify({
+                            notes: request.term,
+                            receiptId: $("#receiptId").val()
+                        }),
+                        contentType: 'application/json;charset=utf-8',
+                        mimeType: 'application/json',
+                        dataType:'json',
                         success: function (data) {
                             console.log('response=', data);
                             if(data == true) {
@@ -90,11 +94,15 @@
             $( "#recheckComment" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/ncws/receipt_recheckComment.htm',
-                        data: {
-                            term: request.term,
-                            nameParam: $("#receiptId").val()
-                        },
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/ncws/rc.htm',
+                        data: JSON.stringify({
+                            notes: request.term,
+                            receiptId: $("#receiptId").val()
+                        }),
+                        contentType: 'application/json;charset=utf-8',
+                        mimeType: 'application/json',
+                        dataType:'json',
                         success: function (data) {
                             console.log('response=', data);
                             if(data == true) {
@@ -487,7 +495,7 @@
     $(function() {
         "use strict";
 
-        $("#itemId").focus();
+        $("#notes").blur();
     });
 </script>
 

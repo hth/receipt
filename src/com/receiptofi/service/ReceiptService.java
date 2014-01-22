@@ -285,11 +285,11 @@ public final class ReceiptService {
      * Saves recheck comment to Document
      *
      * @param comment
-     * @param receiptOCRId
+     * @param documentId
      * @return
      */
-    public boolean updateOCRComment(String comment, String receiptOCRId) {
-        DocumentEntity documentEntity = documentManager.findOne(receiptOCRId);
+    public boolean updateDocumentComment(String comment, String documentId) {
+        DocumentEntity documentEntity = documentManager.findOne(documentId);
         CommentEntity commentEntity = documentEntity.getRecheckComment();
         boolean commentEntityBoolean = false;
         if(commentEntity == null) {
@@ -308,7 +308,7 @@ public final class ReceiptService {
             }
             return true;
         } catch (Exception exce) {
-            log.error("Failed updating comment for receiptOCR: " + receiptOCRId);
+            log.error("Failed updating comment for receiptOCR: " + documentId);
             return false;
         }
     }

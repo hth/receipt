@@ -117,7 +117,7 @@ public final class MileageService {
     }
 
     /**
-     * Saves notes to receipt
+     * Saves notes to mileage
      *
      * @param notes
      * @param mileageId

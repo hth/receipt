@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -46,21 +45,20 @@ public class NotesAndCommentsWebService {
      *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
      *        method fails on invalid request without User Session and user sees 500 error message.
      *
-     * @param notes
-     * @param receiptId
+     * @param body
      * @param userSession
      * @param httpServletResponse
      * @return
      */
-    @RequestMapping(value = "/receipt_notes", method = RequestMethod.GET)
+    @RequestMapping(value = "/rn", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean receiptNotes(@RequestParam("term") String notes, @RequestParam("nameParam") String receiptId,
-                           @ModelAttribute("userSession") UserSession userSession,
-                           HttpServletResponse httpServletResponse) throws IOException {
+    boolean receiptNotes(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
+                         HttpServletResponse httpServletResponse) throws IOException {
 
-        if(userSession != null) {
+        if(userSession != null && body.length() > 0) {
             log.info("Receipt notes updated by userProfileId: " + userSession.getUserProfileId());
-            return receiptService.updateReceiptNotes(TextInputScrubber.scrub(notes), receiptId, userSession.getUserProfileId());
+            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+            return receiptService.updateReceiptNotes(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
@@ -69,12 +67,12 @@ public class NotesAndCommentsWebService {
 
     @RequestMapping(value ="/umn", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean updateNote(@RequestBody String mileage,
-                       @ModelAttribute("userSession") UserSession userSession,
+    boolean updateNote(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
                        HttpServletResponse httpServletResponse) throws IOException {
-        if(userSession != null && mileage.length() > 0) {
-            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileage);
+
+        if(userSession != null && body.length() > 0) {
             log.info("Note updated by userProfileId: " + userSession.getUserProfileId());
+            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
             return mileageService.updateMileageNotes(TextInputScrubber.scrub(map.get("notes")), map.get("mileageId"), userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
@@ -87,21 +85,20 @@ public class NotesAndCommentsWebService {
      *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
      *        method fails on invalid request without User Session and user sees 500 error message.
      *
-     * @param comment
-     * @param receiptId
+     * @param body
      * @param userSession
      * @param httpServletResponse
      * @return
      */
-    @RequestMapping(value = "/receipt_recheckComment", method = RequestMethod.GET)
+    @RequestMapping(value = "/rc", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean receiptRecheckComment(@RequestParam("term") String comment, @RequestParam("nameParam") String receiptId,
-                           @ModelAttribute("userSession") UserSession userSession,
-                           HttpServletResponse httpServletResponse) throws IOException {
+    boolean receiptRecheckComment(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
+                                  HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             log.info("Receipt recheck comment updated by userProfileId: " + userSession.getUserProfileId());
-            return receiptService.updateReceiptComment(TextInputScrubber.scrub(comment), receiptId, userSession.getUserProfileId());
+            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+            return receiptService.updateReceiptComment(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), userSession.getUserProfileId());
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
@@ -113,22 +110,21 @@ public class NotesAndCommentsWebService {
      *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
      *        method fails on invalid request without User Session and user sees 500 error message.
      *
-     * @param comment
-     * @param receiptOCRId
+     * @param body
      * @param userSession
      * @param httpServletResponse
      * @return
      */
-    @RequestMapping(value = "/receiptOCR_recheckComment", method = RequestMethod.GET)
+    @RequestMapping(value = "/dc", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean receiptOCRRecheckComment(@RequestParam("term") String comment, @RequestParam("nameParam") String receiptOCRId,
-                                     @ModelAttribute("userSession") UserSession userSession,
-                                     HttpServletResponse httpServletResponse) throws IOException {
+    boolean documentRecheckComment(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
+                                   HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 log.info("Document recheck comment updated by userProfileId: " + userSession.getUserProfileId());
-                return receiptService.updateOCRComment(TextInputScrubber.scrub(comment), receiptOCRId);
+                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+                return receiptService.updateDocumentComment(TextInputScrubber.scrub(map.get("notes")), map.get("documentId"));
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return false;
