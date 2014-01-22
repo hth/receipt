@@ -84,9 +84,6 @@ class Mileage {
     @JsonProperty("ed")
     private Date endDate;
 
-    @JsonProperty("na")
-    private String notesAbbreviated;
-
     @JsonProperty("n")
     private String notes;
 
@@ -134,6 +131,7 @@ class Mileage {
         return endDate;
     }
 
+    @JsonProperty("na")
     public String getNotesAbbreviated() {
         return StringUtils.abbreviate(notes, 22);
     }
