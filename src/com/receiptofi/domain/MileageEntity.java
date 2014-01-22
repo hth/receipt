@@ -20,7 +20,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.LocalDate;
 
 /**
  * User: hitender
@@ -55,6 +54,10 @@ public class MileageEntity extends BaseEntity {
     @DBRef
     @Field("FILES")
     private Collection<FileSystemEntity> fileSystemEntities;
+
+    @DBRef
+    @Field("N")
+    private CommentEntity mileageNotes;
 
     /** To keep bean happy */
     public MileageEntity() {}
@@ -147,6 +150,14 @@ public class MileageEntity extends BaseEntity {
             this.fileSystemEntities = new ArrayList<>();
         }
         this.fileSystemEntities.addAll(fileSystemEntities);
+    }
+
+    public CommentEntity getMileageNotes() {
+        return mileageNotes;
+    }
+
+    public void setMileageNotes(CommentEntity mileageNotes) {
+        this.mileageNotes = mileageNotes;
     }
 
     @Transient
