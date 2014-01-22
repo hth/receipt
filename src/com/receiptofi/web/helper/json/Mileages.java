@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * User: hitender
  * Date: 1/5/14 11:24 PM
@@ -39,6 +41,7 @@ public final class Mileages {
                 mileageEntity.getEnd(),
                 mileageEntity.getStartDate(),
                 mileageEntity.getEndDate(),
+                mileageEntity.getMileageNotes() == null ? "" : mileageEntity.getMileageNotes().getText(),
                 mileageEntity.getTotal(), mileageEntity.isComplete())
         );
     }
@@ -81,6 +84,9 @@ class Mileage {
     @JsonProperty("ed")
     private Date endDate;
 
+    @JsonProperty("n")
+    private String notes;
+
     @JsonProperty("t")
     private int total;
 
@@ -90,18 +96,19 @@ class Mileage {
     @SuppressWarnings("unused")
     public Mileage() {}
 
-    private Mileage(String id, int start, int end, Date startDate, Date endDate, int total, boolean complete) {
+    private Mileage(String id, int start, int end, Date startDate, Date endDate, String notes, int total, boolean complete) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.notes = notes;
         this.total = total;
         this.complete = complete;
     }
 
-    public static Mileage newInstance(String id, int start, int end, Date startDate, Date endDate, int total, boolean complete) {
-        return new Mileage(id, start, end, startDate, endDate, total, complete);
+    public static Mileage newInstance(String id, int start, int end, Date startDate, Date endDate, String notes, int total, boolean complete) {
+        return new Mileage(id, start, end, startDate, endDate, notes, total, complete);
     }
 
     public String getId() {
@@ -120,8 +127,17 @@ class Mileage {
         return startDate;
     }
 
-    Date getEndDate() {
+    public Date getEndDate() {
         return endDate;
+    }
+
+    @JsonProperty("na")
+    public String getNotesAbbreviated() {
+        return StringUtils.abbreviate(notes, 22);
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     public int getTotal() {

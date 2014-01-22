@@ -667,12 +667,13 @@
                     </div>
                 </div>
                 <div class="col-xs-6">
-                    <table style="width: 460px" class="etable" id="tableMileageForMonth">
+                    <table style="width: 465px" class="etable" id="tableMileageForMonth">
                         <tr>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;"></th>
                             <th style="padding: 3px;">Day</th>
                             <th style="padding: 3px;">Odometer reading / Miles driven</th>
+                            <th style="padding: 3px">Notes</th>
                         </tr>
                         <tbody ng-repeat="record in records">
                         <tr ng-switch on="record.c">
@@ -699,6 +700,12 @@
                             </td>
                             <td style="padding: 3px; text-align: left" ng-switch-when="false">
                                 <a href="modv/{{record.i}}.htm" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
+                            </td>
+                            <td style="padding: 3px; text-align: left" ng-switch-when="false" title="{{record.n}}">
+                                {{record.na}}
+                            </td>
+                            <td style="padding: 3px; text-align: left" ng-switch-when="true" title="{{record.n}}">
+                                {{record.na}}
                             </td>
                         </tr>
                         </tbody>
