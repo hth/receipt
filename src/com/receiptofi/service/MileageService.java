@@ -58,11 +58,13 @@ public final class MileageService {
             if(m1 != null && m2 != null && !m1.isComplete() && !m2.isComplete()) {
                 if(Integer.compare(m1.getStart(), m2.getStart()) == 1) {
                     m2.mergeEndingMileage(m1);
+                    commentManager.save(m2.getMileageNotes());
                     mileageManager.save(m2);
                     mileageManager.deleteHard(m1);
                     return m2;
                 } else if(Integer.compare(m1.getStart(), m2.getStart()) == -1) {
                     m1.mergeEndingMileage(m2);
+                    commentManager.save(m1.getMileageNotes());
                     mileageManager.save(m1);
                     mileageManager.deleteHard(m2);
                     return m1;
