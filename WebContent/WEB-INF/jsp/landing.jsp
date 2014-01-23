@@ -318,8 +318,8 @@
                     return record.i === i;
                 });
                 // and split the record in two separate records
-                newRecords.push({i: new Date().getTime() + 1, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false, sd: $scope.draggables[0].sd});
-                newRecords.push({i: new Date().getTime() + 2, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed});
+                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false, sd: $scope.draggables[0].sd, n: $scope.draggables[0].n, na: $scope.draggables[0].na});
+                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed, n: $scope.draggables[0].n, na: $scope.draggables[0].na});
 
                 // finally update both records and draggables
                 $scope.records = $scope.records.concat(newRecords);
@@ -337,6 +337,13 @@
                             // Not at All. Because of ng-change below
                             $scope.records[_.indexOf($scope.records, newRecords[0])].i = data.ms[0].i;
                             $scope.records[_.indexOf($scope.records, newRecords[1])].i = data.ms[1].i;
+
+                            $scope.records[_.indexOf($scope.records, newRecords[0])].n = data.ms[0].n;
+                            $scope.records[_.indexOf($scope.records, newRecords[1])].n = data.ms[1].n;
+
+                            $scope.records[_.indexOf($scope.records, newRecords[0])].na = data.ms[0].na;
+                            $scope.records[_.indexOf($scope.records, newRecords[1])].na = data.ms[1].na;
+
                             $scope.splitting = false;
                             if(data.mm > 0) {
                                 $("#mmText").text("Monthly miles driven: " + data.mm + " Miles");
@@ -642,80 +649,75 @@
 		</div>
         <div id="tabs-2" style="height: 500px;">
             <div ng-controller="mileageCtrl">
-                <div>
-                    <h5>
-                    <span style="display:block; width:410px;" id="mmText">
-                        <c:choose>
-                            <c:when test="${landingForm.mileageMonthlyTotal gt 0}">
-                                Monthly miles driven: ${landingForm.mileageMonthlyTotal} Miles
-                            </c:when>
-                            <c:otherwise>
-                                No mileage has been computed for this month
-                            </c:otherwise>
-                        </c:choose>
-                    </span>
-                    </h5>
-                </div>
-                <div class="ui-widget" id="existingErrorMessage" ng-bind="errorMessage" >
-                    <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
-                        <p>
-                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                            <span style="display:block; width: auto">
-                                <div ng-show="errorMessage"></div>
+                <c:choose>
+                    <c:when test="${!empty landingForm.mileageEntities}">
+                    <div>
+                        <h5>
+                            <span style="display:block; width:410px;" id="mmText">
+                                Monthly miles driven: <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles
                             </span>
-                        </p>
+                        </h5>
                     </div>
-                </div>
-                <div class="col-xs-6">
-                    <table style="width: 465px" class="etable" id="tableMileageForMonth">
-                        <tr>
-                            <th style="padding: 3px;"></th>
-                            <th style="padding: 3px;"></th>
-                            <th style="padding: 3px;">Day</th>
-                            <th style="padding: 3px;">Odometer reading / Miles driven</th>
-                            <th style="padding: 3px">Notes</th>
-                        </tr>
-                        <tbody ng-repeat="record in records">
-                        <tr ng-switch on="record.c">
-                            <td style="padding: 3px; text-align: center" ng-switch-when="true">
-                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                            </td>
-                            <td style="padding: 3px; text-align: center" ng-switch-when="false">
-                                <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                            </td>
-                            <td style="padding: 3px; text-align: center" ng-switch-when="true">
-                                <img src="images/cars.png" style="height: 18px; width: 25px"/>
-                            </td>
-                            <td style="padding: 3px; text-align: center" ng-switch-when="false">
-                                <img src="images/odometers.png" />
-                            </td>
-                            <td style="padding: 3px; text-align: left" ng-switch-when="false">
-                                {{record.sd | date:'dd MMM'}}
-                            </td>
-                            <td style="padding: 3px; text-align: left" ng-switch-when="true">
-                                {{record.sd | date:'dd MMM'}} - {{record.ed | date:'dd MMM'}}
-                            </td>
-                            <td style="padding: 3px; text-align: left" ng-switch-when="true">
-                                <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
-                            </td>
-                            <td style="padding: 3px; text-align: left" ng-switch-when="false">
-                                <a href="modv/{{record.i}}.htm" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
-                            </td>
-                            <td style="padding: 3px; text-align: left" ng-switch-when="false" title="{{record.n}}">
-                                {{record.na}}
-                            </td>
-                            <td style="padding: 3px; text-align: left" ng-switch-when="true" title="{{record.n}}">
-                                {{record.na}}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-xs-6">
-                    <button class="btn btn-success" ng-show="(draggables.length == 2 && !splitting) || merging" ng-click="merge()" ng-disabled="merging" ng-bind="mergeText()"></button>
-                    <button class="btn btn-danger" ng-show="(draggables[0].c && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
-                    <br><br>
-                    <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">
+                    <div class="ui-widget" id="existingErrorMessage" ng-bind="errorMessage" >
+                        <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+                            <p>
+                                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                                <span style="display:block; width: auto">
+                                    <div ng-show="errorMessage"></div>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <table style="width: 465px" class="etable" id="tableMileageForMonth">
+                            <tr>
+                                <th style="padding: 3px;"></th>
+                                <th style="padding: 3px;"></th>
+                                <th style="padding: 3px;">Day</th>
+                                <th style="padding: 3px;">Odometer reading / Miles driven</th>
+                                <th style="padding: 3px">Notes</th>
+                            </tr>
+                            <tbody ng-repeat="record in records">
+                            <tr ng-switch on="record.c">
+                                <td style="padding: 3px; text-align: center" ng-switch-when="true">
+                                    <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                                </td>
+                                <td style="padding: 3px; text-align: center" ng-switch-when="false">
+                                    <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
+                                </td>
+                                <td style="padding: 3px; text-align: center" ng-switch-when="true">
+                                    <img src="images/cars.png" style="height: 18px; width: 25px"/>
+                                </td>
+                                <td style="padding: 3px; text-align: center" ng-switch-when="false">
+                                    <img src="images/odometers.png" />
+                                </td>
+                                <td style="padding: 3px; text-align: left" ng-switch-when="false">
+                                    {{record.sd | date:'dd MMM'}}
+                                </td>
+                                <td style="padding: 3px; text-align: left" ng-switch-when="true">
+                                    {{record.sd | date:'dd MMM'}} - {{record.ed | date:'dd MMM'}}
+                                </td>
+                                <td style="padding: 3px; text-align: left" ng-switch-when="true">
+                                    <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
+                                </td>
+                                <td style="padding: 3px; text-align: left" ng-switch-when="false">
+                                    <a href="modv/{{record.i}}.htm" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
+                                </td>
+                                <td style="padding: 3px; text-align: left" ng-switch-when="false" title="{{record.n}}">
+                                    {{record.na}}
+                                </td>
+                                <td style="padding: 3px; text-align: left" ng-switch-when="true" title="{{record.n}}">
+                                    {{record.na}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-success" ng-show="(draggables.length == 2 && !splitting) || merging" ng-click="merge()" ng-disabled="merging" ng-bind="mergeText()"></button>
+                        <button class="btn btn-danger" ng-show="(draggables[0].c && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
+                        <br><br>
+                        <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">
                         <span ng-switch on="draggable.c">
                             <div ng-switch-when="true">
                                 <img src="images/cars.png" style="height: 18px; width: 25px"/> {{draggable.t | number:2}} Miles driven
@@ -724,8 +726,22 @@
                                 <img src="images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
                             </div>
                         </span>
+                        </div>
                     </div>
-                </div>
+                    </c:when>
+                    <c:otherwise>
+                    <div class="ui-widget">
+                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
+                            <p>
+                                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                <span style="display:block; width:410px;">
+                                    No odometer reading submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
 		<div id="tabs-3" style="height: 500px">

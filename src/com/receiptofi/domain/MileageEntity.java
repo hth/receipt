@@ -76,8 +76,17 @@ public class MileageEntity extends BaseEntity {
         if(!mileageEntity.isComplete()) {
             this.end = mileageEntity.getStart();
             this.endDate = mileageEntity.getStartDate();
+            mileageNotes.setText(mergeComments(mileageEntity).toString());
             fileSystemEntities.add(mileageEntity.getFileSystemEntities().iterator().next());
         }
+    }
+
+    private StringBuilder mergeComments(MileageEntity mileageEntity) {
+        StringBuilder mergedText = new StringBuilder();
+        mergedText.append(mileageNotes != null ? mileageNotes.getText() : "");
+        mergedText.append("\n\n");
+        mergedText.append(mileageEntity.getMileageNotes() != null ? mileageEntity.getMileageNotes().getText() : "");
+        return mergedText;
     }
 
     public MileageEntity splitMileage() {
