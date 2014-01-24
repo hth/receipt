@@ -651,13 +651,11 @@
             <div ng-controller="mileageCtrl">
                 <c:choose>
                     <c:when test="${!empty landingForm.mileageEntities}">
-                    <div>
-                        <h5>
-                            <span style="display:block; width:410px;" id="mmText">
-                                Monthly miles driven: <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles
-                            </span>
-                        </h5>
-                    </div>
+                    <span style="display:block; width:410px;" id="mmText">
+                        <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>
+                    </span>
+                    <br/>
+
                     <div class="ui-widget" id="existingErrorMessage" ng-bind="errorMessage" >
                         <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
                             <p>

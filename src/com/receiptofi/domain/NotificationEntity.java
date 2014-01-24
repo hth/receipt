@@ -111,6 +111,8 @@ public class NotificationEntity extends BaseEntity {
                 return getReceiptURL(getReferenceId(), getMessage4Display());
             case EXPENSE_REPORT:
                 return getReceiptURL(getReferenceId(), getMessage4Display());
+            case MILEAGE:
+                return getMileageURL(getReferenceId(), getMessage4Display());
             default:
                 log.error("Reached invalid condition in Notification");
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
@@ -127,6 +129,8 @@ public class NotificationEntity extends BaseEntity {
                 return getReceiptURL(getReferenceId(), getMessage());
             case EXPENSE_REPORT:
                 return getReceiptURL(getReferenceId(), getMessage());
+            case MILEAGE:
+                return getMileageURL(getReferenceId(), getMessage());
             default:
                 log.error("Reached invalid condition in Notification");
                 throw new UnsupportedOperationException("Reached invalid condition in Notification");
@@ -141,6 +145,11 @@ public class NotificationEntity extends BaseEntity {
     @Transient
     private String getReceiptURL(String referenceId, String message) {
         return "<a href=\"" + "./receipt/" + referenceId + ".htm" + "\">" + message + "</a>";
+    }
+
+    @Transient
+    private String getMileageURL(String referenceId, String message) {
+        return "<a href=\"" + "./modv/" + referenceId + ".htm" + "\">" + message + "</a>";
     }
 
     /**

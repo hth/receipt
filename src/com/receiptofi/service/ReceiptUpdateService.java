@@ -379,14 +379,31 @@ public final class ReceiptUpdateService {
         return receiptManager.existCheckSum(checkSum);
     }
 
-    public void turkMileage(MileageEntity mileageEntity, DocumentEntity receiptOCR) {
-        DocumentEntity documentEntity = documentManager.findOne(receiptOCR.getId());
+    public void turkMileage(MileageEntity mileageEntity, DocumentEntity documentForm) {
+        DocumentEntity documentEntity = documentManager.findOne(documentForm.getId());
         mileageEntity.setFileSystemEntities(documentEntity.getFileSystemEntities());
         try {
             mileageService.save(mileageEntity);
-            updateMessageManager(receiptOCR, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
+
+            documentForm.setFileSystemEntities(documentEntity.getFileSystemEntities());
+
+            //update the version number as the value could have changed by rotating receipt image through ajax
+            documentForm.setVersion(documentEntity.getVersion());
+            documentForm.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
+            documentForm.setReceiptId(documentEntity.getId());
+            documentForm.inActive();
+            documentManager.save(documentForm);
+
+            updateMessageManager(documentForm, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(mileageEntity.getStart());
+            sb.append(", ");
+            sb.append("odometer reading processed");
+            notificationService.addNotification(sb.toString(), NotificationTypeEnum.MILEAGE, mileageEntity);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
+            //add roll back
         }
     }
 }

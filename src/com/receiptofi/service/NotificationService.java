@@ -1,6 +1,8 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.NotificationTypeEnum;
@@ -74,35 +76,24 @@ public final class NotificationService {
      *
      * @param message
      * @param notificationTypeEnum
-     * @param documentEntity
+     * @param supportedEntity
      */
-    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, DocumentEntity documentEntity) {
-        if(notificationTypeEnum == NotificationTypeEnum.DOCUMENT) {
-            addNotification(message, notificationTypeEnum, documentEntity.getId(), documentEntity.getUserProfileId(), true);
-        } else {
-            throw new UnsupportedOperationException("Incorrect method call for Notification Type");
-        }
-    }
-
-    /**
-     *
-     * @param message
-     * @param notificationTypeEnum
-     * @param receiptEntity
-     */
-    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, ReceiptEntity receiptEntity) {
+    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, BaseEntity supportedEntity) {
         switch (notificationTypeEnum) {
             case EXPENSE_REPORT:
-                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getUserProfileId(), true);
                 break;
             case RECEIPT:
-                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getUserProfileId(), true);
                 break;
             case INVOICE:
-                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getUserProfileId(), true);
                 break;
             case MILEAGE:
-                addNotification(message, notificationTypeEnum, receiptEntity.getId(), receiptEntity.getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((MileageEntity) supportedEntity).getUserProfileId(), true);
+                break;
+            case DOCUMENT:
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((DocumentEntity) supportedEntity).getUserProfileId(), true);
                 break;
             default:
                 throw new UnsupportedOperationException("Incorrect method call for Notification Type");
