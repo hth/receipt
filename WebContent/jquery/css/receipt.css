@@ -504,7 +504,7 @@ a.account {
 h5 {
     font-size: 14px;
 }
-
+/** For Mileage UI */
 .btn {
     display: inline-block;
     *display: inline;
@@ -703,3 +703,17 @@ input[type="button"].btn-block {
     float: left;
     width: 50%
 }
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+/** End of mileage UI */
