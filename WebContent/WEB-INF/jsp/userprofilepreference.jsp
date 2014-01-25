@@ -232,7 +232,7 @@
             </div>
             <!-- If changing the access level here then update the condition check in POST method -->
             <div class="divRow">
-                <div class="divOfCell600"><input type="reset" value="Reset" name="Reset"/> <input type="submit" value="Update" name="Update"/></div>
+                <div class="divOfCell600"><input type="reset" value="Reset" name="Reset" class="btn btn-default"/> <input type="submit" value="Update" name="Update" class="btn btn-default" /></div>
             </div>
             </form:form>
             </c:if>
@@ -259,7 +259,7 @@
                                 <div class="text">
                                     Expense Tag:
                                     <form:input class="tooltip" path="tagName" size="6" title="Help's mark an item with specific expense tag." id="expenseTagId"/>
-                                    <input type="submit" value=" Add " name="Add" style="text-align: right;" <c:out value="${(isSameUser) ? '' : 'disabled'}"/> />&nbsp;
+                                    <input type="submit" value="Add" name="Add" style="text-align: right;" <c:out value="${(isSameUser) ? '' : 'disabled'}"/> class="btn btn-default" />
                                     <br/><br/>
                                 </div>
                                 <div class="text">

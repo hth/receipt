@@ -466,10 +466,10 @@
                                 </tr>
                                 <tr style="height: 6em;">
                                     <td colspan="4">
-                                        <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="receipt-reject" id="reject" />
+                                        <input type="submit" value="Reject" name="receipt-reject" id="reject" class="btn btn-danger" />
                                     </td>
                                     <td colspan="2">
-                                        <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="receipt-submit" id="submit" />
+                                        <input type="submit" value="Submit" name="receipt-submit" id="submit" class="btn btn-default" />
                                     </td>
                                 </tr>
                             </table>
@@ -499,10 +499,10 @@
                                 </tr>
                                 <tr style="height: 6em;">
                                     <td colspan="4">
-                                        <input type="submit" style="color: white; background-color: darkred;" value="**   Reject   **" name="mileage-reject" id="rejectMileage" />
+                                        <input type="submit" value="Reject" name="mileage-reject" id="rejectMileage" class="btn btn-danger" />
                                     </td>
                                     <td colspan="2">
-                                        <input type="submit" style="color: white; background-color: darkgreen" value="   Submit   " name="mileage-submit" id="submitMileage" />
+                                        <input type="submit" value="Submit" name="mileage-submit" id="submitMileage" class="btn btn-default" />
                                     </td>
                                 </tr>
                             </table>

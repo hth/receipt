@@ -86,7 +86,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-                        <input id="signupId" type="submit" value="Complete Invitation" name="confirm_invitation"/>
+                        <input id="signupId" type="submit" value="Complete Invitation" name="confirm_invitation" class="btn btn-default"/>
                     </td>
                     <td>&nbsp;</td>
                 </tr>

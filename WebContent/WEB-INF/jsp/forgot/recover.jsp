@@ -41,7 +41,7 @@
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td align="left"><input id="recoverAccountId" type="submit" value="Recover Account" name="forgot_recover"></td>
+                <td align="left"><input id="recoverAccountId" type="submit" value="Recover Account" name="forgot_recover" class="btn btn-default" /></td>
             </tr>
         </table>
     </form:form>

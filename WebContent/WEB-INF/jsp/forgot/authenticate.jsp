@@ -67,7 +67,7 @@
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <input id="signupId" type="submit" value="Update Password" name="update_password"/>
+                    <input id="signupId" type="submit" value="Update Password" name="update_password" class="btn btn-default" />
                 </td>
                 <td>&nbsp;</td>
             </tr>

@@ -42,7 +42,7 @@
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td align="left"><input type="submit" value="Login"></td>
+				<td align="left"><input type="submit" value="Login" class="btn btn-default" /></td>
 			</tr>
 		</table>
 	</form:form>

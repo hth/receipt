@@ -142,7 +142,7 @@
                                 &nbsp;
                             </div>
                             <div class="divOfCell500" style="background-color: #eee">
-                                <input type="submit" value="Submit" name="submit"/>
+                                <input type="submit" value="Submit" name="submit" class="btn btn-default" />
                             </div>
                         </div>
                     </div>

@@ -175,9 +175,9 @@
         </c:if>
         <tr>
             <td style="padding: 3px;" colspan="3">
-                <input type="submit" value="Search Business" name="search"/>
-                <input type="submit" value="Add a Store or New a Business" name="add"/>
-                <input type="submit" value="Reset" name="reset"/>
+                <input type="submit" value="Search Business" name="search" class="btn btn-default" />
+                <input type="submit" value="Add a Store or New a Business" name="add" class="btn btn-default" />
+                <input type="submit" value="Reset" name="reset" class="btn btn-default" />
             </td>
         </tr>
     </table>

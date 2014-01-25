@@ -434,7 +434,7 @@
                             </tr>
                             <tr style="height: 6em;">
                                 <td colspan="3">&nbsp;</td>
-                                <td colspan="2" align="left"><input type="submit" value="Receipt Re-Check" name="recheck"/></td>
+                                <td colspan="2" align="left"><input type="submit" value="Receipt Re-Check" name="recheck" class="btn btn-default" /></td>
                             </tr>
                             <tr>
                                 <td colspan="5">
