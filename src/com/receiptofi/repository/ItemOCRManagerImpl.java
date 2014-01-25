@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.update;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,7 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -78,7 +80,7 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
 	public List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt) {
-		Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
+		Query query = query(where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
 		Sort sort = new Sort(Direction.ASC, "SEQUENCE");
 		return mongoTemplate.find(query.with(sort), ItemEntityOCR.class, TABLE);
 	}
@@ -98,16 +100,16 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(DocumentEntity receipt) {
-		Query query = Query.query(Criteria.where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
+		Query query = query(where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
 		mongoTemplate.remove(query, ItemEntityOCR.class);
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntityOCR object) {
-		Query query = Query.query(Criteria.where("id").is(object.getId()));
-		Update update = Update.update("NAME", object.getName());
-		return mongoTemplate.updateFirst(query, update(update), TABLE);
+		Query query = query(where("id").is(object.getId()));
+		Update update = update("NAME", object.getName());
+		return mongoTemplate.updateFirst(query, entityUpdate(update), TABLE);
 	}
 
     @Override

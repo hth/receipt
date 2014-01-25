@@ -1,11 +1,11 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.NotificationEntity;
+
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.NotificationEntity;
 
 /**
  * User: hitender

@@ -1,9 +1,9 @@
 package com.receiptofi.repository;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.EvalFeedbackEntity;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * User: hitender

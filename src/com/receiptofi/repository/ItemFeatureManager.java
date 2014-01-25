@@ -3,10 +3,10 @@
  */
 package com.receiptofi.repository;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ItemFeatureEntity;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author hitender

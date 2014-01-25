@@ -3,6 +3,8 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.ItemFeatureEntity;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.ItemFeatureEntity;
 
 /**
  * @author hitender

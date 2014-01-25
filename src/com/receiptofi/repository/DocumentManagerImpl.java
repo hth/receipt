@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -67,12 +69,12 @@ public final class DocumentManagerImpl implements DocumentManager {
 
 	@Override
 	public DocumentEntity findOne(String id) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), DocumentEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("id").is(id)), DocumentEntity.class, TABLE);
 	}
 
     @Override
     public DocumentEntity findOne(String id, String userProfileId) {
-        Query query = Query.query(Criteria.where("id").is(id)).addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId));
+        Query query = query(where("id").is(id)).addCriteria(where("USER_PROFILE_ID").is(userProfileId));
         return mongoTemplate.findOne(query, DocumentEntity.class, TABLE);
     }
 
@@ -90,15 +92,15 @@ public final class DocumentManagerImpl implements DocumentManager {
 
 	@Override
 	public long numberOfPendingReceipts(String userProfileId) {
-        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
+        Query query = query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
 		return mongoTemplate.count(query, TABLE);
 	}
 
 	@Override
 	public List<DocumentEntity> getAllPending(String userProfileId) {
-        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
+        Query query = query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
 
         Sort sort = new Sort(Direction.ASC, "C");
 		return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);
@@ -106,9 +108,9 @@ public final class DocumentManagerImpl implements DocumentManager {
 
     @Override
     public List<DocumentEntity> getAllRejected(String userProfileId) {
-        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria2 = Criteria.where("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
-        Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
+        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteria2 = where("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
+        Query query = query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
 
         Sort sort = new Sort(Direction.ASC, "C");
         return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);

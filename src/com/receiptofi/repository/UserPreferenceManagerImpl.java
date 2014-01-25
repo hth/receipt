@@ -3,23 +3,23 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.UserPreferenceEntity;
+import com.receiptofi.domain.UserProfileEntity;
 import org.bson.types.ObjectId;
 
 import java.util.List;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.UserPreferenceEntity;
-import com.receiptofi.domain.UserProfileEntity;
 
 /**
  * @author hitender
@@ -50,12 +50,12 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 
 	@Override
 	public UserPreferenceEntity findOne(String id) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(new ObjectId(id))), UserPreferenceEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), UserPreferenceEntity.class, TABLE);
 	}
 
 	@Override
 	public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("USER_PROFILE.$id").is(new ObjectId(userProfile.getId()))), UserPreferenceEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("USER_PROFILE.$id").is(new ObjectId(userProfile.getId()))), UserPreferenceEntity.class, TABLE);
 	}
 
 	@Override

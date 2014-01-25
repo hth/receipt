@@ -39,7 +39,7 @@ public final class AppendAdditionalFields {
      * @param update
      * @return
      */
-    public static Update update(Update update) {
+    public static Update entityUpdate(Update update) {
         if(update != null) {
             return update.set("U", DateUtil.nowTime()).inc("V", 1);
         } else {

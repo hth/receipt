@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.update;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 
 import com.mongodb.WriteResult;
 
@@ -43,7 +43,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public FileSystemEntity findOne(String id) {
-        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), FileSystemEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
     }
 
     @Override
@@ -64,8 +64,8 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     private void deleteSoft(FileSystemEntity fileSystemEntity) {
         mongoTemplate.updateMulti(
-                Query.query(Criteria.where("id").is(new ObjectId(fileSystemEntity.getId()))),
-                update(Update.update("D", true)),
+                query(where("id").is(new ObjectId(fileSystemEntity.getId()))),
+                entityUpdate(update("D", true)),
                 FileSystemEntity.class
         );
     }

@@ -1,12 +1,12 @@
 package com.receiptofi.repository;
 
-import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+
+import java.util.List;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * User: hitender
