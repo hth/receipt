@@ -190,6 +190,12 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
 
+    @Override
+    public ReceiptEntity findOne(String receiptId, String userProfileId) {
+        Query query = Query.query(Criteria.where("id").is(receiptId)).addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId));
+        return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
+    }
+
     /**
      * Use this method instead of findOne
      *

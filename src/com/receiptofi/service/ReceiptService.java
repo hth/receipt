@@ -86,14 +86,11 @@ public final class ReceiptService {
     }
 
     /**
-     * //TODO mark the items as deleted but do not delete Item and Receipt
      * Delete a Receipt and its associated data
      * @param receiptId - Receipt id to delete
-     *
-     * TODO make sure delete request comes with a user profile id. Check if the user is deleting its own receipt.
      */
-    public boolean deleteReceipt(String receiptId) throws Exception {
-        ReceiptEntity receipt = receiptManager.findOne(receiptId);
+    public boolean deleteReceipt(String receiptId, String userProfileId) throws Exception {
+        ReceiptEntity receipt = receiptManager.findOne(receiptId, userProfileId);
         if(receipt != null) {
             if(receipt.isActive()) {
                 itemManager.deleteSoft(receipt);
@@ -108,7 +105,7 @@ public final class ReceiptService {
                 }
 
                 if(!StringUtils.isEmpty(receipt.getReceiptOCRId())) {
-                    DocumentEntity documentEntity = documentManager.findOne(receipt.getReceiptOCRId());
+                    DocumentEntity documentEntity = documentManager.findOne(receipt.getReceiptOCRId(), userProfileId);
                     if(documentEntity != null) {
                         itemOCRManager.deleteWhereReceipt(documentEntity);
                         documentManager.deleteHard(documentEntity);
@@ -130,15 +127,15 @@ public final class ReceiptService {
      * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items. Then delete all the items.
      * @param receiptForm
      */
-    public void reopen(ReceiptForm receiptForm) throws Exception {
+    public void reopen(ReceiptForm receiptForm, String userProfileId) throws Exception {
         try {
-            ReceiptEntity receipt = receiptManager.findOne(receiptForm.getReceipt().getId());
+            ReceiptEntity receipt = receiptManager.findOne(receiptForm.getReceipt().getId(), userProfileId);
             if(receipt.getReceiptOCRId() != null) {
                 if(receipt.isActive()) {
                     receipt.inActive();
                     List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
 
-                    DocumentEntity receiptOCR = documentManager.findOne(receipt.getReceiptOCRId());
+                    DocumentEntity receiptOCR = documentManager.findOne(receipt.getReceiptOCRId(), userProfileId);
                     receiptOCR.active();
                     receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_REQUEST);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());

@@ -70,6 +70,12 @@ public final class DocumentManagerImpl implements DocumentManager {
 		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), DocumentEntity.class, TABLE);
 	}
 
+    @Override
+    public DocumentEntity findOne(String id, String userProfileId) {
+        Query query = Query.query(Criteria.where("id").is(id)).addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId));
+        return mongoTemplate.findOne(query, DocumentEntity.class, TABLE);
+    }
+
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
