@@ -63,16 +63,6 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     }
 
     @Override
-    public void createCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void dropCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
         Query query = Query.query(Criteria.where("USER_PROFILE_ID").is(userProfileId));
         Sort sort = new Sort(Sort.Direction.ASC, "TAG");

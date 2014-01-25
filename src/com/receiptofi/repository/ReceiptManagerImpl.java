@@ -279,20 +279,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
-	}
-
-    @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
     }

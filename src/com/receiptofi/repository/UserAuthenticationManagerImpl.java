@@ -74,23 +74,6 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 		mongoTemplate.remove(object, TABLE);
 	}
 
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createCollection() {
-		if (!mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.createCollection(TABLE);
-		}
-
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
-	}
-
     @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();

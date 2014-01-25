@@ -89,18 +89,6 @@ public final class DocumentManagerImpl implements DocumentManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void dropCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
 	public long numberOfPendingReceipts(String userProfileId) {
         Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
         Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());

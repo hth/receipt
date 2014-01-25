@@ -42,16 +42,6 @@ public interface RepositoryManager<T> extends Serializable {
 	 */
 	public void deleteHard(T object);
 
-	/**
-	 * Create a collection if the collection does not already exists.
-	 */
-	public void createCollection();
-
-	/**
-	 * Drops the collection if the collection does already exists.
-	 */
-	public void dropCollection();
-
     /**
      * Collection size
      */

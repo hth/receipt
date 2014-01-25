@@ -63,20 +63,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         mongoTemplate.remove(object);
     }
 
-    @Override
-    public void createCollection() {
-        if (!mongoTemplate.collectionExists(TABLE)) {
-            mongoTemplate.createCollection(TABLE);
-        }
-    }
-
-    @Override
-    public void dropCollection() {
-        if (mongoTemplate.collectionExists(TABLE)) {
-            mongoTemplate.dropCollection(TABLE);
-        }
-    }
-
     public BizStoreEntity noStore() {
         return mongoTemplate.findOne(Query.query(Criteria.where("ADDRESS").is("")), BizStoreEntity.class, TABLE);
     }

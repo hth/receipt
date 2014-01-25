@@ -104,18 +104,6 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void dropCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntityOCR object) {
 		Query query = Query.query(Criteria.where("id").is(object.getId()));
 		Update update = Update.update("NAME", object.getName());

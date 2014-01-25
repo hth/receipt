@@ -67,20 +67,6 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     @Override
-    public void createCollection() {
-        if (!mongoTemplate.collectionExists(TABLE)) {
-            mongoTemplate.createCollection(TABLE);
-        }
-    }
-
-    @Override
-    public void dropCollection() {
-        if (mongoTemplate.collectionExists(TABLE)) {
-            mongoTemplate.dropCollection(TABLE);
-        }
-    }
-
-    @Override
     public BizNameEntity noName() {
         return mongoTemplate.findOne(Query.query(Criteria.where("NAME").is("")), BizNameEntity.class, TABLE);
     }

@@ -104,20 +104,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void createCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
-	}
-
-	@Override
 	public List<UserProfileEntity> searchAllByName(String name) {
 		//TODO look into PageRequest for limit data
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));

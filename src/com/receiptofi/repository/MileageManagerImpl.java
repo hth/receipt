@@ -60,16 +60,6 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public void createCollection() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void dropCollection() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public long collectionSize() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }

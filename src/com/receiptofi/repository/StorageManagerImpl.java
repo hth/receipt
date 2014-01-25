@@ -123,17 +123,6 @@ public final class StorageManagerImpl implements StorageManager {
         }
     }
 
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-	public void dropCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	private String persist(UploadReceiptImage uploadReceiptImage) throws IOException {
 		boolean closeStreamOnPersist = true;

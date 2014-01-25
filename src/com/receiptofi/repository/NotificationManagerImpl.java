@@ -60,16 +60,6 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public void createCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void dropCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
     }
