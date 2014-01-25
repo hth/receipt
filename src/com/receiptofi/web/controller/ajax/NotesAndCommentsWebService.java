@@ -67,8 +67,8 @@ public class NotesAndCommentsWebService {
 
     @RequestMapping(value ="/umn", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean updateNote(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
-                       HttpServletResponse httpServletResponse) throws IOException {
+    boolean updateMileageNotes(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
+                               HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null && body.length() > 0) {
             log.info("Note updated by userProfileId: " + userSession.getUserProfileId());
