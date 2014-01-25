@@ -81,13 +81,13 @@ public class ReceiptController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params="delete")
-	public String delete(@ModelAttribute("receiptForm") ReceiptForm receiptForm) {
+	public String delete(@ModelAttribute("receiptForm") ReceiptForm receiptForm, @ModelAttribute("userSession") UserSession userSession) {
         DateTime time = DateUtil.now();
         log.info("Delete receipt " + receiptForm.getReceipt().getId());
 
         boolean task = false;
         try {
-            task = receiptService.deleteReceipt(receiptForm.getReceipt().getId());
+            task = receiptService.deleteReceipt(receiptForm.getReceipt().getId(), userSession.getUserProfileId());
             if(task == false) {
                 //TODO in case of failure to delete send message to USER
             }
@@ -105,7 +105,7 @@ public class ReceiptController extends BaseController {
         log.info("Initiating re-check on receipt " + receiptForm.getReceipt().getId());
 
         try {
-            receiptService.reopen(receiptForm);
+            receiptService.reopen(receiptForm, userSession.getUserProfileId());
         } catch(Exception exce) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             log.error(exce.getLocalizedMessage() + ", Receipt: " + receiptForm.getReceipt().getId());
@@ -158,7 +158,7 @@ public class ReceiptController extends BaseController {
         Header header = Header.newInstance(authKey);
         if(userProfile != null) {
             try {
-                boolean task = receiptService.deleteReceipt(receiptId);
+                boolean task = receiptService.deleteReceipt(receiptId, profileId);
                 if(task) {
                     header.setStatus(Header.RESULT.SUCCESS);
                     header.setMessage("Deleted receipt successfully");

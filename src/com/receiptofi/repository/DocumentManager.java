@@ -21,6 +21,8 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
 	long numberOfPendingReceipts(String userProfileId);
 
+    DocumentEntity findOne(String documentId, String userProfileId);
+
     /**
      * Get all the pending receipts
      *

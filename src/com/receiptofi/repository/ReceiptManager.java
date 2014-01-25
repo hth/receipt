@@ -28,12 +28,20 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     int SHOW_DATA_FOR_LAST_X_MONTHS = 13;
 
     /**
-     *
      * @param receiptId
      * @param userProfileId
      * @return
      */
     ReceiptEntity findReceipt(String receiptId, String userProfileId);
+
+    /**
+     * Get receipt for specific user.
+     *
+     * @param receiptId
+     * @param userProfileId
+     * @return
+     */
+    ReceiptEntity findOne(String receiptId, String userProfileId);
 
     /**
      * Find all receipts with BizName for the user
