@@ -488,7 +488,7 @@
                            value=" Email address here ..."
                            class="inputForInvitationEmail"
                            />
-                    <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" />
+                    <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" class="btn btn-default" />
                 </div>
                 <div id="info" style="color: black; margin-top: 5px">&#8277; Invitation sent with your name and email address</div>
 			</td>

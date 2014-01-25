@@ -62,8 +62,8 @@
 			<tr>
 				<td>&nbsp;</td>
 				<td>
-                    <input id="signupId" type="submit" value="Signup" name="signup"/>
-                    <input id="recoverId" type="submit" value="Recover" name="recover" style="display: none;"/>
+                    <input id="signupId" type="submit" value="Signup" name="signup" class="btn btn-default" />
+                    <input id="recoverId" type="submit" value="Recover" name="recover" style="display: none;" class="btn btn-default" />
                 </td>
 			</tr>
 		</table>

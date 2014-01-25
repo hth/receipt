@@ -40,7 +40,7 @@
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td align="left"><input type="submit" value="Recover Account" name="forgot_password"></td>
+                <td align="left"><input type="submit" value="Recover Account" name="forgot_password" class="btn btn-default" /></td>
             </tr>
         </table>
     </form:form>

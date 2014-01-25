@@ -171,10 +171,10 @@
                                 console.log(data.filename);
                                 if(data.filename.length > 0) {
                                     $('#download_expense_excel').html(
-                                        "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button'/>" +
+                                        "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
                                         "&nbsp;&nbsp;&nbsp;" +
                                         "<a href='${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
-                                            "<img src='../images/download_icon_lg.png' width='18' height='20' class='downloadIconBlink'>" +
+                                            "<img src='../images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
                                         "</a>"
                                     ).show();
                                 }
@@ -382,20 +382,20 @@
                         <tr style="height: 6em;">
                             <td colspan="5">
                                 <div class="leftAlign" id="download_expense_excel">
-                                    <input type="button" value="Expensofi" name="expensofi" id="expensofi_button"/>
+                                    <input type="button" value="Expensofi" name="expensofi" id="expensofi_button" class="btn btn-default" />
                                     &nbsp;
                                     <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
                                         <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm">
-                                            <img src="../images/download_icon_lg.png" class="downloadIcon" width="18" height="20">
+                                            <img src="../images/download_icon_lg.png" class="downloadIcon" width="30" height="32">
                                         </a>
                                     </c:if>
                                 </div>
-                                <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check"/></div>
+                                <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check" class="btn btn-default" /></div>
                                 <div class="rightAlign">&nbsp;&nbsp;</div>
-                                <div class="rightAlign"><input type="submit" value="Delete" name="delete"/></div>
+                                <div class="rightAlign"><input type="submit" value="Delete" name="delete" class="btn btn-danger" /></div>
                             </td>
                             <td>
-                                <div class="leftAlign"><input type="submit" value="Update Expense Type" name="update-expense-type"/></div>
+                                <div class="leftAlign"><input type="submit" value="Update Expense Type" name="update-expense-type" class="btn btn-default" /></div>
                             </td>
                         </tr>
                         <tr>

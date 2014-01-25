@@ -182,9 +182,9 @@
             </c:if>
             <tr>
                 <td style="padding: 3px;" colspan="4">
-                    <input type="submit" value="Edit" name="edit"/>
-                    <input type="submit" value="Delete Store" name="delete_store"/>
-                    <input type="submit" value="Search Business" name="search"/>
+                    <input type="submit" value="Edit" name="edit" class="btn btn-default" />
+                    <input type="submit" value="Delete Store" name="delete_store" class="btn btn-default" />
+                    <input type="submit" value="Search Business" name="search" class="btn btn-default" />
                 </td>
             </tr>
         </table>
