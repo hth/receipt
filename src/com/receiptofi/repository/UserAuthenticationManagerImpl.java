@@ -9,14 +9,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.update;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -59,36 +60,19 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 
 	@Override
 	public UserAuthenticationEntity findOne(String id) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
+		return mongoTemplate.findOne(query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
-		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), update(Update.update("NAME", name)), TABLE);
+		return mongoTemplate.updateFirst(query(Criteria.where("id").is(id)), entityUpdate(update("NAME", name)), TABLE);
 	}
 
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(UserAuthenticationEntity object) {
 		mongoTemplate.remove(object, TABLE);
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createCollection() {
-		if (!mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.createCollection(TABLE);
-		}
-
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
 	}
 
     @Override

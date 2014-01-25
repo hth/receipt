@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -60,26 +62,16 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public void createCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void dropCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
     }
 
     @Override
     public List<NotificationEntity> getAllNotification(String userProfileId, int limit) {
-        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria2 = Criteria.where("NOTIFIED").is(true);
+        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteria2 = where("NOTIFIED").is(true);
         Sort sort = new Sort(Sort.Direction.DESC, "C");
-        Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isNotDeleted()).with(sort);
+        Query query = query(criteria1).addCriteria(criteria2).addCriteria(isNotDeleted()).with(sort);
         if(limit != NotificationManager.ALL) {
             query.limit(limit);
         }

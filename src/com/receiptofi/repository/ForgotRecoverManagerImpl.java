@@ -1,20 +1,22 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.ForgotRecoverEntity;
+
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.ForgotRecoverEntity;
 
 /**
  * User: hitender
@@ -42,8 +44,8 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public void invalidateAllEntries(ForgotRecoverEntity object) {
-        Criteria criteria = Criteria.where("USER_PROFILE_ID").is(object.getUserProfileId());
-        mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("A", false)), ForgotRecoverEntity.class);
+        Criteria criteria = where("USER_PROFILE_ID").is(object.getUserProfileId());
+        mongoTemplate.updateMulti(query(criteria), entityUpdate(update("A", false)), ForgotRecoverEntity.class);
     }
 
     @Override
@@ -53,8 +55,8 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public ForgotRecoverEntity findByAuthenticationKey(String key) {
-        Criteria criteria = Criteria.where("AUTH").is(key);
-        Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria = where("AUTH").is(key);
+        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, ForgotRecoverEntity.class, TABLE);
     }
 
@@ -65,16 +67,6 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public void deleteHard(ForgotRecoverEntity object) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void createCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void dropCollection() {
         throw new UnsupportedOperationException("Method not implemented");
     }
 

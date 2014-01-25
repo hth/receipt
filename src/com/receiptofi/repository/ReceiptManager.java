@@ -3,19 +3,19 @@
  */
 package com.receiptofi.repository;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import org.joda.time.DateTime;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import org.joda.time.DateTime;
 
 /**
  * @author hitender

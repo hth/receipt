@@ -1,13 +1,19 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.repository.util.AppendAdditionalFields;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,7 +55,7 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public ExpenseTagEntity findOne(String id) {
-        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), ExpenseTagEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), ExpenseTagEntity.class, TABLE);
     }
 
     @Override
@@ -63,18 +69,8 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     }
 
     @Override
-    public void createCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void dropCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
-        Query query = Query.query(Criteria.where("USER_PROFILE_ID").is(userProfileId));
+        Query query = query(where("USER_PROFILE_ID").is(userProfileId));
         Sort sort = new Sort(Sort.Direction.ASC, "TAG");
 
         return mongoTemplate.find(query.with(sort), ExpenseTagEntity.class, TABLE);
@@ -82,8 +78,8 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
-        Criteria criteria1 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
+        Query query = query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
         Sort sort = new Sort(Sort.Direction.ASC, "TAG");
 
         return mongoTemplate.find(query.with(sort), ExpenseTagEntity.class, TABLE);
@@ -91,13 +87,13 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId) {
-        Criteria criteria1 = Criteria.where("id").is(new ObjectId(expenseTypeId));
-        Criteria criteria2 = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Query query = Query.query(criteria1).addCriteria(criteria2);
-        Update update = Update.update("A", changeTo);
+        Criteria criteria1 = where("id").is(new ObjectId(expenseTypeId));
+        Criteria criteria2 = where("USER_PROFILE_ID").is(userProfileId);
+        Query query = query(criteria1).addCriteria(criteria2);
+        Update update = update("A", changeTo);
 
         //TODO try using writeResult to check for condition
-        WriteResult writeResult = mongoTemplate.updateFirst(query, update(update), ExpenseTagEntity.class);
+        WriteResult writeResult = mongoTemplate.updateFirst(query, entityUpdate(update), ExpenseTagEntity.class);
         log.info("changeVisibility WriteResult: ", writeResult);
     }
 

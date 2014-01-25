@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -34,15 +37,15 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity findByAuthenticationKey(String auth) {
-        Criteria criteria = Criteria.where("AUTH").is(auth);
-        Query query = Query.query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria = where("AUTH").is(auth);
+        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 
     @Override
     public void invalidateAllEntries(InviteEntity object) {
-        Criteria criteria = Criteria.where("USER_PROFILE_INVITED.$id").is(new ObjectId(object.getInvited().getId()));
-        WriteResult writeResult = mongoTemplate.updateMulti(Query.query(criteria), update(Update.update("A", false)), InviteEntity.class);
+        Criteria criteria = where("USER_PROFILE_INVITED.$id").is(new ObjectId(object.getInvited().getId()));
+        WriteResult writeResult = mongoTemplate.updateMulti(query(criteria), entityUpdate(update("A", false)), InviteEntity.class);
         log.info(writeResult.toString());
     }
 
@@ -76,32 +79,22 @@ public final class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public void createCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void dropCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
     }
 
     @Override
     public InviteEntity reInviteActiveInvite(String emailId, UserProfileEntity invitedBy) {
-        Criteria criteria1 = Criteria.where("EMAIL").is(emailId);
-        Criteria criteria2 = Criteria.where("USER_PROFILE_INVITED_BY.$id").is(new ObjectId(invitedBy.getId()));
-        Query query = Query.query(criteria1).addCriteria(criteria2).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria1 = where("EMAIL").is(emailId);
+        Criteria criteria2 = where("USER_PROFILE_INVITED_BY.$id").is(new ObjectId(invitedBy.getId()));
+        Query query = query(criteria1).addCriteria(criteria2).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 
     @Override
     public InviteEntity find(String emailId) {
-        Criteria criteria1 = Criteria.where("EMAIL").is(emailId);
-        Query query = Query.query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria1 = where("EMAIL").is(emailId);
+        Query query = query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 }

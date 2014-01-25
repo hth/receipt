@@ -846,8 +846,11 @@
 
 <script>
     $("#active-tab-3").click(function() {
-        $( "#tabs" ).tabs({ active: 2 });
+        $("#tabs").tabs({ active: 2 });
     });
+    <c:if test="${!empty param.showTab}">
+        $("#tabs").tabs({ active: ${param.showTab} });
+    </c:if>
 </script>
 
 <script>

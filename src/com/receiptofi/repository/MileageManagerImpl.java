@@ -6,13 +6,15 @@ import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 
 import org.joda.time.DateTime;
 
@@ -41,12 +43,12 @@ public class MileageManagerImpl implements MileageManager {
 
     @Override
     public MileageEntity findOne(String id) {
-        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), MileageEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), MileageEntity.class, TABLE);
     }
 
     @Override
     public MileageEntity findOne(String id, String userProfileId) {
-        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)).addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId)), MileageEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)).addCriteria(where("USER_PROFILE_ID").is(userProfileId)), MileageEntity.class, TABLE);
     }
 
     @Override
@@ -60,27 +62,17 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public void createCollection() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void dropCollection() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public long collectionSize() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime monthYear) {
-        Criteria criteria = Criteria.where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria1 = Criteria.where("C").gte(monthYear.dayOfMonth().withMinimumValue().toDate()).lt(monthYear.plusMonths(1).dayOfMonth().withMinimumValue().toDate());
+        Criteria criteria = where("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteria1 = where("C").gte(monthYear.dayOfMonth().withMinimumValue().toDate()).lt(monthYear.plusMonths(1).dayOfMonth().withMinimumValue().toDate());
 
         Sort sort = new Sort(Sort.Direction.DESC, "S");
-        Query query = Query.query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Query query = query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query.with(sort), MileageEntity.class, TABLE);
     }
 
@@ -96,8 +88,8 @@ public class MileageManagerImpl implements MileageManager {
 
     private WriteResult updateDateInRecord(String mileageId, String fieldName, DateTime dateTime, String userProfileId) {
         return mongoTemplate.updateFirst(
-                Query.query(Criteria.where("id").is(mileageId)).addCriteria(Criteria.where("USER_PROFILE_ID").is(userProfileId)),
-                Update.update(fieldName, dateTime.toDate()),
+                query(where("id").is(mileageId)).addCriteria(where("USER_PROFILE_ID").is(userProfileId)),
+                update(fieldName, dateTime.toDate()),
                 MileageEntity.class
         );
     }

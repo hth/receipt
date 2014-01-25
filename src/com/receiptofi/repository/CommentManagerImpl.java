@@ -1,16 +1,17 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.CommentEntity;
+
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.CommentEntity;
 
 /**
  * User: hitender
@@ -43,7 +44,7 @@ public final class CommentManagerImpl implements CommentManager {
 
     @Override
     public CommentEntity findOne(String id) {
-        return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), CommentEntity.class);
+        return mongoTemplate.findOne(query(where("id").is(id)), CommentEntity.class);
     }
 
     @Override
@@ -54,16 +55,6 @@ public final class CommentManagerImpl implements CommentManager {
     @Override
     public void deleteHard(CommentEntity object) {
         mongoTemplate.remove(object);
-    }
-
-    @Override
-    public void createCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public void dropCollection() {
-        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override

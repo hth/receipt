@@ -13,15 +13,16 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.update;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,17 +70,17 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("USER_AUTHENTICATION.$id").is(new ObjectId(object.getId()))), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("USER_AUTHENTICATION.$id").is(new ObjectId(object.getId()))), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
 	public UserProfileEntity getObjectUsingEmail(String emailId) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("EMAIL").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("EMAIL").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
 	public UserProfileEntity findOne(String id) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("id").is(id)), UserProfileEntity.class, TABLE);
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	@Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, UserLevelEnum level) {
-		return mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), update(Update.update("USER_LEVEL_ENUM", level)), UserProfileEntity.class);
+		return mongoTemplate.updateFirst(query(where("id").is(id)), entityUpdate(update("USER_LEVEL_ENUM", level)), UserProfileEntity.class);
 	}
 
 	@Override
@@ -104,34 +105,20 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void createCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
-	}
-
-	@Override
 	public List<UserProfileEntity> searchAllByName(String name) {
 		//TODO look into PageRequest for limit data
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
         //Can add "^" + to force search only the names starting with
-		Criteria a = Criteria.where("FIRST_NAME").regex(name, "i");
-		Criteria b = Criteria.where("LAST_NAME").regex(name, "i");
-		return mongoTemplate.find(Query.query(new Criteria().orOperator(a, b)), UserProfileEntity.class, TABLE);
+		Criteria a = where("FIRST_NAME").regex(name, "i");
+		Criteria b = where("LAST_NAME").regex(name, "i");
+		return mongoTemplate.find(query(new Criteria().orOperator(a, b)), UserProfileEntity.class, TABLE);
 	}
 
     @Override
     public UserProfileEntity findOneByEmail(String emailId) {
-        Criteria a = Criteria.where("EMAIL").is(emailId);
-        return mongoTemplate.findOne(Query.query(a), UserProfileEntity.class, TABLE);
+        Criteria a = where("EMAIL").is(emailId);
+        return mongoTemplate.findOne(query(a), UserProfileEntity.class, TABLE);
     }
 
     @Override

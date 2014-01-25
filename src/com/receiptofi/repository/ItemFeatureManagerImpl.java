@@ -3,6 +3,8 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.ItemFeatureEntity;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.ItemFeatureEntity;
 
 /**
  * @author hitender
@@ -58,20 +58,6 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(ItemFeatureEntity object) {
 		mongoTemplate.remove(object, TABLE);
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createCollection() {
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void dropCollection() {
-		if (mongoTemplate.collectionExists(TABLE)) {
-			mongoTemplate.dropCollection(TABLE);
-		}
 	}
 
     @Override
