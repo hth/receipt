@@ -357,7 +357,7 @@
                     <div id="activeReceipt" class="hidden">
                         <form:form method="post" action="../submit.htm" modelAttribute="receiptDocumentForm" id="receiptUpdateForm">
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
-                            <form:errors path="receiptDocument"      cssClass="error" />
+                            <form:errors path="receiptDocument" cssClass="error" />
                             <form:hidden path="receiptDocument.id"/>
                             <form:hidden path="receiptDocument.userProfileId"/>
                             <form:hidden path="receiptDocument.version"/>
@@ -620,8 +620,6 @@
             $('#restricted-fine-uploader').removeClass('hidden');
             $('#documentId').prop('disabled', true);
         </c:if>
-
-        $("#submit").focus();
     });
 
     $(document).ready(function() {
@@ -632,21 +630,24 @@
                 $('#activeReceipt').removeClass('hidden');
                 $('#activeMileage').hide();
                 $('#restricted-fine-uploader').hide();
+                $("#submit").focus();
+                $('#documentId').prop('disabled', true);
             }
 
             if(valueSelected == 'INVOICE') {
                 $('#activeReceipt').removeClass('hidden');
                 $('#activeMileage').hide();
                 $('#restricted-fine-uploader').hide();
+                $('#documentId').prop('disabled', true);
             }
 
             if(valueSelected == 'MILEAGE') {
                 $('#activeReceipt').hide();
                 $('#activeMileage').removeClass('hidden');
                 $('#restricted-fine-uploader').removeClass('hidden');
+                $("#submitMileage").focus();
+                $('#documentId').prop('disabled', true);
             }
-
-            $('#documentId').prop('disabled', true);
         });
     });
 </script>
