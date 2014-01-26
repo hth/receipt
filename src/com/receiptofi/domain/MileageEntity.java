@@ -51,6 +51,10 @@ public class MileageEntity extends BaseEntity {
     @Field("USER_PROFILE_ID")
     private String userProfileId;
 
+    @NotNull
+    @Field("DOC_ID")
+    private String documentId;
+
     @DBRef
     @Field("FILES")
     private Collection<FileSystemEntity> fileSystemEntities;
@@ -148,6 +152,14 @@ public class MileageEntity extends BaseEntity {
 
     public void setUserProfileId(String userProfileId) {
         this.userProfileId = userProfileId;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public Collection<FileSystemEntity> getFileSystemEntities() {

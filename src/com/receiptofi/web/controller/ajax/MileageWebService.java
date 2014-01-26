@@ -93,7 +93,10 @@ public class MileageWebService {
                 mileages.setMonthlyMileage(mileageService.monthltyTotal(userSession.getUserProfileId(), DateUtil.now()));
                 return mileages.asJson();
             } catch(Exception exception) {
-                return "{\"success\" : false, \"message\" : \"" + exception.getLocalizedMessage() + "\"}";
+                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
+                mileageDateUpdateResponse.setSuccess(false);
+                mileageDateUpdateResponse.setMessage(exception.getLocalizedMessage());
+                return mileageDateUpdateResponse.asJson();
             }
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
@@ -115,7 +118,10 @@ public class MileageWebService {
                 mileages.setMonthlyMileage(mileageService.monthltyTotal(userSession.getUserProfileId(), DateUtil.now()));
                 return mileages.asJson();
             } catch(Exception exception) {
-                return "{\"success\" : false, \"message\" : \"" + exception.getLocalizedMessage() + "\"}";
+                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
+                mileageDateUpdateResponse.setSuccess(false);
+                mileageDateUpdateResponse.setMessage(exception.getLocalizedMessage());
+                return mileageDateUpdateResponse.asJson();
             }
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");

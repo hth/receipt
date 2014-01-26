@@ -236,6 +236,8 @@
                 <tr>
                     <td style="vertical-align: top;">
                         <form:form method="post" action="../modv.htm" modelAttribute="mileageForm">
+                            <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
+                            <form:errors path="mileage"         cssClass="error" />
                             <form:hidden path="mileage.id" id="mileageId"/>
                             <form:hidden path="mileage.mileageNotes.id"/>
 

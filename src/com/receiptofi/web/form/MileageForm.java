@@ -6,7 +6,7 @@ import com.receiptofi.domain.MileageEntity;
  * User: hitender
  * Date: 1/13/14 8:35 AM
  */
-public class MileageForm {
+public final class MileageForm {
 
     private MileageEntity mileage;
 
