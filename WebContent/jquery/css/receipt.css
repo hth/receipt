@@ -83,13 +83,14 @@ html, body {
 
 /* For Invitation Email Text box */
 .inputForInvitationEmail {
-    width: 160px;
+    width: 205px;
     display: inline;
-    height: 18px;
-    padding: 1px;
-    font-size: 13px;
+    height: 23px;
+    padding: 2px;
+    font-size: 12px;
     border: solid 1px gray;
-    color: gray;
+    color: #989898;
+    vertical-align: bottom;
 }
 /* End for Invitation Email Text box */
 
