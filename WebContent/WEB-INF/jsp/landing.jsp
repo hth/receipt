@@ -293,9 +293,9 @@
                             angular.extend($scope.records[_.indexOf($scope.records, newRecord)], data.ms[0]);
                             $scope.merging = false;
                             if(data.mm > 0) {
-                                $("#mmText").text("Monthly miles driven: " + data.mm + " Miles");
+                                $("#mmText").html(data.mm + " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>");
                             } else {
-                                $("#mmText").text("No mileage has been computed for this month");
+                                $("#mmText").html("No mileage has been computed for this month");
                             }
                         }
                     }, SERVICE.TIMEOUT);
@@ -346,9 +346,9 @@
 
                             $scope.splitting = false;
                             if(data.mm > 0) {
-                                $("#mmText").text("Monthly miles driven: " + data.mm + " Miles");
+                                $("#mmText").html(data.mm + " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>");
                             } else {
-                                $("#mmText").text("No mileage has been computed for this month");
+                                $("#mmText").html("No mileage has been computed for this month");
                             }
                         }
                     }, SERVICE.TIMEOUT);
