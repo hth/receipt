@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.DBObject;
@@ -380,9 +381,11 @@ public final class ReceiptUpdateService {
     }
 
     public void turkMileage(MileageEntity mileageEntity, DocumentEntity documentForm) {
-        DocumentEntity documentEntity = documentManager.findOne(documentForm.getId());
-        mileageEntity.setFileSystemEntities(documentEntity.getFileSystemEntities());
         try {
+            DocumentEntity documentEntity = documentManager.findOne(documentForm.getId());
+
+            mileageEntity.setFileSystemEntities(documentEntity.getFileSystemEntities());
+            mileageEntity.setDocumentId(documentEntity.getId());
             mileageService.save(mileageEntity);
 
             documentForm.setFileSystemEntities(documentEntity.getFileSystemEntities());
@@ -390,7 +393,7 @@ public final class ReceiptUpdateService {
             //update the version number as the value could have changed by rotating receipt image through ajax
             documentForm.setVersion(documentEntity.getVersion());
             documentForm.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
-            documentForm.setReceiptId(documentEntity.getId());
+            documentForm.setReceiptId(mileageEntity.getId());
             documentForm.inActive();
             documentManager.save(documentForm);
 
@@ -401,6 +404,9 @@ public final class ReceiptUpdateService {
             sb.append(", ");
             sb.append("odometer reading processed");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.MILEAGE, mileageEntity);
+        } catch(DuplicateKeyException duplicateKeyException) {
+            log.error(duplicateKeyException.getLocalizedMessage());
+            throw new RuntimeException("Found existing record with similar odometer reading");
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
             //add roll back
