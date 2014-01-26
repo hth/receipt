@@ -538,25 +538,32 @@
 			    </div>
 			</td>
             <td style="vertical-align: top;" style="width: 250px">
-                <c:if test="${!empty landingForm.notifications}">
                 <div>
                     <section class="chunk">
                         <fieldset>
                             <legend class="hd">
                                 <span class="text"><fmt:message key="notification.title" /></span>
                             </legend>
+                            <c:choose>
+                            <c:when test="${!empty landingForm.notifications}">
                             <c:forEach var="notification" items="${landingForm.notifications}" varStatus="status">
                             <div class="bd">
                                 <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.notificationMessage4Display}</div>
                             </div>
                             </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                            <div class="bd">
+                                <div class="text">There are no Notifications &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            </div>
+                            </c:otherwise>
+                            </c:choose>
                             <div class="bd">
                                 <div class="text"><a href="${pageContext.request.contextPath}/notification.htm">more...</a></div>
                             </div>
                         </fieldset>
                     </section>
                 </div>
-                </c:if>
             </td>
 		</tr>
 	</table>
