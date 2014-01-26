@@ -481,11 +481,10 @@
                     <%--<div style="margin-top: 10px; margin-bottom:1px; font-size: 12px">&#8277; Upload 3 files at a time; &#8277; Max upload size - 10 MB</div>--%>
                 </fieldset>
                 <div style="width: 280px; display: inline">
-                    Friend's
                     <input id="inviteEmailId" type="text"
                            onfocus="this.value=''; setInviteBackGroundColor('white'); $('#info').html('&#8277; Invitation sent with your name and email address');                                                         "
                            onblur="setInviteBackGroundColor('#fefefe')"
-                           value=" Email address here ..."
+                           value=" Email address of friend here ..."
                            class="inputForInvitationEmail"
                            />
                     <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" class="btn btn-default" />
@@ -1358,7 +1357,7 @@
             data: object,
             success: function(response) {
                 $('#info').html(response);
-                $('#inviteEmailId').val(' Email address here ...');
+                $('#inviteEmailId').val(' Email address of friend here ...');
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
