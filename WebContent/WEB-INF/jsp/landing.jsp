@@ -183,7 +183,7 @@
                     sizeLimit: 10485760 // 10 MB in bytes
                 },
                 text: {
-                    uploadButton: '&uarr; &nbsp; Click or Drop to upload Receipt(s)'
+                    uploadButton: '&uarr; &nbsp; Click or Drop to upload image(s)'
                 },
                 showMessage: function (message) {
                     $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
@@ -468,7 +468,7 @@
                 <div id="pendingCountId" style="width: 280px"></div>
                 &nbsp;&nbsp;&nbsp;
                 <fieldset style="width: 260px; margin-bottom: 10px;">
-                    <legend style="color: #065c14; font-weight: bold; font-size: 1.05em">&nbsp;Upload Receipt&nbsp;</legend>
+                    <legend style="color: #065c14; font-weight: bold; font-size: 1.05em">&nbsp;Upload Receipt (and | or) Mileage image &nbsp;</legend>
                     <div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em"></div>
                     <%--<div style="margin-top: 10px; margin-bottom:1px; font-size: 12px">&#8277; Upload 3 files at a time; &#8277; Max upload size - 10 MB</div>--%>
                 </fieldset>
