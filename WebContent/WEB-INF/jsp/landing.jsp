@@ -283,9 +283,9 @@
                 $scope.merging = true;
                 Server.merge(ids).success(function(data) {
                     $timeout(function() {
-                        if (data.success === false) {
+                        if (data.s === false) {
                             $scope.loadSnapshot();
-                            $scope.errorMessage = data.message;
+                            $scope.errorMessage = data.m;
                         } else {
                             // this also updates id in $scope.draggables, magical??
                             // Not at All. Because of ng-change below
@@ -327,9 +327,9 @@
                 $scope.splitting = true;
                 Server.split(i).success(function(data) {
                     $timeout(function() {
-                        if (data.success === false) {
+                        if (data.s === false) {
                             $scope.loadSnapshot();
-                            $scope.errorMessage = data.message;
+                            $scope.errorMessage = data.m;
                         } else {
                             // this also updates id in $scope.draggables, magical??
                             // Not at All. Because of ng-change below
