@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title><fmt:message key="feedback.title" /></title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <meta http-equiv="Refresh" content="3;url=../landing.htm">
 
     <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />

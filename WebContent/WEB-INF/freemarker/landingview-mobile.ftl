@@ -3,8 +3,8 @@
 
 <html>
 <head>
+	<meta charset="utf-8">
 	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/jquery/css/receipt.css' />
 	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
 

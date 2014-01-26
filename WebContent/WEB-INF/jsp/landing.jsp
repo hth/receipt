@@ -5,7 +5,6 @@
     <meta charset="utf-8">
 	<title><fmt:message key="title" /></title>
 
-	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
 
@@ -183,7 +182,7 @@
                     sizeLimit: 10485760 // 10 MB in bytes
                 },
                 text: {
-                    uploadButton: '&uarr; &nbsp; Click or Drop to upload Receipt(s)'
+                    uploadButton: '&uarr; &nbsp; Click or Drop to upload image(s)'
                 },
                 showMessage: function (message) {
                     $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
@@ -318,9 +317,8 @@
                     return record.i === i;
                 });
                 // and split the record in two separate records
+                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed, n: "", na: ""});
                 newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false, sd: $scope.draggables[0].sd, n: $scope.draggables[0].n, na: $scope.draggables[0].na});
-                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed, n: $scope.draggables[0].n, na: $scope.draggables[0].na});
-
                 // finally update both records and draggables
                 $scope.records = $scope.records.concat(newRecords);
                 $scope.draggables = newRecords;
@@ -337,13 +335,6 @@
                             // Not at All. Because of ng-change below
                             $scope.records[_.indexOf($scope.records, newRecords[0])].i = data.ms[0].i;
                             $scope.records[_.indexOf($scope.records, newRecords[1])].i = data.ms[1].i;
-
-                            $scope.records[_.indexOf($scope.records, newRecords[0])].n = data.ms[0].n;
-                            $scope.records[_.indexOf($scope.records, newRecords[1])].n = data.ms[1].n;
-
-                            $scope.records[_.indexOf($scope.records, newRecords[0])].na = data.ms[0].na;
-                            $scope.records[_.indexOf($scope.records, newRecords[1])].na = data.ms[1].na;
-
                             $scope.splitting = false;
                             if(data.mm > 0) {
                                 $("#mmText").html(data.mm + " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>");
@@ -476,7 +467,7 @@
                 <div id="pendingCountId" style="width: 280px"></div>
                 &nbsp;&nbsp;&nbsp;
                 <fieldset style="width: 260px; margin-bottom: 10px;">
-                    <legend style="color: #065c14; font-weight: bold; font-size: 1.05em">&nbsp;Upload Receipt&nbsp;</legend>
+                    <legend style="color: #065c14; font-weight: bold; font-size: 1.05em">&nbsp;Upload Receipt (and | or) Mileage image &nbsp;</legend>
                     <div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em"></div>
                     <%--<div style="margin-top: 10px; margin-bottom:1px; font-size: 12px">&#8277; Upload 3 files at a time; &#8277; Max upload size - 10 MB</div>--%>
                 </fieldset>

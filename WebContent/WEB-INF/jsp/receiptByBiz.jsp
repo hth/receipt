@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title><fmt:message key="receipt.by.biz" /></title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <link rel="icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
 
