@@ -318,9 +318,8 @@
                     return record.i === i;
                 });
                 // and split the record in two separate records
+                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed, n: "", na: ""});
                 newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false, sd: $scope.draggables[0].sd, n: $scope.draggables[0].n, na: $scope.draggables[0].na});
-                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed, n: $scope.draggables[0].n, na: $scope.draggables[0].na});
-
                 // finally update both records and draggables
                 $scope.records = $scope.records.concat(newRecords);
                 $scope.draggables = newRecords;
@@ -337,13 +336,6 @@
                             // Not at All. Because of ng-change below
                             $scope.records[_.indexOf($scope.records, newRecords[0])].i = data.ms[0].i;
                             $scope.records[_.indexOf($scope.records, newRecords[1])].i = data.ms[1].i;
-
-                            $scope.records[_.indexOf($scope.records, newRecords[0])].n = data.ms[0].n;
-                            $scope.records[_.indexOf($scope.records, newRecords[1])].n = data.ms[1].n;
-
-                            $scope.records[_.indexOf($scope.records, newRecords[0])].na = data.ms[0].na;
-                            $scope.records[_.indexOf($scope.records, newRecords[1])].na = data.ms[1].na;
-
                             $scope.splitting = false;
                             if(data.mm > 0) {
                                 $("#mmText").html(data.mm + " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>");
