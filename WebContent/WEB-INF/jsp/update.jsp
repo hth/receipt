@@ -5,7 +5,6 @@
     <meta charset="utf-8">
 	<title><fmt:message key="receipt.update" /></title>
 
-	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <link rel="icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="../../images/circle-leaf-sized_small.png" />
 
@@ -480,7 +479,6 @@
                         <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptDocumentForm" id="receiptUpdateForm">
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
                             <form:errors path="receiptDocument" cssClass="error" />
-                            <form:hidden path="receiptDocument.fileSystemEntities"/>
                             <form:hidden path="receiptDocument.id"/>
                             <form:hidden path="receiptDocument.userProfileId"/>
                             <form:hidden path="receiptDocument.version"/>
@@ -495,6 +493,11 @@
                                             <form:label for="mileage.start" path="mileage.start" cssErrorClass="error">Begin</form:label>
                                             <form:input path="mileage.start" id="startMileage" size="25" class="tooltip" title="Mile before starting the trip"/>
                                         </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="leftAlign"><form:errors path="mileage.start" cssClass="error" /></div>
                                     </td>
                                 </tr>
                                 <tr style="height: 6em;">

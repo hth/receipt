@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title><fmt:message key="account.recover.title" /></title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <meta HTTP-EQUIV="Pragma" content="no-cache">
     <meta HTTP-EQUIV="Expires" content="-1">
 

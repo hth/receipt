@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title><fmt:message key="receipt.title" /></title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
     <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
 
@@ -72,9 +71,23 @@
                         mimeType: 'application/json',
                         dataType:'json',
                         success: function (data) {
-                            console.log(data);
                             if(data.s === true) {
                                 $("#days").text(data.d);
+                            } else if(data.s === false) {
+                                var html = '';
+                                html = html +
+                                        "<div class='ui-widget' id='ajaxErrorMessageId'>" +
+                                        "<div class='ui-state-highlight ui-corner-all alert-error' style='margin-top: 0px; padding: 0 .7em;'>" +
+                                        "<p>" +
+                                        "<span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span>" +
+                                        "<span style='display:block; width: auto'>" +
+                                        data.m +
+                                        "</span>" +
+                                        "</p>" +
+                                        "</div>" +
+                                        "</div>";
+                                $("#errorMessageId").hide();
+                                $("#ajaxErrorMessageId").html(html).show();
                             }
                         }
                     }).fail(function(xhr, status, error){
@@ -96,8 +109,22 @@
                         dataType:'json',
                         success: function (data) {
                             if(data.s === true) {
-                                console.log(data);
                                 $("#days").text(data.d);
+                            } else if(data.s === false) {
+                                var html = '';
+                                html = html +
+                                        "<div class='ui-widget' id='ajaxErrorMessageId'>" +
+                                        "<div class='ui-state-highlight ui-corner-all alert-error' style='margin-top: 0px; padding: 0 .7em;'>" +
+                                        "<p>" +
+                                        "<span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span>" +
+                                        "<span style='display:block; width: auto'>" +
+                                        data.m +
+                                        "</span>" +
+                                        "</p>" +
+                                        "</div>" +
+                                        "</div>";
+                                $("#errorMessageId").hide();
+                                $("#ajaxErrorMessageId").html(html).show();
                             }
                         }
                     }).fail(function(xhr, status, error){
@@ -190,20 +217,21 @@
 
     <p>&nbsp;</p>
 
+    <c:if test="${!empty mileageForm.errorMessage}">
+        <div class="ui-widget" id="errorMessageId">
+            <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                    <span style="display:block; width: auto">
+                        ${mileageForm.errorMessage}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </c:if>
     <c:choose>
         <c:when test="${!empty mileageForm.mileage}">
-            <c:if test="${!empty mileageForm.errorMessage}">
-                <div class="ui-widget">
-                    <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
-                        <p>
-                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                            <span style="display:block; width: auto">
-                                ${mileageForm.errorMessage}
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </c:if>
+            <div id="ajaxErrorMessageId"></div>
             <table>
                 <tr>
                     <td style="vertical-align: top;">
@@ -254,6 +282,24 @@
                                     </td>
                                     <td><span id="days"><spring:eval expression='mileageForm.mileage.tripDays()'/></span></td>
                                     </c:if>
+                                </tr>
+                                <tr style="height: 6em;">
+                                    <c:choose>
+                                    <c:when test="${mileageForm.mileage.complete eq true}">
+                                    <td colspan="3">
+                                        <div class="leftAlign"><input type="submit" value="Split" name="split" class="btn btn-default" /></div>
+                                        <div class="leftAlign">&nbsp;&nbsp;</div>
+                                        <div class="leftAlign"><input type="submit" value="Delete" name="delete" class="btn btn-danger" /></div>
+                                    </td>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <td colspan="1">
+                                        <div class="leftAlign"><input type="submit" value="Split" name="split" class="btn btn-default" disabled /></div>
+                                        <div class="leftAlign">&nbsp;&nbsp;</div>
+                                        <div class="leftAlign"><input type="submit" value="Delete" name="delete" class="btn btn-danger" /></div>
+                                    </td>
+                                    </c:otherwise>
+                                    </c:choose>
                                 </tr>
                                 <tr>
                                     <td colspan="6">
