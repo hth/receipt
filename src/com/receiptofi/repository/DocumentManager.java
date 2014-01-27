@@ -24,6 +24,14 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     DocumentEntity findOne(String documentId, String userProfileId);
 
     /**
+     * Mostly used by technician and above level
+     *
+     * @param documentId
+     * @return
+     */
+    DocumentEntity findActiveOne(String documentId);
+
+    /**
      * Get all the pending receipts
      *
      * @param userProfileId

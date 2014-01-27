@@ -69,12 +69,18 @@ public final class DocumentManagerImpl implements DocumentManager {
 
 	@Override
 	public DocumentEntity findOne(String id) {
-		return mongoTemplate.findOne(query(where("id").is(id)), DocumentEntity.class, TABLE);
+		throw new UnsupportedOperationException("This method is not supported");
 	}
 
     @Override
     public DocumentEntity findOne(String id, String userProfileId) {
         Query query = query(where("id").is(id)).addCriteria(where("USER_PROFILE_ID").is(userProfileId));
+        return mongoTemplate.findOne(query, DocumentEntity.class, TABLE);
+    }
+
+    @Override
+    public DocumentEntity findActiveOne(String id) {
+        Query query = query(where("id").is(id)).addCriteria(isActive());
         return mongoTemplate.findOne(query, DocumentEntity.class, TABLE);
     }
 

@@ -36,8 +36,8 @@ import com.mongodb.gridfs.GridFSDBFile;
  * Time: 2:09 PM
  */
 @Service
-public final class ReceiptUpdateService {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptUpdateService.class);
+public final class DocumentUpdateService {
+    private static final Logger log = LoggerFactory.getLogger(DocumentUpdateService.class);
 
     @Autowired private DocumentManager documentManager;
     @Autowired private ItemOCRManager itemOCRManager;
@@ -53,8 +53,8 @@ public final class ReceiptUpdateService {
     @Autowired private FileSystemService fileSystemService;
     @Autowired private MileageService mileageService;
 
-    public DocumentEntity loadReceiptOCRById(String id) {
-        return documentManager.findOne(id);
+    public DocumentEntity loadActiveDocumentById(String id) {
+        return documentManager.findActiveOne(id);
     }
 
     public List<ItemEntityOCR> loadItemsOfReceipt(DocumentEntity receiptEntity) {
@@ -71,7 +71,7 @@ public final class ReceiptUpdateService {
      */
     public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity documentForm) throws Exception {
         try {
-            DocumentEntity documentEntity = documentManager.findOne(documentForm.getId());
+            DocumentEntity documentEntity = loadActiveDocumentById(documentForm.getId());
 
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
@@ -150,7 +150,7 @@ public final class ReceiptUpdateService {
     public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptDocument) throws Exception {
         ReceiptEntity fetchedReceipt = null;
         try {
-            DocumentEntity documentEntity = documentManager.findOne(receiptDocument.getId());
+            DocumentEntity documentEntity = loadActiveDocumentById(receiptDocument.getId());
 
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
@@ -280,7 +280,7 @@ public final class ReceiptUpdateService {
      */
     public void turkReject(DocumentEntity receiptOCR) throws Exception {
         try {
-            receiptOCR = documentManager.findOne(receiptOCR.getId());
+            receiptOCR = loadActiveDocumentById(receiptOCR.getId());
             receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
             receiptOCR.setBizName(null);
             receiptOCR.setBizStore(null);
@@ -331,7 +331,7 @@ public final class ReceiptUpdateService {
      * @param receiptOCR
      */
     public void deletePendingReceiptOCR(DocumentEntity receiptOCR) {
-        DocumentEntity documentEntity = documentManager.findOne(receiptOCR.getId());
+        DocumentEntity documentEntity = loadActiveDocumentById(receiptOCR.getId());
         if(StringUtils.isEmpty(documentEntity.getReceiptId())) {
             documentManager.deleteHard(documentEntity);
             itemOCRManager.deleteWhereReceipt(documentEntity);
@@ -382,7 +382,7 @@ public final class ReceiptUpdateService {
 
     public void turkMileage(MileageEntity mileageEntity, DocumentEntity documentForm) {
         try {
-            DocumentEntity documentEntity = documentManager.findOne(documentForm.getId());
+            DocumentEntity documentEntity = loadActiveDocumentById(documentForm.getId());
 
             mileageEntity.setFileSystemEntities(documentEntity.getFileSystemEntities());
             mileageEntity.setDocumentId(documentEntity.getId());

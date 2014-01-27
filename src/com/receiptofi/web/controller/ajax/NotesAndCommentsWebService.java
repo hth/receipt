@@ -37,8 +37,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class NotesAndCommentsWebService {
      private static final Logger log = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
-    @Autowired ReceiptService receiptService;
-    @Autowired MileageService mileageService;
+    @Autowired private ReceiptService receiptService;
+    @Autowired private MileageService mileageService;
 
     /**
      * Note: UserSession parameter is to make sure no outside get requests are processed.

@@ -10,7 +10,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.service.ReceiptUpdateService;
+import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.form.ReceiptDocumentForm;
@@ -59,7 +59,7 @@ public class ReceiptUpdateController {
 
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
     @Autowired private MileageDocumentValidator mileageDocumentValidator;
-    @Autowired private ReceiptUpdateService receiptUpdateService;
+    @Autowired private DocumentUpdateService documentUpdateService;
 
     @Value("${duplicate.receipt}")
     private String duplicateReceiptMessage;
@@ -157,7 +157,7 @@ public class ReceiptUpdateController {
 		}
 
         try {
-            if(receiptUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
+            if(documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
                 log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -173,7 +173,7 @@ public class ReceiptUpdateController {
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity documentForm = receiptDocumentForm.getReceiptDocument();
 
-            receiptUpdateService.turkReceipt(receipt, items, documentForm);
+            documentUpdateService.turkReceipt(receipt, items, documentForm);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
@@ -218,7 +218,7 @@ public class ReceiptUpdateController {
         try {
             MileageEntity mileage = receiptDocumentForm.getMileageEntity();
             DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
-            receiptUpdateService.turkMileage(mileage, receiptOCR);
+            documentUpdateService.turkMileage(mileage, receiptOCR);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
@@ -248,7 +248,7 @@ public class ReceiptUpdateController {
         log.info("Beginning of Rejecting Document: " + receiptDocumentForm.getReceiptDocument().getId());
         try {
             DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
-            receiptUpdateService.turkReject(receiptOCR);
+            documentUpdateService.turkReject(receiptOCR);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
@@ -290,7 +290,7 @@ public class ReceiptUpdateController {
         try {
             //TODO: Note should not happen as the condition to check for duplicate has already been satisfied when receipt was first processed.
             // Unless Technician has changed the date or some data. Date change should be exclude during re-check. Something to think about.
-            if(receiptUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
+            if(documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
                 log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -306,7 +306,7 @@ public class ReceiptUpdateController {
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
 
-            receiptUpdateService.turkReceiptReCheck(receipt, items, receiptOCR);
+            documentUpdateService.turkReceiptReCheck(receipt, items, receiptOCR);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
@@ -331,13 +331,13 @@ public class ReceiptUpdateController {
         //Check cannot delete a pending receipt which has been processed once, i.e. has receipt id
         //The check here is not required but its better to check before calling service method
         if(StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReceiptId())) {
-            receiptUpdateService.deletePendingReceiptOCR(receiptDocumentForm.getReceiptDocument());
+            documentUpdateService.deletePendingReceiptOCR(receiptDocumentForm.getReceiptDocument());
         }
         return "redirect:/pending.htm";
     }
 
     private void loadBasedOnAppropriateUserLevel(String receiptOCRId, UserSession userSession, ReceiptDocumentForm receiptDocumentForm) {
-        DocumentEntity receipt = receiptUpdateService.loadReceiptOCRById(receiptOCRId);
+        DocumentEntity receipt = documentUpdateService.loadActiveDocumentById(receiptOCRId);
         if(receipt == null || receipt.isDeleted()) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 log.info("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
@@ -351,7 +351,7 @@ public class ReceiptUpdateController {
             if(receiptDocumentForm.getReceiptDocument() == null && receiptDocumentForm.getItems() == null) {
                 receiptDocumentForm.setReceiptDocument(receipt);
 
-                List<ItemEntityOCR> items = receiptUpdateService.loadItemsOfReceipt(receipt);
+                List<ItemEntityOCR> items = documentUpdateService.loadItemsOfReceipt(receipt);
                 receiptDocumentForm.setItems(items);
             }
             //helps load the image on failure
