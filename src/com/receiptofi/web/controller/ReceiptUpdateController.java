@@ -82,9 +82,14 @@ public class ReceiptUpdateController {
 
         DateTime time = DateUtil.now();
 
-        //Gymnastic to show BindingResult errors if any
+        //Gymnastic to show BindingResult errors if any or any special receipt document containing error message
         if (model.asMap().containsKey("result")) {
+            //result contains validation errors
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
+            receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
+            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+        } else if(model.asMap().containsKey("receiptDocumentForm")) {
+            //errorMessage here contains any other logical error found
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
         } else {
@@ -110,9 +115,14 @@ public class ReceiptUpdateController {
 
         DateTime time = DateUtil.now();
 
-        //Gymnastic to show BindingResult errors if any
+        //Gymnastic to show BindingResult errors if any or any special receipt document containing error message
         if (model.asMap().containsKey("result")) {
+            //result contains validation errors
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
+            receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
+            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+        } else if(model.asMap().containsKey("receiptDocumentForm")) {
+            //errorMessage here contains any other logical error found
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
         } else {
@@ -132,8 +142,8 @@ public class ReceiptUpdateController {
      */
 	@RequestMapping(value = "/submit", method = RequestMethod.POST, params= "receipt-submit")
 	public ModelAndView submit(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                         BindingResult result,
-                         final RedirectAttributes redirectAttrs) {
+                               BindingResult result,
+                               final RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getName());
@@ -148,8 +158,10 @@ public class ReceiptUpdateController {
         try {
             if(receiptUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
                 log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
-                result.rejectValue("errorMessage", "", duplicateReceiptMessage);
-                redirectAttrs.addFlashAttribute("result", result);
+
+                receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
+                redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
                 return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
             }
@@ -165,8 +177,10 @@ public class ReceiptUpdateController {
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
             log.error("Error in Submit Process: " + exce.getLocalizedMessage());
-            result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
-            redirectAttrs.addFlashAttribute("result", result);
+
+            receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
@@ -204,13 +218,11 @@ public class ReceiptUpdateController {
             MileageEntity mileage = receiptDocumentForm.getMileageEntity();
             DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
             receiptUpdateService.turkMileage(mileage, receiptOCR);
+
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
             log.error("Error in Submit Process: " + exce.getLocalizedMessage());
-
-            result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
-            redirectAttrs.addFlashAttribute("result", result);
 
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
