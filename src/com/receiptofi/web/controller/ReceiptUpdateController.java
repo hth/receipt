@@ -14,6 +14,7 @@ import com.receiptofi.service.ReceiptUpdateService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.form.ReceiptDocumentForm;
+import com.receiptofi.web.validator.MileageDocumentValidator;
 import com.receiptofi.web.validator.ReceiptDocumentValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,7 @@ public class ReceiptUpdateController {
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
+    @Autowired private MileageDocumentValidator mileageDocumentValidator;
     @Autowired private ReceiptUpdateService receiptUpdateService;
 
     @Value("${duplicate.receipt}")
@@ -179,8 +181,8 @@ public class ReceiptUpdateController {
      */
     @RequestMapping(value = "/submitMileage", method = RequestMethod.POST, params= "mileage-submit")
     public ModelAndView submitMileage(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                               BindingResult result,
-                               final RedirectAttributes redirectAttrs) {
+                                      BindingResult result,
+                                      final RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         switch(receiptDocumentForm.getReceiptDocument().getDocumentOfType()) {
@@ -189,11 +191,33 @@ public class ReceiptUpdateController {
                 break;
         }
 
-        MileageEntity mileage = receiptDocumentForm.getMileageEntity();
-        DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
-        receiptUpdateService.turkMileage(mileage, receiptOCR);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-        return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+        mileageDocumentValidator.validate(receiptDocumentForm, result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
+            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+        }
+
+        try {
+            MileageEntity mileage = receiptDocumentForm.getMileageEntity();
+            DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
+            receiptUpdateService.turkMileage(mileage, receiptOCR);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+        } catch(Exception exce) {
+            log.error("Error in Submit Process: " + exce.getLocalizedMessage());
+
+            result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("result", result);
+
+            receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+        }
     }
 
     /**
