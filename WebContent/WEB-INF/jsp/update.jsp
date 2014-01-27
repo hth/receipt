@@ -177,14 +177,14 @@
                                 var html = '';
                                 html = html +
                                         "<div class='ui-state-highlight ui-corner-all alert-error' style='margin-top: 0px; padding: 0 .7em;'>" +
-                                            "<p>" +
-                                                "<span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span>" +
-                                                "<span style='display:block; width: auto'>" +
-                                                    "Found pre-existing receipt with similar information for the " +
-                                                    "selected date. Suggestion: Confirm the receipt data or else mark " +
-                                                    "as duplicate by rejecting this receipt." +
-                                                "</span>" +
-                                            "</p>" +
+                                        "<p>" +
+                                        "<span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span>" +
+                                        "<span style='display:block; width: auto'>" +
+                                        "Found pre-existing receipt with similar information for the " +
+                                        "selected date. Suggestion: Confirm the receipt data or else mark " +
+                                        "as duplicate by rejecting this receipt." +
+                                        "</span>" +
+                                        "</p>" +
                                         "</div>";
 
                                 var errorMessage = document.getElementById('errorMessage');
