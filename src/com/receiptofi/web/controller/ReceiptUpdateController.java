@@ -151,6 +151,7 @@ public class ReceiptUpdateController {
 		if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
 		}
@@ -239,7 +240,10 @@ public class ReceiptUpdateController {
      * @return
      */
     @RequestMapping(value = "/submit", method = RequestMethod.POST, params="receipt-reject")
-    public ModelAndView reject(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
+    public ModelAndView reject(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
+                               BindingResult result,
+                               final RedirectAttributes redirectAttrs) {
+
         DateTime time = DateUtil.now();
         log.info("Beginning of Rejecting Document: " + receiptDocumentForm.getReceiptDocument().getId());
         try {
@@ -249,12 +253,14 @@ public class ReceiptUpdateController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
-            log.error(exce.getLocalizedMessage());
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt reject");
+            log.error("Error happened during rejecting receipt : " + receiptDocumentForm.getReceiptDocument().getId(), exce.getLocalizedMessage());
 
-            receiptDocumentForm.setErrorMessage("Receipt could not be processed for Reject. " +
-                    "Contact administrator with Document # " + receiptDocumentForm.getReceiptDocument().getId());
-            return new ModelAndView(NEXT_PAGE_UPDATE);
+            String message = "Receipt could not be processed for Reject. Contact administrator with Document # ";
+            receiptDocumentForm.setErrorMessage(message + receiptDocumentForm.getReceiptDocument().getId());
+            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt reject");
+            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
     }
 
@@ -276,6 +282,7 @@ public class ReceiptUpdateController {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
@@ -285,8 +292,10 @@ public class ReceiptUpdateController {
             // Unless Technician has changed the date or some data. Date change should be exclude during re-check. Something to think about.
             if(receiptUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
                 log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
-                result.rejectValue("errorMessage", "", duplicateReceiptMessage);
-                redirectAttrs.addFlashAttribute("result", result);
+
+                receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
+                redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
                 return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
             }
@@ -302,8 +311,10 @@ public class ReceiptUpdateController {
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
             log.error("Error in Recheck process: " + exce.getLocalizedMessage());
-            result.rejectValue("errorMessage", "", exce.getLocalizedMessage());
-            redirectAttrs.addFlashAttribute("result", result);
+
+            receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt recheck save");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
@@ -327,11 +338,13 @@ public class ReceiptUpdateController {
 
     private void loadBasedOnAppropriateUserLevel(String receiptOCRId, UserSession userSession, ReceiptDocumentForm receiptDocumentForm) {
         DocumentEntity receipt = receiptUpdateService.loadReceiptOCRById(receiptOCRId);
-        if(receipt == null) {
+        if(receipt == null || receipt.isDeleted()) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
                 log.info("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
+                receiptDocumentForm.setErrorMessage("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
             } else {
                 log.warn("No such receipt exists. Request made by: " + userSession.getUserProfileId());
+                receiptDocumentForm.setErrorMessage("No such receipt exists");
             }
         } else if(userSession.getUserProfileId().equalsIgnoreCase(receipt.getUserProfileId()) || (userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue())) {
             //Important: The condition below makes sure when validation fails it does not over write the item list
