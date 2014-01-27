@@ -43,6 +43,7 @@ public final class ReceiptService {
 
     @Autowired private ReceiptManager receiptManager;
     @Autowired private DocumentManager documentManager;
+    @Autowired private DocumentUpdateService documentUpdateService;
     @Autowired private StorageManager storageManager;
     @Autowired private ItemManager itemManager;
     @Autowired private ItemOCRManager itemOCRManager;
@@ -286,7 +287,7 @@ public final class ReceiptService {
      * @return
      */
     public boolean updateDocumentComment(String comment, String documentId) {
-        DocumentEntity documentEntity = documentManager.findOne(documentId);
+        DocumentEntity documentEntity = documentUpdateService.loadActiveDocumentById(documentId);
         CommentEntity commentEntity = documentEntity.getRecheckComment();
         boolean commentEntityBoolean = false;
         if(commentEntity == null) {

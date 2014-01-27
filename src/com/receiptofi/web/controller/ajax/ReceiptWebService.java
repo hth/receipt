@@ -4,7 +4,7 @@ import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.LandingService;
-import com.receiptofi.service.ReceiptUpdateService;
+import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.SHAHashing;
@@ -41,9 +41,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class ReceiptWebService {
     private static final Logger log = LoggerFactory.getLogger(ReceiptWebService.class);
 
-    @Autowired FetcherService fetcherService;
-    @Autowired LandingService landingService;
-    @Autowired ReceiptUpdateService receiptUpdateService;
+    @Autowired private FetcherService fetcherService;
+    @Autowired private LandingService landingService;
+    @Autowired private DocumentUpdateService documentUpdateService;
 
     /**
      * Note: UserSession parameter is to make sure no outside get requests are processed.
@@ -212,7 +212,7 @@ public class ReceiptWebService {
                 Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
 
                 String checkSum = SHAHashing.calculateCheckSum(StringUtils.stripToEmpty(userProfileId), receiptDate, receiptTotal);
-                return receiptUpdateService.checkIfDuplicate(checkSum);
+                return documentUpdateService.checkIfDuplicate(checkSum);
             } catch(ParseException parseException) {
                 log.error("Ajax checkForDuplicate failed to parse total: " + parseException.getLocalizedMessage());
                 throw parseException;

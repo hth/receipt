@@ -8,33 +8,24 @@ import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.helper.json.MileageDateUpdateResponse;
 import com.receiptofi.web.helper.json.Mileages;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -48,7 +39,6 @@ import org.joda.time.DateTime;
 @RequestMapping(value = "/mws")
 @SessionAttributes({"userSession"})
 public class MileageWebService {
-
     private static Logger log = LoggerFactory.getLogger(MileageWebService.class);
 
     @Autowired private MileageService mileageService;
@@ -63,7 +53,9 @@ public class MileageWebService {
      */
     @RequestMapping(value = "/f.json", method = RequestMethod.POST, produces="application/json")
     public @ResponseBody
-    String fetch(@ModelAttribute("userSession") UserSession userSession, HttpServletResponse httpServletResponse) throws IOException {
+    String fetch(@ModelAttribute("userSession") UserSession userSession,
+                 HttpServletResponse httpServletResponse) throws IOException {
+
         DateTime time = DateUtil.now();
 
         if(userSession != null) {
@@ -73,6 +65,7 @@ public class MileageWebService {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return mileages.asJson();
         } else {
+            log.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
@@ -81,8 +74,8 @@ public class MileageWebService {
     @RequestMapping(value = "/m.json", method = RequestMethod.POST, produces="application/json")
     public @ResponseBody
     String merge(@RequestBody String ids,
-                  @ModelAttribute("userSession") UserSession userSession,
-                  HttpServletResponse httpServletResponse) throws IOException {
+                 @ModelAttribute("userSession") UserSession userSession,
+                 HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null && ids.length() > 0) {
             try {
@@ -93,12 +86,10 @@ public class MileageWebService {
                 mileages.setMonthlyMileage(mileageService.monthltyTotal(userSession.getUserProfileId(), DateUtil.now()));
                 return mileages.asJson();
             } catch(Exception exception) {
-                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
-                mileageDateUpdateResponse.setSuccess(false);
-                mileageDateUpdateResponse.setMessage(exception.getLocalizedMessage());
-                return mileageDateUpdateResponse.asJson();
+                return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
         } else {
+            log.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
@@ -118,12 +109,10 @@ public class MileageWebService {
                 mileages.setMonthlyMileage(mileageService.monthltyTotal(userSession.getUserProfileId(), DateUtil.now()));
                 return mileages.asJson();
             } catch(Exception exception) {
-                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
-                mileageDateUpdateResponse.setSuccess(false);
-                mileageDateUpdateResponse.setMessage(exception.getLocalizedMessage());
-                return mileageDateUpdateResponse.asJson();
+                return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
         } else {
+            log.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
@@ -131,26 +120,30 @@ public class MileageWebService {
 
     @RequestMapping(value = "/msd", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    String updateMileageStartDate(@RequestBody String mileageInfo, @ModelAttribute("userSession") UserSession userSession,
+    String updateMileageStartDate(@RequestBody String mileageInfo,
+                                  @ModelAttribute("userSession") UserSession userSession,
                                   HttpServletResponse httpServletResponse) throws IOException {
 
         if(userSession != null && mileageInfo.length() > 0) {
+            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
-                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
-                boolean status = mileageService.updateStartDate(map.get("id"), StringUtils.remove(map.get("msd"), "\""), userSession.getUserProfileId());
                 MileageEntity mileageEntity = mileageService.getMileage(map.get("id"), userSession.getUserProfileId());
-
-                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
-                mileageDateUpdateResponse.setSuccess(status);
-                mileageDateUpdateResponse.setDays(mileageEntity.tripDays());
-                return mileageDateUpdateResponse.asJson();
-            } catch(Exception exception) {
-                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
-                mileageDateUpdateResponse.setSuccess(true);
-                mileageDateUpdateResponse.setMessage(exception.getLocalizedMessage());
-                return mileageDateUpdateResponse.asJson();
+                if(mileageEntity != null) {
+                    boolean status = mileageService.updateStartDate(map.get("id"), StringUtils.remove(map.get("msd"), "\""), userSession.getUserProfileId());
+                    if(status) {
+                        return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
+                    } else {
+                        return createJSONUsingMileageDateUpdateResponse(status, "Failed to update trip start date");
+                    }
+                } else {
+                    return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip start date as record below no longer exists. Please hit browser refresh.");
+                }
+            } catch(RuntimeException re) {
+                return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip start date");
             }
+
         } else {
+            log.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
@@ -158,33 +151,53 @@ public class MileageWebService {
 
     @RequestMapping(value = "/med", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    String updateMileageEndDate(@RequestBody String mileageInfo, @ModelAttribute("userSession") UserSession userSession,
+    String updateMileageEndDate(@RequestBody String mileageInfo,
+                                @ModelAttribute("userSession") UserSession userSession,
                                 HttpServletResponse httpServletResponse) throws IOException {
 
 //        HttpHeaders responseHeaders = new HttpHeaders();
 //        responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+//        return new ResponseEntity<>(mileageDateUpdateResponse.asJson(), responseHeaders, HttpStatus.OK);
 
         if(userSession != null && mileageInfo.length() > 0) {
+            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
-                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
-                boolean status = mileageService.updateEndDate(map.get("id"), StringUtils.remove(map.get("med"), "\""), userSession.getUserProfileId());
-                MileageEntity mileageEntity =  mileageService.getMileage(map.get("id"), userSession.getUserProfileId());
-
-                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
-                mileageDateUpdateResponse.setSuccess(status);
-                mileageDateUpdateResponse.setDays(mileageEntity.tripDays());
-                //return new ResponseEntity<>(mileageDateUpdateResponse.asJson(), responseHeaders, HttpStatus.OK);
-                return mileageDateUpdateResponse.asJson();
-            } catch(Exception exception) {
-                MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
-                mileageDateUpdateResponse.setSuccess(true);
-                mileageDateUpdateResponse.setMessage(exception.getLocalizedMessage());
-                //return new ResponseEntity<>(mileageDateUpdateResponse.asJson(), responseHeaders, HttpStatus.OK);
-                return mileageDateUpdateResponse.asJson();
+                MileageEntity mileageEntity = mileageService.getMileage(map.get("id"), userSession.getUserProfileId());
+                if(mileageEntity != null) {
+                    if(mileageEntity.isComplete()) {
+                        boolean status = mileageService.updateEndDate(map.get("id"), StringUtils.remove(map.get("med"), "\""), userSession.getUserProfileId());
+                        if(status) {
+                            return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
+                        } else {
+                            return createJSONUsingMileageDateUpdateResponse(status, "Failed to update trip end date");
+                        }
+                    } else {
+                        return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip end date. Record no longer represent mileage driven. Please hit browser refresh.");
+                    }
+                } else {
+                    return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip end date as record below no longer exists. Please hit browser refresh.");
+                }
+            } catch(RuntimeException re) {
+                return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip end date");
             }
         } else {
+            log.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
+    }
+
+    private String createJSONUsingMileageDateUpdateResponse(boolean status, MileageEntity mileageEntity) {
+        MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
+        mileageDateUpdateResponse.setSuccess(status);
+        mileageDateUpdateResponse.setDays(mileageEntity.tripDays());
+        return mileageDateUpdateResponse.asJson();
+    }
+
+    private String createJSONUsingMileageDateUpdateResponse(boolean status, String message) {
+        MileageDateUpdateResponse mileageDateUpdateResponse = new MileageDateUpdateResponse();
+        mileageDateUpdateResponse.setSuccess(status);
+        mileageDateUpdateResponse.setMessage(message);
+        return mileageDateUpdateResponse.asJson();
     }
 }
