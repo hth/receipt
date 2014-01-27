@@ -29,8 +29,8 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/pending")
 @SessionAttributes({"userSession"})
-public class ReceiptPendingController {
-	private static final Logger log = LoggerFactory.getLogger(ReceiptPendingController.class);
+public class DocumentPendingController {
+	private static final Logger log = LoggerFactory.getLogger(DocumentPendingController.class);
 
 	private String RECEIPT_PENDING = "/pending";
 

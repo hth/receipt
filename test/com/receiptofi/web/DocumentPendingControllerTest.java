@@ -14,7 +14,7 @@ import static org.junit.Assert.fail;
  * @since Mar 24, 2013 10:08:38 PM
  *
  */
-public class ReceiptPendingControllerTest {
+public class DocumentPendingControllerTest {
 
 	/**
 	 * @throws java.lang.Exception
@@ -31,7 +31,7 @@ public class ReceiptPendingControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.receiptofi.web.controller.ReceiptPendingController#loadForm(javax.servlet.http.HttpSession)}.
+	 * Test method for {@link com.receiptofi.web.controller.DocumentPendingController#loadForm(javax.servlet.http.HttpSession)}.
 	 */
 	@Test
 	public void testLoadForm() {
