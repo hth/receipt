@@ -4,7 +4,7 @@
 package com.receiptofi.web.controller;
 
 import com.receiptofi.domain.UserSession;
-import com.receiptofi.service.ReceiptPendingService;
+import com.receiptofi.service.DocumentPendingService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.form.PendingReceiptForm;
@@ -34,14 +34,14 @@ public class DocumentPendingController {
 
 	private String RECEIPT_PENDING = "/pending";
 
-	@Autowired private ReceiptPendingService receiptPendingService;
+	@Autowired private DocumentPendingService documentPendingService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
         DateTime time = DateUtil.now();
 
-		receiptPendingService.getAllPending(userSession.getUserProfileId(), pendingReceiptForm);
-        receiptPendingService.getAllRejected(userSession.getUserProfileId(), pendingReceiptForm);
+		documentPendingService.getAllPending(userSession.getUserProfileId(), pendingReceiptForm);
+        documentPendingService.getAllRejected(userSession.getUserProfileId(), pendingReceiptForm);
 
 		ModelAndView modelAndView = new ModelAndView(RECEIPT_PENDING);
 		modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
