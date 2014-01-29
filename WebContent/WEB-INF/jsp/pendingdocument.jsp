@@ -87,7 +87,7 @@
 
     <c:choose>
         <c:when test="${!empty pendingReceiptForm.pending}">
-            <h2 class="demoHeaders">Pending receipt<c:if test="${pendingReceiptForm.pending.size() gt 1}">s</c:if></h2>
+            <h2 class="demoHeaders">Pending document<c:if test="${pendingReceiptForm.pending.size() gt 1}">s</c:if></h2>
 
             <table>
                 <tr>
@@ -104,7 +104,7 @@
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentEntity.id}.htm">
+                                    <a href="${pageContext.request.contextPath}/pendingdocument/${receipt.documentEntity.id}.htm">
                                     ${receipt.fileName}
                                     </a>
                                 </td>
@@ -119,13 +119,13 @@
             </table>
         </c:when>
         <c:otherwise>
-            <h2 class="demoHeaders">No pending receipt</h2>
+            <h2 class="demoHeaders">No pending document</h2>
         </c:otherwise>
     </c:choose>
 
     <c:choose>
         <c:when test="${!empty pendingReceiptForm.rejected}">
-            <h2 class="demoHeaders">Rejected receipt<c:if test="${pendingReceiptForm.rejected.size() gt 1}">s</c:if></h2>
+            <h2 class="demoHeaders">Rejected document<c:if test="${pendingReceiptForm.rejected.size() gt 1}">s</c:if></h2>
 
             <table>
                 <tr>
@@ -142,7 +142,7 @@
                                     ${status.count}
                                 </td>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentEntity.id}.htm">
+                                    <a href="${pageContext.request.contextPath}/pendingdocument/${receipt.documentEntity.id}.htm">
                                     ${receipt.fileName}
                                     </a>
                                 </td>
@@ -157,7 +157,7 @@
             </table>
         </c:when>
         <c:otherwise>
-            <h2 class="demoHeaders">No rejected receipt to delete</h2>
+            <h2 class="demoHeaders">No rejected document to delete</h2>
         </c:otherwise>
     </c:choose>
 

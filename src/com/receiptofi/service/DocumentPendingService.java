@@ -18,7 +18,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  * Time: 4:37 AM
  */
 @Service
-public final class ReceiptPendingService {
+public final class DocumentPendingService {
 
     @Autowired private DocumentManager documentManager;
     @Autowired private FileDBService fileDBService;
