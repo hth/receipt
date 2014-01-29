@@ -153,7 +153,7 @@
                                             html = html + "Pending receipts to be processed: ";
                                         }
                                         html = html +
-                                                "<a href='${pageContext.request.contextPath}/pending.htm' style='text-decoration: none;'>" +
+                                                "<a href='${pageContext.request.contextPath}/pendingdocument.htm' style='text-decoration: none;'>" +
                                                 "<strong class='pendingCounter' id='pendingCountValue'>" +
                                                 0 +
                                                 "</strong>" +
@@ -430,7 +430,7 @@
                             <c:choose>
                                 <c:when test="${pendingCount} eq 1">
                                     Pending receipt to be processed:
-                                    <a href="${pageContext.request.contextPath}/pending.htm" style="text-decoration: none;">
+                                    <a href="${pageContext.request.contextPath}/pendingdocument.htm" style="text-decoration: none;">
                                         <strong class="pendingCounter">
                                         ${pendingCount}
                                         </strong>
@@ -438,7 +438,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     Pending receipts to be processed:
-                                    <a href="${pageContext.request.contextPath}/pending.htm" style="text-decoration: none;">
+                                    <a href="${pageContext.request.contextPath}/pendingdocument.htm" style="text-decoration: none;">
                                         <strong class="pendingCounter">
                                         ${pendingCount}
                                         </strong>

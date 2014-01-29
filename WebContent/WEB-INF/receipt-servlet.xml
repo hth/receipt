@@ -135,8 +135,8 @@
 
     <bean id="userRegistrationValidator"    class="com.receiptofi.web.validator.UserRegistrationValidator" />
     <bean id="userLoginValidator"           class="com.receiptofi.web.validator.UserLoginValidator" />
-    <bean id="receiptDocumentValidator"     class="com.receiptofi.web.validator.ReceiptDocumentValidator" />
     <bean id="mileageDocumentValidator"     class="com.receiptofi.web.validator.MileageDocumentValidator" />
+    <bean id="receiptDocumentValidator"     class="com.receiptofi.web.validator.ReceiptDocumentValidator" />
     <bean id="bizValidator"                 class="com.receiptofi.web.validator.BizValidator" />
     <bean id="bizSearchValidator"           class="com.receiptofi.web.validator.BizSearchValidator" />
     <bean id="expenseTypeValidator"         class="com.receiptofi.web.validator.ExpenseTypeValidator" />

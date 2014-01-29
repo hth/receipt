@@ -21,8 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -58,8 +56,8 @@ public class ReceiptUpdateController {
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
-    @Autowired private MileageDocumentValidator mileageDocumentValidator;
     @Autowired private DocumentUpdateService documentUpdateService;
+    @Autowired private MileageDocumentValidator mileageDocumentValidator;
 
     @Value("${duplicate.receipt}")
     private String duplicateReceiptMessage;
@@ -318,22 +316,6 @@ public class ReceiptUpdateController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt recheck save");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
-    }
-
-    /**
-     * Delete operation can only be performed by user and not technician
-     *
-     * @param receiptDocumentForm
-     * @return
-     */
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String delete(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
-        //Check cannot delete a pending receipt which has been processed once, i.e. has receipt id
-        //The check here is not required but its better to check before calling service method
-        if(StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReceiptId())) {
-            documentUpdateService.deletePendingReceiptOCR(receiptDocumentForm.getReceiptDocument());
-        }
-        return "redirect:/pending.htm";
     }
 
     private void loadBasedOnAppropriateUserLevel(String receiptOCRId, UserSession userSession, ReceiptDocumentForm receiptDocumentForm) {
