@@ -51,7 +51,6 @@ public final class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public List<UploadReceiptImage> getAllObjects() {
-		List<UploadReceiptImage> list = new ArrayList<>();
 		DBCursor dbCursor = gridFs.getFileList();
 		while(dbCursor.hasNext()) {
 			DBObject dbObject = dbCursor.next();
