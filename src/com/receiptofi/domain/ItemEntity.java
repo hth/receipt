@@ -214,6 +214,6 @@ public class ItemEntity extends BaseEntity {
 
     @Override
 	public String toString() {
-		return new StringBuilder().append("ItemEntity [name=").append(name).append(", price=").append(price).append(", taxed=").append(taxed).append(", receipt=").append(receipt).append("]").toString();
+		return "ItemEntity [name=" + name + ", price=" + price + ", taxed=" + taxed + ", receipt=" + receipt + "]";
 	}
 }

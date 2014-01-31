@@ -34,7 +34,6 @@ import com.mongodb.WriteResult;
  *
  */
 @Repository
-@Transactional(readOnly = true)
 public final class DocumentManagerImpl implements DocumentManager {
 	private static final long serialVersionUID = 8740416340416509290L;
 	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
@@ -48,7 +47,6 @@ public final class DocumentManagerImpl implements DocumentManager {
 
 	//TODO invoke transaction here
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(DocumentEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -85,13 +83,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(DocumentEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}

@@ -32,7 +32,6 @@ import com.mongodb.gridfs.GridFSInputFile;
  * @since Jan 3, 2013 3:09:08 AM
  *
  */
-@Transactional(readOnly = true)
 public final class StorageManagerImpl implements StorageManager {
 	private static final long serialVersionUID = -5264258042433041673L;
 	private static final Logger log = LoggerFactory.getLogger(StorageManagerImpl.class);
@@ -51,7 +50,6 @@ public final class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public List<UploadReceiptImage> getAllObjects() {
-		List<UploadReceiptImage> list = new ArrayList<>();
 		DBCursor dbCursor = gridFs.getFileList();
 		while(dbCursor.hasNext()) {
 			DBObject dbObject = dbCursor.next();
@@ -66,13 +64,11 @@ public final class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UploadReceiptImage object) throws Exception {
 		persist(object);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveFile(UploadReceiptImage object) throws IOException {
 		return persist(object);
 	}
@@ -83,7 +79,6 @@ public final class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
@@ -102,20 +97,17 @@ public final class StorageManagerImpl implements StorageManager {
     }
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(UploadReceiptImage object) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(String id) {
 		log.debug("deleted GridFs object - " + id);
 		gridFs.remove(new ObjectId(id));
 	}
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
         for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
             log.debug("deleted GridFs object - " + fileSystemEntity.getBlobId());
@@ -123,7 +115,6 @@ public final class StorageManagerImpl implements StorageManager {
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	private String persist(UploadReceiptImage uploadReceiptImage) throws IOException {
 		boolean closeStreamOnPersist = true;
 		GridFSInputFile receiptBlob;

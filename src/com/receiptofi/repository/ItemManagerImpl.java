@@ -45,7 +45,6 @@ import com.mongodb.WriteResult;
  *
  */
 @Repository
-@Transactional(readOnly = true)
 public final class ItemManagerImpl implements ItemManager {
 	private static final Logger log = LoggerFactory.getLogger(ItemManagerImpl.class);
 
@@ -60,7 +59,6 @@ public final class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ItemEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -75,7 +73,6 @@ public final class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void saveObjects(List<ItemEntity> objects) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -189,19 +186,16 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(ItemEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntity object) {
 		Query query = query(where("id").is(object.getId()));
 		Update update = Update.update("NAME", object.getName());
@@ -209,14 +203,12 @@ public final class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(ReceiptEntity receipt) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		mongoTemplate.remove(query(where("RECEIPT.$id").is(new ObjectId(receipt.getId()))), ItemEntity.class);
 	}
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteSoft(ReceiptEntity receipt) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = query(where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
@@ -225,7 +217,6 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ItemEntity> findItems(String name, String bizName) {
         Criteria criteriaI = where("NAME").regex(new StringTokenizer("^" + name).nextToken(), "i");
         Query query;

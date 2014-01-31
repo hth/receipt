@@ -323,11 +323,11 @@ public final class LandingService {
 //        log.info("File Id: " + receiptBlobId);
 
         MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
-        File original = CreateTempFile.file(new StringBuilder()
-                .append("image_")
-                .append(FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()))
-                .toString(),
-                FilenameUtils.getExtension(commonsMultipartFile.getOriginalFilename()));
+        File original = CreateTempFile.file(
+                "image_" +
+                FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()),
+                FilenameUtils.getExtension(commonsMultipartFile.getOriginalFilename())
+        );
 
         commonsMultipartFile.transferTo(original);
         return ImageSplit.decreaseResolution(original);

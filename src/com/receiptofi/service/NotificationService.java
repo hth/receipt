@@ -47,14 +47,8 @@ public final class NotificationService {
         try {
             notificationManager.save(notificationEntity);
         } catch (Exception exce) {
-            StringBuilder sb = new StringBuilder()
-                    .append("Failed adding notification: ")
-                    .append(exce.getLocalizedMessage())
-                    .append(", with message: ")
-                    .append(message).append(", for user: ")
-                    .append(userProfileId);
-
-            log.error(sb.toString());
+            String sb = "Failed adding notification: " + exce.getLocalizedMessage() + ", with message: " + message + ", for user: " + userProfileId;
+            log.error(sb);
         }
     }
 

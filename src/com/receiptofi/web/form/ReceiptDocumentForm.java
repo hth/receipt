@@ -190,7 +190,7 @@ public final class ReceiptDocumentForm {
 
         for(ItemEntity item : items) {
             if(item.getTaxed() == TaxEnum.TAXED) {
-                BigDecimal taxedAmount = Maths.multiply(item.getPrice().toString(), receipt.getPercentTax().toString());
+                BigDecimal taxedAmount = Maths.multiply(item.getPrice().toString(), receipt.getPercentTax());
                 item.setTax(new Double(taxedAmount.toString()));
             } else {
                 item.setTax(0.00);

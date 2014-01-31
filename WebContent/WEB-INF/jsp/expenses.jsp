@@ -157,7 +157,7 @@
         <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
         <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
     </p>
-    <p>&copy; 2013 Receiptofi Inc. All Rights Reserved.</p>
+    <p>&copy; 2014 Receiptofi Inc. All Rights Reserved.</p>
 </div>
 
 </body>

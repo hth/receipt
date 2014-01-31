@@ -30,7 +30,6 @@ import com.mongodb.WriteResult;
  * @since Dec 16, 2012 1:20:53 PM
  */
 @Repository
-@Transactional(readOnly = true)
 public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
 	private static final Logger log = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
 
@@ -44,7 +43,6 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UserAuthenticationEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -64,13 +62,11 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		return mongoTemplate.updateFirst(query(Criteria.where("id").is(id)), entityUpdate(update("NAME", name)), TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(UserAuthenticationEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}

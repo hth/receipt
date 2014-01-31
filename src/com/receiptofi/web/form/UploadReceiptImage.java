@@ -77,31 +77,15 @@ public final class UploadReceiptImage {
         if(!containsFile()) {
             return this.fileData.getOriginalFilename();
         } else {
-            return new StringBuilder()
-                    .append(FilenameUtils.getBaseName(this.fileData.getOriginalFilename()))
-                    .append(SCALED)
-                    .append(".")
-                    .append(FilenameUtils.getExtension(this.fileData.getOriginalFilename()))
-                    .toString();
+            return FilenameUtils.getBaseName(this.fileData.getOriginalFilename()) + SCALED + "." + FilenameUtils.getExtension(this.fileData.getOriginalFilename());
         }
     }
 
 	public String getFileName() {
         if(!containsFile()) {
-		    return new StringBuilder()
-                    .append(getUserProfileId())
-                    .append(UNDER_SCORE)
-                    .append(this.fileData.getOriginalFilename())
-                    .toString();
+		    return getUserProfileId() + UNDER_SCORE + this.fileData.getOriginalFilename();
         } else {
-            return new StringBuilder()
-                    .append(getUserProfileId())
-                    .append(UNDER_SCORE)
-                    .append(FilenameUtils.getBaseName(this.fileData.getOriginalFilename()))
-                    .append(SCALED)
-                    .append(".")
-                    .append(FilenameUtils.getExtension(this.fileData.getOriginalFilename()))
-                    .toString();
+            return getUserProfileId() + UNDER_SCORE + FilenameUtils.getBaseName(this.fileData.getOriginalFilename()) + SCALED + "." + FilenameUtils.getExtension(this.fileData.getOriginalFilename());
         }
 	}
 
@@ -135,18 +119,8 @@ public final class UploadReceiptImage {
         metaData.put("ORIGINAL_FILENAME", getOriginalFileName());
         metaData.put("EMAIL", getEmailId());
         metaData.put("USER_PROFILE_ID", getUserProfileId());
-        metaData.put("EMAIL_AND_FILENAME", new StringBuilder()
-                .append(getEmailId())
-                .append(UNDER_SCORE)
-                .append(getOriginalFileName())
-                .toString());
-
-        metaData.put("USER_PROFILE_ID_AND_FILENAME", new StringBuilder()
-                .append(getUserProfileId())
-                .append(UNDER_SCORE)
-                .append(getOriginalFileName())
-                .toString());
-
+        metaData.put("EMAIL_AND_FILENAME", getEmailId() + UNDER_SCORE + getOriginalFileName());
+        metaData.put("USER_PROFILE_ID_AND_FILENAME", getUserProfileId() + UNDER_SCORE + getOriginalFileName());
         return metaData;
     }
 }

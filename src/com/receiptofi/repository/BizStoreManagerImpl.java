@@ -29,7 +29,6 @@ import com.mongodb.WriteResult;
  * Time: 11:21 PM
  */
 @Repository
-@Transactional(readOnly = true)
 public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Autowired private MongoTemplate mongoTemplate;
@@ -40,7 +39,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BizStoreEntity object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if(object.getId() != null) {
@@ -60,7 +58,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteHard(BizStoreEntity object) {
         mongoTemplate.remove(object);
     }

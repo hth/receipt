@@ -27,7 +27,6 @@ import com.mongodb.WriteResult;
  *
  */
 @Repository
-@Transactional(readOnly = true)
 public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 	private static final long serialVersionUID = -4805176857358849811L;
 
@@ -39,7 +38,6 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UserPreferenceEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if(object.getId() != null) {
@@ -64,7 +62,6 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(UserPreferenceEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}

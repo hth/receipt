@@ -22,7 +22,6 @@ import com.mongodb.WriteResult;
  *
  */
 @Repository
-@Transactional(readOnly = true)
 public final class ItemFeatureManagerImpl implements ItemFeatureManager {
 	private static final long serialVersionUID = -2211419786590573846L;
 
@@ -34,7 +33,6 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ItemFeatureEntity object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if(object.getId() != null) {
@@ -49,13 +47,11 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(ItemFeatureEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}

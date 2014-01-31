@@ -34,7 +34,6 @@ import com.mongodb.WriteResult;
  * Time: 7:28 PM
  */
 @Repository
-@Transactional(readOnly = true)
 public final class MessageManagerImpl implements MessageManager {
     private static final Logger log = LoggerFactory.getLogger(MessageManagerImpl.class);
 
@@ -65,13 +64,11 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status) {
         return findUpdateWithLimit(emailId, userProfileId, status, QUERY_LIMIT);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
@@ -142,7 +139,6 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(MessageDocumentEntity object) throws Exception {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if(object.getId() != null) {
@@ -157,13 +153,11 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult updateObject(String id, String name) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult updateObject(String receiptOCRId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = query(where("LOCKED").is(true))
@@ -176,7 +170,6 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = query(where("LOCKED").is(true))
@@ -192,7 +185,6 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteHard(MessageDocumentEntity object) {
         mongoTemplate.remove(object, TABLE);
     }
