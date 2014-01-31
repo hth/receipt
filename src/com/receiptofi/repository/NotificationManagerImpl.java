@@ -27,7 +27,6 @@ import com.mongodb.WriteResult;
  * Time: 1:38 PM
  */
 @Repository
-@Transactional(readOnly = true)
 public final class NotificationManagerImpl implements NotificationManager {
     private static final Logger log = LoggerFactory.getLogger(NotificationManagerImpl.class);
 

@@ -29,7 +29,6 @@ import com.mongodb.WriteResult;
  * Time: 2:15 PM
  */
 @Repository
-@Transactional(readOnly = true)
 public final class InviteManagerImpl implements InviteManager {
     private final static Logger log = LoggerFactory.getLogger(InviteManagerImpl.class);
 

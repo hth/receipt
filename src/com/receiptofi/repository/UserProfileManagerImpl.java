@@ -35,7 +35,6 @@ import com.mongodb.WriteResult;
  *
  */
 @Repository
-@Transactional(readOnly = true)
 public final class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
 	private static final Logger log = LoggerFactory.getLogger(UserProfileManagerImpl.class);
@@ -48,7 +47,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UserProfileEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -84,7 +82,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		// return mongoTemplate.updateFirst(
 		// Query.query(Criteria.where("id").is(id)),
@@ -93,13 +90,11 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, UserLevelEnum level) {
 		return mongoTemplate.updateFirst(query(where("id").is(id)), entityUpdate(update("USER_LEVEL_ENUM", level)), UserProfileEntity.class);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteHard(UserProfileEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}

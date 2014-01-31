@@ -46,7 +46,6 @@ import com.mongodb.WriteResult;
  *
  */
 @Repository
-@Transactional(readOnly = true)
 public final class ReceiptManagerImpl implements ReceiptManager {
 	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
 
@@ -55,13 +54,11 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 	@Autowired private MongoTemplate mongoTemplate;
 
 	@Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ReceiptEntity> getAllObjects() {
 		return mongoTemplate.findAll(ReceiptEntity.class, TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ReceiptEntity> getAllReceipts(String userProfileId) {
         Criteria criteria = where("USER_PROFILE_ID").is(userProfileId);
 
@@ -70,7 +67,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 	}
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId, DateTime monthYear) {
         Criteria criteria = where("USER_PROFILE_ID").is(userProfileId);
         Criteria criteria1 = where("MONTH").is(monthYear.getMonthOfYear());
@@ -82,7 +78,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
 	@Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId) {
         GroupBy groupBy = GroupBy.key("DAY", "MONTH", "YEAR")
                 .initialDocument("{ total: 0 }")
@@ -100,7 +95,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
     //TODO find a way to format the total in group by
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
         GroupBy groupBy = GroupBy.key("MONTH", "YEAR")
                 .initialDocument("{ total: 0 }")
@@ -142,7 +136,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
     //http://stackoverflow.com/questions/12949870/spring-mongotemplate-find-special-column
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public List<String> findTitles(String title) {
         Criteria criteria = where("TITLE").regex(title, "i");
         Query query = query(criteria);
@@ -160,7 +153,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ReceiptEntity object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -187,7 +179,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
      */
     @Deprecated
 	@Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public ReceiptEntity findOne(String id) {
 		return mongoTemplate.findOne(query(where("id").is(id)), ReceiptEntity.class, TABLE);
 	}
@@ -206,7 +197,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
      * @return
      */
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.NEVER, rollbackFor = Exception.class)
     public ReceiptEntity findReceipt(String receiptId, String userProfileId) {
         Query query = query(where("id").is(receiptId))
                 .addCriteria(where("USER_PROFILE_ID").is(userProfileId))
@@ -234,19 +224,16 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(ReceiptEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteSoft(ReceiptEntity object) {
         //Deleted check sum need re-calculation
         object.markAsDeleted();

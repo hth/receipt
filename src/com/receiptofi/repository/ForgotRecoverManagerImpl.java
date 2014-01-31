@@ -24,7 +24,6 @@ import com.mongodb.WriteResult;
  * Time: 12:10 AM
  */
 @Repository
-@Transactional(readOnly = true)
 public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Autowired private MongoTemplate mongoTemplate;

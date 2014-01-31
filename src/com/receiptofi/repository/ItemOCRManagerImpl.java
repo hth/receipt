@@ -36,7 +36,6 @@ import com.mongodb.WriteResult;
  *
  */
 @Repository
-@Transactional(readOnly = true)
 public final class ItemOCRManagerImpl implements ItemOCRManager {
 	private static final long serialVersionUID = -6094519223354771552L;
 	private static final Logger log = LoggerFactory.getLogger(ItemOCRManagerImpl.class);
@@ -49,7 +48,6 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(ItemEntityOCR object) throws Exception {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
@@ -64,7 +62,6 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void saveObjects(List<ItemEntityOCR> objects) throws Exception {
 		//TODO reflection error saving the list
 		//mongoTemplate.insert(objects, TABLE);
@@ -86,26 +83,22 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(String id, String name) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteHard(ItemEntityOCR object) {
 		mongoTemplate.remove(object, TABLE);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteWhereReceipt(DocumentEntity receipt) {
 		Query query = query(where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
 		mongoTemplate.remove(query, ItemEntityOCR.class);
 	}
 
 	@Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public WriteResult updateObject(ItemEntityOCR object) {
 		Query query = query(where("id").is(object.getId()));
 		Update update = update("NAME", object.getName());
