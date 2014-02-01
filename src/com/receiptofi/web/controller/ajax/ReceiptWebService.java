@@ -211,8 +211,8 @@ public class ReceiptWebService {
                 Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
                 Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
 
-                String checkSum = SHAHashing.calculateCheckSum(StringUtils.stripToEmpty(userProfileId), receiptDate, receiptTotal);
-                return documentUpdateService.checkIfDuplicate(checkSum);
+                String checkSum = SHAHashing.calculateChecksumForNotDeleted(StringUtils.stripToEmpty(userProfileId), receiptDate, receiptTotal);
+                return documentUpdateService.hasReceiptWithSimilarChecksum(checkSum);
             } catch(ParseException parseException) {
                 log.error("Ajax checkForDuplicate failed to parse total: " + parseException.getLocalizedMessage());
                 throw parseException;
