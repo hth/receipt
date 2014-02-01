@@ -1070,7 +1070,7 @@
                 margin: [ 50, 50, 100, 50]
             },
             title: {
-                text: 'Monthly Expenses ${months.get(0).year - 1} - ${months.get(0).year}'
+                text: 'Monthly Expenses for 13 months: ${months.get(months.size() - 1).year - 1} - ${months.get(months.size() - 1).year}'
             },
             credits: {
                 enabled: false
@@ -1101,8 +1101,8 @@
             },
             tooltip: {
                 formatter: function() {
-                    return '<b>'+ this.x +'</b><br/>'+
-                            'Expense in ${months.get(0).year}: '+ Highcharts.numberFormat(this.y, 2) +
+                    return '<b>'+ this.x +'</b> ' +
+                            'total expense : '+ Highcharts.numberFormat(this.y, 2) +
                             '$';
                 }
             },
