@@ -299,8 +299,6 @@
                                         "&nbsp;&nbsp;&nbsp;&nbsp;" +
                                         "<img id='car' src='images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
                                 );
-                            } else {
-                                $("#mmText").html("No odometer reading submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>");
                             }
                         }
                     }, SERVICE.TIMEOUT);
@@ -348,8 +346,6 @@
                                         "&nbsp;&nbsp;&nbsp;&nbsp;" +
                                         "<img id='car' src='images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
                                 );
-                            } else {
-                                $("#mmText").html("No odometer reading submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>");
                             }
                         }
                     }, SERVICE.TIMEOUT);
