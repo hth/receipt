@@ -115,7 +115,7 @@ public class ReceiptEntity extends BaseEntity {
      * Used to flush or avoid duplicate receipt entry
      */
     @Field("CHECK_SUM")
-    private String checkSum;
+    private String checksum;
 
     /** To keep bean happy */
 	public ReceiptEntity() {}
@@ -294,15 +294,18 @@ public class ReceiptEntity extends BaseEntity {
         this.notes = notes;
     }
 
-    public String getCheckSum() {
-        return checkSum;
+    public String getChecksum() {
+        return checksum;
     }
 
     /**
-     * Create for making sure no duplicate receipt could be entered for
+     * Create for making sure no duplicate receipt could be entered. At a time, there can only be two status of receipt
+     * co-exists
+     *  1) Receipt deleted
+     *  2) Receipt not deleted
      */
-    public void checkSum() {
-        this.checkSum = SHAHashing.calculateCheckSum(userProfileId, receiptDate, total, isDeleted());
+    public void computeChecksum() {
+        this.checksum = SHAHashing.calculateChecksum(userProfileId, receiptDate, total, isDeleted());
     }
 
     public String getExpenseReportInFS() {
