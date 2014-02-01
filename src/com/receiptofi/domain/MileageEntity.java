@@ -3,7 +3,6 @@ package com.receiptofi.domain;
 import com.receiptofi.utils.DateUtil;
 
 import javax.validation.constraints.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;

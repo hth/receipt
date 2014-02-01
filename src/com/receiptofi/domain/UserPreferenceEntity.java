@@ -3,16 +3,16 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.AccountTypeEnum;
+
 import javax.validation.constraints.NotNull;
+
+import static com.receiptofi.domain.types.AccountTypeEnum.PERSONAL;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.receiptofi.domain.types.AccountTypeEnum;
-
-import static com.receiptofi.domain.types.AccountTypeEnum.PERSONAL;
 
 /**
  * @author hitender

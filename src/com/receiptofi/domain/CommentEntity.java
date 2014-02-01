@@ -1,5 +1,7 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.CommentTypeEnum;
+
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.google.common.base.Objects;
-
-import com.receiptofi.domain.types.CommentTypeEnum;
 
 /**
  * User: hitender

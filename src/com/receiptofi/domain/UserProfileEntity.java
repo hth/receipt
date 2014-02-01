@@ -3,6 +3,7 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.UserLevelEnum;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
@@ -16,8 +17,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-
-import com.receiptofi.domain.types.UserLevelEnum;
 
 /**
  * @author hitender

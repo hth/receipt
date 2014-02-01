@@ -3,11 +3,11 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.FeaturesOnItemEnum;
+
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.receiptofi.domain.types.FeaturesOnItemEnum;
 
 /**
  * Add various features to an existing Item. It could be like price check for next thirty days. Or add a return reminder on an item.
