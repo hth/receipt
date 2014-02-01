@@ -380,6 +380,13 @@ public final class DocumentUpdateService {
         return receiptManager.notDeletedChecksumDuplicate(checkSum, id);
     }
 
+    /**
+     * Does a similar receipt exists with this checksum. This can be used when adding new receipt or while soft deleting
+     * of a receipt.
+     *
+     * @param checksum
+     * @return
+     */
     public boolean hasReceiptWithSimilarChecksum(String checksum) {
         return receiptManager.hasRecordWithSimilarChecksum(checksum);
     }
