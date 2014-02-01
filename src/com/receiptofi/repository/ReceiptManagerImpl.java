@@ -322,6 +322,13 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         return query(where("CHECK_SUM").is(checksum));
     }
 
+    /**
+     * Ignore the current id receipt and see if there is another receipt with similar checksum exists
+     *
+     * @param checksum
+     * @param id
+     * @return
+     */
     private Query checksumQueryIfDuplicateExists(String checksum, String id) {
         return checksumQuery(checksum)
                 .addCriteria(isNotDeleted())

@@ -142,7 +142,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     ReceiptEntity findNotDeletedChecksumDuplicate(String checksum, String id);
 
     /**
-     * Find if similar receipt exists
+     * Find if receipt with similar checksum exists
      *
      * @param checksum
      * @return
