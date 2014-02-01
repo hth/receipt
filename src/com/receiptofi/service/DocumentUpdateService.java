@@ -57,6 +57,10 @@ public final class DocumentUpdateService {
         return documentManager.findActiveOne(id);
     }
 
+    public DocumentEntity findOne(String documentId, String userProfileId) {
+        return documentManager.findOne(documentId, userProfileId);
+    }
+
     public List<ItemEntityOCR> loadItemsOfReceipt(DocumentEntity receiptEntity) {
         return itemOCRManager.getWhereReceipt(receiptEntity);
     }
