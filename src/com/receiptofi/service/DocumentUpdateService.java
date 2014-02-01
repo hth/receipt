@@ -376,8 +376,12 @@ public final class DocumentUpdateService {
      * @param checkSum
      * @return
      */
-    public boolean checkIfDuplicate(String checkSum) {
-        return receiptManager.existCheckSum(checkSum);
+    public boolean checkIfDuplicate(String checkSum, String id) {
+        return receiptManager.notDeletedChecksumDuplicate(checkSum, id);
+    }
+
+    public boolean hasReceiptWithSimilarChecksum(String checksum) {
+        return receiptManager.hasRecordWithSimilarChecksum(checksum);
     }
 
     public void turkMileage(MileageEntity mileageEntity, DocumentEntity documentForm) {

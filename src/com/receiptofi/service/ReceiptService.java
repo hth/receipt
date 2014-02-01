@@ -358,7 +358,7 @@ public final class ReceiptService {
         return true;
     }
 
-    public void removeExpenseFilenameReference(String filename) {
-        receiptManager.removeExpenseFilenameReference(filename);
+    public void removeExpensofiFilenameReference(String filename) {
+        receiptManager.removeExpensofiFilenameReference(filename);
     }
 }
