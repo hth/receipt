@@ -197,7 +197,9 @@
             "use strict";
 
             $('#tabs').css('width','1025px');
-            $("#tabs").tabs();
+            $("#tabs").tabs({
+                activate: function(){}
+            });
         });
     </script>
     <script>
@@ -650,6 +652,8 @@
                     <c:when test="${!empty landingForm.mileageEntities}">
                     <div style="display:block; width:410px; padding: 5px; margin-bottom: 10px" id="mmText">
                         <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <img id="car" src="images/car.png" style="margin: 0px; height: 18px; width: 25px">
                     </div>
                     <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
                     <div class="col-xs-6">
@@ -844,6 +848,28 @@
 <script>
     $("#active-tab-3").click(function() {
         $("#tabs").tabs({ active: 2 });
+    });
+
+    $('#car').click(function () {
+        $(this).stop().css({
+            'margin': '0'
+        });
+        $(this).animate({
+            marginLeft: '+=160px'
+        }, 2000)
+    });
+
+    $("#tabs").on("tabsactivate", function () {
+        var active = $("#tabs").tabs("option", "active");
+        if (active == 1) {
+            $('#car').animate({
+                marginLeft: '+=160px'
+            }, 2000);
+        } else {
+            $('#car').stop().css({
+                'margin': '0'
+            });
+        }
     });
     <c:if test="${!empty param.showTab}">
         $("#tabs").tabs({ active: ${param.showTab} });
