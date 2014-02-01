@@ -69,7 +69,7 @@ public class MileageManagerImpl implements MileageManager {
     @Override
     public List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime monthYear) {
         Criteria criteria = where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria1 = where("C").gte(monthYear.dayOfMonth().withMinimumValue().toDate()).lt(monthYear.plusMonths(1).dayOfMonth().withMinimumValue().toDate());
+        Criteria criteria1 = where("C").gte(monthYear.dayOfMonth().getDateTime().toDateMidnight().toDate()).lt(monthYear.plusMonths(1).dayOfMonth().getDateTime().toDateMidnight().toDate());
 
         Sort sort = new Sort(Sort.Direction.DESC, "S");
         Query query = query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
