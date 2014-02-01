@@ -171,7 +171,8 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntity: " + e.getLocalizedMessage());
-			throw new RuntimeException(e.getMessage());
+            //todo should throw a better exception; this is highly likely to happen any time soon
+            throw new Exception(e.getMessage());
 		}
 	}
 
