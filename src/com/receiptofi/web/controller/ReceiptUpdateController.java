@@ -155,7 +155,7 @@ public class ReceiptUpdateController {
 		}
 
         try {
-            if(documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
+            if(documentUpdateService.hasReceiptWithSimilarChecksum(receiptDocumentForm.getReceiptEntity().getChecksum())) {
                 log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -288,7 +288,7 @@ public class ReceiptUpdateController {
         try {
             //TODO: Note should not happen as the condition to check for duplicate has already been satisfied when receipt was first processed.
             // Unless Technician has changed the date or some data. Date change should be exclude during re-check. Something to think about.
-            if(documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getCheckSum())) {
+            if(documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getChecksum(), receiptDocumentForm.getReceiptEntity().getId())) {
                 log.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);

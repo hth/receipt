@@ -22,6 +22,8 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -330,9 +332,8 @@ public final class ReceiptManagerImpl implements ReceiptManager {
      * @return
      */
     private Query checksumQueryIfDuplicateExists(String checksum, String id) {
-        return checksumQuery(checksum)
-                .addCriteria(isNotDeleted())
-                .addCriteria(where("id").ne(id)
+        Query query = checksumQuery(checksum)
+                .addCriteria(isNotDeleted()
                         .orOperator(
                                 where("DS_E").is(DocumentStatusEnum.TURK_REQUEST.getName()),
                                 where("DS_E").is(DocumentStatusEnum.TURK_PROCESSED.getName()),
@@ -340,5 +341,13 @@ public final class ReceiptManagerImpl implements ReceiptManager {
                                 where("A").is(false)
                         )
                 );
+
+        if(!StringUtils.isBlank(id)) {
+            //id is blank for new document; whereas for re-check id is always present
+            //in such a senario use method --> hasRecordWithSimilarChecksum
+            query.addCriteria(where("id").ne(id));
+        }
+
+        return query;
     }
 }
