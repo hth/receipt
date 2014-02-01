@@ -345,7 +345,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         if(!StringUtils.isBlank(id)) {
             //id is blank for new document; whereas for re-check id is always present
-            //in such a senario use method --> hasRecordWithSimilarChecksum
+            //in such a scenario use method --> hasRecordWithSimilarChecksum
             query.addCriteria(where("id").ne(id));
         }
 
