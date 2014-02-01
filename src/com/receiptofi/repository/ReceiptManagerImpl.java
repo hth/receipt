@@ -110,9 +110,12 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         DateTime date = DateUtil.now().minusMonths(SHOW_DATA_FOR_LAST_X_MONTHS);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
-        Criteria criteriaA = where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteriaB = where("RECEIPT_DATE").gte(since.toDate());
-        Criteria criteria = criteriaA.andOperator(criteriaB.andOperator(isActive().andOperator(isNotDeleted())));
+        Criteria criteria = where("USER_PROFILE_ID").is(userProfileId)
+                .andOperator(
+                        where("RECEIPT_DATE").gte(since.toDate()),
+                        isActive(),
+                        isNotDeleted()
+                );
 
         GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
         return results.iterator();
