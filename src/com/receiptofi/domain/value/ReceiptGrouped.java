@@ -76,8 +76,13 @@ public final class ReceiptGrouped implements Serializable {
         return date;
     }
 
+    /**
+     * Used in display monthly expense bar name in bar chart
+     * @return
+     */
+    @SuppressWarnings("unused")
     public String getMonthName() {
-        return getDateTime().toString("MMM-yy");
+        return getDateTime().toString("MMM yyyy");
     }
 
     public int getYear() {
