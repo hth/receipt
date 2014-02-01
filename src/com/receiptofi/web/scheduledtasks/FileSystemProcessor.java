@@ -48,7 +48,7 @@ public class FileSystemProcessor {
             found = files.length;
             for(String filename : files) {
                 removeExpiredExcel(getExcelFile(filename));
-                receiptService.removeExpenseFilenameReference(filename);
+                receiptService.removeExpensofiFilenameReference(filename);
                 count++;
             }
         } finally {

@@ -54,18 +54,18 @@ public final class SHAHashing {
 
 			// convert the byte to hex format method 1
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < byteData.length; i++) {
-				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-			}
+            for(byte aByteData : byteData) {
+                sb.append(Integer.toString((aByteData & 0xff) + 0x100, 16).substring(1));
+            }
 
 			// convert the byte to hex format method 2
 			StringBuilder hexString = new StringBuilder();
-			for (int i = 0; i < byteData.length; i++) {
-				String hex = Integer.toHexString(0xff & byteData[i]);
-				if (hex.length() == 1)
-					hexString.append('0');
-				hexString.append(hex);
-			}
+            for(byte aByteData : byteData) {
+                String hex = Integer.toHexString(0xff & aByteData);
+                if(hex.length() == 1)
+                    hexString.append('0');
+                hexString.append(hex);
+            }
             PerformanceProfiling.log(SHAHashing.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
 			return hexString.toString();
 		} else {
@@ -83,8 +83,8 @@ public final class SHAHashing {
      * @param total
      * @return
      */
-    public static String calculateCheckSum(String userProfileId, Date date, Double total) {
-        return calculateCheckSum(userProfileId, date, total, false);
+    public static String calculateChecksumForNotDeleted(String userProfileId, Date date, Double total) {
+        return calculateChecksum(userProfileId, date, total, false);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class SHAHashing {
      * @param deleted
      * @return
      */
-    public static String calculateCheckSum(String userProfileId, Date date, Double total, boolean deleted) {
+    public static String calculateChecksum(String userProfileId, Date date, Double total, boolean deleted) {
         //This is considered to be thread safe
         HashFunction hf = Hashing.md5();
         HashCode hc = hf.newHasher()

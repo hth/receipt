@@ -6,6 +6,7 @@ package com.receiptofi.repository;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.utils.DateUtil;
@@ -21,6 +22,8 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -33,8 +36,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import org.joda.time.DateTime;
 
@@ -52,6 +53,9 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 	private static final long serialVersionUID = -8812261440000722447L;
 
 	@Autowired private MongoTemplate mongoTemplate;
+    @Autowired private ItemManager itemManager;
+    @Autowired private FileSystemManager fileSystemManager;
+    @Autowired private StorageManager storageManager;
 
 	@Override
     public List<ReceiptEntity> getAllObjects() {
@@ -163,11 +167,12 @@ public final class ReceiptManagerImpl implements ReceiptManager {
             if(object.getId() != null) {
                 object.setUpdated();
             }
-            object.checkSum();
+            object.computeChecksum();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntity: " + e.getLocalizedMessage());
-			throw new Exception(e.getMessage());
+            //todo should throw a better exception; this is highly likely to happen any time soon
+            throw new Exception(e.getMessage());
 		}
 	}
 
@@ -239,20 +244,32 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         object.markAsDeleted();
 
         //Re-calculate check sum for deleted object
-        object.checkSum();
-        String checkSum = object.getCheckSum();
+        object.computeChecksum();
+        String checksum = object.getChecksum();
 
-        if(existCheckSum(checkSum)) {
-            Criteria criteria = where("CHECK_SUM").is(checkSum);
-            List<ReceiptEntity> duplicateDeletedReceipts = mongoTemplate.find(query(criteria), ReceiptEntity.class, TABLE);
-            for(ReceiptEntity receiptEntity : duplicateDeletedReceipts) {
-                deleteHard(receiptEntity);
-            }
+        if(hasRecordWithSimilarChecksum(checksum)) {
+            removeCompleteReminiscenceOfSoftDeletedReceipt(checksum);
         }
 
         Query query = query(where("id").is(object.getId()));
-        Update update = Update.update("D", true).set("CHECK_SUM", checkSum);
+        Update update = Update.update("D", true).set("CHECK_SUM", checksum);
         mongoTemplate.updateFirst(query, entityUpdate(update), ReceiptEntity.class);
+    }
+
+    /**
+     * When a receipt is marked as soft delete receipt then previously soft deleted receipt is completely removed
+     *
+     * @param checksum
+     */
+    private void removeCompleteReminiscenceOfSoftDeletedReceipt(String checksum) {
+        Criteria criteria = where("CHECK_SUM").is(checksum);
+        List<ReceiptEntity> duplicateDeletedReceipts = mongoTemplate.find(query(criteria), ReceiptEntity.class, TABLE);
+        for(ReceiptEntity receiptEntity : duplicateDeletedReceipts) {
+            itemManager.deleteWhereReceipt(receiptEntity);
+            fileSystemManager.deleteHard(receiptEntity.getFileSystemEntities());
+            storageManager.deleteHard(receiptEntity.getFileSystemEntities());
+            deleteHard(receiptEntity);
+        }
     }
 
     @Override
@@ -284,16 +301,54 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public boolean existCheckSum(String checkSum) {
-        Criteria criteria = where("CHECK_SUM").is(checkSum);
+    public boolean notDeletedChecksumDuplicate(String checksum, String id) {
         //Active condition is required for re-check criteria
-        //return mongoTemplate.find(query(criteria).addCriteria(isActive()), ReceiptEntity.class, TABLE).size() > 0;
-        return mongoTemplate.find(query(criteria), ReceiptEntity.class, TABLE).size() > 0;
+        return mongoTemplate.find(checksumQueryIfDuplicateExists(checksum, id), ReceiptEntity.class, TABLE).size() > 0;
     }
 
     @Override
-    public void removeExpenseFilenameReference(String filename) {
-        ReceiptEntity receiptEntity = mongoTemplate.findAndModify(query(where("EXP_FILENAME").is(filename)), Update.update("EXP_FILENAME", ""), ReceiptEntity.class);
-        log.debug("nothing", receiptEntity);
+    public ReceiptEntity findNotDeletedChecksumDuplicate(String checksum, String id) {
+        return mongoTemplate.findOne(checksumQueryIfDuplicateExists(checksum, id), ReceiptEntity.class, TABLE);
+    }
+
+    @Override
+    public boolean hasRecordWithSimilarChecksum(String checksum) {
+        return mongoTemplate.find(checksumQuery(checksum), ReceiptEntity.class, TABLE).size() > 0;
+    }
+
+    @Override
+    public void removeExpensofiFilenameReference(String filename) {
+        mongoTemplate.findAndModify(query(where("EXP_FILENAME").is(filename)), Update.update("EXP_FILENAME", ""), ReceiptEntity.class);
+    }
+
+    private Query checksumQuery(String checksum) {
+        return query(where("CHECK_SUM").is(checksum));
+    }
+
+    /**
+     * Ignore the current id receipt and see if there is another receipt with similar checksum exists
+     *
+     * @param checksum
+     * @param id
+     * @return
+     */
+    private Query checksumQueryIfDuplicateExists(String checksum, String id) {
+        Query query = checksumQuery(checksum)
+                .addCriteria(isNotDeleted()
+                        .orOperator(
+                                where("DS_E").is(DocumentStatusEnum.TURK_REQUEST.getName()),
+                                where("DS_E").is(DocumentStatusEnum.TURK_PROCESSED.getName()),
+                                where("A").is(true),
+                                where("A").is(false)
+                        )
+                );
+
+        if(!StringUtils.isBlank(id)) {
+            //id is blank for new document; whereas for re-check id is always present
+            //in such a senario use method --> hasRecordWithSimilarChecksum
+            query.addCriteria(where("id").ne(id));
+        }
+
+        return query;
     }
 }

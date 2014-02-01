@@ -143,6 +143,7 @@ public final class ReceiptService {
                     receiptOCR.setNotes(receipt.getNotes());
 
                     /** All activity at the end is better because you never know what could go wrong during populating other data */
+                    receipt.setReceiptStatus(DocumentStatusEnum.TURK_REQUEST);
                     receiptManager.save(receipt);
                     documentManager.save(receiptOCR);
                     itemOCRManager.deleteWhereReceipt(receiptOCR);
@@ -357,7 +358,7 @@ public final class ReceiptService {
         return true;
     }
 
-    public void removeExpenseFilenameReference(String filename) {
-        receiptManager.removeExpenseFilenameReference(filename);
+    public void removeExpensofiFilenameReference(String filename) {
+        receiptManager.removeExpensofiFilenameReference(filename);
     }
 }
