@@ -106,7 +106,7 @@ public final class ReceiptDocumentForm {
         receipt.setUpdated();
         receipt.setBizName(receiptDocument.getBizName());
         receipt.setBizStore(receiptDocument.getBizStore());
-        receipt.checkSum();
+        receipt.computeChecksum();
 
         //If this is not set then user cannot reopen the a receipt for re-check.
         //TODO When deleting historical receiptDocument make sure to remove this id from receipt referencing Document
