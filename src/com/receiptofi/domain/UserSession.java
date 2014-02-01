@@ -3,9 +3,9 @@
  */
 package com.receiptofi.domain;
 
-import java.io.Serializable;
-
 import com.receiptofi.domain.types.UserLevelEnum;
+
+import java.io.Serializable;
 
 /**
  * @author hitender
