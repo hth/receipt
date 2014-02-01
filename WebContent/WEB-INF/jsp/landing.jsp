@@ -293,10 +293,14 @@
                             // Not at All. Because of ng-change below
                             angular.extend($scope.records[_.indexOf($scope.records, newRecord)], data.ms[0]);
                             $scope.merging = false;
-                            if(data.mm > 0) {
-                                $("#mmText").html(data.mm + " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>");
+                            if(data.mm >= 0) {
+                                $("#mmText").html(data.mm +
+                                        " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
+                                        "&nbsp;&nbsp;&nbsp;&nbsp;" +
+                                        "<img id='car' src='images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
+                                );
                             } else {
-                                $("#mmText").html("No mileage has been computed for this month");
+                                $("#mmText").html("No odometer reading submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>");
                             }
                         }
                     }, SERVICE.TIMEOUT);
@@ -338,10 +342,14 @@
                             $scope.records[_.indexOf($scope.records, newRecords[0])].i = data.ms[0].i;
                             $scope.records[_.indexOf($scope.records, newRecords[1])].i = data.ms[1].i;
                             $scope.splitting = false;
-                            if(data.mm > 0) {
-                                $("#mmText").html(data.mm + " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>");
+                            if(data.mm >= 0) {
+                                $("#mmText").html(data.mm +
+                                        " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
+                                        "&nbsp;&nbsp;&nbsp;&nbsp;" +
+                                        "<img id='car' src='images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
+                                );
                             } else {
-                                $("#mmText").html("No mileage has been computed for this month");
+                                $("#mmText").html("No odometer reading submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>");
                             }
                         }
                     }, SERVICE.TIMEOUT);
@@ -650,10 +658,10 @@
             <div ng-controller="mileageCtrl">
                 <c:choose>
                     <c:when test="${!empty landingForm.mileageEntities}">
-                    <div style="display:block; width:410px; padding: 5px; margin-bottom: 10px" id="mmText">
+                    <div style="display:block; width:410px; margin-bottom: 10px" id="mmText">
                         <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <img id="car" src="images/car.png" style="margin: 0px; height: 18px; width: 25px">
+                        <img id="car" src="images/car.png" style="margin: 0px; height: 15px; width: 20px">
                     </div>
                     <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
                     <div class="col-xs-6">
