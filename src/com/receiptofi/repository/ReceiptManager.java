@@ -52,12 +52,21 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId);
 
     /**
-     * Gets all the user receipts
+     * Gets all the user receipts. Refrain from using open ended query.
      *
      * @param userProfileId
      * @return
      */
 	List<ReceiptEntity> getAllReceipts(String userProfileId);
+
+    /**
+     * Get receipts only the selected year
+     *
+     * @param userProfileId
+     * @param startOfTheYear
+     * @return
+     */
+	List<ReceiptEntity> getAllReceiptsForTheYear(String userProfileId, DateTime startOfTheYear);
 
     /**
      * Gets user receipts for current month

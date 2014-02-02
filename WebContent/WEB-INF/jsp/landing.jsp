@@ -418,7 +418,7 @@
                     </div>
                 </h3>
             </div>
-		    <div class="divOfCell300" id="active-tab-3" style="height: 46px"><h3>Total Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
+		    <div class="divOfCell300" id="active-tab-3" style="height: 46px"><h3>YTD Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
 		</div>
    	</div>
 
@@ -745,7 +745,7 @@
                         <div id="monthly" style="min-width: 475px; height: 425px; margin: 0 auto"></div>
 
                         <fieldset style="width:295px;">
-                            <legend>Total Expense</legend>
+                            <legend>YTD Expense</legend>
                             <div class="divTable">
                                 <div class="headRow">
                                     <div class="divCell">Sub Total</div>
