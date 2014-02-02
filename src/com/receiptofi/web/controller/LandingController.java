@@ -139,7 +139,7 @@ public class LandingController extends BaseController {
         /** bizNames and bizByExpenseTypes added below to landingForm*/
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
 
-        landingService.computeTotalExpense(userSession.getUserProfileId(), modelAndView);
+        landingService.computeYearToDateExpense(userSession.getUserProfileId(), modelAndView);
 
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(userSession.getUserProfileId());

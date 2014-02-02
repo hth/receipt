@@ -20,6 +20,7 @@ import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ImageSplit;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.ReceiptParser;
@@ -86,9 +87,18 @@ public final class LandingService {
         return documentManager.numberOfPendingReceipts(profileId);
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * Do not use this open end query
+     *
+     * @param profileId
+     * @return
+     */
     public List<ReceiptEntity> getAllReceipts(String profileId) {
         return receiptManager.getAllReceipts(profileId);
+    }
+
+    public List<ReceiptEntity> getAllReceiptsForTheYear(String profileId, DateTime startOfTheYear) {
+        return receiptManager.getAllReceiptsForTheYear(profileId, startOfTheYear);
     }
 
     public List<ReceiptEntity> getAllReceiptsForThisMonth(String profileId, DateTime monthYear) {
@@ -213,11 +223,28 @@ public final class LandingService {
     }
 
     /**
+     * Computes all the expenses user has
+     *
      * @param userProfileId
      * @param modelAndView
      */
     public void computeTotalExpense(String userProfileId, ModelAndView modelAndView) {
         List<ReceiptEntity> receipts = getAllReceipts(userProfileId);
+        computeToDateExpense(modelAndView, receipts);
+    }
+
+    /**
+     * Computes YTD expenses
+     *
+     * @param userProfileId
+     * @param modelAndView
+     */
+    public void computeYearToDateExpense(String userProfileId, ModelAndView modelAndView) {
+        List<ReceiptEntity> receipts = getAllReceiptsForTheYear(userProfileId, DateUtil.now().withMonthOfYear(1).withDayOfMonth(1).withTimeAtStartOfDay());
+        computeToDateExpense(modelAndView, receipts);
+    }
+
+    private void computeToDateExpense(ModelAndView modelAndView, List<ReceiptEntity> receipts) {
         BigDecimal tax = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
         for(ReceiptEntity receipt : receipts) {

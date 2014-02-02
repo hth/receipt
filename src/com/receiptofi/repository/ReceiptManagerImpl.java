@@ -65,6 +65,13 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 	@Override
     public List<ReceiptEntity> getAllReceipts(String userProfileId) {
         Criteria criteria = where("USER_PROFILE_ID").is(userProfileId);
+        Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "C"));
+        return mongoTemplate.find(query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
+    }
+
+    @Override
+    public List<ReceiptEntity> getAllReceiptsForTheYear(String userProfileId, DateTime startOfTheYear) {
+        Criteria criteria = where("USER_PROFILE_ID").is(userProfileId).andOperator(where("RECEIPT_DATE").gte(startOfTheYear));
 
 		Sort sort = new Sort(Direction.DESC, "RECEIPT_DATE").and(new Sort(Direction.DESC, "C"));
 		return mongoTemplate.find(query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()).with(sort), ReceiptEntity.class, TABLE);
