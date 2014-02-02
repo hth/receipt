@@ -9,6 +9,9 @@ import com.receiptofi.utils.Maths;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Date;
+
+import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -16,6 +19,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -66,6 +70,10 @@ public class ItemEntity extends BaseEntity {
     @Field("RECEIPT")
     private ReceiptEntity receipt;
 
+    @DateTimeFormat(iso = ISO.DATE_TIME)
+    @Field("R_D")
+    private Date receiptDate;
+
     @DBRef
     @Field("BIZ_NAME")
     private BizNameEntity bizName;
@@ -88,6 +96,7 @@ public class ItemEntity extends BaseEntity {
 		this.receipt = receipt;
 		this.userProfileId = userProfileId;
 		this.sequence = sequence;
+        this.receiptDate = receipt.getReceiptDate();
 	}
 
     /**
@@ -186,9 +195,18 @@ public class ItemEntity extends BaseEntity {
 
 	public void setReceipt(ReceiptEntity receipt) {
 		this.receipt = receipt;
+        this.receiptDate = receipt.getReceiptDate();
 	}
 
-	public String getUserProfileId() {
+    public Date getReceiptDate() {
+        return receiptDate;
+    }
+
+    public void setReceiptDate(Date receiptDate) {
+        this.receiptDate = receiptDate;
+    }
+
+    public String getUserProfileId() {
 		return userProfileId;
 	}
 

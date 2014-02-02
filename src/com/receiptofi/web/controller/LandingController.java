@@ -131,7 +131,7 @@ public class LandingController extends BaseController {
 
         /** Used for charting in Expense Analysis tab */
         log.info("Calculating Pie chart - item expense");
-        Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpense(userSession.getUserProfileId());
+        Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpenseForTheYear(userSession.getUserProfileId());
         modelAndView.addObject("itemExpenses", itemExpenses);
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1 */

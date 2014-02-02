@@ -49,6 +49,9 @@ public class ItemEntityOCR extends BaseEntity {
     @Field("RECEIPT")
 	private DocumentEntity receipt;
 
+    @Field("R_D")
+    private String receiptDate;
+
 	@NotNull
     @Field("USER_PROFILE_ID")
 	private String userProfileId;
@@ -117,9 +120,18 @@ public class ItemEntityOCR extends BaseEntity {
 
 	public void setReceipt(DocumentEntity receipt) {
 		this.receipt = receipt;
+        this.receiptDate = receipt.getReceiptDate();
 	}
 
-	public String getUserProfileId() {
+    public String getReceiptDate() {
+        return receiptDate;
+    }
+
+    public void setReceiptDate(String receiptDate) {
+        this.receiptDate = receiptDate;
+    }
+
+    public String getUserProfileId() {
 		return userProfileId;
 	}
 

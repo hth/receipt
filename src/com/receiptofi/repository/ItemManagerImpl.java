@@ -7,6 +7,7 @@ import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.utils.DateUtil;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -254,9 +255,10 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public long countItemsUsingExpenseType(String expenseTypeId, String userProfileId) {
-        Criteria criteria = where("ET_R.$id").is(new ObjectId(expenseTypeId));
-        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
-        Query query = query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria = where("ET_R.$id").is(new ObjectId(expenseTypeId))
+                .and("USER_PROFILE_ID").is(userProfileId);
+
+        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.count(query, ItemEntity.class);
     }
 
@@ -268,15 +270,20 @@ public final class ItemManagerImpl implements ItemManager {
      * @return
      */
     @Override
-    public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTagEntity expenseType) {
-        Criteria criteria = where("ET_R.$id").is(new ObjectId(expenseType.getId()));
+    public List<ItemEntity> getItemEntitiesForSpecificExpenseTypeForTheYear(ExpenseTagEntity expenseType) {
+        Criteria criteria = where("ET_R.$id").is(new ObjectId(expenseType.getId()))
+                .and("R_D").gte(DateUtil.startOfYear());
+
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query, ItemEntity.class);
     }
 
     @Override
-    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
-        Criteria criteria = where("ET_R").is(StringUtils.trimToNull(null)).and("USER_PROFILE_ID").is(userProfileId);
+    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String userProfileId) {
+        Criteria criteria = where("ET_R").is(StringUtils.trimToNull(null))
+                .and("USER_PROFILE_ID").is(userProfileId)
+                .and("R_D").gte(DateUtil.startOfYear());
+
         return mongoTemplate.find(query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()), ItemEntity.class);
     }
 }
