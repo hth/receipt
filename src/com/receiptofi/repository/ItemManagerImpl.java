@@ -254,7 +254,7 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public long countItemsUsingExpenseType(String expenseTypeId, String userProfileId) {
-        Criteria criteria = where("EXPENSE_TYPE.$id").is(new ObjectId(expenseTypeId));
+        Criteria criteria = where("EXP_R.$id").is(new ObjectId(expenseTypeId));
         Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
         Query query = query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.count(query, ItemEntity.class);
@@ -269,14 +269,14 @@ public final class ItemManagerImpl implements ItemManager {
      */
     @Override
     public List<ItemEntity> getItemEntitiesForSpecificExpenseType(ExpenseTagEntity expenseType) {
-        Criteria criteria = where("EXPENSE_TYPE.$id").is(new ObjectId(expenseType.getId()));
+        Criteria criteria = where("EXP_R.$id").is(new ObjectId(expenseType.getId()));
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query, ItemEntity.class);
     }
 
     @Override
     public List<ItemEntity> getItemEntitiesForUnAssignedExpenseType(String userProfileId) {
-        Criteria criteria = where("EXPENSE_TYPE").is(StringUtils.trimToNull(null)).and("USER_PROFILE_ID").is(userProfileId);
+        Criteria criteria = where("EXP_R").is(StringUtils.trimToNull(null)).and("USER_PROFILE_ID").is(userProfileId);
         return mongoTemplate.find(query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()), ItemEntity.class);
     }
 }

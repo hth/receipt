@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "EXPENSE_TAG")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "expense_type_idx",    def = "{'USER_PROFILE_ID': 1, 'TAG': 1}",  unique=true),
+        @CompoundIndex(name = "expense_tag_idx",    def = "{'USER_PROFILE_ID': 1, 'TAG': 1}",  unique=true),
 } )
 public class ExpenseTagEntity extends BaseEntity {
 
