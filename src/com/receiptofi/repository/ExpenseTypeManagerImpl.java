@@ -11,6 +11,7 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.*;
+import static org.springframework.data.domain.Sort.Direction.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -71,7 +72,7 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     @Override
     public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
         return mongoTemplate.find(
-                query(where("USER_PROFILE_ID").is(userProfileId)).with(new Sort(Direction.ASC, "TAG")),
+                query(where("USER_PROFILE_ID").is(userProfileId)).with(new Sort(ASC, "TAG")),
                 ExpenseTagEntity.class,
                 TABLE
         );
@@ -85,7 +86,7 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
                                 isActive(),
                                 isNotDeleted()
                         )
-                ).with(new Sort(Direction.ASC, "TAG")),
+                ).with(new Sort(ASC, "TAG")),
                 ExpenseTagEntity.class,
                 TABLE
         );
@@ -93,12 +94,7 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId) {
-        Query query = query(
-                where("id").is(new ObjectId(expenseTypeId))
-                        .andOperator(
-                                where("USER_PROFILE_ID").is(userProfileId)
-                        )
-                );
+        Query query = query(where("id").is(new ObjectId(expenseTypeId)).and("USER_PROFILE_ID").is(userProfileId));
         Update update = update("A", changeTo);
 
         //TODO try using writeResult to check for condition

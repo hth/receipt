@@ -113,7 +113,7 @@ public final class ItemManagerImpl implements ItemManager {
      */
     @Override
     public ItemEntity findItem(String itemId, String userProfileId) {
-        Query query = query(where("id").is(itemId).andOperator(where("USER_PROFILE_ID").is(userProfileId)));
+        Query query = query(where("id").is(itemId).and("USER_PROFILE_ID").is(userProfileId));
         return mongoTemplate.findOne(query, ItemEntity.class, TABLE);
     }
 
@@ -175,11 +175,13 @@ public final class ItemManagerImpl implements ItemManager {
     @Override
     public List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId) {
         if(itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
-            Criteria criteriaA = where("NAME").is(itemEntity.getName());
-            Criteria criteriaB = where("USER_PROFILE_ID").is(userProfileId);
+            Criteria criteria = where("NAME").is(itemEntity.getName())
+                    .and("USER_PROFILE_ID").is(userProfileId)
+                    .andOperator(
+                            isNotDeleted()
+                    );
 
-            Query query = query(criteriaA.andOperator(criteriaB.andOperator(isNotDeleted())));
-            return mongoTemplate.find(query, ItemEntity.class, TABLE);
+            return mongoTemplate.find(query(criteria), ItemEntity.class, TABLE);
         } else {
             log.error("One of the query is trying to get items for different User Profile Id: " + userProfileId + ", Item Id: " + itemEntity.getId());
             return new LinkedList<>();
