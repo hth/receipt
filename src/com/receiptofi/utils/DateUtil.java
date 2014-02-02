@@ -128,6 +128,10 @@ public final class DateUtil {
         return now().toDateMidnight().toDate().toString();
     }
 
+    public static DateTime startOfYear() {
+        return now().withMonthOfYear(1).withDayOfMonth(1).withTimeAtStartOfDay();
+    }
+
     /**
      * Gets the current duration of the process
      * @param start
