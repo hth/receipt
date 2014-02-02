@@ -30,11 +30,11 @@ public final class ItemService {
     }
 
     public List<ItemEntity> itemsForExpenseType(ExpenseTagEntity expenseTagEntity) {
-        return itemManager.getItemEntitiesForSpecificExpenseType(expenseTagEntity);
+        return itemManager.getItemEntitiesForSpecificExpenseTypeForTheYear(expenseTagEntity);
     }
 
     public List<ItemEntity> itemsForUnAssignedExpenseType(String userProfileId) {
-        return itemManager.getItemEntitiesForUnAssignedExpenseType(userProfileId);
+        return itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(userProfileId);
     }
 
     /**
@@ -43,7 +43,7 @@ public final class ItemService {
      * @param profileId
      * @return
      */
-    public Map<String, BigDecimal> getAllItemExpense(String profileId) {
+    public Map<String, BigDecimal> getAllItemExpenseForTheYear(String profileId) {
         Map<String, BigDecimal> expenseItems = new HashMap<>();
         BigDecimal netSum = BigDecimal.ZERO;
 
@@ -53,7 +53,7 @@ public final class ItemService {
 
             BigDecimal sum = BigDecimal.ZERO;
             //Todo this query take a long time. Optimize it. Almost 150ms through this loop
-            List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseType(expenseTagEntity);
+            List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseTypeForTheYear(expenseTagEntity);
             sum = calculateSum(sum, items);
             netSum = Maths.add(netSum, sum);
             expenseItems.put(expenseTagEntity.getTagName(), sum);
@@ -93,7 +93,7 @@ public final class ItemService {
      * @return
      */
     private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String profileId) {
-        List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseType(profileId);
+        List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(profileId);
         if(unassignedItems.size() > 0) {
             BigDecimal sum = calculateSum(BigDecimal.ZERO, unassignedItems);
             netSum = Maths.add(netSum, sum);

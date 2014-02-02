@@ -109,8 +109,8 @@ public final class LandingService {
         return receiptManager.getAllObjectsGroupedByDate(profileId);
     }
 
-    public Map<String, BigDecimal> getAllItemExpense(String profileId) {
-        return itemService.getAllItemExpense(profileId);
+    public Map<String, BigDecimal> getAllItemExpenseForTheYear(String profileId) {
+        return itemService.getAllItemExpenseForTheYear(profileId);
     }
 
     public List<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
@@ -240,7 +240,7 @@ public final class LandingService {
      * @param modelAndView
      */
     public void computeYearToDateExpense(String userProfileId, ModelAndView modelAndView) {
-        List<ReceiptEntity> receipts = getAllReceiptsForTheYear(userProfileId, DateUtil.now().withMonthOfYear(1).withDayOfMonth(1).withTimeAtStartOfDay());
+        List<ReceiptEntity> receipts = getAllReceiptsForTheYear(userProfileId, DateUtil.startOfYear());
         computeToDateExpense(modelAndView, receipts);
     }
 
