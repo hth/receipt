@@ -58,7 +58,7 @@ public class ItemEntityOCR extends BaseEntity {
     private BizNameEntity bizName;
 
     @DBRef
-    @Field("EXPENSE_TYPE")
+    @Field("EXP_R")
     private ExpenseTagEntity expenseTag;
 
 	/** To keep spring happy in recreating the bean from form during submit action */

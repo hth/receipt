@@ -71,7 +71,7 @@ public class ItemEntity extends BaseEntity {
     private BizNameEntity bizName;
 
     @DBRef
-    @Field("EXPENSE_TYPE")
+    @Field("EXP_R")
     private ExpenseTagEntity expenseTag;
 
 	public ItemEntity() {}
