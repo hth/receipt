@@ -17,6 +17,12 @@ public interface ExpenseTypeManager extends RepositoryManager<ExpenseTagEntity> 
 
     List<ExpenseTagEntity> allExpenseTypes(String userProfileId);
 
+    /**
+     * Gets all active expense tag
+     *
+     * @param userProfileId
+     * @return
+     */
     List<ExpenseTagEntity> activeExpenseTypes(String userProfileId);
 
     void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId);

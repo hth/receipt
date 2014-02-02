@@ -1,7 +1,6 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.repository.util.AppendAdditionalFields;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,7 @@ import java.util.List;
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.domain.Sort.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -70,26 +70,35 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
 
     @Override
     public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
-        Query query = query(where("USER_PROFILE_ID").is(userProfileId));
-        Sort sort = new Sort(Sort.Direction.ASC, "TAG");
-
-        return mongoTemplate.find(query.with(sort), ExpenseTagEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("USER_PROFILE_ID").is(userProfileId)).with(new Sort(Direction.ASC, "TAG")),
+                ExpenseTagEntity.class,
+                TABLE
+        );
     }
 
     @Override
     public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
-        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
-        Query query = query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
-        Sort sort = new Sort(Sort.Direction.ASC, "TAG");
-
-        return mongoTemplate.find(query.with(sort), ExpenseTagEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("USER_PROFILE_ID").is(userProfileId)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(Direction.ASC, "TAG")),
+                ExpenseTagEntity.class,
+                TABLE
+        );
     }
 
     @Override
     public void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId) {
-        Criteria criteria1 = where("id").is(new ObjectId(expenseTypeId));
-        Criteria criteria2 = where("USER_PROFILE_ID").is(userProfileId);
-        Query query = query(criteria1).addCriteria(criteria2);
+        Query query = query(
+                where("id").is(new ObjectId(expenseTypeId))
+                        .andOperator(
+                                where("USER_PROFILE_ID").is(userProfileId)
+                        )
+                );
         Update update = update("A", changeTo);
 
         //TODO try using writeResult to check for condition
