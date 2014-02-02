@@ -15,6 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 5/13/13
  * Time: 7:47 PM
  */
+
+/** As reference field : ET_R */
 @Document(collection = "EXPENSE_TAG")
 @CompoundIndexes(value = {
         @CompoundIndex(name = "expense_tag_idx",    def = "{'USER_PROFILE_ID': 1, 'TAG': 1}",  unique=true),
