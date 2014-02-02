@@ -80,10 +80,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
         Criteria criteriaA = new Criteria();
         if(StringUtils.isNotEmpty(bizAddress)) {
-            criteriaA.andOperator(where("ADDRESS").regex(bizAddress, "i"));
+            criteriaA.and("ADDRESS").regex(bizAddress, "i");
         }
         if(StringUtils.isNotEmpty(bizPhone)) {
-            criteriaA.andOperator(where("PHONE").regex(bizPhone, "i"));
+            criteriaA.and("PHONE").regex(bizPhone, "i");
         }
 
         if(bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
