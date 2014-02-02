@@ -9,11 +9,12 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Date;
 
+import static org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import org.joda.time.DateTime;
 
