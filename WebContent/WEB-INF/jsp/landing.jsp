@@ -1286,7 +1286,7 @@
                 text: 'Expense Share'
             },
             subtitle: {
-                text: 'For 2013'
+                text: 'For ${landingForm.receiptForMonth.year}'
             },
             tooltip: {
                 formatter: function () {

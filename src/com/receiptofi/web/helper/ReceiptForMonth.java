@@ -28,6 +28,10 @@ public final class ReceiptForMonth {
         return monthYear;
     }
 
+    public String getYear() {
+        return monthYear.substring(5, monthYear.length());
+    }
+
     public void setMonthYear(String monthYear) {
         this.monthYear = monthYear;
     }
