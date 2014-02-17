@@ -1,0 +1,2 @@
+sudo visudo
+db ALL=(ALL) ALL
