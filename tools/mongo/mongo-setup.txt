@@ -11,7 +11,8 @@ Unzip it. Unzip using mac tool or on your favourite shell
 	tar xzf mongodb-osx-x86_64-2.4.6.tgz
 
 Rename the unzipped folder to mongodb
-	sudo mv ~/Downloads/mongodb /usr/local
+	sudo mkdir /usr/local/mongodb
+	sudo mv ~/Downloads/mongodb /usr/local/mongodb
 
 Create folder to hold data. Mongo stores data to default location ‘/data/db’. Don’t forget to set the permission. Prefer creating a user that has access to MongoDB and can start and stop MongoDB. Use this user to set as username for ‘/data/db’
 	sudo mkdir -p /data/db
@@ -34,7 +35,7 @@ Restart shell and type to confirm if mongo is working
 
 STEP II
 
-For auto start MongoDB
+For auto start MongoDB (sudo chown db)
 	sudo touch /Library/LaunchDaemons/mongodb.plist
 	sudo vim /Library/LaunchDaemons/mongodb.plist
 
@@ -76,52 +77,53 @@ For auto start MongoDB
     	</dict>
  	</plist>
 
-Create mongod.conf file
+Create mongod.conf  (sudo chown db)
 	sudo touch /etc/mongod.conf
 	sudo vim /etc/mongod.conf
 
 	Save the file with following contents in mongod.conf
 		# Store data at default /data/db
-		dbpath = /data/db
+        dbpath = /data/db
 
-		# Append logs to /var/log/mongodb/mongo.log
-		logpath = /var/log/mongodb/mongo.log
-		logappend = true
+        # Append logs to /var/log/mongodb/mongo.log
+        logpath = /var/log/mongodb/mongo.log
+        logappend = true
 
-		# Run as conventional database
-		fork = true
+        # Run as conventional database. true enables daemon mode.
+        fork = true
 
-		# 25GB oplog size;
-		oplogSize=25600
+        # 25GB oplog size;
+        oplogSize=25600
 
-		# Only accept local connections. Note: This did not work, hence commented. Currently listens to all the interfaces.
-		#bind_ip = 127.0.0.1,192.168.1.60,192.168.1.69,192.168.1.71,192.168.1.67
+        # Only accept local connections. Note: This did not work, hence commented. Currently listens to all the interfaces.
+        #bind_ip = 127.0.0.1,192.168.1.60,192.168.1.69,192.168.1.71,192.168.1.67
 
-		# Choose a name for your replica set; make sure its consistent
-		replSet = flab
+        # Choose a name for your replica set; make sure its consistent
+        replSet = flab
 
-		# Diagnostic Configurations
-		# http://docs.mongodb.org/manual/administration/configuration/
+        # Diagnostic Configurations
+        # http://docs.mongodb.org/manual/administration/configuration/
 
-		# Profiles if query is slower than 50ms; default is 100ms
-		slowms = 50
+        # Profiles if query is slower than 50ms; default is 100ms
+        slowms = 50
 
-		# Profile the query; sets the level to profile
-		profile = 3
+        # Profile the query; sets the level to profile. Currently list only slow performing query.
+        profile = 1
 
-		# Verbose for logging; currently turned off; switch on when there are real issues
-		#verbose = true
+        # Verbose for logging; currently turned off; switch on when there are real issues
+        verbose = false
 
-		#Level 3 logs all read and write operations
-		diaglog = 3
+        #Level 3 logs all read and write operations
+        diaglog = 3
 
-		# Forces all request to be validated. Don`t use in production as this can cause performance issue. Use only when in untrusted environment.
-		#objcheck = true
+        # Forces all request to be validated. Don`t use in production as this can cause performance issue. Use only when in untrusted environment.
+        objcheck = false
 
-		# Profile cpu
-		cpu = true
+        # Profile cpu
+        cpu = false
 
-Now reload/load the above by typing
+
+Now reload/load the above by typing (do not sudo chown db for this one)
 	sudo launchctl unload /Library/LaunchDaemons/mongodb.plist
 	sudo launchctl load /Library/LaunchDaemons/mongodb.plist
 
