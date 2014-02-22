@@ -30,9 +30,14 @@ import com.mongodb.WriteResult;
 public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 	private static final long serialVersionUID = -4805176857358849811L;
 
-	@Autowired private MongoTemplate mongoTemplate;
+	private MongoTemplate mongoTemplate;
 
-	@Override
+    @Autowired
+    public UserPreferenceManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
 	public List<UserPreferenceEntity> getAllObjects() {
 		return mongoTemplate.findAll(UserPreferenceEntity.class, TABLE);
 	}

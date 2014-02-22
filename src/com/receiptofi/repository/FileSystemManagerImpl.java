@@ -15,6 +15,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
 
@@ -22,6 +23,7 @@ import com.mongodb.WriteResult;
  * User: hitender
  * Date: 12/23/13 9:21 PM
  */
+@Repository
 public final class FileSystemManagerImpl implements FileSystemManager {
     private static final Logger log = LoggerFactory.getLogger(FileSystemManagerImpl.class);
 

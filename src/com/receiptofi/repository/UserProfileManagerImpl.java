@@ -39,7 +39,12 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	private static final long serialVersionUID = 7078530488197339683L;
 	private static final Logger log = LoggerFactory.getLogger(UserProfileManagerImpl.class);
 
-	@Autowired private MongoTemplate mongoTemplate;
+	private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public UserProfileManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
 	@Override
 	public List<UserProfileEntity> getAllObjects() {

@@ -35,7 +35,12 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 
 	private static final long serialVersionUID = 5745317401200234475L;
 
-	@Autowired private MongoTemplate mongoTemplate;
+	private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public UserAuthenticationManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
 	@Override
 	public List<UserAuthenticationEntity> getAllObjects() {
