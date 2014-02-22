@@ -26,7 +26,12 @@ import com.mongodb.WriteResult;
 @Repository
 public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public ForgotRecoverManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public List<ForgotRecoverEntity> getAllObjects() {
