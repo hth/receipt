@@ -22,7 +22,7 @@
 
     <!-- Only on build machine -->
     <target name="check-pass-properties">
-        <available file="/Users/jenkins/Documents/receiptofi-additional-files/pass.properties" property="properties.present"/>
+        <available file="/Users/jenkins/receiptofi-additional-files/pass.properties" property="properties.present"/>
     </target>
 
     <!-- TODO http://alvinalexander.com/blog/post/java/sample-cobertura-ant-build-script -->
