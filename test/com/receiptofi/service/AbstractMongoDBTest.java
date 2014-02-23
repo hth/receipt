@@ -1,8 +1,5 @@
 package com.receiptofi.service;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
@@ -22,11 +19,14 @@ import org.junit.BeforeClass;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import com.mongodb.DB;
+import com.mongodb.Mongo;
+
 /**
  * User: hitender
  * Date: 2/19/14 11:51 PM
  */
-public abstract class AbstractMongoDbTest {
+public abstract class AbstractMongoDBTest {
     private static final class BasicExecutableNaming implements ITempNaming {
         @Override
         public String nameFor(String prefix, String postfix) {
@@ -87,7 +87,7 @@ public abstract class AbstractMongoDbTest {
     }
 
     public MongoTemplate createDatastore(Class clazz) {
-       return createDatastore(clazz, "receiptofi-test");
+        return createDatastore(clazz, "receiptofi-test");
     }
 
     protected MongoTemplate getMongoTemplate() {

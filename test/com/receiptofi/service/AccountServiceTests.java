@@ -30,7 +30,7 @@ import com.mongodb.util.JSON;
  * Date: 2/19/14 11:21 PM
  */
 @RunWith(MockitoJUnitRunner.class)
-public class AccountServiceTest extends AbstractMongoDbTest {
+public class AccountServiceTests extends AbstractMongoDBTest {
 
     private String userProfileCollectionName = "USER_PROFILE";
     private DBCollection userProfileCollection;
