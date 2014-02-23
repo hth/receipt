@@ -97,10 +97,10 @@ public class AccountServiceTests extends AbstractMongoDBTest {
     @After
     public void afterTest() {
         userProfileCollection.drop();
+        assertThat(userProfileCollection.getCount(), equalTo(0L));
     }
 
     private void populateUserProfileCollection() {
-        assertThat(userProfileCollection.getCount(), equalTo(0L));
         for(String jsonOfUserProfile : USER_PROFILE_DATA) {
             DBObject dbObject = (DBObject) JSON.parse(jsonOfUserProfile);
             userProfileCollection.save(dbObject);
