@@ -7,12 +7,12 @@
 
     <property name="src.dir"                    value="src" />
     <property name="web.dir"                    value="WebContent" />
+    <property name="build.dir"                  value="${web.dir}/WEB-INF/classes" />
     <property name="test.dir"                   value="test" />
     <property name="resources.dir"              value="resources" />
     <property name="resources.conf.dir"         value="${resources.dir}/conf" />
     <property name="resources.conf.prod.dir"    value="${resources.conf.dir}/production" />
     <property name="prod.ready.dir"             value="production_ready" />
-    <property name="build.dir"                  value="${prod.ready.dir}/WEB-INF/classes" />
     <property name="prod.ready.classes.dir"     value="${prod.ready.dir}/WEB-INF/classes" />
     <property name="prod.ready.lib.dir"         value="${prod.ready.dir}/WEB-INF/lib" />
     <property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
@@ -44,7 +44,7 @@
         <fileset dir="${appserver.lib}">
             <include name="servlet*.jar" />
         </fileset>
-        <pathelement path="${build.dir}" />
+        <pathelement path="${prod.ready.classes.dir}" />
     </path>
 
     <target name="usage">
