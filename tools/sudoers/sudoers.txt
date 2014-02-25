@@ -1,2 +1,0 @@
-sudo visudo   (Execute this command)
-db ALL=(ALL) ALL
