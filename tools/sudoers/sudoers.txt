@@ -1,0 +1,3 @@
+sudo visudo   (Execute this command)
+And then add the following line for the user
+db ALL=(ALL) ALL
