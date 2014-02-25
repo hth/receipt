@@ -31,10 +31,10 @@ import org.joda.time.DateTime;
 public final class AccountService {
     private static final Logger log = LoggerFactory.getLogger(AccountService.class);
 
-    @Autowired private UserAuthenticationManager userAuthenticationManager;
-    @Autowired private UserProfileManager userProfileManager;
-    @Autowired private UserPreferenceManager userPreferenceManager;
-    @Autowired private ForgotRecoverManager forgotRecoverManager;
+    private UserAuthenticationManager userAuthenticationManager;
+    private UserProfileManager userProfileManager;
+    private UserPreferenceManager userPreferenceManager;
+    private ForgotRecoverManager forgotRecoverManager;
 
     //TODO remove this
     @Value("${grandPassword}")
@@ -42,6 +42,19 @@ public final class AccountService {
 
     @Value("${domain}")
     private String domain;
+
+    @Autowired
+    public AccountService(
+            UserAuthenticationManager userAuthenticationManager,
+            UserProfileManager userProfileManager,
+            UserPreferenceManager userPreferenceManager,
+            ForgotRecoverManager forgotRecoverManager) {
+
+        this.userAuthenticationManager = userAuthenticationManager;
+        this.userProfileManager = userProfileManager;
+        this.userPreferenceManager = userPreferenceManager;
+        this.forgotRecoverManager = forgotRecoverManager;
+    }
 
     public UserProfileEntity findIfUserExists(String emailId) {
         return userProfileManager.findOneByEmail(emailId);

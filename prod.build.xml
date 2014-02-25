@@ -29,7 +29,7 @@
 
     <!-- Only on build machine -->
     <target name="check-pass-properties">
-        <available file="/Users/jenkins/Documents/receiptofi-additional-files/pass.properties" property="properties.present"/>
+        <available file="/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties" property="properties.present"/>
     </target>
 
     <!-- TODO http://alvinalexander.com/blog/post/java/sample-cobertura-ant-build-script -->
@@ -39,12 +39,12 @@
             <include name="*.jar" />
         </fileset>
         <!-- We need the servlet API classes: -->
-        <!-- * for Tomcat 5/6 use servlet-api.jar -->
+        <!-- * for Tomcat 5/6/7/8 use servlet-api.jar -->
         <!-- * for other app servers - check the docs -->
         <fileset dir="${appserver.lib}">
             <include name="servlet*.jar" />
         </fileset>
-        <pathelement path="${build.dir}" />
+        <pathelement path="${prod.ready.classes.dir}" />
     </path>
 
     <target name="usage">
@@ -257,8 +257,8 @@
     <!-- ============================================================== -->
 
     <target name="buildtests" description="Compile test tree java files">
-        <mkdir dir="${build.dir}" />
-        <javac destdir="${build.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+        <mkdir dir="${prod.ready.classes.dir}" />
+        <javac destdir="${prod.ready.classes.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
             <src path="${test.dir}" />
             <classpath refid="master-classpath" />
         </javac>
@@ -270,7 +270,7 @@
             <formatter type="brief" usefile="false" />
 
             <batchtest>
-                <fileset dir="${build.dir}">
+                <fileset dir="${prod.ready.classes.dir}">
                     <include name="**/*Tests.*" />
                 </fileset>
             </batchtest>
