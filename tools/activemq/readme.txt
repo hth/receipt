@@ -1,5 +1,7 @@
 Download activemq
 unzip
+note: chown root:wheel (always root)
+
 
 sudo mv ~/Downloads/apache-activemq-5.8.0 /usr/local/
 sudo ln -s /usr/local/apache-activemq-5.8.0 /Library/ActiveMQ

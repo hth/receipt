@@ -18,9 +18,9 @@
         <key>WorkingDirectory</key>
         <string>/usr/local/mongodb</string>
         <key>StandardErrorPath</key>
-        <string>/var/log/mongodb/error.log</string>
+        <string>/var/log/receiptofi/mongodb/error.log</string>
         <key>StandardOutPath</key>
-        <string>/var/log/mongodb/output.log</string>
+        <string>/var/log/receiptofi/mongodb/output.log</string>
         <key>HardResourceLimits</key>
         <dict>
             <key>NumberOfFiles</key>
