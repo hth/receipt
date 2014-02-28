@@ -9,6 +9,7 @@ STEP I
 Download mongo from official site
 Unzip it. Unzip using mac tool or on your favourite shell
 	tar xzf mongodb-osx-x86_64-2.4.6.tgz
+	mv mong* mongodb
 
 Rename the unzipped folder to mongodb
 	sudo mkdir /usr/local/mongodb
@@ -16,7 +17,7 @@ Rename the unzipped folder to mongodb
 
 Create folder to hold data. Mongo stores data to default location ‘/data/db’. Don’t forget to set the permission. Prefer creating a user that has access to MongoDB and can start and stop MongoDB. Use this user to set as username for ‘/data/db’
 	sudo mkdir -p /data/db
-	sudo chown yourusername /data/db
+	sudo chown yourusername:staff /data/db
 
 Create folder for logging MongoDB messages. This is defined later in ‘mongod.conf’
 	sudo mkdir -p /var/log/mongodb

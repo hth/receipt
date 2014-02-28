@@ -17,9 +17,9 @@
         <key>ServiceDescription</key>
         <string>Receiptofi IPFW Filter Rules</string>
         <key>StandardErrorPath</key>
-        <string>/var/log/ipfw.receiptofi.stderr</string>
+        <string>/var/log/receiptofi/firewall/ipfw.stderr.log</string>
         <key>StandardOutPath</key>
-        <string>/var/log/ipfw.receiptofi.stdout</string>
+        <string>/var/log/receiptofi/firewall/ipfw.stdout.log</string>
         <key>UserName</key>
         <string>root</string>
     </dict>

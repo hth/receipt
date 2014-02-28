@@ -37,6 +37,9 @@ In the file - Adding 3rd Party Info to Certificate -
 
 3.	In server.xml point the 'keyStoreFile' attribute to the location of  'domain_keystore.jks' file and provide the password.
 
+4. Don't forget to add the receiptofi.com to hosts file with ip address
+example
+    192.168.XXX.XXX	receiptofi.com
 
 In server.xml there is no need to set the alias as 'tomcat'. Tomcat considered to be default.
 

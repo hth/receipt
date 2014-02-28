@@ -1,8 +1,8 @@
 # Store data at default /data/db
 dbpath = /data/db
 
-# Append logs to /var/log/mongodb/mongo.log
-logpath = /var/log/mongodb/mongo.log
+# Append logs to /var/log/receiptofi/mongodb/mongo.log
+logpath = /var/log/receiptofi/mongodb/mongo.log
 logappend = true
 
 # Run as conventional database
@@ -23,8 +23,8 @@ replSet = flab
 # Profiles if query is slower than 50ms; default is 100ms
 slowms = 50
 
-# Profile the query; sets the level to profile
-profile = 3
+# Profile the query; sets the level to profile. Currently list only slow performing query.
+profile = 1
 
 # Verbose for logging; currently turned off; switch on when there are real issues
 #verbose = true

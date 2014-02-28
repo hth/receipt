@@ -20,9 +20,9 @@
         <key>ServiceDescription</key>
         <string>Receiptofi ActiveMQ</string>
         <key>StandardErrorPath</key>
-        <string>/var/log/activemq.receiptofi.stderr</string>
+        <string>/var/log/receiptofi/activemq/activemq.stderr.log</string>
         <key>StandardOutPath</key>
-        <string>/var/log/activemq.receiptofi.stdout</string>
+        <string>/var/log/receiptofi/activemq/activemq.stdout.log</string>
         <key>UserName</key>
         <string>db</string>
     </dict>
