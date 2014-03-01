@@ -9,6 +9,9 @@
 ::1             localhost
 fe80::1%lo0     localhost
 
+#for tomcat server
+192.168.XXX.XXX receiptofi.com
+
 #Mongo Servers
 192.168.1.60    m2
 192.168.1.60    ofi2

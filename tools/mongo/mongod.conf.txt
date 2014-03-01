@@ -36,4 +36,4 @@ diaglog = 3
 #objcheck = true
 
 # Profile cpu
-cpu = true
+cpu = false
