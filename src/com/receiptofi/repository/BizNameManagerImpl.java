@@ -14,8 +14,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -50,8 +48,8 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     @Override
-    public BizNameEntity findOneByName(String name) {
-        Criteria criteria = where("NAME").is(name);
+    public BizNameEntity findOneByName(String businessName) {
+        Criteria criteria = where("N").is(businessName);
         return mongoTemplate.findOne(query(criteria), BizNameEntity.class, TABLE);
     }
 
@@ -67,17 +65,17 @@ public final class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public BizNameEntity noName() {
-        return mongoTemplate.findOne(query(where("NAME").is("")), BizNameEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("N").is("")), BizNameEntity.class, TABLE);
     }
 
     @Override
-    public List<BizNameEntity> findAllBiz(String bizName) {
-        return mongoTemplate.find(query(where("NAME").regex("^" + bizName, "i")), BizNameEntity.class, TABLE);
+    public List<BizNameEntity> findAllBiz(String businessName) {
+        return mongoTemplate.find(query(where("N").regex("^" + businessName, "i")), BizNameEntity.class, TABLE);
     }
 
-    public Set<String> findAllDistinctBizStr(String bizName) {
+    public Set<String> findAllDistinctBizStr(String businessName) {
         Set<String> set = new HashSet<>();
-        for (BizNameEntity bizNameEntity : findAllBiz(bizName)) {
+        for (BizNameEntity bizNameEntity : findAllBiz(businessName)) {
             set.add(bizNameEntity.getName());
         }
         return set;

@@ -19,26 +19,26 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     BizNameEntity noName();
 
     /**
-     * Find one Biz Name for the supplied value for the column name
+     * Find one Biz Name for the supplied value for the column businessName
      *
-     * @param name
+     * @param businessName
      * @return
      */
-    BizNameEntity findOneByName(String name);
+    BizNameEntity findOneByName(String businessName);
 
     /**
-     * Find all the Business with name
+     * Find all the Business with businessName
      *
-     * @param bizName
+     * @param businessName
      * @return
      */
-    List<BizNameEntity> findAllBiz(String bizName);
+    List<BizNameEntity> findAllBiz(String businessName);
 
     /**
-     * Find all the Business with name. Mostly used for Ajax call listing.
+     * Find all the Business with businessName. Mostly used for Ajax call listing.
      *
-     * @param bizName
+     * @param businessName
      * @return
      */
-    Set<String> findAllDistinctBizStr(String bizName);
+    Set<String> findAllDistinctBizStr(String businessName);
 }
