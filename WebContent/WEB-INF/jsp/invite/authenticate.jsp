@@ -49,7 +49,7 @@
             <form:hidden path="forgotAuthenticateForm.authenticationKey" />
             <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
                 <tr>
-                    <td style="text-align: right; width: 19%">Email Address:</td>
+                    <td style="text-align: right; width: 19%">Login Id:</td>
                     <td style="width: 30%">${inviteAuthenticateForm.emailId}</td>
                     <td style="width: 51%">&nbsp;</td>
                 </tr>

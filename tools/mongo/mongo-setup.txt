@@ -13,14 +13,14 @@ Unzip it. Unzip using mac tool or on your favourite shell
 
 Rename the unzipped folder to mongodb
 	sudo mkdir /usr/local/mongodb
-	sudo mv ~/Downloads/mongodb /usr/local/mongodb
+	sudo mv ~/Downloads/mongodb /usr/local/
 
 Create folder to hold data. Mongo stores data to default location ‘/data/db’. Don’t forget to set the permission. Prefer creating a user that has access to MongoDB and can start and stop MongoDB. Use this user to set as username for ‘/data/db’
 	sudo mkdir -p /data/db
 	sudo chown yourusername:staff /data/db
 
 Create folder for logging MongoDB messages. This is defined later in ‘mongod.conf’
-	sudo mkdir -p /var/log/mongodb
+	sudo mkdir -p /var/log/receiptofi/mongodb
 
 Create/update .bash_profile
 	touch ~/.bash_profile
@@ -38,49 +38,49 @@ STEP II
 
 For auto start MongoDB (sudo chown db)
 	sudo touch /Library/LaunchDaemons/mongodb.plist
-	sudo vim /Library/LaunchDaemons/mongodb.plist
+	sudo nano /Library/LaunchDaemons/mongodb.plist
 
 	Add the following in the above file
 
 	<?xml version="1.0" encoding="UTF-8"?>
- 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
- 	<plist version="1.0">
-    	<dict>
-        	<key>Label</key>
-        	<string>mongodb</string>
-        	<key>ProgramArguments</key>
-        	<array>
-            	<string>/usr/local/mongodb/bin/mongod</string>
-            	<string>run</string>
-            	<string>--config</string>
-            	<string>/etc/mongod.conf</string>
-        	</array>
-        	<key>RunAtLoad</key>
-        	<true/>
-        	<key>KeepAlive</key>
-        	<true/>
-        	<key>WorkingDirectory</key>
-        	<string>/usr/local/mongodb</string>
-        	<key>StandardErrorPath</key>
-        	<string>/var/log/mongodb/error.log</string>
-        	<key>StandardOutPath</key>
-        	<string>/var/log/mongodb/output.log</string>
-        	<key>HardResourceLimits</key>
-        	<dict>
-           		<key>NumberOfFiles</key>
-           		<integer>1024</integer>
-        	</dict>
-        	<key>SoftResourceLimits</key>
-        	<dict>
-            	<key>NumberOfFiles</key>
-            	<integer>1024</integer>
-        	</dict>
-    	</dict>
- 	</plist>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+        <dict>
+            <key>Label</key>
+            <string>mongodb</string>
+            <key>ProgramArguments</key>
+            <array>
+                <string>/usr/local/mongodb/bin/mongod</string>
+                <string>run</string>
+                <string>--config</string>
+                <string>/etc/mongod.conf</string>
+            </array>
+            <key>RunAtLoad</key>
+            <true/>
+            <key>KeepAlive</key>
+            <true/>
+            <key>WorkingDirectory</key>
+            <string>/usr/local/mongodb</string>
+            <key>StandardErrorPath</key>
+            <string>/var/log/receiptofi/mongodb/error.log</string>
+            <key>StandardOutPath</key>
+            <string>/var/log/receiptofi/mongodb/output.log</string>
+            <key>HardResourceLimits</key>
+            <dict>
+                <key>NumberOfFiles</key>
+                <integer>1024</integer>
+            </dict>
+            <key>SoftResourceLimits</key>
+            <dict>
+                <key>NumberOfFiles</key>
+                <integer>1024</integer>
+            </dict>
+        </dict>
+    </plist>
 
 Create mongod.conf  (sudo chown db)
 	sudo touch /etc/mongod.conf
-	sudo vim /etc/mongod.conf
+	sudo nano /etc/mongod.conf
 
 	Save the file with following contents in mongod.conf
 		# Store data at default /data/db
