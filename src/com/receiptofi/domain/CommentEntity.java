@@ -26,10 +26,10 @@ public class CommentEntity extends BaseEntity {
     private static final int TEXT_LENGTH = 250;
 
     @Size(min = 0, max = TEXT_LENGTH)
-    @Field("TEXT")
+    @Field("T")
     private String text;
 
-    @Field("COMMENT_TYPE")
+    @Field("CT_E")
     private CommentTypeEnum commentType;
 
     public CommentEntity() {}
