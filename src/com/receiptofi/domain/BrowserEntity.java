@@ -24,15 +24,15 @@ public class BrowserEntity extends BaseEntity {
 
     @NotNull
     @Field("IP")
-    private String ip;
+    private String ipAddress;
 
     @NotNull
     @Field("UA")
     private String userAgent;
 
-    private BrowserEntity(String cookieId, String ip, String userAgent) {
+    private BrowserEntity(String cookieId, String ipAddress, String userAgent) {
         this.cookieId = cookieId;
-        this.ip = ip;
+        this.ipAddress = ipAddress;
         this.userAgent = userAgent;
     }
 
@@ -48,12 +48,12 @@ public class BrowserEntity extends BaseEntity {
         this.cookieId = cookieId;
     }
 
-    public String getIp() {
-        return ip;
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public String getUserAgent() {
