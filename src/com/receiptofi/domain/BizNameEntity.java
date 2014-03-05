@@ -18,13 +18,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "BIZ_NAME")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_name_idx", def = "{'NAME': 1}",  unique = true),
+        @CompoundIndex(name = "biz_name_idx", def = "{'N': 1}",  unique = true),
 } )
 public class BizNameEntity extends BaseEntity {
 
     @NotNull
     @Size(min = 0, max = 60)
-    @Field("NAME")
+    @Field("N")
     private String name;
 
     /* To make bean happy */
