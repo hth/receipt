@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class BrowserEntity extends BaseEntity {
 
     @NotNull
-    @Field("C")
+    @Field("CK")
     private String cookieId;
 
     @NotNull
