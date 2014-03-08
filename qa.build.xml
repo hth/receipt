@@ -99,7 +99,7 @@
             </fileset>
         </copy>
         <propertyfile file="${prod.ready.classes.dir}/messages.properties">
-            <entry key="build.version" value="qa-${env.BUILD_NUMBER}"/>
+            <entry key="build.version" value="QA-${env.BUILD_NUMBER}"/>
         </propertyfile>
     </target>
 
