@@ -7,7 +7,6 @@
     <filter>
         <filter-name>monitoring</filter-name>
         <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
-        <!-- really do I need async ? -->
         <async-supported>true</async-supported>
         <init-param>
             <param-name>allowed-addr-pattern</param-name>

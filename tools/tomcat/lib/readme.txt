@@ -6,7 +6,7 @@ component for Tomcat
 
 If you want to configure Tomcat to use log4j globally:
 
-Put log4j.jar and tomcat-juli-adapters.jar from "extras" into $CATALINA_HOME/lib.
+Put from local/lib log4j.jar and tomcat-juli-adapters.jar from "extras" into $CATALINA_HOME/lib.
 Replace $CATALINA_HOME/bin/tomcat-juli.jar with tomcat-juli.jar from "extras".
 
 Delete $CATALINA_BASE/conf/logging.properties to prevent java.util.logging generating zero length log files.
