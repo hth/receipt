@@ -38,7 +38,7 @@ public final class LoginService {
                 browserManager.save(browserEntity);
             }
         } catch(Exception e) {
-            log.error("Moving on. Omitting this error message: " + e.getLocalizedMessage());
+            log.error("Moving on. Omitting this error={}", e.getLocalizedMessage(), e);
         }
     }
 }
