@@ -28,10 +28,12 @@ public final class BizSearchValidator implements Validator {
         log.info("Executing validation for new bizForm");
 
         BizForm bizForm = (BizForm) obj;
-        if(StringUtils.isEmpty(bizForm.getName()) && StringUtils.isEmpty(bizForm.getAddress()) && StringUtils.isEmpty(bizForm.getPhone())) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name",       "field.required", new Object[] { "Biz Name" });
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",    "field.required", new Object[] { "Address" });
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone",      "field.required", new Object[] { "Phone" });
+        if(StringUtils.isEmpty(bizForm.getBusinessName()) &&
+                StringUtils.isEmpty(bizForm.getAddress()) &&
+                StringUtils.isEmpty(bizForm.getPhone())) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "businessName",   "field.required", new Object[] { "Biz Name" });
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",        "field.required", new Object[] { "Address" });
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone",          "field.required", new Object[] { "Phone" });
         }
     }
 }

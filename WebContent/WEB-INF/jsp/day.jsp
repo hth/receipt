@@ -103,7 +103,7 @@
                     ${status.count}
                 </td>
                 <td style="padding:3px;">
-                    <spring:eval expression="receipt.bizName.name" />
+                    <spring:eval expression="receipt.bizName.businessName" />
                 </td>
                 <td style="padding:3px;">
                     <fmt:formatDate value="${receipt.receiptDate}" type="both"/>

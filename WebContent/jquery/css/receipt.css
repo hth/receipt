@@ -95,7 +95,7 @@ html, body {
 /* End for Invitation Email Text box */
 
 /* For Biz Search Text box */
-.inputForBizPhone {
+.inputForBusinessPhone {
     width: 140px;
     display: inline;
     height: 18px;
@@ -104,7 +104,7 @@ html, body {
     border: solid 1px gray;
     color: #000000;
 }
-.inputForBizName {
+.inputForBusinessName {
     width: 360px;
     display: inline;
     height: 18px;
@@ -113,7 +113,7 @@ html, body {
     border: solid 1px gray;
     color: #000000;
 }
-.inputForBizAddress {
+.inputForBusinessAddress {
     width: 450px;
     display: inline;
     height: 18px;

@@ -25,7 +25,7 @@ public class BizNameEntity extends BaseEntity {
     @NotNull
     @Size(min = 0, max = 60)
     @Field("N")
-    private String name;
+    private String businessName;
 
     /* To make bean happy */
     public BizNameEntity() {}
@@ -34,18 +34,18 @@ public class BizNameEntity extends BaseEntity {
         return new BizNameEntity();
     }
 
-    public String getName() {
-        return name;
+    public String getBusinessName() {
+        return businessName;
     }
 
     /**
-     * Cannot: Added Capitalize Fully feature to business name as the name has to be matching with business style
+     * Cannot: Added Capitalize Fully feature to business businessName as the businessName has to be matching with business style
      *
-     * @param name
+     * @param businessName
      */
-    public void setName(String name) {
-        //this.name = WordUtils.capitalize(WordUtils.capitalizeFully(StringUtils.strip(name)), '.', '(', ')');
-        this.name = StringUtils.trim(name);
+    public void setBusinessName(String businessName) {
+        //this.businessName = WordUtils.capitalize(WordUtils.capitalizeFully(StringUtils.strip(businessName)), '.', '(', ')');
+        this.businessName = StringUtils.trim(businessName);
     }
 
     /**
@@ -54,6 +54,6 @@ public class BizNameEntity extends BaseEntity {
      * @return
      */
     public String getSafeJSName() {
-        return StringEscapeUtils.escapeEcmaScript(name);
+        return StringEscapeUtils.escapeEcmaScript(businessName);
     }
 }

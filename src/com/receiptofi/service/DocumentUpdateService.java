@@ -100,7 +100,7 @@ public final class DocumentUpdateService {
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
-            sb.append(" '").append(receipt.getBizName().getName()).append("' ");
+            sb.append(" '").append(receipt.getBizName().getBusinessName()).append("' ");
             sb.append("receipt processed");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
@@ -223,7 +223,7 @@ public final class DocumentUpdateService {
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
-            sb.append(" '").append(receipt.getBizName().getName()).append("' ");
+            sb.append(" '").append(receipt.getBizName().getBusinessName()).append("' ");
             sb.append("receipt re-checked");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 

@@ -102,7 +102,7 @@ public class ExpensofiController {
                 ExpensofiExcelView.newInstance().generateExcel(model.asMap(), new HSSFWorkbook());
 
                 updateReceiptWithExcelFilename(receiptEntity, filename);
-                notificationService.addNotification(receiptEntity.getBizName().getName() + " expense report created", NotificationTypeEnum.EXPENSE_REPORT, receiptEntity);
+                notificationService.addNotification(receiptEntity.getBizName().getBusinessName() + " expense report created", NotificationTypeEnum.EXPENSE_REPORT, receiptEntity);
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
                 return new ExcelFileName(filename).asJson();

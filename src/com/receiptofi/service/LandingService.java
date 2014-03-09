@@ -200,7 +200,7 @@ public final class LandingService {
                     }
                 }
 
-                String bizName = StringEscapeUtils.escapeEcmaScript(bizNameEntity.getName());
+                String bizName = StringEscapeUtils.escapeEcmaScript(bizNameEntity.getBusinessName());
                 if(maps.containsKey(bizName)) {
                     Map<String, BigDecimal> mapData = maps.get(bizName);
                     for(String key : itemMaps.keySet()) {

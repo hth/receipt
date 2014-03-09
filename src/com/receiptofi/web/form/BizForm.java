@@ -15,7 +15,7 @@ import com.receiptofi.domain.BizStoreEntity;
  * Time: 11:52 PM
  */
 public final class BizForm {
-    private String name;
+    private String businessName;
     private String address;
     private String phone;
 
@@ -35,12 +35,12 @@ public final class BizForm {
         return new BizForm();
     }
 
-    public String getName() {
-        return name;
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBusinessName(String name) {
+        this.businessName = name;
     }
 
     public String getAddress() {
@@ -75,8 +75,8 @@ public final class BizForm {
         this.addressId = addressId;
     }
 
-    public void setBizName(BizNameEntity bizName) {
-        this.name = bizName.getName();
+    public void setBizNameEntity(BizNameEntity bizName) {
+        this.businessName = bizName.getBusinessName();
         this.nameId = bizName.getId();
     }
 

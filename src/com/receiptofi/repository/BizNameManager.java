@@ -32,7 +32,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
      * @param businessName
      * @return
      */
-    List<BizNameEntity> findAllBiz(String businessName);
+    List<BizNameEntity> findAllBizWithMatchingName(String businessName);
 
     /**
      * Find all the Business with businessName. Mostly used for Ajax call listing.

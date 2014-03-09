@@ -201,7 +201,7 @@ public class ReceiptController extends BaseController {
         ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_BY_BIZ);
         if(userSession != null) {
 
-            List<BizNameEntity> bizNames = bizNameManager.findAllBiz(id);
+            List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(id);
             for(BizNameEntity bizNameEntity : bizNames) {
                 List<ReceiptEntity> receipts = receiptService.findReceipt(bizNameEntity, userSession.getUserProfileId());
                 for(ReceiptEntity receiptEntity : receipts) {

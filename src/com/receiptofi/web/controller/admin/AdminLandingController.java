@@ -55,7 +55,7 @@ public class AdminLandingController {
 
 //            List<UserProfileEntity> users = userProfileManager.getAllObjects();
 //            for(UserProfileEntity userProfileEntity : users) {
-//                log.info(userProfileEntity.getName());
+//                log.info(userProfileEntity.getBusinessName());
 //                List<ReceiptEntity> receipts = receiptManager.getAllReceipts(userProfileEntity.getId());
 //                for(ReceiptEntity receiptEntity : receipts) {
 //                    if(receiptEntity.getReceiptScaledBlobId() == null) {

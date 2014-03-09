@@ -117,7 +117,7 @@ public class FileDownloadController {
     }
 
     private void setHeaderForExcel(ReceiptEntity receiptEntity, HttpServletResponse response) {
-        response.addHeader("Content-Disposition", "inline; filename=" + receiptEntity.getBizName().getName() + "-" + Formatter.toSmallDate(receiptEntity.getReceiptDate()));
+        response.addHeader("Content-Disposition", "inline; filename=" + receiptEntity.getBizName().getBusinessName() + "-" + Formatter.toSmallDate(receiptEntity.getReceiptDate()));
         response.setContentType("application/vnd.ms-excel");
     }
 

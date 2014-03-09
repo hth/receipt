@@ -113,7 +113,7 @@
 			[#assign counter=counter + 1]
 		</td>
 		<td style="padding: 8px; vertical-align: top;">
-			${receipt.bizName.name}
+			${receipt.bizName.businessName}
 		</td>
 		<td style="padding: 8px; vertical-align: top;">
 			${receipt.receiptDate?datetime("yyyy-MM-dd'T'HH:mm:ssXXX")?date}

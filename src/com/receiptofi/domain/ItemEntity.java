@@ -195,7 +195,10 @@ public class ItemEntity extends BaseEntity {
 
 	public void setReceipt(ReceiptEntity receipt) {
 		this.receipt = receipt;
-        this.receiptDate = receipt.getReceiptDate();
+        if(receipt != null && receipt.getReceiptDate() != null) {
+            //receipt null during reflection when just one of the field is populated
+            this.receiptDate = receipt.getReceiptDate();
+        }
 	}
 
     public Date getReceiptDate() {

@@ -51,11 +51,11 @@ public final class BizService {
         bizStoreManager.save(bizStoreEntity);
     }
 
-    public Set<BizStoreEntity> bizSearch(String bizName, String bizAddress, String bizPhone) {
+    public Set<BizStoreEntity> bizSearch(String businessName, String bizAddress, String bizPhone) {
         Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
 
-        if(StringUtils.isNotEmpty(bizName)) {
-            List<BizNameEntity> bizNameEntities = bizNameManager.findAllBiz(bizName);
+        if(StringUtils.isNotEmpty(businessName)) {
+            List<BizNameEntity> bizNameEntities = bizNameManager.findAllBizWithMatchingName(businessName);
             for(BizNameEntity bizNameEntity : bizNameEntities) {
                 List<BizStoreEntity> bizStores = bizStoreManager.findAllWithStartingAddressStartingPhone(bizAddress, bizPhone, bizNameEntity);
                 bizStoreEntities.addAll(bizStores);
@@ -87,7 +87,7 @@ public final class BizService {
         BizNameEntity bizNameEntity = receiptEntity.getBizName();
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 
-        BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getName());
+        BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
         if(bizName == null) {
             try {
                 bizNameManager.save(bizNameEntity);
@@ -105,7 +105,7 @@ public final class BizService {
                     bizNameManager.deleteHard(bizNameEntity);
                 }
                 BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
-                throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
+                throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getBusinessName());
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
@@ -120,7 +120,7 @@ public final class BizService {
                 } catch (DuplicateKeyException | IOException e) {
                     log.error(e.getLocalizedMessage());
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
-                    throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
+                    throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getBusinessName());
                 }
             } else {
                 receiptEntity.setBizName(bizName);
@@ -138,7 +138,7 @@ public final class BizService {
         BizNameEntity bizNameEntity = document.getBizName();
         BizStoreEntity bizStoreEntity = document.getBizStore();
 
-        BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getName());
+        BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
         if(bizName == null) {
             try {
                 bizNameManager.save(bizNameEntity);
@@ -156,7 +156,7 @@ public final class BizService {
                     bizNameManager.deleteHard(bizNameEntity);
                 }
                 BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
-                throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
+                throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getBusinessName());
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
@@ -171,7 +171,7 @@ public final class BizService {
                 } catch (DuplicateKeyException e) {
                     log.error(e.getLocalizedMessage());
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
-                    throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getName());
+                    throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getBusinessName());
                 }
             } else {
                 document.setBizName(bizName);

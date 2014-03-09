@@ -37,7 +37,7 @@ public final class ReceiptLandingView {
     public static ReceiptLandingView newInstance(final ReceiptEntity receiptEntity) {
         ReceiptLandingView receiptLandingView = new ReceiptLandingView();
         receiptLandingView.setId(receiptEntity.getId());
-        receiptLandingView.setName(receiptEntity.getBizName().getName());
+        receiptLandingView.setName(receiptEntity.getBizName().getBusinessName());
         receiptLandingView.setDate(receiptEntity.getReceiptDate());
         receiptLandingView.setTax(receiptEntity.getTax());
         receiptLandingView.setTotal(receiptEntity.getTotal());
@@ -45,7 +45,7 @@ public final class ReceiptLandingView {
         receiptLandingView.setExpenseReportInFS(receiptEntity.getExpenseReportInFS());
 
         /** Remove all alpha numeric characters as it creates issues with 'id' */
-        receiptLandingView.setBizNameForId(StringUtils.deleteWhitespace(receiptEntity.getBizName().getName()).replaceAll("[^a-zA-Z0-9]", ""));
+        receiptLandingView.setBizNameForId(StringUtils.deleteWhitespace(receiptEntity.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", ""));
         return receiptLandingView;
     }
 
