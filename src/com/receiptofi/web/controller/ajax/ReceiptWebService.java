@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
@@ -50,20 +51,31 @@ public class ReceiptWebService {
      *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
      *        method fails on invalid request without User Session and user sees 500 error message.
      *
-     * @param bizName
+     * @param businessName
      * @param userSession
      * @param httpServletResponse
      * @return
      */
-    @RequestMapping(value = "/find_company", method = RequestMethod.GET)
-    public @ResponseBody
-    Set<String> searchBiz(@RequestParam("term") String bizName,
-                           @ModelAttribute("userSession") UserSession userSession,
-                           HttpServletResponse httpServletResponse) throws IOException {
-
+    @RequestMapping(
+            value = "/find_company",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json",
+            produces = "application/json")
+    public
+    @ResponseBody
+    Set<String> searchBusinessWithBusinessName(
+            @RequestParam("term") String businessName,
+            @ModelAttribute("userSession") UserSession userSession,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(bizName));
+                try {
+                    return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
+                } catch (Exception fetchBusinessName) {
+                    log.error("Error fetching business number, error={}", fetchBusinessName);
+                    return new HashSet<>();
+                }
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -80,20 +92,32 @@ public class ReceiptWebService {
      *        method fails on invalid request without User Session and user sees 500 error message.
      *
      * @param bizAddress
-     * @param bizName
+     * @param businessName
      * @param userSession
      * @param httpServletResponse
      * @return
      */
-    @RequestMapping(value = "/find_address", method = RequestMethod.GET)
-    public @ResponseBody
-    Set<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String bizName,
-                           @ModelAttribute("userSession") UserSession userSession,
-                           HttpServletResponse httpServletResponse) throws IOException {
-
+    @RequestMapping(
+            value = "/find_address",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json",
+            produces = "application/json")
+    public
+    @ResponseBody
+    Set<String> searchBiz(
+            @RequestParam("term") String bizAddress,
+            @RequestParam("nameParam") String businessName,
+            @ModelAttribute("userSession") UserSession userSession,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(bizName));
+                try {
+                    return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
+                } catch (Exception fetchBusinessAddress) {
+                    log.error("Error fetching business address, error={}", fetchBusinessAddress);
+                    return new HashSet<>();
+                }
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -110,21 +134,38 @@ public class ReceiptWebService {
      *        method fails on invalid request without User Session and user sees 500 error message.
      *
      * @param bizPhone
-     * @param bizName
+     * @param businessName
      * @param bizAddress
      * @param userSession
      * @param httpServletResponse
      * @return
      */
-    @RequestMapping(value = "/find_phone", method = RequestMethod.GET)
-    public @ResponseBody
-    Set<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String bizName, @RequestParam("addressParam") String bizAddress,
-                             @ModelAttribute("userSession") UserSession userSession,
-                             HttpServletResponse httpServletResponse) throws IOException {
-
+    @RequestMapping(
+            value = "/find_phone",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json",
+            produces = "application/json")
+    public
+    @ResponseBody
+    Set<String> searchPhone(
+            @RequestParam("term") String bizPhone,
+            @RequestParam("nameParam") String businessName,
+            @RequestParam("addressParam") String bizAddress,
+            @ModelAttribute("userSession") UserSession userSession,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctBizPhone(StringUtils.stripToEmpty(bizPhone), StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(bizName));
+                try {
+                    return fetcherService.findDistinctBizPhone(
+                            StringUtils.stripToEmpty(bizPhone),
+                            StringUtils.stripToEmpty(bizAddress),
+                            StringUtils.stripToEmpty(businessName)
+                    );
+                } catch (Exception fetchingPhone) {
+                    log.error("Error fetching phone number, error={}", fetchingPhone);
+                    return new HashSet<>();
+                }
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -141,20 +182,36 @@ public class ReceiptWebService {
      *        method fails on invalid request without User Session and user sees 500 error message.
      *
      * @param itemName
-     * @param bizName
+     * @param businessName
      * @param userSession
      * @param httpServletResponse
      * @return
      */
-    @RequestMapping(value = "/find_item", method = RequestMethod.GET)
-    public @ResponseBody
-    Set<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String bizName,
-                            @ModelAttribute("userSession") UserSession userSession,
-                            HttpServletResponse httpServletResponse) throws IOException {
+    @RequestMapping(
+            value = "/find_item",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json",
+            produces = "application/json")
+    public
+    @ResponseBody
+    Set<String> searchItem(
+            @RequestParam("term") String itemName,
+            @RequestParam("nameParam") String businessName,
+            @ModelAttribute("userSession") UserSession userSession,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(bizName));
+                try {
+                    return fetcherService.findDistinctItems(
+                            StringUtils.stripToEmpty(itemName),
+                            StringUtils.stripToEmpty(businessName)
+                    );
+                } catch (Exception fetchingItems) {
+                    log.error("Error fetching items, error={}", fetchingItems);
+                    return new HashSet<>();
+                }
             } else {
                 httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
                 return null;
@@ -173,16 +230,27 @@ public class ReceiptWebService {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/pending", method = RequestMethod.POST)
-    public @ResponseBody
-    long pendingReceipts(@ModelAttribute("userSession") UserSession userSession,
-                         HttpServletResponse httpServletResponse) throws IOException {
-
+    @RequestMapping(
+            value = "/pending",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json")
+    public
+    @ResponseBody
+    long pendingReceipts(
+            @ModelAttribute("userSession") UserSession userSession,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if(userSession != null) {
-            return landingService.pendingReceipt(userSession.getUserProfileId());
+            try {
+                return landingService.pendingReceipt(userSession.getUserProfileId());
+            } catch (Exception pendingReceipt) {
+                log.error("Error fetching items, error={}", pendingReceipt);
+                return 0;
+            }
         } else {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return -1L;
+            return 0;
         }
     }
 
@@ -198,23 +266,36 @@ public class ReceiptWebService {
      * @throws IOException
      */
     //TODO make this post
-    @RequestMapping(value = "/check_for_duplicate", method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/check_for_duplicate",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json",
+            produces = "application/json")
     //@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate Account")  // 409 //TODO something to think about
-    public @ResponseBody
-    boolean checkForDuplicate(@RequestParam("date") String date, @RequestParam("total") String total,
-                              @RequestParam("userProfileId") String userProfileId,
-                              @ModelAttribute("userSession") UserSession userSession,
-                              HttpServletResponse httpServletResponse) throws IOException, ParseException, NumberFormatException {
+    public
+    @ResponseBody
+    boolean checkForDuplicate(
+            @RequestParam("date") String date,
+            @RequestParam("total") String total,
+            @RequestParam("userProfileId") String userProfileId,
+            @ModelAttribute("userSession") UserSession userSession,
+            HttpServletResponse httpServletResponse
+    ) throws IOException, ParseException, NumberFormatException {
 
         if(userSession != null) {
             try {
                 Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
                 Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
 
-                String checkSum = SHAHashing.calculateChecksumForNotDeleted(StringUtils.stripToEmpty(userProfileId), receiptDate, receiptTotal);
+                String checkSum = SHAHashing.calculateChecksumForNotDeleted(
+                        StringUtils.stripToEmpty(userProfileId),
+                        receiptDate,
+                        receiptTotal
+                );
+
                 return documentUpdateService.hasReceiptWithSimilarChecksum(checkSum);
-            } catch(ParseException parseException) {
-                log.error("Ajax checkForDuplicate failed to parse total: " + parseException.getLocalizedMessage());
+            } catch (ParseException parseException) {
+                log.error("Ajax checkForDuplicate failed to parse total, error={}", parseException);
                 throw parseException;
             }
         } else {
@@ -235,14 +316,21 @@ public class ReceiptWebService {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/change_fs_image_orientation", method = RequestMethod.POST)
-    public @ResponseBody
-    boolean changeFSImageOrientation(@RequestParam("fileSystemId") String fileSystemId,
-                                     @RequestParam("orientation") String imageOrientation,
-                                     @RequestParam("blobId") String blobId,
-                                     @RequestParam("userProfileId") String userProfileId,
-                                     @ModelAttribute("userSession") UserSession userSession,
-                                     HttpServletResponse httpServletResponse) throws IOException {
+    @RequestMapping(
+            value = "/change_fs_image_orientation",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json")
+    public
+    @ResponseBody
+    boolean changeFSImageOrientation(
+            @RequestParam("fileSystemId") String fileSystemId,
+            @RequestParam("orientation") String imageOrientation,
+            @RequestParam("blobId") String blobId,
+            @RequestParam("userProfileId") String userProfileId,
+            @ModelAttribute("userSession") UserSession userSession,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
 
         if(userSession != null) {
             if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue() || userProfileId.equalsIgnoreCase(userSession.getUserProfileId())) {
@@ -253,9 +341,9 @@ public class ReceiptWebService {
                             blobId
                     );
                     return true;
-                } catch (Exception e) {
-                    //Eat the error message
-                    log.error("Failed to change orientation of the image: " + e.getLocalizedMessage());
+                } catch (Exception failedToChangeImageOrientation) {
+                    //Do nothing with the error message
+                    log.error("Failed to change orientation of the image, error={}", failedToChangeImageOrientation);
                     return false;
                 }
             } else {
