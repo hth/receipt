@@ -53,7 +53,7 @@ public class BizNameEntity extends BaseEntity {
      *
      * @return
      */
-    public String getSafeJSName() {
+    public String getSafeJSBusinessName() {
         return StringEscapeUtils.escapeEcmaScript(businessName);
     }
 }
