@@ -116,7 +116,7 @@
         <tr>
             <td style="padding:3px;">
                 <a href="${pageContext.request.contextPath}/receipt/${itemAnalyticForm.item.receipt.id}.htm">
-                ${itemAnalyticForm.item.receipt.bizName.name}
+                ${itemAnalyticForm.item.receipt.bizName.businessName}
                 </a>
             </td>
             <td style="padding:3px;">
@@ -165,7 +165,7 @@
                     </td>
                     <td style="padding:3px;">
                         <a href="${pageContext.request.contextPath}/receipt/${item.receipt.id}.htm">
-                        ${item.receipt.bizName.name}
+                        ${item.receipt.bizName.businessName}
                         </a>
                     </td>
                     <td style="padding:3px;">

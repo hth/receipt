@@ -638,7 +638,7 @@
                 <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                     <p>
                         <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                        <span style="display:block; width:410px;">
+                        <span style="display:block; width:510px;">
                             No receipt(s) submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>
                         </span>
                     </p>
@@ -726,7 +726,7 @@
                         <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                             <p>
                                 <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                <span style="display:block; width:410px;">
+                                <span style="display:block; width:510px;">
                                     No odometer reading submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>
                                 </span>
                             </p>
@@ -774,7 +774,7 @@
             <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                 <p>
                     <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width:410px;">
+                    <span style="display:block; width:510px;">
                         No expense analysis available as no receipt submitted or transformed
                     </span>
                 </p>
@@ -808,7 +808,7 @@
                         <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                             <p>
                             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                            <span style="display:block; width:410px;">
+                            <span style="display:block; width:510px;">
                                 No receipt(s) submitted or transformed
                             </span>
                             </p>
@@ -827,7 +827,7 @@
             <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
                 <p>
                     <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width:410px;">
+                    <span style="display:block; width:510px;">
                         No data available as no receipt submitted or transformed
                     </span>
                 </p>
@@ -1169,7 +1169,7 @@
             });
 
             /**
-             * Data for the markers consisting of a name, a LatLng and a zIndex for
+             * Data for the markers consisting of a businessName, a LatLng and a zIndex for
              * the order in which these markers should display on top of each
              * other.
              */

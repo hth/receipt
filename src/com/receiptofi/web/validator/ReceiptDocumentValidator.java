@@ -37,10 +37,30 @@ public final class ReceiptDocumentValidator implements Validator {
         ReceiptDocumentForm receiptDocumentForm = (ReceiptDocumentForm) obj;
         log.info("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receiptDocument.bizName.name",    "field.required", new Object[]{"Name"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receiptDocument.receiptDate",     "field.required", new Object[]{"Date"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receiptDocument.total",           "field.required", new Object[]{"Total"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "receiptDocument.subTotal",        "field.required", new Object[]{"Sub Total"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(
+                errors,
+                "receiptDocument.bizName.businessName",
+                "field.required",
+                new Object[]{"Biz Name"}
+        );
+        ValidationUtils.rejectIfEmptyOrWhitespace(
+                errors,
+                "receiptDocument.receiptDate",
+                "field.required",
+                new Object[]{"Date"}
+        );
+        ValidationUtils.rejectIfEmptyOrWhitespace(
+                errors,
+                "receiptDocument.total",
+                "field.required",
+                new Object[]{"Total"}
+        );
+        ValidationUtils.rejectIfEmptyOrWhitespace(
+                errors,
+                "receiptDocument.subTotal",
+                "field.required",
+                new Object[]{"Sub Total"}
+        );
 
         try {
             DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());

@@ -69,14 +69,14 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     @Override
-    public List<BizNameEntity> findAllBiz(String businessName) {
+    public List<BizNameEntity> findAllBizWithMatchingName(String businessName) {
         return mongoTemplate.find(query(where("N").regex("^" + businessName, "i")), BizNameEntity.class, TABLE);
     }
 
     public Set<String> findAllDistinctBizStr(String businessName) {
         Set<String> set = new HashSet<>();
-        for (BizNameEntity bizNameEntity : findAllBiz(businessName)) {
-            set.add(bizNameEntity.getName());
+        for (BizNameEntity bizNameEntity : findAllBizWithMatchingName(businessName)) {
+            set.add(bizNameEntity.getBusinessName());
         }
         return set;
     }

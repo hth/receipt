@@ -107,7 +107,7 @@
                         </td>
                         <td style="padding: 3px;">
                             <a href="${pageContext.request.contextPath}/receipt/${item.receipt.id}.htm">
-                                ${item.receipt.bizName.name}
+                                ${item.receipt.bizName.businessName}
                             </a>
                         </td>
                         <td style="padding: 3px;">

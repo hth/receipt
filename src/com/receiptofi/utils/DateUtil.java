@@ -29,6 +29,7 @@ public final class DateUtil {
     public static final int HOURS               = 24;
     public static final int DAY_IN_SECONDS      = HOUR_IN_SECONDS * 24;
 
+    //todo add support for small AM|PM
 	private static enum DateType {
 		FRM_1("\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|AM)", 				"12/15/2012 02:13PM", 		"MM/dd/yyyy hh:mma"),
 		FRM_2("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}", 					"12/24/12 19:03", 			"MM/dd/yy kk:mm"),

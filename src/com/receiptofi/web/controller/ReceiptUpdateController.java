@@ -144,7 +144,7 @@ public class ReceiptUpdateController {
                                final RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
-        log.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getName());
+        log.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
 		receiptDocumentValidator.validate(receiptDocumentForm, result);
 		if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
@@ -275,7 +275,7 @@ public class ReceiptUpdateController {
                                 final RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
-        log.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getName());
+        log.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);

@@ -283,7 +283,7 @@
                         <tr>
                             <td colspan="5">
                                 <div style="text-align: center; font-size: 15px">
-                                    <b><spring:eval expression="receiptForm.receipt.bizName.name" /></b>
+                                    <b><spring:eval expression="receiptForm.receipt.bizName.businessName" /></b>
                                 </div>
                             </td>
                         </tr>

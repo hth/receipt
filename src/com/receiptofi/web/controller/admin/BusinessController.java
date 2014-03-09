@@ -82,7 +82,7 @@ public class BusinessController {
         if(userSession.getLevel() == UserLevelEnum.ADMIN) {
             ModelAndView modelAndView = new ModelAndView(EDIT_PAGE);
             BizNameEntity bizNameEntity = bizService.findName(nameId);
-            bizForm.setBizName(bizNameEntity);
+            bizForm.setBizNameEntity(bizNameEntity);
 
             if(StringUtils.isNotEmpty(storeId)) {
                 BizStoreEntity bizStoreEntity = bizService.findStore(storeId);
@@ -151,13 +151,13 @@ public class BusinessController {
         BizNameEntity bizNameEntity;
         if(StringUtils.isNotEmpty(bizForm.getNameId())) {
             bizNameEntity = bizService.findName(bizForm.getNameId());
-            bizNameEntity.setName(bizForm.getName());
+            bizNameEntity.setBusinessName(bizForm.getBusinessName());
             try {
                 bizService.saveName(bizNameEntity);
-                log.info("Business '" + bizNameEntity.getName() + "' updated successfully");
+                log.info("Business '" + bizNameEntity.getBusinessName() + "' updated successfully");
             } catch(Exception e) {
-                log.error("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
-                bizForm.setBizError("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
+                log.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
+                bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 //Re-direct to prevent resubmit
@@ -207,7 +207,7 @@ public class BusinessController {
                 if(bizService.countReceiptForBizName(bizNameEntity) == 0) {
                     bizService.deleteBizName(bizNameEntity);
                     bizForm.setBizSuccess("Deleted biz name successfully");
-                    log.info("Deleted biz name: " + bizNameEntity.getName() + ", id: " + bizNameEntity.getId() + ", by user: " + userSession.getEmailId());
+                    log.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user: " + userSession.getEmailId());
                 }
             } else {
                 bizForm.setBizError("Could not delete the store as its currently being referred by a receipt");
@@ -263,14 +263,14 @@ public class BusinessController {
             receiptEntity.setBizStore(bizStoreEntity);
 
             BizNameEntity bizNameEntity = BizNameEntity.newInstance();
-            bizNameEntity.setName(bizForm.getName());
+            bizNameEntity.setBusinessName(bizForm.getBusinessName());
             receiptEntity.setBizName(bizNameEntity);
             try {
                 bizService.saveNewBusinessAndOrStore(receiptEntity);
-                bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getName() + "' added successfully");
+                bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getBusinessName() + "' added successfully");
             } catch(Exception e) {
-                log.error("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
-                bizForm.setBizError("Failed to edit name: " + bizForm.getName() + ", " + e.getLocalizedMessage());
+                log.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
+                bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 //Re-direct to prevent resubmit
@@ -281,7 +281,7 @@ public class BusinessController {
                 redirectAttrs.addFlashAttribute("bizStore", receiptEntity.getBizStore());
                 bizForm.setLast10BizStore(bizService.getAllStoresForBusinessName(receiptEntity));
             } else {
-                bizForm.setBizError("Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getName());
+                bizForm.setBizError("Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getBusinessName());
             }
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -331,10 +331,10 @@ public class BusinessController {
      * @return
      */
     private Set<BizStoreEntity> searchBizStoreEntities(BizForm bizForm) {
-        String name     = StringUtils.trim(bizForm.getName());
-        String address  = StringUtils.trim(bizForm.getAddress());
-        String phone    = StringUtils.trim(BizStoreEntity.phoneCleanup(bizForm.getPhone()));
-        Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(name, address, phone);
+        String businessName = StringUtils.trim(bizForm.getBusinessName());
+        String address = StringUtils.trim(bizForm.getAddress());
+        String phone = StringUtils.trim(BizStoreEntity.phoneCleanup(bizForm.getPhone()));
+        Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(businessName, address, phone);
         bizForm.setBizSuccess("Found '" + bizStoreEntities.size() + "' matching business(es).");
 
         bizService.countReceiptForBizStore(bizStoreEntities, bizForm);

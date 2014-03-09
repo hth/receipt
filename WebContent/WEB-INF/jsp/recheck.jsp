@@ -347,8 +347,8 @@
                             <tr>
                                 <td colspan="5">
                                     <div class="leftAlign">
-                                        <form:label for="receiptDocument.bizName.name" path="receiptDocument.bizName.name" cssErrorClass="error">Biz Name</form:label>
-                                        <form:input path="receiptDocument.bizName.name" id="bizName" size="52"/>
+                                        <form:label for="receiptDocument.bizName.businessName" path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name</form:label>
+                                        <form:input path="receiptDocument.bizName.businessName" id="bizName" size="52"/>
                                     </div>
                                     <div class="rightAlign">
                                         <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date</form:label>
@@ -358,7 +358,7 @@
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <div class="leftAlign"><form:errors path="receiptDocument.bizName.name" cssClass="error" /></div>
+                                    <div class="leftAlign"><form:errors path="receiptDocument.bizName.businessName" cssClass="error" /></div>
                                     <div class="rightAlign"><form:errors path="receiptDocument.receiptDate" cssClass="error" /></div>
                                 </td>
                             </tr>

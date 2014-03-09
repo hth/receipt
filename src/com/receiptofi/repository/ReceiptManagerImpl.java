@@ -181,7 +181,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         List<String> titles = new ArrayList<>();
         for(ReceiptEntity re : list) {
-            titles.add(re.getBizName().getName());
+            titles.add(re.getBizName().getBusinessName());
         }
 
         return titles;

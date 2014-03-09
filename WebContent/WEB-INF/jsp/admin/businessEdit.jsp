@@ -143,11 +143,11 @@
         <table style="width: 760px" class="etable">
             <tr>
                 <td style="padding: 3px;">
-                    <form:label for="name" path="name" cssErrorClass="error">Biz Name:</form:label>
+                    <form:label for="businessName" path="businessName" cssErrorClass="error">Biz Name:</form:label>
                 </td>
                 <td style="padding: 3px;" colspan="3">
-                    <form:input path="name" id="name" class="inputForBizName"/>
-                    <form:errors path="name" cssClass="error" />
+                    <form:input path="businessName" id="businessName" class="inputForBusinessName"/>
+                    <form:errors path="businessName" cssClass="error" />
                 </td>
             </tr>
             <c:if test="${not empty bizForm.addressId}">
@@ -156,13 +156,13 @@
                     <form:label for="address" path="address" cssErrorClass="error">Address:</form:label>
                 </td>
                 <td style="padding: 3px;">
-                    <form:input path="address" id="address" class="inputForBizAddress"/>
+                    <form:input path="address" id="address" class="inputForBusinessAddress"/>
                 </td>
                 <td style="padding: 3px;">
                     <form:label for="phone" path="phone" cssErrorClass="error">Phone:</form:label>
                 </td>
                 <td style="padding: 3px;">
-                    <form:input path="phone" id="phone" class="inputForBizPhone"/>
+                    <form:input path="phone" id="phone" class="inputForBusinessPhone"/>
                 </td>
             </tr>
             </c:if>
@@ -206,7 +206,7 @@
             <tr>
                 <td style="padding:3px; text-align: left; vertical-align: top">
                     <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=">
-                    <spring:eval expression="bizStore.bizName.name" />
+                    <spring:eval expression="bizStore.bizName.businessName" />
                     </a>
 
                     <br/><br/>
@@ -244,7 +244,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $( "#name" ).autocomplete({
+        $( "#businessName" ).autocomplete({
             source: "${pageContext. request. contextPath}/rws/find_company.htm"
         });
 
@@ -257,7 +257,7 @@
                     url: '${pageContext. request. contextPath}/rws/find_address.htm',
                     data: {
                         term: request.term,
-                        nameParam: $("#name").val()
+                        nameParam: $("#businessName").val()
                     },
                     success: function (data) {
                         console.log('response=', data);
@@ -276,7 +276,7 @@
                     url: '${pageContext. request. contextPath}/rws/find_phone.htm',
                     data: {
                         term: request.term,
-                        nameParam: $("#name").val(),
+                        nameParam: $("#businessName").val(),
                         addressParam: $("#address").val()
                     },
                     success: function (data) {
