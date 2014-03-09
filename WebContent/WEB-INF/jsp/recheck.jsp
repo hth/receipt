@@ -86,7 +86,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $( "#bizName" ).autocomplete({
+            $( "#businessName" ).autocomplete({
                 source: "${pageContext. request. contextPath}/rws/find_company.htm"
             });
 
@@ -99,7 +99,7 @@
                         url: '${pageContext. request. contextPath}/rws/find_address.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#bizName").val()
+                            extraParam: $("#businessName").val()
                         },
                         success: function (data) {
                             console.log('response=', data);
@@ -118,7 +118,7 @@
                         url: '${pageContext. request. contextPath}/rws/find_item.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#bizName").val()
+                            extraParam: $("#businessName").val()
                         },
                         success: function (data) {
                             console.log('response=', data);
@@ -348,7 +348,7 @@
                                 <td colspan="5">
                                     <div class="leftAlign">
                                         <form:label for="receiptDocument.bizName.businessName" path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name</form:label>
-                                        <form:input path="receiptDocument.bizName.businessName" id="bizName" size="52"/>
+                                        <form:input path="receiptDocument.bizName.businessName" id="businessName" size="52"/>
                                     </div>
                                     <div class="rightAlign">
                                         <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date</form:label>
