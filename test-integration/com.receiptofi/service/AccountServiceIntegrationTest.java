@@ -1,8 +1,8 @@
 package com.receiptofi.service;
 
+import com.receiptofi.AbstractMongoDBTest;
+import com.receiptofi.IntegrationTests;
 import com.receiptofi.domain.ForgotRecoverEntity;
-import com.receiptofi.domain.UserAuthenticationEntity;
-import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
 import com.receiptofi.repository.ForgotRecoverManagerImpl;
@@ -14,9 +14,9 @@ import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.repository.UserProfileManagerImpl;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.experimental.categories.Category;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
@@ -30,7 +30,8 @@ import com.mongodb.util.JSON;
  * User: hitender
  * Date: 2/25/14 1:02 AM
  */
-public class AccountServiceIntegrationTests extends AbstractMongoDBTest {
+@Category(IntegrationTests.class)
+public class AccountServiceIntegrationTest extends AbstractMongoDBTest {
     private String userProfileCollectionName = "USER_PROFILE";
     private DBCollection userProfileCollection;
 
@@ -45,18 +46,16 @@ public class AccountServiceIntegrationTests extends AbstractMongoDBTest {
 
     @Before
     public void setup() {
-        userAuthenticationManager = new UserAuthenticationManagerImpl(createDatastore(UserAuthenticationEntity.class));
-        userProfileManager = new UserProfileManagerImpl(createDatastore(UserProfileEntity.class));
-        userPreferenceManager = new UserPreferenceManagerImpl(createDatastore(UserPreferenceEntity.class));
-        forgotRecoverManager = new ForgotRecoverManagerImpl(createDatastore(ForgotRecoverEntity.class));
+        userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
+        userProfileManager = new UserProfileManagerImpl(getMongoTemplate());
+        userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
+        forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
         accountService = new AccountService(userAuthenticationManager, userProfileManager, userPreferenceManager, forgotRecoverManager);
 
-        assertTrue(getMongoTemplate().collectionExists(userProfileCollectionName));
-        userProfileCollection = getMongoTemplate().getCollection(userProfileCollectionName);
+        userProfileCollection = getCollection(userProfileCollectionName);
         populateUserProfileCollection();
 
-        assertTrue(getMongoTemplate().collectionExists(forgotRecoverCollectionName));
-        forgotRecoverCollection = getMongoTemplate().getCollection(forgotRecoverCollectionName);
+        forgotRecoverCollection = getCollection(forgotRecoverCollectionName);
         populateForgotRecoverCollection();
     }
 
@@ -70,7 +69,7 @@ public class AccountServiceIntegrationTests extends AbstractMongoDBTest {
         assertNull(accountService.findIfUserExists("user_community_3@receiptofi.com"));
     }
 
-    @Test
+    @Ignore
     public void testCreateNewAccount() throws Exception {
 
     }
@@ -82,22 +81,22 @@ public class AccountServiceIntegrationTests extends AbstractMongoDBTest {
         assertNotNull(forgotRecoverEntity.getId());
     }
 
-    @Test
+    @Ignore
     public void testInvalidateAllEntries() throws Exception {
 
     }
 
-    @Test
+    @Ignore
     public void testFindAccountAuthenticationForKey() throws Exception {
 
     }
 
-    @Test
+    @Ignore
     public void testUpdateAuthentication() throws Exception {
 
     }
 
-    @Test
+    @Ignore
     public void testGetPreference() throws Exception {
 
     }
