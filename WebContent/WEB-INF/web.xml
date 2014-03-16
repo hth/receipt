@@ -87,6 +87,10 @@
         <location>/500.html</location>
     </error-page>
 
+    <!--<error-page>-->
+        <!--<location>/forglobalerror</location>-->
+    <!--</error-page>-->
+
     <!--<filter>-->
         <!--<filter-name>session</filter-name>-->
         <!--<filter-class>org.eclipse.jetty.continuation.ContinuationFilter</filter-class>-->
