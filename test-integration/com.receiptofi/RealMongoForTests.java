@@ -33,7 +33,7 @@ import com.mongodb.MongoClient;
  * User: hitender
  * Date: 2/19/14 11:51 PM
  */
-public abstract class AbstractMongoDBTest {
+public abstract class RealMongoForTests {
     private static MongodExecutable mongodExecutable = null;
     private static MongodProcess mongodProcess = null;
     private static Mongo mongo = null;

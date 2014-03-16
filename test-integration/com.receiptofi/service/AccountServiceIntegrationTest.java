@@ -1,7 +1,7 @@
 package com.receiptofi.service;
 
-import com.receiptofi.AbstractMongoDBTest;
 import com.receiptofi.IntegrationTests;
+import com.receiptofi.RealMongoForTests;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
@@ -31,7 +31,7 @@ import com.mongodb.util.JSON;
  * Date: 2/25/14 1:02 AM
  */
 @Category(IntegrationTests.class)
-public class AccountServiceIntegrationTest extends AbstractMongoDBTest {
+public class AccountServiceIntegrationTest extends RealMongoForTests {
     private String userProfileCollectionName = "USER_PROFILE";
     private DBCollection userProfileCollection;
 

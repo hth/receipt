@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
  * Date: 2/19/14 11:21 PM
  */
 @RunWith(MockitoJUnitRunner.class)
-public class AccountServiceTests {
+public class AccountServiceTest {
 
     @Mock private UserAuthenticationManager userAuthenticationManager;
     @Mock private UserProfileManager userProfileManager;
