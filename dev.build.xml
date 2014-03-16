@@ -9,11 +9,15 @@
 	<property name="web.dir"                    value="WebContent" />
 	<property name="build.dir"                  value="${web.dir}/WEB-INF/classes" />
 	<property name="test.dir"                   value="test" />
+	<property name="test-integration.dir"       value="test-integration" />
 	<property name="resources.dir"              value="resources" />
     <property name="resources.conf.dir"         value="${resources.dir}/conf" />
     <property name="resources.conf.prod.dir"    value="${resources.conf.dir}/production" />
 	<property name="datadump.dir"               value="${resources.dir}/dump/${database}" />
-    <property name="classes.jar"                value="server-dev" />
+    <property name="classes.jar"                value="classes.jar" />
+
+    <property name="dist.dir"                   value="${web.dir}/WEB-INF/dist" />
+    <property name="tests.dir"                  value="${web.dir}/WEB-INF/tests" />
 
     <!-- Used for time stamping the server.jar -->
     <tstamp>
@@ -105,7 +109,12 @@
 		</javac>
 	</target>
 
-    <target name="make-war" depends="compile" description="Build war file">
+    <target name="jar" description="Jar all the file in classes directory" depends="compile">
+        <mkdir dir="${dist.dir}" />
+        <jar destfile="${dist.dir}/${classes.jar}" basedir="${build.dir}" excludes="**/Test*.class" />
+    </target>
+
+    <target name="make-war" depends="clean-test, clean-dist, compile" description="Build war file">
         <war destfile="${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
             <fileset dir="${web.dir}">
                 <include name="**/*.*" />
@@ -138,11 +147,26 @@
 				<include name="**/*.*"/>
 			</fileset>
 		</delete>
+        <delete includeemptydirs="true">
+            <fileset dir="${build.dir}" includes="**/*"/>
+        </delete>
         <delete>
             <fileset dir="." includes="**/*.war"/>
         </delete>
 		<echo message="Cleaned" />
 	</target>
+
+    <target name="clean-test" description="Clean test directories">
+        <delete dir="${tests.dir}" />
+        <echo message="Cleaned tests" />
+    </target>
+
+    <target name="clean-dist" description="Clean classes jar">
+        <delete dir="${dist.dir}" />
+        <echo message="Cleaned tests" />
+    </target>
+
+    <target name="clean-all" depends="clean-test, clean-dist, clean" />
 
 	<target name="undeploy" description="Un-Deploy application">
 		<delete>
@@ -211,22 +235,27 @@
 	<!-- Unit test -->
 	<!-- ============================================================== -->
 
-	<target name="buildtests" description="Compile test tree java files">
-		<mkdir dir="${build.dir}" />
-		<javac destdir="${build.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+	<target name="build-tests" description="Compile test tree java files" depends="clean-test, compile, jar">
+        <mkdir dir="${build.dir}" />
+		<mkdir dir="${tests.dir}" />
+		<javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
 			<src path="${test.dir}" />
-			<classpath refid="master-classpath" />
+            <classpath refid="master-classpath" />
 		</javac>
 	</target>
 
-	<target name="tests" depends="compile, buildtests" description="Run tests">
-		<junit printsummary="on" fork="false" haltonfailure="false" failureproperty="tests.failed" showoutput="true">
-			<classpath refid="master-classpath" />
+	<target name="tests" depends="build-tests" description="Run tests">
+		<junit printsummary="on" fork="true" haltonfailure="false" failureproperty="tests.failed" showoutput="true">
+            <classpath>
+                <path refid="master-classpath" />
+                <pathelement location="${tests.dir}" />
+                <pathelement location="${dist.dir}/${classes.jar}" />
+            </classpath>
 			<formatter type="brief" usefile="false" />
 
 			<batchtest>
-				<fileset dir="${build.dir}">
-					<include name="**/*Tests.*" />
+				<fileset dir="${tests.dir}">
+					<include name="**/*Test.*" />
 				</fileset>
 			</batchtest>
 
@@ -236,10 +265,51 @@
 			tests.failed=${tests.failed}
 			***********************************************************
 			***********************************************************
-			**** One or more tests failed! Check the output ... ****
+			**** One or more tests failed! Check the output ... *******
 			***********************************************************
 			***********************************************************
 		</fail>
 	</target>
+
+    <target name="build-integration-tests" description="Compile test tree java files" depends="clean-test, compile, jar">
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${tests.dir}" />
+        <javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+            <src path="${test-integration.dir}" />
+            <classpath refid="master-classpath" />
+        </javac>
+    </target>
+
+    <target name="integration-tests" depends="build-integration-tests" description="Run tests">
+        <junit printsummary="on" fork="true" haltonfailure="false" failureproperty="tests.failed" showoutput="true">
+            <classpath>
+                <path refid="master-classpath" />
+                <pathelement location="${tests.dir}" />
+                <pathelement location="${dist.dir}/${classes.jar}" />
+            </classpath>
+            <formatter type="brief" usefile="false" />
+
+            <batchtest>
+                <fileset dir="${tests.dir}">
+                    <include name="**/*Test.*" />
+                </fileset>
+            </batchtest>
+
+        </junit>
+
+        <fail if="integration-tests.failed">
+            tests.failed=${tests.failed}
+            ********************************************************************
+            ********************************************************************
+            **** One or more integration tests failed! Check the output ... ****
+            ********************************************************************
+            ********************************************************************
+        </fail>
+    </target>
+
+    <target name="tests-all">
+        <antcall target="tests" />
+        <antcall target="integration-tests" />
+    </target>
 
 </project>
