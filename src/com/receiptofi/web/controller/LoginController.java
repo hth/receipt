@@ -49,11 +49,17 @@ public class LoginController {
     public static final String LOGIN_PAGE = "login";
 
     //private UserAgentStringParser parser;
-    private CachedUserAgentStringParser parser;
+    private final CachedUserAgentStringParser parser;
 
     @Autowired private UserLoginValidator userLoginValidator;
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+
+    public LoginController() {
+        //Get an UserAgentStringParser and analyze the requesting client
+        //parser = UADetectorServiceFactory.getResourceModuleParser();
+        parser = CachedUserAgentStringParser.getInstance();
+    }
 
 	// TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
@@ -72,15 +78,11 @@ public class LoginController {
     @PostConstruct
     public void init() {
         log.info("Init of login controller");
-        //Get an UserAgentStringParser and analyze the requesting client
-        //parser = UADetectorServiceFactory.getResourceModuleParser();
-        parser = CachedUserAgentStringParser.getInstance();
     }
 
     @PreDestroy
     public void cleanUp() {
         log.info("Cleanup of login controller");
-        parser = null;
     }
 
     /**
