@@ -16,17 +16,6 @@
 
 </head>
 <body>
-<div id="fb-root"></div>
-<script>
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=230231300514410";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
 <div class="wrapper">
     <img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
     <p>&nbsp;</p>
@@ -52,13 +41,10 @@
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td align="left">
-                    <input type="submit" value="Login" class="btn btn-default" />
-                    <div class="fb-login-button" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false"></div>
-                </td>
+				<td align="left"><input type="submit" value="Login" class="btn btn-default" /></td>
 			</tr>
 		</table>
-	</form:form>
+    </form:form>
 
 	<p>
         <a href="<c:url value="new.htm"/>" title="Create a new account.">Register Now</a>
