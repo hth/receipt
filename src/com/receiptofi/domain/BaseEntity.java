@@ -4,6 +4,8 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -25,6 +27,7 @@ import org.joda.time.DateTime;
  */
 public abstract class BaseEntity implements Serializable {
 	private static final long serialVersionUID = -5848946567869042567L;
+    private static final Logger log = LoggerFactory.getLogger(BaseEntity.class);
 
 	@Id
 	protected String id;
@@ -137,7 +140,8 @@ public abstract class BaseEntity implements Serializable {
 		if (annotation != null) {
 			try {
 				value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
-			} catch (Exception ex) {
+			} catch (Exception annotationException) {
+                log.error("annotation reading error={}", annotationException);
 			}
 		}
 
