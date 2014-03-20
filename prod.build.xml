@@ -274,6 +274,33 @@
     <!-- End Tomcat tasks -->
 
     <!-- ============================================================== -->
+    <!-- PMD                                                            -->
+    <!-- ============================================================== -->
+
+    <path id="pmd.classpath">
+        <pathelement location="."/>
+        <fileset dir="pmd">
+            <include name="*.jar"/>
+        </fileset>
+        <path refid="master-classpath" />
+    </path>
+
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
+
+    <target name="pmd">
+        <pmd>
+            <ruleset>rulesets/java/design.xml</ruleset>
+            <ruleset>java-imports</ruleset>
+            <ruleset>java-unusedcode</ruleset>
+            <ruleset>java-basic</ruleset>
+            <formatter type="net.sourceforge.pmd.renderers.HTMLRenderer" toFile="violation_pmd_report.html" toconsole="true"/>
+            <fileset dir="${src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </pmd>
+    </target>
+
+    <!-- ============================================================== -->
     <!-- Unit test -->
     <!-- ============================================================== -->
 
