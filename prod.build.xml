@@ -298,6 +298,8 @@
                 <include name="**/*.java"/>
             </fileset>
         </pmd>
+
+        <echo message="PMD process complete. Files have been created." />
     </target>
 
     <!-- ============================================================== -->
