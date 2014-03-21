@@ -293,17 +293,6 @@
             <ruleset>java-imports</ruleset>
             <ruleset>java-unusedcode</ruleset>
             <ruleset>java-basic</ruleset>
-            <formatter type="html" toFile="violation_pmd_report.html" toconsole="true"/>
-            <fileset dir="${src.dir}">
-                <include name="**/*.java"/>
-            </fileset>
-        </pmd>
-
-        <pmd>
-            <ruleset>rulesets/java/design.xml</ruleset>
-            <ruleset>java-imports</ruleset>
-            <ruleset>java-unusedcode</ruleset>
-            <ruleset>java-basic</ruleset>
             <formatter type="xml" toFile="pmd.xml" toconsole="true"/>
             <fileset dir="${src.dir}">
                 <include name="**/*.java"/>
