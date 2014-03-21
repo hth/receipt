@@ -243,32 +243,31 @@
         <path refid="master-classpath" />
     </path>
 
-    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
-
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <target name="pmd">
         <pmd>
             <ruleset>rulesets/java/design.xml</ruleset>
             <ruleset>java-imports</ruleset>
             <ruleset>java-unusedcode</ruleset>
             <ruleset>java-basic</ruleset>
-            <formatter type="html" toFile="violation_pmd_report.html" toconsole="true"/>
-            <fileset dir="${src.dir}">
-                <include name="**/*.java"/>
-            </fileset>
-        </pmd>
-
-        <pmd>
-            <ruleset>rulesets/java/design.xml</ruleset>
-            <ruleset>java-imports</ruleset>
-            <ruleset>java-unusedcode</ruleset>
-            <ruleset>java-basic</ruleset>
-            <formatter type="xml" toFile="pmd.xml" toconsole="true"/>
+            <formatter type="html" toFile="violation_pmd_report.html" toconsole="true" />
             <fileset dir="${src.dir}">
                 <include name="**/*.java"/>
             </fileset>
         </pmd>
 
         <echo message="PMD process complete. Files have been created." />
+    </target>
+
+    <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.classpath" />
+    <target name="cpd">
+        <cpd minimumTokenCount="100" format="text" outputFile="duplicate_code.txt">
+            <fileset dir="${src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </cpd>
+
+        <echo message="Duplicate code check complete. Files have been created." />
     </target>
 
     <!-- ============================================================== -->

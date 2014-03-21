@@ -45,8 +45,7 @@ public class CommentEntity extends BaseEntity {
     }
 
     public void setText(String text) {
-        text = StringUtils.trim(text);
-        this.text = StringUtils.substring(text, 0, TEXT_LENGTH);
+        this.text = StringUtils.substring(StringUtils.trim(text), 0, TEXT_LENGTH);
     }
 
     public CommentTypeEnum getCommentType() {
