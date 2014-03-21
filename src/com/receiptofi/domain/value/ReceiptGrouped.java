@@ -72,8 +72,7 @@ public final class ReceiptGrouped implements Serializable {
             log.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
             return DateUtil.now();
         }
-        DateTime date = new DateTime(year, month, 1, 0, 0);
-        return date;
+        return new DateTime(year, month, 1, 0, 0);
     }
 
     /**
