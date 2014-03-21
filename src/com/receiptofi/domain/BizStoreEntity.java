@@ -98,9 +98,10 @@ public class BizStoreEntity extends BaseEntity {
      */
     public void setPhone(String phone) {
         if(StringUtils.isEmpty(phone)) {
-            phone = PHONE_BLANK;
+            this.phone = phoneCleanup(PHONE_BLANK);
+        } else {
+            this.phone = phoneCleanup(phone);
         }
-        this.phone = phoneCleanup(phone);
     }
 
     public double getLat() {
