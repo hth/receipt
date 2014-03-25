@@ -50,7 +50,7 @@ public final class InviteService {
             newInvitedUser.inActive();
             userProfileManager.save(newInvitedUser);
 
-            String authenticationKey = HashText.bCrypt(RandomString.newInstance().nextString());
+            String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
             inviteEntity = InviteEntity.newInstance(emailId, authenticationKey, newInvitedUser, userProfile);
             inviteManager.save(inviteEntity);
             return inviteEntity;

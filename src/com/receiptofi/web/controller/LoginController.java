@@ -129,7 +129,7 @@ public class LoginController {
             //Always check user login with lower letter email case
 			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(StringUtils.lowerCase(userLoginForm.getEmailId()));
 			if (userProfile != null) {
-				userLoginForm.setPassword(HashText.bCrypt(userLoginForm.getPassword()));
+				userLoginForm.setPassword(HashText.computeBCrypt(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
 				if (user.getPassword().equals(userLoginForm.getPassword()) || user.getGrandPassword().equals(userLoginForm.getPassword())) {
 					log.info("Login Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());

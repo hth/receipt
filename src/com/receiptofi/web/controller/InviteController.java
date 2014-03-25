@@ -82,8 +82,8 @@ public class InviteController {
                 userProfileEntity.active();
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
-                        HashText.bCrypt(inviteAuthenticateForm.getForgotAuthenticateForm().getPassword()),
-                        HashText.bCrypt(RandomString.newInstance().nextString()));
+                        HashText.computeBCrypt(inviteAuthenticateForm.getForgotAuthenticateForm().getPassword()),
+                        HashText.computeBCrypt(RandomString.newInstance().nextString()));
 
 
                 userAuthenticationEntity.setId(userProfileEntity.getUserAuthentication().getId());

@@ -207,7 +207,7 @@ public final class MailService {
     public InviteEntity reCreateAnotherInvite(String emailId, UserProfileEntity userProfile) {
         InviteEntity inviteEntity = inviteService.find(emailId);
         try {
-            String auth = HashText.bCrypt(RandomString.newInstance().nextString());
+            String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
             inviteEntity = InviteEntity.newInstance(emailId, auth, inviteEntity.getInvited(), userProfile);
             inviteManager.save(inviteEntity);
             return inviteEntity;

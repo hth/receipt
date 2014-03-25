@@ -39,7 +39,7 @@ public final class UserRegistrationForm {
 	 * @return
 	 */
 	public UserAuthenticationEntity newUserAuthenticationEntity() {
-		return UserAuthenticationEntity.newInstance(HashText.bCrypt(password), HashText.bCrypt(RandomString.newInstance().nextString()));
+		return UserAuthenticationEntity.newInstance(HashText.computeBCrypt(password), HashText.computeBCrypt(RandomString.newInstance().nextString()));
 	}
 
 	public UserProfileEntity newUserProfileEntity(UserAuthenticationEntity userAuthentication) {

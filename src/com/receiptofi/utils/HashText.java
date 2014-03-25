@@ -47,8 +47,8 @@ public final class HashText {
         return hashCode(text, md5) ;
     }
 
-    public static String bCrypt(String text) {
-        String pw_hash = BCrypt.hashpw(text, BCrypt.gensalt());
+    public static String computeBCrypt(String text) {
+        String pw_hash = BCrypt.hashpw(text, BCrypt.gensalt(15));
 
         if (BCrypt.checkpw(text, pw_hash)) {
             log.info("It matches");

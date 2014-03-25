@@ -118,7 +118,7 @@ public final class AccountService {
      * @return
      */
     public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) throws Exception {
-        String authenticationKey = HashText.bCrypt(RandomString.newInstance().nextString());
+        String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
 
         ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(userProfileEntity.getId(), authenticationKey);
         try {

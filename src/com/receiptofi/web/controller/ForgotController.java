@@ -227,8 +227,8 @@ public class ForgotController {
                 UserProfileEntity userProfileEntity = userProfilePreferenceService.findById(forgotRecoverEntity.getUserProfileId());
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
-                        HashText.bCrypt(forgotAuthenticateForm.getPassword()),
-                        HashText.bCrypt(RandomString.newInstance().nextString())
+                        HashText.computeBCrypt(forgotAuthenticateForm.getPassword()),
+                        HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
 
