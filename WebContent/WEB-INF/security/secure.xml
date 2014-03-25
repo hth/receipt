@@ -1,0 +1,31 @@
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns="http://www.springframework.org/schema/security"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/emp/**" access="hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
+        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+
+        <!-- this for REST API and all form submission -->
+        <!--<intercept-url pattern="/spitter/form" requires-channel="https"/>-->
+
+        <!--<form-login login-processing-url="/static/j_spring_security_check"-->
+                    <!--login-page="/login"-->
+                    <!--authentication-failure-url="/login?login_error=true" />-->
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="username" password="password" authorities="ROLE_USER" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+
+</beans:beans>
