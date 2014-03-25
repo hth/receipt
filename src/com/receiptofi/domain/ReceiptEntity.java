@@ -4,7 +4,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.utils.SHAHashing;
+import com.receiptofi.utils.HashText;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
@@ -305,7 +305,7 @@ public class ReceiptEntity extends BaseEntity {
      *  2) Receipt not deleted
      */
     public void computeChecksum() {
-        this.checksum = SHAHashing.calculateChecksum(userProfileId, receiptDate, total, isDeleted());
+        this.checksum = HashText.calculateChecksum(userProfileId, receiptDate, total, isDeleted());
     }
 
     public String getExpenseReportInFS() {

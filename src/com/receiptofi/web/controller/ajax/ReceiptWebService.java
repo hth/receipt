@@ -7,7 +7,7 @@ import com.receiptofi.service.LandingService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
-import com.receiptofi.utils.SHAHashing;
+import com.receiptofi.utils.HashText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -287,7 +287,7 @@ public class ReceiptWebService {
                 Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
                 Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
 
-                String checkSum = SHAHashing.calculateChecksumForNotDeleted(
+                String checkSum = HashText.calculateChecksumForNotDeleted(
                         StringUtils.stripToEmpty(userProfileId),
                         receiptDate,
                         receiptTotal

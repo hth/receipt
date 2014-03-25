@@ -7,9 +7,9 @@ import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.InviteService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.form.InviteAuthenticateForm;
 import com.receiptofi.web.validator.InviteAuthenticateValidator;
 import org.slf4j.Logger;
@@ -82,8 +82,8 @@ public class InviteController {
                 userProfileEntity.active();
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
-                        SHAHashing.hashCodeSHA512(inviteAuthenticateForm.getForgotAuthenticateForm().getPassword()),
-                        SHAHashing.hashCodeSHA1(RandomString.newInstance().nextString()));
+                        HashText.bCrypt(inviteAuthenticateForm.getForgotAuthenticateForm().getPassword()),
+                        HashText.bCrypt(RandomString.newInstance().nextString()));
 
 
                 userAuthenticationEntity.setId(userProfileEntity.getUserAuthentication().getId());

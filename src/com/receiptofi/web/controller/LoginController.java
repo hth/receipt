@@ -10,8 +10,8 @@ import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
 import com.receiptofi.web.validator.UserLoginValidator;
@@ -129,7 +129,7 @@ public class LoginController {
             //Always check user login with lower letter email case
 			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(StringUtils.lowerCase(userLoginForm.getEmailId()));
 			if (userProfile != null) {
-				userLoginForm.setPassword(SHAHashing.hashCodeSHA512(userLoginForm.getPassword()));
+				userLoginForm.setPassword(HashText.bCrypt(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
 				if (user.getPassword().equals(userLoginForm.getPassword()) || user.getGrandPassword().equals(userLoginForm.getPassword())) {
 					log.info("Login Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());

@@ -10,6 +10,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import org.joda.time.DateTime;
 
 import com.google.common.base.Charsets;
@@ -22,8 +24,8 @@ import com.google.common.hash.Hashing;
  * @since Dec 22, 2012 11:52:04 PM
  *
  */
-public final class SHAHashing {
-	private static final Logger log = LoggerFactory.getLogger(SHAHashing.class);
+public final class HashText {
+	private static final Logger log = LoggerFactory.getLogger(HashText.class);
 
 	private static MessageDigest md1;
     private static MessageDigest md5;
@@ -33,7 +35,7 @@ public final class SHAHashing {
             md1 = MessageDigest.getInstance("SHA-1");
             md5 = MessageDigest.getInstance("SHA-512");
 		} catch (NoSuchAlgorithmException exce) {
-
+            log.error("No hashing algorithm found={}", exce);
 		}
 	}
 
@@ -43,6 +45,17 @@ public final class SHAHashing {
 
     public static String hashCodeSHA512(String text) {
         return hashCode(text, md5) ;
+    }
+
+    public static String bCrypt(String text) {
+        String pw_hash = BCrypt.hashpw(text, BCrypt.gensalt());
+
+        if (BCrypt.checkpw(text, pw_hash)) {
+            log.info("It matches");
+        } else {
+            log.info("It does not match");
+        }
+        return pw_hash;
     }
 
 	private static String hashCode(String text, MessageDigest md) {
@@ -66,11 +79,11 @@ public final class SHAHashing {
                     hexString.append('0');
                 hexString.append(hex);
             }
-            PerformanceProfiling.log(SHAHashing.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+            PerformanceProfiling.log(HashText.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
 			return hexString.toString();
 		} else {
 			log.info("Un-Initialized MessageDigest");
-            PerformanceProfiling.log(SHAHashing.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
+            PerformanceProfiling.log(HashText.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return null;
 		}
 	}

@@ -7,9 +7,9 @@ import com.receiptofi.service.AccountService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.form.ForgotAuthenticateForm;
 import com.receiptofi.web.form.ForgotRecoverForm;
 import com.receiptofi.web.form.UserRegistrationForm;
@@ -227,8 +227,8 @@ public class ForgotController {
                 UserProfileEntity userProfileEntity = userProfilePreferenceService.findById(forgotRecoverEntity.getUserProfileId());
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
-                        SHAHashing.hashCodeSHA512(forgotAuthenticateForm.getPassword()),
-                        SHAHashing.hashCodeSHA1(RandomString.newInstance().nextString())
+                        HashText.bCrypt(forgotAuthenticateForm.getPassword()),
+                        HashText.bCrypt(RandomString.newInstance().nextString())
                 );
 
 

@@ -5,8 +5,8 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.AccountTypeEnum;
 import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserProfileManager;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.form.UserRegistrationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +50,7 @@ public final class InviteService {
             newInvitedUser.inActive();
             userProfileManager.save(newInvitedUser);
 
-            String authenticationKey = SHAHashing.hashCodeSHA512(RandomString.newInstance().nextString());
+            String authenticationKey = HashText.bCrypt(RandomString.newInstance().nextString());
             inviteEntity = InviteEntity.newInstance(emailId, authenticationKey, newInvitedUser, userProfile);
             inviteManager.save(inviteEntity);
             return inviteEntity;
