@@ -10,7 +10,10 @@
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/emp/**" access="hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/monitoring/**" access="hasIpAddress('192.168.1.*')" />
 
+        <!-- not sure if this will work on https -->
+        <intercept-url pattern="/monitoring/**" requires-channel="https"/>
         <!-- this for REST API and all form submission -->
         <!--<intercept-url pattern="/spitter/form" requires-channel="https"/>-->
 

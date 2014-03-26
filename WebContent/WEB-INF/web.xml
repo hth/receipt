@@ -8,11 +8,12 @@
         <filter-name>monitoring</filter-name>
         <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
         <async-supported>true</async-supported>
-        <init-param>
-            <param-name>allowed-addr-pattern</param-name>
-            <!-- Allows 192.168.1.* with mask 255.255.255.255, other wise add |123\.123\.123\.123 -->
-            <param-value>192\.168\.1\..*</param-value>
-        </init-param>
+        <!--<init-param>-->
+            <!-- removed for because of spring security; only requires in one place -->
+            <!--<param-name>allowed-addr-pattern</param-name>-->
+            <!--&lt;!&ndash; Allows 192.168.1.* with mask 255.255.255.255, other wise add |123\.123\.123\.123 &ndash;&gt;-->
+            <!--<param-value>192\.168\.1\..*</param-value>-->
+        <!--</init-param>-->
     </filter>
     <filter-mapping>
         <filter-name>monitoring</filter-name>
