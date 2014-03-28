@@ -27,35 +27,38 @@ import com.google.common.hash.Hashing;
 public final class HashText {
 	private static final Logger log = LoggerFactory.getLogger(HashText.class);
 
-	private static MessageDigest md1;
-    private static MessageDigest md5;
+    // Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value.
+    private static final int WORKLOAD = 15;
+
+	private static MessageDigest MD1;
+    private static MessageDigest MD5;
 
 	static {
 		try {
-            md1 = MessageDigest.getInstance("SHA-1");
-            md5 = MessageDigest.getInstance("SHA-512");
+            MD1 = MessageDigest.getInstance("SHA-1");
+            MD5 = MessageDigest.getInstance("SHA-512");
 		} catch (NoSuchAlgorithmException exce) {
             log.error("No hashing algorithm found={}", exce);
 		}
 	}
 
     public static String hashCodeSHA1(String text) {
-        return hashCode(text, md1) ;
+        return hashCode(text, MD1) ;
     }
 
     public static String hashCodeSHA512(String text) {
-        return hashCode(text, md5) ;
+        return hashCode(text, MD5) ;
     }
 
     public static String computeBCrypt(String text) {
-        String pw_hash = BCrypt.hashpw(text, BCrypt.gensalt(15));
+        return BCrypt.hashpw(text, BCrypt.gensalt(WORKLOAD));
+    }
 
-        if (BCrypt.checkpw(text, pw_hash)) {
-            log.info("It matches");
-        } else {
-            log.info("It does not match");
+    public static boolean checkPassword(String password_plaintext, String stored_hash) {
+        if(null == stored_hash || !stored_hash.startsWith("$2a$")) {
+            throw new IllegalArgumentException("Invalid hash provided for comparison");
         }
-        return pw_hash;
+        return BCrypt.checkpw(password_plaintext, stored_hash);
     }
 
 	private static String hashCode(String text, MessageDigest md) {
