@@ -1,0 +1,18 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[DateTime=%d{yyyy-MM-dd HH:mm:ss}] [Thread=%thread] [ID=%X{X-REQUEST-ID}] Type=%-5p [LineNumber=%L] [Method=%C{46}.%M] Message=%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger additivity="true" name="com.receiptofi">
+        <!-- To log in separate logger -->
+        <!--<appender-ref ref="STDOUT" />-->
+        <level value="debug" />
+    </logger>
+
+    <!-- ROOT level should be minimum or else messages within third party jar gets logged -->
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -3,6 +3,20 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 	<display-name>receipt</display-name>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/security/secure.xml
+            /WEB-INF/mongo/mongo-config.xml
+            /WEB-INF/receipt-servlet.xml
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>/WEB-INF/classes/logback.xml</param-value>
+    </context-param>
+
     <!-- Java Melody Start -->
     <filter>
         <filter-name>monitoring</filter-name>
@@ -24,27 +38,23 @@
     </listener>
     <!-- Java Melody Ends -->
 
-	<servlet>
-		<servlet-name>receipt</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-	<servlet-mapping>
-		<servlet-name>receipt</servlet-name>
-		<url-pattern>*.htm</url-pattern>
-	</servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>receipt</servlet-name>
-        <url-pattern>*.xml</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>receipt</servlet-name>
-        <url-pattern>*.json</url-pattern>
-    </servlet-mapping>
-    <!--Do no include html servlet mapping here as this would result in not throwing the right error codes listed below -->
+    <filter>
+        <filter-name>logContextFilter</filter-name>
+        <filter-class>com.receiptofi.web.filter.LogContextFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>logContextFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!--http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html-->
     <!--16.3.3.11 Working with "application/x-www-form-urlencoded" data-->
@@ -52,11 +62,38 @@
         <filter-name>httpPutFormFilter</filter-name>
         <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>httpPutFormFilter</filter-name>
         <servlet-name>receipt</servlet-name>
     </filter-mapping>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.receiptofi.web.listener.ReceiptofiServletContextListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>receipt</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/receipt-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>receipt</servlet-name>
+        <url-pattern>*.htm</url-pattern>
+        <url-pattern>*.xml</url-pattern>
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
+    <!--Do no include html servlet mapping here as this would result in not throwing the right error codes listed below -->
 
     <error-page>
         <error-code>400</error-code>
@@ -88,41 +125,8 @@
         <location>/500.html</location>
     </error-page>
 
-    <!--<error-page>-->
-        <!--<location>/forglobalerror</location>-->
-    <!--</error-page>-->
-
-    <!--<filter>-->
-        <!--<filter-name>session</filter-name>-->
-        <!--<filter-class>org.eclipse.jetty.continuation.ContinuationFilter</filter-class>-->
-    <!--</filter>-->
-
-    <!--<filter-mapping>-->
-        <!--<filter-name>session</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
-
-    <!--<servlet>-->
-        <!--<servlet-name>amq</servlet-name>-->
-        <!--<servlet-class>org.apache.activemq.web.AjaxServlet</servlet-class>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
-
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>amq</servlet-name>-->
-        <!--<url-pattern>/amq/*</url-pattern>-->
-    <!--</servlet-mapping>-->
-
-	<context-param>
-	    <param-name>log4jConfigLocation</param-name>
-	    <param-value>/WEB-INF/classes/log4j.web.properties</param-value>
-	</context-param>
-
-    <!-- For logging log4j -->
-    <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
-    <listener>
-        <listener-class>com.receiptofi.web.listener.ReceiptofiServletContextListener</listener-class>
-    </listener>
+    <!-- for all other errors -->
+    <error-page>
+        <location>/404.html</location>
+    </error-page>
 </web-app>
