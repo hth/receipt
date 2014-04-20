@@ -19,6 +19,7 @@ public final class PerformanceProfiling {
     private static final Logger log = LoggerFactory.getLogger(PerformanceProfiling.class);
     private static final int QUARTER_SECOND = 250;
     private static final int HALF_SECOND = 500;
+    private static boolean TIME_UNIT_MS = true;
 
     /**
      * Logs the start of the process
@@ -30,7 +31,9 @@ public final class PerformanceProfiling {
      */
     public static <T> Date log(Class<T> type, String... message) {
         Date time = DateUtil.nowTime();
-        log.debug(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
+        if(log.isDebugEnabled()) {
+            log.debug(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
+        }
         return time;
     }
 
@@ -43,11 +46,24 @@ public final class PerformanceProfiling {
      * @param <T>
      */
     public static <T> void log(Class<T> type, DateTime time, String... message) {
-        //log.info(type.getBusinessName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ss: " + DateUtil.duration(time).getSeconds());
         if(System.currentTimeMillis() - time.getMillis() > QUARTER_SECOND) {
-            log.warn(type.getName() + "  " + Arrays.asList(message).toString() + ", " + time + ", duration in ms: " + (System.currentTimeMillis() - time.getMillis()) + " ms");
+            if(log.isWarnEnabled()) {
+                log.warn("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+            }
         } else {
-            log.debug(type.getName() + "  " + Arrays.asList(message).toString()  +  ", " + time + ", duration in ms: " + (System.currentTimeMillis() - time.getMillis()) + " ms");
+            if(log.isDebugEnabled()) {
+                log.debug("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+            } else if(log.isInfoEnabled()) {
+                log.info("{}  {}, {}, duration={} seconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+            }
+        }
+    }
+
+    private static String computeDuration(DateTime time) {
+        if(TIME_UNIT_MS) {
+            return String.valueOf(System.currentTimeMillis() - time.getMillis());
+        } else {
+            return String.valueOf(DateUtil.duration(time).getSeconds());
         }
     }
 

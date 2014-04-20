@@ -9,9 +9,9 @@ import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.form.UserRegistrationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +118,7 @@ public final class AccountService {
      * @return
      */
     public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) throws Exception {
-        String authenticationKey = SHAHashing.hashCodeSHA512(RandomString.newInstance().nextString());
+        String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
 
         ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(userProfileEntity.getId(), authenticationKey);
         try {

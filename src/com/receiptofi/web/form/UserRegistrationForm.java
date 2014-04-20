@@ -11,8 +11,8 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.AccountTypeEnum;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.utils.SHAHashing;
 
 /**
  * @author hitender
@@ -39,7 +39,7 @@ public final class UserRegistrationForm {
 	 * @return
 	 */
 	public UserAuthenticationEntity newUserAuthenticationEntity() {
-		return UserAuthenticationEntity.newInstance(SHAHashing.hashCodeSHA512(password), SHAHashing.hashCodeSHA1(RandomString.newInstance().nextString()));
+		return UserAuthenticationEntity.newInstance(HashText.computeBCrypt(password), HashText.computeBCrypt(RandomString.newInstance().nextString()));
 	}
 
 	public UserProfileEntity newUserProfileEntity(UserAuthenticationEntity userAuthentication) {

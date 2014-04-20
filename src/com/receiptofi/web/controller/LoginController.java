@@ -10,8 +10,8 @@ import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.utils.SHAHashing;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
 import com.receiptofi.web.validator.UserLoginValidator;
@@ -129,9 +129,14 @@ public class LoginController {
             //Always check user login with lower letter email case
 			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(StringUtils.lowerCase(userLoginForm.getEmailId()));
 			if (userProfile != null) {
-				userLoginForm.setPassword(SHAHashing.hashCodeSHA512(userLoginForm.getPassword()));
 				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
-				if (user.getPassword().equals(userLoginForm.getPassword()) || user.getGrandPassword().equals(userLoginForm.getPassword())) {
+                boolean passwordIsValid = false;
+                try {
+                    passwordIsValid = HashText.checkPassword(userLoginForm.getPassword(), user.getPassword()) || HashText.checkPassword(userLoginForm.getPassword(), user.getGrandPassword());
+                } catch (Exception notValidHash) {
+                    log.warn("Invalid hash for user={}", userLoginForm.getEmailId(), notValidHash);
+                }
+                if(passwordIsValid) {
 					log.info("Login Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
 
 					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
@@ -141,19 +146,17 @@ public class LoginController {
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
 					return path;
 				} else {
-					userLoginForm.setPassword("");
-					log.warn("Password not matching for user : " + userLoginForm.getEmailId());
-					result.rejectValue("emailId", "field.emailId.notMatching");
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
-					return LOGIN_PAGE;
+					log.warn("Password not matching for user={}", userLoginForm.getEmailId());
 				}
+                result.rejectValue("emailId", "field.emailId.notMatching");
 			} else {
-				userLoginForm.setPassword("");
-				log.warn("No Email Id found in record : " + userLoginForm.getEmailId());
+				log.warn("No Email Id found in record={}", userLoginForm.getEmailId());
 				result.rejectValue("emailId", "field.emailId.notFound");
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
-				return LOGIN_PAGE;
 			}
+
+            userLoginForm.setPassword("");
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
+            return LOGIN_PAGE;
 		}
 	}
 

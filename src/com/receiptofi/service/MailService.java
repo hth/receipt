@@ -9,8 +9,8 @@ import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
+import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.utils.SHAHashing;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -207,7 +207,7 @@ public final class MailService {
     public InviteEntity reCreateAnotherInvite(String emailId, UserProfileEntity userProfile) {
         InviteEntity inviteEntity = inviteService.find(emailId);
         try {
-            String auth = SHAHashing.hashCodeSHA512(RandomString.newInstance().nextString());
+            String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
             inviteEntity = InviteEntity.newInstance(emailId, auth, inviteEntity.getInvited(), userProfile);
             inviteManager.save(inviteEntity);
             return inviteEntity;
