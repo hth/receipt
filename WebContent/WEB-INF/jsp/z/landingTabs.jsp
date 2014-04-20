@@ -27,7 +27,7 @@
                             <td style="padding: 3px; text-align: center">
                                 <c:if test="${!empty receipt.expenseReportInFS}">
                                     <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receipt.id}.htm">
-                                        <img src="images/download_icon_lg.png" class="downloadIcon" width="14" height="14">
+                                        <img src="static/images/download_icon_lg.png" class="downloadIcon" width="14" height="14">
                                     </a>
                                 </c:if>
                             </td>

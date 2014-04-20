@@ -56,7 +56,7 @@ public class FileDownloadController {
     @Autowired private FileSystemProcessor fileSystemProcessor;
     @Autowired private ReceiptService receiptService;
 
-    @Value("${imageNotFoundPlaceHolder:/images/no_image.gif}")
+    @Value("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
     private String imageNotFound;
 
 	/**
@@ -77,7 +77,7 @@ public class FileDownloadController {
                 log.warn("GridFSDBFile is null; failedToFindImage="+ imageId);
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
     			File file = FileUtils.getFile(pathToWeb + imageNotFound);
-//                File file = FileUtils.getFile(pathToWeb + "/images/no_image_found.jpg");
+//                File file = FileUtils.getFile(pathToWeb + "/static/images/no_image_found.jpg");
 				BufferedImage bi = ImageIO.read(file);
                 setContentType(file, response);
 				OutputStream out = response.getOutputStream();

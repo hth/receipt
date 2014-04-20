@@ -5,8 +5,8 @@
     <meta charset="utf-8">
 	<title><fmt:message key="title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="static/images/circle-leaf-sized_small.png" />
 
     <!-- load dojo and provide config via data attribute -->
     <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
@@ -51,20 +51,20 @@
 
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css' media='print' />
-	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
-    <link rel='stylesheet' type='text/css' href="jquery/fineuploader/fineuploader-3.6.3.css" />
-    <link rel='stylesheet' type='text/css' href="jquery/css/_angular/animate-custom.css" />
-    <link rel='stylesheet' type='text/css' href='jquery/css/receipt.css' />
+	<link rel='stylesheet' type='text/css' href='static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
+    <link rel='stylesheet' type='text/css' href="static/jquery/fineuploader/fineuploader-3.6.3.css" />
+    <link rel='stylesheet' type='text/css' href="static/jquery/css/_angular/animate-custom.css" />
+    <link rel='stylesheet' type='text/css' href='static/jquery/css/receipt.css' />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/3.0.7/highcharts.js"></script>
-    <script type="text/javascript" src="jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <script type="text/javascript" src="static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-    <script type="text/javascript" src="jquery/js/_angular/angular-animate.min.js"></script>
-    <script type="text/javascript" src="jquery/js/_angular/angular-animate.min.js.map"></script>
+    <script type="text/javascript" src="static/jquery/js/_angular/angular-animate.min.js"></script>
+    <script type="text/javascript" src="static/jquery/js/_angular/angular-animate.min.js.map"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 
     <!-- For drop down menu -->
@@ -297,7 +297,7 @@
                                 $("#mmText").html(data.mm +
                                         " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
                                         "&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                        "<img id='car' src='images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
+                                        "<img id='car' src='static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
                                 );
                             }
                         }
@@ -344,7 +344,7 @@
                                 $("#mmText").html(data.mm +
                                         " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
                                         "&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                        "<img id='car' src='images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
+                                        "<img id='car' src='static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
                                 );
                             }
                         }
@@ -397,14 +397,14 @@
 <div class="wrapper">
  	<div class="divTable" style="width: 810px">
 		<div class="divRow">
-            <div class="divOfCell250" style="height: 46px"><img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
+            <div class="divOfCell250" style="height: 46px"><img src="static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
 			<div class="divOfCell250">
                 <h3>
                     <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <img src="static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
@@ -605,7 +605,7 @@
                                 <td style="padding: 3px; text-align: center">
                                     <c:if test="${!empty receipt.expenseReportInFS}">
                                         <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receipt.id}.htm">
-                                            <img src="images/download_icon_lg.png" class="downloadIcon" width="14" height="14" title="Download expensed receipt">
+                                            <img src="static/images/download_icon_lg.png" class="downloadIcon" width="14" height="14" title="Download expensed receipt">
                                         </a>
                                     </c:if>
                                 </td>
@@ -657,7 +657,7 @@
                     <div style="display:block; width:410px; margin-bottom: 10px" id="mmText">
                         <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <img id="car" src="images/car.png" style="margin: 0px; height: 15px; width: 20px">
+                        <img id="car" src="static/images/car.png" style="margin: 0px; height: 15px; width: 20px">
                     </div>
                     <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
                     <div class="col-xs-6">
@@ -678,10 +678,10 @@
                                     <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
                                 </td>
                                 <td style="padding: 3px; text-align: center" ng-switch-when="true">
-                                    <img src="images/cars.png" style="height: 18px; width: 25px"/>
+                                    <img src="static/images/cars.png" style="height: 18px; width: 25px"/>
                                 </td>
                                 <td style="padding: 3px; text-align: center" ng-switch-when="false">
-                                    <img src="images/odometers.png" />
+                                    <img src="static/images/odometers.png" />
                                 </td>
                                 <td style="padding: 3px; text-align: left" ng-switch-when="false">
                                     {{record.sd | date:'dd MMM'}}
@@ -712,10 +712,10 @@
                         <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">
                         <span ng-switch on="draggable.c">
                             <div ng-switch-when="true">
-                                <img src="images/cars.png" style="height: 18px; width: 25px"/> {{draggable.t | number:2}} Miles driven
+                                <img src="static/images/cars.png" style="height: 18px; width: 25px"/> {{draggable.t | number:2}} Miles driven
                             </div>
                             <div ng-switch-when="false">
-                                <img src="images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
+                                <img src="static/images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
                             </div>
                         </span>
                         </div>
@@ -1211,7 +1211,7 @@
             // increase in the X direction to the right and in
             // the Y direction down.
             var image = {
-                url: 'images/beachflag.png',
+                url: 'static/images/beachflag.png',
                 // This marker is 20 pixels wide by 32 pixels tall.
                 size: new google.maps.Size(20, 32),
                 // The origin for this image is 0,0.
@@ -1220,7 +1220,7 @@
                 anchor: new google.maps.Point(0, 32)
             };
             var shadow = {
-                url: 'images/beachflag_shadow.png',
+                url: 'static/images/beachflag_shadow.png',
                 // The shadow image is larger in the horizontal dimension
                 // while the position and offset are the same as for the main image.
                 size: new google.maps.Size(37, 32),

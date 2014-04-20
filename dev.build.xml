@@ -79,7 +79,7 @@
             </fileset>
         </copy>
 		<copy todir="${build.dir}/images">
-			<fileset dir="${web.dir}/images">
+			<fileset dir="${web.dir}/static/images">
 				<include name="**/*.*"/>
 			</fileset>
 		</copy>

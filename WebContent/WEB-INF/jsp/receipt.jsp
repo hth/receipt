@@ -5,16 +5,16 @@
     <meta charset="utf-8">
 	<title><fmt:message key="receipt.title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
 
-    <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href='../static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='../static/jquery/css/receipt.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+	<script type="text/javascript" src="../static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="../static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -173,7 +173,7 @@
                                         "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
                                         "&nbsp;&nbsp;&nbsp;" +
                                         "<a href='${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
-                                            "<img src='../images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
+                                            "<img src='../static/images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
                                         "</a>"
                                     ).show();
                                 }
@@ -225,7 +225,7 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="../static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
                 <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
@@ -236,7 +236,7 @@
                         <div>
                             <a class="account" style="color: #065c14">
                                 ${sessionScope['userSession'].emailId}
-                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <img src="../static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
@@ -385,7 +385,7 @@
                                     &nbsp;
                                     <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
                                         <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm">
-                                            <img src="../images/download_icon_lg.png" class="downloadIcon" width="30" height="32">
+                                            <img src="../static/images/download_icon_lg.png" class="downloadIcon" width="30" height="32">
                                         </a>
                                     </c:if>
                                 </div>

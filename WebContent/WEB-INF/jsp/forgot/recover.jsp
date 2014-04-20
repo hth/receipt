@@ -5,18 +5,18 @@
     <meta charset="utf-8">
     <title><fmt:message key="account.recover.title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
 
-    <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href='../static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+    <link rel='stylesheet' type='text/css' href='../static/jquery/css/receipt.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="../static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 </head>
 <body>
 <div class="wrapper">
-    <img src="../images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
+    <img src="../static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
     <p>&nbsp;</p>
     <h2>
         <fmt:message key="account.recover.title" />

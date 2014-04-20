@@ -8,10 +8,10 @@
     <meta HTTP-EQUIV="Pragma" content="no-cache">
     <meta HTTP-EQUIV="Expires" content="-1">
 
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
 
-    <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href='../static/jquery/css/receipt.css'>
 
     <style>
         body {background: #e6e6e6;margin: 0; padding: 20px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#666666;}
@@ -26,7 +26,7 @@
 <div class="wrapper">
     <c:if test="${success eq false}">
         <div class="error_page">
-            <img alt="receipt-o-fi logo" src="../images/receipt-o-fi.logo.jpg" height="45px" />
+            <img alt="receipt-o-fi logo" src="../static/images/receipt-o-fi.logo.jpg" height="45px" />
             <h1>Password update failed</h1>
             <p>We apologize, but we were unable to update your account with new password.</p>
             <p>&nbsp;</p>
@@ -36,7 +36,7 @@
 
     <c:if test="${success eq true}">
         <div class="error_page">
-            <img alt="receipt-o-fi logo" src="../images/receipt-o-fi.logo.jpg" height="45px" />
+            <img alt="receipt-o-fi logo" src="../static/images/receipt-o-fi.logo.jpg" height="45px" />
             <h1>Password successfully changed</h1>
             <p>Please log in with your new password.</p>
             <p>&nbsp;</p>
