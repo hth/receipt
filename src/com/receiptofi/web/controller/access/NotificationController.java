@@ -1,4 +1,4 @@
-package com.receiptofi.web.controller;
+package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.repository.NotificationManager;

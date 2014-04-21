@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.receiptofi.web.controller;
+package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.UserSession;

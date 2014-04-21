@@ -5,13 +5,10 @@
         </encoder>
     </appender>
 
-    <logger additivity="true" name="com.receiptofi">
-        <!-- To log in separate logger -->
-        <!--<appender-ref ref="STDOUT" />-->
-        <level value="debug" />
-    </logger>
+    <logger name="com.receiptofi" level="debug" />
 
-    <!-- ROOT level should be minimum or else messages within third party jar gets logged -->
+    <logger name="org.apache.activemq" level="OFF"/>
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>

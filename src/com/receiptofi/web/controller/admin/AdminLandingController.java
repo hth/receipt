@@ -8,7 +8,7 @@ import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.AdminLandingService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.controller.LoginController;
+import com.receiptofi.web.controller.access.LoginController;
 import com.receiptofi.web.form.UserSearchForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
