@@ -25,7 +25,7 @@ public interface RepositoryManager<T> extends Serializable {
 	 *
 	 * @throws Exception
 	 */
-	public void save(T object) throws Exception;
+	public void save(T object);
 
 	/**
 	 * Gets a record for a particular id.

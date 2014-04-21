@@ -25,8 +25,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -48,7 +46,7 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 	}
 
 	@Override
-	public void save(ItemEntityOCR object) throws Exception {
+	public void save(ItemEntityOCR object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
             if(object.getId() != null) {
@@ -56,8 +54,8 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ItemEntityOCR: " + e.getLocalizedMessage());
-			throw new Exception(e.getMessage());
+			log.error("Duplicate record entry for ItemEntityOCR={}", e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

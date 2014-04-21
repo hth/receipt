@@ -11,17 +11,14 @@ import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.*;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -48,7 +45,7 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 	}
 
 	@Override
-	public void save(UserAuthenticationEntity object) throws Exception {
+	public void save(UserAuthenticationEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
             if(object.getId() != null) {
@@ -56,8 +53,8 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for UserAuthenticationEntity: " + e.getLocalizedMessage());
-			throw new Exception(e.getMessage());
+			log.error("Duplicate record entry for UserAuthenticationEntity:{} {}", e.getLocalizedMessage(), e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

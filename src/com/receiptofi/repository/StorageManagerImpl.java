@@ -12,12 +12,8 @@ import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
@@ -64,7 +60,7 @@ public final class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
-	public void save(UploadReceiptImage object) throws Exception {
+	public void save(UploadReceiptImage object) {
 		persist(object);
 	}
 
@@ -115,17 +111,22 @@ public final class StorageManagerImpl implements StorageManager {
         }
     }
 
-	private String persist(UploadReceiptImage uploadReceiptImage) throws IOException {
+	private String persist(UploadReceiptImage uploadReceiptImage) {
 		boolean closeStreamOnPersist = true;
 		GridFSInputFile receiptBlob;
-        if(!uploadReceiptImage.containsFile()) {
-            receiptBlob = gridFs.createFile(
-                    uploadReceiptImage.getFileData().getInputStream(),
-                    uploadReceiptImage.getFileName(),
-                    closeStreamOnPersist);
-        } else {
-            InputStream is = new FileInputStream(uploadReceiptImage.getFile());
-            receiptBlob = gridFs.createFile(is, uploadReceiptImage.getFileName(), closeStreamOnPersist);
+        try {
+            if(!uploadReceiptImage.containsFile()) {
+                receiptBlob = gridFs.createFile(
+                        uploadReceiptImage.getFileData().getInputStream(),
+                        uploadReceiptImage.getFileName(),
+                        closeStreamOnPersist);
+            } else {
+                InputStream is = new FileInputStream(uploadReceiptImage.getFile());
+                receiptBlob = gridFs.createFile(is, uploadReceiptImage.getFileName(), closeStreamOnPersist);
+            }
+        } catch (IOException ioe) {
+            log.error("Image persist error:{}", ioe);
+            throw new RuntimeException(ioe.getCause());
         }
 
         if(receiptBlob != null) {

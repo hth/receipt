@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.domain.Sort.Direction.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -188,7 +188,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-	public void save(ReceiptEntity object) throws Exception {
+	public void save(ReceiptEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			// Cannot use insert because insert does not perform update like save.
@@ -201,9 +201,9 @@ public final class ReceiptManagerImpl implements ReceiptManager {
             object.computeChecksum();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ReceiptEntity: " + e.getLocalizedMessage());
+			log.error("Duplicate record entry for ReceiptEntity={}", e);
             //todo should throw a better exception; this is highly likely to happen any time soon
-            throw new Exception(e.getMessage());
+            throw new RuntimeException(e.getMessage());
 		}
 	}
 

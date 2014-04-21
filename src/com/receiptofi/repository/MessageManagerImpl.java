@@ -23,8 +23,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -139,7 +137,7 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public void save(MessageDocumentEntity object) throws Exception {
+    public void save(MessageDocumentEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if(object.getId() != null) {
             object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.

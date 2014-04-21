@@ -23,8 +23,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -47,7 +45,7 @@ public final class DocumentManagerImpl implements DocumentManager {
 
 	//TODO invoke transaction here
 	@Override
-	public void save(DocumentEntity object) throws Exception {
+	public void save(DocumentEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 			// Cannot use insert because insert does not perform update like save.
@@ -59,9 +57,8 @@ public final class DocumentManagerImpl implements DocumentManager {
             }
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for DocumentEntity: " + e.getLocalizedMessage());
-			log.error("Duplicate record entry for DocumentEntity: " + object);
-			throw new Exception(e.getMessage());
+			log.error("Duplicate record entry for DocumentEntity={}", e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

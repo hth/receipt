@@ -17,7 +17,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -38,7 +37,7 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public void save(NotificationEntity object) throws Exception {
+    public void save(NotificationEntity object) {
         if(object.getId() != null) {
             object.setUpdated();
         }

@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -24,8 +24,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -52,7 +50,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public void save(UserProfileEntity object) throws Exception {
+	public void save(UserProfileEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 //            if(getObjectUsingEmail(object.getEmailId()) == null)
@@ -66,8 +64,8 @@ public final class UserProfileManagerImpl implements UserProfileManager {
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for UserProfileEntity: " + e.getLocalizedMessage());
-			throw new Exception(e.getMessage());
+			log.error("Duplicate record entry for UserProfileEntity={}", e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

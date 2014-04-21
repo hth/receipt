@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -54,7 +52,7 @@ public final class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public void save(InviteEntity object) throws Exception {
+    public void save(InviteEntity object) {
         if(object.getId() != null) {
             object.setUpdated();
         }

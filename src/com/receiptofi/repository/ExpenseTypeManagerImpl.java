@@ -7,11 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.*;
-import static org.springframework.data.domain.Sort.Direction.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -20,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -42,15 +38,15 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     }
 
     @Override
-    public void save(ExpenseTagEntity object) throws Exception {
+    public void save(ExpenseTagEntity object) {
         try {
             if(object.getId() != null) {
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);
         } catch (DataIntegrityViolationException e) {
-            log.error("Duplicate record entry for ExpenseType: " + e.getLocalizedMessage());
-            throw new Exception("Expense Name: " + object.getTagName() + ", already exists");
+            log.error("Duplicate record entry for ExpenseType={}", e);
+            throw new RuntimeException("Expense Name: " + object.getTagName() + ", already exists");
         }
     }
 
