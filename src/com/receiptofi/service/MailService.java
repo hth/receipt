@@ -19,6 +19,7 @@ import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -159,7 +160,7 @@ public final class MailService {
             try {
                 inviteEntity = inviteService.initiateInvite(emailId, userProfileEntity);
                 formulateInvitationEmail(emailId, userProfileEntity, inviteEntity);
-            } catch (Exception exception) {
+            } catch (RuntimeException exception) {
                 if(inviteEntity != null) {
                     deleteInvite(inviteEntity);
                     log.info("Due to failure in sending the invitation email. Deleting Invite: " + inviteEntity.getId() + ", for: " + inviteEntity.getEmailId());
@@ -221,7 +222,7 @@ public final class MailService {
         }
     }
 
-    private void formulateInvitationEmail(String emailId, UserProfileEntity userProfileEntity, InviteEntity inviteEntity) throws Exception {
+    private void formulateInvitationEmail(String emailId, UserProfileEntity userProfileEntity, InviteEntity inviteEntity) {
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("from", userProfileEntity.getName());
         rootMap.put("fromEmail", userProfileEntity.getEmail());
@@ -254,10 +255,10 @@ public final class MailService {
             helper.addInline("receiptofi.logo", res);
 
             mailSender.send(message);
-        } catch(TemplateException | IOException exception) {
+        } catch(TemplateException | IOException | MessagingException exception) {
             log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
             log.info("Failure in sending the invitation email: " + inviteEntity.getId() + ", for: " + inviteEntity.getEmailId());
-            throw new Exception(exception);
+            throw new RuntimeException(exception);
         }
     }
 

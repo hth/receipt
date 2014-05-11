@@ -38,8 +38,17 @@ public class AccountController {
     private static final String NEW_ACCOUNT = "/new";
     private static final String FORGOT_RECOVER_ACCOUNT = "/forgot/recover";
 
-    @Autowired private UserRegistrationValidator userRegistrationValidator;
-    @Autowired private AccountService accountService;
+    private final UserRegistrationValidator userRegistrationValidator;
+    private final AccountService accountService;
+
+    @Autowired
+    public AccountController(
+            UserRegistrationValidator userRegistrationValidator,
+            AccountService accountService
+    ) {
+        this.userRegistrationValidator = userRegistrationValidator;
+        this.accountService = accountService;
+    }
 
     @ModelAttribute("userRegistrationForm")
     public UserRegistrationForm getUserRegistrationForm() {
@@ -77,7 +86,7 @@ public class AccountController {
             //TODO For now de-activate all registration. Currently registration is by invitation only.
             userProfile = accountService.createNewAccount(userRegistrationForm);
             log.info("Registered new Email Id: " + userProfile.getEmail());
-        } catch (Exception exce) {
+        } catch (RuntimeException exce) {
             log.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
             return NEW_ACCOUNT;

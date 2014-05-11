@@ -34,12 +34,12 @@ import org.joda.time.DateTime;
 public final class AccountService {
     private static final Logger log = LoggerFactory.getLogger(AccountService.class);
 
-    private UserAccountManager userAccountManager;
-    private UserAuthenticationManager userAuthenticationManager;
-    private UserProfileManager userProfileManager;
-    private UserPreferenceManager userPreferenceManager;
-    private ForgotRecoverManager forgotRecoverManager;
-    private GenerateUserIdManager generateUserIdManager;
+    private final UserAccountManager userAccountManager;
+    private final UserAuthenticationManager userAuthenticationManager;
+    private final UserProfileManager userProfileManager;
+    private final UserPreferenceManager userPreferenceManager;
+    private final ForgotRecoverManager forgotRecoverManager;
+    private final GenerateUserIdManager generateUserIdManager;
 
     //TODO remove this
     @Value("${grandPassword}")
@@ -58,8 +58,8 @@ public final class AccountService {
             UserProfileManager userProfileManager,
             UserPreferenceManager userPreferenceManager,
             ForgotRecoverManager forgotRecoverManager,
-            GenerateUserIdManager generateUserIdManager) {
-
+            GenerateUserIdManager generateUserIdManager
+    ) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userProfileManager = userProfileManager;
@@ -83,7 +83,7 @@ public final class AccountService {
      * @return
      * @throws Exception
      */
-    public UserProfileEntity createNewAccount(UserRegistrationForm userRegistrationForm) throws Exception {
+    public UserProfileEntity createNewAccount(UserRegistrationForm userRegistrationForm) {
         DateTime time = DateUtil.now();
 
         UserAccountEntity userAccount;
@@ -95,9 +95,9 @@ public final class AccountService {
             userAuthentication.setGrandPassword(grandPassword);
             userAuthenticationManager.save(userAuthentication);
         } catch (Exception e) {
-            log.error("During saving UserAuthenticationEntity: " + e.getLocalizedMessage());
+            log.error("During saving UserAuthenticationEntity={}", e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user authentication");
-            throw new Exception("error saving user authentication");
+            throw new RuntimeException("error saving user authentication ", e);
         }
 
         try {
@@ -120,22 +120,22 @@ public final class AccountService {
             checkRegistration(userProfile);
             userProfileManager.save(userProfile);
         } catch (Exception e) {
-            log.error("During saving UserProfileEntity: " + e.getLocalizedMessage());
+            log.error("During saving UserProfileEntity={}", e.getLocalizedMessage(), e);
 
             //Roll back
             userAuthenticationManager.deleteHard(userAuthentication);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user profile");
-            throw new Exception("error saving user profile");
+            throw new RuntimeException("error saving user profile ", e);
         }
 
         try {
             UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userRegistrationForm.getAccountType(), userProfile);
             userPreferenceManager.save(userPreferenceEntity);
         } catch (Exception e) {
-            log.error("During saving UserPreferenceEntity: " + e.getLocalizedMessage());
+            log.error("During saving UserPreferenceEntity={}", e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error saving user preference");
-            throw new Exception("error saving user preference");
+            throw new RuntimeException("error saving user preference ", e);
         }
 
         return userProfile;
