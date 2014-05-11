@@ -20,13 +20,13 @@ import com.mongodb.WriteResult;
  */
 public interface ItemOCRManager extends RepositoryManager<ItemEntityOCR> {
 
-	public static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntityOCR.class, Document.class, "collection");
+	static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntityOCR.class, Document.class, "collection");
 
-	public void saveObjects(List<ItemEntityOCR> objects) throws Exception;
+	void saveObjects(List<ItemEntityOCR> objects) throws Exception;
 
-	public WriteResult updateObject(ItemEntityOCR object);
+	WriteResult updateObject(ItemEntityOCR object);
 
-	public List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt);
+	List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt);
 
-	public void deleteWhereReceipt(DocumentEntity receipt);
+	void deleteWhereReceipt(DocumentEntity receipt);
 }
