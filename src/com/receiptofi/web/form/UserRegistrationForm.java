@@ -3,16 +3,9 @@
  */
 package com.receiptofi.web.form;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
-
-import com.receiptofi.domain.UserAuthenticationEntity;
-import com.receiptofi.domain.UserPreferenceEntity;
-import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.AccountTypeEnum;
-import com.receiptofi.utils.HashText;
-import com.receiptofi.utils.RandomString;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author hitender

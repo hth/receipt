@@ -2,13 +2,10 @@ package com.receiptofi.web.controller.emp;
 
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.ReceiptUser;
-import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.EmpLandingService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
-import com.receiptofi.web.controller.access.LoginController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;

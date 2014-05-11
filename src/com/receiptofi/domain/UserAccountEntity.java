@@ -5,7 +5,6 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 
 import javax.validation.constraints.NotNull;
-
 import java.util.HashSet;
 import java.util.Set;
 

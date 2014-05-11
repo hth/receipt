@@ -2,15 +2,11 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
-import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
-import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.PerformanceProfiling;

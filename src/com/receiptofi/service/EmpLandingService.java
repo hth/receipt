@@ -1,13 +1,13 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.MessageDocumentEntity;
+import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.repository.MessageManager;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.receiptofi.domain.MessageDocumentEntity;
-import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.repository.MessageManager;
 
 /**
  * User: hitender

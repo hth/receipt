@@ -4,7 +4,6 @@ import com.receiptofi.domain.social.RememberMeTokenEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;

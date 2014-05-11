@@ -2,7 +2,6 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptUser;
-import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
