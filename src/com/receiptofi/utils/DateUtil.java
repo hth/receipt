@@ -39,12 +39,11 @@ public final class DateUtil {
      * 12/15/2012 PM 04:49:45
      * 08/29/2012 03:07 PM
      *
-     * @param dateString
+     * @param dateStr
      * @return
      */
-    public static Date getDateFromString(String dateString) {
-        dateString = StringUtils.trim(dateString.replaceAll("-", "/"));
-        dateString = dateString.replaceAll("[\\t\\n\\r]+", " ");
+    public static Date getDateFromString(String dateStr) {
+        String dateString = StringUtils.trim(dateStr.replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
         for(DateType dateType : DateType.values()) {
             if(dateString.matches(dateType.getRegex())) {
                 return DateTime.parse(dateString, dateType.getFormatter()).toDate();
