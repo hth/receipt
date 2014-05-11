@@ -20,7 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  *
  */
 @Document(collection = "USER_PREFERENCE")
-public class UserPreferenceEntity extends BaseEntity {
+public final class UserPreferenceEntity extends BaseEntity {
 
 	private static final long serialVersionUID = 1096957451728520230L;
 

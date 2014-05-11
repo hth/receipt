@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @since Dec 15, 2012 8:11:45 PM
  */
 @Document(collection = "USER_AUTHENTICATION")
-public class UserAuthenticationEntity extends BaseEntity {
+public final class UserAuthenticationEntity extends BaseEntity {
 	private static final long serialVersionUID = -5207492124434434278L;
 
 	@NotNull
