@@ -8,10 +8,10 @@
     <meta HTTP-EQUIV="Pragma" content="no-cache">
     <meta HTTP-EQUIV="Expires" content="-1">
 
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
 
-    <link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
 
     <style>
         body {background: #e6e6e6;margin: 0; padding: 20px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#666666;}
@@ -25,7 +25,7 @@
 <body>
 <div class="wrapper">
     <div class="error_page">
-        <img alt="receipt-o-fi logo" src="../images/receipt-o-fi.logo.jpg" height="45px" />
+        <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
         <h1>Confirmation Page</h1>
         <p>An email has been sent with information regarding recovering your account password</p>
         <p>&nbsp;</p>

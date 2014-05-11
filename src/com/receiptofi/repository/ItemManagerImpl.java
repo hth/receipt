@@ -33,8 +33,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import org.joda.time.DateTime;
 
@@ -60,7 +58,7 @@ public final class ItemManagerImpl implements ItemManager {
 	}
 
 	@Override
-	public void save(ItemEntity object) throws Exception {
+	public void save(ItemEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
             if(object.getId() != null) {
@@ -68,8 +66,8 @@ public final class ItemManagerImpl implements ItemManager {
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
-			throw new Exception(e.getMessage());
+			log.error("Duplicate record entry for ItemEntity={}", e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

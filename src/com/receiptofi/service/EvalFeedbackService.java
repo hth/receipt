@@ -26,20 +26,19 @@ public final class EvalFeedbackService {
     @Autowired EvalFeedbackManager evalFeedbackManager;
     @Autowired FileDBService fileDBService;
 
-    public void addFeedback(String comment, int rating, CommonsMultipartFile fileData, UserSession userSession) {
+    public void addFeedback(String comment, int rating, CommonsMultipartFile fileData, String receiptUserId) {
         String blobId = "";
         try {
             if(fileData.getSize() > 0) {
                 UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
                 uploadReceiptImage.setFileData(fileData);
-                uploadReceiptImage.setEmailId(userSession.getEmailId());
-                uploadReceiptImage.setUserProfileId(userSession.getUserProfileId());
+                uploadReceiptImage.setUserProfileId(receiptUserId);
                 uploadReceiptImage.setFileType(FileTypeEnum.FEEDBACK);
 
                 blobId = fileDBService.saveFile(uploadReceiptImage);
             }
 
-            EvalFeedbackEntity evalFeedbackEntity = EvalFeedbackEntity.newInstance(comment, rating, userSession.getUserProfileId());
+            EvalFeedbackEntity evalFeedbackEntity = EvalFeedbackEntity.newInstance(comment, rating, receiptUserId);
             if(!StringUtils.isEmpty(blobId)) {
                 evalFeedbackEntity.setAttachmentBlobId(blobId);
             }

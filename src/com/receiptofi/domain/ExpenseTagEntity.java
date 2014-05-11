@@ -34,16 +34,16 @@ public class ExpenseTagEntity extends BaseEntity {
     private int forYear;
 
     @NotNull
-    @Field("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field("RID")
+    private String receiptUserId;
 
     /** To make bean happy */
     public ExpenseTagEntity() {}
 
-    public static ExpenseTagEntity newInstance(String expName, String userProfileId) {
+    public static ExpenseTagEntity newInstance(String expName, String receiptUserId) {
         ExpenseTagEntity expenseTagEntity = new ExpenseTagEntity();
         expenseTagEntity.setTagName(expName);
-        expenseTagEntity.setUserProfile(userProfileId);
+        expenseTagEntity.setReceiptUserId(receiptUserId);
         expenseTagEntity.setForYear(DateUtil.now().getYear());
         return expenseTagEntity;
     }
@@ -64,11 +64,11 @@ public class ExpenseTagEntity extends BaseEntity {
         this.forYear = forYear;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfile(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 }

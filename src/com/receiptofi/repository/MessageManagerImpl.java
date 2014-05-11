@@ -23,8 +23,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -51,8 +49,7 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
-        Query query = query(where("LOCKED").is(false))
-                .addCriteria(where("DS_E").is(status));
+        Query query = query(where("LOCKED").is(false).and("DS_E").is(status));
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Order(DESC, "USER_LEVEL_ENUM"));
@@ -110,10 +107,7 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
-        Query query = query(where("LOCKED").is(true))
-                .addCriteria(where("DS_E").is(status))
-                .addCriteria(where("EMAIL").is(emailId))
-                .addCriteria(where("USER_PROFILE_ID").is(userProfileId));
+        Query query = query(where("LOCKED").is(true).and("DS_E").is(status).and("EM").is(emailId).and("USER_PROFILE_ID").is(userProfileId));
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Order(DESC, "USER_LEVEL_ENUM"));
@@ -126,8 +120,7 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageDocumentEntity> findAllPending() {
-        Query query = query(where("LOCKED").is(true))
-                .addCriteria(where("DS_E").is(DocumentStatusEnum.OCR_PROCESSED));
+        Query query = query(where("LOCKED").is(true).and("DS_E").is(DocumentStatusEnum.OCR_PROCESSED));
 
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Order(DESC, "USER_LEVEL_ENUM"));
@@ -139,7 +132,7 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public void save(MessageDocumentEntity object) throws Exception {
+    public void save(MessageDocumentEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if(object.getId() != null) {
             object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
@@ -160,22 +153,15 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public WriteResult updateObject(String receiptOCRId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = query(where("LOCKED").is(true))
-                .addCriteria(where("DS_E").is(statusFind))
-                .addCriteria(where("RECEIPT_OCR_ID").is(receiptOCRId));
-
+        Query query = query(where("LOCKED").is(true).and("DS_E").is(statusFind).and("RECEIPT_OCR_ID").is(receiptOCRId));
         Update update = update("DS_E", statusSet).set("A", false);
-
         return mongoTemplate.updateFirst(query, entityUpdate(update), MessageDocumentEntity.class);
     }
 
     @Override
     public WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = query(where("LOCKED").is(true))
-                .addCriteria(where("DS_E").is(statusFind))
-                .addCriteria(where("A").is(false))
-                .addCriteria(where("RECEIPT_OCR_ID").is(receiptOCRId));
+        Query query = query(where("LOCKED").is(true).and("DS_E").is(statusFind).and("A").is(false).and("RECEIPT_OCR_ID").is(receiptOCRId));
 
         Update update = update("recordLocked", false)
                 .set("A", true)

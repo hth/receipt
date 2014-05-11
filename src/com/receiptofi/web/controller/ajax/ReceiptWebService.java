@@ -1,7 +1,6 @@
 package com.receiptofi.web.controller.ajax;
 
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.DocumentUpdateService;
@@ -11,6 +10,7 @@ import com.receiptofi.utils.HashText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
@@ -23,13 +23,13 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  * User: hitender
@@ -37,8 +37,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * Time: 11:44 PM
  */
 @Controller
-@RequestMapping(value = "/rws")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/ws/r")
 public class ReceiptWebService {
     private static final Logger log = LoggerFactory.getLogger(ReceiptWebService.class);
 
@@ -47,15 +46,10 @@ public class ReceiptWebService {
     @Autowired private DocumentUpdateService documentUpdateService;
 
     /**
-     * Note: UserSession parameter is to make sure no outside get requests are processed.
-     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     *        method fails on invalid request without User Session and user sees 500 error message.
-     *
      * @param businessName
-     * @param userSession
-     * @param httpServletResponse
      * @return
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping(
             value = "/find_company",
             method = RequestMethod.GET,
@@ -63,40 +57,21 @@ public class ReceiptWebService {
             produces = "application/json")
     public
     @ResponseBody
-    Set<String> searchBusinessWithBusinessName(
-            @RequestParam("term") String businessName,
-            @ModelAttribute("userSession") UserSession userSession,
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                try {
-                    return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
-                } catch (Exception fetchBusinessName) {
-                    log.error("Error fetching business number, error={}", fetchBusinessName);
-                    return new HashSet<>();
-                }
-            } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-                return null;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return null;
+    Set<String> searchBusinessWithBusinessName(@RequestParam("term") String businessName) {
+        try {
+            return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
+        } catch (Exception fetchBusinessName) {
+            log.error("Error fetching business number, error={}", fetchBusinessName);
+            return new HashSet<>();
         }
     }
 
     /**
-     * Note: UserSession parameter is to make sure no outside get requests are processed.
-     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     *        method fails on invalid request without User Session and user sees 500 error message.
-     *
      * @param bizAddress
      * @param businessName
-     * @param userSession
-     * @param httpServletResponse
      * @return
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping(
             value = "/find_address",
             method = RequestMethod.GET,
@@ -104,42 +79,22 @@ public class ReceiptWebService {
             produces = "application/json")
     public
     @ResponseBody
-    Set<String> searchBiz(
-            @RequestParam("term") String bizAddress,
-            @RequestParam("nameParam") String businessName,
-            @ModelAttribute("userSession") UserSession userSession,
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                try {
-                    return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
-                } catch (Exception fetchBusinessAddress) {
-                    log.error("Error fetching business address, error={}", fetchBusinessAddress);
-                    return new HashSet<>();
-                }
-            } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-                return null;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return null;
+    Set<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String businessName) {
+        try {
+            return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
+        } catch (Exception fetchBusinessAddress) {
+            log.error("Error fetching business address, error={}", fetchBusinessAddress);
+            return new HashSet<>();
         }
     }
 
     /**
-     * Note: UserSession parameter is to make sure no outside get requests are processed.
-     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     *        method fails on invalid request without User Session and user sees 500 error message.
-     *
      * @param bizPhone
      * @param businessName
      * @param bizAddress
-     * @param userSession
-     * @param httpServletResponse
      * @return
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping(
             value = "/find_phone",
             method = RequestMethod.GET,
@@ -147,46 +102,25 @@ public class ReceiptWebService {
             produces = "application/json")
     public
     @ResponseBody
-    Set<String> searchPhone(
-            @RequestParam("term") String bizPhone,
-            @RequestParam("nameParam") String businessName,
-            @RequestParam("addressParam") String bizAddress,
-            @ModelAttribute("userSession") UserSession userSession,
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                try {
-                    return fetcherService.findDistinctBizPhone(
-                            StringUtils.stripToEmpty(bizPhone),
-                            StringUtils.stripToEmpty(bizAddress),
-                            StringUtils.stripToEmpty(businessName)
-                    );
-                } catch (Exception fetchingPhone) {
-                    log.error("Error fetching phone number, error={}", fetchingPhone);
-                    return new HashSet<>();
-                }
-            } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-                return null;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return null;
+    Set<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String businessName, @RequestParam("addressParam") String bizAddress) {
+        try {
+            return fetcherService.findDistinctBizPhone(
+                    StringUtils.stripToEmpty(bizPhone),
+                    StringUtils.stripToEmpty(bizAddress),
+                    StringUtils.stripToEmpty(businessName)
+            );
+        } catch (Exception fetchingPhone) {
+            log.error("Error fetching phone number, error={}", fetchingPhone);
+            return new HashSet<>();
         }
     }
 
     /**
-     * Note: UserSession parameter is to make sure no outside get requests are processed.
-     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     *        method fails on invalid request without User Session and user sees 500 error message.
-     *
      * @param itemName
      * @param businessName
-     * @param userSession
-     * @param httpServletResponse
      * @return
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping(
             value = "/find_item",
             method = RequestMethod.GET,
@@ -194,42 +128,22 @@ public class ReceiptWebService {
             produces = "application/json")
     public
     @ResponseBody
-    Set<String> searchItem(
-            @RequestParam("term") String itemName,
-            @RequestParam("nameParam") String businessName,
-            @ModelAttribute("userSession") UserSession userSession,
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                try {
-                    return fetcherService.findDistinctItems(
-                            StringUtils.stripToEmpty(itemName),
-                            StringUtils.stripToEmpty(businessName)
-                    );
-                } catch (Exception fetchingItems) {
-                    log.error("Error fetching items, error={}", fetchingItems);
-                    return new HashSet<>();
-                }
-            } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-                return null;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return null;
+    Set<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String businessName) {
+        try {
+            return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(businessName));
+        } catch (Exception fetchingItems) {
+            log.error("Error fetching items, error={}", fetchingItems);
+            return new HashSet<>();
         }
     }
 
     /**
      * Gets all the pending receipt after a receipt is successfully uploaded
      *
-     * @param userSession
-     * @param httpServletResponse
      * @return
      * @throws IOException
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(
             value = "/pending",
             method = RequestMethod.POST,
@@ -237,19 +151,13 @@ public class ReceiptWebService {
             produces = "application/json")
     public
     @ResponseBody
-    long pendingReceipts(
-            @ModelAttribute("userSession") UserSession userSession,
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-        if(userSession != null) {
-            try {
-                return landingService.pendingReceipt(userSession.getUserProfileId());
-            } catch (Exception pendingReceipt) {
-                log.error("Error fetching items, error={}", pendingReceipt);
-                return 0;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+    long pendingReceipts() {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        try {
+            return landingService.pendingReceipt(receiptUser.getRid());
+        } catch (Exception pendingReceipt) {
+            log.error("Error fetching items, error={}", pendingReceipt);
             return 0;
         }
     }
@@ -260,12 +168,10 @@ public class ReceiptWebService {
      * @param date
      * @param total
      * @param userProfileId
-     * @param userSession
-     * @param httpServletResponse
      * @return
      * @throws IOException
      */
-    //TODO make this post
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping(
             value = "/check_for_duplicate",
             method = RequestMethod.GET,
@@ -277,30 +183,22 @@ public class ReceiptWebService {
     boolean checkForDuplicate(
             @RequestParam("date") String date,
             @RequestParam("total") String total,
-            @RequestParam("userProfileId") String userProfileId,
-            @ModelAttribute("userSession") UserSession userSession,
-            HttpServletResponse httpServletResponse
+            @RequestParam("userProfileId") String userProfileId
     ) throws IOException, ParseException, NumberFormatException {
+        try {
+            Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
+            Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
 
-        if(userSession != null) {
-            try {
-                Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
-                Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
+            String checkSum = HashText.calculateChecksumForNotDeleted(
+                    StringUtils.stripToEmpty(userProfileId),
+                    receiptDate,
+                    receiptTotal
+            );
 
-                String checkSum = HashText.calculateChecksumForNotDeleted(
-                        StringUtils.stripToEmpty(userProfileId),
-                        receiptDate,
-                        receiptTotal
-                );
-
-                return documentUpdateService.hasReceiptWithSimilarChecksum(checkSum);
-            } catch (ParseException parseException) {
-                log.error("Ajax checkForDuplicate failed to parse total, error={}", parseException);
-                throw parseException;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return true;
+            return documentUpdateService.hasReceiptWithSimilarChecksum(checkSum);
+        } catch (ParseException parseException) {
+            log.error("Ajax checkForDuplicate failed to parse total, error={}", parseException);
+            throw parseException;
         }
     }
 
@@ -311,11 +209,12 @@ public class ReceiptWebService {
      * @param imageOrientation
      * @param blobId
      * @param userProfileId
-     * @param userSession
-     * @param httpServletResponse
+     * @param request
+     * @param response
      * @return
      * @throws IOException
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping(
             value = "/change_fs_image_orientation",
             method = RequestMethod.POST,
@@ -328,30 +227,31 @@ public class ReceiptWebService {
             @RequestParam("orientation") String imageOrientation,
             @RequestParam("blobId") String blobId,
             @RequestParam("userProfileId") String userProfileId,
-            @ModelAttribute("userSession") UserSession userSession,
-            HttpServletResponse httpServletResponse
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws IOException {
 
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue() || userProfileId.equalsIgnoreCase(userSession.getUserProfileId())) {
-                try {
-                    fetcherService.changeFSImageOrientation(
-                            StringUtils.stripToEmpty(fileSystemId),
-                            Integer.parseInt(StringUtils.stripToEmpty(imageOrientation)),
-                            blobId
-                    );
-                    return true;
-                } catch (Exception failedToChangeImageOrientation) {
-                    //Do nothing with the error message
-                    log.error("Failed to change orientation of the image, error={}", failedToChangeImageOrientation);
-                    return false;
-                }
-            } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(request.isUserInRole("ROLE_ADMIN") ||
+                request.isUserInRole("ROLE_TECHNICIAN") ||
+                request.isUserInRole("ROLE_SUPERVISOR") ||
+                userProfileId.equalsIgnoreCase(receiptUser.getRid()))
+        {
+            try {
+                fetcherService.changeFSImageOrientation(
+                        StringUtils.stripToEmpty(fileSystemId),
+                        Integer.parseInt(StringUtils.stripToEmpty(imageOrientation)),
+                        blobId
+                );
+                return true;
+            } catch (Exception failedToChangeImageOrientation) {
+                //Do nothing with the error message
+                log.error("Failed to change orientation of the image, error={}", failedToChangeImageOrientation);
                 return false;
             }
         } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
+            response.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
         }
     }

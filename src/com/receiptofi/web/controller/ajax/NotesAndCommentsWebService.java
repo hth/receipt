@@ -1,5 +1,6 @@
 package com.receiptofi.web.controller.ajax;
 
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.MileageService;
@@ -15,7 +16,10 @@ import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,106 +36,46 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * Time: 8:57 PM
  */
 @Controller
-@RequestMapping(value = "/ncws")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/ws/nc")
 public class NotesAndCommentsWebService {
      private static final Logger log = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
     @Autowired private ReceiptService receiptService;
     @Autowired private MileageService mileageService;
 
-    /**
-     * Note: UserSession parameter is to make sure no outside get requests are processed.
-     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     *        method fails on invalid request without User Session and user sees 500 error message.
-     *
-     * @param body
-     * @param userSession
-     * @param httpServletResponse
-     * @return
-     */
     @RequestMapping(value = "/rn", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean receiptNotes(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
-                         HttpServletResponse httpServletResponse) throws IOException {
-
-        if(userSession != null && body.length() > 0) {
-            log.info("Receipt notes updated by userProfileId: " + userSession.getUserProfileId());
-            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-            return receiptService.updateReceiptNotes(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), userSession.getUserProfileId());
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return false;
-        }
+    boolean saveReceiptNotes(@RequestBody String body) throws IOException {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("Receipt notes updated by userProfileId={}", receiptUser.getRid());
+        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        return receiptService.updateReceiptNotes(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
     }
 
-    @RequestMapping(value ="/umn", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value ="/mn", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean updateMileageNotes(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
-                               HttpServletResponse httpServletResponse) throws IOException {
-
-        if(userSession != null && body.length() > 0) {
-            log.info("Note updated by userProfileId: " + userSession.getUserProfileId());
-            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-            return mileageService.updateMileageNotes(TextInputScrubber.scrub(map.get("notes")), map.get("mileageId"), userSession.getUserProfileId());
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return false;
-        }
+    boolean saveMileageNotes(@RequestBody String body) throws IOException {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("Note updated by userProfileId={}", receiptUser.getRid());
+        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        return mileageService.updateMileageNotes(TextInputScrubber.scrub(map.get("notes")), map.get("mileageId"), receiptUser.getRid());
     }
 
-    /**
-     * Note: UserSession parameter is to make sure no outside get requests are processed.
-     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     *        method fails on invalid request without User Session and user sees 500 error message.
-     *
-     * @param body
-     * @param userSession
-     * @param httpServletResponse
-     * @return
-     */
     @RequestMapping(value = "/rc", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean receiptRecheckComment(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
-                                  HttpServletResponse httpServletResponse) throws IOException {
-
-        if(userSession != null) {
-            log.info("Receipt recheck comment updated by userProfileId: " + userSession.getUserProfileId());
-            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-            return receiptService.updateReceiptComment(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), userSession.getUserProfileId());
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return false;
-        }
+    boolean saveReceiptRecheckComment(@RequestBody String body) throws IOException {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("Receipt recheck comment updated by userProfileId={}", receiptUser.getRid());
+        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        return receiptService.updateReceiptComment(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
     }
 
-    /**
-     * Note: UserSession parameter is to make sure no outside get requests are processed.
-     *        The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     *        method fails on invalid request without User Session and user sees 500 error message.
-     *
-     * @param body
-     * @param userSession
-     * @param httpServletResponse
-     * @return
-     */
     @RequestMapping(value = "/dc", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody
-    boolean documentRecheckComment(@RequestBody String body, @ModelAttribute("userSession") UserSession userSession,
-                                   HttpServletResponse httpServletResponse) throws IOException {
-
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
-                log.info("Document recheck comment updated by userProfileId: " + userSession.getUserProfileId());
-                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-                return receiptService.updateDocumentComment(TextInputScrubber.scrub(map.get("notes")), map.get("documentId"));
-            } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-                return false;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return false;
-        }
+    boolean saveDocumentRecheckComment(@RequestBody String body) throws IOException {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("Document recheck comment updated by userProfileId={}", receiptUser.getRid());
+        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        return receiptService.updateDocumentComment(TextInputScrubber.scrub(map.get("notes")), map.get("documentId"));
     }
 }

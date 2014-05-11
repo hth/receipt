@@ -1,0 +1,17 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[DateTime=%d{yyyy-MM-dd HH:mm:ss}] [Thread=%thread] [ID=%X{X-REQUEST-ID}] Type=%-5p [LineNumber=%L] [Method=%C{46}.%M] Message=%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.receiptofi" level="debug" />
+    <logger name="com.receiptofi.web.filter.LogContextFilter" level="OFF" />
+    <logger name="org.spring" level="info" />
+
+    <logger name="org.apache.activemq" level="OFF"/>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

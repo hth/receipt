@@ -6,6 +6,10 @@ import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
 import com.receiptofi.repository.ForgotRecoverManagerImpl;
+import com.receiptofi.repository.GenerateUserIdManager;
+import com.receiptofi.repository.GenerateUserIdManagerImpl;
+import com.receiptofi.repository.UserAccountManager;
+import com.receiptofi.repository.UserAccountManagerImpl;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserAuthenticationManagerImpl;
 import com.receiptofi.repository.UserPreferenceManager;
@@ -38,19 +42,32 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
     private String forgotRecoverCollectionName = "FORGOT_RECOVER";
     private DBCollection forgotRecoverCollection;
 
+    private UserAccountManager userAccountManager;
     private UserAuthenticationManager userAuthenticationManager;
     private UserProfileManager userProfileManager;
     private UserPreferenceManager userPreferenceManager;
     private ForgotRecoverManager forgotRecoverManager;
+    private GenerateUserIdManager generateUserIdManager;
+
     private AccountService accountService;
 
     @Before
     public void setup() {
+
+        userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
         userProfileManager = new UserProfileManagerImpl(getMongoTemplate());
         userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
-        accountService = new AccountService(userAuthenticationManager, userProfileManager, userPreferenceManager, forgotRecoverManager);
+        generateUserIdManager = new GenerateUserIdManagerImpl(getMongoTemplate());
+        accountService = new AccountService(
+                userAccountManager,
+                userAuthenticationManager,
+                userProfileManager,
+                userPreferenceManager,
+                forgotRecoverManager,
+                generateUserIdManager
+        );
 
         userProfileCollection = getCollection(userProfileCollectionName);
         populateUserProfileCollection();
@@ -61,7 +78,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
 
     @Test
     public void testFindIfUser_Exists_Integration() throws Exception {
-        assertEquals("user_community_1@receiptofi.com", accountService.findIfUserExists("user_community_1@receiptofi.com").getEmailId());
+        assertEquals("user_community_1@receiptofi.com", accountService.findIfUserExists("user_community_1@receiptofi.com").getEmail());
     }
 
     @Test

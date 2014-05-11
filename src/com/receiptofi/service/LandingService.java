@@ -302,7 +302,7 @@ public final class LandingService {
             itemOCRManager.saveObjects(items);
 
             log.info("DocumentEntity @Id after save: " + documentEntity.getId());
-            UserProfileEntity userProfile = userProfileManager.findOne(documentEntity.getUserProfileId());
+            UserProfileEntity userProfile = userProfileManager.getUsingId(documentEntity.getUserProfileId());
             senderJMS.send(documentEntity, userProfile);
         } catch (Exception exce) {
             log.error("Exception occurred during saving receipt: " + exce.getLocalizedMessage());

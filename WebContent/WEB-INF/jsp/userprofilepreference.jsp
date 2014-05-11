@@ -5,16 +5,16 @@
     <meta charset="utf-8">
 	<title><fmt:message key="profile.title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/clip/jquery.zclip.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/clip/jquery.zclip.min.js"></script>
 
     <!-- For dashboard tabs -->
     <script>
@@ -24,7 +24,7 @@
 
         $(document).ready(function () {
             $("#copy-button").zclip({
-                path: '../jquery/js/clip/ZeroClipboard.swf',
+                path: '${pageContext.request.contextPath}/static/jquery/js/clip/ZeroClipboard.swf',
                 copy: $('#auth b').text()
             });
         });
@@ -89,24 +89,24 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
+                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
             </div>
             <div class="divOfCell250">
                 <h3>
                     <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
-                                ${sessionScope['userSession'].emailId}
-                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <sec:authentication property="principal.username" />
+                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
                             <ul class="root">
                                 <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
-                                <li><a href="${pageContext.request.contextPath}/eval/feedback.htm">Send Feedback</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
 
@@ -167,7 +167,7 @@
                     <div class="divOfCell600">
                     Registration:
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.registration}" type="both" /></b></div>
+                    <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.created}" type="both" /></b></div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
@@ -181,14 +181,14 @@
                 <div class="divRow">
                     <div class="divOfCell600" id="auth">
                         Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.userAuthentication.authenticationKey" /></b> **
+                        <b><spring:eval expression="userProfilePreferenceForm.userAuthentication.authenticationKey" /></b> **
                         <button id='copy-button'>copy</button>
                     </div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
                         Auth changed:&nbsp;
-                        <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.userAuthentication.updated}" type="both" /></b>
+                        <b><fmt:formatDate value="${userProfilePreferenceForm.userAuthentication.updated}" type="both" /></b>
                     </div>
                 </div>
             </div>
@@ -196,8 +196,7 @@
                 ** <b>Auth Code</b> is like password. Keep it secure.
             </p>
 
-            <spring:eval expression="userSession.level eq T(com.receiptofi.domain.types.UserLevelEnum).ADMIN" var="isAdmin" />
-            <c:if test="${isAdmin}">
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
             <!-- If changing the access level here then update the condition check in POST method -->
 
             <div>&nbsp;</div>
@@ -234,7 +233,7 @@
                 <div class="divOfCell600"><input type="reset" value="Reset" name="Reset" class="btn btn-default"/> <input type="submit" value="Update" name="Update" class="btn btn-default" /></div>
             </div>
             </form:form>
-            </c:if>
+            </sec:authorize>
 		</div>
 		<div id="tabs-2">
             <div class="divTable">
@@ -245,7 +244,7 @@
 
             <p/>
 
-            <spring:eval expression="${userProfilePreferenceForm.userProfile.id eq sessionScope['userSession'].userProfileId}" var="isSameUser" />
+            <spring:eval expression="${userProfilePreferenceForm.userProfile.receiptUserId eq pageContext.request.userPrincipal.principal.rid}" var="isSameUser" />
 
             <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
                 <div style="width: 325px">

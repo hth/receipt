@@ -34,7 +34,7 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public void save(MileageEntity object) throws Exception {
+    public void save(MileageEntity object) {
         if(object.getId() != null) {
             object.setUpdated();
         }
@@ -67,12 +67,11 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime monthYear) {
-        Criteria criteria = where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria1 = where("C").gte(monthYear.dayOfMonth().getDateTime().toDateMidnight().toDate()).lt(monthYear.plusMonths(1).dayOfMonth().getDateTime().toDateMidnight().toDate());
+    public List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime startMonth, DateTime endMonth) {
+        Criteria criteria = where("USER_PROFILE_ID").is(userProfileId).and("C").gte(startMonth.toDate()).lt(endMonth.toDate());
 
         Sort sort = new Sort(Sort.Direction.DESC, "S");
-        Query query = query(criteria).addCriteria(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query.with(sort), MileageEntity.class, TABLE);
     }
 
@@ -88,7 +87,7 @@ public class MileageManagerImpl implements MileageManager {
 
     private WriteResult updateDateInRecord(String mileageId, String fieldName, DateTime dateTime, String userProfileId) {
         return mongoTemplate.updateFirst(
-                query(where("id").is(mileageId)).addCriteria(where("USER_PROFILE_ID").is(userProfileId)),
+                query(where("id").is(mileageId).and("USER_PROFILE_ID").is(userProfileId)),
                 update(fieldName, dateTime.toDate()),
                 MileageEntity.class
         );

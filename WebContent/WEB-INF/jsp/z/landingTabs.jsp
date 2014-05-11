@@ -26,8 +26,8 @@
                             </td>
                             <td style="padding: 3px; text-align: center">
                                 <c:if test="${!empty receipt.expenseReportInFS}">
-                                    <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receipt.id}.htm">
-                                        <img src="images/download_icon_lg.png" class="downloadIcon" width="14" height="14">
+                                    <a href="${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm">
+                                        <img src="${pageContext.request.contextPath}/static/images/download_icon_lg.png" class="downloadIcon" width="14" height="14">
                                     </a>
                                 </c:if>
                             </td>
@@ -41,7 +41,7 @@
                                 <spring:eval expression="receipt.tax" />
                             </td>
                             <td style="padding: 3px; text-align: right">
-                                <a href="${pageContext.request.contextPath}/receipt/${receipt.id}.htm">
+                                <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm">
                                     <spring:eval expression='receipt.total' />
                                 </a>
                             </td>
@@ -82,14 +82,14 @@ $(function () {
                 {
                     y: ${item.total},
                     color: colors[${status.count-1}],
-                    url: 'receipt/biz/${item.bizName}.htm',
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
                     id: '${item.bizNameForId}',
                     drilldown: {
                         name: '${item.bizName}',
                         categories: [${item.expenseTags}],
                         data: [${item.expenseValues}],
                         color: colors[${status.count-1}],
-                        url: 'receipt/biz/${item.bizName}.htm',
+                        url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
                         id: '${item.bizNameForId}'
                     }
                 },

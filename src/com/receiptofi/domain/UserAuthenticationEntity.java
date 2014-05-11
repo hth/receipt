@@ -5,20 +5,14 @@ package com.receiptofi.domain;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author hitender
  * @since Dec 15, 2012 8:11:45 PM
- *
- * The link below is for field annotation settings
- * {@link http://www.jpalace.org/docs/tutorials/spring/mvc_21.html}
  */
 @Document(collection = "USER_AUTHENTICATION")
-@CompoundIndexes({ @CompoundIndex(name = "user_authentication_idx", def = "{'PASSWORD': 1}") })
 public class UserAuthenticationEntity extends BaseEntity {
 	private static final long serialVersionUID = -5207492124434434278L;
 
@@ -65,7 +59,6 @@ public class UserAuthenticationEntity extends BaseEntity {
 		return password;
 	}
 
-	//TODO implement OAuth
 	public String getAuthenticationKey() {
 		return authenticationKey;
 	}

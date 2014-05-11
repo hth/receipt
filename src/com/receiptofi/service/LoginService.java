@@ -1,9 +1,11 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.BrowserEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.BrowserManager;
+import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +23,15 @@ public final class LoginService {
     private static Logger log = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;
+    @Autowired private UserAccountManager userAccountManager;
     @Autowired private BrowserManager browserManager;
 
-    public UserAuthenticationEntity loadAuthenticationEntity(UserProfileEntity userProfileEntity) {
-        return userAuthenticationManager.findOne(userProfileEntity.getUserAuthentication().getId());
+    public UserAccountEntity loadUserAccount(String rid) {
+        return userAccountManager.findUserAccount(rid);
+    }
+
+    private UserAuthenticationEntity loadAuthenticationEntity(UserAccountEntity userAccount) {
+        return userAuthenticationManager.findOne(userAccount.getUserAuthentication().getId());
     }
 
     public void saveUpdateBrowserInfo(String cookieId, String ip, String userAgent) {

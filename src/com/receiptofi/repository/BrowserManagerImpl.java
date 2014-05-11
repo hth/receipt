@@ -29,7 +29,7 @@ public final class BrowserManagerImpl implements BrowserManager {
     }
 
     @Override
-    public void save(BrowserEntity object) throws Exception {
+    public void save(BrowserEntity object) {
         if(object.getId() != null) {
             object.setUpdated();
         }

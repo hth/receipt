@@ -23,7 +23,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class InviteEntity extends BaseEntity {
 
     @NotNull
-    @Field("EMAIL")
+    @Field("EM")
     @Email
     private String emailId;
 

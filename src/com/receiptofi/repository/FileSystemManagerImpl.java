@@ -36,7 +36,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     }
 
     @Override
-    public void save(FileSystemEntity object) throws Exception {
+    public void save(FileSystemEntity object) {
         if(object.getId() != null) {
             object.setUpdated();
         }

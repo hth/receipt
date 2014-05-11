@@ -5,16 +5,19 @@
     <meta charset="utf-8">
 	<title><fmt:message key="receipt.title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/circle-leaf-sized_small.png" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-    <link rel='stylesheet' type='text/css' href='../jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='../jquery/css/receipt.css'>
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="../jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script type="text/javascript" src="../jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -64,7 +67,10 @@
                 source: function (request, response) {
                     $.ajax({
                         type: "POST",
-                        url: '${pageContext. request. contextPath}/ncws/rn.htm',
+                        url: '${pageContext. request. contextPath}/ws/nc/rn.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
                         data: JSON.stringify({
                             notes: request.term,
                             receiptId: $("#receiptId").val()
@@ -94,7 +100,10 @@
                 source: function (request, response) {
                     $.ajax({
                         type: "POST",
-                        url: '${pageContext. request. contextPath}/ncws/rc.htm',
+                        url: '${pageContext. request. contextPath}/ws/nc/rc.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
                         data: JSON.stringify({
                             notes: request.term,
                             receiptId: $("#receiptId").val()
@@ -158,10 +167,11 @@
 
                         $.ajax({
                             type: 'POST',
-                            url: '${pageContext. request. contextPath}/expensofi/items.htm',
+                            url: '${pageContext. request. contextPath}/access/expensofi/items.htm',
                             data: JSON.stringify(jsonItems),
                             dataType: 'json',
-                            beforeSend: function() {
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                                 $('#download_expense_excel').html(
                                     "<div class='spinner small' id='spinner'></div>"
                                 ).show();
@@ -172,8 +182,8 @@
                                     $('#download_expense_excel').html(
                                         "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
                                         "&nbsp;&nbsp;&nbsp;" +
-                                        "<a href='${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
-                                            "<img src='../images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
+                                        "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
+                                            "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
                                         "</a>"
                                     ).show();
                                 }
@@ -225,25 +235,25 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
+                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
             </div>
             <div class="divOfCell250">
                 <h3>
                     <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
-                                ${sessionScope['userSession'].emailId}
-                                <img src="../images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <sec:authentication property="principal.username" />
+                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
                             <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
                                 <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
-                                <li><a href="${pageContext.request.contextPath}/eval/feedback.htm">Send Feedback</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
 
@@ -318,12 +328,12 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${item.quantity eq 1}">
-                                            <a href="${pageContext.request.contextPath}/itemanalytic/${item.id}.htm">
+                                            <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">
                                                 ${item.name}
                                             </a>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="${pageContext.request.contextPath}/itemanalytic/${item.id}.htm">
+                                            <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">
                                                 ${item.name}
                                             </a>
                                             <div style="margin-top: 5px">
@@ -384,8 +394,8 @@
                                     <input type="button" value="Expensofi" name="expensofi" id="expensofi_button" class="btn btn-default" />
                                     &nbsp;
                                     <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
-                                        <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receiptForm.receipt.id}.htm">
-                                            <img src="../images/download_icon_lg.png" class="downloadIcon" width="30" height="32">
+                                        <a href="${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm">
+                                            <img src="${pageContext.request.contextPath}/static/images/download_icon_lg.png" class="downloadIcon" width="30" height="32">
                                         </a>
                                     </c:if>
                                 </div>
@@ -534,7 +544,7 @@
         info = [
             <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
             {
-                src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
+                src: "${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm",
                 pos: {
                     top: topHeight = calculateTop(${arr.height}),
                     left: 0

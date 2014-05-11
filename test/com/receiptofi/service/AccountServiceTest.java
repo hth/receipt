@@ -3,6 +3,8 @@ package com.receiptofi.service;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
+import com.receiptofi.repository.GenerateUserIdManager;
+import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
@@ -28,6 +30,8 @@ public class AccountServiceTest {
     @Mock private UserProfileManager userProfileManager;
     @Mock private UserPreferenceManager userPreferenceManager;
     @Mock private ForgotRecoverManager forgotRecoverManager;
+    @Mock private UserAccountManager userAccountManager;
+    @Mock private GenerateUserIdManager generateUserIdManager;
 
     private AccountService accountService;
 
@@ -35,10 +39,12 @@ public class AccountServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         accountService = new AccountService(
+                userAccountManager,
                 userAuthenticationManager,
                 userProfileManager,
                 userPreferenceManager,
-                forgotRecoverManager
+                forgotRecoverManager,
+                generateUserIdManager
         );
     }
 

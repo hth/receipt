@@ -1,0 +1,2 @@
+ <content allowCasualMultipartParsing="true"> --> multipart works without it. But in case there is problem with default
+ settings then change the content to true

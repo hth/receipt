@@ -5,24 +5,24 @@
     <meta charset="utf-8">
 	<title><fmt:message key="login.title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' href='jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='jquery/css/receipt.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
 </head>
 <body>
 <div class="wrapper">
-    <img src="images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
+    <img src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
     <p>&nbsp;</p>
 	<h2>
 		<fmt:message key="login.heading" />
 	</h2>
-	<form:form method="post" modelAttribute="userLoginForm" action="login.htm">
+	<form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" style="width: 600px;">
 			<tr>
 				<td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
@@ -47,7 +47,7 @@
     </form:form>
 
 	<p>
-        <a href="<c:url value="new.htm"/>" title="Create a new account.">Register Now</a>
+        <a href="<c:url value="open/new.htm"/>" title="Create a new account.">Register Now</a>
         &nbsp;&nbsp;|&nbsp;&nbsp;
         <a href="forgot/password.htm" title="Click here to recover your password.">Forgot your password ?</a>
     </p>

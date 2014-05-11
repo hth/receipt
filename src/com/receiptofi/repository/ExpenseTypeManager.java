@@ -15,15 +15,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public interface ExpenseTypeManager extends RepositoryManager<ExpenseTagEntity> {
     public static String TABLE = BaseEntity.getClassAnnotationValue(ExpenseTagEntity.class, Document.class, "collection");
 
-    List<ExpenseTagEntity> allExpenseTypes(String userProfileId);
+    List<ExpenseTagEntity> allExpenseTypes(String receiptUserId);
 
     /**
      * Gets all active expense tag
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<ExpenseTagEntity> activeExpenseTypes(String userProfileId);
+    List<ExpenseTagEntity> activeExpenseTypes(String receiptUserId);
 
-    void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId);
+    void changeVisibility(String expenseTypeId, boolean changeTo, String receiptUserId);
 }

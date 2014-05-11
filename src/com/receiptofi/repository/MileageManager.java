@@ -17,7 +17,7 @@ public interface MileageManager extends RepositoryManager<MileageEntity> {
     static String TABLE = BaseEntity.getClassAnnotationValue(MileageEntity.class, Document.class, "collection");
 
     MileageEntity findOne(String id, String userProfileId);
-    List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime monthYear);
+    List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime startMonth, DateTime endMonth);
     boolean updateStartDate(String mileageId, DateTime startDate, String userProfileId);
     boolean updateEndDate(String mileageId, DateTime endDate, String userProfileId);
 }

@@ -2,10 +2,12 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.InviteEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.InviteManager;
+import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
@@ -48,11 +50,13 @@ public final class MailService {
     @Autowired private AccountService accountService;
     @Autowired private InviteService inviteService;
     @Autowired private JavaMailSenderImpl mailSender;
+    @Autowired private LoginService loginService;
 
     @Autowired private InviteManager inviteManager;
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private UserAuthenticationManager userAuthenticationManager;
     @Autowired private UserPreferenceManager userPreferenceManager;
+    @Autowired private UserAccountManager userAccountManager;
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
@@ -220,7 +224,7 @@ public final class MailService {
     private void formulateInvitationEmail(String emailId, UserProfileEntity userProfileEntity, InviteEntity inviteEntity) throws Exception {
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("from", userProfileEntity.getName());
-        rootMap.put("fromEmail", userProfileEntity.getEmailId());
+        rootMap.put("fromEmail", userProfileEntity.getEmail());
         rootMap.put("to", emailId);
         rootMap.put("link", inviteEntity.getAuthenticationKey());
         rootMap.put("domain", domain);
@@ -264,12 +268,14 @@ public final class MailService {
      */
     private void deleteInvite(InviteEntity inviteEntity) {
         log.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
-        UserProfileEntity userProfileEntity = accountService.findIfUserExists(inviteEntity.getEmailId());
-        UserAuthenticationEntity userAuthenticationEntity = userProfileEntity.getUserAuthentication();
-        UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfileEntity);
+        UserProfileEntity userProfile = accountService.findIfUserExists(inviteEntity.getEmailId());
+        UserAccountEntity userAccount = loginService.loadUserAccount(userProfile.getReceiptUserId());
+        UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
+        UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);
         userPreferenceManager.deleteHard(userPreferenceEntity);
         userAuthenticationManager.deleteHard(userAuthenticationEntity);
-        userProfileManager.deleteHard(userProfileEntity);
+        userAccountManager.deleteHard(userAccount);
+        userProfileManager.deleteHard(userProfile);
         inviteManager.deleteHard(inviteEntity);
     }
 }

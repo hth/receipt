@@ -34,7 +34,7 @@ public final class CommentManagerImpl implements CommentManager {
      * @throws Exception
      */
     @Override
-    public void save(CommentEntity object) throws Exception {
+    public void save(CommentEntity object) {
         //Note: comment should not be marked updated with new time as its already updated by Ajax
 //        if(object.getId() != null) {
 //            object.setUpdated();

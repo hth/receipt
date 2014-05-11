@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -24,8 +24,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.WriteResult;
 
@@ -52,7 +50,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public void save(UserProfileEntity object) throws Exception {
+	public void save(UserProfileEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
 //            if(getObjectUsingEmail(object.getEmailId()) == null)
@@ -66,8 +64,8 @@ public final class UserProfileManagerImpl implements UserProfileManager {
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for UserProfileEntity: " + e.getLocalizedMessage());
-			throw new Exception(e.getMessage());
+			log.error("Duplicate record entry for UserProfileEntity={}", e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -78,8 +76,18 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity getObjectUsingEmail(String emailId) {
-		return mongoTemplate.findOne(query(where("EMAIL").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("EM").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
 	}
+
+    @Override
+    public UserProfileEntity getUsingId(String receiptUserId) {
+        return mongoTemplate.findOne(query(where("RID").is(receiptUserId).andOperator(isActive())), UserProfileEntity.class, TABLE);
+    }
+
+    @Override
+    public UserProfileEntity getUsingUserId(String userId) {
+        return mongoTemplate.findOne(query(where("UID").is(userId).andOperator(isActive())), UserProfileEntity.class, TABLE);
+    }
 
 	@Override
 	public UserProfileEntity findOne(String id) {
@@ -110,15 +118,14 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
         //Can add "^" + to force search only the names starting with
-		Criteria a = where("FIRST_NAME").regex(name, "i");
-		Criteria b = where("LAST_NAME").regex(name, "i");
+		Criteria a = where("FN").regex(name, "i");
+		Criteria b = where("LN").regex(name, "i");
 		return mongoTemplate.find(query(new Criteria().orOperator(a, b)), UserProfileEntity.class, TABLE);
 	}
 
     @Override
     public UserProfileEntity findOneByEmail(String emailId) {
-        Criteria a = where("EMAIL").is(emailId);
-        return mongoTemplate.findOne(query(a), UserProfileEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("EM").is(emailId)), UserProfileEntity.class, TABLE);
     }
 
     @Override
