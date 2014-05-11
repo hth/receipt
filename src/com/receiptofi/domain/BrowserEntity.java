@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "browser_idx", def = "{'U': 1}", unique=true),
 } )
-public class BrowserEntity extends BaseEntity {
+public final class BrowserEntity extends BaseEntity {
 
     @NotNull
     @Field("CK")

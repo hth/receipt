@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Time: 6:48 PM
  */
 @Document(collection = "MESSAGE_DOCUMENT")
-public class MessageDocumentEntity extends BaseEntity {
+public final class MessageDocumentEntity extends BaseEntity {
 
     //TODO change to document id
     @NotNull

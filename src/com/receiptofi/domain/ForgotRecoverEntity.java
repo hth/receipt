@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         @CompoundIndex(name = "forgot_recover_idx",     def = "{'USER_PROFILE_ID': 0, 'C': 1}"),
         @CompoundIndex(name = "forgot_recover_key_idx", def = "{'AUTH' : 0}", unique = true)
 } )
-public class ForgotRecoverEntity extends BaseEntity {
+public final class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
     @Field("USER_PROFILE_ID")

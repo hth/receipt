@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Time: 1:29 PM
  */
 @Document(collection = "NOTIFICATION")
-public class NotificationEntity extends BaseEntity {
+public final class NotificationEntity extends BaseEntity {
     private static final Logger log = LoggerFactory.getLogger(NotificationEntity.class);
     private static final int OFF_SET = 0;
     private static final int MAX_WIDTH = 45;
