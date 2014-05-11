@@ -18,8 +18,7 @@ import com.mongodb.WriteResult;
  * Time: 7:28 PM
  */
 public interface MessageManager extends RepositoryManager<MessageDocumentEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
-    static final int QUERY_LIMIT = 10;
+    String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
 
     List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status);
 

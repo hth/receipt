@@ -20,7 +20,7 @@ import com.mongodb.WriteResult;
  *
  */
 public interface UserProfileManager extends RepositoryManager<UserProfileEntity> {
-	static String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
+	String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
 
 	UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object);
 

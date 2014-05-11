@@ -17,6 +17,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
@@ -35,6 +36,9 @@ import com.mongodb.WriteResult;
 public final class MessageManagerImpl implements MessageManager {
     private static final Logger log = LoggerFactory.getLogger(MessageManagerImpl.class);
 
+    @Value("${messageQueryLimit:10}")
+    private int messageQueryLimit;
+
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
@@ -44,7 +48,7 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status) {
-        return findWithLimit(status, QUERY_LIMIT);
+        return findWithLimit(status, messageQueryLimit);
     }
 
     @Override
@@ -62,7 +66,7 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status) {
-        return findUpdateWithLimit(emailId, userProfileId, status, QUERY_LIMIT);
+        return findUpdateWithLimit(emailId, userProfileId, status, messageQueryLimit);
     }
 
     @Override
@@ -77,7 +81,7 @@ public final class MessageManagerImpl implements MessageManager {
 //                "}";
 //
 //        String sortQuery  = "{ sort : { 'level' : " + -1 + ", 'created' : " + 1 + "} }";
-//        String limitQuery = "{ limit : " + QUERY_LIMIT + "}";
+//        String limitQuery = "{ limit : " + messageQueryLimit + "}";
 
 //        BasicDBObject basicDBObject = new BasicDBObject()
 //                .append("recordLocked", false)

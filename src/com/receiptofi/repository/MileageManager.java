@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
  * Date: 12/25/13 4:16 AM
  */
 public interface MileageManager extends RepositoryManager<MileageEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(MileageEntity.class, Document.class, "collection");
+    String TABLE = BaseEntity.getClassAnnotationValue(MileageEntity.class, Document.class, "collection");
 
     MileageEntity findOne(String id, String userProfileId);
     List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime startMonth, DateTime endMonth);

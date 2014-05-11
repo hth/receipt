@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 public interface UserPreferenceManager extends RepositoryManager<UserPreferenceEntity> {
-	static String TABLE = BaseEntity.getClassAnnotationValue(UserPreferenceEntity.class, Document.class, "collection");
+	String TABLE = BaseEntity.getClassAnnotationValue(UserPreferenceEntity.class, Document.class, "collection");
 
 	UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
 }

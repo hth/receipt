@@ -26,6 +26,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -51,6 +52,9 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
 
 	private static final long serialVersionUID = -8812261440000722447L;
+
+    @Value("${displayMonths:13}")
+    int displayMonths;
 
 	@Autowired private MongoTemplate mongoTemplate;
     @Autowired private ItemManager itemManager;
@@ -133,7 +137,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
                         "  result.total += obj.TOTAL; " +
                         "}");
 
-        DateTime date = DateUtil.now().minusMonths(SHOW_DATA_FOR_LAST_X_MONTHS);
+        DateTime date = DateUtil.now().minusMonths(displayMonths);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
         Criteria criteria = where("USER_PROFILE_ID").is(userProfileId)
                 .and("RECEIPT_DATE").gte(since.toDate())
@@ -156,7 +160,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
                         "}");
 
 
-        DateTime date = DateUtil.now().minusMonths(SHOW_DATA_FOR_LAST_X_MONTHS);
+        DateTime date = DateUtil.now().minusMonths(displayMonths);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
         Criteria criteria = where("USER_PROFILE_ID").is(userProfileId)
                 .and("RECEIPT_DATE").gte(since.toDate())
