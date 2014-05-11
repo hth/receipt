@@ -4,7 +4,6 @@
 package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -31,38 +30,41 @@ import org.joda.time.DateTime;
 /**
  * @author hitender
  * @since Dec 24, 2012 3:13:26 PM
- *
  */
 @Controller
 @RequestMapping(value = "/open/new")
 public class AccountController {
     private static final Logger log = LoggerFactory.getLogger(AccountController.class);
-
-    private static final String NEW_ACCOUNT             = "/new";
-    private static final String FORGOT_RECOVER_ACCOUNT  = "/forgot/recover";
+    private static final String NEW_ACCOUNT = "/new";
+    private static final String FORGOT_RECOVER_ACCOUNT = "/forgot/recover";
 
     @Autowired private UserRegistrationValidator userRegistrationValidator;
     @Autowired private AccountService accountService;
 
-	@ModelAttribute("userRegistrationForm")
-	public UserRegistrationForm getUserRegistrationForm() {
-		return UserRegistrationForm.newInstance();
-	}
+    @ModelAttribute("userRegistrationForm")
+    public UserRegistrationForm getUserRegistrationForm() {
+        return UserRegistrationForm.newInstance();
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm() {
-		log.debug("Loading New Account");
-		return NEW_ACCOUNT;
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public String loadForm() {
+        log.debug("Loading New Account");
+        return NEW_ACCOUNT;
+    }
 
-	@RequestMapping(method = RequestMethod.POST, params = {"signup"})
-	public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, BindingResult result, final RedirectAttributes redirectAttrs) {
+    @RequestMapping(method = RequestMethod.POST, params = {"signup"})
+    public String post(
+            @ModelAttribute("userRegistrationForm")
+            UserRegistrationForm userRegistrationForm,
+
+            BindingResult result
+    ) {
         DateTime time = DateUtil.now();
         userRegistrationValidator.validate(userRegistrationForm, result);
-		if(result.hasErrors()) {
+        if(result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
             return NEW_ACCOUNT;
-		}
+        }
 
         UserProfileEntity userProfile = accountService.findIfUserExists(userRegistrationForm.getEmailId());
         if(userProfile != null) {
@@ -75,7 +77,7 @@ public class AccountController {
             //TODO For now de-activate all registration. Currently registration is by invitation only.
             userProfile = accountService.createNewAccount(userRegistrationForm);
             log.info("Registered new Email Id: " + userProfile.getEmail());
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             log.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
             return NEW_ACCOUNT;
@@ -96,12 +98,15 @@ public class AccountController {
      * Starts the account recovery process
      *
      * @param userRegistrationForm
-     * @param result
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, params = {"recover"})
-    public String recover(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm,
-                          @SuppressWarnings("unused") BindingResult result, final RedirectAttributes redirectAttrs) {
+    public String recover(
+            @ModelAttribute("userRegistrationForm")
+            UserRegistrationForm userRegistrationForm,
+
+            RedirectAttributes redirectAttrs
+    ) {
         redirectAttrs.addFlashAttribute("userRegistrationForm", userRegistrationForm);
         return "redirect:" + FORGOT_RECOVER_ACCOUNT + ".htm";
     }
@@ -109,39 +114,38 @@ public class AccountController {
     /**
      * Ajax call to check if the account is available to register.
      *
-     * Note: This code can be accessed from outside without any checking. Mostly will provide information about user is
-     *        registered in the system or not.
+     * This code can be accessed from outside without any checking. Mostly will provide information about user is
+     * registered in the system or not.
      *
-     *  TODO: Change it. This is currently a threat.
+     * TODO: Change it. This is currently a threat.
      *
      * @param emailId
      * @return
      */
-    @RequestMapping(value="/availability", method=RequestMethod.GET)
-    public @ResponseBody
+    @RequestMapping(value = "/availability", method = RequestMethod.GET)
+    public
+    @ResponseBody
     String getAvailability(@RequestParam String emailId) {
         DateTime time = DateUtil.now();
         log.info("Auto find if the emailId is present: " + emailId);
         AvailabilityStatus availabilityStatus;
 
         UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
-        if(userProfileEntity != null) {
-            if (userProfileEntity.getEmail().equals(emailId)) {
-                log.info("Not Available: " + emailId);
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-                availabilityStatus = AvailabilityStatus.notAvailable(emailId);
-                return new StringBuilder()
-                        .append("{ \"valid\" : \"")
-                        .append(availabilityStatus.isAvailable())
-                        .append("\", \"message\" : \"")
-                        .append("<b>")
-                        .append(emailId)
-                        .append("</b>")
-                        .append(" is already registered. ")
-                        .append(StringUtils.join(availabilityStatus.getSuggestions()))
-                        .append("\" }")
-                        .toString();
-            }
+        if(userProfileEntity != null && userProfileEntity.getEmail().equals(emailId)) {
+            log.info("Not Available: " + emailId);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+            availabilityStatus = AvailabilityStatus.notAvailable(emailId);
+            return new StringBuilder()
+                    .append("{ \"valid\" : \"")
+                    .append(availabilityStatus.isAvailable())
+                    .append("\", \"message\" : \"")
+                    .append("<b>")
+                    .append(emailId)
+                    .append("</b>")
+                    .append(" is already registered. ")
+                    .append(StringUtils.join(availabilityStatus.getSuggestions()))
+                    .append("\" }")
+                    .toString();
         }
         log.info("Available: " + emailId);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
