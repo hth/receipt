@@ -1,6 +1,7 @@
 package com.receiptofi.web.form;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 
@@ -19,6 +20,7 @@ public final class UserProfilePreferenceForm {
 
     private UserProfileEntity userProfile;
     private UserPreferenceEntity userPreference;
+    private UserAuthenticationEntity userAuthentication;
     private List<ExpenseTagEntity> expenseTags;
     private Map<String, Long> expenseTagCount = new HashMap<>();
     private int visibleExpenseTags = 0;
@@ -104,5 +106,13 @@ public final class UserProfilePreferenceForm {
         } else {
             this.successMessage = this.successMessage + ", " + successMessage;
         }
+    }
+
+    public UserAuthenticationEntity getUserAuthentication() {
+        return userAuthentication;
+    }
+
+    public void setUserAuthentication(UserAuthenticationEntity userAuthentication) {
+        this.userAuthentication = userAuthentication;
     }
 }

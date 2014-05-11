@@ -5,6 +5,7 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemAnalyticService;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,8 +36,7 @@ import org.joda.time.DateTime;
  *
  */
 @Controller
-@RequestMapping(value = "/itemanalytic")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/itemanalytic")
 public class ItemAnalyticController {
 	private static final Logger log = LoggerFactory.getLogger(ItemAnalyticController.class);
 	private static final String nextPage = "/itemanalytic";
@@ -46,10 +47,11 @@ public class ItemAnalyticController {
     @Autowired private ExpensesService expensesService;
 
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	public ModelAndView loadForm(@PathVariable String id, @ModelAttribute("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm, @ModelAttribute("userSession") UserSession userSession) {
+	public ModelAndView loadForm(@PathVariable String id, @ModelAttribute("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		ItemEntity item = itemAnalyticService.findItemById(id, userSession.getUserProfileId());
+        ItemEntity item = itemAnalyticService.findItemById(id, receiptUser.getRid());
         if(item != null) {
             itemAnalyticForm.setItem(item);
             itemAnalyticForm.setDays(NINETY_DAYS);
@@ -70,14 +72,14 @@ public class ItemAnalyticController {
             itemAnalyticForm.setSiteAveragePrice(siteAveragePrice);
 
             /** Your average */
-            List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), userSession.getUserProfileId(), untilThisDay);
+            List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), receiptUser.getRid(), untilThisDay);
             itemAnalyticForm.setYourAverageItems(yourAverageItems);
 
             BigDecimal yourAveragePrice = itemAnalyticService.calculateAveragePrice(yourAverageItems);
             itemAnalyticForm.setYourAveragePrice(yourAveragePrice);
 
             /** Users historical items */
-            List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, userSession.getUserProfileId());
+            List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, receiptUser.getRid());
             itemAnalyticForm.setYourHistoricalItems(yourItems);
 
             /** Loads expense types */

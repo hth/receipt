@@ -16,6 +16,7 @@ import com.receiptofi.domain.types.UserLevelEnum;
 public final class UserSearchForm {
 
 	private String id;
+    private String receiptUserId;
 	private String userName = "";
 	private String firstName = "";
 	private String lastName = "";
@@ -33,11 +34,12 @@ public final class UserSearchForm {
 		UserSearchForm userSearchForm = new UserSearchForm();
 
         userSearchForm.setId(userProfile.getId());
+        userSearchForm.setReceiptUserId(userProfile.getReceiptUserId());
         userSearchForm.setFirstName(userProfile.getFirstName());
         userSearchForm.setLastName(userProfile.getLastName());
         userSearchForm.setUserName(userProfile.getFirstName() + ", " + userProfile.getLastName());
         userSearchForm.setLevel(userProfile.getLevel());
-        userSearchForm.setEmailId(userProfile.getEmailId());
+        userSearchForm.setEmailId(userProfile.getEmail());
         return userSearchForm;
 	}
 
@@ -49,7 +51,15 @@ public final class UserSearchForm {
 		this.id = id;
 	}
 
-	public void setUserName(String userName) {
+    public String getReceiptUserId() {
+        return receiptUserId;
+    }
+
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
+    }
+
+    public void setUserName(String userName) {
 		this.userName = userName;
 	}
 

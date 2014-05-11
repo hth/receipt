@@ -5,25 +5,28 @@
     <meta charset="utf-8">
     <title><fmt:message key="receipt.update" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-    <link rel='stylesheet' type='text/css' href='../static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='../static/jquery/css/receipt.css'>
-    <link rel='stylesheet' type='text/css' href="../static/jquery/fineuploader/fineuploader-3.6.3.css" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href="${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="../static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="../static/jquery/js/raphael/raphael-min.js"></script>
-    <script type="text/javascript" src="../static/jquery/js/dynamic_list_helper2.js"></script>
-    <script type="text/javascript" src="../static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
-    <%--<script type="text/javascript" src="../../static/jquery/js/beatak-imageloader/jquery.imageloader.js"></script>--%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/dynamic_list_helper2.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/beatak-imageloader/jquery.imageloader.js"></script>--%>
 
     <script>
         /* add background color to holder in tr tag */
         window.onload = function () {
             <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-                fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
+                fetchReceiptImage('${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
             </c:forEach>
         };
 
@@ -67,12 +70,15 @@
 
         function orientation(id, angle, blobId, userProfileId) {
             $.ajax({
-                url: '${pageContext. request. contextPath}/rws/change_fs_image_orientation.htm',
+                url: '${pageContext. request. contextPath}/ws/r/change_fs_image_orientation.htm',
                 data: {
                     fileSystemId: id,
                     orientation: angle,
                     blobId: blobId,
                     userProfileId: userProfileId
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                 },
                 type: "POST",
                 success: function (data) {
@@ -127,25 +133,25 @@
 <div class="divTable">
     <div class="divRow">
         <div class="divOfCell50" style="height: 46px">
-            <img src="../static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+            <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
         </div>
         <div class="divOfCell75" style="height: 46px">
-            <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
+            <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
         </div>
         <div class="divOfCell250">
             <h3>
                 <div class="dropdown" style="height: 17px">
                     <div>
                         <a class="account" style="color: #065c14">
-                            ${sessionScope['userSession'].emailId}
-                            <img src="../static/images/gear.png" width="18px" height="15px" style="float: right;"/>
+                            <sec:authentication property="principal.username" />
+                            <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                         </a>
                     </div>
                     <div class="submenu">
                         <ul class="root">
-                            <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
+                            <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
                             <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
-                            <li><a href="${pageContext.request.contextPath}/eval/feedback.htm">Send Feedback</a></li>
+                            <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
                         </ul>
                     </div>
 

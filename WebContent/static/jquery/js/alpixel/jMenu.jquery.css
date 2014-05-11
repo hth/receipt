@@ -38,7 +38,7 @@
 }
 
 .jMenu li ul li.arrow {
-    background: #322f32 url('../../../static/images/arrow_down.png') no-repeat center center;
+    background: #322f32 url('../../../../static/images/arrow_down.png') no-repeat center center;
     height: 6px;
     border-bottom: none;
     padding: 0 0 10px;
@@ -54,7 +54,7 @@
 }
 
 .jMenu li ul li a.isParent {
-    background: #3a3a3a url('../../../static/images/arrow_right.png') no-repeat right center;
+    background: #3a3a3a url('../../../../static/images/arrow_right.png') no-repeat right center;
 }
 
 .jMenu li ul li a:hover {

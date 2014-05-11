@@ -68,16 +68,16 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     @Override
     public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
         return mongoTemplate.find(
-                query(where("USER_PROFILE_ID").is(userProfileId)).with(new Sort(ASC, "TAG")),
+                query(where("RID").is(userProfileId)).with(new Sort(ASC, "TAG")),
                 ExpenseTagEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
+    public List<ExpenseTagEntity> activeExpenseTypes(String receiptUserId) {
         return mongoTemplate.find(
-                query(where("USER_PROFILE_ID").is(userProfileId)
+                query(where("RID").is(receiptUserId)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -89,8 +89,8 @@ public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     }
 
     @Override
-    public void changeVisibility(String expenseTypeId, boolean changeTo, String userProfileId) {
-        Query query = query(where("id").is(new ObjectId(expenseTypeId)).and("USER_PROFILE_ID").is(userProfileId));
+    public void changeVisibility(String expenseTypeId, boolean changeTo, String receiptUserId) {
+        Query query = query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(receiptUserId));
         Update update = update("A", changeTo);
 
         //TODO try using writeResult to check for condition

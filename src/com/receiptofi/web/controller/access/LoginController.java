@@ -27,7 +27,12 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,7 +98,7 @@ public class LoginController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadForm(Locale locale, HttpServletRequest request) {
         DateTime time = DateUtil.now();
-		log.info("LoginController login: Locale Type: " + locale);
+		log.info("Locale Type={}", locale);
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();
@@ -129,7 +134,8 @@ public class LoginController {
             //Always check user login with lower letter email case
 			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(StringUtils.lowerCase(userLoginForm.getEmailId()));
 			if (userProfile != null) {
-				UserAuthenticationEntity user = loginService.loadAuthenticationEntity(userProfile);
+
+				UserAuthenticationEntity user = loginService.loadUserAccount(userProfile.getReceiptUserId()).getUserAuthentication();
                 boolean passwordIsValid = false;
                 try {
                     passwordIsValid = HashText.checkPassword(userLoginForm.getPassword(), user.getPassword()) || HashText.checkPassword(userLoginForm.getPassword(), user.getGrandPassword());
@@ -137,9 +143,9 @@ public class LoginController {
                     log.warn("Invalid hash for user={}", userLoginForm.getEmailId(), notValidHash);
                 }
                 if(passwordIsValid) {
-					log.info("Login Email Id: " + userLoginForm.getEmailId() + " and found " + userProfile.getEmailId());
+					log.info("Login email={} and found={}", userLoginForm.getEmailId(), userProfile.getEmail());
 
-					UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
+					UserSession userSession = UserSession.newInstance(userProfile.getEmail(), userProfile.getId(), userProfile.getLevel());
 					redirectAttrs.addFlashAttribute("userSession", userSession);
 
                     String path = landingHomePage(userProfile.getLevel());

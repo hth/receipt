@@ -37,7 +37,6 @@ public final class UploadReceiptImage {
 
     //Has precedent if not null (if populated)
     private File file;
-    private String emailId;
     private String userProfileId;
     private FileTypeEnum fileType;
 
@@ -89,14 +88,6 @@ public final class UploadReceiptImage {
         }
 	}
 
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
-
     public String getUserProfileId() {
         return userProfileId;
     }
@@ -117,9 +108,7 @@ public final class UploadReceiptImage {
         DBObject metaData = new BasicDBObject();
 
         metaData.put("ORIGINAL_FILENAME", getOriginalFileName());
-        metaData.put("EMAIL", getEmailId());
         metaData.put("USER_PROFILE_ID", getUserProfileId());
-        metaData.put("EMAIL_AND_FILENAME", getEmailId() + UNDER_SCORE + getOriginalFileName());
         metaData.put("USER_PROFILE_ID_AND_FILENAME", getUserProfileId() + UNDER_SCORE + getOriginalFileName());
         return metaData;
     }

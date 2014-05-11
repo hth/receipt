@@ -28,6 +28,14 @@ public final class UserProfilePreferenceService {
         return userProfileManager.getObjectUsingEmail(emailId);
     }
 
+    public UserProfileEntity getUsingId(String receiptUserId) {
+        return userProfileManager.getUsingId(receiptUserId);
+    }
+
+    public UserProfileEntity getUsingUserId(String userId) {
+        return userProfileManager.getUsingUserId(userId);
+    }
+
     public void updateProfile(UserProfileEntity userProfile) throws Exception {
         userProfileManager.save(userProfile);
     }
@@ -72,11 +80,11 @@ public final class UserProfilePreferenceService {
         }
     }
 
-    public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String userProfileId) {
+    public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String receiptUserId) {
         if(changeStatTo.equalsIgnoreCase("true")) {
-            expenseTypeManager.changeVisibility(expenseTypeId, false, userProfileId);
+            expenseTypeManager.changeVisibility(expenseTypeId, false, receiptUserId);
         } else {
-            expenseTypeManager.changeVisibility(expenseTypeId, true, userProfileId);
+            expenseTypeManager.changeVisibility(expenseTypeId, true, receiptUserId);
         }
     }
 }

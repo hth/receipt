@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.math.BigDecimal.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +47,13 @@ public final class ItemService {
      */
     public Map<String, BigDecimal> getAllItemExpenseForTheYear(String profileId) {
         Map<String, BigDecimal> expenseItems = new HashMap<>();
-        BigDecimal netSum = BigDecimal.ZERO;
+        BigDecimal netSum = ZERO;
 
         //Find sum of all items for particular expense
         List<ExpenseTagEntity> expenseTypeEntities = expenseTypeManager.activeExpenseTypes(profileId);
         for(ExpenseTagEntity expenseTagEntity : expenseTypeEntities) {
 
-            BigDecimal sum = BigDecimal.ZERO;
+            BigDecimal sum = ZERO;
             //Todo this query take a long time. Optimize it. Almost 150ms through this loop
             List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseTypeForTheYear(expenseTagEntity);
             sum = calculateSum(sum, items);
@@ -64,8 +66,9 @@ public final class ItemService {
         // Calculate percentage
         for(String key : expenseItems.keySet()) {
             BigDecimal percent = Maths.percent(expenseItems.get(key));
-            percent = Maths.divide(percent, netSum);
-            expenseItems.put(key, percent);
+            expenseItems.put(key, (netSum == ZERO) ? ZERO : Maths.divide(percent, netSum));
+            //percent = Maths.divide(percent, netSum);
+            //expenseItems.put(key, percent);
         }
 
         return expenseItems;
@@ -95,7 +98,7 @@ public final class ItemService {
     private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String profileId) {
         List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(profileId);
         if(unassignedItems.size() > 0) {
-            BigDecimal sum = calculateSum(BigDecimal.ZERO, unassignedItems);
+            BigDecimal sum = calculateSum(ZERO, unassignedItems);
             netSum = Maths.add(netSum, sum);
             expenseItems.put("Un-Assigned", sum);
         }

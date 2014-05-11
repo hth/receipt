@@ -1,7 +1,7 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.UserSession;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +28,7 @@ import org.joda.time.DateTime;
  * Time: 1:23 AM
  */
 @Controller
-@RequestMapping(value = "/day")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/day")
 public class ThisDayController {
     private static final Logger log = LoggerFactory.getLogger(ThisDayController.class);
     private static final String nextPage = "/day";
@@ -36,12 +36,15 @@ public class ThisDayController {
     @Autowired private ReceiptService receiptService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView getThisDay(@ModelAttribute("userSession") UserSession userSession, @RequestParam("date") String date) {
+    public ModelAndView getThisDay(@RequestParam("date") String date) {
         DateTime time = DateUtil.now();
 
         Long longDate = Long.parseLong(date);
         DateTime dateTime = new DateTime(longDate);
-        List<ReceiptEntity> receipts = receiptService.findReceipt(dateTime, userSession.getUserProfileId());
+        List<ReceiptEntity> receipts = receiptService.findReceipt(
+                dateTime,
+                ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
+        );
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("receipts", receipts);

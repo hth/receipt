@@ -5,16 +5,19 @@
     <meta charset="utf-8">
     <title><fmt:message key="receipt.title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-    <link rel='stylesheet' type='text/css' href='../static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='../static/jquery/css/receipt.css'>
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="../static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type="text/javascript" src="../static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script type="text/javascript" src="../static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -62,7 +65,10 @@
                 onSelect: function(request) {
                     $.ajax({
                         type: "POST",
-                        url: '${pageContext. request. contextPath}/mws/msd.htm',
+                        url: '${pageContext. request. contextPath}/ws/m/msd.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
                         data: JSON.stringify({
                             id: '${mileageForm.mileage.id}',
                             msd: $("#datePickerStart").val()
@@ -99,7 +105,10 @@
                 onSelect: function(request) {
                     $.ajax({
                         type: "POST",
-                        url: '${pageContext. request. contextPath}/mws/med.htm',
+                        url: '${pageContext. request. contextPath}/ws/m/med.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
                         data: JSON.stringify({
                             id: '${mileageForm.mileage.id}',
                             med: $("#datePickerEnd").val()
@@ -143,7 +152,10 @@
                 source: function (request, response) {
                     $.ajax({
                         type: "POST",
-                        url: '${pageContext. request. contextPath}/ncws/umn.htm',
+                        url: '${pageContext. request. contextPath}/ws/nc/mn.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
                         data: JSON.stringify({
                             notes: request.term,
                             mileageId: $("#mileageId").val()
@@ -187,25 +199,25 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
+                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
             </div>
             <div class="divOfCell250">
                 <h3>
                     <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
-                                ${sessionScope['userSession'].emailId}
-                                <img src="../static/images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <sec:authentication property="principal.username" />
+                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
                             <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
                                 <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
-                                <li><a href="${pageContext.request.contextPath}/eval/feedback.htm">Send Feedback</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
 
@@ -257,18 +269,18 @@
                                     <td style="font-size: 16px">
                                         <b><fmt:formatNumber value="${mileageForm.mileage.start}" type="number" /></b>
                                         &nbsp;&nbsp; Miles
-                                        <img src="../static/images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
+                                        <img src="${pageContext.request.contextPath}/static/images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
                                     </td>
                                     <c:if test="${mileageForm.mileage.complete eq true}">
                                     <td style="font-size: 16px">
                                         <b><fmt:formatNumber value="${mileageForm.mileage.end}" type="number" /></b>
                                         &nbsp;&nbsp;Miles
-                                        <img src="../static/images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
+                                        <img src="${pageContext.request.contextPath}/static/images/odometers.png" style="height: 20px; width: 20px; vertical-align: top" />
                                     </td>
                                     <td style="font-size: 16px">
                                         <b><fmt:formatNumber value="${mileageForm.mileage.total}" type="number" /></b>
                                         &nbsp;&nbsp; Miles Driven
-                                        <img src="../static/images/car-front.png" style="height: 20px; width: 20px; vertical-align: top"/>
+                                        <img src="${pageContext.request.contextPath}/static/images/car-front.png" style="height: 20px; width: 20px; vertical-align: top"/>
                                     </td>
                                     </c:if>
                                 </tr>
@@ -411,7 +423,7 @@
         info = [
             <c:forEach items="${mileageForm.mileage.fileSystemEntities}" var="arr" varStatus="status">
             {
-                src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
+                src: "${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm",
                 pos: {
                     top: topHeight = calculateTop(300),
                     left: 0

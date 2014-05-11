@@ -4,10 +4,10 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.AccountService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
@@ -18,24 +18,22 @@ import com.receiptofi.web.validator.ExpenseTypeValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -49,37 +47,31 @@ import org.joda.time.DateTime;
  *
  */
 @Controller
-@RequestMapping(value = "/userprofilepreference")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/userprofilepreference")
 public class UserProfilePreferenceController {
 	private static final Logger log = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
 	private static final String nextPage = "/userprofilepreference";
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    @Autowired private AccountService accountService;
     @Autowired private ItemService itemService;
     @Autowired private ExpenseTypeValidator expenseTypeValidator;
 
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession,
-                                 @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-                                 @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
-                                 SessionStatus sessionStatus,
-                                 HttpServletResponse httpServletResponse,
-                                 final Model model) throws IOException {
+	public ModelAndView loadForm(
+            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
+            Model model
+    ) throws IOException {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
-        if(userProfile == null) {
-            /** If user profile fails to load here then seems user was marked inactive */
-            /** Sign off user */
-            sessionStatus.setComplete();
-            log.warn("User does not seem to have access granted: " + userSession.getEmailId());
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return null;
-        }
-
+        UserProfileEntity userProfile = userProfilePreferenceService.getUsingId(receiptUser.getRid());
+        Assert.notNull(userProfile);
         userProfilePreferenceForm.setUserProfile(userProfile);
+
         ModelAndView modelAndView = populateModel(nextPage, null, userProfilePreferenceForm);
 
         //Gymnastic to show BindingResult errors if any
@@ -95,24 +87,26 @@ public class UserProfilePreferenceController {
      * Used for adding Expense Type
      *
      * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
-     * @param userSession
      * @param userProfilePreferenceForm
      * @param expenseTypeForm
      * @param result
      * @return
      */
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @RequestMapping(value="/i", method = RequestMethod.POST)
-    public String addExpenseTag(@ModelAttribute("userSession") UserSession userSession,
-                                      @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
-                                      @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-                                      BindingResult result,
-                                      final RedirectAttributes redirectAttrs) {
+    public String addExpenseTag(
+            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
+            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+            BindingResult result,
+            RedirectAttributes redirectAttrs) {
+
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //There is UI logic based on this. Set the right to be active when responding.
         redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
 
-        UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(userSession.getEmailId());
+        UserProfileEntity userProfile = userProfilePreferenceService.getUsingId(receiptUser.getRid());
         userProfilePreferenceForm.setUserProfile(userProfile);
 
         expenseTypeValidator.validate(expenseTypeForm, result);
@@ -122,11 +116,11 @@ public class UserProfilePreferenceController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
 
             //Re-direct to prevent resubmit
-            return "redirect:" + nextPage + "/i" + ".htm";
+            return "redirect:/access" + nextPage + "/i" + ".htm";
         }
 
         try {
-            ExpenseTagEntity expenseType = ExpenseTagEntity.newInstance(expenseTypeForm.getTagName(), userSession.getUserProfileId());
+            ExpenseTagEntity expenseType = ExpenseTagEntity.newInstance(expenseTypeForm.getTagName(), receiptUser.getRid());
             userProfilePreferenceService.addExpenseType(expenseType);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -136,7 +130,7 @@ public class UserProfilePreferenceController {
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         //Re-direct to prevent resubmit
-        return "redirect:" + nextPage + "/i" + ".htm";
+        return "redirect:/access" + nextPage + "/i" + ".htm";
     }
 
     /**
@@ -145,22 +139,25 @@ public class UserProfilePreferenceController {
      *
      * @param expenseTagId
      * @param changeStatTo
-     * @param userSession
      * @return
      */
     @RequestMapping(value="/expenseTagVisible", method = RequestMethod.GET)
-    public ModelAndView changeExpenseTypeVisibleStatus(@ModelAttribute("userSession") UserSession userSession,
-                                                       @RequestParam(value="id") String expenseTagId,
-                                                       @RequestParam(value="status") String changeStatTo,
-                                                       @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-                                                       @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm) {
+    public ModelAndView changeExpenseTypeVisibleStatus(
+            @RequestParam(value="id") String expenseTagId,
+            @RequestParam(value="status") String changeStatTo,
+            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
+    ) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //Secondary check. In case some one tries to be smart by passing parameters in URL :)
-        if(itemService.countItemsUsingExpenseType(expenseTagId, userSession.getUserProfileId()) == 0) {
-            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTagId, changeStatTo, userSession.getUserProfileId());
+        if(itemService.countItemsUsingExpenseType(expenseTagId, receiptUser.getRid()) == 0) {
+            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTagId, changeStatTo, receiptUser.getRid());
         }
-        UserProfileEntity userProfile = userProfilePreferenceService.findById(userSession.getUserProfileId());
+
+        UserProfileEntity userProfile = userProfilePreferenceService.findById(receiptUser.getRid());
+        Assert.notNull(userProfile);
         userProfilePreferenceForm.setUserProfile(userProfile);
 
         ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
@@ -175,110 +172,93 @@ public class UserProfilePreferenceController {
     /**
      * Only admin has access to this link. Others get 403 error.
      *
-     * @param userSession
      * @param id
      * @param expenseTypeForm
-     * @param httpServletResponse
      * @return
      * @throws IOException
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/their", method = RequestMethod.GET)
-	public ModelAndView getUser(@ModelAttribute("userSession") UserSession userSession,
-                                @RequestParam("id") String id,
-                                @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-                                @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
-                                HttpServletResponse httpServletResponse) throws IOException {
-
+	public ModelAndView getUser(
+            @RequestParam("id") String id,
+            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
+    ) throws IOException {
         DateTime time = DateUtil.now();
 
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.ADMIN.getValue()) {
-                UserProfileEntity userProfile = userProfilePreferenceService.findById(id);
-                userProfilePreferenceForm.setUserProfile(userProfile);
-                ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
-                modelAndView.addObject("id", id);
+        UserProfileEntity userProfile = userProfilePreferenceService.getUsingId(id);
+        Assert.notNull(userProfile);
+        userProfilePreferenceForm.setUserProfile(userProfile);
 
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-                return modelAndView;
-            } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-                return null;
-            }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return null;
-        }
+        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
+        modelAndView.addObject("id", id);
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return modelAndView;
+
 	}
 
     /**
      * Only Admin can update the user level. Others get 403 error. If the user cannot access /their, then its highly
      * unlikely to perform the action below.
      *
-     * @param userSession
      * @param expenseTypeForm
-     * @param httpServletResponse
      * @return
      * @throws IOException
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value="/update", method = RequestMethod.POST)
-	public String updateUser(@ModelAttribute("userSession") UserSession userSession,
-                                   @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-                                   @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
-                                   HttpServletResponse httpServletResponse) throws IOException {
-
+	public String updateUser(
+            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
+    ) throws IOException {
         DateTime time = DateUtil.now();
 
-        if(userSession != null) {
-            if(userSession.getLevel().value >= UserLevelEnum.ADMIN.getValue()) {
-                UserProfileEntity userProfile = userProfilePreferenceService.findById(userProfilePreferenceForm.getUserProfile().getId());
-                userProfile.setLevel(userProfilePreferenceForm.getUserProfile().getLevel());
-                if(!userProfilePreferenceForm.isActive() || !userProfile.isActive()) {
-                    if(userProfilePreferenceForm.isActive()) {
-                        userProfile.active();
-                    } else {
-                        userProfile.inActive();
-                    }
-                }
-                try {
-                    //TODO remove this code as its a temporary fix to update existing email ids from capital case in the email to lowercase
-                    //userProfile.setEmailId(StringUtils.lowerCase(userProfile.getEmailId()));
+        UserProfileEntity userProfile = userProfilePreferenceService.findById(userProfilePreferenceForm.getUserProfile().getId());
+        Assert.notNull(userProfile);
 
-                    userProfilePreferenceService.updateProfile(userProfile);
-                } catch (Exception exce) {
-                    log.error("Failed updating User Profile: " + exce.getLocalizedMessage() + ", user profile Id: " + userProfile.getEmailId());
-                    userProfilePreferenceForm.setErrorMessage("Failed updating user profile: " + exce.getLocalizedMessage());
-                }
-
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-                //Re-direct to prevent resubmit
-                return "redirect:" + nextPage + "/their" + ".htm?id=" + userProfilePreferenceForm.getUserProfile().getId();
+        userProfile.setLevel(userProfilePreferenceForm.getUserProfile().getLevel());
+        if(!userProfilePreferenceForm.isActive() || !userProfile.isActive()) {
+            if(userProfilePreferenceForm.isActive()) {
+                userProfile.active();
             } else {
-                httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-                return null;
+                userProfile.inActive();
             }
-        } else {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
-            return null;
         }
+        try {
+            //TODO remove this code as its a temporary fix to update existing email ids from capital case in the email to lowercase
+            //userProfile.setEmailId(StringUtils.lowerCase(userProfile.getEmailId()));
+
+            userProfilePreferenceService.updateProfile(userProfile);
+        } catch (Exception exce) {
+            log.error("Failed updating User Profile: " + exce.getLocalizedMessage() + ", user profile Id: " + userProfile.getEmail());
+            userProfilePreferenceForm.setErrorMessage("Failed updating user profile: " + exce.getLocalizedMessage());
+        }
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        //Re-direct to prevent resubmit
+        return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
 	}
 
 	/**
 	 * @param nextPage
-     * @param userProfilePreferenceForm
+     * @param userProfilePreference
 	 * @return
 	 */
-	private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, UserProfilePreferenceForm userProfilePreferenceForm) {
+	private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, UserProfilePreferenceForm userProfilePreference) {
         DateTime time = DateUtil.now();
 
-        UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreferenceForm.getUserProfile());
+        UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreference.getUserProfile());
+        userProfilePreference.setUserAuthentication(accountService.findUserById(userProfilePreference.getUserProfile().getReceiptUserId()).getUserAuthentication());
+
 		ModelAndView modelAndView = new ModelAndView(nextPage);
-        userProfilePreferenceForm.setUserPreference(userPreference);
+        userProfilePreference.setUserPreference(userPreference);
         if(expenseTypeForm != null) {
             modelAndView.addObject("expenseTypeForm", expenseTypeForm);
         }
 
-        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfilePreferenceForm.getUserProfile().getId());
-        userProfilePreferenceForm.setExpenseTags(expenseTypes);
+        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfilePreference.getUserProfile().getReceiptUserId());
+        userProfilePreference.setExpenseTags(expenseTypes);
 
         Map<String, Long> expenseTypeCount = new HashMap<>();
         int count = 0;
@@ -289,12 +269,12 @@ public class UserProfilePreferenceController {
 
             expenseTypeCount.put(
                     expenseType.getTagName(),
-                    itemService.countItemsUsingExpenseType(expenseType.getId(), userProfilePreferenceForm.getUserProfile().getId())
+                    itemService.countItemsUsingExpenseType(expenseType.getId(), userProfilePreference.getUserProfile().getId())
             );
         }
 
-        userProfilePreferenceForm.setExpenseTagCount(expenseTypeCount);
-        userProfilePreferenceForm.setVisibleExpenseTags(count);
+        userProfilePreference.setExpenseTagCount(expenseTypeCount);
+        userProfilePreference.setVisibleExpenseTags(count);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
 		return modelAndView;

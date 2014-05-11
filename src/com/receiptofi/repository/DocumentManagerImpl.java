@@ -69,7 +69,7 @@ public final class DocumentManagerImpl implements DocumentManager {
 
     @Override
     public DocumentEntity findOne(String id, String userProfileId) {
-        Query query = query(where("id").is(id)).addCriteria(where("USER_PROFILE_ID").is(userProfileId));
+        Query query = query(where("id").is(id).and("USER_PROFILE_ID").is(userProfileId));
         return mongoTemplate.findOne(query, DocumentEntity.class, TABLE);
     }
 
@@ -107,9 +107,10 @@ public final class DocumentManagerImpl implements DocumentManager {
 
     @Override
     public List<DocumentEntity> getAllRejected(String userProfileId) {
-        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria2 = where("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT);
-        Query query = query(criteria1).addCriteria(criteria2).addCriteria(isNotActive()).addCriteria(isDeleted());
+        Query query = query(
+                where("USER_PROFILE_ID").is(userProfileId)
+                .and("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)
+        ).addCriteria(isNotActive()).addCriteria(isDeleted());
 
         Sort sort = new Sort(Direction.ASC, "C");
         return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);

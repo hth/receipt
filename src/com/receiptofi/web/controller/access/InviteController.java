@@ -1,11 +1,13 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.InviteEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.InviteService;
+import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -43,6 +45,7 @@ public class InviteController {
     private static final String SUCCESS         = "success";
 
     @Autowired private AccountService accountService;
+    @Autowired private LoginService loginService;
     @Autowired private InviteService inviteService;
     @Autowired private InviteAuthenticateValidator inviteAuthenticateValidator;
     @Autowired private UserProfileManager userProfileManager;
@@ -86,9 +89,11 @@ public class InviteController {
                         HashText.computeBCrypt(RandomString.newInstance().nextString()));
 
 
-                userAuthenticationEntity.setId(userProfileEntity.getUserAuthentication().getId());
-                userAuthenticationEntity.setVersion(userProfileEntity.getUserAuthentication().getVersion());
-                userAuthenticationEntity.setCreated(userProfileEntity.getUserAuthentication().getCreated());
+                UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfileEntity.getReceiptUserId());
+
+                userAuthenticationEntity.setId(userAccountEntity.getUserAuthentication().getId());
+                userAuthenticationEntity.setVersion(userAccountEntity.getUserAuthentication().getVersion());
+                userAuthenticationEntity.setCreated(userAccountEntity.getUserAuthentication().getCreated());
                 userAuthenticationEntity.setUpdated();
                 try {
                     userProfileManager.save(userProfileEntity);

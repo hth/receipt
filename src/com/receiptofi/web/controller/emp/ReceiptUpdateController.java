@@ -1,15 +1,14 @@
 /**
  *
  */
-package com.receiptofi.web.controller.access;
+package com.receiptofi.web.controller.emp;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -19,10 +18,12 @@ import com.receiptofi.web.validator.ReceiptDocumentValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,7 +47,6 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/emp")
-@SessionAttributes({"userSession"})
 public class ReceiptUpdateController {
     private static final Logger log = LoggerFactory.getLogger(ReceiptUpdateController.class);
 
@@ -68,30 +67,36 @@ public class ReceiptUpdateController {
      *
      * Added logic to make sure only the user of the receipt or technician can see the receipt.
      *
-     * @param userSession
      * @param receiptOCRId
      * @param receiptDocumentForm
      * @return
      */
 	@RequestMapping(value = "/update/{receiptOCRId}", method = RequestMethod.GET)
-	public ModelAndView update(@PathVariable String receiptOCRId, @ModelAttribute("userSession") UserSession userSession,
-                               @ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                               final Model model) {
+	public ModelAndView update(
+            @PathVariable
+            String receiptOCRId,
 
+            @ModelAttribute("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm,
+
+            Model model,
+            HttpServletRequest httpServletRequest
+    ) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //Gymnastic to show BindingResult errors if any or any special receipt document containing error message
         if (model.asMap().containsKey("result")) {
             //result contains validation errors
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
-            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+            loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
         } else if(model.asMap().containsKey("receiptDocumentForm")) {
             //errorMessage here contains any other logical error found
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
-            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+            loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
         } else {
-            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+            loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -101,16 +106,21 @@ public class ReceiptUpdateController {
     /**
      * For Technician: Loads recheck receipt
      *
-     * @param userSession
      * @param receiptOCRId
      * @param receiptDocumentForm
      * @return
      */
     @RequestMapping(value = "/recheck/{receiptOCRId}", method = RequestMethod.GET)
-    public ModelAndView recheck(@PathVariable String receiptOCRId, @ModelAttribute("userSession") UserSession userSession,
-                                @ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                                final Model model) {
+    public ModelAndView recheck(
+            @PathVariable
+            String receiptOCRId,
 
+            @ModelAttribute("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm,
+
+            Model model,
+            HttpServletRequest httpServletRequest
+    ) {
         DateTime time = DateUtil.now();
 
         //Gymnastic to show BindingResult errors if any or any special receipt document containing error message
@@ -118,13 +128,13 @@ public class ReceiptUpdateController {
             //result contains validation errors
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
-            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+            loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
         } else if(model.asMap().containsKey("receiptDocumentForm")) {
             //errorMessage here contains any other logical error found
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
-            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+            loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
         } else {
-            loadBasedOnAppropriateUserLevel(receiptOCRId, userSession, receiptDocumentForm);
+            loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -139,10 +149,13 @@ public class ReceiptUpdateController {
      * @return
      */
 	@RequestMapping(value = "/submit", method = RequestMethod.POST, params= "receipt-submit")
-	public ModelAndView submit(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                               BindingResult result,
-                               final RedirectAttributes redirectAttrs) {
+	public ModelAndView submit(
+            @ModelAttribute("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm,
 
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
 		receiptDocumentValidator.validate(receiptDocumentForm, result);
@@ -193,10 +206,13 @@ public class ReceiptUpdateController {
      * @return
      */
     @RequestMapping(value = "/submitMileage", method = RequestMethod.POST, params= "mileage-submit")
-    public ModelAndView submitMileage(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                                      BindingResult result,
-                                      final RedirectAttributes redirectAttrs) {
+    public ModelAndView submitMileage(
+            @ModelAttribute("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm,
 
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
         DateTime time = DateUtil.now();
         switch(receiptDocumentForm.getReceiptDocument().getDocumentOfType()) {
             case MILEAGE:
@@ -238,10 +254,13 @@ public class ReceiptUpdateController {
      * @return
      */
     @RequestMapping(value = "/submit", method = RequestMethod.POST, params="receipt-reject")
-    public ModelAndView reject(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                               BindingResult result,
-                               final RedirectAttributes redirectAttrs) {
+    public ModelAndView reject(
+            @ModelAttribute("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm,
 
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
         DateTime time = DateUtil.now();
         log.info("Beginning of Rejecting Document: " + receiptDocumentForm.getReceiptDocument().getId());
         try {
@@ -270,10 +289,13 @@ public class ReceiptUpdateController {
      * @return
      */
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
-    public ModelAndView recheck(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm,
-                                BindingResult result,
-                                final RedirectAttributes redirectAttrs) {
+    public ModelAndView recheck(
+            @ModelAttribute("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm,
 
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
         DateTime time = DateUtil.now();
         log.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);
@@ -318,17 +340,19 @@ public class ReceiptUpdateController {
         }
     }
 
-    private void loadBasedOnAppropriateUserLevel(String receiptOCRId, UserSession userSession, ReceiptDocumentForm receiptDocumentForm) {
+    private void loadBasedOnAppropriateUserLevel(String receiptOCRId, ReceiptDocumentForm receiptDocumentForm, HttpServletRequest request) {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         DocumentEntity receipt = documentUpdateService.loadActiveDocumentById(receiptOCRId);
         if(receipt == null || receipt.isDeleted()) {
-            if(userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue()) {
+            if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR")) {
                 log.info("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
                 receiptDocumentForm.setErrorMessage("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
             } else {
-                log.warn("No such receipt exists. Request made by: " + userSession.getUserProfileId());
+                log.warn("No such receipt exists. Request made by: " + receiptUser.getRid());
                 receiptDocumentForm.setErrorMessage("No such receipt exists");
             }
-        } else if(userSession.getUserProfileId().equalsIgnoreCase(receipt.getUserProfileId()) || (userSession.getLevel().value >= UserLevelEnum.TECHNICIAN.getValue())) {
+        } else if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR") || receipt.getUserProfileId().equalsIgnoreCase(receiptUser.getRid())) {
             //Important: The condition below makes sure when validation fails it does not over write the item list
             if(receiptDocumentForm.getReceiptDocument() == null && receiptDocumentForm.getItems() == null) {
                 receiptDocumentForm.setReceiptDocument(receipt);
@@ -339,7 +363,7 @@ public class ReceiptUpdateController {
             //helps load the image on failure
             receiptDocumentForm.getReceiptDocument().setFileSystemEntities(receipt.getFileSystemEntities());
         } else {
-            log.warn("Un-authorized access by user: " + userSession.getUserProfileId() + ", accessing receipt: " + receiptOCRId);
+            log.warn("Un-authorized access by user: " + receiptUser.getRid() + ", accessing receipt: " + receiptOCRId);
         }
     }
 }

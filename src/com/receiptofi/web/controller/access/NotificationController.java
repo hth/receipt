@@ -1,5 +1,6 @@
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.NotificationService;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +27,7 @@ import org.joda.time.DateTime;
  * Time: 9:51 PM
  */
 @Controller
-@RequestMapping(value = "/notification")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/notification")
 public class NotificationController {
     private static final Logger log = LoggerFactory.getLogger(LandingController.class);
 
@@ -38,12 +39,13 @@ public class NotificationController {
     private static final String NEXT_PAGE_IS_CALLED_NOTIFICATION = "/notification";
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("notificationForm") NotificationForm notificationForm) {
+    public ModelAndView loadForm(@ModelAttribute("notificationForm") NotificationForm notificationForm) {
         DateTime time = DateUtil.now();
-        log.info("LandingController loadForm: " + userSession.getEmailId());
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("LandingController loadForm: " + receiptUser.getRid());
 
         ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_NOTIFICATION);
-        notificationForm.setNotifications(notificationService.notifications(userSession.getUserProfileId(), NotificationManager.ALL));
+        notificationForm.setNotifications(notificationService.notifications(receiptUser.getRid(), NotificationManager.ALL));
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

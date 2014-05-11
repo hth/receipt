@@ -43,10 +43,15 @@ public final class MileageService {
     }
 
     public List<MileageEntity> getMileageForThisMonth(String profileId, DateTime monthYear) {
-        return mileageManager.getMileageForThisMonth(profileId, monthYear);
+        DateTime startTime = monthYear.dayOfMonth().withMinimumValue().withTimeAtStartOfDay();
+        return mileageManager.getMileageForThisMonth(
+                profileId,
+                startTime,
+                startTime.plusMonths(1).withTimeAtStartOfDay().minusMillis(1)
+        );
     }
 
-    public int monthltyTotal(String userProfileId, DateTime monthYear) {
+    public int monthlyTotal(String userProfileId, DateTime monthYear) {
         return mileageTotal(getMileageForThisMonth(userProfileId, monthYear));
     }
 

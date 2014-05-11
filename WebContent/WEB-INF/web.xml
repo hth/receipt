@@ -39,12 +39,24 @@
     <!-- Java Melody Ends -->
 
     <filter>
+        <filter-name>MultipartFilter</filter-name>
+        <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>MultipartFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>ERROR</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <filter>
@@ -94,6 +106,11 @@
         <url-pattern>*.json</url-pattern>
     </servlet-mapping>
     <!--Do no include html servlet mapping here as this would result in not throwing the right error codes listed below -->
+
+    <welcome-file-list>
+        <!-- maps to LoginController index -->
+        <welcome-file>open/index.htm</welcome-file>
+    </welcome-file-list>
 
     <error-page>
         <error-code>400</error-code>

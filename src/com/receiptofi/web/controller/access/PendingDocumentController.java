@@ -4,6 +4,7 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.DocumentPendingService;
 import com.receiptofi.service.DocumentUpdateService;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +35,7 @@ import org.joda.time.DateTime;
  *
  */
 @Controller
-@RequestMapping(value = "/pendingdocument")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/pendingdocument")
 public class PendingDocumentController {
 	private static final Logger log = LoggerFactory.getLogger(PendingDocumentController.class);
 
@@ -45,13 +46,13 @@ public class PendingDocumentController {
     @Autowired private DocumentUpdateService documentUpdateService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession,
-                                 @ModelAttribute("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
+	public ModelAndView loadForm(@ModelAttribute("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
 
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		documentPendingService.getAllPending(userSession.getUserProfileId(), pendingReceiptForm);
-        documentPendingService.getAllRejected(userSession.getUserProfileId(), pendingReceiptForm);
+        documentPendingService.getAllPending(receiptUser.getRid(), pendingReceiptForm);
+        documentPendingService.getAllRejected(receiptUser.getRid(), pendingReceiptForm);
 
 		ModelAndView modelAndView = new ModelAndView(LIST_PENDING_DOCUMENTS);
 		modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
@@ -62,12 +63,12 @@ public class PendingDocumentController {
 
     @RequestMapping(value = "/{documentId}", method = RequestMethod.GET)
     public ModelAndView showDocument(@PathVariable String documentId,
-                                     @ModelAttribute("userSession") UserSession userSession,
                                      @ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
 
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        DocumentEntity documentEntity = documentUpdateService.findOne(documentId, userSession.getUserProfileId());
+        DocumentEntity documentEntity = documentUpdateService.findOne(documentId, receiptUser.getRid());
         receiptDocumentForm.setReceiptDocument(documentEntity);
 
         ModelAndView modelAndView = new ModelAndView(SHOW_DOCUMENT);
@@ -90,6 +91,6 @@ public class PendingDocumentController {
         if(StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReceiptId())) {
             documentUpdateService.deletePendingReceiptOCR(receiptDocumentForm.getReceiptDocument());
         }
-        return "redirect:/pendingdocument.htm";
+        return "redirect:/access/pendingdocument.htm";
     }
 }

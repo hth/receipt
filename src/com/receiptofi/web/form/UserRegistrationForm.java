@@ -33,23 +33,6 @@ public final class UserRegistrationForm {
 		return new UserRegistrationForm();
 	}
 
-	/**
-	 * Gets a new instance of Receipt User
-	 *
-	 * @return
-	 */
-	public UserAuthenticationEntity newUserAuthenticationEntity() {
-		return UserAuthenticationEntity.newInstance(HashText.computeBCrypt(password), HashText.computeBCrypt(RandomString.newInstance().nextString()));
-	}
-
-	public UserProfileEntity newUserProfileEntity(UserAuthenticationEntity userAuthentication) {
-		return UserProfileEntity.newInstance(emailId, firstName, lastName, DateTime.now().toDate(), userAuthentication);
-	}
-
-	public UserPreferenceEntity newUserPreferenceEntity(UserProfileEntity userProfile) {
-		return UserPreferenceEntity.newInstance(accountType, userProfile);
-	}
-
 	public String getFirstName() {
 		return firstName;
 	}

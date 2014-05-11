@@ -2,6 +2,7 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +35,7 @@ import org.joda.time.DateTime;
  * Time: 11:28 PM
  */
 @Controller
-@RequestMapping(value = "/expenses")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/expenses")
 public class ExpensesController {
     private static final Logger log = LoggerFactory.getLogger(ExpensesController.class);
     private static final String nextPage = "/expenses";
@@ -43,10 +44,11 @@ public class ExpensesController {
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping(value = "{tag}", method = RequestMethod.GET)
-    public ModelAndView forExpenseType(@PathVariable String tag, @ModelAttribute("expenseForm") ExpenseForm expenseForm, @ModelAttribute("userSession") UserSession userSession) {
+    public ModelAndView forExpenseType(@PathVariable String tag, @ModelAttribute("expenseForm") ExpenseForm expenseForm) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(userSession.getUserProfileId());
+        List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(receiptUser.getRid());
         List<ItemEntity> items = new ArrayList<>();
 
         if(!tag.equalsIgnoreCase("Un-Assigned")) {
@@ -57,7 +59,7 @@ public class ExpensesController {
                 }
             }
         } else if(tag.equalsIgnoreCase("Un-Assigned")) {
-            items = itemService.itemsForUnAssignedExpenseType(userSession.getUserProfileId());
+            items = itemService.itemsForUnAssignedExpenseType(receiptUser.getRid());
         }
 
         expenseForm.setName(tag);

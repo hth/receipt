@@ -26,8 +26,14 @@
         <!--<intercept-url pattern="/signin/**"-->
         <!--access="permitAll" />-->
 
+        <intercept-url pattern="/open/**"
+                       access="permitAll" />
+
         <intercept-url pattern="/access/**"
                        access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
+
+        <intercept-url pattern="/ws/**"
+                       access="hasAnyRole('ROLE_USER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/emp/**"
                        access="hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
@@ -38,7 +44,12 @@
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('192.168.1.*')" />
 
-        <form-login default-target-url="/access/landing.htm" />
+        <form-login
+                login-page="/login.htm"
+                default-target-url="/access/landing.htm"
+                authentication-failure-url="/login?error"
+                username-parameter="emailId"
+                password-parameter="password" />
 
         <!-- not sure if this will work on https -->
         <intercept-url pattern="/monitoring/**" requires-channel="https"/>
@@ -85,7 +96,7 @@
     <beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"/>
 
     <beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
-        <!--<beans:property name="tokenRepository"      ref="persistentTokenRepositoryImpl" />-->
+        <beans:property name="tokenRepository"      ref="persistentTokenRepositoryImpl" />
         <beans:property name="userDetailsService"   ref="customUserDetailsService" />
         <beans:property name="key"                  value="?M.?75:.V_/?ch1ll3rB!m$.2c0fkl1*c.s2M*@#-_xEx34!" />
         <beans:property name="cookieName"           value="receiptofi_session_cookie"/>

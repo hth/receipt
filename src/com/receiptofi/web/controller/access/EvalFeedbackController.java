@@ -1,5 +1,6 @@
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.EvalFeedbackService;
 import com.receiptofi.utils.DateUtil;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,8 +33,7 @@ import org.joda.time.DateTime;
  * Time: 8:19 AM
  */
 @Controller
-@RequestMapping(value = "/eval")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/eval")
 public class EvalFeedbackController {
     private static final Logger log = LoggerFactory.getLogger(EvalFeedbackController.class);
 
@@ -47,20 +48,23 @@ public class EvalFeedbackController {
     @Autowired EvalFeedbackValidator evalFeedbackValidator;
 
     @RequestMapping(method = RequestMethod.GET, value = "/feedback")
-    public ModelAndView loadForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
+    public ModelAndView loadForm(@ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
         DateTime time = DateUtil.now();
-        log.info("Feedback loadForm: " + userSession.getEmailId());
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        log.info("Feedback loadForm: " + receiptUser.getRid());
         ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/feedback")
-    public ModelAndView postForm(@ModelAttribute("userSession") UserSession userSession,
-                                 @ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm,
+    public ModelAndView postForm(@ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm,
                                  HttpServletRequest httpServletRequest, BindingResult result) {
 
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
@@ -68,12 +72,12 @@ public class EvalFeedbackController {
             return modelAndView;
         }
 
-        evalFeedbackService.addFeedback(TextInputScrubber.scrub(evalFeedbackForm.getComment()), evalFeedbackForm.getRating(), evalFeedbackForm.getFileData(), userSession);
+        evalFeedbackService.addFeedback(TextInputScrubber.scrub(evalFeedbackForm.getComment()), evalFeedbackForm.getRating(), evalFeedbackForm.getFileData(), receiptUser.getRid());
         log.info("Feedback saved successfully");
 
         httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, true);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return new ModelAndView("redirect:" + NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM + ".htm");
+        return new ModelAndView("redirect:/access" + NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM + ".htm");
     }
 
     /**
@@ -95,6 +99,6 @@ public class EvalFeedbackController {
                 }
             }
         }
-        return "redirect:" + NEXT_PAGE_IS_CALLED_FEEDBACK + ".htm";
+        return "redirect:/access" + NEXT_PAGE_IS_CALLED_FEEDBACK + ".htm";
     }
 }

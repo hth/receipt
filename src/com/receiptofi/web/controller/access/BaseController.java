@@ -3,10 +3,12 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserProfileManager;
+import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.ValidateObjectID;
 import com.receiptofi.web.rest.Header;
 import org.slf4j.Logger;
@@ -24,23 +26,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseController {
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
-    @Autowired UserAuthenticationManager userAuthenticationManager;
-    @Autowired UserProfileManager userProfileManager;
+    @Autowired private UserProfileManager userProfileManager;
+    @Autowired private LoginService loginService;
 
     public String getAuth(String profileId) {
         log.debug("Find user with profileId: " + profileId);
-        return getAuth(userProfileManager.findOne(profileId));
+        return getAuth(userProfileManager.getUsingId(profileId));
     }
 
-    public String getAuth(UserProfileEntity userProfile) {
-        UserAuthenticationEntity userAuthentication = userAuthenticationManager.findOne(userProfile.getUserAuthentication().getId());
+    private String getAuth(UserProfileEntity userProfile) {
+        UserAuthenticationEntity userAuthentication = loginService.loadUserAccount(userProfile.getReceiptUserId()).getUserAuthentication();
         return userAuthentication.getAuthenticationKey();
     }
 
     public UserProfileEntity authenticate(String profileId, String authKey) {
         if(isValid(profileId, authKey)) {
-            UserProfileEntity userProfile = userProfileManager.findOne(profileId);
-            if(checkAuthKey(authKey, userProfile)) {
+            UserProfileEntity userProfile = userProfileManager.getUsingId(profileId);
+            UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
+            if(checkAuthKey(authKey, userAccountEntity)) {
                 return userProfile;
             }
             return null;
@@ -48,25 +51,14 @@ public abstract class BaseController {
         return null;
     }
 
-    public boolean isAuthenticate(String profileId, String authKey) {
-        if(isValid(profileId, authKey)) {
-            UserProfileEntity userProfile = userProfileManager.findOne(profileId);
-            if(checkAuthKey(authKey, userProfile)) {
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-
     /**
      *
      * @param authKey
-     * @param userProfile
+     * @param userAccount
      * @return
      */
-    private boolean checkAuthKey(String authKey, UserProfileEntity userProfile) {
-        return userProfile != null && authKey.equals(userProfile.getUserAuthentication().getAuthenticationKey());
+    private boolean checkAuthKey(String authKey, UserAccountEntity userAccount) {
+        return userAccount != null && authKey.equals(userAccount.getUserAuthentication().getAuthenticationKey());
     }
 
     /**
@@ -76,7 +68,7 @@ public abstract class BaseController {
      * @return
      */
     private boolean isValid(String profileId, String authKey) {
-        return StringUtils.isNotEmpty(profileId) && ValidateObjectID.isValid(profileId) && StringUtils.isNotEmpty(authKey);
+        return StringUtils.isNotEmpty(profileId) && StringUtils.isNotEmpty(authKey);
     }
 
     /**

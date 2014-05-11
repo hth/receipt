@@ -27,7 +27,7 @@ public class MessageDocumentEntity extends BaseEntity {
     private UserLevelEnum level = UserLevelEnum.USER;
 
     @Email
-    @Field("EMAIL")
+    @Field("EM")
     String emailId;
 
     @NotNull

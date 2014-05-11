@@ -82,16 +82,14 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity reInviteActiveInvite(String emailId, UserProfileEntity invitedBy) {
-        Criteria criteria1 = where("EMAIL").is(emailId);
-        Criteria criteria2 = where("USER_PROFILE_INVITED_BY.$id").is(new ObjectId(invitedBy.getId()));
-        Query query = query(criteria1).addCriteria(criteria2).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Criteria criteria = where("EM").is(emailId).and("USER_PROFILE_INVITED_BY.$id").is(new ObjectId(invitedBy.getId()));
+        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 
     @Override
     public InviteEntity find(String emailId) {
-        Criteria criteria1 = where("EMAIL").is(emailId);
-        Query query = query(criteria1).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Query query = query(where("EM").is(emailId)).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 }

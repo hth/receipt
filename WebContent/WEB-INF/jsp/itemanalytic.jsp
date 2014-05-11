@@ -5,15 +5,15 @@
     <meta charset="utf-8">
 	<title><fmt:message key="item.analytic.title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../static/images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' href='../static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='../static/jquery/css/receipt.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="../static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script type='text/javascript' src="../static/jquery/js/highcharts.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type='text/javascript' src="${pageContext.request.contextPath}/static/jquery/js/highcharts.js"></script>
 
     <!-- For drop down menu -->
     <script>
@@ -56,25 +56,25 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/landing.htm" style="color: #065c14">Home</a></h3>
+                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
             </div>
             <div class="divOfCell250">
                 <h3>
                     <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
-                                ${sessionScope['userSession'].emailId}
-                                <img src="../static/images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <sec:authentication property="principal.username" />
+                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
                             <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
                                 <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
-                                <li><a href="${pageContext.request.contextPath}/eval/feedback.htm">Send Feedback</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
 
@@ -115,7 +115,7 @@
         </tbody>
         <tr>
             <td style="padding:3px;">
-                <a href="${pageContext.request.contextPath}/receipt/${itemAnalyticForm.item.receipt.id}.htm">
+                <a href="${pageContext.request.contextPath}/access/receipt/${itemAnalyticForm.item.receipt.id}.htm">
                 ${itemAnalyticForm.item.receipt.bizName.businessName}
                 </a>
             </td>
@@ -164,7 +164,7 @@
                         ${status.count}
                     </td>
                     <td style="padding:3px;">
-                        <a href="${pageContext.request.contextPath}/receipt/${item.receipt.id}.htm">
+                        <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm">
                         ${item.receipt.bizName.businessName}
                         </a>
                     </td>
@@ -175,7 +175,7 @@
                         <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
                     </td>
                     <td style="padding:3px;">
-                        <a href="${pageContext.request.contextPath}/itemanalytic/${item.id}.htm">
+                        <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">
                         ${item.name}
                         </a>
                     </td>

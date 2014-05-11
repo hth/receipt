@@ -4,6 +4,7 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
@@ -30,6 +31,7 @@ import org.apache.commons.io.IOUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +49,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  *
  */
 @Controller
-@RequestMapping(value = "/filedownload")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/filedownload")
 public class FileDownloadController {
 	private static final Logger log = LoggerFactory.getLogger(FileDownloadController.class);
 
@@ -67,8 +68,9 @@ public class FileDownloadController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/receiptimage/{imageId}")
-	public void getReceipt(@PathVariable String imageId, @ModelAttribute("userSession") UserSession userSession, HttpServletRequest request, HttpServletResponse response) {
+	public void getReceipt(@PathVariable String imageId, HttpServletRequest request, HttpServletResponse response) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		try {
 			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
@@ -92,17 +94,18 @@ public class FileDownloadController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
 		} catch (IOException e) {
 			log.error("Exception occurred during image retrieval" + e.getLocalizedMessage());
-			log.error("Image retrieval error occurred: " + imageId + " for user : " + userSession.getEmailId());
+			log.error("Image retrieval error occurred: " + imageId + " for user : " + receiptUser.getRid());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
 		}
 	}
 
     @RequestMapping(method = RequestMethod.GET, value = "/expensofi/{receiptId}")
-    public void getReport(@PathVariable String receiptId, @ModelAttribute("userSession") UserSession userSession, HttpServletResponse response) {
+    public void getReport(@PathVariable String receiptId, HttpServletResponse response) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, userSession.getUserProfileId());
+            ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
             setHeaderForExcel(receiptEntity, response);
 
             InputStream inputStream = new FileInputStream(fileSystemProcessor.getExcelFile(receiptEntity.getExpenseReportInFS()));
@@ -111,7 +114,7 @@ public class FileDownloadController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
         } catch (IOException e) {
             log.error("Exception occurred during excel retrieval" + e.getLocalizedMessage());
-            log.error("Excel retrieval error occurred: " + receiptId + " for user : " + userSession.getEmailId());
+            log.error("Excel retrieval error occurred: " + receiptId + " for user : " + receiptUser.getRid());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
         }
     }

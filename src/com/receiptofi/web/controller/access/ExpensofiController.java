@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.service.FileDBService;
@@ -33,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,8 +57,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  * Date: 11/30/13 2:45 AM
  */
 @Controller
-@RequestMapping(value = "/expensofi")
-@SessionAttributes({"userSession"})
+@RequestMapping(value = "/access/expensofi")
 public class ExpensofiController {
     private static final Logger log = LoggerFactory.getLogger(ExpensofiController.class);
 
@@ -68,11 +69,12 @@ public class ExpensofiController {
 
     @RequestMapping(value = "/items", method = RequestMethod.POST)
     public @ResponseBody
-    String expensofi(@RequestBody String itemIds, @ModelAttribute("userSession") UserSession userSession, Model model) throws IOException {
+    String expensofi(@RequestBody String itemIds, Model model) throws IOException {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         JsonArray jsonItems = getJsonElements(itemIds);
-        List<ItemEntity> items = getItemEntities(userSession, jsonItems);
+        List<ItemEntity> items = getItemEntities(receiptUser.getRid(), jsonItems);
 
         if(items.size() > 0) {
             model.addAttribute("items", items);
@@ -122,10 +124,10 @@ public class ExpensofiController {
         receiptService.updateReceiptWithExpReportFilename(receiptEntity);
     }
 
-    private List<ItemEntity> getItemEntities(UserSession userSession, JsonArray jsonItems) {
+    private List<ItemEntity> getItemEntities(String receiptUserId, JsonArray jsonItems) {
         List<ItemEntity> items = new ArrayList<>();
         for(Object jsonItem : jsonItems) {
-            ItemEntity ie = itemAnalyticService.findItemById(jsonItem.toString().substring(1, jsonItem.toString().length() - 1), userSession.getUserProfileId());
+            ItemEntity ie = itemAnalyticService.findItemById(jsonItem.toString().substring(1, jsonItem.toString().length() - 1), receiptUserId);
             items.add(ie);
         }
         return items;

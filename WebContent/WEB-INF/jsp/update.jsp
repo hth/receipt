@@ -5,25 +5,28 @@
     <meta charset="utf-8">
 	<title><fmt:message key="receipt.update" /></title>
 
-    <link rel="icon" type="image/x-icon" href="../../static/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../static/images/circle-leaf-sized_small.png" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-	<link rel='stylesheet' type='text/css' href='../../static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
-	<link rel='stylesheet' type='text/css' href='../../static/jquery/css/receipt.css'>
-    <link rel='stylesheet' type='text/css' href="../../static/jquery/fineuploader/fineuploader-3.6.3.css" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css'>
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+    <link rel='stylesheet' type='text/css' href="${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="../../static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-	<script type="text/javascript" src="../../static/jquery/js/raphael/raphael-min.js"></script>
-    <script type="text/javascript" src="../../static/jquery/js/dynamic_list_helper2.js"></script>
-    <script type="text/javascript" src="../../static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/dynamic_list_helper2.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
     <%--<script type="text/javascript" src="../../static/jquery/js/beatak-imageloader/jquery.imageloader.js"></script>--%>
 
 	<script>
 		/* add background color to holder in tr tag */
         window.onload = function () {
             <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-                fetchReceiptImage('${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
+                fetchReceiptImage('${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
             </c:forEach>
         };
 
@@ -67,12 +70,15 @@
 
         function orientation(id, angle, blobId, userProfileId) {
             $.ajax({
-                url: '${pageContext. request. contextPath}/rws/change_fs_image_orientation.htm',
+                url: '${pageContext. request. contextPath}/ws/r/change_fs_image_orientation.htm',
                 data: {
                     fileSystemId: id,
                     orientation: angle,
                     blobId: blobId,
                     userProfileId: userProfileId
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                 },
                 type: "POST",
                 success: function (data) {
@@ -89,7 +95,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $( "#businessName" ).autocomplete({
-                source: "${pageContext. request. contextPath}/rws/find_company.htm"
+                source: "${pageContext. request. contextPath}/ws/r/find_company.htm"
             });
 
         });
@@ -98,7 +104,7 @@
             $( "#address" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/rws/find_address.htm',
+                        url: '${pageContext. request. contextPath}/ws/r/find_address.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#businessName").val()
@@ -119,7 +125,7 @@
             $( "#phone" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/rws/find_phone.htm',
+                        url: '${pageContext. request. contextPath}/ws/r/find_phone.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#businessName").val(),
@@ -141,7 +147,7 @@
             $( ".items" ).autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/rws/find_item.htm',
+                        url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
                         data: {
                             term: request.term,
                             nameParam: $("#businessName").val()
@@ -163,7 +169,7 @@
                 source: function (request, response) {
                     $('#existingErrorMessage').hide();
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/rws/check_for_duplicate.htm',
+                        url: '${pageContext. request. contextPath}/ws/r/check_for_duplicate.htm',
                         data: {
                             date:  $("#date").val(),
                             total: $("#total").val(),
@@ -242,12 +248,12 @@
     <div class="divTable">
         <div class="divRow">
             <div class="divOfCell50" style="height: 46px">
-                <img src="../../static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
             </div>
             <div class="divOfCell75" style="height: 46px">
-                <spring:eval var="isTech" expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" />
+                <sec:authorize access="hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" var="isAdmin" />
                 <c:choose>
-                    <c:when test="${isTech}">
+                    <c:when test="${isAdmin}">
                         <h3><a href="${pageContext.request.contextPath}/emp/landing.htm" style="color: #065c14">Home</a></h3>
                     </c:when>
                     <c:otherwise>
@@ -260,8 +266,8 @@
                     <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
-                                ${sessionScope['userSession'].emailId}
-                                <img src="../../static/images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <sec:authentication property="principal.username" />
+                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
@@ -291,8 +297,7 @@
         </c:otherwise>
     </c:choose>
 
-    <spring:eval var="isNotTech" expression="userSession.level lt T(com.receiptofi.domain.types.UserLevelEnum).TECHNICIAN" />
-    <c:if test="${isNotTech}">
+    <c:if test="${!isAdmin}">
     <c:choose>
         <c:when test="${empty receiptDocumentForm.receiptDocument.receiptId}">
         <form:form method="post" action="../delete.htm" modelAttribute="receiptDocumentForm">
@@ -337,7 +342,7 @@
     </c:otherwise>
     </c:choose>
 
-    <c:if test="${isTech}">
+    <c:if test="${isAdmin}">
     <div>
         <form:label for="receiptDocumentForm.receiptDocument.documentOfType" path="receiptDocumentForm.receiptDocument.documentOfType" cssErrorClass="error">
             Document Type:
@@ -353,7 +358,7 @@
         <tr>
             <td style="vertical-align: top;">
                 <c:choose>
-                    <c:when test="${isTech}">
+                    <c:when test="${isAdmin}">
                     <div id="activeReceipt" class="hidden">
                         <form:form method="post" action="../submit.htm" modelAttribute="receiptDocumentForm" id="receiptUpdateForm">
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
@@ -551,7 +556,7 @@
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
             <span style="display:block; width:700px;">
             <c:choose>
-            <c:when test="${isTech}">
+            <c:when test="${isAdmin}">
                 Oops! Seems like user has deleted this receipt recently.
             </c:when>
             <c:otherwise>

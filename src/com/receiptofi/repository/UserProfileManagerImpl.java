@@ -76,8 +76,18 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
 	@Override
 	public UserProfileEntity getObjectUsingEmail(String emailId) {
-		return mongoTemplate.findOne(query(where("EMAIL").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
+		return mongoTemplate.findOne(query(where("EM").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
 	}
+
+    @Override
+    public UserProfileEntity getUsingId(String receiptUserId) {
+        return mongoTemplate.findOne(query(where("RID").is(receiptUserId).andOperator(isActive())), UserProfileEntity.class, TABLE);
+    }
+
+    @Override
+    public UserProfileEntity getUsingUserId(String userId) {
+        return mongoTemplate.findOne(query(where("UID").is(userId).andOperator(isActive())), UserProfileEntity.class, TABLE);
+    }
 
 	@Override
 	public UserProfileEntity findOne(String id) {
@@ -108,15 +118,14 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 		//PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
         //Can add "^" + to force search only the names starting with
-		Criteria a = where("FIRST_NAME").regex(name, "i");
-		Criteria b = where("LAST_NAME").regex(name, "i");
+		Criteria a = where("FN").regex(name, "i");
+		Criteria b = where("LN").regex(name, "i");
 		return mongoTemplate.find(query(new Criteria().orOperator(a, b)), UserProfileEntity.class, TABLE);
 	}
 
     @Override
     public UserProfileEntity findOneByEmail(String emailId) {
-        Criteria a = where("EMAIL").is(emailId);
-        return mongoTemplate.findOne(query(a), UserProfileEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("EM").is(emailId)), UserProfileEntity.class, TABLE);
     }
 
     @Override

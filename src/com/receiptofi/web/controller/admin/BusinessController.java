@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.admin;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.BizService;
@@ -22,6 +23,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,7 +44,6 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/admin")
-@SessionAttributes({"userSession"})
 public class BusinessController {
     private static final Logger log = LoggerFactory.getLogger(BusinessController.class);
     private static final String NEXT_PAGE = "/admin/business";
@@ -55,58 +56,43 @@ public class BusinessController {
     @Autowired private BizSearchValidator bizSearchValidator;
 
     @RequestMapping(value = "/business", method = RequestMethod.GET)
-    public ModelAndView loadSearchForm(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
-                                       final Model model) {
+    public ModelAndView loadSearchForm(@ModelAttribute("bizForm") BizForm bizForm, Model model) {
 
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.bizForm", model.asMap().get("result"));
         }
 
-        if(userSession.getLevel() == UserLevelEnum.ADMIN) {
-            ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
-            return modelAndView;
-        }
-
-        //Re-direct user to his home page because user tried accessing Un-Authorized page
-        log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
-        return new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
+        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/business/edit", method = RequestMethod.GET)
-    public ModelAndView editStore(@ModelAttribute("userSession") UserSession userSession,
-                                  @RequestParam("nameId") String nameId,
-                                  @RequestParam("storeId") String storeId,
-                                  @ModelAttribute("bizForm") BizForm bizForm) {
+    public ModelAndView editStore(
+            @RequestParam("nameId") String nameId,
+            @RequestParam("storeId") String storeId,
+            @ModelAttribute("bizForm") BizForm bizForm
+    ) {
+        ModelAndView modelAndView = new ModelAndView(EDIT_PAGE);
+        BizNameEntity bizNameEntity = bizService.findName(nameId);
+        bizForm.setBizNameEntity(bizNameEntity);
 
-        if(userSession.getLevel() == UserLevelEnum.ADMIN) {
-            ModelAndView modelAndView = new ModelAndView(EDIT_PAGE);
-            BizNameEntity bizNameEntity = bizService.findName(nameId);
-            bizForm.setBizNameEntity(bizNameEntity);
-
-            if(StringUtils.isNotEmpty(storeId)) {
-                BizStoreEntity bizStoreEntity = bizService.findStore(storeId);
-                bizForm.setBizStore(bizStoreEntity);
-            }
-
-            return modelAndView;
+        if(StringUtils.isNotEmpty(storeId)) {
+            BizStoreEntity bizStoreEntity = bizService.findStore(storeId);
+            bizForm.setBizStore(bizStoreEntity);
         }
 
-        //Re-direct user to his home page because user tried accessing Un-Authorized page
-        log.warn("Re-direct user to his home page because user tried accessing Un-Authorized page: User: " + userSession.getUserProfileId());
-        return new ModelAndView(LoginController.landingHomePage(userSession.getLevel()));
+        return modelAndView;
     }
 
     /**
      * Reset the form
      *
-     * @param userSession
      * @param redirectAttrs
      * @return
      */
     @RequestMapping(value = "/business", method = RequestMethod.POST, params = "reset")
-    public String reset(@ModelAttribute("userSession") UserSession userSession,
-                        final RedirectAttributes redirectAttrs) {
+    public String reset(RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", BizForm.newInstance());
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
@@ -120,12 +106,10 @@ public class BusinessController {
      * No validation is performed.
      *
      * @param bizForm
-     * @param userSession - Required when user try to refresh page after log out
      * @return
      */
     @RequestMapping(value = "/business", method = RequestMethod.POST, params = "edit")
-    public String editBiz(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
-                          final RedirectAttributes redirectAttrs) {
+    public String editBiz(@ModelAttribute("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
@@ -180,14 +164,14 @@ public class BusinessController {
      * No validation is performed.
      *
      * @param bizForm
-     * @param userSession - Required when user try to refresh page after log out
      * @return
      */
     @RequestMapping(value = "/business", method = RequestMethod.POST, params = "delete_store")
-    public String deleteBizStore(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
-                                 final RedirectAttributes redirectAttrs) {
+    public String deleteBizStore(@ModelAttribute("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStoreEntity;
@@ -201,13 +185,13 @@ public class BusinessController {
             if(bizForm.getReceiptCount().get(bizStoreEntity.getId()) == 0) {
                 bizService.deleteBizStore(bizStoreEntity);
                 bizForm.setBizSuccess("Deleted store successfully");
-                log.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user: " + userSession.getEmailId());
+                log.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user={}", receiptUser.getRid());
 
                 //To make sure no orphan biz name are lingering around
                 if(bizService.countReceiptForBizName(bizNameEntity) == 0) {
                     bizService.deleteBizName(bizNameEntity);
                     bizForm.setBizSuccess("Deleted biz name successfully");
-                    log.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user: " + userSession.getEmailId());
+                    log.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user={}", receiptUser.getRid());
                 }
             } else {
                 bizForm.setBizError("Could not delete the store as its currently being referred by a receipt");
@@ -226,13 +210,10 @@ public class BusinessController {
      *
      * @param bizForm
      * @param result
-     * @param userSession - Required when user try to refresh page after log out
      * @return
      */
     @RequestMapping(value = "/business", method = RequestMethod.POST, params = "add")
-    public String addBiz(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
-                         BindingResult result,
-                         final RedirectAttributes redirectAttrs) {
+    public String addBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
@@ -295,13 +276,10 @@ public class BusinessController {
      *
      * @param bizForm
      * @param result
-     * @param userSession
      * @return
      */
     @RequestMapping(value = "/business", method = RequestMethod.POST, params = "search")
-    public String searchBiz(@ModelAttribute("userSession") UserSession userSession, @ModelAttribute("bizForm") BizForm bizForm,
-                            BindingResult result,
-                            final RedirectAttributes redirectAttrs) {
+    public String searchBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);

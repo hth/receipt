@@ -5,8 +5,11 @@
     <meta charset="utf-8">
 	<title><fmt:message key="title" /></title>
 
-    <link rel="icon" type="image/x-icon" href="static/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="static/images/circle-leaf-sized_small.png" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
 
     <!-- load dojo and provide config via data attribute -->
     <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
@@ -51,20 +54,20 @@
 
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css' media='print' />
-	<link rel='stylesheet' type='text/css' href='static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
-    <link rel='stylesheet' type='text/css' href="static/jquery/fineuploader/fineuploader-3.6.3.css" />
-    <link rel='stylesheet' type='text/css' href="static/jquery/css/_angular/animate-custom.css" />
-    <link rel='stylesheet' type='text/css' href='static/jquery/css/receipt.css' />
+	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/_angular/animate-custom.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css' />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/3.0.7/highcharts.js"></script>
-    <script type="text/javascript" src="static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-    <script type="text/javascript" src="static/jquery/js/_angular/angular-animate.min.js"></script>
-    <script type="text/javascript" src="static/jquery/js/_angular/angular-animate.min.js.map"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/_angular/angular-animate.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/_angular/angular-animate.min.js.map"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 
     <!-- For drop down menu -->
@@ -137,7 +140,10 @@
 
                             $.ajax({
                                 type: 'POST',
-                                url:  '${pageContext. request. contextPath}/rws/pending.htm',
+                                beforeSend: function(xhr) {
+                                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                                },
+                                url:  '${pageContext. request. contextPath}/ws/r/pending.htm',
                                 success: function(response) {
                                     if(response > 0) {
                                         var html = '';
@@ -153,7 +159,7 @@
                                             html = html + "Pending receipts to be processed: ";
                                         }
                                         html = html +
-                                                "<a href='${pageContext.request.contextPath}/pendingdocument.htm' style='text-decoration: none;'>" +
+                                                "<a href='${pageContext.request.contextPath}/access/pendingdocument.htm' style='text-decoration: none;'>" +
                                                 "<strong class='pendingCounter' id='pendingCountValue'>" +
                                                 0 +
                                                 "</strong>" +
@@ -173,8 +179,11 @@
                     }
                 },
                 request: {
-                    endpoint: '${pageContext. request. contextPath}/landing/upload.htm',
-                    customHeaders: { Accept: 'multipart/form-data' }
+                    endpoint: '${pageContext. request. contextPath}/access/landing/upload.htm',
+                    customHeaders: {
+                        Accept: 'multipart/form-data',
+                        'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                    }
                 },
                 multiple: true,
                 validation: {
@@ -205,9 +214,9 @@
     <script>
         var App = angular.module('App', ['ngAnimate']);
         App.constant('SERVICE', {
-            'F': '${pageContext.request.contextPath}/mws/f.json',
-            'M': '${pageContext.request.contextPath}/mws/m.json',
-            'S': '${pageContext.request.contextPath}/mws/s.json',
+            'F': '${pageContext.request.contextPath}/ws/m/f.json',
+            'M': '${pageContext.request.contextPath}/ws/m/m.json',
+            'S': '${pageContext.request.contextPath}/ws/m/s.json',
             'TIMEOUT': 0
         });
 
@@ -297,7 +306,7 @@
                                 $("#mmText").html(data.mm +
                                         " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
                                         "&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                        "<img id='car' src='static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
+                                        "<img id='car' src='${pageContext.request.contextPath}/static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
                                 );
                             }
                         }
@@ -344,7 +353,7 @@
                                 $("#mmText").html(data.mm +
                                         " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
                                         "&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                        "<img id='car' src='static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
+                                        "<img id='car' src='${pageContext.request.contextPath}/static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
                                 );
                             }
                         }
@@ -371,12 +380,15 @@
         App.service('Server', function($http, SERVICE) {
             return {
                 load: function() {
+                    $http.defaults.headers.post['X-CSRF-TOKEN'] = $("meta[name='_csrf']").attr("content");
                     return $http.post(SERVICE.F);
                 },
                 merge: function(ids) {
+                    $http.defaults.headers.post['X-CSRF-TOKEN'] = $("meta[name='_csrf']").attr("content");
                     return $http.post(SERVICE.M, {id1: ids[0], id2: ids[1]});
                 },
                 split: function(id) {
+                    $http.defaults.headers.post['X-CSRF-TOKEN'] = $("meta[name='_csrf']").attr("content");
                     return $http.post(SERVICE.S, {id: id});
                 }
             }
@@ -397,21 +409,21 @@
 <div class="wrapper">
  	<div class="divTable" style="width: 810px">
 		<div class="divRow">
-            <div class="divOfCell250" style="height: 46px"><img src="static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
+            <div class="divOfCell250" style="height: 46px"><img src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
 			<div class="divOfCell250">
                 <h3>
                     <div class="dropdown" style="height: 17px">
                         <div>
                             <a class="account" style="color: #065c14">
-                                ${sessionScope['userSession'].emailId}
-                                <img src="static/images/gear.png" width="18px" height="15px" style="float: right;"/>
+                                <sec:authentication property="principal.username" />
+                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
                             </a>
                         </div>
                         <div class="submenu">
                             <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/userprofilepreference/i.htm">Profile And Preferences</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
                                 <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
-                                <li><a href="${pageContext.request.contextPath}/eval/feedback.htm">Send Feedback</a></li>
+                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
 
@@ -436,7 +448,7 @@
                             <c:choose>
                                 <c:when test="${pendingCount} eq 1">
                                     Pending receipt to be processed:
-                                    <a href="${pageContext.request.contextPath}/pendingdocument.htm" style="text-decoration: none;">
+                                    <a href="${pageContext.request.contextPath}/access/pendingdocument.htm" style="text-decoration: none;">
                                         <strong class="pendingCounter">
                                         ${pendingCount}
                                         </strong>
@@ -444,7 +456,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     Pending receipts to be processed:
-                                    <a href="${pageContext.request.contextPath}/pendingdocument.htm" style="text-decoration: none;">
+                                    <a href="${pageContext.request.contextPath}/access/pendingdocument.htm" style="text-decoration: none;">
                                         <strong class="pendingCounter">
                                         ${pendingCount}
                                         </strong>
@@ -511,7 +523,7 @@
 									title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
 									start : '${receiptGrouped.date}',
 									end   : '${receiptGrouped.date}',
-									url   : '${pageContext.request.contextPath}/day.htm?date=${receiptGrouped.date.time}'
+									url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}'
 								},
                                 </c:forEach>
 								]
@@ -556,7 +568,7 @@
                             </c:otherwise>
                             </c:choose>
                             <div class="bd">
-                                <div class="text"><a href="${pageContext.request.contextPath}/notification.htm">more...</a></div>
+                                <div class="text"><a href="${pageContext.request.contextPath}/access/notification.htm">more...</a></div>
                             </div>
                         </fieldset>
                     </section>
@@ -565,7 +577,7 @@
 		</tr>
 	</table>
 
-    <spring:eval expression="userSession.level ge T(com.receiptofi.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
+    <spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
     <div id="off_screen">
         <div id="map-canvas"></div>
     </div>
@@ -604,8 +616,8 @@
                                 </td>
                                 <td style="padding: 3px; text-align: center">
                                     <c:if test="${!empty receipt.expenseReportInFS}">
-                                        <a href="${pageContext.request.contextPath}/filedownload/expensofi/${receipt.id}.htm">
-                                            <img src="static/images/download_icon_lg.png" class="downloadIcon" width="14" height="14" title="Download expensed receipt">
+                                        <a href="${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm">
+                                            <img src="${pageContext.request.contextPath}/static/images/download_icon_lg.png" class="downloadIcon" width="14" height="14" title="Download expensed receipt">
                                         </a>
                                     </c:if>
                                 </td>
@@ -619,7 +631,7 @@
                                     <spring:eval expression="receipt.tax" />
                                 </td>
                                 <td style="padding: 3px; text-align: right">
-                                    <a href="${pageContext.request.contextPath}/receipt/${receipt.id}.htm">
+                                    <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm">
                                         <spring:eval expression='receipt.total' />
                                     </a>
                                 </td>
@@ -657,7 +669,7 @@
                     <div style="display:block; width:410px; margin-bottom: 10px" id="mmText">
                         <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <img id="car" src="static/images/car.png" style="margin: 0px; height: 15px; width: 20px">
+                        <img id="car" src="${pageContext.request.contextPath}/static/images/car.png" style="margin: 0px; height: 15px; width: 20px">
                     </div>
                     <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
                     <div class="col-xs-6">
@@ -678,10 +690,10 @@
                                     <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
                                 </td>
                                 <td style="padding: 3px; text-align: center" ng-switch-when="true">
-                                    <img src="static/images/cars.png" style="height: 18px; width: 25px"/>
+                                    <img src="${pageContext.request.contextPath}/static/images/cars.png" style="height: 18px; width: 25px"/>
                                 </td>
                                 <td style="padding: 3px; text-align: center" ng-switch-when="false">
-                                    <img src="static/images/odometers.png" />
+                                    <img src="${pageContext.request.contextPath}/static/images/odometers.png" />
                                 </td>
                                 <td style="padding: 3px; text-align: left" ng-switch-when="false">
                                     {{record.sd | date:'dd MMM'}}
@@ -712,10 +724,10 @@
                         <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">
                         <span ng-switch on="draggable.c">
                             <div ng-switch-when="true">
-                                <img src="static/images/cars.png" style="height: 18px; width: 25px"/> {{draggable.t | number:2}} Miles driven
+                                <img src="${pageContext.request.contextPath}/static/images/cars.png" style="height: 18px; width: 25px"/> {{draggable.t | number:2}} Miles driven
                             </div>
                             <div ng-switch-when="false">
-                                <img src="static/images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
+                                <img src="${pageContext.request.contextPath}/static/images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
                             </div>
                         </span>
                         </div>
@@ -795,7 +807,7 @@
                         <c:forEach var="item" items="${landingForm.receiptGroupedByMonths}"  varStatus="status">
                             <tr>
                                 <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" target="_blank">
+                                    <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" target="_blank">
                                         <spring:eval expression='item.dateTime.toString("MMM, yyyy")' />
                                     </a>
                                 </td>
@@ -884,12 +896,13 @@
     function loadMonthlyExpenses(date, clicked) {
         $.ajax({
             type: "POST",
-            url: '${pageContext. request. contextPath}/landing/monthly_expenses.htm',
+            url: '${pageContext. request. contextPath}/access/landing/monthly_expenses.htm',
             data: {
                 monthView: date,
                 buttonClick: clicked
             },
-            beforeSend: function() {
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                 $('#onLoadReceiptForMonthId').hide();
                 $('#refreshReceiptForMonthId').html(
                         "<div class='spinner large' id='spinner'></div>"
@@ -918,14 +931,14 @@
                 {
                     y: ${item.total},
                     color: colors[${status.count-1}],
-                    url: 'receipt/biz/${item.bizName}.htm',
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
                     id: '${item.bizNameForId}',
                     drilldown: {
                         name: '${item.bizName}',
                         categories: [${item.expenseTags}],
                         data: [${item.expenseValues}],
                         color: colors[${status.count-1}],
-                        url: 'receipt/biz/${item.bizName}.htm',
+                        url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
                         id: '${item.bizNameForId}'
                     }
                 },
@@ -1211,7 +1224,7 @@
             // increase in the X direction to the right and in
             // the Y direction down.
             var image = {
-                url: 'static/images/beachflag.png',
+                url: '${pageContext.request.contextPath}/static/images/beachflag.png',
                 // This marker is 20 pixels wide by 32 pixels tall.
                 size: new google.maps.Size(20, 32),
                 // The origin for this image is 0,0.
@@ -1220,7 +1233,7 @@
                 anchor: new google.maps.Point(0, 32)
             };
             var shadow = {
-                url: 'static/images/beachflag_shadow.png',
+                url: '${pageContext.request.contextPath}/static/images/beachflag_shadow.png',
                 // The shadow image is larger in the horizontal dimension
                 // while the position and offset are the same as for the main image.
                 size: new google.maps.Size(37, 32),
@@ -1331,7 +1344,7 @@
                                         y: ${item.value},
                                         sliced: true,
                                         selected: true,
-                                        url: '${pageContext.request.contextPath}/expenses/${item.key}.htm'
+                                        url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
                                     },
                                     <c:set var="first" value="true"/>
                                 </c:when>
@@ -1341,7 +1354,7 @@
                                         y: ${item.value},
                                         sliced: false,
                                         selected: false,
-                                        url: '${pageContext.request.contextPath}/expenses/${item.key}.htm'
+                                        url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
                                     },
                                 </c:otherwise>
                             </c:choose>
@@ -1354,7 +1367,7 @@
                                     y: ${item.value},
                                     sliced: false,
                                     selected: false,
-                                    url: '${pageContext.request.contextPath}/expenses/${item.key}.htm'
+                                    url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
                                 },
                             </c:forEach>
                         </c:otherwise>
@@ -1381,7 +1394,10 @@
 
         $.ajax({
             type: "POST",
-            url: "${pageContext. request. contextPath}/landing/invite.htm",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+            },
+            url: "${pageContext. request. contextPath}/access/landing/invite.htm",
             data: object,
             success: function(response) {
                 $('#info').html(response);

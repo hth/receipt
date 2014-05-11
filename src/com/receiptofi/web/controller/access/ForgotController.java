@@ -4,6 +4,7 @@ import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.LoginService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
@@ -66,6 +67,7 @@ public class ForgotController {
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private ForgotAuthenticateValidator forgotAuthenticateValidator;
     @Autowired private MailService mailService;
+    @Autowired private LoginService loginService;
 
     @RequestMapping(method = RequestMethod.GET, value = "password")
     public ModelAndView password(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
@@ -231,10 +233,11 @@ public class ForgotController {
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
+                UserAuthenticationEntity userAuthenticationLoaded = loginService.loadUserAccount(userProfileEntity.getReceiptUserId()).getUserAuthentication();
 
-                userAuthenticationEntity.setId(userProfileEntity.getUserAuthentication().getId());
-                userAuthenticationEntity.setVersion(userProfileEntity.getUserAuthentication().getVersion());
-                userAuthenticationEntity.setCreated(userProfileEntity.getUserAuthentication().getCreated());
+                userAuthenticationEntity.setId(userAuthenticationLoaded.getId());
+                userAuthenticationEntity.setVersion(userAuthenticationLoaded.getVersion());
+                userAuthenticationEntity.setCreated(userAuthenticationLoaded.getCreated());
                 userAuthenticationEntity.setUpdated();
                 try {
                     accountService.updateAuthentication(userAuthenticationEntity);

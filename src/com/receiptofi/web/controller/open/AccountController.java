@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.receiptofi.web.controller;
+package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.UserSession;
@@ -34,7 +34,7 @@ import org.joda.time.DateTime;
  *
  */
 @Controller
-@RequestMapping(value = "/new")
+@RequestMapping(value = "/open/new")
 public class AccountController {
     private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
@@ -74,21 +74,18 @@ public class AccountController {
         try {
             //TODO For now de-activate all registration. Currently registration is by invitation only.
             userProfile = accountService.createNewAccount(userRegistrationForm);
-            log.info("Registered new Email Id: " + userProfile.getEmailId());
+            log.info("Registered new Email Id: " + userProfile.getEmail());
         } catch(Exception exce) {
             log.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
             return NEW_ACCOUNT;
         }
 
-        UserSession userSession = UserSession.newInstance(userProfile.getEmailId(), userProfile.getId(), userProfile.getLevel());
-        redirectAttrs.addFlashAttribute("userSession", userSession);
-
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
 
         if(userProfile.isActive()) {
             /** This code to invoke the controller */
-            return "redirect:/landing.htm";
+            return "redirect:/access/login.htm";
         } else {
             //TODO For now de-activate all registration. Currently registration is by invitation only.
             return NEW_ACCOUNT;
@@ -129,7 +126,7 @@ public class AccountController {
 
         UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
         if(userProfileEntity != null) {
-            if (userProfileEntity.getEmailId().equals(emailId)) {
+            if (userProfileEntity.getEmail().equals(emailId)) {
                 log.info("Not Available: " + emailId);
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 availabilityStatus = AvailabilityStatus.notAvailable(emailId);
