@@ -62,8 +62,11 @@ public class MileageEntity extends BaseEntity {
     @Field("N")
     private CommentEntity mileageNotes;
 
-    /** To keep bean happy */
-    public MileageEntity() {}
+    /**
+     * To keep bean happy
+     */
+    public MileageEntity() {
+    }
 
     public MileageEntity(FileSystemEntity fileSystemEntity, String userProfileId) {
         if(fileSystemEntities == null) {
@@ -74,7 +77,9 @@ public class MileageEntity extends BaseEntity {
         this.startDate = getCreated();
     }
 
-    /** To be used during merge operation */
+    /**
+     * To be used during merge operation
+     */
     public void mergeEndingMileage(MileageEntity mileageEntity) {
         if(!mileageEntity.isComplete()) {
             this.end = mileageEntity.getStart();
@@ -186,7 +191,7 @@ public class MileageEntity extends BaseEntity {
 
     @Transient
     public int getTotal() {
-        return isComplete() ? (end - start) : start;
+        return isComplete() ? end - start : start;
     }
 
     /**
@@ -196,30 +201,32 @@ public class MileageEntity extends BaseEntity {
      */
     @Transient
     public boolean isComplete() {
-        return (start != 0) && (end != 0) && (fileSystemEntities.size() > 0);
+        return start != 0 && end != 0 && fileSystemEntities.size() > 0;
     }
 
     @Transient
     public String tripDays() {
-        if(startDate != null) {
-            DateTime dayStart = DateUtil.toDateTime(startDate);
-            DateTime dayEnd = DateUtil.toDateTime(endDate);
-
-            int days = Days.daysBetween(dayStart.withTimeAtStartOfDay() , dayEnd.withTimeAtStartOfDay()).getDays();
-
-            if(days == 0) {
-                return "Same Day Trip";
-            } else if(days == 1) {
-                return "1 day trip";
-            } else if(days > 0) {
-                return days + " days trip";
-            } else if(days < 0) {
-                return "Trip end day greater";
-            } else {
-                return "";
-            }
-        } else {
+        if(startDate == null) {
             return "";
+        }
+
+        DateTime dayStart = DateUtil.toDateTime(startDate);
+        DateTime dayEnd = DateUtil.toDateTime(endDate);
+
+        int days = Days.daysBetween(dayStart.withTimeAtStartOfDay(), dayEnd.withTimeAtStartOfDay()).getDays();
+        switch (days) {
+            case 0:
+                return "Same Day Trip";
+            case 1:
+                return "1 day trip";
+            default:
+                if(days > 0) {
+                    return days + " days trip";
+                } else if(days < 0) {
+                    return "Trip end day greater";
+                } else {
+                    return "";
+                }
         }
     }
 }

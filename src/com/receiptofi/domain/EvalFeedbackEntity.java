@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "eval_feedback_idx",    def = "{'USER_PROFILE_ID': 1, 'C': 1}",  unique=true),
 } )
-public class EvalFeedbackEntity extends BaseEntity {
+public final class EvalFeedbackEntity extends BaseEntity {
 
     @Field("FEEDBACK")
     private String feedback;
