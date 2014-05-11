@@ -1,8 +1,6 @@
 package com.receiptofi.web.controller.ajax;
 
 import com.receiptofi.domain.ReceiptUser;
-import com.receiptofi.domain.UserSession;
-import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.ParseJsonStringToMap;
@@ -10,23 +8,16 @@ import com.receiptofi.utils.TextInputScrubber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
-
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  * Update for all Ajax Calls

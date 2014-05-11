@@ -4,7 +4,6 @@ import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.MileageEntity;
-import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.DocumentManager;
@@ -15,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

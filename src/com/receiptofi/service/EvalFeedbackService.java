@@ -1,7 +1,6 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.EvalFeedbackEntity;
-import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.repository.EvalFeedbackManager;
 import com.receiptofi.web.form.UploadReceiptImage;

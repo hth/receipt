@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.receiptofi.web.validator;
 
 import com.receiptofi.domain.ItemEntityOCR;
@@ -90,7 +87,7 @@ public final class ReceiptDocumentValidator implements Validator {
             }
 
             /** This condition is added to make sure no receipt is added without at least one valid item in the list */
-            if(conditionFailed && (receiptDocumentForm.getItems().size() == conditionFailedCounter)) {
+            if(conditionFailed && receiptDocumentForm.getItems().size() == conditionFailedCounter) {
                 log.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", as no items were found");
                 errors.rejectValue("receiptDocument", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
             }

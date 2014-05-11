@@ -1,9 +1,9 @@
 package com.receiptofi.web.controller.ajax;
 
 import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.LandingService;
-import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.HashText;

@@ -4,9 +4,6 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.social.RememberMeTokenEntity;
 import com.receiptofi.repository.RepositoryManager;
 
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**

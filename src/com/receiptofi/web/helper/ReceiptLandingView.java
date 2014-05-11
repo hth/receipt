@@ -1,13 +1,13 @@
 package com.receiptofi.web.helper;
 
+import com.receiptofi.domain.ReceiptEntity;
+
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
-
-import com.receiptofi.domain.ReceiptEntity;
 
 /**
  * User: hitender

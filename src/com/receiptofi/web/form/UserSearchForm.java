@@ -3,10 +3,10 @@
  */
 package com.receiptofi.web.form;
 
-import com.google.common.base.Objects;
-
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.UserLevelEnum;
+
+import com.google.common.base.Objects;
 
 /**
  * @author hitender
