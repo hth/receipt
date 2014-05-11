@@ -13,6 +13,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @since Dec 16, 2012 1:20:31 PM
  */
 public interface UserAuthenticationManager extends RepositoryManager<UserAuthenticationEntity> {
-	static String TABLE = BaseEntity.getClassAnnotationValue(UserAuthenticationEntity.class, Document.class, "collection");
-
+	String TABLE = BaseEntity.getClassAnnotationValue(UserAuthenticationEntity.class, Document.class, "collection");
 }
