@@ -23,9 +23,20 @@ import org.springframework.stereotype.Service;
 public final class InviteService {
     private static Logger log = LoggerFactory.getLogger(InviteService.class);
 
-    @Autowired private AccountService accountService;
-    @Autowired private InviteManager inviteManager;
-    @Autowired private UserProfileManager userProfileManager;
+    private final AccountService accountService;
+    private final InviteManager inviteManager;
+    private final UserProfileManager userProfileManager;
+
+    @Autowired
+    public InviteService(
+            AccountService accountService,
+            InviteManager inviteManager,
+            UserProfileManager userProfileManager
+    ) {
+        this.accountService = accountService;
+        this.inviteManager = inviteManager;
+        this.userProfileManager = userProfileManager;
+    }
 
     /**
      *
@@ -33,7 +44,7 @@ public final class InviteService {
      * @param userProfile
      * @return
      */
-    public InviteEntity initiateInvite(String emailId, UserProfileEntity userProfile) throws Exception {
+    public InviteEntity initiateInvite(String emailId, UserProfileEntity userProfile) {
         UserRegistrationForm userRegistrationForm = UserRegistrationForm.newInstance();
         userRegistrationForm.setEmailId(emailId);
         userRegistrationForm.setAccountType(AccountTypeEnum.PERSONAL);
@@ -42,22 +53,23 @@ public final class InviteService {
         userRegistrationForm.setPassword(RandomString.newInstance(8).nextString());
 
         InviteEntity inviteEntity;
+        UserProfileEntity newInvitedUser;
         try {
             //First save is performed
-            UserProfileEntity newInvitedUser = accountService.createNewAccount(userRegistrationForm);
-
-            //Updating the record as inactive until user completes registration
-            newInvitedUser.inActive();
-            userProfileManager.save(newInvitedUser);
-
-            String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
-            inviteEntity = InviteEntity.newInstance(emailId, authenticationKey, newInvitedUser, userProfile);
-            inviteManager.save(inviteEntity);
-            return inviteEntity;
-        } catch (Exception exception) {
+            newInvitedUser = accountService.createNewAccount(userRegistrationForm);
+        } catch (RuntimeException exception) {
             log.error("Error occurred during creation of invited user: " + exception.getLocalizedMessage());
             throw exception;
         }
+
+        //Updating the record as inactive until user completes registration
+        newInvitedUser.inActive();
+        userProfileManager.save(newInvitedUser);
+
+        String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
+        inviteEntity = InviteEntity.newInstance(emailId, authenticationKey, newInvitedUser, userProfile);
+        inviteManager.save(inviteEntity);
+        return inviteEntity;
     }
 
     /**
