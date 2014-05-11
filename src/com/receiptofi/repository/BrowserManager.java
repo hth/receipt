@@ -11,6 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 4:08 PM
  */
 public interface BrowserManager extends RepositoryManager<BrowserEntity> {
-    public static String TABLE = BaseEntity.getClassAnnotationValue(BrowserEntity.class, Document.class, "collection");
+    static String TABLE = BaseEntity.getClassAnnotationValue(BrowserEntity.class, Document.class, "collection");
 
 }

@@ -11,5 +11,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 7:12 PM
  */
 public interface CommentManager extends RepositoryManager<CommentEntity> {
-    public static String TABLE = BaseEntity.getClassAnnotationValue(CommentEntity.class, Document.class, "collection");
+    static String TABLE = BaseEntity.getClassAnnotationValue(CommentEntity.class, Document.class, "collection");
 }

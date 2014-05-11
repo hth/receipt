@@ -18,32 +18,32 @@ public interface RepositoryManager<T> extends Serializable {
 	/**
 	 * Get all records.
 	 */
-	public List<T> getAllObjects();
+	List<T> getAllObjects();
 
 	/**
 	 * Saves a record.
 	 *
 	 * @throws Exception
 	 */
-	public void save(T object);
+	void save(T object);
 
 	/**
 	 * Gets a record for a particular id.
 	 */
-	public T findOne(String id);
+	T findOne(String id);
 
 	/**
 	 * Updates a record name for a particular id.
 	 */
-	public WriteResult updateObject(String id, String name);
+	WriteResult updateObject(String id, String name);
 
 	/**
 	 * Delete a record for a particular object.
 	 */
-	public void deleteHard(T object);
+	void deleteHard(T object);
 
     /**
      * Collection size
      */
-    public long collectionSize();
+    long collectionSize();
 }

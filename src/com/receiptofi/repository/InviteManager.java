@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 2:15 PM
  */
 public interface InviteManager extends RepositoryManager<InviteEntity> {
-    public static String TABLE = BaseEntity.getClassAnnotationValue(InviteEntity.class, Document.class, "collection");
+    static String TABLE = BaseEntity.getClassAnnotationValue(InviteEntity.class, Document.class, "collection");
 
     /**
      * Find InviteEntity by authentication key
