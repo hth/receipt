@@ -31,9 +31,12 @@ public class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSucc
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.info("Logout from={} and user={}",
-                extractEndpoint(request.getHeader("Referer"), request.getContextPath()),
-                authentication.getPrincipal() != null ? ((ReceiptUser) authentication.getPrincipal()).getRid() : "Not Available");
+        String receiptUserId = "Not Available";
+        if(authentication.getPrincipal() != null) {
+            receiptUserId = ((ReceiptUser) authentication.getPrincipal()).getRid();
+        }
+
+        log.info("Logout from={} and user={}", extractEndpoint(request.getHeader("Referer"), request.getContextPath()), receiptUserId);
         super.onLogoutSuccess(request, response, authentication);
     }
 
