@@ -293,7 +293,14 @@
                         <div class="submenu">
                             <ul class="root">
                                 <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li><a href="${pageContext.request.contextPath}/signoff.htm">Sign off</a></li>
+                                <li>
+                                    <a href="#">
+                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                                            <input type="submit" value="Log out" class="button"/>
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                        </form>
+                                    </a>
+                                </li>
                                 <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
                             </ul>
                         </div>
