@@ -19,8 +19,7 @@ import com.mongodb.WriteResult;
  *
  */
 public interface ItemOCRManager extends RepositoryManager<ItemEntityOCR> {
-
-	static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntityOCR.class, Document.class, "collection");
+	String TABLE = BaseEntity.getClassAnnotationValue(ItemEntityOCR.class, Document.class, "collection");
 
 	void saveObjects(List<ItemEntityOCR> objects) throws Exception;
 

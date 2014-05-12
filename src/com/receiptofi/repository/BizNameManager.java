@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 11:08 PM
  */
 public interface BizNameManager extends RepositoryManager<BizNameEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(BizNameEntity.class, Document.class, "collection");
+    String TABLE = BaseEntity.getClassAnnotationValue(BizNameEntity.class, Document.class, "collection");
 
     BizNameEntity noName();
 

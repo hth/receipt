@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 11:20 PM
  */
 public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(BizStoreEntity.class, Document.class, "collection");
+    String TABLE = BaseEntity.getClassAnnotationValue(BizStoreEntity.class, Document.class, "collection");
     static int STORE_LIMIT = 10;
 
     //TODO use annotation instead
