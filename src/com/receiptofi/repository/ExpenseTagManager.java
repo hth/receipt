@@ -9,7 +9,7 @@ import java.util.List;
  * Date: 5/13/13
  * Time: 11:59 PM
  */
-public interface ExpenseTypeManager extends RepositoryManager<ExpenseTagEntity> {
+public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
 
     List<ExpenseTagEntity> allExpenseTypes(String receiptUserId);
 

@@ -2,7 +2,7 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.repository.ExpenseTypeManager;
+import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.utils.Maths;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 public final class ItemService {
 
     @Autowired private ItemManager itemManager;
-    @Autowired private ExpenseTypeManager expenseTypeManager;
+    @Autowired private ExpenseTagManager expenseTagManager;
 
     public long countItemsUsingExpenseType(String expenseTypeId, String userProfileId) {
         return itemManager.countItemsUsingExpenseType(expenseTypeId, userProfileId);
@@ -50,7 +50,7 @@ public final class ItemService {
         BigDecimal netSum = ZERO;
 
         //Find sum of all items for particular expense
-        List<ExpenseTagEntity> expenseTypeEntities = expenseTypeManager.activeExpenseTypes(profileId);
+        List<ExpenseTagEntity> expenseTypeEntities = expenseTagManager.activeExpenseTypes(profileId);
         for(ExpenseTagEntity expenseTagEntity : expenseTypeEntities) {
 
             BigDecimal sum = ZERO;

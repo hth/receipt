@@ -31,8 +31,8 @@ import com.mongodb.WriteResult;
  * Date: 5/13/13
  * Time: 11:59 PM
  */
-public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
-    private static final Logger log = LoggerFactory.getLogger(ExpenseTypeManagerImpl.class);
+public final class ExpenseTagManagerImpl implements ExpenseTagManager {
+    private static final Logger log = LoggerFactory.getLogger(ExpenseTagManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(ExpenseTagEntity.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
