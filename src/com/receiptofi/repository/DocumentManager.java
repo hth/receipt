@@ -16,8 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 public interface DocumentManager extends RepositoryManager<DocumentEntity> {
-
-	static String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
+	String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
 
 	long numberOfPendingReceipts(String userProfileId);
 

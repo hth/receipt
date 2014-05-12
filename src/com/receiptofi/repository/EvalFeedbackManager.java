@@ -11,5 +11,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 5:37 PM
  */
 public interface EvalFeedbackManager extends RepositoryManager<EvalFeedbackEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(EvalFeedbackEntity.class, Document.class, "collection");
+    String TABLE = BaseEntity.getClassAnnotationValue(EvalFeedbackEntity.class, Document.class, "collection");
 }

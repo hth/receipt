@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 12:10 AM
  */
 public interface ForgotRecoverManager extends RepositoryManager<ForgotRecoverEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(ForgotRecoverEntity.class, Document.class, "collection");
+    String TABLE = BaseEntity.getClassAnnotationValue(ForgotRecoverEntity.class, Document.class, "collection");
 
     /**
      * Find ForgotRecoverEntity by authentication key

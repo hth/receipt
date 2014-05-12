@@ -22,7 +22,7 @@ import com.mongodb.WriteResult;
  *
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {
-	static String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
+	String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
 
 	void saveObjects(List<ItemEntity> objects) throws Exception;
 

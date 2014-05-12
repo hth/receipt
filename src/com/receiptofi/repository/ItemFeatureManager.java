@@ -14,5 +14,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 public interface ItemFeatureManager extends RepositoryManager<ItemFeatureEntity> {
-	static String TABLE = BaseEntity.getClassAnnotationValue(ItemFeatureEntity.class, Document.class, "collection");
+	String TABLE = BaseEntity.getClassAnnotationValue(ItemFeatureEntity.class, Document.class, "collection");
 }

@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 1:38 PM
  */
 public interface NotificationManager extends RepositoryManager<NotificationEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(NotificationEntity.class, Document.class, "collection");
+    String TABLE = BaseEntity.getClassAnnotationValue(NotificationEntity.class, Document.class, "collection");
     static int LIMIT_FIVE = 5;
     static int ALL = -1;
 

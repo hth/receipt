@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 11:59 PM
  */
 public interface ExpenseTypeManager extends RepositoryManager<ExpenseTagEntity> {
-    static String TABLE = BaseEntity.getClassAnnotationValue(ExpenseTagEntity.class, Document.class, "collection");
+    String TABLE = BaseEntity.getClassAnnotationValue(ExpenseTagEntity.class, Document.class, "collection");
 
     List<ExpenseTagEntity> allExpenseTypes(String receiptUserId);
 

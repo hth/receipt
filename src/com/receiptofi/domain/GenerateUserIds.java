@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 4/13/14 5:11 PM
  */
 @Document(collection = "GENERATE_USER_IDS")
-public class GenerateUserIds {
+public final class GenerateUserIds {
 
     @Id
     private final String className;
