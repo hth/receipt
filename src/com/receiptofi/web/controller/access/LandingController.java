@@ -232,7 +232,7 @@ public class LandingController extends BaseController {
             bizByExpenseTypes.add(landingDonutChart);
         }
 
-        landingForm.setBizNames(bizNames_sb.toString().substring(0, bizNames_sb.toString().length() > 0 ? (bizNames_sb.toString().length() - 1) : 0));
+        landingForm.setBizNames(bizNames_sb.toString().substring(0, bizNames_sb.toString().length() > 0 ? bizNames_sb.toString().length() - 1 : 0));
         landingForm.setBizByExpenseTypes(bizByExpenseTypes);
     }
 
@@ -474,7 +474,7 @@ public class LandingController extends BaseController {
              * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to limit
              * the number of invite.
              */
-            if(userProfileEntity == null || (!userProfileEntity.isActive() && !userProfileEntity.isDeleted())) {
+            if(userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 boolean status;
                 if(userProfileEntity == null) {
                     status = mailService.sendInvitation(emailId, userSession.getEmailId());
