@@ -40,7 +40,7 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
  * User: hitender
  * Date: 11/30/13 2:45 AM
  */
-public class ExpensofiExcelView extends AbstractExcelView {
+public final class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger log = LoggerFactory.getLogger(ExpensofiExcelView.class);
 
     public final HSSFCellStyle NO_STYLE = null;
