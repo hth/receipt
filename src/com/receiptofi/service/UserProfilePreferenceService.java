@@ -3,7 +3,7 @@ package com.receiptofi.service;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.repository.ExpenseTypeManager;
+import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
 
@@ -22,7 +22,7 @@ public final class UserProfilePreferenceService {
 
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private UserPreferenceManager userPreferenceManager;
-    @Autowired private ExpenseTypeManager expenseTypeManager;
+    @Autowired private ExpenseTagManager expenseTagManager;
 
     public UserProfileEntity loadFromEmail(String emailId) {
         return userProfileManager.getObjectUsingEmail(emailId);
@@ -55,7 +55,7 @@ public final class UserProfilePreferenceService {
      * @return
      */
     public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
-        return expenseTypeManager.allExpenseTypes(userProfileId);
+        return expenseTagManager.allExpenseTypes(userProfileId);
     }
 
     /**
@@ -65,16 +65,16 @@ public final class UserProfilePreferenceService {
      * @return
      */
     public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
-        return expenseTypeManager.activeExpenseTypes(userProfileId);
+        return expenseTagManager.activeExpenseTypes(userProfileId);
     }
 
     public ExpenseTagEntity getExpenseType(String expenseTypeId) {
-        return expenseTypeManager.findOne(expenseTypeId);
+        return expenseTagManager.findOne(expenseTypeId);
     }
 
     public void addExpenseType(ExpenseTagEntity expenseType) throws Exception {
         try {
-            expenseTypeManager.save(expenseType);
+            expenseTagManager.save(expenseType);
         } catch (Exception e) {
             throw e;
         }
@@ -82,9 +82,9 @@ public final class UserProfilePreferenceService {
 
     public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String receiptUserId) {
         if(changeStatTo.equalsIgnoreCase("true")) {
-            expenseTypeManager.changeVisibility(expenseTypeId, false, receiptUserId);
+            expenseTagManager.changeVisibility(expenseTypeId, false, receiptUserId);
         } else {
-            expenseTypeManager.changeVisibility(expenseTypeId, true, receiptUserId);
+            expenseTagManager.changeVisibility(expenseTypeId, true, receiptUserId);
         }
     }
 }

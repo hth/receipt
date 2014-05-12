@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
@@ -17,7 +18,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -29,6 +32,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -46,8 +50,7 @@ import com.mongodb.WriteResult;
 @Repository
 public final class ItemManagerImpl implements ItemManager {
 	private static final Logger log = LoggerFactory.getLogger(ItemManagerImpl.class);
-
-	private static final long serialVersionUID = 5734660649481504610L;
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
 
 	@Autowired private MongoTemplate mongoTemplate;
     @Autowired private BizNameManager bizNameManager;

@@ -38,7 +38,6 @@ import org.joda.time.DateTime;
         @CompoundIndex(name = "receipt_expense_Report",def = "{'EXP_FILENAME': -1}")
 } )
 public class ReceiptEntity extends BaseEntity {
-	private static final long serialVersionUID = -7218588762395325831L;
 
 	@NotNull
     @Field("DS_E")

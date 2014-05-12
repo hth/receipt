@@ -1,12 +1,9 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 
 import java.util.List;
 import java.util.Set;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * User: hitender
@@ -14,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 11:08 PM
  */
 public interface BizNameManager extends RepositoryManager<BizNameEntity> {
-    String TABLE = BaseEntity.getClassAnnotationValue(BizNameEntity.class, Document.class, "collection");
 
     BizNameEntity noName();
 

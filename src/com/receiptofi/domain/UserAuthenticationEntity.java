@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "USER_AUTHENTICATION")
 public final class UserAuthenticationEntity extends BaseEntity {
-	private static final long serialVersionUID = -5207492124434434278L;
 
 	@NotNull
     @Field("PASSWORD")

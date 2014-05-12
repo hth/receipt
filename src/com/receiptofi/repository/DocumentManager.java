@@ -3,12 +3,9 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 
 import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author hitender
@@ -16,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 public interface DocumentManager extends RepositoryManager<DocumentEntity> {
-	String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
 
 	long numberOfPendingReceipts(String userProfileId);
 

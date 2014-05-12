@@ -3,14 +3,11 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.WriteResult;
 
@@ -20,7 +17,6 @@ import com.mongodb.WriteResult;
  *
  */
 public interface UserProfileManager extends RepositoryManager<UserProfileEntity> {
-	String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
 
 	UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object);
 

@@ -26,7 +26,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "DOCUMENT")
 @CompoundIndexes({ @CompoundIndex(name = "document_idx", def = "{'FS': 1, 'USER_PROFILE_ID': 1}") })
 public class DocumentEntity extends BaseEntity {
-	private static final long serialVersionUID = 5258538763598321136L;
 
 	@NotNull
     @Field("DS_E")

@@ -21,7 +21,6 @@ import com.google.common.base.Objects;
  *
  */
 public final class ReceiptGrouped implements Serializable {
-	private static final long serialVersionUID = 291731832249108585L;
     private static final Logger log = LoggerFactory.getLogger(ReceiptGrouped.class);
 
     private BigDecimal total;

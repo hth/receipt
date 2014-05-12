@@ -47,10 +47,6 @@ public class AdminLandingController {
     }
 
     /**
-     * UserSession parameter is to make sure no outside get requests are made.
-     * The error message returned is HTTP ERROR CODE - 403 in case the users is not of a particular level but
-     * method fails on invalid request without User Session and user sees 500 error message.
-     *
      * @param name Search for user name
      * @return
      */

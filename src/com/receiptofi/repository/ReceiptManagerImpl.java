@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -18,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -31,6 +34,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapreduce.GroupBy;
 import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -50,8 +54,7 @@ import com.mongodb.WriteResult;
 @Repository
 public final class ReceiptManagerImpl implements ReceiptManager {
 	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
-
-	private static final long serialVersionUID = -8812261440000722447L;
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
 
     @Value("${displayMonths:13}")
     int displayMonths;

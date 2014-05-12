@@ -18,7 +18,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "ITEM_FEATURE")
 public final class ItemFeatureEntity extends BaseEntity {
-	private static final long serialVersionUID = -4231361664120744038L;
 
 	@DBRef
     @Field("ITEM")

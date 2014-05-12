@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ItemFeatureEntity;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
@@ -21,7 +23,7 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class ItemFeatureManagerImpl implements ItemFeatureManager {
-	private static final long serialVersionUID = -2211419786590573846L;
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemFeatureEntity.class, Document.class, "collection");
 
 	@Autowired private MongoTemplate mongoTemplate;
 

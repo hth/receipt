@@ -1,10 +1,7 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserProfileEntity;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * User: hitender
@@ -12,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 2:15 PM
  */
 public interface InviteManager extends RepositoryManager<InviteEntity> {
-    String TABLE = BaseEntity.getClassAnnotationValue(InviteEntity.class, Document.class, "collection");
 
     /**
      * Find InviteEntity by authentication key

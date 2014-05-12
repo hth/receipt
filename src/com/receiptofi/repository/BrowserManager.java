@@ -1,9 +1,6 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BrowserEntity;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * User: hitender
@@ -11,5 +8,4 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 4:08 PM
  */
 public interface BrowserManager extends RepositoryManager<BrowserEntity> {
-    String TABLE = BaseEntity.getClassAnnotationValue(BrowserEntity.class, Document.class, "collection");
 }

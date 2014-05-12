@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MileageEntity;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -25,6 +27,7 @@ import com.mongodb.WriteResult;
  * Date: 12/25/13 4:16 AM
  */
 public class MileageManagerImpl implements MileageManager {
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(MileageEntity.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

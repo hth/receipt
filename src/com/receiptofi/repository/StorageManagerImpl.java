@@ -29,7 +29,6 @@ import com.mongodb.gridfs.GridFSInputFile;
  *
  */
 public final class StorageManagerImpl implements StorageManager {
-	private static final long serialVersionUID = -5264258042433041673L;
 	private static final Logger log = LoggerFactory.getLogger(StorageManagerImpl.class);
 
 	private final GridFS gridFs;

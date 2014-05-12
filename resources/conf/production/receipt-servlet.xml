@@ -130,7 +130,7 @@
     <bean id="itemOCRManager"               class="com.receiptofi.repository.ItemOCRManagerImpl" />
     <bean id="itemFeatureManager"           class="com.receiptofi.repository.ItemFeatureManagerImpl" />
     <bean id="messageManager"               class="com.receiptofi.repository.MessageManagerImpl" />
-    <bean id="expenseManager"               class="com.receiptofi.repository.ExpenseTypeManagerImpl" />
+    <bean id="expenseManager"               class="com.receiptofi.repository.ExpenseTagManagerImpl" />
     <bean id="notificationManager"          class="com.receiptofi.repository.NotificationManagerImpl" />
     <bean id="evalFeedbackManager"          class="com.receiptofi.repository.EvalFeedbackManagerImpl" />
     <bean id="bizNameManager"               class="com.receiptofi.repository.BizNameManagerImpl" />

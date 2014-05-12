@@ -1,12 +1,9 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
 import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.WriteResult;
 
@@ -18,7 +15,6 @@ import com.mongodb.WriteResult;
  * Time: 7:28 PM
  */
 public interface MessageManager extends RepositoryManager<MessageDocumentEntity> {
-    String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
 
     List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status);
 

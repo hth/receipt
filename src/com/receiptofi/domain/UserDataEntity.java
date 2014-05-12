@@ -20,8 +20,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @CompoundIndexes({ @CompoundIndex(name = "user_data_idx", def = "{'USER_AUTHENTICATION': 1, 'CLIENT_NAME': -1}") })
 public final class UserDataEntity extends BaseEntity {
 
-	private static final long serialVersionUID = 4809841412952941731L;
-
 	@DBRef
     @Field("USER_AUTHENTICATION")
 	private UserAuthenticationEntity userAuthentication;

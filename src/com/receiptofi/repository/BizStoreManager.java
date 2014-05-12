@@ -1,12 +1,9 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 
 import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * User: hitender
@@ -14,8 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Time: 11:20 PM
  */
 public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
-    String TABLE = BaseEntity.getClassAnnotationValue(BizStoreEntity.class, Document.class, "collection");
-    static int STORE_LIMIT = 10;
+    int STORE_LIMIT = 10;
 
     //TODO use annotation instead
     /** Field name */

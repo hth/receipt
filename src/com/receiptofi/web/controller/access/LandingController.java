@@ -8,7 +8,6 @@ import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.ReceiptUser;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -459,9 +458,10 @@ public class LandingController extends BaseController {
     /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */
     @RequestMapping(value = "/landing/invite", method = RequestMethod.POST)
     public @ResponseBody
-    String invite(@RequestParam(value="emailId") String emailId, @ModelAttribute UserSession userSession) {
+    String invite(@RequestParam(value="emailId") String emailId) {
         //Always lower case the email address
         emailId = StringUtils.lowerCase(emailId);
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         log.info("Invitation being sent to: " + emailId);
 
@@ -477,19 +477,19 @@ public class LandingController extends BaseController {
             if(userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 boolean status;
                 if(userProfileEntity == null) {
-                    status = mailService.sendInvitation(emailId, userSession.getEmailId());
+                    status = mailService.sendInvitation(emailId, receiptUser.getUsername());
                 } else {
-                    status = mailService.reSendInvitation(emailId, userSession.getEmailId());
+                    status = mailService.reSendInvitation(emailId, receiptUser.getUsername());
                 }
                 if(status) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("Invitation sent to '").append(emailId).append("'");
-                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, userSession.getUserProfileId());
+                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
                     return "Invitation Sent to: " + emailId;
                 } else {
                     StringBuilder sb = new StringBuilder();
                     sb.append("Unsuccessful in sending invitation to '").append(emailId).append("'");
-                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, userSession.getUserProfileId());
+                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
                     return "Unsuccessful in sending invitation: " + emailId;
                 }
             } else if(userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {

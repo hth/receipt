@@ -5,7 +5,6 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.UserSession;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -139,9 +138,6 @@ public class LoginController {
                 }
                 if(passwordIsValid) {
 					log.info("Login email={} and found={}", userLoginForm.getEmailId(), userProfile.getEmail());
-
-					UserSession userSession = UserSession.newInstance(userProfile.getEmail(), userProfile.getId(), userProfile.getLevel());
-					redirectAttrs.addFlashAttribute("userSession", userSession);
 
                     String path = landingHomePage(userProfile.getLevel());
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");

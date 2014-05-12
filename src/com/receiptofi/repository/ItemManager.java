@@ -3,14 +3,11 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 
 import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.joda.time.DateTime;
 
@@ -22,7 +19,6 @@ import com.mongodb.WriteResult;
  *
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {
-	String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
 
 	void saveObjects(List<ItemEntity> objects) throws Exception;
 
