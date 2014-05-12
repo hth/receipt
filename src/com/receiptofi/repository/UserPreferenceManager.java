@@ -3,11 +3,8 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author hitender
@@ -15,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 public interface UserPreferenceManager extends RepositoryManager<UserPreferenceEntity> {
-	String TABLE = BaseEntity.getClassAnnotationValue(UserPreferenceEntity.class, Document.class, "collection");
 
 	UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
 }

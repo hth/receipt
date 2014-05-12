@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.slf4j.Logger;
@@ -10,7 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isDeleted;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -33,8 +38,8 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class DocumentManagerImpl implements DocumentManager {
-	private static final long serialVersionUID = 8740416340416509290L;
 	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
 
 	@Autowired private MongoTemplate mongoTemplate;
 

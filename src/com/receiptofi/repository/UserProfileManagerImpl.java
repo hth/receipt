@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
@@ -34,8 +36,8 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class UserProfileManagerImpl implements UserProfileManager {
-	private static final long serialVersionUID = 7078530488197339683L;
 	private static final Logger log = LoggerFactory.getLogger(UserProfileManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
 
 	private MongoTemplate mongoTemplate;
 

@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -7,7 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -29,6 +33,7 @@ import com.mongodb.WriteResult;
  */
 public final class ExpenseTypeManagerImpl implements ExpenseTypeManager {
     private static final Logger log = LoggerFactory.getLogger(ExpenseTypeManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(ExpenseTagEntity.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -34,7 +34,6 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @Document(collection = "ITEM")
 @CompoundIndexes({ @CompoundIndex(name = "user_item_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}") })
 public class ItemEntity extends BaseEntity {
-	private static final long serialVersionUID = 1031429034359059354L;
 
 	@Size(min = 1, max = 128)
     @Field("NAME")

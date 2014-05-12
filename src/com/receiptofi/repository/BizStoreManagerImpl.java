@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import org.bson.types.ObjectId;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,7 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class BizStoreManagerImpl implements BizStoreManager {
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(BizStoreEntity.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +26,7 @@ import com.mongodb.WriteResult;
 @Repository
 public class UserAccountManagerImpl implements UserAccountManager {
     private static final Logger log = LoggerFactory.getLogger(UserAccountManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(UserAccountEntity.class, Document.class, "collection");
 
     private MongoTemplate mongoTemplate;
 

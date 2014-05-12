@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CommentEntity;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
@@ -20,6 +22,8 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class CommentManagerImpl implements CommentManager {
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(CommentEntity.class, Document.class, "collection");
+
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override

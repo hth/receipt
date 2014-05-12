@@ -3,10 +3,7 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ItemFeatureEntity;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author hitender
@@ -14,5 +11,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 public interface ItemFeatureManager extends RepositoryManager<ItemFeatureEntity> {
-	String TABLE = BaseEntity.getClassAnnotationValue(ItemFeatureEntity.class, Document.class, "collection");
+
 }

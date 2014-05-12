@@ -14,7 +14,6 @@ import java.io.Serializable;
  *       Used in session
  */
 public final class UserSession implements Serializable {
-	private static final long serialVersionUID = 7575677662361932482L;
 
 	String emailId;
 	String userProfileId;

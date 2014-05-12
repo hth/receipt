@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import org.bson.types.ObjectId;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -35,10 +37,10 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class ItemOCRManagerImpl implements ItemOCRManager {
-	private static final long serialVersionUID = -6094519223354771552L;
 	private static final Logger log = LoggerFactory.getLogger(ItemOCRManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemEntityOCR.class, Document.class, "collection");
 
-	@Autowired private MongoTemplate mongoTemplate;
+    @Autowired private MongoTemplate mongoTemplate;
 
 	@Override
 	public List<ItemEntityOCR> getAllObjects() {

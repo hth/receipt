@@ -1,11 +1,13 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.GenerateUserIds;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -19,6 +21,7 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class GenerateUserIdManagerImpl implements  GenerateUserIdManager{
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(GenerateUserIds.class, Document.class, "collection");
 
     private MongoTemplate mongoTemplate;
 

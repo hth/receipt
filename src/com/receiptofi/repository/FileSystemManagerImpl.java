@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
@@ -26,6 +28,7 @@ import com.mongodb.WriteResult;
 @Repository
 public final class FileSystemManagerImpl implements FileSystemManager {
     private static final Logger log = LoggerFactory.getLogger(FileSystemManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(FileSystemEntity.class, Document.class, "collection");
 
     @Autowired
     private MongoTemplate mongoTemplate;
