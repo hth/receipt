@@ -460,14 +460,14 @@ public class LandingController extends BaseController {
     public @ResponseBody
     String invite(@RequestParam(value="emailId") String emailId) {
         //Always lower case the email address
-        emailId = StringUtils.lowerCase(emailId);
+        String email = StringUtils.lowerCase(emailId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        log.info("Invitation being sent to: " + emailId);
+        log.info("Invitation being sent to: " + email);
 
-        boolean isValid = EmailValidator.getInstance().isValid(emailId);
+        boolean isValid = EmailValidator.getInstance().isValid(email);
         if(isValid) {
-            UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
+            UserProfileEntity userProfileEntity = accountService.findIfUserExists(email);
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
              * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
@@ -477,37 +477,37 @@ public class LandingController extends BaseController {
             if(userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 boolean status;
                 if(userProfileEntity == null) {
-                    status = mailService.sendInvitation(emailId, receiptUser.getUsername());
+                    status = mailService.sendInvitation(email, receiptUser.getUsername());
                 } else {
-                    status = mailService.reSendInvitation(emailId, receiptUser.getUsername());
+                    status = mailService.reSendInvitation(email, receiptUser.getUsername());
                 }
                 if(status) {
                     StringBuilder sb = new StringBuilder();
-                    sb.append("Invitation sent to '").append(emailId).append("'");
+                    sb.append("Invitation sent to '").append(email).append("'");
                     notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
-                    return "Invitation Sent to: " + emailId;
+                    return "Invitation Sent to: " + email;
                 } else {
                     StringBuilder sb = new StringBuilder();
-                    sb.append("Unsuccessful in sending invitation to '").append(emailId).append("'");
+                    sb.append("Unsuccessful in sending invitation to '").append(email).append("'");
                     notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
-                    return "Unsuccessful in sending invitation: " + emailId;
+                    return "Unsuccessful in sending invitation: " + email;
                 }
             } else if(userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
-                log.info(emailId + ", already registered. Thanks!");
-                return emailId + ", already registered. Thanks!";
+                log.info(email + ", already registered. Thanks!");
+                return email + ", already registered. Thanks!";
             } else if(userProfileEntity.isDeleted()) {
-                log.info(emailId + ", already registered but no longer with us. Appreciate!");
+                log.info(email + ", already registered but no longer with us. Appreciate!");
 
                 //Have to send a positive message
-                return emailId + ", already invited. Appreciate!";
+                return email + ", already invited. Appreciate!";
             } else {
-                log.info(emailId + ", already invited. Thanks!");
+                log.info(email + ", already invited. Thanks!");
                 // TODO can put a condition to check or if user is still in invitation mode or has completed registration
                 // TODO Based on either condition we can let user recover password or re-send invitation
-                return emailId + ", already invited. Thanks!";
+                return email + ", already invited. Thanks!";
             }
         } else {
-            return "Invalid Email: " + emailId;
+            return "Invalid Email: " + email;
         }
     }
 }
