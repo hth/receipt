@@ -26,19 +26,19 @@
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" style="width: 600px;">
 			<tr>
 				<td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
-				<td width="30%"><form:input class="tooltip" path="emailId" title="Please enter the email address when you registered with us." /></td>
-				<td width="51%"><form:errors path="emailId" cssClass="error" /></td>
+				<td width="40%"><form:input class="tooltip" path="emailId" title="Please enter the email address when you registered with us." /></td>
+				<td width="41%"><form:errors path="emailId" cssClass="error" /></td>
 			</tr>
 			<tr>
 				<td align="right" width="19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-				<td width="30%"><form:password class="tooltip" path="password" title="Please enter the password you registered with." /></td>
-				<td width="51%"><form:errors path="password" cssClass="error" /></td>
+				<td width="40%"><form:password class="tooltip" path="password" title="Please enter the password you registered with." /></td>
+				<td width="41%"><form:errors path="password" cssClass="error" /></td>
 			</tr>
-			<tr>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-			</tr>
+            <tr>
+                <td></td>
+                <td><input type='checkbox' name='_spring_security_remember_me'/> Remember me on this computer</td>
+                <td></td>
+            </tr>
 			<tr>
 				<td>&nbsp;</td>
 				<td align="left"><input type="submit" value="Login" class="btn btn-default" /></td>
