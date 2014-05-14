@@ -106,7 +106,6 @@ public final class AccountService {
                     userRegistrationForm.getEmailId(),
                     userRegistrationForm.getFirstName(),
                     userRegistrationForm.getLastName(),
-                    userRegistrationForm.getAccountType(),
                     userAuthentication
             );
             userAccountManager.save(userAccount);
@@ -130,7 +129,7 @@ public final class AccountService {
         }
 
         try {
-            UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userRegistrationForm.getAccountType(), userProfile);
+            UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userProfile);
             userPreferenceManager.save(userPreferenceEntity);
         } catch (Exception e) {
             log.error("During saving UserPreferenceEntity={}", e.getLocalizedMessage(), e);

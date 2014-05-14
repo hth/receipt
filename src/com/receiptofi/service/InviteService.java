@@ -2,7 +2,6 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.AccountTypeEnum;
 import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.HashText;
@@ -24,7 +23,9 @@ public final class InviteService {
     private static Logger log = LoggerFactory.getLogger(InviteService.class);
 
     private final AccountService accountService;
+
     private final InviteManager inviteManager;
+
     private final UserProfileManager userProfileManager;
 
     @Autowired
@@ -39,7 +40,6 @@ public final class InviteService {
     }
 
     /**
-     *
      * @param emailId
      * @param userProfile
      * @return
@@ -47,7 +47,6 @@ public final class InviteService {
     public InviteEntity initiateInvite(String emailId, UserProfileEntity userProfile) {
         UserRegistrationForm userRegistrationForm = UserRegistrationForm.newInstance();
         userRegistrationForm.setEmailId(emailId);
-        userRegistrationForm.setAccountType(AccountTypeEnum.PERSONAL);
         userRegistrationForm.setFirstName("");
         userRegistrationForm.setLastName("");
         userRegistrationForm.setPassword(RandomString.newInstance(8).nextString());

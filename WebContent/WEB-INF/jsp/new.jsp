@@ -47,16 +47,6 @@
 				<td style="width: 51%"><form:errors path="password" cssClass="error" /></td>
 			</tr>
 			<tr>
-				<td style="text-align: right; width: 19%"><form:label for="accountType" path="accountType" cssErrorClass="error">Account Type:</form:label></td>
-				<td style="width: 30%">
-					<form:select class="tooltip" path="accountType" title="Select an account type.">
-						<form:option value="0" label="Select Account Type" />
-						<form:options itemValue="name" itemLabel="description" />
-					</form:select>
-				</td>
-				<td style="width: 51%"><form:errors path="accountType" cssClass="error" /></td>
-			</tr>
-			<tr>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
