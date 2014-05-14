@@ -34,10 +34,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
+    /**
+     * @param email - lower case string
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
-    public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        log.info("login through site, user={}", email);
+
         //Always check user login with lower letter email case
-        UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(StringUtils.lowerCase(emailId));
+        UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(email);
         if (userProfile != null) {
             UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
@@ -57,6 +64,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUserId(String uid) throws UsernameNotFoundException {
+        log.info("login through facebook user={}", uid);
+
         UserProfileEntity userProfile = userProfilePreferenceService.getUsingUserId(uid);
         if (userProfile != null) {
             UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());

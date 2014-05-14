@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,11 +51,9 @@ public final class SignInAdapterImpl implements SignInAdapter {
         UserDetails user;
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         if(servletWebRequest.getRequest().getRequestURI().contains("facebook")) {
-            log.info("login through facebook user={}", localUserId);
             user = myUserAccountService.loadUserByUserId(localUserId);
         } else {
-            log.info("login through site, user={}", localUserId);
-            user = myUserAccountService.loadUserByUsername(localUserId);
+            user = myUserAccountService.loadUserByUsername(StringUtils.lowerCase(localUserId));
         }
         Assert.notNull(user);
 
