@@ -18,6 +18,7 @@
 
     <property name="dist.dir"                   value="${web.dir}/WEB-INF/dist" />
     <property name="tests.dir"                  value="${web.dir}/WEB-INF/tests" />
+    <property name="encoding"                   value="UTF-8" />
 
     <!-- Used for time stamping the server.jar -->
     <tstamp>
@@ -104,7 +105,7 @@
 	<target name="compile" description="Compile main source tree java files" depends="resources, do-if-pass-present">
 		<mkdir dir="${build.dir}" />
 		<javac destdir="${build.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
-               optimize="false" failonerror="true" encoding="UTF-8">
+               optimize="false" failonerror="true" encoding="${encoding}">
 			<src path="${src.dir}" />
 			<classpath refid="master-classpath" />
 		</javac>
@@ -279,7 +280,7 @@
         <mkdir dir="${build.dir}" />
 		<mkdir dir="${tests.dir}" />
 		<javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
-               optimize="false" failonerror="true" encoding="UTF-8">
+               optimize="false" failonerror="true" encoding="${encoding}">
 			<src path="${test.dir}" />
             <classpath refid="master-classpath" />
 		</javac>
@@ -316,7 +317,7 @@
         <mkdir dir="${build.dir}" />
         <mkdir dir="${tests.dir}" />
         <javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
-               optimize="false" failonerror="true" encoding="UTF-8">
+               optimize="false" failonerror="true" encoding="${encoding}">
             <src path="${test-integration.dir}" />
             <classpath refid="master-classpath" />
         </javac>
