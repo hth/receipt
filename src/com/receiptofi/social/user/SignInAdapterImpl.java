@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,9 @@ public final class SignInAdapterImpl implements SignInAdapter {
     private static final Logger log = LoggerFactory.getLogger(SignInAdapterImpl.class);
     private final RequestCache myRequestCache;
     private CustomUserDetailsService myUserAccountService;
+
+    @Value("${completeProfileController:/access/completeprofile.htm}")
+    private String completeProfileController;
 
     @Inject
     public SignInAdapterImpl(RequestCache requestCache, CustomUserDetailsService service) {
@@ -64,7 +68,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
 
         if(isProfileNotComplete(user)) {
             log.debug("profile not complete, user={}", user.getUsername());
-            return "/access/completeprofile.htm";
+            return completeProfileController;
         }
 
         if(saved == null) {
