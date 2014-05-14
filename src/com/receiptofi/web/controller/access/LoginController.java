@@ -110,54 +110,6 @@ public class LoginController {
 	}
 
     /**
-     * Performs login validation for the user
-     *
-     * @param userLoginForm
-     * @param result
-     * @param redirectAttrs
-     * @return
-     */
-	@RequestMapping(method = RequestMethod.POST)
-	public String post(@ModelAttribute("userLoginForm") UserLoginForm userLoginForm, BindingResult result, final RedirectAttributes redirectAttrs) {
-        DateTime time = DateUtil.now();
-		userLoginValidator.validate(userLoginForm, result);
-		if (result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-			return LOGIN_PAGE;
-		} else {
-            //Always check user login with lower letter email case
-			UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(StringUtils.lowerCase(userLoginForm.getEmailId()));
-			if (userProfile != null) {
-
-				UserAuthenticationEntity user = loginService.loadUserAccount(userProfile.getReceiptUserId()).getUserAuthentication();
-                boolean passwordIsValid = false;
-                try {
-                    passwordIsValid = HashText.checkPassword(userLoginForm.getPassword(), user.getPassword()) || HashText.checkPassword(userLoginForm.getPassword(), user.getGrandPassword());
-                } catch (Exception notValidHash) {
-                    log.warn("Invalid hash for user={}", userLoginForm.getEmailId(), notValidHash);
-                }
-                if(passwordIsValid) {
-					log.info("Login email={} and found={}", userLoginForm.getEmailId(), userProfile.getEmail());
-
-                    String path = landingHomePage(userProfile.getLevel());
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-					return path;
-				} else {
-					log.warn("Password not matching for user={}", userLoginForm.getEmailId());
-				}
-                result.rejectValue("emailId", "field.emailId.notMatching");
-			} else {
-				log.warn("No Email Id found in record={}", userLoginForm.getEmailId());
-				result.rejectValue("emailId", "field.emailId.notFound");
-			}
-
-            userLoginForm.setPassword("");
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure");
-            return LOGIN_PAGE;
-		}
-	}
-
-    /**
      * Get the user landing page when they log in or try to access un-authorized page
      *
      * @param level

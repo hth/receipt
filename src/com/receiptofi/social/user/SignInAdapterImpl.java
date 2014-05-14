@@ -31,7 +31,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Profile(value = "DEV")
 public final class SignInAdapterImpl implements SignInAdapter {
     private static final Logger log = LoggerFactory.getLogger(SignInAdapterImpl.class);
+
     private final RequestCache myRequestCache;
+
     private CustomUserDetailsService myUserAccountService;
 
     @Value("${completeProfileController:/access/completeprofile.htm}")
