@@ -145,92 +145,74 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
 
     private static final String[] FORGOT_RECOVER_DATA = new String[] {
             "{\n" +
-                    "    \"_id\" : {$oid: \"521fbb57036499d95a7048e6\"},\n" +
-                    "    \"USER_PROFILE_ID\" : \"521b24d90364b935ab7bbc10\",\n" +
-                    "    \"AUTH\" : \"1c73721ff298769272362c4b083622a70de74b43a8a6f92cd6091c6a1a79234e5b56d3f775f3157ed436d947d33662cab789519d52344562b6a38fe68d1f3924\",\n" +
-                    "    \"VERSION\" : 2,\n" +
-                    "    \"UPDATE\" : {$date: \"2013-09-07T17:17:28.392Z\"},\n" +
-                    "    \"CREATE\" : {$date: \"2013-08-29T21:21:27.131Z\"},\n" +
-                    "    \"ACTIVE\" : false,\n" +
-                    "    \"DELETE\" : false\n" +
+                    "    \"_id\" : {$oid: \"537305b23004599a154294a9\"},\n" +
+                    "    \"USER_PROFILE_ID\" : \"5370907530041668259b38d1\",\n" +
+                    "    \"AUTH\" : \"$2a$15$2UowKxnrUCRqkK3CbDtzou6cZMcIKAzVB37Op379l5D9YE7pWxsam\",\n" +
+                    "    \"V\" : 0,\n" +
+                    "    \"U\" : {$date: \"2014-05-14T05:57:06.870Z\"},\n" +
+                    "    \"C\" : {$date: \"2014-05-14T05:57:06.870Z\"},\n" +
+                    "    \"A\" : true,\n" +
+                    "    \"D\" : false\n" +
                     "}"
     };
 
     private static final String[] USER_PROFILE_DATA = new String[] {
             "{\n" +
-                    "    \"ACTIVE\" : true,\n" +
-                    "    \"CREATE\" : {$date: \"2013-08-26T09:49:23.441Z\"},\n" +
-                    "    \"DELETE\" : false,\n" +
-                    "    \"EMAIL\" : \"super@receiptofi.com\",\n" +
-                    "    \"FIRST_NAME\" : \"Super\",\n" +
-                    "    \"HOURS_OFF_SET\" : 0,\n" +
-                    "    \"LAST_NAME\" : \"User\",\n" +
-                    "    \"REGISTRATION\" : {$date: \"2013-08-26T09:49:23.441Z\"},\n" +
-                    "    \"UPDATE\" : {$date: \"2013-08-26T09:49:23.441Z\"},\n" +
-                    "    \"USER_AUTHENTICATION\" : {\n" +
-                    "        \"$ref\" : \"USER_AUTHENTICATION\",\n" +
-                    "        \"$id\" : \"521b24a30364b935ab7bbc0c\"\n" +
-                    "    },\n" +
-                    "    \"USER_LEVEL_ENUM\" : \"ADMIN\",\n" +
-                    "    \"VERSION\" : 0,\n" +
-                    "    \"_id\" : {$oid: \"521b24a30364b935ab7bbc0d\"}\n" +
-                    "}"
-            ,
+                    "    \"_id\" : {$oid: \"537068ee3004ff079b5af89c\"},\n" +
+                    "    \"RID\" : \"10000000001\",\n" +
+                    "    \"UID\" : \"4564545645646\",\n" +
+                    "    \"P_E\" : \"FACEBOOK\",\n" +
+                    "    \"UN\" : \"baan.dal\",\n" +
+                    "    \"N\" : \"Ann Pluse\",\n" +
+                    "    \"FN\" : \"Ann\",\n" +
+                    "    \"LN\" : \"Pluse\",\n" +
+                    "    \"GE\" : \"male\",\n" +
+                    "    \"LO\" : \"en_US\",\n" +
+                    "    \"URL\" : \"https://www.facebook.com/baan.dal\",\n" +
+                    "    \"TZ\" : -7,\n" +
+                    "    \"UT\" : {$date: \"2014-03-13T05:01:04.000Z\"},\n" +
+                    "    \"BI\" : \"About me is here\",\n" +
+                    "	 \"EM\" : \"user_community_1@receiptofi.com\",\n" +
+                    "    \"USER_LEVEL_ENUM\" : \"USER\",\n" +
+                    "    \"V\" : 1,\n" +
+                    "    \"U\" : {$date: \"2014-05-12T06:23:42.281Z\"},\n" +
+                    "    \"C\" : {$date: \"2014-05-12T06:23:42.281Z\"},\n" +
+                    "    \"A\" : true,\n" +
+                    "    \"D\" : false\n" +
+                    "}",
             "{\n" +
-                    "    \"_id\" : {$oid: \"521b24d90364b935ab7bbc10\"},\n" +
-                    "    \"EMAIL\" : \"user_community_1@receiptofi.com\",\n" +
-                    "    \"FIRST_NAME\" : \"User\",\n" +
-                    "    \"LAST_NAME\" : \"One\",\n" +
-                    "    \"REGISTRATION\" : {$date: \"2013-08-26T09:50:17.043Z\"},\n" +
-                    "    \"HOURS_OFF_SET\" : 0,\n" +
-                    "    \"USER_LEVEL_ENUM\" : \"USER_COMMUNITY\",\n" +
-                    "    \"VERSION\" : 5,\n" +
-                    "    \"UPDATE\" : {$date: \"2013-09-13T09:25:55.641Z\"},\n" +
-                    "    \"CREATE\" : {$date: \"2013-08-26T09:50:17.043Z\"},\n" +
-                    "    \"ACTIVE\" : true,\n" +
-                    "    \"DELETE\" : false,\n" +
-                    "    \"USER_AUTHENTICATION\" : {\n" +
-                    "        \"$ref\" : \"USER_AUTHENTICATION\",\n" +
-                    "        \"$id\" : \"521b24d90364b935ab7bbc0f\"\n" +
-                    "    }\n" +
-                    "}"
-            ,
+                    "    \"_id\" : {$oid: \"537068ef3004ff079b5af89e\"},\n" +
+                    "    \"RID\" : \"10000000002\",\n" +
+                    "    \"UID\" : \"98374509349050\",\n" +
+                    "    \"P_E\" : \"FACEBOOK\",\n" +
+                    "    \"N\" : \"박진영\",\n" +
+                    "    \"FN\" : \"진영\",\n" +
+                    "    \"LN\" : \"박\",\n" +
+                    "    \"GE\" : \"female\",\n" +
+                    "    \"LO\" : \"ko_KR\",\n" +
+                    "    \"URL\" : \"https://www.facebook.com/profile.php?id=98374509349050\",\n" +
+                    "    \"TP_ID\" : \"pbU11ZeqqMY1lImnlTptEBSm_9s\",\n" +
+                    "    \"TZ\" : 0,\n" +
+                    "    \"UT\" : {$date: \"2014-04-16T09:29:46.000Z\"},\n" +
+                    "    \"USER_LEVEL_ENUM\" : \"USER\",\n" +
+                    "    \"V\" : 1,\n" +
+                    "    \"U\" : {$date: \"2014-05-12T06:23:43.163Z\"},\n" +
+                    "    \"C\" : {$date: \"2014-05-12T06:23:43.163Z\"},\n" +
+                    "    \"A\" : true,\n" +
+                    "    \"D\" : false\n" +
+                    "}",
             "{\n" +
-                    "    \"_id\" : {$oid: \"521b265b0364b935ab7bbc15\"},\n" +
-                    "    \"EMAIL\" : \"tech@receiptofi.com\",\n" +
-                    "    \"FIRST_NAME\" : \"Tech\",\n" +
-                    "    \"LAST_NAME\" : \"User\",\n" +
-                    "    \"REGISTRATION\" : {$date: \"2013-08-26T09:56:43.292Z\"},\n" +
-                    "    \"HOURS_OFF_SET\" : 0,\n" +
-                    "    \"USER_LEVEL_ENUM\" : \"TECHNICIAN\",\n" +
-                    "    \"VERSION\" : 3,\n" +
-                    "    \"UPDATE\" : {$date: \"2013-08-26T09:59:35.326Z\"},\n" +
-                    "    \"CREATE\" : {$date: \"2013-08-26T09:56:43.292Z\"},\n" +
-                    "    \"ACTIVE\" : true,\n" +
-                    "    \"DELETE\" : false,\n" +
-                    "    \"USER_AUTHENTICATION\" : {\n" +
-                    "        \"$ref\" : \"USER_AUTHENTICATION\",\n" +
-                    "        \"$id\" : \"521b265b0364b935ab7bbc14\"\n" +
-                    "    }\n" +
-                    "}"
-            ,
-            "{\n" +
-                    "    \"_id\" : {$oid: \"521bba950364b935ab7bbc1e\"},\n" +
-                    "    \"EMAIL\" : \"user_community_2@receiptofi.com\",\n" +
-                    "    \"FIRST_NAME\" : \"User\",\n" +
-                    "    \"LAST_NAME\" : \"Two\",\n" +
-                    "    \"REGISTRATION\" : {$date: \"2013-08-26T20:29:09.777Z\"},\n" +
-                    "    \"HOURS_OFF_SET\" : 0,\n" +
-                    "    \"USER_LEVEL_ENUM\" : \"USER_COMMUNITY\",\n" +
-                    "    \"VERSION\" : 3,\n" +
-                    "    \"UPDATE\" : {$date: \"2013-09-07T17:18:33.648Z\"},\n" +
-                    "    \"CREATE\" : {$date: \"2013-08-26T20:29:09.777Z\"},\n" +
-                    "    \"ACTIVE\" : true,\n" +
-                    "    \"DELETE\" : false,\n" +
-                    "    \"USER_AUTHENTICATION\" : {\n" +
-                    "        \"$ref\" : \"USER_AUTHENTICATION\",\n" +
-                    "        \"$id\" : \"521bba950364b935ab7bbc1d\"\n" +
-                    "    }\n" +
+                    "    \"_id\" : {$oid: \"5370907530041668259b38d1\"},\n" +
+                    "    \"RID\" : \"10000000004\",\n" +
+                    "    \"FN\" : \"User\",\n" +
+                    "    \"LN\" : \"Two\",\n" +
+                    "    \"EM\" : \"user_community_2@receiptofi.com\",\n" +
+                    "    \"USER_LEVEL_ENUM\" : \"USER\",\n" +
+                    "    \"V\" : 0,\n" +
+                    "    \"U\" : {$date: \"2014-05-12T09:12:21.900Z\"},\n" +
+                    "    \"C\" : {$date: \"2014-05-12T09:12:21.900Z\"},\n" +
+                    "    \"A\" : true,\n" +
+                    "    \"D\" : false\n" +
                     "}"
     };
 }
