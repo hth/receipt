@@ -103,7 +103,8 @@
 
 	<target name="compile" description="Compile main source tree java files" depends="resources, do-if-pass-present">
 		<mkdir dir="${build.dir}" />
-		<javac destdir="${build.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+		<javac destdir="${build.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
+               optimize="false" failonerror="true" encoding="UTF-8">
 			<src path="${src.dir}" />
 			<classpath refid="master-classpath" />
 		</javac>
@@ -277,7 +278,8 @@
 	<target name="build-tests" description="Compile test tree java files" depends="clean-test, compile, jar">
         <mkdir dir="${build.dir}" />
 		<mkdir dir="${tests.dir}" />
-		<javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+		<javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
+               optimize="false" failonerror="true" encoding="UTF-8">
 			<src path="${test.dir}" />
             <classpath refid="master-classpath" />
 		</javac>
@@ -313,7 +315,8 @@
     <target name="build-integration-tests" description="Compile test tree java files" depends="clean-test, compile, jar">
         <mkdir dir="${build.dir}" />
         <mkdir dir="${tests.dir}" />
-        <javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false" optimize="false" failonerror="true">
+        <javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
+               optimize="false" failonerror="true" encoding="UTF-8">
             <src path="${test-integration.dir}" />
             <classpath refid="master-classpath" />
         </javac>
