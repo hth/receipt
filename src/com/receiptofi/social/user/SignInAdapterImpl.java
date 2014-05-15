@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,8 +33,13 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Profile(value = "DEV")
 public final class SignInAdapterImpl implements SignInAdapter {
     private static final Logger log = LoggerFactory.getLogger(SignInAdapterImpl.class);
+
     private final RequestCache myRequestCache;
+
     private CustomUserDetailsService myUserAccountService;
+
+    @Value("${completeProfileController:/access/completeprofile.htm}")
+    private String completeProfileController;
 
     @Inject
     public SignInAdapterImpl(RequestCache requestCache, CustomUserDetailsService service) {
@@ -43,11 +51,9 @@ public final class SignInAdapterImpl implements SignInAdapter {
         UserDetails user;
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         if(servletWebRequest.getRequest().getRequestURI().contains("facebook")) {
-            log.info("login through facebook user={}", localUserId);
             user = myUserAccountService.loadUserByUserId(localUserId);
         } else {
-            log.info("login through site, user={}", localUserId);
-            user = myUserAccountService.loadUserByUsername(localUserId);
+            user = myUserAccountService.loadUserByUsername(StringUtils.lowerCase(localUserId));
         }
         Assert.notNull(user);
 
@@ -64,7 +70,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
 
         if(isProfileNotComplete(user)) {
             log.debug("profile not complete, user={}", user.getUsername());
-            return "/access/completeprofile.htm";
+            return completeProfileController;
         }
 
         if(saved == null) {

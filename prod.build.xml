@@ -21,6 +21,7 @@
 
     <property name="dist.dir"                   value="${prod.ready.dir}/WEB-INF/dist" />
     <property name="tests.dir"                  value="${prod.ready.dir}/WEB-INF/tests" />
+    <property name="encoding"                   value="UTF-8" />
 
     <!-- Used for Jenkins Environment and only for prod version -->
     <property environment="env"/>
@@ -117,7 +118,7 @@
 
     <target name="compile" description="Compile main source tree java files" depends="resources, do-if-pass-present">
         <javac destdir="${prod.ready.classes.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
-               optimize="false" failonerror="true" encoding="UTF-8">
+               optimize="false" failonerror="true" encoding="${encoding}">
             <src path="${src.dir}" />
             <classpath refid="master-classpath" />
         </javac>
@@ -321,7 +322,7 @@
         <mkdir dir="${prod.ready.classes.dir}" />
         <mkdir dir="${tests.dir}" />
         <javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
-               optimize="false" failonerror="true" encoding="UTF-8">
+               optimize="false" failonerror="true" encoding="${encoding}">
             <src path="${test.dir}" />
             <classpath refid="master-classpath" />
         </javac>
@@ -358,7 +359,7 @@
         <mkdir dir="${prod.ready.classes.dir}" />
         <mkdir dir="${tests.dir}" />
         <javac destdir="${tests.dir}" source="1.7" target="1.7" debug="true" deprecation="false"
-               optimize="false" failonerror="true" encoding="UTF-8">
+               optimize="false" failonerror="true" encoding="${encoding}">
             <src path="${test-integration.dir}" />
             <classpath refid="master-classpath" />
         </javac>

@@ -1,14 +1,11 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.AccountTypeEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.receiptofi.domain.types.AccountTypeEnum.PERSONAL;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -18,8 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "USER_ACCOUNT")
 @CompoundIndexes({
-	@CompoundIndex(name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
-	@CompoundIndex(name = "user_account_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true)
+        @CompoundIndex(name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
+        @CompoundIndex(name = "user_account_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true)
 })
 public class UserAccountEntity extends BaseEntity {
 
@@ -27,46 +24,48 @@ public class UserAccountEntity extends BaseEntity {
     @Field("RID")
     private String receiptUserId;
 
-    /** This is set by third party and cannot be relied on */
+    /**
+     * This is set by third party and cannot be relied on
+     */
     @NotNull
     @Field("UID")
-	private String userId;
+    private String userId;
 
     @Field("PID")
-	private ProviderEnum providerId;
+    private ProviderEnum providerId;
 
     @Field("PUID")
     private String providerUserId;
 
     @Field("DN")
-	private String displayName;
+    private String displayName;
 
     @Field("PURL")
-	private String profileUrl;
+    private String profileUrl;
 
     @Field("IURL")
-	private String imageUrl;
+    private String imageUrl;
 
     @Field("AT")
-	private String accessToken;
+    private String accessToken;
 
     @Field("SE")
-	private String secret;
+    private String secret;
 
     @Field("RT")
-	private String refreshToken;
+    private String refreshToken;
 
     @Field("ET")
-	private Long expireTime;
+    private Long expireTime;
 
     @Field("FN")
-	private String firstName;
+    private String firstName;
 
     @Field("LN")
-	private String lastName;
+    private String lastName;
 
     @Field("RE")
-	private Set<RoleEnum> roles = new HashSet<RoleEnum>() {{
+    private Set<RoleEnum> roles = new HashSet<RoleEnum>() {{
         add(RoleEnum.ROLE_USER);
     }};
 
@@ -74,37 +73,31 @@ public class UserAccountEntity extends BaseEntity {
     @Field("USER_AUTHENTICATION")
     private UserAuthenticationEntity userAuthentication;
 
-    @NotNull
-    @Field("AT_E")
-    private AccountTypeEnum accountType = PERSONAL;
+    public UserAccountEntity() {
+    }
 
-	public UserAccountEntity() {}
-	
-	private UserAccountEntity(
+    private UserAccountEntity(
             String receiptUserId,
             String userId,
             String firstName,
             String lastName,
-            AccountTypeEnum accountType,
             UserAuthenticationEntity userAuthentication
     ) {
         this.receiptUserId = receiptUserId;
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-        this.accountType = accountType;
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.userAuthentication = userAuthentication;
-	}
+    }
 
     public static UserAccountEntity newInstance(
             String receiptUserId,
             String userId,
             String firstName,
             String lastName,
-            AccountTypeEnum accountType,
             UserAuthenticationEntity userAuthentication
     ) {
-        return new UserAccountEntity(receiptUserId, userId, firstName, lastName, accountType, userAuthentication);
+        return new UserAccountEntity(receiptUserId, userId, firstName, lastName, userAuthentication);
     }
 
     public String getReceiptUserId() {
@@ -116,99 +109,100 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public String getUserId() {
-		return userId;
-	}
+        return userId;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public ProviderEnum getProviderId() {
-		return providerId;
-	}
+    public ProviderEnum getProviderId() {
+        return providerId;
+    }
 
-	public void setProviderId(ProviderEnum providerId) {
-		this.providerId = providerId;
-	}
-	public String getProviderUserId() {
-		return providerUserId;
-	}
+    public void setProviderId(ProviderEnum providerId) {
+        this.providerId = providerId;
+    }
 
-	public void setProviderUserId(String providerUserId) {
-		this.providerUserId = providerUserId;
-	}
+    public String getProviderUserId() {
+        return providerUserId;
+    }
 
-	public String getDisplayName() {
-		return displayName;
-	}
+    public void setProviderUserId(String providerUserId) {
+        this.providerUserId = providerUserId;
+    }
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
+    public String getDisplayName() {
+        return displayName;
+    }
 
-	public String getProfileUrl() {
-		return profileUrl;
-	}
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
-	public void setProfileUrl(String profileUrl) {
-		this.profileUrl = profileUrl;
-	}
+    public String getProfileUrl() {
+        return profileUrl;
+    }
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
 
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
-	public String getAccessToken() {
-		return accessToken;
-	}
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
+    public String getAccessToken() {
+        return accessToken;
+    }
 
-	public String getSecret() {
-		return secret;
-	}
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
+    public String getSecret() {
+        return secret;
+    }
 
-	public String getRefreshToken() {
-		return refreshToken;
-	}
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
 
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-	public Long getExpireTime() {
-		return expireTime;
-	}
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
-	public void setExpireTime(Long expireTime) {
-		this.expireTime = expireTime;
-	}
+    public Long getExpireTime() {
+        return expireTime;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setExpireTime(Long expireTime) {
+        this.expireTime = expireTime;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public Set<RoleEnum> getRoles() {
         return roles;
@@ -230,20 +224,11 @@ public class UserAccountEntity extends BaseEntity {
         this.userAuthentication = userAuthentication;
     }
 
-    public AccountTypeEnum getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(AccountTypeEnum accountType) {
-        this.accountType = accountType;
-    }
-
     @Override
     public String toString() {
         if(firstName != null && !"".equals(firstName)) {
             return firstName;
         }
-
         return userId;
     }
 }
