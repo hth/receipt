@@ -3,9 +3,11 @@
  */
 package com.receiptofi.web.controller.open;
 
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.helper.AvailabilityStatus;
@@ -13,12 +15,21 @@ import com.receiptofi.web.validator.UserRegistrationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,20 +43,27 @@ import org.joda.time.DateTime;
  * @since Dec 24, 2012 3:13:26 PM
  */
 @Controller
-@RequestMapping(value = "/open/new")
-public class AccountController {
-    private static final Logger log = LoggerFactory.getLogger(AccountController.class);
-    private static final String NEW_ACCOUNT = "/new";
-    private static final String FORGOT_RECOVER_ACCOUNT = "/forgot/recover";
+@RequestMapping(value = "/open/registration")
+public final class AccountRegistrationController {
+    private static final Logger log = LoggerFactory.getLogger(AccountRegistrationController.class);
+
+    @Value("${registrationPage:registration}")
+    private String registrationPage;
+
+    @Value("${registrationSuccess:redirect:/open/registration/success.htm}")
+    private String registrationSuccess;
+
+    @Value("${registrationSuccessPage:registrationsuccess}")
+    private String registrationSuccessPage;
+
+    @Value("${recover:redirect:/forgot/recover.htm}")
+    private String recover;
 
     private final UserRegistrationValidator userRegistrationValidator;
     private final AccountService accountService;
 
     @Autowired
-    public AccountController(
-            UserRegistrationValidator userRegistrationValidator,
-            AccountService accountService
-    ) {
+    public AccountRegistrationController(UserRegistrationValidator userRegistrationValidator, AccountService accountService) {
         this.userRegistrationValidator = userRegistrationValidator;
         this.accountService = accountService;
     }
@@ -57,108 +75,105 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String loadForm() {
-        log.debug("Loading New Account");
-        return NEW_ACCOUNT;
+        log.debug("New Account Registration invoked");
+        return registrationPage;
     }
 
     @RequestMapping(method = RequestMethod.POST, params = {"signup"})
-    public String post(
-            @ModelAttribute("userRegistrationForm")
-            UserRegistrationForm userRegistrationForm,
-
-            BindingResult result
-    ) {
+    public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, RedirectAttributes redirectAttrs, BindingResult result) {
         DateTime time = DateUtil.now();
         userRegistrationValidator.validate(userRegistrationForm, result);
         if(result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
-            return NEW_ACCOUNT;
+            return registrationPage;
         }
 
         UserProfileEntity userProfile = accountService.findIfUserExists(userRegistrationForm.getEmailId());
         if(userProfile != null) {
             userRegistrationValidator.accountExists(userRegistrationForm, result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "account exists");
-            return NEW_ACCOUNT;
+            return registrationPage;
         }
 
+        UserAccountEntity userAccount;
         try {
             //TODO For now de-activate all registration. Currently registration is by invitation only.
-            userProfile = accountService.createNewAccount(userRegistrationForm);
-            log.info("Registered new Email Id: " + userProfile.getEmail());
+            userAccount = accountService.createNewAccount(userRegistrationForm);
+            log.info("Registered new user Id={}", userAccount.getReceiptUserId());
         } catch (RuntimeException exce) {
             log.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
-            return NEW_ACCOUNT;
+            return registrationPage;
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
 
-        if(userProfile.isActive()) {
-            /** This code to invoke the controller */
-            return "redirect:/access/login.htm";
+        if(userAccount.isActive()) {
+            redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
+            return registrationSuccess;
         } else {
             //TODO For now de-activate all registration. Currently registration is by invitation only.
-            return NEW_ACCOUNT;
+            return registrationPage;
         }
     }
 
     /**
      * Starts the account recovery process
-     *
+     * @param email
+     * @param httpServletResponse
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/success")
+    public String success(@ModelAttribute("email") String email, HttpServletResponse httpServletResponse) throws IOException {
+        if(StringUtils.isNotBlank(email)) {
+            return registrationSuccessPage;
+        } else {
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+    }
+
+    /**
+     * Starts the account recovery process
      * @param userRegistrationForm
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, params = {"recover"})
-    public String recover(
-            @ModelAttribute("userRegistrationForm")
-            UserRegistrationForm userRegistrationForm,
-
-            RedirectAttributes redirectAttrs
-    ) {
+    public String recover(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("userRegistrationForm", userRegistrationForm);
-        return "redirect:" + FORGOT_RECOVER_ACCOUNT + ".htm";
+        return recover;
     }
 
     /**
      * Ajax call to check if the account is available to register.
-     *
-     * This code can be accessed from outside without any checking. Mostly will provide information about user is
-     * registered in the system or not.
-     *
-     * TODO: Change it. This is currently a threat.
-     *
-     * @param emailId
+     * @param body
      * @return
+     * @throws IOException
      */
-    @RequestMapping(value = "/availability", method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/availability",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json"
+    )
     public
     @ResponseBody
-    String getAvailability(@RequestParam String emailId) {
+    String getAvailability(@RequestBody String body) throws IOException {
         DateTime time = DateUtil.now();
-        log.info("Auto find if the emailId is present: " + emailId);
+        String email =  StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("email"));
         AvailabilityStatus availabilityStatus;
 
-        UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
-        if(userProfileEntity != null && userProfileEntity.getEmail().equals(emailId)) {
-            log.info("Not Available: " + emailId);
+        UserProfileEntity userProfileEntity = accountService.findIfUserExists(email);
+        if(userProfileEntity != null && userProfileEntity.getEmail().equals(email)) {
+            log.info("Email={} provided during registration exists", email);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
-            availabilityStatus = AvailabilityStatus.notAvailable(emailId);
-            return new StringBuilder()
-                    .append("{ \"valid\" : \"")
-                    .append(availabilityStatus.isAvailable())
-                    .append("\", \"message\" : \"")
-                    .append("<b>")
-                    .append(emailId)
-                    .append("</b>")
-                    .append(" is already registered. ")
-                    .append(StringUtils.join(availabilityStatus.getSuggestions()))
-                    .append("\" }")
-                    .toString();
+            availabilityStatus = AvailabilityStatus.notAvailable(email);
+            return String.format("{ \"valid\" : \"%s\", \"message\" : \"<b>%s</b> is already registered. %s\" }", availabilityStatus.isAvailable(), email, StringUtils.join(availabilityStatus.getSuggestions()));
         }
-        log.info("Available: " + emailId);
+        log.info("Email available={} for registration", email);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
         availabilityStatus = AvailabilityStatus.available();
-        return "{ \"valid\" : \"" + availabilityStatus.isAvailable() + "\" }";
+        return String.format("{ \"valid\" : \"%s\" }", availabilityStatus.isAvailable());
     }
 }

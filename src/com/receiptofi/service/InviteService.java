@@ -1,8 +1,10 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.InviteEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.InviteManager;
+import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
@@ -23,20 +25,21 @@ public final class InviteService {
     private static Logger log = LoggerFactory.getLogger(InviteService.class);
 
     private final AccountService accountService;
-
     private final InviteManager inviteManager;
-
     private final UserProfileManager userProfileManager;
+    private final UserAccountManager userAccountManager;
 
     @Autowired
     public InviteService(
             AccountService accountService,
             InviteManager inviteManager,
-            UserProfileManager userProfileManager
+            UserProfileManager userProfileManager,
+            UserAccountManager userAccountManager
     ) {
         this.accountService = accountService;
         this.inviteManager = inviteManager;
         this.userProfileManager = userProfileManager;
+        this.userAccountManager = userAccountManager;
     }
 
     /**
@@ -52,19 +55,20 @@ public final class InviteService {
         userRegistrationForm.setPassword(RandomString.newInstance(8).nextString());
 
         InviteEntity inviteEntity;
-        UserProfileEntity newInvitedUser;
+        UserAccountEntity userAccount;
         try {
             //First save is performed
-            newInvitedUser = accountService.createNewAccount(userRegistrationForm);
+            userAccount = accountService.createNewAccount(userRegistrationForm);
         } catch (RuntimeException exception) {
             log.error("Error occurred during creation of invited user: " + exception.getLocalizedMessage());
             throw exception;
         }
 
         //Updating the record as inactive until user completes registration
-        newInvitedUser.inActive();
-        userProfileManager.save(newInvitedUser);
+        userAccount.inActive();
+        userAccountManager.save(userAccount);
 
+        UserProfileEntity newInvitedUser = userProfileManager.getUsingId(userAccount.getReceiptUserId());
         String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
         inviteEntity = InviteEntity.newInstance(emailId, authenticationKey, newInvitedUser, userProfile);
         inviteManager.save(inviteEntity);

@@ -48,8 +48,8 @@ public final class AccountService {
     @Value("${domain}")
     private String domain;
 
-    @Value("${registrationOn:true}")
-    private boolean registrationOn;
+    @Value("${registrationAllowed}")
+    private boolean registrationAllowed;
 
     @Autowired
     public AccountService(
@@ -83,7 +83,7 @@ public final class AccountService {
      * @return
      * @throws Exception
      */
-    public UserProfileEntity createNewAccount(UserRegistrationForm userRegistrationForm) {
+    public UserAccountEntity createNewAccount(UserRegistrationForm userRegistrationForm) {
         DateTime time = DateUtil.now();
 
         UserAccountEntity userAccount;
@@ -108,6 +108,7 @@ public final class AccountService {
                     userRegistrationForm.getLastName(),
                     userAuthentication
             );
+            isRegistrationAllowed(userAccount);
             userAccountManager.save(userAccount);
 
             userProfile = UserProfileEntity.newInstance(
@@ -116,7 +117,6 @@ public final class AccountService {
                     userRegistrationForm.getLastName(),
                     userAccount.getReceiptUserId()
             );
-            checkRegistration(userProfile);
             userProfileManager.save(userProfile);
         } catch (Exception e) {
             log.error("During saving UserProfileEntity={}", e.getLocalizedMessage(), e);
@@ -137,15 +137,13 @@ public final class AccountService {
             throw new RuntimeException("error saving user preference ", e);
         }
 
-        return userProfile;
+        return userAccount;
     }
 
-    private void checkRegistration(UserProfileEntity userProfile) {
-        if(!registrationOn) {
-            if(!domain.startsWith("localhost")) {
-                //TODO For now de-activate all registration. Currently registration is by invitation only.
-                userProfile.inActive();
-            }
+    private void isRegistrationAllowed(UserAccountEntity userAccount) {
+        if(!registrationAllowed) {
+            //TODO For now de-activate all registration. Currently registration is by invitation only.
+            userAccount.inActive();
         }
     }
 

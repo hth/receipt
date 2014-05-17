@@ -47,7 +47,7 @@
     </form:form>
 
 	<p>
-        <a href="<c:url value="open/new.htm"/>" title="Create a new account.">Register Now</a>
+        <a href="${pageContext.request.contextPath}/open/registration.htm" title="Create a new account.">Register Now</a>
         &nbsp;&nbsp;|&nbsp;&nbsp;
         <a href="forgot/password.htm" title="Click here to recover your password.">Forgot your password ?</a>
     </p>

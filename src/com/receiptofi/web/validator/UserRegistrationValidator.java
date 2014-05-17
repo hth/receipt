@@ -69,6 +69,6 @@ public final class UserRegistrationValidator implements Validator {
         errors.rejectValue("emailId",
                 "emailId.already.registered",
                 new Object[] { userRegistration.getEmailId() },
-                "Account already registered with this Email ID");
+                "Account already registered with this Email");
     }
 }
