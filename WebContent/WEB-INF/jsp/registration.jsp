@@ -24,7 +24,7 @@
 	<h2>
 		<fmt:message key="signup.heading" />
 	</h2>
-	<form:form method="post" modelAttribute="userRegistrationForm" action="new.htm">
+	<form:form method="post" modelAttribute="userRegistrationForm" action="registration.htm">
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" width="600px">
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="firstName" path="firstName" cssErrorClass="error">First Name:</form:label></td>
@@ -61,9 +61,7 @@
 		</table>
 	</form:form>
 
-	<p>Please note: A verification email will be sent to your email address.</p>
-
-    <p><a href="<c:url value="login.htm"/>" title="Click here to go to login.">Login</a></p>
+    <p><a href="${pageContext.request.contextPath}/login.htm" title="Click here to go to login.">Login</a></p>
 </div>
 
 <div class="footer">
@@ -88,25 +86,28 @@
 
     function checkAvailability() {
         $.ajax({
-            url: '${pageContext. request. contextPath}/access/new/availability.htm',
+            type: "POST",
+            url: '${pageContext. request. contextPath}/open/registration/availability.htm',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             },
-            data: {
-                emailId: $('#emailId').val()
-            },
-            contentType: "*/*",
-            dataTypes: "application/json",
+            data: JSON.stringify({
+                email: $('#emailId').val()
+            }),
+            contentType: 'application/json;charset=utf-8',
+            mimeType: 'application/json',
+            dataType:'json',
             success: function (data) {
-                console.log('response=', $.parseJSON(data));
-                fieldValidated("emailId", $.parseJSON(data));
+                console.log('response=', data);
+                fieldValidated("emailId", data);
             }
         });
     }
 
     function fieldValidated(field, result) {
         if (result.valid == "true") {
-            $("#" + field + "\\.errors").remove();
+            $("#emailIdErrors").html("<span id='emailId.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
+            $("label[for='" + field + "']").removeAttr('class');
             $("#recoverId").css({'display': 'none'});
         } else {
             $("#emailIdErrors").html("<span id='" + field + ".errors' style='color:red;'>" + result.message + "</span>");
@@ -145,6 +146,13 @@
 
     $(function () {
         $(document).tooltip();
+
+        $('#emailIdErrors').blur(function () {
+            if ($(this).val().length == 0) {
+                $("#emailIdErrors").html("<span id='emailId.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
+                $("#recoverId").css({'display': 'none'});
+            }
+        });
     });
 </script>
 
