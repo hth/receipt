@@ -1,5 +1,6 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -38,6 +39,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+import org.springframework.util.Assert;
 
 /**
  * User: hitender
@@ -49,18 +51,26 @@ public final class MailService {
     private static Logger log = LoggerFactory.getLogger(MailService.class);
 
     @Autowired private AccountService accountService;
+
     @Autowired private InviteService inviteService;
+
     @Autowired private JavaMailSenderImpl mailSender;
+
     @Autowired private LoginService loginService;
 
     @Autowired private InviteManager inviteManager;
+
     @Autowired private UserProfileManager userProfileManager;
+
     @Autowired private UserAuthenticationManager userAuthenticationManager;
+
     @Autowired private UserPreferenceManager userPreferenceManager;
+
     @Autowired private UserAccountManager userAccountManager;
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+    @Autowired
+    private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
 
     @Value("${do.not.reply.email}")
     private String doNotReplyEmail;
@@ -86,60 +96,84 @@ public final class MailService {
     @Value("${mail.recover.subject}")
     private String mailRecoverSubject;
 
+    @Value("${mail.validate.subject}")
+    private String mailValidateSubject;
+
+    public boolean accountValidationEmail(UserAccountEntity userAccount, EmailValidateEntity accountValidate) {
+        Assert.notNull(userAccount);
+        Map<String, String> rootMap = new HashMap<>();
+        rootMap.put("to", userAccount.getName());
+        rootMap.put("contact_email", userAccount.getUserId());
+        rootMap.put("link", accountValidate.getAuthenticationKey());
+        rootMap.put("domain", domain);
+        rootMap.put("https", https);
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+
+            // use the true flag to indicate you need a multipart message
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
+
+            String sentTo = !StringUtils.isEmpty(devSentTo) ? devSentTo : userAccount.getUserId();
+            if(!sentTo.equalsIgnoreCase(devSentTo)) {
+                helper.setTo(new InternetAddress(userAccount.getUserId(), userAccount.getName()));
+            } else {
+                helper.setTo(new InternetAddress(devSentTo, emailAddressName));
+            }
+            log.info("Account validation sent to={}", !StringUtils.isEmpty(devSentTo) ? devSentTo : userAccount.getUserId());
+            sendMail(
+                    userAccount.getName() + ": " + mailValidateSubject,
+                    freemarkerToString("mail/self-signup.ftl", rootMap),
+                    message,
+                    helper
+            );
+        } catch (IOException | TemplateException | MessagingException exception) {
+            log.error("Validation failure email for={}", userAccount.getUserId(), exception);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Send recover email to user of provided email id
-     *
      * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
+     *
      * @param emailId
      */
     public boolean mailRecoverLink(String emailId) {
-        UserProfileEntity userProfileEntity =  accountService.findIfUserExists(emailId);
+        UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
         if(userProfileEntity != null) {
+            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity);
+
+            Map<String, String> rootMap = new HashMap<>();
+            rootMap.put("to", userProfileEntity.getName());
+            rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
+            rootMap.put("domain", domain);
+            rootMap.put("https", https);
+
             try {
-                ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity);
+                MimeMessage message = mailSender.createMimeMessage();
 
-                Map<String, String> rootMap = new HashMap<>();
-                rootMap.put("to", userProfileEntity.getName());
-                rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
-                rootMap.put("domain", domain);
-                rootMap.put("https", https);
+                // use the true flag to indicate you need a multipart message
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+                helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
 
-                try {
-                    Configuration cfg = freemarkerConfiguration.createConfiguration();
-                    Template template = cfg.getTemplate("text-account-recover.ftl");
-                    final String text = processTemplateIntoString(template, rootMap);
-
-                    MimeMessage message = mailSender.createMimeMessage();
-
-                    // use the true flag to indicate you need a multipart message
-                    MimeMessageHelper helper = new MimeMessageHelper(message, true , "UTF-8");
-                    helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
-
-                    String sentTo = !StringUtils.isEmpty(devSentTo) ? devSentTo : emailId;
-                    if(!sentTo.equalsIgnoreCase(devSentTo)) {
-                        helper.setTo(new InternetAddress(emailId, userProfileEntity.getName()));
-                    } else {
-                        helper.setTo(new InternetAddress(devSentTo, emailAddressName));
-                    }
-                    log.info("Mail recovery send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
-
-                    // use the true flag to indicate the text included is HTML
-                    helper.setText(text, true);
-                    helper.setSubject(userProfileEntity.getName() + ": " + mailRecoverSubject);
-
-                    //Attach image always at the end
-                    URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
-                    assert url != null;
-                    FileSystemResource res = new FileSystemResource(url.getPath());
-                    helper.addInline("receiptofi.logo", res);
-
-                    mailSender.send(message);
-                } catch (IOException | TemplateException exception) {
-                    log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
-                    return false;
+                String sentTo = !StringUtils.isEmpty(devSentTo) ? devSentTo : emailId;
+                if(!sentTo.equalsIgnoreCase(devSentTo)) {
+                    helper.setTo(new InternetAddress(emailId, userProfileEntity.getName()));
+                } else {
+                    helper.setTo(new InternetAddress(devSentTo, emailAddressName));
                 }
-            } catch(Exception exception) {
-                log.error("Exception occurred during persisting ForgotRecoverEntity: " + exception.getLocalizedMessage());
+                log.info("Mail recovery send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
+                sendMail(
+                        userProfileEntity.getName() + ": " + mailRecoverSubject,
+                        freemarkerToString("mail/account-recover.ftl", rootMap),
+                        message,
+                        helper
+                );
+            } catch (IOException | TemplateException | MessagingException exception) {
+                log.error("Recovery email={}", exception);
                 return false;
             }
         }
@@ -149,12 +183,12 @@ public final class MailService {
     /**
      * Used in sending the invitation for the first time
      *
-     * @param emailId Invited users email address
+     * @param emailId            Invited users email address
      * @param userProfileEmailId Existing users email address
      * @return
      */
     public boolean sendInvitation(String emailId, String userProfileEmailId) {
-        UserProfileEntity userProfileEntity =  accountService.findIfUserExists(userProfileEmailId);
+        UserProfileEntity userProfileEntity = accountService.findIfUserExists(userProfileEmailId);
         if(userProfileEntity != null) {
             InviteEntity inviteEntity = null;
             try {
@@ -175,12 +209,12 @@ public final class MailService {
     /**
      * Helps in re-sending the invitation or to send new invitation to existing (pending) invitation by a new user.
      *
-     * @param emailId Invited users email address
+     * @param emailId            Invited users email address
      * @param userProfileEmailId Existing users email address
      * @return
      */
     public boolean reSendInvitation(String emailId, String userProfileEmailId) {
-        UserProfileEntity userProfileEntity =  accountService.findIfUserExists(userProfileEmailId);
+        UserProfileEntity userProfileEntity = accountService.findIfUserExists(userProfileEmailId);
         if(userProfileEntity != null) {
             try {
                 InviteEntity inviteEntity = inviteService.reInviteActiveInvite(emailId, userProfileEntity);
@@ -232,10 +266,6 @@ public final class MailService {
         rootMap.put("https", https);
 
         try {
-            Configuration cfg = freemarkerConfiguration.createConfiguration();
-            Template template = cfg.getTemplate("text-invite.ftl");
-            final String text = processTemplateIntoString(template, rootMap);
-
             MimeMessage message = mailSender.createMimeMessage();
 
             // use the true flag to indicate you need a multipart message
@@ -243,23 +273,36 @@ public final class MailService {
             helper.setFrom(new InternetAddress(inviteeEmail, emailAddressName));
             helper.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId);
             log.info("Invitation send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
-
-            // use the true flag to indicate the text included is HTML
-            helper.setText(text, true);
-            helper.setSubject(mailInviteSubject + " - " + userProfileEntity.getName());
-
-            //Attach image always at the end
-            URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
-            assert url != null;
-            FileSystemResource res = new FileSystemResource(url.getPath());
-            helper.addInline("receiptofi.logo", res);
-
-            mailSender.send(message);
-        } catch(TemplateException | IOException | MessagingException exception) {
-            log.error("Exception during sending and formulating email: " + exception.getLocalizedMessage());
-            log.info("Failure in sending the invitation email: " + inviteEntity.getId() + ", for: " + inviteEntity.getEmailId());
+            sendMail(
+                    mailInviteSubject + " - " + userProfileEntity.getName(),
+                    freemarkerToString("mail/invite.ftl", rootMap),
+                    message,
+                    helper
+            );
+        } catch (TemplateException | IOException | MessagingException exception) {
+            log.error("Invitation failure email inviteId={}, for={}, exception={}", inviteEntity.getId(), inviteEntity.getEmailId(), exception);
             throw new RuntimeException(exception);
         }
+    }
+
+    private void sendMail(String subject, String text, MimeMessage message, MimeMessageHelper helper) throws MessagingException {
+        // use the true flag to indicate the text included is HTML
+        helper.setText(text, true);
+        helper.setSubject(subject);
+
+        //Attach image always at the end
+        URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
+        Assert.notNull(url);
+        FileSystemResource res = new FileSystemResource(url.getPath());
+        helper.addInline("receiptofi.logo", res);
+
+        mailSender.send(message);
+    }
+
+    private String freemarkerToString(String ftl, Map<String, String> rootMap) throws IOException, TemplateException {
+        Configuration cfg = freemarkerConfiguration.createConfiguration();
+        Template template = cfg.getTemplate(ftl);
+        return processTemplateIntoString(template, rootMap);
     }
 
     /**
@@ -273,6 +316,7 @@ public final class MailService {
         UserAccountEntity userAccount = loginService.loadUserAccount(userProfile.getReceiptUserId());
         UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
         UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);
+
         userPreferenceManager.deleteHard(userPreferenceEntity);
         userAuthenticationManager.deleteHard(userAuthenticationEntity);
         userAccountManager.deleteHard(userAccount);

@@ -39,16 +39,17 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity findByAuthenticationKey(String auth) {
-        Criteria criteria = where("AUTH").is(auth);
-        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Query query = query(where("AUTH").is(auth)).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 
     @Override
     public void invalidateAllEntries(InviteEntity object) {
-        Criteria criteria = where("USER_PROFILE_INVITED.$id").is(new ObjectId(object.getInvited().getId()));
-        WriteResult writeResult = mongoTemplate.updateMulti(query(criteria), entityUpdate(update("A", false)), InviteEntity.class);
-        log.info(writeResult.toString());
+        mongoTemplate.updateMulti(
+                query(where("USER_PROFILE_INVITED.$id").is(new ObjectId(object.getInvited().getId()))),
+                entityUpdate(update("A", false)),
+                InviteEntity.class
+        );
     }
 
     @Override

@@ -55,7 +55,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     getAuthorities(userAccountEntity.getRoles()),
                     userProfile.getReceiptUserId(),
                     userProfile.getLevel(),
-                    userAccountEntity.isActive()
+                    userAccountEntity.isActive() && userAccountEntity.isAccountValidated()
             );
         } else {
             log.error("Error in retrieving user");
@@ -79,7 +79,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     getAuthorities(userAccountEntity.getRoles()),
                     userProfile.getReceiptUserId(),
                     userProfile.getLevel(),
-                    userAccountEntity.isActive()
+                    userAccountEntity.isActive() && userAccountEntity.isAccountValidated()
             );
         } else {
             log.error("Error in retrieving user");

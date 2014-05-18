@@ -1,4 +1,4 @@
-package com.receiptofi.web.controller.access;
+package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -12,6 +12,7 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.utils.RandomString;
+import com.receiptofi.web.controller.open.ForgotController;
 import com.receiptofi.web.form.InviteAuthenticateForm;
 import com.receiptofi.web.validator.InviteAuthenticateValidator;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ import org.joda.time.DateTime;
  * Time: 1:48 PM
  */
 @Controller
-@RequestMapping(value = "/invite")
+@RequestMapping(value = "/open/invite")
 public class InviteController {
     private static final Logger log = LoggerFactory.getLogger(ForgotController.class);
 

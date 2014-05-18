@@ -17,7 +17,7 @@
 </p>
 
 <p>
-    <a href="${https}://${domain}/forgot/authenticate.htm?authenticationKey=${link}">Reset your Receiptofi account password ></a>
+    <a href="${https}://${domain}/open/forgot/authenticate.htm?authenticationKey=${link}">Reset your Receiptofi account password ></a>
 
 </p>
 <hr>

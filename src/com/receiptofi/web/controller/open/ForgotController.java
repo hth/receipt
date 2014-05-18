@@ -1,4 +1,4 @@
-package com.receiptofi.web.controller.access;
+package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;

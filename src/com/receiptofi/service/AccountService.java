@@ -83,7 +83,7 @@ public final class AccountService {
      * @return
      * @throws Exception
      */
-    public UserAccountEntity createNewAccount(UserRegistrationForm userRegistrationForm) {
+    public UserAccountEntity executeCreationOfNewAccount(UserRegistrationForm userRegistrationForm) {
         DateTime time = DateUtil.now();
 
         UserAccountEntity userAccount;
@@ -108,7 +108,7 @@ public final class AccountService {
                     userRegistrationForm.getLastName(),
                     userAuthentication
             );
-            isRegistrationAllowed(userAccount);
+            userAccount.inActive(); //activated on email validation
             userAccountManager.save(userAccount);
 
             userProfile = UserProfileEntity.newInstance(
@@ -153,17 +153,11 @@ public final class AccountService {
      * @param userProfileEntity
      * @return
      */
-    public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) throws Exception {
+    public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) {
         String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
-
         ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(userProfileEntity.getId(), authenticationKey);
-        try {
-            forgotRecoverManager.save(forgotRecoverEntity);
-            return forgotRecoverEntity;
-        } catch (Exception exception) {
-            log.error("Exception generated during password recovery action: " + exception.getLocalizedMessage());
-            throw exception;
-        }
+        forgotRecoverManager.save(forgotRecoverEntity);
+        return forgotRecoverEntity;
     }
 
     public void invalidateAllEntries(ForgotRecoverEntity forgotRecoverEntity) {
@@ -187,5 +181,9 @@ public final class AccountService {
 
     public UserPreferenceEntity getPreference(UserProfileEntity userProfileEntity) {
         return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
+    }
+
+    public void saveUserAccount(UserAccountEntity userAccountEntity) {
+        userAccountManager.save(userAccountEntity);
     }
 }

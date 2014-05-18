@@ -3,9 +3,12 @@
  */
 package com.receiptofi.web.controller.open;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.EmailValidateService;
+import com.receiptofi.service.MailService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -15,24 +18,19 @@ import com.receiptofi.web.validator.UserRegistrationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -56,16 +54,24 @@ public final class AccountRegistrationController {
     @Value("${registrationSuccessPage:registrationsuccess}")
     private String registrationSuccessPage;
 
-    @Value("${recover:redirect:/forgot/recover.htm}")
+    @Value("${recover:redirect:/open/forgot/recover.htm}")
     private String recover;
 
     private final UserRegistrationValidator userRegistrationValidator;
     private final AccountService accountService;
+    private final MailService mailService;
+    private final EmailValidateService emailValidateService;
 
     @Autowired
-    public AccountRegistrationController(UserRegistrationValidator userRegistrationValidator, AccountService accountService) {
+    public AccountRegistrationController(
+            UserRegistrationValidator userRegistrationValidator,
+            AccountService accountService,
+            MailService mailService,
+            EmailValidateService emailValidateService) {
         this.userRegistrationValidator = userRegistrationValidator;
         this.accountService = accountService;
+        this.mailService = mailService;
+        this.emailValidateService = emailValidateService;
     }
 
     @ModelAttribute("userRegistrationForm")
@@ -97,24 +103,21 @@ public final class AccountRegistrationController {
 
         UserAccountEntity userAccount;
         try {
-            //TODO For now de-activate all registration. Currently registration is by invitation only.
-            userAccount = accountService.createNewAccount(userRegistrationForm);
-            log.info("Registered new user Id={}", userAccount.getReceiptUserId());
+            userAccount = accountService.executeCreationOfNewAccount(userRegistrationForm);
         } catch (RuntimeException exce) {
             log.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
             return registrationPage;
         }
 
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        log.info("Registered new user Id={}", userAccount.getReceiptUserId());
+        redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
 
-        if(userAccount.isActive()) {
-            redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
-            return registrationSuccess;
-        } else {
-            //TODO For now de-activate all registration. Currently registration is by invitation only.
-            return registrationPage;
-        }
+        EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(userAccount.getReceiptUserId(), userAccount.getUserId());
+        mailService.accountValidationEmail(userAccount, accountValidate);
+
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        return registrationSuccess;
     }
 
     /**
