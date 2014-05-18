@@ -32,9 +32,6 @@ public class EmailValidateEntity extends BaseEntity {
     @Field("AUTH")
     private String authenticationKey;
 
-    /* To make bean happy */
-    public EmailValidateEntity() {}
-
     private EmailValidateEntity(String receiptUserId, String email, String authenticationKey) {
         this.receiptUserId = receiptUserId;
         this.email = email;
