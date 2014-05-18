@@ -4,7 +4,7 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;

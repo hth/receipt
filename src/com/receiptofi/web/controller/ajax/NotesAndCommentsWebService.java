@@ -1,6 +1,6 @@
 package com.receiptofi.web.controller.ajax;
 
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.ParseJsonStringToMap;

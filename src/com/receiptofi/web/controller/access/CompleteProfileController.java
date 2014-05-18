@@ -1,6 +1,6 @@
 package com.receiptofi.web.controller.access;
 
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
 import org.slf4j.Logger;

@@ -2,7 +2,7 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.utils.DateUtil;

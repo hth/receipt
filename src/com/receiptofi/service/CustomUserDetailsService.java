@@ -1,6 +1,6 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

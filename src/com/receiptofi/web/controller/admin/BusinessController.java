@@ -3,7 +3,7 @@ package com.receiptofi.web.controller.admin;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.utils.DateUtil;
