@@ -3,7 +3,10 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title><fmt:message key="signup.title" /></title>
+    <title><fmt:message key="account.email.validated" /></title>
+
+    <meta HTTP-EQUIV="Pragma" content="no-cache">
+    <meta HTTP-EQUIV="Expires" content="-1">
 
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
@@ -23,11 +26,10 @@
 <div class="wrapper">
     <div class="error_page">
         <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
-        <h1><fmt:message key="signup.success" /></h1>
-        <p>Verification email has been sent to email <b><c:out value="${email}"/></b>.</p>
-        <p>Please follow the directions in the email to validated your account.</p>
+        <h1>Account validation failed</h1>
+        <p>We apologize, but we could not validate your account.</p>
         <p>&nbsp;</p>
-        <p>Click here for <a href="${pageContext.request.contextPath}/login.htm">Login</a> page</p>
+        <p></p>Please <a href="${pageContext.request.contextPath}/login.htm">click here</a> to return to the main page and start over.</p>
     </div>
 </div>
 
@@ -38,38 +40,6 @@
     </p>
     <p>&copy; 2014 Receiptofi Inc. All Rights Reserved.</p>
 </div>
-
-<script>
-    $(function () {
-        $('.tooltip').each(function () {
-            var $this, id, t;
-
-            $this = $(this);
-            id = this.id;
-            t = $('<span />', {
-                title: $this.attr('title')
-            }).appendTo($this.parent()).tooltip({
-                position: {
-                    of: '#' + id,
-                    my: "left+190 center",
-                    at: "left center",
-                    collision: "fit"
-                }
-            });
-            // remove the title from the real element.
-            $this.attr('title', '');
-            $('#' + id).focusin(function () {
-                t.tooltip('open');
-            }).focusout(function () {
-                t.tooltip('close');
-            });
-        });
-    });
-
-    $(function () {
-        $(document).tooltip();
-    });
-</script>
 
 </body>
 </html>

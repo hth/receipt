@@ -58,7 +58,7 @@ public final class InviteService {
         UserAccountEntity userAccount;
         try {
             //First save is performed
-            userAccount = accountService.createNewAccount(userRegistrationForm);
+            userAccount = accountService.executeCreationOfNewAccount(userRegistrationForm);
         } catch (RuntimeException exception) {
             log.error("Error occurred during creation of invited user: " + exception.getLocalizedMessage());
             throw exception;

@@ -44,7 +44,7 @@
         </table>
     </form:form>
 
-    <p><a href="<c:url value="../login.htm"/>" title="Click here to go to login.">Login</a></p>
+    <p><a href="${pageContext.request.contextPath}/login.htm" title="Click here to go to login.">Login</a></p>
 </div>
 
 <div class="footer">

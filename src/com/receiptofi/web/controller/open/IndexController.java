@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Date: 4/21/14 8:00 PM
  */
 @Controller
-public class IndexController {
+public final class IndexController {
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
     @RequestMapping(value = "/open/index", method = RequestMethod.GET)

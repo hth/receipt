@@ -73,6 +73,9 @@ public class UserAccountEntity extends BaseEntity {
     @Field("USER_AUTHENTICATION")
     private UserAuthenticationEntity userAuthentication;
 
+    //TODO on email change this should be reset to false and validation process has to be redone
+    private boolean isAccountValidated;
+
     public UserAccountEntity() {
     }
 
@@ -222,6 +225,18 @@ public class UserAccountEntity extends BaseEntity {
 
     public void setUserAuthentication(UserAuthenticationEntity userAuthentication) {
         this.userAuthentication = userAuthentication;
+    }
+
+    public boolean isAccountValidated() {
+        return isAccountValidated;
+    }
+
+    public void setAccountValidated(boolean accountValidated) {
+        isAccountValidated = accountValidated;
+    }
+
+    public String getName() {
+        return this.firstName + " " + this.lastName;
     }
 
     @Override

@@ -21,7 +21,7 @@
     <h2>
         <fmt:message key="account.recover.title" />
     </h2>
-    <form:form method="post" modelAttribute="forgotRecoverForm" action="recover.htm">
+    <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
         <span style="display:none;visibility:hidden;">
             <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
             <form:input path="captcha" disabled="true"/>
@@ -40,7 +40,7 @@
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td align="left"><input id="recoverAccountId" type="submit" value="Recover Account" name="forgot_recover" class="btn btn-default" /></td>
+                <td align="left"><input id="recoverAccountId" type="submit" value="Recover Account" name="forgot_password" class="btn btn-default" /></td>
             </tr>
         </table>
     </form:form>

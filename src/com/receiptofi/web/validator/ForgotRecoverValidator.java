@@ -26,7 +26,7 @@ public final class ForgotRecoverValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.info("Executing validation for new bizForm");
+        log.info("Executing validation for password forgotten");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email Id"});
 
