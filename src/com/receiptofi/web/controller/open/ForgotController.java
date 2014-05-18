@@ -22,21 +22,21 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -46,17 +46,29 @@ import org.joda.time.DateTime;
  * Time: 9:44 AM
  */
 @Controller
-@RequestMapping(value = "/forgot")
+@RequestMapping(value = "/open/forgot")
 public class ForgotController {
     private static final Logger log = LoggerFactory.getLogger(ForgotController.class);
 
-    private static final String FORGOT_PASSWORD             = "/forgot/password";
-    private static final String FORGOT_RECOVER_ACCOUNT      = "/forgot/recover";
-    private static final String FORGOT_RECOVER_CONFIRM      = "/forgot/recoverConfirm";
-    private static final String FORGOT_RECOVER_AUTH         = "/forgot/authenticate";
-    private static final String FORGOT_RECOVER_AUTH_CONFIRM = "/forgot/authenticateConfirm";
+    @Value("${password:/forgot/password}")
+    private String passwordPage;
 
-    /** Used in session */
+    @Value("${recoverPage:/forgot/recover}")
+    private String recoverPage;
+
+    @Value("${recoverConfirmPage:/forgot/recoverConfirm}")
+    private String recoverConfirmPage;
+
+    @Value("${recoverConfirm:redirect:/open/forgot/recoverConfirm.htm}")
+    private String recoverConfirm;
+
+    @Value("${authenticatePage:/forgot/authenticate}")
+    private String authenticatePage;
+
+    @Value("${authenticationConfirmPage:/forgot/authenticateConfirm}")
+    private String authenticateConfirm;
+
+    /** Used in RedirectAttributes */
     private static final String SUCCESS_EMAIL   = "success_email";
 
     /** Used in JSP page /forgot/authenticateConfirm */
@@ -70,56 +82,54 @@ public class ForgotController {
     @Autowired private LoginService loginService;
 
     @RequestMapping(method = RequestMethod.GET, value = "password")
-    public ModelAndView password(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
-        log.info("Load password recovery page");
-        return new ModelAndView(FORGOT_PASSWORD, "forgotRecoverForm", forgotRecoverForm);
+    public String onPasswordLinkClicked(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
+        log.info("Password recovery page invoked");
+        return passwordPage;
     }
 
-    /**
-     * User can submit an email address to recover their account
-     *
-     * @param forgotRecoverForm
-     * @param httpServletRequest
-     * @param httpServletResponse
-     * @param result
-     * @return
-     * @throws IOException
-     */
     @RequestMapping(method = RequestMethod.POST, value = "password", params = {"forgot_password"})
-    public ModelAndView postPassword(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
+    public String emailUserForPasswordRecovery(
+            @ModelAttribute("forgotRecoverForm")
+            ForgotRecoverForm forgotRecoverForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) throws IOException {
+
         DateTime time = DateUtil.now();
         forgotRecoverValidator.validate(forgotRecoverForm, result);
         if(result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
-
-            ModelAndView modelAndView = new ModelAndView(FORGOT_PASSWORD);
-            modelAndView.addObject("forgotRecoverForm", forgotRecoverForm);
-
-            return modelAndView;
+            return passwordPage;
         }
 
         boolean status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
         if(!status) {
-            log.error("Failed to send recovery email");
+            log.error("Failed to send recovery email for user={}", forgotRecoverForm.getEmailId());
         }
 
-        // Check the mantra section
-        // http://www.theserverside.com/news/1365146/Redirect-After-Post
-        // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
-        httpServletRequest.getSession().setAttribute(SUCCESS_EMAIL, true);
-        return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
+        redirectAttrs.addFlashAttribute(SUCCESS_EMAIL, Boolean.toString(status));
+        return recoverConfirm;
     }
 
     /**
      * Method just for changing the URL, hence have to use re-direct.
      * This could be an expensive call because of redirect.
      *
+     * Its redirected from RequestMethod.POST from
+     * @see AccountRegistrationController#recover(UserRegistrationForm, RedirectAttributes)
+     *
      * @param userRegistrationForm
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "recover")
-    public ModelAndView loadForm(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, HttpServletResponse httpServletResponse) throws IOException {
-        log.info("Recover password process initiated for user: " + userRegistrationForm.getEmailId());
+    public ModelAndView whenAccountAlreadyExists(
+            @ModelAttribute("userRegistrationForm")
+            UserRegistrationForm userRegistrationForm,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        log.info("Recover password process initiated for user={}", userRegistrationForm.getEmailId());
         if(StringUtils.isEmpty(userRegistrationForm.getEmailId())) {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
             return null;
@@ -129,102 +139,63 @@ public class ForgotController {
         forgotRecoverForm.setEmailId(userRegistrationForm.getEmailId());
         forgotRecoverForm.setCaptcha(userRegistrationForm.getEmailId());
 
-        return new ModelAndView(FORGOT_RECOVER_ACCOUNT, "forgotRecoverForm", forgotRecoverForm);
-    }
-
-    /**
-     * Recover the account and sends email to users account
-     *
-     * @param forgotRecoverForm
-     * @param result
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.POST, value = "recover", params = {"forgot_recover"})
-    public ModelAndView post(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BindingResult result) throws IOException {
-        DateTime time = DateUtil.now();
-        if(StringUtils.isEmpty(forgotRecoverForm.getEmailId())) {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Forbidden to access this page directly");
-            return null;
-        }
-
-        forgotRecoverValidator.validate(forgotRecoverForm, result);
-        if(result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
-
-            ModelAndView modelAndView = new ModelAndView(FORGOT_RECOVER_ACCOUNT);
-            modelAndView.addObject("forgotRecoverForm", forgotRecoverForm);
-
-            return modelAndView;
-        }
-
-        boolean status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
-        if(!status) {
-            log.error("Failed to send recovery email");
-        }
-
-        // Check the mantra section
-        // http://www.theserverside.com/news/1365146/Redirect-After-Post
-        // Fix for form re-submission is by re-directing to a GET request from POST request and little bit of gymnastic
-        httpServletRequest.getSession().setAttribute(SUCCESS_EMAIL, true);
-        return new ModelAndView("redirect:" + FORGOT_RECOVER_CONFIRM + ".htm");
+        return new ModelAndView(recoverPage, "forgotRecoverForm", forgotRecoverForm);
     }
 
     /**
      * Add this gymnastic to make sure the page does not process when refreshed again or bookmarked.
      *
-     * @param httpServletRequest
-     * @param httpServletResponse
      * @return
      * @throws IOException
      */
     @RequestMapping(method = RequestMethod.GET, value = "recoverConfirm")
-    public String recoverConfirm(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, SessionStatus sessionStatus) throws IOException {
-        Enumeration<String> attributes = httpServletRequest.getSession().getAttributeNames();
-        while(attributes.hasMoreElements()) {
-            String attributeName = attributes.nextElement();
-            if(attributeName.equals(SUCCESS_EMAIL)) {
-                boolean condition = (boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EMAIL);
-                if(condition) {
-                    // Marking any session if set as complete.
-                    // There should be nothing set anyways in previous request.
-                    // This is just a precaution
-                    sessionStatus.setComplete();
+    public String showConfirmationPageForProcessingPasswordRecovery(
+            @ModelAttribute(SUCCESS_EMAIL)
+            String success,
 
-                    // important to invalidate at the end
-                    httpServletRequest.getSession(false).invalidate();
-                    return FORGOT_RECOVER_CONFIRM;
-                }
-            }
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+
+        //referer is a weak check; strong check would be to check against the actual value of referer
+        if(StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
+            return recoverConfirmPage;
         }
-        httpServletResponse.sendError(SC_FORBIDDEN, "Forbidden to access this page directly");
+        log.warn("ah! some just tried access={}", recoverConfirmPage);
+        httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "authenticate")
-    public ModelAndView loadForm(@RequestParam("authenticationKey") String key) {
-        ForgotRecoverEntity forgotRecoverEntity = accountService.findAccountAuthenticationForKey(key);
-        ModelAndView modelAndView = new ModelAndView(FORGOT_RECOVER_AUTH);
+    public String whenClickedOnEmailLink(
+            @RequestParam("authenticationKey")
+            String key,
 
+            ForgotAuthenticateForm forgotAuthenticateForm
+    ) {
+        ForgotRecoverEntity forgotRecoverEntity = accountService.findAccountAuthenticationForKey(key);
         if(forgotRecoverEntity != null) {
-            ForgotAuthenticateForm forgotAuthenticateForm = ForgotAuthenticateForm.newInstance();
             forgotAuthenticateForm.setAuthenticationKey(key);
             forgotAuthenticateForm.setUserProfileId(forgotRecoverEntity.getUserProfileId());
-            modelAndView.addObject("forgotAuthenticateForm", forgotAuthenticateForm);
         }
-
-        return modelAndView;
+        return authenticatePage;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "authenticate", params = {"update_password"})
-    public ModelAndView post(@ModelAttribute("forgotAuthenticateForm") ForgotAuthenticateForm forgotAuthenticateForm, BindingResult result) {
+    public ModelAndView updatePassword(
+            @ModelAttribute("forgotAuthenticateForm")
+            ForgotAuthenticateForm forgotAuthenticateForm,
+
+            BindingResult result
+    ) {
         DateTime time = DateUtil.now();
         forgotAuthenticateValidator.validate(forgotAuthenticateForm, result);
         if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-            return new ModelAndView(FORGOT_RECOVER_AUTH, "forgotAuthenticateForm", forgotAuthenticateForm);
+            return new ModelAndView(authenticatePage);
         } else {
             ForgotRecoverEntity forgotRecoverEntity = accountService.findAccountAuthenticationForKey(forgotAuthenticateForm.getAuthenticationKey());
-            ModelAndView modelAndView = new ModelAndView(FORGOT_RECOVER_AUTH_CONFIRM);
+            ModelAndView modelAndView = new ModelAndView(authenticateConfirm);
             if(forgotRecoverEntity != null) {
                 UserProfileEntity userProfileEntity = userProfilePreferenceService.findById(forgotRecoverEntity.getUserProfileId());
 

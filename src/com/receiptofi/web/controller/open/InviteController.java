@@ -12,7 +12,6 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.web.controller.open.ForgotController;
 import com.receiptofi.web.form.InviteAuthenticateForm;
 import com.receiptofi.web.validator.InviteAuthenticateValidator;
 import org.slf4j.Logger;

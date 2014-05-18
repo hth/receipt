@@ -14,7 +14,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
 
-    <c:if test="${empty forgotAuthenticateForm}">
+    <c:if test="${empty forgotAuthenticateForm.userProfileId}">
     <style>
         body {background: #e6e6e6;margin: 0; padding: 20px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#666666;}
         .error_page {width: 600px; padding: 50px; margin: auto;}
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <c:if test="${empty forgotAuthenticateForm}">
+    <c:if test="${empty forgotAuthenticateForm.userProfileId}">
     <div class="error_page">
         <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
         <h1>Invalid Link</h1>
@@ -38,7 +38,7 @@
     </div>
     </c:if>
 
-    <c:if test="${!empty forgotAuthenticateForm}">
+    <c:if test="${!empty forgotAuthenticateForm.userProfileId}">
     <img src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
     <p>&nbsp;</p>
     <h2>

@@ -140,6 +140,7 @@ public final class AccountRegistrationController {
     /**
      * Starts the account recovery process
      * @param userRegistrationForm
+     * @param redirectAttrs
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, params = {"recover"})

@@ -25,6 +25,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -173,7 +175,7 @@ public final class MailService {
                         helper
                 );
             } catch (IOException | TemplateException | MessagingException exception) {
-                log.error("Recovery email={}", exception);
+                log.error("Recovery email={}", exception.getLocalizedMessage(), exception);
                 return false;
             }
         }
@@ -251,7 +253,7 @@ public final class MailService {
             inviteManager.save(inviteEntity);
             return inviteEntity;
         } catch (Exception exception) {
-            log.error("Error occurred during creation of invited user: " + exception.getLocalizedMessage());
+            log.error("Error occurred during creation of invited user={}", emailId, exception.getLocalizedMessage(), exception);
             return null;
         }
     }
@@ -296,7 +298,12 @@ public final class MailService {
         FileSystemResource res = new FileSystemResource(url.getPath());
         helper.addInline("receiptofi.logo", res);
 
-        mailSender.send(message);
+        try {
+            mailSender.send(message);
+        } catch(MailSendException mailSendException) {
+            log.error("Mail send exception={}", mailSendException.getLocalizedMessage());
+            throw new MessagingException(mailSendException.getLocalizedMessage(), mailSendException);
+        }
     }
 
     private String freemarkerToString(String ftl, Map<String, String> rootMap) throws IOException, TemplateException {
