@@ -36,7 +36,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/ws/m")
-public class MileageWebService {
+public final class MileageWebService {
     private static Logger log = LoggerFactory.getLogger(MileageWebService.class);
 
     @Autowired private MileageService mileageService;

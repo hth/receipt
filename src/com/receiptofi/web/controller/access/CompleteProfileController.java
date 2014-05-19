@@ -20,7 +20,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/completeprofile")
-public class CompleteProfileController {
+public final class CompleteProfileController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @Value("${maxSkipProfileUpdate:5}")

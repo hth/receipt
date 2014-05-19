@@ -20,7 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         @CompoundIndex(name = "invite_email_idx",   def = "{'EMAIL': 0}", unique = false),
         @CompoundIndex(name = "invite_key_idx",     def = "{'AUTH' : 0}", unique = true)
 } )
-public class InviteEntity extends BaseEntity {
+public final class InviteEntity extends BaseEntity {
 
     @NotNull
     @Field("EM")

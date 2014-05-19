@@ -32,7 +32,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/eval")
-public class EvalFeedbackController {
+public final class EvalFeedbackController {
     private static final Logger log = LoggerFactory.getLogger(EvalFeedbackController.class);
 
     /* Refers to feedback.jsp and next one to feedbackConfirm.jsp */

@@ -76,7 +76,7 @@ import org.joda.time.format.DateTimeFormatter;
  */
 @Controller
 @RequestMapping(value = "/access")
-public class LandingController extends BaseController {
+public final class LandingController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired LandingService landingService;

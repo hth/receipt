@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         @CompoundIndex(name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
         @CompoundIndex(name = "user_account_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true)
 })
-public class UserAccountEntity extends BaseEntity {
+public final class UserAccountEntity extends BaseEntity {
 
     @NotNull
     @Field("RID")

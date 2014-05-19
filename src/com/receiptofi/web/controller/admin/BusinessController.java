@@ -40,7 +40,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/admin")
-public class BusinessController {
+public final class BusinessController {
     private static final Logger log = LoggerFactory.getLogger(BusinessController.class);
     private static final String NEXT_PAGE = "/admin/business";
     private static final String EDIT_PAGE = "/admin/businessEdit";

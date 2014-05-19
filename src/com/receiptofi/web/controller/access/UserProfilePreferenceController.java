@@ -48,7 +48,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/userprofilepreference")
-public class UserProfilePreferenceController {
+public final class UserProfilePreferenceController {
 	private static final Logger log = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
 	private static final String nextPage = "/userprofilepreference";

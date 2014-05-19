@@ -43,7 +43,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/receipt")
-public class ReceiptController extends BaseController {
+public final class ReceiptController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(ReceiptController.class);
 
 	private static String NEXT_PAGE = "/receipt";

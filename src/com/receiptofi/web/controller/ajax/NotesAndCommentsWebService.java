@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping(value = "/ws/nc")
-public class NotesAndCommentsWebService {
+public final class NotesAndCommentsWebService {
      private static final Logger log = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
     @Autowired private ReceiptService receiptService;

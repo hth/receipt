@@ -55,7 +55,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  */
 @Controller
 @RequestMapping(value = "/access/expensofi")
-public class ExpensofiController {
+public final class ExpensofiController {
     private static final Logger log = LoggerFactory.getLogger(ExpensofiController.class);
 
     @Autowired private ReceiptService receiptService;

@@ -47,7 +47,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/open/forgot")
-public class ForgotController {
+public final class ForgotController {
     private static final Logger log = LoggerFactory.getLogger(ForgotController.class);
 
     @Value("${password:/forgot/password}")

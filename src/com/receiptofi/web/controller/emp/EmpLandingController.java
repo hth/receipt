@@ -28,7 +28,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/emp")
-public class EmpLandingController {
+public final class EmpLandingController {
     private static final Logger log = LoggerFactory.getLogger(EmpLandingController.class);
     private static final String nextPage = "/emp/landing";
 

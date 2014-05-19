@@ -26,7 +26,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/notification")
-public class NotificationController {
+public final class NotificationController {
     private static final Logger log = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired NotificationService notificationService;

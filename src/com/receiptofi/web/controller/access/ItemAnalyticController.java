@@ -35,7 +35,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/itemanalytic")
-public class ItemAnalyticController {
+public final class ItemAnalyticController {
 	private static final Logger log = LoggerFactory.getLogger(ItemAnalyticController.class);
 	private static final String nextPage = "/itemanalytic";
 

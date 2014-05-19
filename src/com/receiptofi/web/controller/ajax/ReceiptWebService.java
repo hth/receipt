@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping(value = "/ws/r")
-public class ReceiptWebService {
+public final class ReceiptWebService {
     private static final Logger log = LoggerFactory.getLogger(ReceiptWebService.class);
 
     @Autowired private FetcherService fetcherService;

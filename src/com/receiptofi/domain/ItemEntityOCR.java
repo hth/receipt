@@ -23,7 +23,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
  */
 @Document(collection = "ITEM_OCR")
 @CompoundIndexes({ @CompoundIndex(name = "user_item_ocr_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}") })
-public class ItemEntityOCR extends BaseEntity {
+public final class ItemEntityOCR extends BaseEntity {
 
 	@Size(min = 1, max = 128)
     @Field("NAME")

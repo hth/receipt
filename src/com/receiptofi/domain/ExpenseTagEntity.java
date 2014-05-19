@@ -21,7 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "expense_tag_idx",    def = "{'USER_PROFILE_ID': 1, 'TAG': 1}",  unique=true),
 } )
-public class ExpenseTagEntity extends BaseEntity {
+public final class ExpenseTagEntity extends BaseEntity {
 
     @NotNull
     @Size(min = 0, max = 6)

@@ -29,7 +29,7 @@ import org.joda.time.Days;
         @CompoundIndex(name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'USER_PROFILE_ID': -1}", unique = true),
         @CompoundIndex(name = "mileage_s_idx", def = "{'S': -1, 'USER_PROFILE_ID': -1}", unique = true)
 })
-public class MileageEntity extends BaseEntity {
+public final class MileageEntity extends BaseEntity {
 
     @NotNull
     @Field("S")

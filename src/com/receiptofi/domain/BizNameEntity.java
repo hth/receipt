@@ -20,10 +20,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "biz_name_idx", def = "{'N': 1}",  unique = true),
 } )
-public class BizNameEntity extends BaseEntity {
+public final class BizNameEntity extends BaseEntity {
 
     @NotNull
-    @Size(min = 0, max = 60)
     @Field("N")
     private String businessName;
 

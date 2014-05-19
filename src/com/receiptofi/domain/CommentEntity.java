@@ -2,10 +2,9 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.CommentTypeEnum;
 
-import javax.validation.constraints.Size;
-
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,10 +21,11 @@ import com.google.common.base.Objects;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "comment_idx", def = "{'ID': 1}"),
 } )
-public class CommentEntity extends BaseEntity {
-    private static final int TEXT_LENGTH = 250;
+public final class CommentEntity extends BaseEntity {
 
-    @Size(min = 0, max = TEXT_LENGTH)
+    @Value("${textLength:250}")
+    private int textLength;
+
     @Field("T")
     private String text;
 
@@ -45,7 +45,7 @@ public class CommentEntity extends BaseEntity {
     }
 
     public void setText(String text) {
-        this.text = StringUtils.substring(StringUtils.trim(text), 0, TEXT_LENGTH);
+        this.text = StringUtils.substring(StringUtils.trim(text), 0, textLength);
     }
 
     public CommentTypeEnum getCommentType() {

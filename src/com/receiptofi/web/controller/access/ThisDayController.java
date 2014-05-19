@@ -27,7 +27,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/day")
-public class ThisDayController {
+public final class ThisDayController {
     private static final Logger log = LoggerFactory.getLogger(ThisDayController.class);
     private static final String nextPage = "/day";
 

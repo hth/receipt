@@ -47,7 +47,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/emp")
-public class ReceiptUpdateController {
+public final class ReceiptUpdateController {
     private static final Logger log = LoggerFactory.getLogger(ReceiptUpdateController.class);
 
 	private static final String NEXT_PAGE_UPDATE        = "/update";
