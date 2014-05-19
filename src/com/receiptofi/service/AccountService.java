@@ -72,8 +72,12 @@ public final class AccountService {
         return userProfileManager.findOneByEmail(emailId);
     }
 
-    public UserAccountEntity findUserById(String receiptUserId) {
+    public UserAccountEntity findByReceiptUserId(String receiptUserId) {
         return userAccountManager.findByReceiptUserId(receiptUserId);
+    }
+
+    public UserAccountEntity findByUserId(String email) {
+        return userAccountManager.findByUserId(email);
     }
 
     /**

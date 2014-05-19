@@ -249,7 +249,7 @@ public final class UserProfilePreferenceController {
         DateTime time = DateUtil.now();
 
         UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreference.getUserProfile());
-        userProfilePreference.setUserAuthentication(accountService.findUserById(userProfilePreference.getUserProfile().getReceiptUserId()).getUserAuthentication());
+        userProfilePreference.setUserAuthentication(accountService.findByReceiptUserId(userProfilePreference.getUserProfile().getReceiptUserId()).getUserAuthentication());
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
         userProfilePreference.setUserPreference(userPreference);
