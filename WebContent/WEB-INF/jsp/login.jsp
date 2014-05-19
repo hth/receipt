@@ -22,6 +22,12 @@
 	<h2>
 		<fmt:message key="login.heading" />
 	</h2>
+    <c:if test="${!empty param.error and param.error eq '--'}">
+    <div class="error">
+        Your login attempt was not successful, try again.<br />
+        Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+    </div>
+    </c:if>
 	<form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
 		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" style="width: 600px;">
 			<tr>
