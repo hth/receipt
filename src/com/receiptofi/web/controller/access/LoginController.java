@@ -3,13 +3,10 @@
  */
 package com.receiptofi.web.controller.access;
 
-import com.receiptofi.domain.UserAuthenticationEntity;
-import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
@@ -23,15 +20,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -43,7 +36,7 @@ import net.sf.uadetector.ReadableUserAgent;
  */
 @Controller
 @RequestMapping(value = "/login")
-public class LoginController {
+public final class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     public static final String LOGIN_PAGE = "login";
 

@@ -34,7 +34,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/pendingdocument")
-public class PendingDocumentController {
+public final class PendingDocumentController {
 	private static final Logger log = LoggerFactory.getLogger(PendingDocumentController.class);
 
 	private String LIST_PENDING_DOCUMENTS = "/pendingdocument";

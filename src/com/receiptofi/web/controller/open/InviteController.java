@@ -35,7 +35,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/open/invite")
-public class InviteController {
+public final class InviteController {
     private static final Logger log = LoggerFactory.getLogger(ForgotController.class);
 
     private static final String INVITE_AUTH         = "/invite/authenticate";

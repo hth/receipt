@@ -47,7 +47,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  */
 @Controller
 @RequestMapping(value = "/access/filedownload")
-public class FileDownloadController {
+public final class FileDownloadController {
 	private static final Logger log = LoggerFactory.getLogger(FileDownloadController.class);
 
 	@Autowired private FileDBService fileDBService;

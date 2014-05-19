@@ -37,7 +37,7 @@ import org.joda.time.DateTime;
         @CompoundIndex(name = "receipt_unique_idx",    def = "{'CHECK_SUM': -1}", unique = true),
         @CompoundIndex(name = "receipt_expense_Report",def = "{'EXP_FILENAME': -1}")
 } )
-public class ReceiptEntity extends BaseEntity {
+public final class ReceiptEntity extends BaseEntity {
 
 	@NotNull
     @Field("DS_E")

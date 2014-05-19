@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "email_valid_idx", def = "{'AUTH': 1}",  unique = true),
 } )
-public class EmailValidateEntity extends BaseEntity {
+public final class EmailValidateEntity extends BaseEntity {
 
     @NotNull
     @Field("RID")

@@ -30,7 +30,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/modv")
-public class MileageOdometerController {
+public final class MileageOdometerController {
     private static final Logger log = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private MileageService mileageService;

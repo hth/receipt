@@ -25,7 +25,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "DOCUMENT")
 @CompoundIndexes({ @CompoundIndex(name = "document_idx", def = "{'FS': 1, 'USER_PROFILE_ID': 1}") })
-public class DocumentEntity extends BaseEntity {
+public final class DocumentEntity extends BaseEntity {
 
 	@NotNull
     @Field("DS_E")

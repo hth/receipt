@@ -33,7 +33,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/admin")
-public class AdminLandingController {
+public final class AdminLandingController {
     private static final Logger log = LoggerFactory.getLogger(AdminLandingController.class);
     private static final String nextPage = "/admin/landing";
 

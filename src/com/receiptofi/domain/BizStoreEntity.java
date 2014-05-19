@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -26,19 +27,18 @@ import org.springframework.format.annotation.NumberFormat;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
-public class BizStoreEntity extends BaseEntity {
+public final class BizStoreEntity extends BaseEntity {
     private static final Logger log = LoggerFactory.getLogger(BizStoreEntity.class);
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
-    private static final String PHONE_BLANK = "000_000_0000";
+    @Value("${phoneNumberBlank:000_000_0000}")
+    private String phoneNumberBlank;
 
     @NotNull
-    @Size(min = 0, max = 128)
     @Field("ADDRESS")
     private String address;
 
     @NotNull
-    @Size(min = 0, max = 20)
     @Field("PHONE")
     private String phone;
 
@@ -98,7 +98,7 @@ public class BizStoreEntity extends BaseEntity {
      */
     public void setPhone(String phone) {
         if(StringUtils.isEmpty(phone)) {
-            this.phone = phoneCleanup(PHONE_BLANK);
+            this.phone = phoneCleanup(phoneNumberBlank);
         } else {
             this.phone = phoneCleanup(phone);
         }

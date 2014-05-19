@@ -34,7 +34,7 @@ import org.joda.time.DateTime;
  */
 @Controller
 @RequestMapping(value = "/access/expenses")
-public class ExpensesController {
+public final class ExpensesController {
     private static final Logger log = LoggerFactory.getLogger(ExpensesController.class);
     private static final String nextPage = "/expenses";
 

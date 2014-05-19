@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping(value = "/access/signoff")
-public class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
+public final class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final Logger log = LoggerFactory.getLogger(SignOff.class);
 
     @Override

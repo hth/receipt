@@ -33,7 +33,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
 @Document(collection = "ITEM")
 @CompoundIndexes({ @CompoundIndex(name = "user_item_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}") })
-public class ItemEntity extends BaseEntity {
+public final class ItemEntity extends BaseEntity {
 
 	@Size(min = 1, max = 128)
     @Field("NAME")

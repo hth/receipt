@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 12/13/13 12:47 AM
  */
 @Document(collection = "FILE_SYSTEM")
-public class FileSystemEntity extends BaseEntity {
+public final class FileSystemEntity extends BaseEntity {
 
     @NotNull
     @Field("BLOB_ID")
