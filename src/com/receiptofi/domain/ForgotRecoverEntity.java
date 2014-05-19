@@ -14,8 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "FORGOT_RECOVER")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "forgot_recover_idx",     def = "{'USER_PROFILE_ID': 0, 'C': 1}"),
-        @CompoundIndex(name = "forgot_recover_key_idx", def = "{'AUTH' : 0}", unique = true)
+        @CompoundIndex(name = "forgot_recover_idx",     def = "{'USER_PROFILE_ID': 0, 'AUTH' : 0}", unique = true)
 } )
 public final class ForgotRecoverEntity extends BaseEntity {
 
