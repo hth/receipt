@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,7 +27,6 @@ import org.springframework.format.annotation.NumberFormat;
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
 public final class BizStoreEntity extends BaseEntity {
-    private static final Logger log = LoggerFactory.getLogger(BizStoreEntity.class);
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     @Value("${phoneNumberBlank:000_000_0000}")
