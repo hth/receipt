@@ -24,8 +24,8 @@ public final class UserProfilePreferenceService {
     @Autowired private UserPreferenceManager userPreferenceManager;
     @Autowired private ExpenseTagManager expenseTagManager;
 
-    public UserProfileEntity loadFromEmail(String emailId) {
-        return userProfileManager.getObjectUsingEmail(emailId);
+    public UserProfileEntity findByEmail(String email) {
+        return userProfileManager.findByEmail(email);
     }
 
     public UserProfileEntity getUsingId(String receiptUserId) {

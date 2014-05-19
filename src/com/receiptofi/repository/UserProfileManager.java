@@ -20,7 +20,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
 	UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object);
 
-	UserProfileEntity getObjectUsingEmail(String emailId);
+	UserProfileEntity findByEmail(String email);
 
     UserProfileEntity findByReceiptUserId(String receiptUserId);
 

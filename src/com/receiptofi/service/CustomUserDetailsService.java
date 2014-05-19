@@ -42,7 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("login through site, user={}", email);
 
         //Always check user login with lower letter email case
-        UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(email);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
         if (userProfile != null) {
             UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();

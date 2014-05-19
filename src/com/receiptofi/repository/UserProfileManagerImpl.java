@@ -55,7 +55,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	public void save(UserProfileEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
 		try {
-//            if(getObjectUsingEmail(object.getEmailId()) == null)
+//            if(findByEmail(object.getEmailId()) == null)
 //			    mongoTemplate.save(object, TABLE);
 //            else {
 //                log.error("User seems to be already registered: " + object.getEmailId());
@@ -77,7 +77,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public UserProfileEntity getObjectUsingEmail(String emailId) {
+	public UserProfileEntity findByEmail(String emailId) {
 		return mongoTemplate.findOne(query(where("EM").is(emailId).andOperator(isActive())), UserProfileEntity.class, TABLE);
 	}
 
