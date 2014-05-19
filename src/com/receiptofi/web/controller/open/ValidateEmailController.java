@@ -52,7 +52,7 @@ public final class ValidateEmailController {
     public String validateEmail(@RequestParam("authenticationKey") String key, RedirectAttributes redirectAttrs, HttpServletResponse httpServletResponse) throws IOException {
         EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key);
         if(emailValidate != null) {
-            UserAccountEntity userAccount = accountService.findUserById(emailValidate.getReceiptUserId());
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getReceiptUserId());
             if(!userAccount.isAccountValidated()) {
                 userAccount.setAccountValidated(true);
                 userAccount.active();

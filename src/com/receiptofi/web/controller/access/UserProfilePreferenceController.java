@@ -4,9 +4,9 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -249,7 +249,7 @@ public final class UserProfilePreferenceController {
         DateTime time = DateUtil.now();
 
         UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreference.getUserProfile());
-        userProfilePreference.setUserAuthentication(accountService.findUserById(userProfilePreference.getUserProfile().getReceiptUserId()).getUserAuthentication());
+        userProfilePreference.setUserAuthentication(accountService.findByReceiptUserId(userProfilePreference.getUserProfile().getReceiptUserId()).getUserAuthentication());
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
         userProfilePreference.setUserPreference(userPreference);

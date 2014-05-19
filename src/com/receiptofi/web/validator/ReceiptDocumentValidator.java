@@ -32,7 +32,7 @@ public final class ReceiptDocumentValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         ReceiptDocumentForm receiptDocumentForm = (ReceiptDocumentForm) obj;
-        log.info("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
+        log.debug("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
 
         ValidationUtils.rejectIfEmptyOrWhitespace(
                 errors,

@@ -1,7 +1,7 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

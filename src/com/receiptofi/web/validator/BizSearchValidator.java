@@ -25,7 +25,7 @@ public final class BizSearchValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.info("Executing validation for new bizForm");
+        log.debug("Executing validation");
 
         BizForm bizForm = (BizForm) obj;
         if(StringUtils.isEmpty(bizForm.getBusinessName()) &&

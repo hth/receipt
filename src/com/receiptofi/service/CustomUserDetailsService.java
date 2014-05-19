@@ -1,9 +1,9 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.RoleEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

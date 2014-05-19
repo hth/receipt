@@ -25,7 +25,7 @@ public final class EvalFeedbackValidator implements  Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.info("Executing validation for new uploadReceiptImageValidator");
+        log.debug("Executing validation");
 
         EvalFeedbackForm evalFeedbackForm = (EvalFeedbackForm) obj;
         if(evalFeedbackForm.getComment().length() < 15) {

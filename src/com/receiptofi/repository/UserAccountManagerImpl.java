@@ -66,7 +66,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
 
     @Override
     public void deleteHard(UserAccountEntity object) {
-        throw new UnsupportedOperationException("Method not implemented");
+        mongoTemplate.remove(object, TABLE);
     }
 
     @Override
@@ -77,5 +77,10 @@ public class UserAccountManagerImpl implements UserAccountManager {
     @Override
     public UserAccountEntity findByReceiptUserId(String rid) {
         return mongoTemplate.findOne(query(Criteria.where("RID").is(rid)), UserAccountEntity.class, TABLE);
+    }
+
+    @Override
+    public UserAccountEntity findByUserId(String email) {
+        return mongoTemplate.findOne(query(Criteria.where("UID").is(email)), UserAccountEntity.class, TABLE);
     }
 }

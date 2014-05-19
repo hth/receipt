@@ -25,7 +25,7 @@ public final class ExpenseTypeValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.info("Executing validation for new ExpenseTagEntity");
+        log.debug("Executing validation");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[] { "Tag Name" });
 
         ExpenseTypeForm expenseTypeForm = (ExpenseTypeForm) obj;

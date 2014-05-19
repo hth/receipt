@@ -23,7 +23,7 @@ public final class InviteAuthenticateValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.info("Executing validation for new bizForm");
+        log.debug("Executing validation");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[] { "First Name" });
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[] { "Last Name" });

@@ -23,7 +23,7 @@ public final class ForgotAuthenticateValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.info("Executing validation for new bizForm");
+        log.debug("Executing validation");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordSecond", "field.required", new Object[]{"Retype Password"});
