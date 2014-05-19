@@ -44,7 +44,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         //Always check user login with lower letter email case
         UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(email);
         if (userProfile != null) {
-            UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
+            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
 
             return new ReceiptUser(
@@ -66,7 +66,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         UserProfileEntity userProfile = userProfilePreferenceService.getUsingUserId(uid);
         if (userProfile != null) {
-            UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
+            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
 
             return new ReceiptUser(

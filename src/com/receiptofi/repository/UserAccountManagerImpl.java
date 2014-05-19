@@ -75,7 +75,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     }
 
     @Override
-    public UserAccountEntity findUserAccount(String rid) {
+    public UserAccountEntity findByReceiptUserId(String rid) {
         return mongoTemplate.findOne(query(Criteria.where("RID").is(rid)), UserAccountEntity.class, TABLE);
     }
 }

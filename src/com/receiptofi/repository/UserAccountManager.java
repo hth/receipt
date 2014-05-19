@@ -8,5 +8,5 @@ import com.receiptofi.domain.UserAccountEntity;
  */
 public interface UserAccountManager extends RepositoryManager<UserAccountEntity> {
 
-    UserAccountEntity findUserAccount(String rid);
+    UserAccountEntity findByReceiptUserId(String rid);
 }

@@ -25,8 +25,8 @@ public final class LoginService {
     @Autowired private UserAccountManager userAccountManager;
     @Autowired private BrowserManager browserManager;
 
-    public UserAccountEntity loadUserAccount(String rid) {
-        return userAccountManager.findUserAccount(rid);
+    public UserAccountEntity findByReceiptUserId(String rid) {
+        return userAccountManager.findByReceiptUserId(rid);
     }
 
     private UserAuthenticationEntity loadAuthenticationEntity(UserAccountEntity userAccount) {

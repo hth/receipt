@@ -33,14 +33,14 @@ public abstract class BaseController {
     }
 
     private String getAuth(UserProfileEntity userProfile) {
-        UserAuthenticationEntity userAuthentication = loginService.loadUserAccount(userProfile.getReceiptUserId()).getUserAuthentication();
+        UserAuthenticationEntity userAuthentication = loginService.findByReceiptUserId(userProfile.getReceiptUserId()).getUserAuthentication();
         return userAuthentication.getAuthenticationKey();
     }
 
     public UserProfileEntity authenticate(String profileId, String authKey) {
         if(isValid(profileId, authKey)) {
             UserProfileEntity userProfile = userProfileManager.getUsingId(profileId);
-            UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
+            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             if(checkAuthKey(authKey, userAccountEntity)) {
                 return userProfile;
             }

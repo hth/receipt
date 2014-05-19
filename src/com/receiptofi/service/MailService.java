@@ -25,7 +25,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -320,7 +319,7 @@ public final class MailService {
     private void deleteInvite(InviteEntity inviteEntity) {
         log.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
         UserProfileEntity userProfile = accountService.findIfUserExists(inviteEntity.getEmailId());
-        UserAccountEntity userAccount = loginService.loadUserAccount(userProfile.getReceiptUserId());
+        UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
         UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
         UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);
 

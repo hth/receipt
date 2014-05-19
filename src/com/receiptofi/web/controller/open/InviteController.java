@@ -89,7 +89,7 @@ public class InviteController {
                         HashText.computeBCrypt(RandomString.newInstance().nextString()));
 
 
-                UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfileEntity.getReceiptUserId());
+                UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfileEntity.getReceiptUserId());
 
                 userAuthenticationEntity.setId(userAccountEntity.getUserAuthentication().getId());
                 userAuthenticationEntity.setVersion(userAccountEntity.getUserAuthentication().getVersion());
