@@ -4,7 +4,7 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.DocumentEntity;
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentPendingService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.DateUtil;

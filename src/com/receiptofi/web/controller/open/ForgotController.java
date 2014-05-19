@@ -204,7 +204,7 @@ public class ForgotController {
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
-                UserAuthenticationEntity userAuthenticationLoaded = loginService.loadUserAccount(userProfileEntity.getReceiptUserId()).getUserAuthentication();
+                UserAuthenticationEntity userAuthenticationLoaded = loginService.findByReceiptUserId(userProfileEntity.getReceiptUserId()).getUserAuthentication();
 
                 userAuthenticationEntity.setId(userAuthenticationLoaded.getId());
                 userAuthenticationEntity.setVersion(userAuthenticationLoaded.getVersion());

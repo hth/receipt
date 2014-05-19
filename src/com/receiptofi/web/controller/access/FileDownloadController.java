@@ -4,7 +4,7 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;

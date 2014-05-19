@@ -73,7 +73,7 @@ public final class AccountService {
     }
 
     public UserAccountEntity findUserById(String receiptUserId) {
-        return userAccountManager.findUserAccount(receiptUserId);
+        return userAccountManager.findByReceiptUserId(receiptUserId);
     }
 
     /**

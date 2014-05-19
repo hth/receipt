@@ -6,7 +6,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;

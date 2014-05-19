@@ -29,18 +29,18 @@ public abstract class BaseController {
 
     public String getAuth(String profileId) {
         log.debug("Find user with profileId: " + profileId);
-        return getAuth(userProfileManager.getUsingId(profileId));
+        return getAuth(userProfileManager.findByReceiptUserId(profileId));
     }
 
     private String getAuth(UserProfileEntity userProfile) {
-        UserAuthenticationEntity userAuthentication = loginService.loadUserAccount(userProfile.getReceiptUserId()).getUserAuthentication();
+        UserAuthenticationEntity userAuthentication = loginService.findByReceiptUserId(userProfile.getReceiptUserId()).getUserAuthentication();
         return userAuthentication.getAuthenticationKey();
     }
 
     public UserProfileEntity authenticate(String profileId, String authKey) {
         if(isValid(profileId, authKey)) {
-            UserProfileEntity userProfile = userProfileManager.getUsingId(profileId);
-            UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
+            UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(profileId);
+            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             if(checkAuthKey(authKey, userAccountEntity)) {
                 return userProfile;
             }

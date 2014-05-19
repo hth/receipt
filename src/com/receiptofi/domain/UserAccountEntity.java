@@ -74,6 +74,7 @@ public class UserAccountEntity extends BaseEntity {
     private UserAuthenticationEntity userAuthentication;
 
     //TODO on email change this should be reset to false and validation process has to be redone
+    @Field("AV")
     private boolean isAccountValidated;
 
     public UserAccountEntity() {

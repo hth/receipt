@@ -1,6 +1,6 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,9 +42,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("login through site, user={}", email);
 
         //Always check user login with lower letter email case
-        UserProfileEntity userProfile = userProfilePreferenceService.loadFromEmail(email);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
         if (userProfile != null) {
-            UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
+            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
 
             return new ReceiptUser(
@@ -68,7 +66,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         UserProfileEntity userProfile = userProfilePreferenceService.getUsingUserId(uid);
         if (userProfile != null) {
-            UserAccountEntity userAccountEntity = loginService.loadUserAccount(userProfile.getReceiptUserId());
+            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
 
             return new ReceiptUser(
