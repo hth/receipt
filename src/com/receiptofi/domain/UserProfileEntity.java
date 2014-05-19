@@ -25,9 +25,7 @@ import org.springframework.social.facebook.api.WorkEntry;
  */
 @Document(collection = "USER_PROFILE")
 @CompoundIndexes({
-        @CompoundIndex(name = "user_profile_rid_idx",           def = "{'RID': -1}", unique = true),
-        @CompoundIndex(name = "user_profile_uid_idx",           def = "{'RID': -1, 'UID': -1}", unique = true),
-        @CompoundIndex(name = "user_profile_provider_uid_idx",  def = "{'RID': -1, 'UID': -1, 'P_E': 1}", unique = true)
+        @CompoundIndex(name = "user_profile_provider_uid_em_idx",   def = "{'RID': -1, 'UID': -1, 'P_E': 1, 'EM' : 1}", unique = true)
 })
 public class UserProfileEntity extends BaseEntity {
 
