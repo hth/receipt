@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,8 +39,11 @@ import org.joda.time.DateTime;
 public final class InviteController {
     private static final Logger log = LoggerFactory.getLogger(ForgotController.class);
 
-    private static final String INVITE_AUTH         = "/invite/authenticate";
-    private static final String INVITE_AUTH_CONFIRM = "/invite/authenticateConfirm";
+    @Value("${authenticatePage:/invite/authenticate}")
+    private String authenticatePage;
+
+    @Value("${authenticateConfirmPage:/invite/authenticateConfirm}")
+    private String authenticateConfirmPage;
 
     /** Used in JSP page /forgot/authenticateConfirm */
     private static final String SUCCESS         = "success";
@@ -51,21 +55,24 @@ public final class InviteController {
     @Autowired private UserProfileManager userProfileManager;
 
     @RequestMapping(method = RequestMethod.GET, value = "authenticate")
-    public ModelAndView loadForm(@RequestParam("authenticationKey") String key) {
+    public String loadForm(
+            @RequestParam("authenticationKey")
+            String key,
+
+            @ModelAttribute("inviteAuthenticateForm")
+            InviteAuthenticateForm inviteAuthenticateForm
+    ) {
         InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(key);
-        ModelAndView modelAndView = new ModelAndView(INVITE_AUTH);
 
         if(inviteEntity != null) {
-            InviteAuthenticateForm inviteAuthenticateForm = InviteAuthenticateForm.newInstance();
             inviteAuthenticateForm.setEmailId(inviteEntity.getEmailId());
             inviteAuthenticateForm.setFirstName(inviteEntity.getInvited().getFirstName());
             inviteAuthenticateForm.setLastName(inviteEntity.getInvited().getLastName());
             inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key);
             inviteAuthenticateForm.getForgotAuthenticateForm().setUserProfileId(inviteEntity.getInvited().getId());
-            modelAndView.addObject("inviteAuthenticateForm", inviteAuthenticateForm);
         }
 
-        return modelAndView;
+        return authenticatePage;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "authenticate", params = {"confirm_invitation"})
@@ -74,10 +81,10 @@ public final class InviteController {
         inviteAuthenticateValidator.validate(inviteAuthenticateForm, result);
         if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-            return new ModelAndView(INVITE_AUTH, "inviteAuthenticateForm", inviteAuthenticateForm);
+            return new ModelAndView(authenticatePage);
         } else {
             InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(inviteAuthenticateForm.getForgotAuthenticateForm().getAuthenticationKey());
-            ModelAndView modelAndView = new ModelAndView(INVITE_AUTH_CONFIRM);
+            ModelAndView modelAndView = new ModelAndView(authenticateConfirmPage);
             if(inviteEntity != null) {
                 UserProfileEntity userProfileEntity = inviteEntity.getInvited();
                 userProfileEntity.setFirstName(inviteAuthenticateForm.getFirstName());
@@ -98,6 +105,12 @@ public final class InviteController {
                 try {
                     userProfileManager.save(userProfileEntity);
                     accountService.updateAuthentication(userAuthenticationEntity);
+
+                    userAccountEntity.active();
+                    userAccountEntity.setAccountValidated(true);
+                    userAccountEntity.setUserAuthentication(userAuthenticationEntity);
+                    accountService.saveUserAccount(userAccountEntity);
+
                     inviteService.invalidateAllEntries(inviteEntity);
                     modelAndView.addObject(SUCCESS, true);
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
