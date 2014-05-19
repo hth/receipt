@@ -29,11 +29,11 @@ public final class UserProfilePreferenceService {
     }
 
     public UserProfileEntity getUsingId(String receiptUserId) {
-        return userProfileManager.getUsingId(receiptUserId);
+        return userProfileManager.findByReceiptUserId(receiptUserId);
     }
 
     public UserProfileEntity getUsingUserId(String userId) {
-        return userProfileManager.getUsingUserId(userId);
+        return userProfileManager.findByUserId(userId);
     }
 
     public void updateProfile(UserProfileEntity userProfile) throws Exception {

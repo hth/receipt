@@ -29,7 +29,7 @@ public abstract class BaseController {
 
     public String getAuth(String profileId) {
         log.debug("Find user with profileId: " + profileId);
-        return getAuth(userProfileManager.getUsingId(profileId));
+        return getAuth(userProfileManager.findByReceiptUserId(profileId));
     }
 
     private String getAuth(UserProfileEntity userProfile) {
@@ -39,7 +39,7 @@ public abstract class BaseController {
 
     public UserProfileEntity authenticate(String profileId, String authKey) {
         if(isValid(profileId, authKey)) {
-            UserProfileEntity userProfile = userProfileManager.getUsingId(profileId);
+            UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(profileId);
             UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             if(checkAuthKey(authKey, userAccountEntity)) {
                 return userProfile;

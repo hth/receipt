@@ -22,9 +22,9 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
 	UserProfileEntity getObjectUsingEmail(String emailId);
 
-    UserProfileEntity getUsingId(String receiptUserId);
+    UserProfileEntity findByReceiptUserId(String receiptUserId);
 
-    UserProfileEntity getUsingUserId(String userId);
+    UserProfileEntity findByUserId(String email);
 
 	/**
 	 * Used for searching user based on name. Search could be based on First Name or Last Name.

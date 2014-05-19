@@ -153,7 +153,7 @@ public final class ReceiptService {
                     itemManager.deleteWhereReceipt(receipt);
 
                     log.info("DocumentEntity @Id after save: " + receiptOCR.getId());
-                    UserProfileEntity userProfile = userProfileManager.getUsingId(receiptOCR.getUserProfileId());
+                    UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(receiptOCR.getUserProfileId());
                     senderJMS.send(receiptOCR, userProfile);
                 } else {
                     log.error("Attempt to invoke re-check on Receipt: " + receipt.getId() + ", Browser Back Action performed");
