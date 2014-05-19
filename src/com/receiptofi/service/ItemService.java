@@ -97,7 +97,7 @@ public final class ItemService {
      */
     private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String profileId) {
         List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(profileId);
-        if(unassignedItems.size() > 0) {
+        if(unassignedItems.isEmpty()) {
             BigDecimal sum = calculateSum(ZERO, unassignedItems);
             netSum = Maths.add(netSum, sum);
             expenseItems.put("Un-Assigned", sum);
