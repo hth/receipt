@@ -17,15 +17,23 @@ import com.receiptofi.web.validator.InviteAuthenticateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.joda.time.DateTime;
 
@@ -42,11 +50,14 @@ public final class InviteController {
     @Value("${authenticatePage:/invite/authenticate}")
     private String authenticatePage;
 
+    @Value("${authenticateResult:redirect:/open/invite/result.htm}")
+    private String authenticateResult;
+
     @Value("${authenticateConfirmPage:/invite/authenticateConfirm}")
     private String authenticateConfirmPage;
 
-    /** Used in JSP page /forgot/authenticateConfirm */
-    private static final String SUCCESS         = "success";
+    /** Used in JSP page /invite/authenticateConfirm */
+    private static final String SUCCESS = "success";
 
     @Autowired private AccountService accountService;
     @Autowired private LoginService loginService;
@@ -63,7 +74,6 @@ public final class InviteController {
             InviteAuthenticateForm inviteAuthenticateForm
     ) {
         InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(key);
-
         if(inviteEntity != null) {
             inviteAuthenticateForm.setEmailId(inviteEntity.getEmailId());
             inviteAuthenticateForm.setFirstName(inviteEntity.getInvited().getFirstName());
@@ -71,20 +81,23 @@ public final class InviteController {
             inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key);
             inviteAuthenticateForm.getForgotAuthenticateForm().setUserProfileId(inviteEntity.getInvited().getId());
         }
-
         return authenticatePage;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "authenticate", params = {"confirm_invitation"})
-    public ModelAndView post(@ModelAttribute("inviteAuthenticateForm") InviteAuthenticateForm inviteAuthenticateForm, BindingResult result) {
+    public String post(
+            @ModelAttribute("inviteAuthenticateForm")
+            InviteAuthenticateForm inviteAuthenticateForm,
+            RedirectAttributes redirectAttrs,
+            BindingResult result
+    ) {
         DateTime time = DateUtil.now();
         inviteAuthenticateValidator.validate(inviteAuthenticateForm, result);
         if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-            return new ModelAndView(authenticatePage);
+            return authenticatePage;
         } else {
             InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(inviteAuthenticateForm.getForgotAuthenticateForm().getAuthenticationKey());
-            ModelAndView modelAndView = new ModelAndView(authenticateConfirmPage);
             if(inviteEntity != null) {
                 UserProfileEntity userProfileEntity = inviteEntity.getInvited();
                 userProfileEntity.setFirstName(inviteAuthenticateForm.getFirstName());
@@ -112,18 +125,33 @@ public final class InviteController {
                     accountService.saveUserAccount(userAccountEntity);
 
                     inviteService.invalidateAllEntries(inviteEntity);
-                    modelAndView.addObject(SUCCESS, true);
+                    redirectAttrs.addFlashAttribute(SUCCESS, "true");
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
                 } catch (Exception e) {
                     log.error("Error during updating of the old authentication keys: " + e.getLocalizedMessage());
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-                    modelAndView.addObject(SUCCESS, false);
+                    redirectAttrs.addFlashAttribute(SUCCESS, "false");
                 }
             } else {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
-                modelAndView.addObject(SUCCESS, false);
+                redirectAttrs.addFlashAttribute(SUCCESS, "false");
             }
-            return modelAndView;
+            return authenticateResult;
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/result")
+    public String success(
+            @ModelAttribute("success")
+            String success,
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        if(StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
+            return authenticateConfirmPage;
+        }
+        log.warn("ah! some just tried access={}", authenticateConfirmPage);
+        httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+        return null;
     }
 }

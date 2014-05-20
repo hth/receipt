@@ -34,7 +34,7 @@
             <h1>Invalid Link</h1>
             <p>We apologize, but we are unable to verify the link you used to access this page. <sup>(404)</sup></p>
             <p>&nbsp;</p>
-            <p></p>Please <a href="../login.htm">click here</a> to return to the main page and start over.</p>
+            <p></p>Please <a href="${pageContext.request.contextPath}/login.htm">click here</a> to return to the main page and start over.</p>
         </div>
     </c:if>
 
@@ -45,6 +45,7 @@
             <fmt:message key="invite.heading" />
         </h2>
         <form:form method="post" action="authenticate.htm" modelAttribute="inviteAuthenticateForm">
+            <form:hidden path="emailId" />
             <form:hidden path="forgotAuthenticateForm.userProfileId" />
             <form:hidden path="forgotAuthenticateForm.authenticationKey" />
             <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
