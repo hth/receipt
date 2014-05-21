@@ -31,7 +31,7 @@ public final class ForgotRecoverValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email Id"});
 
         ForgotRecoverForm frf = (ForgotRecoverForm) obj;
-        if(!StringUtils.isEmpty(frf.getCaptcha())) {
+        if(StringUtils.isNotEmpty(frf.getCaptcha())) {
             errors.rejectValue("captcha", "field.unmatched", new Object[] { "" }, "Entered value does not match");
         }
 

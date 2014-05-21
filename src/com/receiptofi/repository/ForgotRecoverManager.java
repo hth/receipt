@@ -20,7 +20,7 @@ public interface ForgotRecoverManager extends RepositoryManager<ForgotRecoverEnt
     /**
      * Make all the existing request invalid
      *
-     * @param object
+     * @param receiptUserId
      */
-    void invalidateAllEntries(ForgotRecoverEntity object);
+    void invalidateAllEntries(String receiptUserId);
 }

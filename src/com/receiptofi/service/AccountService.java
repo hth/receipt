@@ -154,18 +154,18 @@ public final class AccountService {
     /**
      * Used in for sending authentication link to recover account in case of the lost password
      *
-     * @param userProfileEntity
+     * @param receiptUserId
      * @return
      */
-    public ForgotRecoverEntity initiateAccountRecovery(UserProfileEntity userProfileEntity) {
+    public ForgotRecoverEntity initiateAccountRecovery(String receiptUserId) {
         String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
-        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(userProfileEntity.getId(), authenticationKey);
+        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(receiptUserId, authenticationKey);
         forgotRecoverManager.save(forgotRecoverEntity);
         return forgotRecoverEntity;
     }
 
-    public void invalidateAllEntries(ForgotRecoverEntity forgotRecoverEntity) {
-        forgotRecoverManager.invalidateAllEntries(forgotRecoverEntity);
+    public void invalidateAllEntries(String receiptUserId) {
+        forgotRecoverManager.invalidateAllEntries(receiptUserId);
     }
 
     public ForgotRecoverEntity findAccountAuthenticationForKey(String key) {

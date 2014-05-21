@@ -9,7 +9,7 @@ public final class ForgotAuthenticateForm {
 
     private String password;
     private String passwordSecond;
-    private String userProfileId;
+    private String receiptUserId;
     private String authenticationKey;
 
     private ForgotAuthenticateForm() { }
@@ -34,12 +34,12 @@ public final class ForgotAuthenticateForm {
         this.passwordSecond = passwordSecond;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public String getAuthenticationKey() {
