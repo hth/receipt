@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -176,7 +177,7 @@ public final class ForgotController {
         ForgotRecoverEntity forgotRecoverEntity = accountService.findAccountAuthenticationForKey(key);
         if(forgotRecoverEntity != null) {
             forgotAuthenticateForm.setAuthenticationKey(key);
-            forgotAuthenticateForm.setUserProfileId(forgotRecoverEntity.getUserProfileId());
+            forgotAuthenticateForm.setReceiptUserId(forgotRecoverEntity.getReceiptUserId());
         }
         return authenticatePage;
     }
@@ -197,7 +198,8 @@ public final class ForgotController {
             ForgotRecoverEntity forgotRecoverEntity = accountService.findAccountAuthenticationForKey(forgotAuthenticateForm.getAuthenticationKey());
             ModelAndView modelAndView = new ModelAndView(authenticateConfirm);
             if(forgotRecoverEntity != null) {
-                UserProfileEntity userProfileEntity = userProfilePreferenceService.findById(forgotRecoverEntity.getUserProfileId());
+                UserProfileEntity userProfileEntity = userProfilePreferenceService.findByReceiptUserId(forgotRecoverEntity.getReceiptUserId());
+                Assert.notNull(userProfileEntity);
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
                         HashText.computeBCrypt(forgotAuthenticateForm.getPassword()),
@@ -212,7 +214,7 @@ public final class ForgotController {
                 userAuthenticationEntity.setUpdated();
                 try {
                     accountService.updateAuthentication(userAuthenticationEntity);
-                    accountService.invalidateAllEntries(forgotRecoverEntity);
+                    accountService.invalidateAllEntries(forgotRecoverEntity.getReceiptUserId());
                     modelAndView.addObject(SUCCESS, true);
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
                 } catch (Exception e) {

@@ -51,8 +51,8 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     }
 
     @Override
-    public void invalidateAllEntries(ForgotRecoverEntity object) {
-        Criteria criteria = where("USER_PROFILE_ID").is(object.getUserProfileId());
+    public void invalidateAllEntries(String receiptUserId) {
+        Criteria criteria = where("RID").is(receiptUserId);
         mongoTemplate.updateMulti(query(criteria), entityUpdate(update("A", false)), ForgotRecoverEntity.class);
     }
 
@@ -75,7 +75,7 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public void deleteHard(ForgotRecoverEntity object) {
-        throw new UnsupportedOperationException("Method not implemented");
+        mongoTemplate.remove(object);
     }
 
     @Override

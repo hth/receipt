@@ -94,7 +94,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
     @Test
     public void testInitiateAccountRecovery_Integration() throws Exception {
         UserProfileEntity userProfileEntity = userProfileManager.findOneByEmail("user_community_1@receiptofi.com");
-        ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity);
+        ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity.getReceiptUserId());
         assertNotNull(forgotRecoverEntity.getId());
     }
 

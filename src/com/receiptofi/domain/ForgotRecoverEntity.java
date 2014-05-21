@@ -14,29 +14,29 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "FORGOT_RECOVER")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "forgot_recover_idx",     def = "{'USER_PROFILE_ID': 0, 'AUTH' : 0}", unique = true)
+        @CompoundIndex(name = "forgot_recover_idx",     def = "{'RID': 0, 'AUTH' : 0}", unique = true)
 } )
 public final class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
-    @Field("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field("RID")
+    private final String receiptUserId;
 
     @NotNull
     @Field("AUTH")
-    private String authenticationKey;
+    private final String authenticationKey;
 
-    private ForgotRecoverEntity(String userProfileId, String authenticationKey) {
-        this.userProfileId = userProfileId;
+    private ForgotRecoverEntity(String receiptUserId, String authenticationKey) {
+        this.receiptUserId = receiptUserId;
         this.authenticationKey = authenticationKey;
     }
 
-    public static ForgotRecoverEntity newInstance(String userProfileId, String authenticationKey) {
-        return new ForgotRecoverEntity(userProfileId, authenticationKey);
+    public static ForgotRecoverEntity newInstance(String receiptUserId, String authenticationKey) {
+        return new ForgotRecoverEntity(receiptUserId, authenticationKey);
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
     public String getAuthenticationKey() {

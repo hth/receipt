@@ -143,12 +143,12 @@ public final class MailService {
      * @param emailId
      */
     public boolean mailRecoverLink(String emailId) {
-        UserProfileEntity userProfileEntity = accountService.findIfUserExists(emailId);
-        if(userProfileEntity != null) {
-            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userProfileEntity);
+        UserAccountEntity userAccount = accountService.findByUserId(emailId);
+        if(userAccount != null && userAccount.isAccountValidated()) {
+            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getReceiptUserId());
 
             Map<String, String> rootMap = new HashMap<>();
-            rootMap.put("to", userProfileEntity.getName());
+            rootMap.put("to", userAccount.getName());
             rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
             rootMap.put("domain", domain);
             rootMap.put("https", https);
@@ -162,23 +162,25 @@ public final class MailService {
 
                 String sentTo = !StringUtils.isEmpty(devSentTo) ? devSentTo : emailId;
                 if(!sentTo.equalsIgnoreCase(devSentTo)) {
-                    helper.setTo(new InternetAddress(emailId, userProfileEntity.getName()));
+                    helper.setTo(new InternetAddress(emailId, userAccount.getName()));
                 } else {
                     helper.setTo(new InternetAddress(devSentTo, emailAddressName));
                 }
                 log.info("Mail recovery send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : emailId));
                 sendMail(
-                        userProfileEntity.getName() + ": " + mailRecoverSubject,
+                        userAccount.getName() + ": " + mailRecoverSubject,
                         freemarkerToString("mail/account-recover.ftl", rootMap),
                         message,
                         helper
                 );
+                return true;
             } catch (IOException | TemplateException | MessagingException exception) {
                 log.error("Recovery email={}", exception.getLocalizedMessage(), exception);
                 return false;
             }
         }
-        return true;
+        //TODO make sure not validate email should not get link to recover password; they should be re-send email
+        return false;
     }
 
     /**

@@ -28,7 +28,7 @@ public final class UserProfilePreferenceService {
         return userProfileManager.findByEmail(email);
     }
 
-    public UserProfileEntity getUsingId(String receiptUserId) {
+    public UserProfileEntity findByReceiptUserId(String receiptUserId) {
         return userProfileManager.findByReceiptUserId(receiptUserId);
     }
 

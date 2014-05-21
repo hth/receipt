@@ -68,7 +68,7 @@ public final class UserProfilePreferenceController {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        UserProfileEntity userProfile = userProfilePreferenceService.getUsingId(receiptUser.getRid());
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(receiptUser.getRid());
         Assert.notNull(userProfile);
         userProfilePreferenceForm.setUserProfile(userProfile);
 
@@ -106,7 +106,7 @@ public final class UserProfilePreferenceController {
         //There is UI logic based on this. Set the right to be active when responding.
         redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
 
-        UserProfileEntity userProfile = userProfilePreferenceService.getUsingId(receiptUser.getRid());
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(receiptUser.getRid());
         userProfilePreferenceForm.setUserProfile(userProfile);
 
         expenseTypeValidator.validate(expenseTypeForm, result);
@@ -186,7 +186,7 @@ public final class UserProfilePreferenceController {
     ) throws IOException {
         DateTime time = DateUtil.now();
 
-        UserProfileEntity userProfile = userProfilePreferenceService.getUsingId(id);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(id);
         Assert.notNull(userProfile);
         userProfilePreferenceForm.setUserProfile(userProfile);
 

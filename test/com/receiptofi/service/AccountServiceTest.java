@@ -62,7 +62,7 @@ public class AccountServiceTest {
     @Test
     public void testInitiateAccountRecovery() throws Exception {
         when(userProfileManager.findOneByEmail(anyString())).thenReturn(new UserProfileEntity());
-        accountService.initiateAccountRecovery(new UserProfileEntity());
+        accountService.initiateAccountRecovery(anyString());
 
         verify(forgotRecoverManager, atLeastOnce()).save(any(ForgotRecoverEntity.class));
     }
@@ -71,7 +71,7 @@ public class AccountServiceTest {
     public void testInitiateAccountRecovery_Fails_When_Saving() throws Exception {
         doThrow(new Exception()).when(forgotRecoverManager).save((ForgotRecoverEntity) anyObject());
         when(userProfileManager.findOneByEmail(anyString())).thenReturn(new UserProfileEntity());
-        accountService.initiateAccountRecovery(new UserProfileEntity());
+        accountService.initiateAccountRecovery(anyString());
 
         verify(forgotRecoverManager, atLeastOnce()).save(any(ForgotRecoverEntity.class));
     }

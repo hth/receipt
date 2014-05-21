@@ -46,7 +46,7 @@
         </h2>
         <form:form method="post" action="authenticate.htm" modelAttribute="inviteAuthenticateForm">
             <form:hidden path="emailId" />
-            <form:hidden path="forgotAuthenticateForm.userProfileId" />
+            <form:hidden path="forgotAuthenticateForm.receiptUserId" />
             <form:hidden path="forgotAuthenticateForm.authenticationKey" />
             <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
                 <tr>
