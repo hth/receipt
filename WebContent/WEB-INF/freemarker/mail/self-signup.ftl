@@ -13,14 +13,14 @@
 </p>
 
 <p>
-	<a href="${https}://${domain}/open/validate.htm?authenticationKey=${link}">Verify Now</a>
+	<a href="${https}://${domain}/open/validate.htm?authenticationKey=${link}">Verify Now ></a>
 
 </p>
 
 <p>
 	<b>Wondering why you got this email?</b>
-	It's sent when someone adds or changes a contact email address for an Receiptofi ID account. If you didn't do this,
-	don't worry. Your email address cannot be used as a contact address for an Receiptofi ID without your verification.
+	It's sent when someone sign's up or changes a contact email address for an Receiptofi account. If you didn't do this,
+	don't worry. Your email address cannot be used as a contact address with Receiptofi without your verification.
 </p>
 
 Thanks,
