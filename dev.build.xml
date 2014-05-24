@@ -70,7 +70,7 @@
 	<target name="resources" description="Moves resources to appropriate place">
 		<copy todir="${build.dir}">
 			<fileset dir="${resources.dir}">
-				<include name="log4j.web.properties" />
+				<include name="logback.xml" />
                 <include name="messages.properties" />
 			</fileset>
 		</copy>
