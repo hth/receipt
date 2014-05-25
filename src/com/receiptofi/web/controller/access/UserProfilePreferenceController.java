@@ -58,7 +58,7 @@ public final class UserProfilePreferenceController {
     @Autowired private ItemService itemService;
     @Autowired private ExpenseTypeValidator expenseTypeValidator;
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
 	public ModelAndView loadForm(
             @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
@@ -92,7 +92,7 @@ public final class UserProfilePreferenceController {
      * @param result
      * @return
      */
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value="/i", method = RequestMethod.POST)
     public String addExpenseTag(
             @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
@@ -177,7 +177,7 @@ public final class UserProfilePreferenceController {
      * @return
      * @throws IOException
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/their", method = RequestMethod.GET)
 	public ModelAndView getUser(
             @RequestParam("id") String id,

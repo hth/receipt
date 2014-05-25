@@ -243,14 +243,6 @@
             </sec:authorize>
 		</div>
 		<div id="tabs-2">
-            <div class="divTable">
-                <div class="divRow">
-                    <div class="divOfCell600">Account Type: <b><spring:eval expression="userProfilePreferenceForm.userPreference.accountType.description" /></b></div>
-                </div>
-            </div>
-
-            <p/>
-
             <spring:eval expression="${userProfilePreferenceForm.userProfile.receiptUserId eq pageContext.request.userPrincipal.principal.rid}" var="isSameUser" />
 
             <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
