@@ -60,9 +60,9 @@ First Step:
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
 
+	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
 
-
-Second Step:
+Second Step to configure central:
 
 Download redis
 	move to /usr/local/redis-x-x-x
@@ -113,9 +113,9 @@ Download redis
 	This will check the syntax
 	plutil -lint redis.plist
 
-	open port for listening
+	open port for listening is not required. It works without this line
 	--sudo ipfw add 100 allow tcp from any to any dst-port 6379
-	sudo ipfw add 100 allow tcp from 192.168.1.60 to any dst-port 6379
+	--sudo ipfw add 100 allow tcp from 192.168.1.60 to any dst-port 6379
 
 	sudo launchctl unload /Library/LaunchDaemons/redis.plist
 	sudo launchctl load /Library/LaunchDaemons/redis.plist
