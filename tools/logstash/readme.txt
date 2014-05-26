@@ -2,15 +2,16 @@ Install java
 
 First Step:
 
-	Install Logstash on Shipper
+	Install Logstash on Shipper (Test machine)
 	/etc/logstash/conf.d/receiptofi.shipper.conf
 
 	input {
 		file {
-			type => "syslog"
+			type => "test_app"
 			path => ["/var/log/receiptofi/*.log"]
 			exclude => ["*.gz", "shipper.log"]
 			sincedb_path => "/opt/logstash/sincedb-access"
+			tags => "test"
 			//think about
 			stat_interval => 15
 			start_position => beginning
@@ -59,6 +60,9 @@ First Step:
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
+
+	Update firewall to allow redis on port 6379; and the reload firewall
+	sudo ipfw add 120 allow tcp from 192.168.1.74 to any dst-port 6379
 
 	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
 
@@ -183,7 +187,6 @@ Install Logstash on Central Server
 	}
 
 	output {
-		stdout { }
 		elasticsearch {
 			cluster => "logstash"
 		}
