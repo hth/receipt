@@ -18,7 +18,6 @@ First Step:
 	}
 
 	output {
-		stdout { }
 		redis {
 			host => "192.168.1.74"
 			data_type => "list"
@@ -224,3 +223,38 @@ Install Logstash on Central Server
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
+
+
+	logstash.web.plist
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+	<plist version="1.0">
+  		<dict>
+        	<key>KeepAlive</key>
+        	<true/>
+        	<key>Label</key>
+        	<string>logstash.web</string>
+        	<key>ProgramArguments</key>
+        	<array>
+          		<string>/usr/local/logstash-1.4.1/bin/logstash</string>
+          		<string>web</string>
+        	</array>
+        	<key>RunAtLoad</key>
+        	<true/>
+        	<key>WorkingDirectory</key>
+        	<string>/dev/null</string>
+        	<!--
+        	should be dev null I believe
+        	<key>StandardErrorPath</key>
+        	<string>/var/log/logstash/logstash.log</string>
+        	<key>StandardOutPath</key>
+        	<string>/var/log/logstash/logstash.log</string>
+        	-->
+  		</dict>
+	</plist>
+
+	plutil -lint logstash.web.plist
+
+	sudo launchctl unload /Library/LaunchDaemons/logstash.web.plist
+	sudo launchctl load /Library/LaunchDaemons/logstash.web.plist
