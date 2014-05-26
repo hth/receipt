@@ -88,8 +88,13 @@
 
         <copy todir="${prod.ready.classes.dir}">
             <fileset dir="${resources.dir}">
-                <include name="logback.xml" />
+                <exclude name="logback.xml" />
                 <include name="messages.properties" />
+            </fileset>
+        </copy>
+        <copy todir="${prod.ready.classes.dir}">
+            <fileset dir="${resources.conf.prod.dir}">
+                <include name="logback.xml" />
             </fileset>
         </copy>
         <copy todir="${prod.ready.classes.dir}/conf">
