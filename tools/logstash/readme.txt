@@ -11,6 +11,9 @@ First Step:
 			path => ["/var/log/receiptofi/*.log"]
 			exclude => ["*.gz", "shipper.log"]
 			sincedb_path => "/opt/logstash/sincedb-access"
+			//think about
+			stat_interval => 15
+			start_position => beginning
 		}
 	}
 
@@ -78,7 +81,7 @@ Download redis
 	Executable     : /usr/local/redis-2.8.9/src/redis-cli
 	Cli Executable : /usr/local/redis-2.8.9/src/redis-cli
 
-	Note: Change the binding of redis.conf to 192.168.1.74
+	Note: Change the binding of redis.conf to 192.168.1.74. Just keep on ip address otherwise it gives (ECONNREFUSED) warn
 	sudo chown root:wheel redis.conf
 
 	redis.plist
