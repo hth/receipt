@@ -2,15 +2,24 @@ Install java
 
 First Step:
 
-	Install Logstash on Shipper
+	Install Logstash on Shipper (Test machine)
 	/etc/logstash/conf.d/receiptofi.shipper.conf
+
+	Note: type => "test_app" is indexed; for prod it will be type => "prod_app"
+	codec => multiline not sure how much beneficial
 
 	input {
 		file {
-			type => "syslog"
+			type => "test_app"
 			path => ["/var/log/receiptofi/*.log"]
 			exclude => ["*.gz", "shipper.log"]
 			sincedb_path => "/opt/logstash/sincedb-access"
+			tags => "test"
+			codec => multiline {
+			  pattern => "^\s"
+			  what => "previous"
+			}
+
 			//think about
 			stat_interval => 15
 			start_position => beginning
@@ -57,8 +66,19 @@ First Step:
 	  </dict>
 	</plist>
 
+	cmd
+	Verbose
+	bin/logstash agent --verbose -f /etc/logstash/conf.d/receiptofi.shipper.conf
+
+	How to test configuration
+	bin/logstash agent --configtest --config /etc/logstash/conf.d/receiptofi.shipper.conf
+
+
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
+
+	Update firewall to allow redis on port 6379; and the reload firewall
+	sudo ipfw add 120 allow tcp from 192.168.1.74 to any dst-port 6379
 
 	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
 
@@ -113,10 +133,6 @@ Download redis
 	This will check the syntax
 	plutil -lint redis.plist
 
-	open port for listening is not required. It works without this line
-	--sudo ipfw add 100 allow tcp from any to any dst-port 6379
-	--sudo ipfw add 100 allow tcp from 192.168.1.60 to any dst-port 6379
-
 	sudo launchctl unload /Library/LaunchDaemons/redis.plist
 	sudo launchctl load /Library/LaunchDaemons/redis.plist
 
@@ -124,6 +140,10 @@ Download redis
 	sudo lsof -i -P | grep -i "listen"
 
 Install elastic search on Central
+
+	Note: Elasticsearch is flaky to start when IP address is not available. This causes logstash to fail.
+			There is no way to fix it. Tried specifying static IP to the machine but that did not worked.
+			Currently, starts the machine, reload elasticsearch and logstash. Everything is jolly after this.
 
 	/etc/elasticsearch/conf.d/elasticsearch.yml
 	sudo chown root:wheel elasticsearch.yml
@@ -156,9 +176,9 @@ Install elastic search on Central
 		<key>WorkingDirectory</key>
 		<string>/var/lib/elasticsearch</string>
 		<key>StandardErrorPath</key>
-		<string>/dev/null</string>
+		<string>/var/log/elasticsearch/elasticsearch.log</string>
 		<key>StandardOutPath</key>
-		<string>/dev/null</string>
+		<string>/var/log/elasticsearch/elasticsearch.log</string>
 	  </dict>
 	</plist>
 
@@ -183,7 +203,6 @@ Install Logstash on Central Server
 	}
 
 	output {
-		stdout { }
 		elasticsearch {
 			cluster => "logstash"
 		}
@@ -258,3 +277,52 @@ Install Logstash on Central Server
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.web.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.web.plist
+
+	see who can connect to redis by
+	client list
+
+	........................ END ...............
+
+	############### DON'T NEED THIS FIREWALL SECTION #############
+	############### DON'T NEED THIS FIREWALL SECTION #############
+	############### DON'T NEED THIS FIREWALL SECTION #############
+	############### DON'T NEED THIS FIREWALL SECTION #############
+
+	firewall.plist
+
+	<?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+        <dict>
+            <key>Label</key>
+            <string>ipfw</string>
+            <key>OnDemand</key>
+            <false/>
+            <key>ProgramArguments</key>
+            <array>
+                <string>/usr/local/ipfw.startup.sh</string>
+            </array>
+            <key>RunAtLoad</key>
+            <true/>
+            <key>LaunchOnlyOnce</key>
+            <true/>
+            <key>ServiceDescription</key>
+            <string>IPFW Filter Rules</string>
+            <key>StandardErrorPath</key>
+            <string>/var/log/firewall/ipfw.stderr.log</string>
+            <key>StandardOutPath</key>
+            <string>/var/log/firewall/ipfw.stdout.log</string>
+            <key>UserName</key>
+            <string>root</string>
+        </dict>
+    </plist>
+
+    plutil -lint redis.plist
+
+	open port for listening open port for listening is not required. It works without this line
+	file -- ipfw.startup.sh
+	--sudo ipfw add 100 allow tcp from any to any dst-port 6379
+	sudo ipfw add 100 allow tcp from 192.168.1.60 to any dst-port 6379
+
+	sudo launchctl unload /Library/LaunchDaemons/firewall.plist
+    sudo launchctl load /Library/LaunchDaemons/firewall.plist

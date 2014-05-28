@@ -69,7 +69,7 @@
                      key="?M.?75:.V_/?ch1ll3rB!m$.2c0fkl1*c.s2M*@#-_xEx34!" />
 
         <session-management invalid-session-url="/">
-            <concurrency-control max-sessions="1"
+            <concurrency-control max-sessions="5"
                                  error-if-maximum-exceeded="true"
                                  expired-url="/" />
         </session-management>
