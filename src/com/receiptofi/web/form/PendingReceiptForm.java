@@ -4,6 +4,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.web.helper.ReceiptOCRHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,8 +14,8 @@ import java.util.List;
  */
 public final class PendingReceiptForm {
 
-    List<ReceiptOCRHelper> pending = new ArrayList<>();
-    List<ReceiptOCRHelper> rejected = new ArrayList<>();
+    List<ReceiptOCRHelper> pending = Collections.emptyList();
+    List<ReceiptOCRHelper> rejected = Collections.emptyList();
 
     private PendingReceiptForm() {}
 
