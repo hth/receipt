@@ -80,6 +80,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
             List<String> userIds = providerUserIds.get(providerId);
             List<Connection<?>> connections = connectionsForUsers.get(providerId);
             if(connections == null) {
+                //TODO re-check this code
                 connections = new ArrayList<>(userIds.size());
                 for(String userId : userIds) {
                     connections.add(null);

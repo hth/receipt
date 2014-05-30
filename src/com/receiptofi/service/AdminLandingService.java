@@ -39,7 +39,7 @@ public final class AdminLandingService {
         for(UserSearchForm userSearchForm : findAllUsers(name)) {
             users.add(userSearchForm.getUserName());
         }
-        log.info("List of users: ", users);
+        log.debug("List of users: ", users);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return users;
     }

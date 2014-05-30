@@ -184,10 +184,10 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         //This makes just one of the field populated
         query.fields().include("TITLE");
-        List<ReceiptEntity> list = mongoTemplate.find(query, ReceiptEntity.class, TABLE);
+        List<ReceiptEntity> receipts = mongoTemplate.find(query, ReceiptEntity.class, TABLE);
 
         List<String> titles = new ArrayList<>();
-        for(ReceiptEntity re : list) {
+        for(ReceiptEntity re : receipts) {
             titles.add(re.getBizName().getBusinessName());
         }
 

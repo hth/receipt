@@ -58,9 +58,10 @@ public final class MessageManagerImpl implements MessageManager {
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
         Query query = query(where("LOCKED").is(false).and("DS_E").is(status));
 
-        List<Order> orders = new ArrayList<>();
-        orders.add(new Order(DESC, "USER_LEVEL_ENUM"));
-        orders.add(new Order(ASC, "C"));
+        List<Order> orders = new ArrayList<Order>() {{
+            add(new Order(DESC, "USER_LEVEL_ENUM"));
+            add(new Order(ASC, "C"));
+        }};
         Sort sort = new Sort(orders);
 
         query.with(sort).limit(limit);
@@ -116,9 +117,10 @@ public final class MessageManagerImpl implements MessageManager {
     public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
         Query query = query(where("LOCKED").is(true).and("DS_E").is(status).and("EM").is(emailId).and("USER_PROFILE_ID").is(userProfileId));
 
-        List<Order> orders = new ArrayList<>();
-        orders.add(new Order(DESC, "USER_LEVEL_ENUM"));
-        orders.add(new Order(ASC, "C"));
+        List<Order> orders = new ArrayList<Order>() {{
+            add(new Order(DESC, "USER_LEVEL_ENUM"));
+            add(new Order(ASC, "C"));
+        }};
         Sort sort = new Sort(orders);
 
         query.with(sort);
@@ -129,9 +131,10 @@ public final class MessageManagerImpl implements MessageManager {
     public List<MessageDocumentEntity> findAllPending() {
         Query query = query(where("LOCKED").is(true).and("DS_E").is(DocumentStatusEnum.OCR_PROCESSED));
 
-        List<Order> orders = new ArrayList<>();
-        orders.add(new Order(DESC, "USER_LEVEL_ENUM"));
-        orders.add(new Order(ASC, "C"));
+        List<Order> orders = new ArrayList<Order>() {{
+            add(new Order(DESC, "USER_LEVEL_ENUM"));
+            add(new Order(ASC, "C"));
+        }};
         Sort sort = new Sort(orders);
 
         query.with(sort);
