@@ -15,14 +15,17 @@ First Step:
 			exclude => ["*.gz", "shipper.log"]
 			sincedb_path => "/opt/logstash/sincedb-access"
 			tags => "test"
-			codec => multiline {
-			  pattern => "^\s"
-			  what => "previous"
-			}
+			codec => "json"
 
 			//think about
 			stat_interval => 15
 			start_position => beginning
+
+			//no need for this as line are clubbed together
+			codec => multiline {
+			  pattern => "^\s"
+			  what => "previous"
+			}
 		}
 	}
 
@@ -199,6 +202,7 @@ Install Logstash on Central Server
 			type => "redis-input"
 			data_type => "list"
 			key => "logstash"
+			codec => "json"
 		}
 	}
 
