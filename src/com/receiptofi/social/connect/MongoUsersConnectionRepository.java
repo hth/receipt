@@ -57,14 +57,15 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
         connectionService.remove(userId, connectionKey);
     }
 
-    public List<String> findUserIdsWithConnection(Connection<?> connection) {
+    public List<String> findUserIdsWithConnection(final Connection<?> connection) {
         ProviderEnum providerId = ProviderEnum.valueOf(connection.getKey().getProviderId().toUpperCase());
         List<String> result = connectionService.getUserIds(providerId, connection.getKey().getProviderUserId());
 
         if(result == null || result.size() == 0) {
             connectionService.create(connection.getKey().getProviderUserId(), connection);
-            result = new ArrayList<>();
-            result.add(connection.getKey().getProviderUserId());
+            result = new ArrayList<String>() {{
+                add(connection.getKey().getProviderUserId());
+            }};
         }
 
         return result;

@@ -9,6 +9,7 @@ import com.receiptofi.domain.types.DocumentStatusEnum;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Transient;
@@ -99,7 +100,7 @@ public final class DocumentEntity extends BaseEntity {
 
 	public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
         if(this.fileSystemEntities == null) {
-            this.fileSystemEntities = new ArrayList<>();
+            this.fileSystemEntities = Collections.emptyList();
         }
 		this.fileSystemEntities.add(receiptBlobId);
 	}

@@ -6,7 +6,7 @@ package com.receiptofi.domain.types;
  */
 public enum RoleEnum {
     ROLE_USER,
-    ROLE_ADMIN,
     ROLE_TECHNICIAN,
-    ROLE_SUPERVISOR
+    ROLE_SUPERVISOR,
+    ROLE_ADMIN
 }

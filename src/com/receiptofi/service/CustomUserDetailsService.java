@@ -56,7 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userAccountEntity.isActive() && userAccountEntity.isAccountValidated()
             );
         } else {
-            log.error("not found user={}", email);
+            log.warn("not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         }
     }
@@ -80,7 +80,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userAccountEntity.isActive() && userAccountEntity.isAccountValidated()
             );
         } else {
-            log.error("not found user={}", uid);
+            log.warn("not found user={}", uid);
             throw new UsernameNotFoundException("Error in retrieving user");
         }
     }

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -228,7 +229,7 @@ public final class ItemManagerImpl implements ItemManager {
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if(bizNameEntity == null) {
             //query = Query.query(criteriaI);
-            return new ArrayList<>();
+            return Collections.emptyList();
         } else {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
             query = query(criteriaI).addCriteria(criteriaB);
