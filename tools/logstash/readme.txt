@@ -190,6 +190,12 @@ Install elastic search on Central
 	sudo launchctl unload /Library/LaunchDaemons/elasticsearch.plist
 	sudo launchctl load /Library/LaunchDaemons/elasticsearch.plist
 
+	To delete all index
+	curl -XDELETE 'http://localhost:9200/*/'
+
+	To see stats
+	http://192.168.1.74:9200/_stats
+
 Install Logstash on Central Server
 
 	/etc/logstash/conf.d/receiptofi.central.conf
@@ -330,3 +336,7 @@ Install Logstash on Central Server
 
 	sudo launchctl unload /Library/LaunchDaemons/firewall.plist
     sudo launchctl load /Library/LaunchDaemons/firewall.plist
+
+Set Mail to send email from central logstash
+
+	Follow readme for setting email
