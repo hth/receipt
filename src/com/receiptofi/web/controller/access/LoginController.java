@@ -1,16 +1,10 @@
-/**
- *
- */
 package com.receiptofi.web.controller.access;
 
-import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.LoginService;
-import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.PerformanceProfiling;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
-import com.receiptofi.web.validator.UserLoginValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,14 +33,14 @@ import net.sf.uadetector.ReadableUserAgent;
 @RequestMapping(value = "/login")
 public final class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-    public static final String LOGIN_PAGE = "login";
+
+    @Value("${loginPage:login}")
+    public String loginPage;
 
     //private UserAgentStringParser parser;
     private final CachedUserAgentStringParser parser;
 
-    @Autowired private UserLoginValidator userLoginValidator;
     @Autowired private LoginService loginService;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
     public LoginController() {
         //Get an UserAgentStringParser and analyze the requesting client
@@ -53,19 +48,17 @@ public final class LoginController {
         parser = CachedUserAgentStringParser.getInstance();
     }
 
-	// TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
+    // TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
-	/**
-	 * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
-	 *
-	 * @info: OR you could just replace it in Form Request method getReceiptUser model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
-	 *
-	 * @return UserAuthenticationEntity
-	 */
-	@ModelAttribute("userLoginForm")
-	public UserLoginForm getUserLoginForm() {
-		return UserLoginForm.newInstance();
-	}
+    /**
+     * @return UserAuthenticationEntity
+     * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
+     * @info: OR you could just replace it in Form Request method getReceiptUser model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
+     */
+    @ModelAttribute("userLoginForm")
+    public UserLoginForm getUserLoginForm() {
+        return UserLoginForm.newInstance();
+    }
 
     @PostConstruct
     public void init() {
@@ -82,10 +75,10 @@ public final class LoginController {
      *
      * @return
      */
-	@RequestMapping(method = RequestMethod.GET)
-	public String loadForm(Locale locale, HttpServletRequest request) {
+    @RequestMapping(method = RequestMethod.GET)
+    public String loadForm(Locale locale, HttpServletRequest request) {
         DateTime time = DateUtil.now();
-		log.info("Locale Type={}", locale);
+        log.info("Locale Type={}", locale);
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();
@@ -94,46 +87,12 @@ public final class LoginController {
             String cookieId = cookie.getValue();
             String ip = getClientIpAddress(request);
 
-            log.debug(cookieId + ", " + ip + ", " + agent);
+            log.info("cookie={}, ip={}, user-agent={}", cookieId, ip, agent);
             loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString());
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-		return LOGIN_PAGE;
-	}
-
-    /**
-     * Get the user landing page when they log in or try to access un-authorized page
-     *
-     * @param level
-     * @return
-     */
-    public static String landingHomePage(UserLevelEnum level) {
-        String path = "redirect:/landing.htm";
-        switch(level) {
-            case ADMIN:
-                path = "redirect:/admin/landing.htm";
-                break;
-            case USER_PAID:
-                //do nothing for now
-                break;
-            case USER:
-                //do nothing for now
-                break;
-            case EMPLOYER:
-                //do nothing for now
-                break;
-            case EMPLOYER_PAID:
-                //do nothing for now
-                break;
-            case TECHNICIAN:
-                path = "redirect:/emp/landing.htm";
-                break;
-            case SUPERVISOR:
-                //do nothing for now
-                break;
-        }
-        return path;
+        return loginPage;
     }
 
     /**
@@ -142,21 +101,21 @@ public final class LoginController {
      * @param request
      * @return
      */
-    public static String getClientIpAddress(HttpServletRequest request) {
+    private String getClientIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
         if(ip == null) {

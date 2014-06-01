@@ -47,7 +47,8 @@
         <form-login
                 login-page="/login.htm"
                 default-target-url="/access/landing.htm"
-                authentication-failure-url="/login.htm?error=--#"
+                authentication-success-handler-ref="onLoginSuccessHandler"
+                authentication-failure-handler-ref="authenticationFailureHandler"
                 username-parameter="emailId"
                 password-parameter="password" />
 
@@ -85,6 +86,14 @@
             <xss-protection />
         </headers>
     </http>
+
+    <beans:bean id="onLoginSuccessHandler" class="com.receiptofi.security.OnLoginAuthenticationSuccessHandler" />
+    <beans:bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <beans:property name="redirectStrategy" ref="queryStringPropagateRedirectStrategy" />
+        <beans:property name="defaultFailureUrl" value="/login.htm" />
+    </beans:bean>
+
+    <beans:bean id="queryStringPropagateRedirectStrategy" class="com.receiptofi.security.QueryStringPropagateRedirectStrategy" />
 
     <!-- Declare an authentication-manager to use a custom userDetailsService -->
     <authentication-manager>
