@@ -48,7 +48,7 @@
                 login-page="/login.htm"
                 default-target-url="/access/landing.htm"
                 authentication-success-handler-ref="onLoginSuccessHandler"
-                authentication-failure-handler-ref="authenticationFailureHandler"
+                authentication-failure-url="/login.htm?error=--#"
                 username-parameter="emailId"
                 password-parameter="password" />
 
@@ -69,6 +69,7 @@
         <remember-me services-ref="rememberMeServices"
                      key="?M.?75:.V_/?ch1ll3rB!m$.2c0fkl1*c.s2M*@#-_xEx34!" />
 
+        <!--session-fixation-protection="migrateSession"-->
         <session-management invalid-session-url="/">
             <concurrency-control max-sessions="5"
                                  error-if-maximum-exceeded="true"
@@ -88,12 +89,6 @@
     </http>
 
     <beans:bean id="onLoginSuccessHandler" class="com.receiptofi.security.OnLoginAuthenticationSuccessHandler" />
-    <beans:bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-        <beans:property name="redirectStrategy" ref="queryStringPropagateRedirectStrategy" />
-        <beans:property name="defaultFailureUrl" value="/login.htm" />
-    </beans:bean>
-
-    <beans:bean id="queryStringPropagateRedirectStrategy" class="com.receiptofi.security.QueryStringPropagateRedirectStrategy" />
 
     <!-- Declare an authentication-manager to use a custom userDetailsService -->
     <authentication-manager>
