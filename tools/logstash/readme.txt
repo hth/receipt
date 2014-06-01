@@ -339,4 +339,9 @@ Install Logstash on Central Server
 
 Set Mail to send email from central logstash
 
-	Follow readme for setting email
+	Follow readme for setting email alerts and if possible the link
+	http://benjaminrojas.net/configuring-postfix-to-send-mail-from-mac-os-x-mountain-lion/
+
+Gork Debugger Site
+	http://grokdebug.herokuapp.com/
+	http://drewsearcy.com/email-alerts-with-logstash/
