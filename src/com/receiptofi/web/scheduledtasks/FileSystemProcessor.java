@@ -26,13 +26,11 @@ import org.springframework.stereotype.Component;
 public class FileSystemProcessor {
     private static final Logger log = LoggerFactory.getLogger(FileSystemProcessor.class);
 
-    public static final String EXPENSOFI_FILE_SYSTEM = "/opt/receiptofi/expensofi";
+    @Value("${expensofiReportLocation}")
+    private String expensofiReportLocation;
 
     @Value("${deleteExcelFileAfterDay:7}")
     private int deleteExcelFileAfterDay;
-
-    @Value("${expensofiFileSystem:/opt/receiptofi/expensofi}")
-    private String expensofiFileSystem;
 
     @Autowired private ReceiptService receiptService;
 
@@ -43,7 +41,7 @@ public class FileSystemProcessor {
         int count = 0, found = 0;
         try {
             AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(deleteExcelFileAfterDay).toDate());
-            File directory = new File(expensofiFileSystem);
+            File directory = new File(expensofiReportLocation);
             String[] files = directory.list(cutoff);
             found = files.length;
             for(String filename : files) {
@@ -52,13 +50,13 @@ public class FileSystemProcessor {
                 count++;
             }
         } finally {
-            log.info("FileSystemProcessor.removeExpiredExcelFiles : deletedExcelFile=" + count + ", foundExcelFile=" + found);
+            log.info("FileSystemProcessor.removeExpiredExcelFiles : deletedExcelFile={}, foundExcelFile={}", count, found);
         }
 
     }
 
     public File getExcelFile(String filename) {
-        return new File(expensofiFileSystem + File.separator + filename);
+        return new File(expensofiReportLocation + File.separator + filename);
     }
 
     public void removeExpiredExcel(File file) {

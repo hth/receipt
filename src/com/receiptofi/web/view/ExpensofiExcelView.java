@@ -2,7 +2,6 @@ package com.receiptofi.web.view;
 
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.web.helper.AnchorFileInExcel;
-import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +31,7 @@ import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 /**
@@ -42,6 +42,9 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
  */
 public final class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger log = LoggerFactory.getLogger(ExpensofiExcelView.class);
+
+    @Value("${expensofiReportLocation}")
+    private String expensofiReportLocation;
 
     public final HSSFCellStyle NO_STYLE = null;
 
@@ -137,7 +140,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     protected void persistWorkbookToFileSystem(Workbook workbook, String filename) throws IOException {
         FileOutputStream out = null;
         try {
-			out = new FileOutputStream(new File(FileSystemProcessor.EXPENSOFI_FILE_SYSTEM + File.separator + filename));
+			out = new FileOutputStream(new File(expensofiReportLocation + File.separator + filename));
 			workbook.write(out);
         } catch (IOException e) {
             log.error("Error while persisting file to file system: " + filename, e);

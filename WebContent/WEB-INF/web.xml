@@ -17,6 +17,11 @@
         <param-value>/WEB-INF/classes/logback.xml</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>config.properties</param-name>
+        <param-value>/WEB-INF/classes/conf/config.properties</param-value>
+    </context-param>
+
     <!-- Java Melody Start -->
     <filter>
         <filter-name>monitoring</filter-name>
