@@ -8,7 +8,6 @@ import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.web.form.UserRegistrationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,21 +47,15 @@ public final class InviteService {
      * @return
      */
     public InviteEntity initiateInvite(String emailId, UserProfileEntity userProfile) {
-        UserRegistrationForm userRegistrationForm = UserRegistrationForm.newInstance();
-        userRegistrationForm.setEmailId(emailId);
-        userRegistrationForm.setFirstName("");
-        userRegistrationForm.setLastName("");
-        userRegistrationForm.setPassword(RandomString.newInstance(8).nextString());
-
         InviteEntity inviteEntity;
         UserAccountEntity userAccount;
         try {
             //First save is performed
             userAccount = accountService.executeCreationOfNewAccount(
-                    userRegistrationForm.getEmailId(),
-                    userRegistrationForm.getFirstName(),
-                    userRegistrationForm.getLastName(),
-                    userRegistrationForm.getPassword()
+                    emailId,
+                    "",
+                    "",
+                    RandomString.newInstance(8).nextString()
             );
         } catch (RuntimeException exception) {
             log.error("Error occurred during creation of invited user: " + exception.getLocalizedMessage());
