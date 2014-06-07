@@ -103,7 +103,12 @@ public final class AccountRegistrationController {
 
         UserAccountEntity userAccount;
         try {
-            userAccount = accountService.executeCreationOfNewAccount(userRegistrationForm);
+            userAccount = accountService.executeCreationOfNewAccount(
+                    userRegistrationForm.getEmailId(),
+                    userRegistrationForm.getFirstName(),
+                    userRegistrationForm.getLastName(),
+                    userRegistrationForm.getPassword()
+            );
         } catch (RuntimeException exce) {
             log.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
