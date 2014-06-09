@@ -18,6 +18,9 @@ import com.receiptofi.utils.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -84,7 +87,12 @@ public final class AccountService {
         UserAccountEntity userAccountEntity = userAccountManager.findByUserId(mail);
         Assert.notNull(userAccountEntity);
 
-        return userAccountEntity.getUserAuthentication().getAuthenticationKey().equals(auth);
+        try {
+            return userAccountEntity.getUserAuthentication().getAuthenticationKey().equals(URLDecoder.decode(auth, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            log.error("Auth decoding issue for user={}, reason={}", mail, e.getLocalizedMessage(), e);
+            return false;
+        }
     }
 
     /**
