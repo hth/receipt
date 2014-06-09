@@ -60,11 +60,6 @@ public class UserAccountManagerImpl implements UserAccountManager {
     }
 
     @Override
-    public WriteResult updateObject(String id, String name) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void deleteHard(UserAccountEntity object) {
         mongoTemplate.remove(object, TABLE);
     }

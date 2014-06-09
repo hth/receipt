@@ -97,19 +97,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
 	@Override
-	public WriteResult updateObject(String id, String name) {
-		// return mongoTemplate.updateFirst(
-		// Query.query(Criteria.where("id").is(id)),
-		// Update.update("level", name), TABLE);
-		throw new UnsupportedOperationException("Method not implemented");
-	}
-
-	@Override
-	public WriteResult updateObject(String id, UserLevelEnum level) {
-		return mongoTemplate.updateFirst(query(where("id").is(id)), entityUpdate(update("USER_LEVEL_ENUM", level)), UserProfileEntity.class);
-	}
-
-	@Override
     public void deleteHard(UserProfileEntity object) {
 		mongoTemplate.remove(object, TABLE);
 	}
