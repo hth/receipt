@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static org.springframework.data.mongodb.core.query.Criteria.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +79,6 @@ public class UserAccountManagerImpl implements UserAccountManager {
 
     @Override
     public UserAccountEntity findByUserIdAndAuth(String mail, String auth) {
-        return mongoTemplate.findOne(query(where("userId").is(mail).and("USER_AUTHENTICATION.A").is(auth)), UserAccountEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("userId").is(mail).and("USER_AUTHENTICATION.AU").is(auth)), UserAccountEntity.class, TABLE);
     }
 }

@@ -21,16 +21,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public final class UserAuthenticationEntity extends BaseEntity {
 
 	@NotNull
-    @Field("P")
+    @Field("PA")
 	private String password;
 
 	@NotNull
-    @Field("A")
+    @Field("AU")
 	private String authenticationKey;
 
     //TODO drop this column
     @NotNull
-    @Field("G_P")
+    @Field("G_PA")
     private String grandPassword;
 
 	/**

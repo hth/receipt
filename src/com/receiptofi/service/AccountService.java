@@ -99,7 +99,10 @@ public final class AccountService {
         UserProfileEntity userProfile;
 
         try {
-            userAuthentication = UserAuthenticationEntity.newInstance(HashText.computeBCrypt(password), HashText.hashCodeSHA1(RandomString.newInstance().nextString()));
+            userAuthentication = UserAuthenticationEntity.newInstance(
+                    HashText.computeBCrypt(password),
+                    HashText.computeBCrypt(RandomString.newInstance().nextString())
+            );
             userAuthentication.setGrandPassword(grandPassword);
             userAuthenticationManager.save(userAuthentication);
         } catch (Exception e) {
