@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import org.joda.time.DateTime;
 
@@ -79,8 +80,11 @@ public final class AccountService {
         return userAccountManager.findByUserId(mail);
     }
 
-    public UserAccountEntity findByUserIdAndAuth(String mail, String auth) {
-        return userAccountManager.findByUserIdAndAuth(mail, auth);
+    public boolean hasAccess(String mail, String auth) {
+        UserAccountEntity userAccountEntity = userAccountManager.findByUserId(mail);
+        Assert.notNull(userAccountEntity);
+
+        return userAccountEntity.getUserAuthentication().getAuthenticationKey().equals(auth);
     }
 
     /**
