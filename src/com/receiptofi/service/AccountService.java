@@ -44,10 +44,6 @@ public final class AccountService {
     private final ForgotRecoverManager forgotRecoverManager;
     private final GenerateUserIdManager generateUserIdManager;
 
-    //TODO remove this
-    @Value("${grandPassword}")
-    private String grandPassword;
-
     @Value("${domain}")
     private String domain;
 
@@ -115,7 +111,6 @@ public final class AccountService {
                     HashText.computeBCrypt(password),
                     HashText.computeBCrypt(RandomString.newInstance().nextString())
             );
-            userAuthentication.setGrandPassword(grandPassword);
             userAuthenticationManager.save(userAuthentication);
         } catch (Exception e) {
             log.error("During saving UserAuthenticationEntity={}", e.getLocalizedMessage(), e);
@@ -198,7 +193,6 @@ public final class AccountService {
      * @throws Exception
      */
     public void updateAuthentication(UserAuthenticationEntity userAuthenticationEntity) throws Exception {
-        userAuthenticationEntity.setGrandPassword(grandPassword);
         userAuthenticationManager.save(userAuthenticationEntity);
     }
 
