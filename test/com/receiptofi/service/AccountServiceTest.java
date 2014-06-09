@@ -50,7 +50,7 @@ public class AccountServiceTest {
 
     @Test
     public void testFindIfUser_Does_Not_Exists() throws Exception {
-        when(userProfileManager.findOneByEmail(anyString())).thenReturn(null);
+        when(userProfileManager.findOneByMail(anyString())).thenReturn(null);
         assertNull(accountService.findIfUserExists("user_community_3@receiptofi.com"));
     }
 
@@ -61,7 +61,7 @@ public class AccountServiceTest {
 
     @Test
     public void testInitiateAccountRecovery() throws Exception {
-        when(userProfileManager.findOneByEmail(anyString())).thenReturn(new UserProfileEntity());
+        when(userProfileManager.findOneByMail(anyString())).thenReturn(new UserProfileEntity());
         accountService.initiateAccountRecovery(anyString());
 
         verify(forgotRecoverManager, atLeastOnce()).save(any(ForgotRecoverEntity.class));
@@ -70,7 +70,7 @@ public class AccountServiceTest {
     @Test(expected = Exception.class)
     public void testInitiateAccountRecovery_Fails_When_Saving() throws Exception {
         doThrow(new Exception()).when(forgotRecoverManager).save((ForgotRecoverEntity) anyObject());
-        when(userProfileManager.findOneByEmail(anyString())).thenReturn(new UserProfileEntity());
+        when(userProfileManager.findOneByMail(anyString())).thenReturn(new UserProfileEntity());
         accountService.initiateAccountRecovery(anyString());
 
         verify(forgotRecoverManager, atLeastOnce()).save(any(ForgotRecoverEntity.class));
