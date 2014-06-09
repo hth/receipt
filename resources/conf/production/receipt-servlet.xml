@@ -3,9 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xmlns:jms="http://www.springframework.org/schema/jms"
-       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:c="http://www.springframework.org/schema/c"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:cache="http://www.springframework.org/schema/cache"
@@ -16,10 +14,8 @@
           http://www.springframework.org/schema/context/spring-context-3.2.xsd
           http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-          http://www.springframework.org/schema/data/mongo
-          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
-          http://www.springframework.org/schema/util
-          http://www.springframework.org/schema/util/spring-util-3.2.xsd
+
+
           http://www.springframework.org/schema/cache
           http://www.springframework.org/schema/cache/spring-cache.xsd
           http://www.springframework.org/schema/task
@@ -82,8 +78,8 @@
     </bean>
 
     <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
-        <!--&lt;!&ndash; one of the properties available; the maximum file size in bytes; supports 10MB &ndash;&gt;-->
-        <!--<property name="maxUploadSize" value="10485760"/>-->
+    <!--&lt;!&ndash; one of the properties available; the maximum file size in bytes; supports 10MB &ndash;&gt;-->
+    <!--<property name="maxUploadSize" value="10485760"/>-->
     <!--</bean>-->
 
     <bean id="filterMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -118,38 +114,6 @@
         <property name="from" value="${goDaddyUsername}"/>
     </bean>
 
-    <!-- refer this for session scope -->
-    <!-- http://richardchesterwood.blogspot.com.au/2011/03/using-sessions-in-spring-mvc-including.html -->
-    <!-- an HTTP Session-scoped bean exposed as a proxy -->
-    <bean id="userAuthenticationManager"    class="com.receiptofi.repository.UserAuthenticationManagerImpl" />
-    <bean id="userProfileManager"           class="com.receiptofi.repository.UserProfileManagerImpl" />
-    <bean id="userPreferenceManager"        class="com.receiptofi.repository.UserPreferenceManagerImpl" />
-    <bean id="receiptManager"               class="com.receiptofi.repository.ReceiptManagerImpl" />
-    <bean id="itemManager"                  class="com.receiptofi.repository.ItemManagerImpl" />
-    <bean id="documentManager"              class="com.receiptofi.repository.DocumentManagerImpl" />
-    <bean id="itemOCRManager"               class="com.receiptofi.repository.ItemOCRManagerImpl" />
-    <bean id="itemFeatureManager"           class="com.receiptofi.repository.ItemFeatureManagerImpl" />
-    <bean id="messageManager"               class="com.receiptofi.repository.MessageManagerImpl" />
-    <bean id="expenseManager"               class="com.receiptofi.repository.ExpenseTagManagerImpl" />
-    <bean id="notificationManager"          class="com.receiptofi.repository.NotificationManagerImpl" />
-    <bean id="evalFeedbackManager"          class="com.receiptofi.repository.EvalFeedbackManagerImpl" />
-    <bean id="bizNameManager"               class="com.receiptofi.repository.BizNameManagerImpl" />
-    <bean id="bizStoreManager"              class="com.receiptofi.repository.BizStoreManagerImpl" />
-    <bean id="fileSystemManager"            class="com.receiptofi.repository.FileSystemManagerImpl" />
-    <bean id="mileageManager"               class="com.receiptofi.repository.MileageManagerImpl" />
-    <bean id="rememberMeTokenManager"       class="com.receiptofi.repository.social.RememberMeTokenManagerImpl" />
-
-    <bean id="userRegistrationValidator"    class="com.receiptofi.web.validator.UserRegistrationValidator" />
-    <bean id="userLoginValidator"           class="com.receiptofi.web.validator.UserLoginValidator" />
-    <bean id="mileageDocumentValidator"     class="com.receiptofi.web.validator.MileageDocumentValidator" />
-    <bean id="receiptDocumentValidator"     class="com.receiptofi.web.validator.ReceiptDocumentValidator" />
-    <bean id="bizValidator"                 class="com.receiptofi.web.validator.BizValidator" />
-    <bean id="bizSearchValidator"           class="com.receiptofi.web.validator.BizSearchValidator" />
-    <bean id="expenseTypeValidator"         class="com.receiptofi.web.validator.ExpenseTypeValidator" />
-    <bean id="forgotRecoverValidator"       class="com.receiptofi.web.validator.ForgotRecoverValidator" />
-    <bean id="forgotAuthenticateValidator"  class="com.receiptofi.web.validator.ForgotAuthenticateValidator" />
-    <bean id="inviteAuthenticateValidator"  class="com.receiptofi.web.validator.InviteAuthenticateValidator" />
-    <bean id="evalFeedbackValidator"        class="com.receiptofi.web.validator.EvalFeedbackValidator" />
     <!-- ===================================== -->
     <!-- JMS configuration                     -->
     <!-- ===================================== -->
