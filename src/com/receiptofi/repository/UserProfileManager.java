@@ -34,5 +34,5 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 	 */
 	List<UserProfileEntity> searchAllByName(String name);
 
-    UserProfileEntity findOneByEmail(String emailId);
+    UserProfileEntity findOneByMail(String emailId);
 }

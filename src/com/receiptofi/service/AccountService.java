@@ -67,16 +67,20 @@ public final class AccountService {
         this.generateUserIdManager = generateUserIdManager;
     }
 
-    public UserProfileEntity findIfUserExists(String emailId) {
-        return userProfileManager.findOneByEmail(emailId);
+    public UserProfileEntity findIfUserExists(String mail) {
+        return userProfileManager.findOneByMail(mail);
     }
 
     public UserAccountEntity findByReceiptUserId(String receiptUserId) {
         return userAccountManager.findByReceiptUserId(receiptUserId);
     }
 
-    public UserAccountEntity findByUserId(String email) {
-        return userAccountManager.findByUserId(email);
+    public UserAccountEntity findByUserId(String mail) {
+        return userAccountManager.findByUserId(mail);
+    }
+
+    public UserAccountEntity findByUserIdAndAuth(String mail, String auth) {
+        return userAccountManager.findByUserIdAndAuth(mail, auth);
     }
 
     /**

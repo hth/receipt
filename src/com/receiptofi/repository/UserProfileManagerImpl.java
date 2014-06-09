@@ -113,8 +113,8 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 	}
 
     @Override
-    public UserProfileEntity findOneByEmail(String emailId) {
-        return mongoTemplate.findOne(query(where("EM").is(emailId)), UserProfileEntity.class, TABLE);
+    public UserProfileEntity findOneByMail(String mail) {
+        return mongoTemplate.findOne(query(where("EM").is(mail)), UserProfileEntity.class, TABLE);
     }
 
     @Override

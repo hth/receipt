@@ -16,22 +16,21 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "USER_AUTHENTICATION")
 @CompoundIndexes({
-        @CompoundIndex(name = "user_authentication_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
-        @CompoundIndex(name = "user_authentication_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true)
+        @CompoundIndex(name = "user_authentication_role_idx", def = "{'P': 1, 'A': 1, 'G_P': 1}", unique = true)
 })
 public final class UserAuthenticationEntity extends BaseEntity {
 
 	@NotNull
-    @Field("PASSWORD")
+    @Field("P")
 	private String password;
 
 	@NotNull
-    @Field("AUTH")
+    @Field("A")
 	private String authenticationKey;
 
     //TODO drop this column
     @NotNull
-    @Field("G_PASSWORD")
+    @Field("G_P")
     private String grandPassword;
 
 	/**
