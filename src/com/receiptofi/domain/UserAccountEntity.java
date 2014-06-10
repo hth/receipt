@@ -5,6 +5,7 @@ import com.receiptofi.domain.types.RoleEnum;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -65,7 +66,7 @@ public final class UserAccountEntity extends BaseEntity {
     private String lastName;
 
     @Field("RE")
-    private Set<RoleEnum> roles = new HashSet<RoleEnum>() {{
+    private Set<RoleEnum> roles = new LinkedHashSet<RoleEnum>() {{
         add(RoleEnum.ROLE_USER);
     }};
 
