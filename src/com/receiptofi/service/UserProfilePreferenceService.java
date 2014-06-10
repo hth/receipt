@@ -40,10 +40,6 @@ public final class UserProfilePreferenceService {
         userProfileManager.save(userProfile);
     }
 
-    public UserProfileEntity findById(String userProfileId) {
-        return userProfileManager.findOne(userProfileId);
-    }
-
     public UserPreferenceEntity loadFromProfile(UserProfileEntity userProfileEntity) {
         return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
     }

@@ -299,7 +299,7 @@
                             <c:when test="${expenseTag.active eq true}">
                                 <c:choose>
                                     <c:when test="${isSameUser}">
-                                        <a href="${pageContext.request.contextPath}/expenses/${expenseTag.tagName}.htm">
+                                        <a href="${pageContext.request.contextPath}/access/expenses/${expenseTag.tagName}.htm">
                                             <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />
                                         </a>
                                     </c:when>
@@ -312,7 +312,7 @@
                                 <c:choose>
                                     <c:when test="${isSameUser}">
                                         <del>
-                                            <a href="${pageContext.request.contextPath}/expenses/${expenseTag.tagName}.htm">
+                                            <a href="${pageContext.request.contextPath}/access/expenses/${expenseTag.tagName}.htm">
                                                 <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />
                                             </a>
                                         </del>
@@ -331,7 +331,7 @@
                         <c:when test="${userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName) eq 0}">
                             <c:choose>
                                 <c:when test="${isSameUser}">
-                                    <a href="${pageContext.request.contextPath}/userprofilepreference/expenseTagVisible.htm?id=${expenseTag.id}&status=${expenseTag.active}">
+                                    <a href="${pageContext.request.contextPath}/access/userprofilepreference/expenseTagVisible.htm?id=${expenseTag.id}&status=${expenseTag.active}">
                                         <c:choose>
                                             <c:when test="${expenseTag.active eq true}">
                                                 Hide

@@ -156,7 +156,7 @@ public final class UserProfilePreferenceController {
             userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTagId, changeStatTo, receiptUser.getRid());
         }
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findById(receiptUser.getRid());
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(receiptUser.getRid());
         Assert.notNull(userProfile);
         userProfilePreferenceForm.setUserProfile(userProfile);
 
@@ -214,7 +214,7 @@ public final class UserProfilePreferenceController {
     ) throws IOException {
         DateTime time = DateUtil.now();
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findById(userProfilePreferenceForm.getUserProfile().getId());
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(userProfilePreferenceForm.getUserProfile().getReceiptUserId());
         Assert.notNull(userProfile);
 
         userProfile.setLevel(userProfilePreferenceForm.getUserProfile().getLevel());
