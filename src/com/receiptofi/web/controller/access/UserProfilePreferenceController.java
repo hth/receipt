@@ -4,9 +4,12 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.RoleEnum;
+import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -20,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -209,8 +213,11 @@ public final class UserProfilePreferenceController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	public String updateUser(
-            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
+            @ModelAttribute("expenseTypeForm")
+            ExpenseTypeForm expenseTypeForm,
+
+            @ModelAttribute("userProfilePreferenceForm")
+            UserProfilePreferenceForm userProfilePreferenceForm
     ) throws IOException {
         DateTime time = DateUtil.now();
 
@@ -225,18 +232,22 @@ public final class UserProfilePreferenceController {
                 userProfile.inActive();
             }
         }
-        try {
-            //TODO remove this code as its a temporary fix to update existing email ids from capital case in the email to lowercase
-            //userProfile.setEmailId(StringUtils.lowerCase(userProfile.getEmailId()));
 
+        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
+                userProfile.getReceiptUserId(),
+                userProfile.getLevel()
+        );
+
+        try {
+            accountService.saveUserAccount(userAccount);
             userProfilePreferenceService.updateProfile(userProfile);
         } catch (Exception exce) {
-            log.error("Failed updating User Profile: " + exce.getLocalizedMessage() + ", user profile Id: " + userProfile.getEmail());
-            userProfilePreferenceForm.setErrorMessage("Failed updating user profile: " + exce.getLocalizedMessage());
+            //XXX todo should there be two phase commit
+            log.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
+            userProfilePreferenceForm.setErrorMessage("Failed updating user profile " + exce.getLocalizedMessage());
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        //Re-direct to prevent resubmit
         return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
 	}
 

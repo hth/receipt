@@ -160,20 +160,26 @@
                 <div class="divRow">
                     <div class="divOfCell600">
                         Name:
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.name" /></b>
                     </div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
-                        Profile Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.id" /></b>
+                        User Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" /></b>
+                    </div>
+                </div>
+                <div class="divRow">
+                    <div class="divOfCell600">
+                        Email on file: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.email" /></b>
                     </div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
                     Registration:
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.created}" type="both" /></b></div>
                 </div>
                 <div class="divRow">
@@ -209,12 +215,12 @@
             <div>&nbsp;</div>
 
             <form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
-            <form:hidden path="userProfile.id"/>
+            <form:hidden path="userProfile.receiptUserId"/>
             <div class="divTable">
                 <div class="divRow">
                     <div class="divOfCell600">
                         Profile Id: &nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.id" /></b>
+                        <b><spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" /></b>
                     </div>
                 </div>
                 <div class="divRow">
