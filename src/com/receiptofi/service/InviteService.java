@@ -67,8 +67,12 @@ public final class InviteService {
         userAccountManager.save(userAccount);
 
         UserProfileEntity newInvitedUser = userProfileManager.findByReceiptUserId(userAccount.getReceiptUserId());
-        String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
-        inviteEntity = InviteEntity.newInstance(emailId, authenticationKey, newInvitedUser, userProfile);
+        inviteEntity = InviteEntity.newInstance(
+                emailId,
+                HashText.computeBCrypt(RandomString.newInstance().nextString()),
+                newInvitedUser,
+                userProfile
+        );
         inviteManager.save(inviteEntity);
         return inviteEntity;
     }
