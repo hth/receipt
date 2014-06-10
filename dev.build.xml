@@ -154,6 +154,8 @@
         </delete>
         <delete>
             <fileset dir="." includes="**/*.war"/>
+            <file directory="." file="duplicate_code.txt"/>
+            <file directory="." file="violation_pmd_report.html"/>
         </delete>
 		<echo message="Cleaned" />
 	</target>
@@ -234,7 +236,7 @@
 	<!-- End Tomcat tasks -->
 
     <!-- ============================================================== -->
-    <!-- PMD                                                            -->
+    <!-- PMD and CPD                                                    -->
     <!-- ============================================================== -->
 
     <path id="pmd.classpath">

@@ -68,7 +68,7 @@ public final class ValidateEmailController {
             }
             return validateResult;
         } else {
-            log.info("authentication failed for invalid auth={}", auth);
+            log.info("authentication failed for invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
