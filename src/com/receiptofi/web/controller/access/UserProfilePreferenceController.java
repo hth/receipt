@@ -8,8 +8,6 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.RoleEnum;
-import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -23,9 +21,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -128,7 +127,7 @@ public final class UserProfilePreferenceController {
             userProfilePreferenceService.addExpenseType(expenseType);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
-            result.rejectValue("expName", "", e.getLocalizedMessage());
+            result.rejectValue("expName", StringUtils.EMPTY, e.getLocalizedMessage());
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
