@@ -64,17 +64,17 @@ public final class UserProfilePreferenceController {
     @PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/i", method = RequestMethod.GET)
 	public ModelAndView loadForm(
-            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
+            @ModelAttribute("expenseTypeForm")
+            ExpenseTypeForm expenseTypeForm,
+
+            @ModelAttribute("userProfilePreferenceForm")
+            UserProfilePreferenceForm userProfilePreferenceForm,
+
             Model model
     ) throws IOException {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(receiptUser.getRid());
-        Assert.notNull(userProfile);
-        userProfilePreferenceForm.setUserProfile(userProfile);
-
+        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
         ModelAndView modelAndView = populateModel(nextPage, null, userProfilePreferenceForm);
 
         //Gymnastic to show BindingResult errors if any
@@ -98,19 +98,21 @@ public final class UserProfilePreferenceController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value="/i", method = RequestMethod.POST)
     public String addExpenseTag(
-            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm,
-            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute("userProfilePreferenceForm")
+            UserProfilePreferenceForm userProfilePreferenceForm,
+
+            @ModelAttribute("expenseTypeForm")
+            ExpenseTypeForm expenseTypeForm,
+
             BindingResult result,
             RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         //There is UI logic based on this. Set the right to be active when responding.
         redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(receiptUser.getRid());
-        userProfilePreferenceForm.setUserProfile(userProfile);
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
 
         expenseTypeValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
@@ -159,10 +161,7 @@ public final class UserProfilePreferenceController {
             userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTagId, changeStatTo, receiptUser.getRid());
         }
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(receiptUser.getRid());
-        Assert.notNull(userProfile);
-        userProfilePreferenceForm.setUserProfile(userProfile);
-
+        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
         ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
 
         //There is UI logic based on this. Set the right to be active when responding.
@@ -175,7 +174,7 @@ public final class UserProfilePreferenceController {
     /**
      * Only admin has access to this link. Others get 403 error.
      *
-     * @param id
+     * @param rid
      * @param expenseTypeForm
      * @return
      * @throws IOException
@@ -183,23 +182,26 @@ public final class UserProfilePreferenceController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/their", method = RequestMethod.GET)
 	public ModelAndView getUser(
-            @RequestParam("id") String id,
+            @RequestParam("id") String rid,
             @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
             @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
     ) throws IOException {
         DateTime time = DateUtil.now();
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(id);
-        Assert.notNull(userProfile);
-        userProfilePreferenceForm.setUserProfile(userProfile);
+        populateUserProfilePreferenceForm(rid, userProfilePreferenceForm);
 
         ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
-        modelAndView.addObject("id", id);
+        modelAndView.addObject("id", rid);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 
 	}
+
+    private void populateUserProfilePreferenceForm(String rid, UserProfilePreferenceForm userProfilePreferenceForm) {
+        UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid);
+        userProfilePreferenceForm.setUserProfile(userProfile);
+    }
 
     /**
      * Only Admin can update the user level. Others get 403 error. If the user cannot access /their, then its highly
@@ -220,9 +222,9 @@ public final class UserProfilePreferenceController {
     ) throws IOException {
         DateTime time = DateUtil.now();
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(userProfilePreferenceForm.getUserProfile().getReceiptUserId());
-        Assert.notNull(userProfile);
-
+        UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(
+                userProfilePreferenceForm.getUserProfile().getReceiptUserId()
+        );
         userProfile.setLevel(userProfilePreferenceForm.getUserProfile().getLevel());
         if(!userProfilePreferenceForm.isActive() || !userProfile.isActive()) {
             if(userProfilePreferenceForm.isActive()) {
@@ -259,7 +261,11 @@ public final class UserProfilePreferenceController {
         DateTime time = DateUtil.now();
 
         UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreference.getUserProfile());
-        userProfilePreference.setUserAuthentication(accountService.findByReceiptUserId(userProfilePreference.getUserProfile().getReceiptUserId()).getUserAuthentication());
+        userProfilePreference.setUserAuthentication(
+                accountService.findByReceiptUserId(
+                        userProfilePreference.getUserProfile().getReceiptUserId()
+                ).getUserAuthentication()
+        );
 
 		ModelAndView modelAndView = new ModelAndView(nextPage);
         userProfilePreference.setUserPreference(userPreference);
