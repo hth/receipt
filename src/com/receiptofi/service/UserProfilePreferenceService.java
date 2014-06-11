@@ -32,6 +32,10 @@ public final class UserProfilePreferenceService {
         return userProfileManager.findByReceiptUserId(receiptUserId);
     }
 
+    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String receiptUserId) {
+        return userProfileManager.forProfilePreferenceFindByReceiptUserId(receiptUserId);
+    }
+
     public UserProfileEntity getUsingUserId(String userId) {
         return userProfileManager.findByUserId(userId);
     }

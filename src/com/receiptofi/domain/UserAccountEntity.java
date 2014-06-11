@@ -4,9 +4,10 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -243,7 +244,7 @@ public final class UserAccountEntity extends BaseEntity {
 
     @Override
     public String toString() {
-        if(firstName != null && !"".equals(firstName)) {
+        if(StringUtils.isNotBlank(firstName)) {
             return firstName;
         }
         return userId;
