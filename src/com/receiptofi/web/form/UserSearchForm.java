@@ -71,7 +71,7 @@ public final class UserSearchForm {
      * @return
      */
 	public String getUserName() {
-		if(userName.length() > 2 && !userName.equalsIgnoreCase(", ")) {
+		if(!userName.equalsIgnoreCase(", ") && userName.length() > 2) {
 			return userName;
 		}
 		return StringUtils.EMPTY;
