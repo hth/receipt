@@ -52,7 +52,7 @@ public final class ReceiptParser {
 		}
 
         //At least have one item added for place holder. This will help is cloning for more items later.
-        if(items.size() == 0) {
+        if(items.isEmpty()) {
             items.add(processItem(StringUtils.EMPTY, 1, documentEntity));
         }
 	}
