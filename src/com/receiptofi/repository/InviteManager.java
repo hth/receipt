@@ -1,6 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.InviteEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 
 /**
@@ -30,7 +31,7 @@ public interface InviteManager extends RepositoryManager<InviteEntity> {
      *
      * @param emailId
      */
-    InviteEntity reInviteActiveInvite(String emailId, UserProfileEntity invitedBy);
+    InviteEntity reInviteActiveInvite(String emailId, UserAccountEntity invitedBy);
 
     /**
      * Search existing invite by email id that is active and not deleted
