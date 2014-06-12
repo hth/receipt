@@ -197,16 +197,16 @@ public final class MailService {
             try {
                 inviteEntity = inviteService.initiateInvite(invitedUserEmail, userProfileEntity);
                 formulateInvitationEmail(invitedUserEmail, userProfileEntity, inviteEntity);
+                return true;
             } catch (RuntimeException exception) {
                 if(inviteEntity != null) {
                     deleteInvite(inviteEntity);
                     log.info("Due to failure in sending the invitation email. Deleting Invite: " + inviteEntity.getId() + ", for: " + inviteEntity.getEmailId());
                 }
                 log.error("Exception occurred during persisting InviteEntity, message={}", exception.getLocalizedMessage(), exception);
-                return false;
             }
         }
-        return true;
+        return false;
     }
 
     /**
