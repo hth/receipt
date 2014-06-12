@@ -3,7 +3,6 @@ package com.receiptofi.repository;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.UserProfileEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
