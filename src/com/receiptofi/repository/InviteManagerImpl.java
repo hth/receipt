@@ -37,14 +37,14 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity findByAuthenticationKey(String auth) {
-        Query query = query(where("AUTH").is(auth)).addCriteria(isActive()).addCriteria(isNotDeleted());
+        Query query = query(where("AU").is(auth)).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
 
     @Override
     public void invalidateAllEntries(InviteEntity object) {
         mongoTemplate.updateMulti(
-                query(where("USER_PROFILE_INVITED.$id").is(new ObjectId(object.getInvited().getId()))),
+                query(where("IN.$id").is(new ObjectId(object.getInvited().getId()))),
                 entityUpdate(update("A", false)),
                 InviteEntity.class
         );
@@ -60,7 +60,6 @@ public final class InviteManagerImpl implements InviteManager {
         if(object.getId() != null) {
             object.setUpdated();
         }
-        object.increaseInvitationCount();
         mongoTemplate.save(object, TABLE);
     }
 
@@ -81,7 +80,7 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity reInviteActiveInvite(String emailId, UserProfileEntity invitedBy) {
-        Criteria criteria = where("EM").is(emailId).and("USER_PROFILE_INVITED_BY.$id").is(new ObjectId(invitedBy.getId()));
+        Criteria criteria = where("EM").is(emailId).and("IN_BY.$id").is(new ObjectId(invitedBy.getId()));
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
