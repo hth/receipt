@@ -2,6 +2,7 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.InviteEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -79,7 +80,7 @@ public final class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public InviteEntity reInviteActiveInvite(String emailId, UserProfileEntity invitedBy) {
+    public InviteEntity reInviteActiveInvite(String emailId, UserAccountEntity invitedBy) {
         Criteria criteria = where("EM").is(emailId).and("IN_BY.$id").is(new ObjectId(invitedBy.getId()));
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);

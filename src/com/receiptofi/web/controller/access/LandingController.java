@@ -477,9 +477,9 @@ public final class LandingController extends BaseController {
             if(userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 boolean status;
                 if(userProfileEntity == null) {
-                    status = mailService.sendInvitation(invitedUserEmail, receiptUser.getUsername());
+                    status = mailService.sendInvitation(invitedUserEmail, receiptUser.getRid());
                 } else {
-                    status = mailService.reSendInvitation(invitedUserEmail, receiptUser.getUsername());
+                    status = mailService.reSendInvitation(invitedUserEmail, receiptUser.getRid());
                 }
                 if(status) {
                     StringBuilder sb = new StringBuilder();

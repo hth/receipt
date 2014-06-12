@@ -187,16 +187,16 @@ public final class MailService {
      * Used in sending the invitation for the first time
      *
      * @param invitedUserEmail  Invited users email address
-     * @param existingUserEmail Existing users email address
+     * @param invitedByRid Existing users email address
      * @return
      */
-    public boolean sendInvitation(String invitedUserEmail, String existingUserEmail) {
-        UserProfileEntity userProfileEntity = accountService.findIfUserExists(existingUserEmail);
-        if(userProfileEntity != null) {
+    public boolean sendInvitation(String invitedUserEmail, String invitedByRid) {
+        UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
+        if(invitedBy != null) {
             InviteEntity inviteEntity = null;
             try {
-                inviteEntity = inviteService.initiateInvite(invitedUserEmail, userProfileEntity);
-                formulateInvitationEmail(invitedUserEmail, userProfileEntity, inviteEntity);
+                inviteEntity = inviteService.initiateInvite(invitedUserEmail, invitedBy);
+                formulateInvitationEmail(invitedUserEmail, invitedBy, inviteEntity);
                 return true;
             } catch (RuntimeException exception) {
                 if(inviteEntity != null) {
@@ -213,21 +213,21 @@ public final class MailService {
      * Helps in re-sending the invitation or to send new invitation to existing (pending) invitation by a new user.
      *
      * @param emailId            Invited users email address
-     * @param userProfileEmailId Existing users email address
+     * @param invitedByRid Existing users email address
      * @return
      */
-    public boolean reSendInvitation(String emailId, String userProfileEmailId) {
-        UserProfileEntity userProfileEntity = accountService.findIfUserExists(userProfileEmailId);
-        if(userProfileEntity != null) {
+    public boolean reSendInvitation(String emailId, String invitedByRid) {
+        UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
+        if(invitedBy != null) {
             try {
-                InviteEntity inviteEntity = inviteService.reInviteActiveInvite(emailId, userProfileEntity);
+                InviteEntity inviteEntity = inviteService.reInviteActiveInvite(emailId, invitedBy);
                 boolean isNewInvite = false;
                 if(inviteEntity == null) {
                     //Means invite exist by another user. Better to create a new invite for the requesting user
-                    inviteEntity = reCreateAnotherInvite(emailId, userProfileEntity);
+                    inviteEntity = reCreateAnotherInvite(emailId, invitedBy);
                     isNewInvite = true;
                 }
-                formulateInvitationEmail(emailId, userProfileEntity, inviteEntity);
+                formulateInvitationEmail(emailId, invitedBy, inviteEntity);
                 if(!isNewInvite) {
                     inviteManager.save(inviteEntity);
                 }
@@ -243,14 +243,14 @@ public final class MailService {
      * Invitation is created by the new user
      *
      * @param email
-     * @param userProfile
+     * @param invitedBy
      * @return
      */
-    public InviteEntity reCreateAnotherInvite(String email, UserProfileEntity userProfile) {
+    public InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
         InviteEntity inviteEntity = inviteService.find(email);
         try {
             String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
-            inviteEntity = InviteEntity.newInstance(email, auth, inviteEntity.getInvited(), userProfile);
+            inviteEntity = InviteEntity.newInstance(email, auth, inviteEntity.getInvited(), invitedBy);
             inviteManager.save(inviteEntity);
             return inviteEntity;
         } catch (Exception exception) {
@@ -259,10 +259,10 @@ public final class MailService {
         }
     }
 
-    private void formulateInvitationEmail(String email, UserProfileEntity userProfileEntity, InviteEntity inviteEntity) {
+    private void formulateInvitationEmail(String email, UserAccountEntity invitedBy, InviteEntity inviteEntity) {
         Map<String, String> rootMap = new HashMap<>();
-        rootMap.put("from", userProfileEntity.getName());
-        rootMap.put("fromEmail", userProfileEntity.getEmail());
+        rootMap.put("from", invitedBy.getName());
+        rootMap.put("fromEmail", invitedBy.getUserId());
         rootMap.put("to", email);
         rootMap.put("link", inviteEntity.getAuthenticationKey());
         rootMap.put("domain", domain);
@@ -277,7 +277,7 @@ public final class MailService {
             helper.setTo(!StringUtils.isEmpty(devSentTo) ? devSentTo : email);
             log.info("Invitation send to : " + (!StringUtils.isEmpty(devSentTo) ? devSentTo : email));
             sendMail(
-                    mailInviteSubject + " - " + userProfileEntity.getName(),
+                    mailInviteSubject + " - " + invitedBy.getName(),
                     freemarkerToString("mail/invite.ftl", rootMap),
                     message,
                     helper

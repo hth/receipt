@@ -38,9 +38,9 @@ public final class InviteEntity extends BaseEntity {
 
     @DBRef
     @Field("IN_BY")
-    private UserProfileEntity invitedBy;
+    private UserAccountEntity invitedBy;
 
-    public static InviteEntity newInstance(String email, String authenticationKey, UserProfileEntity invited, UserProfileEntity invitedBy) {
+    public static InviteEntity newInstance(String email, String authenticationKey, UserProfileEntity invited, UserAccountEntity invitedBy) {
         InviteEntity inviteEntity = new InviteEntity();
 
         inviteEntity.setEmail(email);
@@ -75,11 +75,11 @@ public final class InviteEntity extends BaseEntity {
         this.invited = invited;
     }
 
-    public UserProfileEntity getInvitedBy() {
+    public UserAccountEntity getInvitedBy() {
         return invitedBy;
     }
 
-    public void setInvitedBy(UserProfileEntity invitedBy) {
+    public void setInvitedBy(UserAccountEntity invitedBy) {
         this.invitedBy = invitedBy;
     }
 }
