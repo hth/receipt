@@ -2,7 +2,6 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.UserProfileEntity;
 
 /**
  * User: hitender

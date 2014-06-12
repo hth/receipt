@@ -4,7 +4,6 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
