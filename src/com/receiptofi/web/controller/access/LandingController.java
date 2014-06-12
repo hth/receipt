@@ -467,7 +467,7 @@ public final class LandingController extends BaseController {
 
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
         if(isValid) {
-            UserProfileEntity userProfileEntity = accountService.findIfUserExists(invitedUserEmail);
+            UserProfileEntity userProfileEntity = accountService.doesUserExists(invitedUserEmail);
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
              * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
