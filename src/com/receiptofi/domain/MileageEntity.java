@@ -203,7 +203,7 @@ public final class MileageEntity extends BaseEntity {
      */
     @Transient
     public boolean isComplete() {
-        return start != 0 && end != 0 && fileSystemEntities.size() > 0;
+        return start != 0 && end != 0 && !fileSystemEntities.isEmpty();
     }
 
     @Transient
