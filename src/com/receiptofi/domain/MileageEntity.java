@@ -95,11 +95,11 @@ public final class MileageEntity extends BaseEntity {
 
     private StringBuilder mergeComments(MileageEntity mileageEntity) {
         StringBuilder mergedText = new StringBuilder();
-        mergedText.append(mileageNotes != null ? mileageNotes.getText() : StringUtils.EMPTY);
+        mergedText.append(mileageNotes == null ? StringUtils.EMPTY : mileageNotes.getText());
         if(mergedText.toString().length() > 0) {
             mergedText.append("\n\n");
         }
-        mergedText.append(mileageEntity.getMileageNotes() != null ? mileageEntity.getMileageNotes().getText() : StringUtils.EMPTY);
+        mergedText.append(mileageEntity.getMileageNotes() == null ? StringUtils.EMPTY : mileageEntity.getMileageNotes().getText());
         return mergedText;
     }
 
