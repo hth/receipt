@@ -51,7 +51,7 @@ public class AccountServiceTest {
     @Test
     public void testFindIfUser_Does_Not_Exists() throws Exception {
         when(userProfileManager.findOneByMail(anyString())).thenReturn(null);
-        assertNull(accountService.findIfUserExists("user_community_3@receiptofi.com"));
+        assertNull(accountService.doesUserExists("user_community_3@receiptofi.com"));
     }
 
     @Test

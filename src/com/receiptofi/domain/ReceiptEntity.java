@@ -9,7 +9,6 @@ import com.receiptofi.utils.HashText;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,7 +68,6 @@ public final class ReceiptEntity extends BaseEntity {
     @Field("TOTAL")
 	private Double total;
 
-	@NotNull
 	@NumberFormat(style = Style.CURRENCY)
     @Field("TAX")
 	private Double tax = 0.00;
@@ -317,6 +315,24 @@ public final class ReceiptEntity extends BaseEntity {
 
     @Override
     public String toString() {
-        return Objects.toString(this);
+        return "ReceiptEntity{" +
+                "receiptStatus=" + receiptStatus +
+                ", fileSystemEntities=" + fileSystemEntities +
+                ", receiptDate=" + receiptDate +
+                ", year=" + year +
+                ", month=" + month +
+                ", day=" + day +
+                ", total=" + total +
+                ", tax=" + tax +
+                ", percentTax='" + percentTax + '\'' +
+                ", userProfileId='" + userProfileId + '\'' +
+                ", bizName=" + bizName +
+                ", bizStore=" + bizStore +
+                ", receiptOCRId='" + receiptOCRId + '\'' +
+                ", recheckComment=" + recheckComment +
+                ", notes=" + notes +
+                ", expenseReportInFS='" + expenseReportInFS + '\'' +
+                ", checksum='" + checksum + '\'' +
+                '}';
     }
 }

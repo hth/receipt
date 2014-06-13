@@ -78,12 +78,12 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
 
     @Test
     public void testFindIfUser_Exists_Integration() throws Exception {
-        assertEquals("user_community_1@receiptofi.com", accountService.findIfUserExists("user_community_1@receiptofi.com").getEmail());
+        assertEquals("user_community_1@receiptofi.com", accountService.doesUserExists("user_community_1@receiptofi.com").getEmail());
     }
 
     @Test
     public void testFindIfUser_Does_Not_Exists() throws Exception {
-        assertNull(accountService.findIfUserExists("user_community_3@receiptofi.com"));
+        assertNull(accountService.doesUserExists("user_community_3@receiptofi.com"));
     }
 
     @Ignore

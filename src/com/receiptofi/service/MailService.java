@@ -320,7 +320,7 @@ public final class MailService {
      */
     private void deleteInvite(InviteEntity inviteEntity) {
         log.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
-        UserProfileEntity userProfile = accountService.findIfUserExists(inviteEntity.getEmail());
+        UserProfileEntity userProfile = accountService.doesUserExists(inviteEntity.getEmail());
         UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
         UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
         UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);

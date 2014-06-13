@@ -3,6 +3,8 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -32,8 +34,6 @@ import com.receiptofi.web.helper.json.Mileages;
 import com.receiptofi.web.rest.Base;
 import com.receiptofi.web.rest.Header;
 import com.receiptofi.web.rest.LandingView;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -467,7 +467,7 @@ public final class LandingController extends BaseController {
 
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
         if(isValid) {
-            UserProfileEntity userProfileEntity = accountService.findIfUserExists(invitedUserEmail);
+            UserProfileEntity userProfileEntity = accountService.doesUserExists(invitedUserEmail);
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
              * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
