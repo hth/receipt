@@ -59,6 +59,7 @@ public final class LandingViewService {
     @Value("${app.name}")
     private String appName;
 
+    //XXX TODO Find if this has to be removed. Since no more mobile is supported in web
     public String landingViewHTMLString(LandingView landingView) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(LandingView.class);
