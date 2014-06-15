@@ -118,8 +118,7 @@ public final class LandingService {
         Iterator<ReceiptGrouped> groupedIterator = receiptManager.getAllObjectsGroupedByMonth(userProfileId);
 
         List<ReceiptGrouped> receiptGroupedList = Lists.newArrayList(groupedIterator);
-        List<ReceiptGrouped> sortedList = descendingOrder.sortedCopy(receiptGroupedList);
-        return sortedList;
+        return descendingOrder.sortedCopy(receiptGroupedList);
     }
 
     /**

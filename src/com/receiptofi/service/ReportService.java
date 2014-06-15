@@ -109,8 +109,7 @@ public final class ReportService {
     private String freemarkerDo(Map rootMap) throws IOException, TemplateException {
         Configuration cfg = freemarkerConfiguration.createConfiguration();
         Template template = cfg.getTemplate("monthly-report.ftl");
-        final String text = processTemplateIntoString(template, rootMap);
-        return text;
+        return processTemplateIntoString(template, rootMap);
     }
 
     /**
