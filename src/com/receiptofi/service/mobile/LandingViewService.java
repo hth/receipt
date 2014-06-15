@@ -31,6 +31,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
  * User: hitender
  * Date: 9/21/13 1:17 PM
  */
+@Deprecated //TODO Find if this has to be removed. Since no more mobile is supported in web
 @Service
 public final class LandingViewService {
     private static final Logger log = LoggerFactory.getLogger(LandingViewService.class);
