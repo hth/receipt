@@ -390,8 +390,7 @@ public final class LandingController extends BaseController {
         DateTime time = DateUtil.now();
         log.info("HTML : " + profileId);
         LandingView landingView = landingView(profileId, authKey, time);
-        String html = landingViewService.landingViewHTMLString(landingView);
-        return html;
+        return landingViewService.landingViewHTMLString(landingView);
     }
 
     /**
