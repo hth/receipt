@@ -74,7 +74,7 @@ public final class ExpensofiController {
         JsonArray jsonItems = getJsonElements(itemIds);
         List<ItemEntity> items = getItemEntities(receiptUser.getRid(), jsonItems);
 
-        if(items.size() > 0) {
+        if(!items.isEmpty()) {
             model.addAttribute("items", items);
             Assert.notNull(model.asMap().get("items"));
 
