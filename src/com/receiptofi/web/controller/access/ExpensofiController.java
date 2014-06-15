@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,7 +76,7 @@ public final class ExpensofiController {
 
         if(items.size() > 0) {
             model.addAttribute("items", items);
-            assert(model.asMap().get("items") != null);
+            Assert.notNull(model.asMap().get("items"));
 
             ReceiptEntity receiptEntity = items.get(0).getReceipt();
             Collection<AnchorFileInExcel> anchorFileInExcels = new LinkedList<>();

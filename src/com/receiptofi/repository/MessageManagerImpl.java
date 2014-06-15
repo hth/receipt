@@ -40,6 +40,13 @@ public final class MessageManagerImpl implements MessageManager {
     private static final Logger log = LoggerFactory.getLogger(MessageManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
 
+    private static final Sort SORT_BY_USER_LEVEL_AND_CREATED = new Sort(
+            new ArrayList<Order>() {{
+                add(new Order(DESC, "USER_LEVEL_ENUM"));
+                add(new Order(ASC, "C"));
+            }}
+    );
+
     @Value("${messageQueryLimit:10}")
     private int messageQueryLimit;
 
@@ -58,13 +65,7 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
         Query query = query(where("LOCKED").is(false).and("DS_E").is(status));
-        Sort sort = new Sort(
-                new ArrayList<Order>() {{
-                    add(new Order(DESC, "USER_LEVEL_ENUM"));
-                    add(new Order(ASC, "C"));
-                }}
-        );
-        query.with(sort).limit(limit);
+        query.with(SORT_BY_USER_LEVEL_AND_CREATED).limit(limit);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
@@ -116,26 +117,14 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
         Query query = query(where("LOCKED").is(true).and("DS_E").is(status).and("EM").is(emailId).and("USER_PROFILE_ID").is(userProfileId));
-        Sort sort = new Sort(
-                new ArrayList<Order>() {{
-                    add(new Order(DESC, "USER_LEVEL_ENUM"));
-                    add(new Order(ASC, "C"));
-                }}
-        );
-        query.with(sort);
+        query.with(SORT_BY_USER_LEVEL_AND_CREATED);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
     @Override
     public List<MessageDocumentEntity> findAllPending() {
         Query query = query(where("LOCKED").is(true).and("DS_E").is(DocumentStatusEnum.OCR_PROCESSED));
-        Sort sort = new Sort(
-                new ArrayList<Order>() {{
-                    add(new Order(DESC, "USER_LEVEL_ENUM"));
-                    add(new Order(ASC, "C"));
-                }}
-        );
-        query.with(sort);
+        query.with(SORT_BY_USER_LEVEL_AND_CREATED);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
