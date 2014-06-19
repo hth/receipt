@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.Properties;
 
+import org.springframework.util.Assert;
+
 /**
  * User: hitender
  * Date: 9/21/13 8:15 PM
@@ -41,21 +43,22 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     }
 
     private boolean hasAccessToFileSystem() {
+        Assert.notNull(config.get("expensofiReportLocation"));
         File directory = new File((String) config.get("expensofiReportLocation"));
         if(directory.exists() && directory.isDirectory()) {
             File file = new File(config.get("expensofiReportLocation") + File.separator + "receiptofi-expensofi.temp.delete.me");
             try {
                 if(!file.createNewFile()) {
-                    throw new AccessDeniedException("Cannot create, to location: " + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot create, to location=" + config.get("expensofiReportLocation"));
                 }
                 if(!file.canWrite()) {
-                    throw new AccessDeniedException("Cannot write, to location: " + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot write, to location=" + config.get("expensofiReportLocation"));
                 }
                 if(!file.canRead()) {
-                    throw new AccessDeniedException("Cannot read, to location: " + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot read, to location=" + config.get("expensofiReportLocation"));
                 }
                 if(!file.delete()) {
-                    throw new AccessDeniedException("Cannot delete, from location: " + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot delete, from location=" + config.get("expensofiReportLocation"));
                 }
             } catch(IOException e) {
                 log.error(
@@ -64,14 +67,17 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
                         e.getLocalizedMessage(),
                         e
                 );
-                log.error("Stopping server now");
-                System.exit(0);
+                stopServer();
             }
         } else {
             log.error("File system directory does not exists, location={}", config.get("expensofiReportLocation"));
-            log.error("Stopping server now");
-            System.exit(0);
+            stopServer();
         }
         return true;
+    }
+
+    private void stopServer() {
+        log.error("Stopping server now");
+        System.exit(0);
     }
 }
