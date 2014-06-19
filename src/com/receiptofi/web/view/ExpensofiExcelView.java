@@ -142,7 +142,14 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             out = new FileOutputStream(new File(expensofiReportLocation + File.separator + filename));
 			workbook.write(out);
         } catch (IOException e) {
-            log.error("Error while persisting file to file system: " + filename, e);
+            log.error(
+                    "Error while persisting file to file system={}{}{}, reason=",
+                    expensofiReportLocation,
+                    File.separator,
+                    filename,
+                    e.getLocalizedMessage(),
+                    e
+            );
         } finally {
         	if(out != null) {
                 out.flush();
