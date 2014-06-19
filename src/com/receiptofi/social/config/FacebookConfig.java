@@ -52,10 +52,9 @@ public class FacebookConfig {
     @Bean
     @Scope(value = "singleton", proxyMode = ScopedProxyMode.INTERFACES)
     public ConnectionFactoryLocator connectionFactoryLocator() {
-        logger.info("Initializing connectionFactoryLocator");
+        logger.info("Initializing facebook connectionFactoryLocator");
         ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
         registry.addConnectionFactory(new FacebookConnectionFactory(facebookClientId, facebookClientSecret));
-
         return registry;
     }
 
