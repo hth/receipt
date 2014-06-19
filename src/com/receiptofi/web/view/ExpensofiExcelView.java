@@ -143,7 +143,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 			workbook.write(out);
         } catch (IOException e) {
             log.error(
-                    "Error while persisting file to file system={}{}{}, reason=",
+                    "Possible permission error while persisting file to file system={}{}{}, reason=",
                     expensofiReportLocation,
                     File.separator,
                     filename,
