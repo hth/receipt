@@ -42,6 +42,10 @@ public final class HashText {
 		}
 	}
 
+    private HashText() {
+        // Utility classes should always be final and have an private constructor
+    }
+
     public static String hashCodeSHA1(String text) {
         return hashCode(text, MD1) ;
     }
@@ -71,15 +75,16 @@ public final class HashText {
 			// convert the byte to hex format method 1
 			StringBuilder sb = new StringBuilder();
             for(byte aByteData : byteData) {
-                sb.append(Integer.toString((aByteData & 0xff) + 0x100, 16).substring(1));
+                sb.append(Integer.toString(aByteData & 0xff + 0x100, 16).substring(1));
             }
 
 			// convert the byte to hex format method 2
 			StringBuilder hexString = new StringBuilder();
             for(byte aByteData : byteData) {
                 String hex = Integer.toHexString(0xff & aByteData);
-                if(hex.length() == 1)
+                if(hex.length() == 1) {
                     hexString.append('0');
+                }
                 hexString.append(hex);
             }
             PerformanceProfiling.log(HashText.class, time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
