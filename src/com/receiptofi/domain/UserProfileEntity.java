@@ -19,6 +19,8 @@ import org.springframework.social.facebook.api.EducationEntry;
 import org.springframework.social.facebook.api.Reference;
 import org.springframework.social.facebook.api.WorkEntry;
 
+import com.google.common.collect.Lists;
+
 /**
  * User: hitender
  * Date: 4/13/14 2:19 AM
@@ -63,7 +65,7 @@ public final class UserProfileEntity extends BaseEntity {
     private Locale locale;
 
     @Field("URL")
-    private String link;
+    private String link; //profile URL
 
     @Field("WS")
     private String website;
@@ -443,6 +445,13 @@ public final class UserProfileEntity extends BaseEntity {
 
     public void setWork(List<WorkEntry> work) {
         this.work = work;
+    }
+
+    public void addWork(WorkEntry work) {
+        if(this.work == null) {
+            this.work = Lists.newArrayList();
+        }
+        this.work.add(work);
     }
 
     public List<EducationEntry> getEducation() {
