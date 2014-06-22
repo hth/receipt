@@ -69,11 +69,11 @@ public final class UserSearchForm {
      * @return
      */
 	public String getUserName() {
-		if(!userName.equalsIgnoreCase(", ") && userName.length() > 2) {
-			return userName;
-		}
-		return StringUtils.EMPTY;
-	}
+        if(userName.equalsIgnoreCase(", ") || userName.length() <= 2) {
+            return StringUtils.EMPTY;
+        }
+        return userName;
+    }
 
 	public String getFirstName() {
 		return firstName;
