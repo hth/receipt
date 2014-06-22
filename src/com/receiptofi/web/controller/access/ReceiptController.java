@@ -61,24 +61,24 @@ public final class ReceiptController extends BaseController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
-        if(receiptEntity != null) {
+        if(receiptEntity == null) {
+            //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
+            //Possible condition of bookmark or trying to gain access to some unknown receipt
+            log.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
+        } else {
             List<ItemEntity> items = receiptService.findItems(receiptEntity);
             List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(receiptUser.getRid());
 
             receiptForm.setReceipt(receiptEntity);
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTypes);
-        } else {
-            //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
-            //Possible condition of bookmark or trying to gain access to some unknown receipt
-            log.warn("User " + receiptUser.getRid() + ", tried submitting an invalid receipt id: " + receiptId);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return new ModelAndView(NEXT_PAGE);
 	}
 
-    @SuppressWarnings("PMD.EmptyIfStmt")
+    //@SuppressWarnings("PMD.EmptyIfStmt")
 	@RequestMapping(method = RequestMethod.POST, params="delete")
 	public String delete(@ModelAttribute("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();
