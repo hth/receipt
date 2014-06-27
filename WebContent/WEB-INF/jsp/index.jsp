@@ -17,7 +17,8 @@
             <div class="row">
                 <div class="col-xs-6">
                 You have been registered, but we are currently not accepting new users. <br/>
-                Will notify you when we have started accepting new users and will automatically grant access to you.
+                Will notify you when we have started accepting new users and will automatically grant access to you. <br/>
+                User: ${user}, Registration: ${pid}
                 </div>
             </div>
 
