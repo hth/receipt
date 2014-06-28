@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title><fmt:message key="account.recover.title" /></title>
 
     <meta HTTP-EQUIV="Pragma" content="no-cache">

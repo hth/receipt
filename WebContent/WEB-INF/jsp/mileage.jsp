@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title><fmt:message key="receipt.title" /></title>
 
     <meta name="_csrf" content="${_csrf.token}"/>
@@ -73,7 +73,7 @@
                             id: '${mileageForm.mileage.id}',
                             msd: $("#datePickerStart").val()
                         }),
-                        contentType: 'application/json;charset=utf-8',
+                        contentType: 'application/json;charset=UTF-8',
                         mimeType: 'application/json',
                         dataType:'json',
                         success: function (data) {
@@ -113,7 +113,7 @@
                             id: '${mileageForm.mileage.id}',
                             med: $("#datePickerEnd").val()
                         }),
-                        contentType: 'application/json;charset=utf-8',
+                        contentType: 'application/json;charset=UTF-8',
                         mimeType: 'application/json',
                         dataType:'json',
                         success: function (data) {
@@ -160,7 +160,7 @@
                             notes: request.term,
                             mileageId: $("#mileageId").val()
                         }),
-                        contentType: 'application/json;charset=utf-8',
+                        contentType: 'application/json;charset=UTF-8',
                         mimeType: 'application/json',
                         dataType:'json',
                         success: function (data) {

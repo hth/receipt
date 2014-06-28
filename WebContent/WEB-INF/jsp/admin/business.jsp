@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title><fmt:message key="receipt.admin.title" /></title>
 
     <meta name="_csrf" content="${_csrf.token}"/>

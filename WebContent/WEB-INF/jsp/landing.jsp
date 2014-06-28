@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html ng-app="App">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
 	<title><fmt:message key="title" /></title>
 
     <meta name="_csrf" content="${_csrf.token}"/>
