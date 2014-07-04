@@ -3,7 +3,7 @@
 
 <html>
 <head>
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
 	<title></title>
 	<link rel="icon" type="image/x-icon" 			href="${protocol}://${host}:${port}/${appname}/static/images/circle-leaf-sized_small.png" />
 	<link rel="shortcut icon" type="image/x-icon" 	href="${protocol}://${host}:${port}/${appname}/static/images/circle-leaf-sized_small.png" />

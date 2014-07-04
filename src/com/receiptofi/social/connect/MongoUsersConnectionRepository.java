@@ -41,10 +41,10 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
     }
 
     public MongoUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator,
-                                          TextEncryptor noOpText) {
+                                          TextEncryptor textEncryptor) {
 
         this.connectionFactoryLocator = connectionFactoryLocator;
-        textEncryptor = noOpText;
+        this.textEncryptor = textEncryptor;
     }
 
     public void setConnectionSignUp(ConnectionSignUp connectionSignUp) {

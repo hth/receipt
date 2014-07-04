@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title><fmt:message key="feedback.title" /></title>
 
     <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/access/landing.htm">

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title><fmt:message key="receipt.update" /></title>
 
     <meta name="_csrf" content="${_csrf.token}"/>
@@ -191,7 +191,7 @@
                             notes: request.term,
                             documentId: $("#documentId").val()
                         }),
-                        contentType: 'application/json;charset=utf-8',
+                        contentType: 'application/json;charset=UTF-8',
                         mimeType: 'application/json',
                         dataType:'json',
                         success: function (data) {

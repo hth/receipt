@@ -22,12 +22,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 public final class UserAccountEntity extends BaseEntity {
 
+    /**
+     * Unique Id throughout the system. This will never change.
+     */
     @NotNull
     @Field("RID")
     private String receiptUserId;
 
     /**
      * This is set by third party and cannot be relied on
+     * It could be either matching provider's Id or email
      */
     @NotNull
     @Field("UID")
@@ -36,6 +40,9 @@ public final class UserAccountEntity extends BaseEntity {
     @Field("PID")
     private ProviderEnum providerId;
 
+    /**
+     * Provider User Id matches id's from social provider
+     */
     @Field("PUID")
     private String providerUserId;
 
