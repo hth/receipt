@@ -161,7 +161,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
                     "    \"_id\" : {$oid: \"537068ee3004ff079b5af89c\"},\n" +
                     "    \"RID\" : \"10000000001\",\n" +
                     "    \"UID\" : \"4564545645646\",\n" +
-                    "    \"P_E\" : \"FACEBOOK\",\n" +
+                    "    \"PID\" : \"FACEBOOK\",\n" +
                     "    \"UN\" : \"baan.dal\",\n" +
                     "    \"N\" : \"Ann Pluse\",\n" +
                     "    \"FN\" : \"Ann\",\n" +
@@ -184,7 +184,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
                     "    \"_id\" : {$oid: \"537068ef3004ff079b5af89e\"},\n" +
                     "    \"RID\" : \"10000000002\",\n" +
                     "    \"UID\" : \"98374509349050\",\n" +
-                    "    \"P_E\" : \"FACEBOOK\",\n" +
+                    "    \"PID\" : \"FACEBOOK\",\n" +
                     "    \"N\" : \"박진영\",\n" +
                     "    \"FN\" : \"진영\",\n" +
                     "    \"LN\" : \"박\",\n" +
