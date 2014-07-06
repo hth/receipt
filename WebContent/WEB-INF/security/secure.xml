@@ -24,7 +24,7 @@
         <request-cache ref="requestCache" />
 
         <intercept-url pattern="/**"
-                       access="hasIpAddress('192.168.1.*', '127.0.0.1')" />
+                       access="hasIpAddress('192.168.1.*', '127.0.0.1', 'localhost')" />
 
         <csrf />
 
