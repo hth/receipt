@@ -18,7 +18,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "USER_ACCOUNT")
 @CompoundIndexes({
         @CompoundIndex(name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
-        @CompoundIndex(name = "user_account_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true)
+        @CompoundIndex(name = "user_account_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true),
+        @CompoundIndex(name = "user_account_rid_idx", def = "{'RID': 1}", unique = true)
 })
 public final class UserAccountEntity extends BaseEntity {
 
