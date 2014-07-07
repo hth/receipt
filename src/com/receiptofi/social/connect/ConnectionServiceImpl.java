@@ -84,12 +84,14 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     public void update(String userId, Connection<?> userConn) {
         UserAccountEntity userAccountFromConnection = connectionConverter.convert(userId, userConn);
+        log.info("populated userAccountFromConnection={}", userAccountFromConnection);
 
         UserAccountEntity userAccount = getUserAccountEntity(
                 userId,
                 userAccountFromConnection.getProviderId(),
                 userAccountFromConnection.getProviderUserId()
         );
+        log.info("fetched userAccount={}", userAccount);
         if(userAccount != null) {
             userAccount.setExpireTime(userAccountFromConnection.getExpireTime());
             userAccount.setAccessToken(userAccountFromConnection.getAccessToken());
@@ -98,6 +100,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             userAccount.setDisplayName(userAccountFromConnection.getDisplayName());
             userAccount.setUpdated();
 
+            log.info("fetched before save userAccount={}", userAccount);
             mongoTemplate.save(userAccount);
         } else {
             UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
