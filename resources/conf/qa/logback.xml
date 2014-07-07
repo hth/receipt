@@ -32,6 +32,7 @@
     <logger name="com.receiptofi.web.filter.LogContextFilter" level="ON" />
     <logger name="org.spring" level="info" />
 
+    <logger name="net.bull.javamelody." level="ON" />
     <logger name="org.apache.activemq" level="OFF"/>
 
     <root level="all">
