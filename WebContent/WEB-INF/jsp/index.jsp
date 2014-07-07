@@ -33,7 +33,7 @@
             <div class="col-xs-6">
             <!-- FACEBOOK SIGNIN -->
             <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST">
-                <input type="hidden" name="scope" value="email,basic_info,user_activities,user_education_history,user_likes" />
+                <input type="hidden" name="scope" value="email,basic_info,user_activities" />
                 <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
                 <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
                 <button type="submit" class="btn btn-large btn-primary">Sign in with Facebook</button>
