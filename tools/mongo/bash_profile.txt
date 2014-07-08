@@ -1,2 +1,15 @@
-export MONGO_PATH=/usr/local/mongodb
-export PATH=$PATH:$MONGO_PATH/bin
+#   Set Paths
+#   ------------------------------------------------------------
+    export JAVA_HOME=/Library/Java/Home
+    export MONGO_PATH=/usr/local/mongodb
+    export PATH=$PATH:$JAVA_HOME/bin:$MONGO_PATH/bin
+
+#   Set Default Editor (change 'Nano' to the editor of your choice)
+#   ------------------------------------------------------------
+    export EDITOR=/usr/bin/nano
+
+#   finderShowHidden:   Show hidden files in Finder
+#   finderHideHidden:   Hide hidden files in Finder
+#   -------------------------------------------------------------------
+    alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
+    alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
