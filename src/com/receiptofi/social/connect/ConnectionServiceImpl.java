@@ -28,6 +28,7 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.model.MappingException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -167,7 +168,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     public void copyAndSaveFacebookToUserProfile(FacebookProfile facebookUserProfile, UserAccountEntity userAccount) {
-        log.debug("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
+        log.info("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
         UserProfileEntity userProfile = mongoTemplate.findOne(
                 query(where("UID").is(facebookUserProfile.getId())),
                 UserProfileEntity.class
@@ -191,12 +192,22 @@ public class ConnectionServiceImpl implements ConnectionService {
             } else {
                 userProfile.inActive();
             }
-            mongoTemplate.save(userProfile);
+            try {
+                mongoTemplate.save(userProfile);
+            } catch (MappingException e) {
+                log.error("error found during updating userProfile from provider RID={} userId={} provider={} reason={}",
+                        userProfile.getReceiptUserId(),
+                        userProfile.getUserId(),
+                        userProfile.getProviderId(),
+                        e.getLocalizedMessage(),
+                        e);
+                throw e;
+            }
 
             //XXX TODO think about moving this up in previous method call
             updateUserIdWithEmailWhenPresent(userAccount, userProfile);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            log.error(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 
