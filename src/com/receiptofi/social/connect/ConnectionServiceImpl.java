@@ -8,6 +8,7 @@ import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.social.annotation.Social;
+import com.receiptofi.social.config.ProviderConfig;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.util.Registration;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
@@ -56,6 +57,9 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Autowired
     private Registration registration;
+
+    @Autowired
+    private ProviderConfig providerConfig;
 
     @Autowired
     public ConnectionServiceImpl(
@@ -122,16 +126,30 @@ public class ConnectionServiceImpl implements ConnectionService {
         Google google = new GoogleTemplate(userAccountFromConnection.getAccessToken());
         Person googleUserProfile = google.plusOperations().getGoogleProfile();
         copyAndSaveGoogleToUserProfile(googleUserProfile, userAccount);
+        log.info("Google Id={}", googleUserProfile.getId());
 
         // XXX TODO page Circle to get all the users in the circle
-        log.info("Google Id={}", googleUserProfile.getId());
     }
 
     private void processFacebook(UserAccountEntity userAccountFromConnection, UserAccountEntity userAccount) {
         Facebook facebook = new FacebookTemplate(userAccountFromConnection.getAccessToken(), "notfoundexception");
         FacebookProfile userProfile = facebook.userOperations().getUserProfile();
         copyAndSaveFacebookToUserProfile(userProfile, userAccount);
+        log.info("Facebook Id={}", userProfile.getId());
 
+        if(providerConfig.isPopulateSocialFriendOn()) {
+            populateFacebookFriends(userAccount, facebook);
+        }
+    }
+
+    /**
+     * //XXX TODO this method should be pushed down to cron job; as this consumes time
+     *
+     * Populates friends from Facebook
+     * @param userAccount
+     * @param facebook
+     */
+    private void populateFacebookFriends(UserAccountEntity userAccount, Facebook facebook) {
         List<FacebookProfile> profiles = facebook.friendOperations().getFriendProfiles();
         for(FacebookProfile facebookUserProfile : profiles) {
             UserAccountEntity userAccountEntity = mongoTemplate.findOne(
@@ -164,7 +182,6 @@ public class ConnectionServiceImpl implements ConnectionService {
             mongoTemplate.save(userAccountEntity);
             copyAndSaveFacebookToUserProfile(facebookUserProfile, userAccountEntity);
         }
-        log.info("Facebook Id={}", userProfile.getId());
     }
 
     public void copyAndSaveFacebookToUserProfile(FacebookProfile facebookUserProfile, UserAccountEntity userAccount) {
