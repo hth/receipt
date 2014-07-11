@@ -160,31 +160,31 @@
                 <div class="divRow">
                     <div class="divOfCell600">
                         Name:
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.name" /></b>
                     </div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
-                        User Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        User Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" /></b>
                     </div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
-                        Email on file: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Email on file: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.email" /></b>
                     </div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
                     Registration:
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.created}" type="both" /></b></div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
-                        Profile changed:&nbsp;
+                        Profile changed:&nbsp;&nbsp;
                         <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both" /></b>
                     </div>
                 </div>
@@ -193,14 +193,14 @@
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600" id="auth">
-                        Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><spring:eval expression="userProfilePreferenceForm.userAuthentication.authenticationKey" /></b> **
+                        ** Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><spring:eval expression="userProfilePreferenceForm.userAuthentication.authenticationKey" /></b>
                         <button id='copy-button'>copy</button>
                     </div>
                 </div>
                 <div class="divRow">
                     <div class="divOfCell600">
-                        Auth changed:&nbsp;
+                        Auth changed:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><fmt:formatDate value="${userProfilePreferenceForm.userAuthentication.updated}" type="both" /></b>
                     </div>
                 </div>
