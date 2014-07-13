@@ -42,8 +42,9 @@
     <logger name="com.receiptofi.web.filter.LogContextFilter" level="OFF" />
     <logger name="org.spring" level="info" />
 
-    <logger name="net.bull.javamelody." level="OFF" />
+    <logger name="net.bull.javamelody." level="ON" />
     <logger name="org.apache.activemq" level="OFF"/>
+    <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
 
     <root level="all">
         <appender-ref ref="FILE" />
