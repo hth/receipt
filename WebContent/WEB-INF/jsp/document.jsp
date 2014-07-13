@@ -184,6 +184,7 @@
         <c:choose>
             <c:when test="${empty receiptDocumentForm.receiptDocument.receiptId}">
                 <form:form method="post" action="delete.htm" modelAttribute="receiptDocumentForm">
+                    <form:hidden path="receiptDocument.documentStatus"/>
                     <form:hidden path="receiptDocument.receiptId"/>
                     <form:hidden path="receiptDocument.id"/>
                     <input type="submit" value="Delete" name="delete" id="deleteId"/>
