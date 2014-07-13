@@ -22,7 +22,6 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
-import com.receiptofi.service.mobile.LandingViewService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.PerformanceProfiling;
@@ -85,7 +84,6 @@ public final class LandingController extends BaseController {
     @Autowired AccountService accountService;
     @Autowired NotificationService notificationService;
     @Autowired ReportService reportService;
-    @Autowired LandingViewService landingViewService;
     @Autowired MileageService mileageService;
 
 	/**
@@ -375,22 +373,6 @@ public final class LandingController extends BaseController {
         }
 
         return json;
-    }
-
-    /**
-     * Provides user information of home page through a JSON URL
-     *
-     * @param profileId
-     * @param authKey
-     * @return
-     */
-    @RequestMapping(value = "/landing/user/{profileId}/auth/{authKey}.htm", method = RequestMethod.GET, produces="text/html")
-    public @ResponseBody
-    String loadHTML(@PathVariable String profileId, @PathVariable String authKey) {
-        DateTime time = DateUtil.now();
-        log.info("HTML : " + profileId);
-        LandingView landingView = landingView(profileId, authKey, time);
-        return landingViewService.landingViewHTMLString(landingView);
     }
 
     /**
