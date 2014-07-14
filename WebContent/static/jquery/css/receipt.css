@@ -205,10 +205,10 @@ html, body {
     width:500px;
     background-color:#FFFFFF;
 }
-.divOfCell600 {
+.divOfCell700 {
     float:left;/*fix for  buggy browsers*/
     display:table-column;
-    width:600px;
+    width:700px;
     background-color:#FFFFFF;
 }
 /* End*/

@@ -158,48 +158,48 @@
 		<div id="tabs-1">
             <div class="divTable">
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         Name:
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.name" /></b>
                     </div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         User Id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" /></b>
                     </div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         Email on file: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.email" /></b>
                     </div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                     Registration:
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.created}" type="both" /></b></div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         Profile changed:&nbsp;&nbsp;
                         <b><fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both" /></b>
                     </div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">&nbsp;</div>
+                    <div class="divOfCell700">&nbsp;</div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600" id="auth">
+                    <div class="divOfCell700" id="auth">
                         ** Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><spring:eval expression="userProfilePreferenceForm.userAuthentication.authenticationKey" /></b>
+                        <b><spring:eval expression="userProfilePreferenceForm.userAuthentication.authenticationKeyEncoded" /></b>
                         <button id='copy-button'>copy</button>
                     </div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         Auth changed:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><fmt:formatDate value="${userProfilePreferenceForm.userAuthentication.updated}" type="both" /></b>
                     </div>
@@ -218,13 +218,13 @@
             <form:hidden path="userProfile.receiptUserId"/>
             <div class="divTable">
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         Profile Id: &nbsp;&nbsp;&nbsp;&nbsp;
                         <b><spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" /></b>
                     </div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         Level: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         <form:select path="userProfile.level" >
@@ -234,7 +234,7 @@
                     </div>
                 </div>
                 <div class="divRow">
-                    <div class="divOfCell600">
+                    <div class="divOfCell700">
                         Active: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         <form:checkbox path="active" id="active" />Active
@@ -243,7 +243,7 @@
             </div>
             <!-- If changing the access level here then update the condition check in POST method -->
             <div class="divRow">
-                <div class="divOfCell600"><input type="reset" value="Reset" name="Reset" class="btn btn-default"/> <input type="submit" value="Update" name="Update" class="btn btn-default" /></div>
+                <div class="divOfCell700"><input type="reset" value="Reset" name="Reset" class="btn btn-default"/> <input type="submit" value="Update" name="Update" class="btn btn-default" /></div>
             </div>
             </form:form>
             </sec:authorize>

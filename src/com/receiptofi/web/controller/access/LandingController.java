@@ -3,8 +3,6 @@
  */
 package com.receiptofi.web.controller.access;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -68,6 +66,9 @@ import org.springframework.web.util.WebUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 /**
  * @author hitender
@@ -244,9 +245,9 @@ public final class LandingController extends BaseController {
     public @ResponseBody
     String upload(HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
-        log.info("Upload a receipt");
+        log.info("uploading document");
 
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
         String outcome = "{\"success\" : false}";
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
@@ -261,16 +262,16 @@ public final class LandingController extends BaseController {
             for (MultipartFile multipartFile : files) {
                 UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
-                uploadReceiptImage.setUserProfileId(receiptUser.getRid());
+                uploadReceiptImage.setUserProfileId(rid);
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
-                    landingService.uploadReceipt(receiptUser.getRid(), uploadReceiptImage);
+                    landingService.uploadReceipt(rid, uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {
                     outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
-                    log.error("Receipt upload reason={}, for rid={}", exce.getLocalizedMessage(), receiptUser.getRid(), exce);
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
+                    log.error("document upload failed reason={} rid={}", exce.getLocalizedMessage(), rid, exce);
+                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error to save document");
                 }
             }
         } else {
