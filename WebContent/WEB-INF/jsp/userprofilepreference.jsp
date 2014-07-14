@@ -194,7 +194,7 @@
                 <div class="divRow">
                     <div class="divOfCell700" id="auth">
                         ** Auth Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><spring:eval expression="userProfilePreferenceForm.userAuthentication.authenticationKey" /></b>
+                        <b><spring:eval expression="userProfilePreferenceForm.userAuthentication.authenticationKeyEncoded" /></b>
                         <button id='copy-button'>copy</button>
                     </div>
                 </div>
