@@ -80,14 +80,20 @@ public class Registration {
      * @return
      */
     public boolean checkRegistrationIsTurnedOn(UserDetails user) {
+        log.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), indexController);
+
         if(user.isEnabled() || registrationTurnedOn) {
             return false;
         }
-        log.info("profile not active, redirect to {}, user={}", indexController, user.getUsername());
+
         return true;
     }
 
     public String getIndexController() {
         return indexController;
+    }
+
+    public boolean isRegistrationTurnedOn() {
+        return registrationTurnedOn;
     }
 }
