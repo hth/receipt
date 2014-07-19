@@ -58,7 +58,12 @@ Check the status of the peer..
 	Uuid: 51c7c768-b046-46ac-a4ad-caa67c1b768d
 	State: Peer in Cluster (Connected)
 
- Create and start volume in both the servers..
+Create volumes; mount it http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html
+Once mounted; created directory /data/brick
+
+	gluster volume create Test-Volume replica 2 transport tcp 172.30.0.210:/data/brick 172.30.0.204:/data/brick
+
+Create and start volume in both the servers..
 
 	[root@ip-10-144-143-144 ec2-user]# gluster volume create Test-Volume replica 2 transport tcp ec2-122-248-202-153.ap-southeast-1.compute.amazonaws.com:/data1 ec2-54-254-58-214.ap-southeast-1.compute.amazonaws.com:/data2
 	volume create: Test-Volume: success: please start the volume to access data
@@ -81,8 +86,24 @@ Check Gluster volume..
 	Brick1: ec2-122-248-202-153.ap-southeast-1.compute.amazonaws.com:/data1
 	Brick2: ec2-54-254-58-214.ap-southeast-1.compute.amazonaws.com:/data2
 
+	OR
 
-data1 and data2 will both be having same data in between them its just taken to show that its not neccesary to take same mount name..
+	[root@ip-172-30-0-204 ec2-user]# gluster volume info
+
+    Volume Name: Test-Volume
+    Type: Replicate
+    Volume ID: 279ae7f1-5876-42ce-bc00-7a17d466f07a
+    Status: Started
+    Number of Bricks: 1 x 2 = 2
+    Transport-type: tcp
+    Bricks:
+    Brick1: 172.30.0.210:/data/brick
+    Brick2: 172.30.0.204:/data/brick
+
+
+data1 and data2 will both be having same data in between them its just taken to show that its not necessary to take same mount name..
+
+Follow -- http://www.howtoforge.com/distributed-replicated-storage-across-four-storage-nodes-with-glusterfs-3.2.x-on-centos-6.3
 
 create a /data directory in both master and client box so it can have common mount point..
 
