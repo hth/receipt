@@ -287,6 +287,7 @@ public final class DocumentUpdateService {
         try {
             DocumentEntity document = loadActiveDocumentById(receiptOCR.getId());
             document.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
+            document.setDocumentOfType(receiptOCR.getDocumentOfType());
             document.setBizName(null);
             document.setBizStore(null);
             document.inActive();
