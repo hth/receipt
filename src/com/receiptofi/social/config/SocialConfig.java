@@ -2,7 +2,7 @@ package com.receiptofi.social.config;
 
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
-import com.receiptofi.service.CustomUserDetailsService;
+import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.connect.ConnectionConverter;
 import com.receiptofi.social.connect.ConnectionServiceImpl;
