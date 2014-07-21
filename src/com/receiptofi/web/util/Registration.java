@@ -1,7 +1,7 @@
 package com.receiptofi.web.util;
 
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.social.domain.site.ReceiptUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

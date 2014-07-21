@@ -3,7 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ItemAnalyticService;
