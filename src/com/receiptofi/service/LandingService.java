@@ -22,7 +22,6 @@ import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.ImageSplit;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.ReceiptParser;
 import com.receiptofi.web.helper.ReceiptForMonth;
@@ -76,6 +75,7 @@ public final class LandingService {
     @Autowired private ItemService itemService;
     @Autowired private NotificationService notificationService;
     @Autowired private FileSystemService fileSystemService;
+    @Autowired private ImageSplitService imageSplitService;
 
     static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
         public int compare(ReceiptGrouped left, ReceiptGrouped right) {
@@ -282,7 +282,7 @@ public final class LandingService {
             documentEntity = DocumentEntity.newInstance();
             documentEntity.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
 
-            fileSystemEntityUnScaled = new FileSystemEntity(receiptBlobId, ImageSplit.bufferedImage(scaled), 0, 0);
+            fileSystemEntityUnScaled = new FileSystemEntity(receiptBlobId, imageSplitService.bufferedImage(scaled), 0, 0);
             fileSystemService.save(fileSystemEntityUnScaled);
             documentEntity.addReceiptBlobId(fileSystemEntityUnScaled);
 
@@ -355,7 +355,7 @@ public final class LandingService {
         );
 
         commonsMultipartFile.transferTo(original);
-        return ImageSplit.decreaseResolution(original);
+        return imageSplitService.decreaseResolution(original);
     }
 
 
