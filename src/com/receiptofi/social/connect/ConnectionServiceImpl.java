@@ -11,7 +11,6 @@ import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.util.Registration;
-import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +25,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
