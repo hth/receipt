@@ -2,7 +2,7 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.repository.StorageManager;
-import com.receiptofi.web.form.UploadReceiptImage;
+import com.receiptofi.common.domain.UploadReceiptImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -24,7 +24,7 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ImageSplit;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.ReceiptParser;
-import com.receiptofi.web.form.UploadReceiptImage;
+import com.receiptofi.common.domain.UploadReceiptImage;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import org.slf4j.Logger;
