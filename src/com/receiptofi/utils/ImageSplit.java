@@ -1,6 +1,6 @@
 package com.receiptofi.utils;
 
-import com.receiptofi.shared.domain.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadReceiptImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
