@@ -4,7 +4,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.common.domain.UploadReceiptImage;
+import com.receiptofi.shared.domain.UploadReceiptImage;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

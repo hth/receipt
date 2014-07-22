@@ -4,7 +4,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.common.domain.UploadReceiptImage;
+import com.receiptofi.shared.domain.UploadReceiptImage;
 
 import java.io.IOException;
 import java.util.Collection;

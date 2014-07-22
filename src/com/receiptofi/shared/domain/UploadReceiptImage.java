@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.receiptofi.common.domain;
+package com.receiptofi.shared.domain;
 
 import com.receiptofi.domain.types.FileTypeEnum;
 
