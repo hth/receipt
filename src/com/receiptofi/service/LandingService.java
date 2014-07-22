@@ -23,7 +23,6 @@ import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
-import com.receiptofi.utils.ReceiptParser;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import org.slf4j.Logger;
@@ -76,6 +75,7 @@ public final class LandingService {
     @Autowired private NotificationService notificationService;
     @Autowired private FileSystemService fileSystemService;
     @Autowired private ImageSplitService imageSplitService;
+    @Autowired private ReceiptParserService receiptParserService;
 
     static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
         public int compare(ReceiptGrouped left, ReceiptGrouped right) {
@@ -293,7 +293,7 @@ public final class LandingService {
             setEmptyBiz(documentEntity);
 
             items = new LinkedList<>();
-            ReceiptParser.read(receiptOCRTranslation, documentEntity, items);
+            receiptParserService.read(receiptOCRTranslation, documentEntity, items);
 
             //Save Document, Items and the Send JMS
             documentManager.save(documentEntity);
