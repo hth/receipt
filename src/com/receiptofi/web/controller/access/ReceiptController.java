@@ -8,7 +8,7 @@ import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;

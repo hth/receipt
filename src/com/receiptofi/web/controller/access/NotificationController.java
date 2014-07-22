@@ -1,6 +1,6 @@
 package com.receiptofi.web.controller.access;
 
-import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.utils.DateUtil;

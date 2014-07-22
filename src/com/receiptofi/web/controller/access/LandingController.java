@@ -7,7 +7,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
