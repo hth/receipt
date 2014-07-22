@@ -48,7 +48,7 @@ public final class ReceiptParserService {
 				// http://stackoverflow.com/questions/600733/using-java-to-find-substring-of-a-bigger-string-using-regular-expression
 				// String date = d.group(1);
 
-				log.debug("Found date - " + s);
+				log.debug("Found date - ", s);
 				documentEntity.setReceiptDate(s.trim());
 			}
 			save = s;
