@@ -46,7 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -226,25 +225,21 @@ public final class LandingService {
      * Computes all the expenses user has
      *
      * @param userProfileId
-     * @param modelAndView
      */
-    public void computeTotalExpense(String userProfileId, ModelAndView modelAndView) {
-        List<ReceiptEntity> receipts = getAllReceipts(userProfileId);
-        computeToDateExpense(modelAndView, receipts);
+    public Map<String, BigDecimal> computeTotalExpense(String userProfileId) {
+        return computeToDateExpense(getAllReceipts(userProfileId));
     }
 
     /**
      * Computes YTD expenses
      *
      * @param userProfileId
-     * @param modelAndView
      */
-    public void computeYearToDateExpense(String userProfileId, ModelAndView modelAndView) {
-        List<ReceiptEntity> receipts = getAllReceiptsForTheYear(userProfileId, DateUtil.startOfYear());
-        computeToDateExpense(modelAndView, receipts);
+    public Map<String, BigDecimal> computeYearToDateExpense(String userProfileId) {
+        return computeToDateExpense(getAllReceiptsForTheYear(userProfileId, DateUtil.startOfYear()));
     }
 
-    private void computeToDateExpense(ModelAndView modelAndView, List<ReceiptEntity> receipts) {
+    private Map<String, BigDecimal> computeToDateExpense(List<ReceiptEntity> receipts) {
         BigDecimal tax = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
         for(ReceiptEntity receipt : receipts) {
@@ -252,9 +247,12 @@ public final class LandingService {
             total = Maths.add(total, receipt.getTotal());
         }
 
-        modelAndView.addObject("tax", tax);
-        modelAndView.addObject("totalWithoutTax", Maths.subtract(total, tax));
-        modelAndView.addObject("total", total);
+        Map<String, BigDecimal> map = new HashMap<>();
+        map.put("tax", tax);
+        map.put("totalWithoutTax", Maths.subtract(total, tax));
+        map.put("total", total);
+
+        return map;
     }
 
     /**

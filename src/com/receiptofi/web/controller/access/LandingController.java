@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +142,8 @@ public final class LandingController extends BaseController {
         /** bizNames and bizByExpenseTypes added below to landingForm*/
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
 
-        landingService.computeYearToDateExpense(receiptUser.getRid(), modelAndView);
+        Map<String, BigDecimal> ytdExpenseMap = landingService.computeYearToDateExpense(receiptUser.getRid());
+        modelAndView.addAllObjects(ytdExpenseMap);
 
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(receiptUser.getRid());
