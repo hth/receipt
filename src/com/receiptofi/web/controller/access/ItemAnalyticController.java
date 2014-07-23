@@ -9,7 +9,7 @@ import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.ItemAnalyticForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

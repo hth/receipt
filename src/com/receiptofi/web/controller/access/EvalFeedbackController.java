@@ -3,7 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.service.EvalFeedbackService;
 import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.EvalFeedbackForm;
 import com.receiptofi.web.util.TextInputScrubber;
 import com.receiptofi.web.validator.EvalFeedbackValidator;

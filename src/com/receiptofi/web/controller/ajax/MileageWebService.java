@@ -5,7 +5,7 @@ import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.helper.json.MileageDateUpdateResponse;
 import com.receiptofi.web.helper.json.Mileages;
 import org.slf4j.Logger;

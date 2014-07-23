@@ -23,7 +23,7 @@ import com.receiptofi.service.ReportService;
 import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
 import com.receiptofi.web.helper.ReceiptForMonth;

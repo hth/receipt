@@ -9,7 +9,7 @@ import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

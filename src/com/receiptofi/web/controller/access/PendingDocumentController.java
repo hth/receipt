@@ -8,7 +8,7 @@ import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentPendingService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.PendingReceiptForm;
 import com.receiptofi.web.form.ReceiptDocumentForm;
 import org.slf4j.Logger;
