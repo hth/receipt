@@ -13,7 +13,7 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.ReceiptForm;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.rest.Header;

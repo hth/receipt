@@ -7,7 +7,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.social.domain.site.ReceiptUser;
+import com.receiptofi.domain.shared.UploadReceiptImage;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -20,12 +20,12 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
+import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
-import com.receiptofi.web.form.UploadReceiptImage;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.json.Mileages;
 import com.receiptofi.web.rest.Base;
@@ -141,7 +141,8 @@ public final class LandingController extends BaseController {
         /** bizNames and bizByExpenseTypes added below to landingForm*/
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
 
-        landingService.computeYearToDateExpense(receiptUser.getRid(), modelAndView);
+        Map<String, BigDecimal> ytdExpenseMap = landingService.computeYearToDateExpense(receiptUser.getRid());
+        modelAndView.addAllObjects(ytdExpenseMap);
 
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(receiptUser.getRid());

@@ -5,7 +5,7 @@ package com.receiptofi.web.controller.admin;
 
 import com.receiptofi.service.AdminLandingService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.UserSearchForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

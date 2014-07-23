@@ -7,7 +7,7 @@ import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.BizForm;
 import com.receiptofi.web.validator.BizSearchValidator;
 import com.receiptofi.web.validator.BizValidator;

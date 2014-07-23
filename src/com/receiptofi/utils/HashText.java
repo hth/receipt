@@ -3,6 +3,7 @@
  */
 package com.receiptofi.utils;
 
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,7 +2,7 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.PerformanceProfiling;
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
