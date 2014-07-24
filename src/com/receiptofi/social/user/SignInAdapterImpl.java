@@ -1,9 +1,9 @@
 package com.receiptofi.social.user;
 
 import com.receiptofi.domain.types.ProviderEnum;
-import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.social.annotation.Social;
-import com.receiptofi.web.util.Registration;
+import com.receiptofi.social.config.Registration;
+import com.receiptofi.social.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

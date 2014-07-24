@@ -4,7 +4,7 @@ import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
-import com.receiptofi.web.util.Registration;
+import com.receiptofi.social.config.Registration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

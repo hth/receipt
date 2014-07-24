@@ -1,4 +1,4 @@
-package com.receiptofi.web.util;
+package com.receiptofi.social.config;
 
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.social.domain.site.ReceiptUser;

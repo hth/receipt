@@ -9,8 +9,8 @@ import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
+import com.receiptofi.social.config.Registration;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.web.util.Registration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
