@@ -27,6 +27,7 @@ import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
+import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.helper.json.Mileages;
 import com.receiptofi.web.rest.Base;
 import com.receiptofi.web.rest.Header;
@@ -115,7 +116,7 @@ public final class LandingController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
 
 		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), time);
-        ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, time);
+        ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, time);
         modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
@@ -193,7 +194,7 @@ public final class LandingController extends BaseController {
         }
 
         List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), monthYear);
-        ReceiptForMonth receiptForMonth = landingService.getReceiptForMonth(allReceiptsForThisMonth, monthYear);
+        ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, monthYear);
         landingForm.setReceiptForMonth(receiptForMonth);
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
@@ -523,5 +524,22 @@ public final class LandingController extends BaseController {
         } else {
             return "Invalid Email: " + invitedUserEmail;
         }
+    }
+
+    /**
+     *
+     * @param allReceiptsForThisMonth
+     * @param monthYear
+     * @return
+     */
+    public ReceiptForMonth getReceiptForMonth(List<ReceiptEntity> allReceiptsForThisMonth, DateTime monthYear) {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("MMM, yyyy");
+
+        ReceiptForMonth receiptForMonth = ReceiptForMonth.newInstance();
+        receiptForMonth.setMonthYear(dtf.print(monthYear));
+        for(ReceiptEntity receiptEntity : allReceiptsForThisMonth) {
+            receiptForMonth.addReceipt(ReceiptLandingView.newInstance(receiptEntity));
+        }
+        return receiptForMonth;
     }
 }
