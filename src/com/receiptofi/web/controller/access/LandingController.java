@@ -21,9 +21,9 @@ import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
 import com.receiptofi.social.domain.site.ReceiptUser;
+import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
@@ -31,10 +31,16 @@ import com.receiptofi.web.helper.json.Mileages;
 import com.receiptofi.web.rest.Base;
 import com.receiptofi.web.rest.Header;
 import com.receiptofi.web.rest.LandingView;
+import com.receiptofi.web.rest.ReportView;
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -421,21 +427,46 @@ public final class LandingController extends BaseController {
             dateTime = dateTime.plusMonths(1).minusDays(1);
 
             header.setStatus(Header.RESULT.SUCCESS);
-            return reportService.monthlyReport(dateTime,
-                    receiptUser.getRid(),
-                    receiptUser.getUsername(),
-                    header
-            );
-        } catch(IllegalArgumentException iae) {
+
+            ReportView reportView = getReportView(receiptUser, header, dateTime);
+            File file = populateDataForXML(reportView);
+            return reportService.monthlyReport(file);
+        } catch(RuntimeException e) {
             header.setMessage("Invalid parameter. Correct format - " + pattern + " [Please provide parameter shown without quotes - 'Jan, 2013']");
             header.setStatus(Header.RESULT.FAILURE);
 
-            return reportService.monthlyReport(DateTime.now().minusYears(40),
-                    receiptUser.getRid(),
-                    receiptUser.getUsername(),
-                    header
-            );
+            ReportView reportView = getReportView(receiptUser, header, DateTime.now().minusYears(40));
+            File file = populateDataForXML(reportView);
+            return reportService.monthlyReport(file);
         }
+    }
+
+    private File populateDataForXML(ReportView reportView) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(ReportView.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
+
+            File file = CreateTempFile.file("XML-Report", ".xml");
+            jaxbMarshaller.marshal(reportView, file);
+
+            //Commenting console output
+            //jaxbMarshaller.marshal(reportView, System.out);
+
+            return file;
+        } catch (JAXBException | IOException e) {
+            log.error("Error while processing reporting template: " + e.getLocalizedMessage());
+            throw new RuntimeException("Error while processing reporting template");
+        }
+    }
+
+    private ReportView getReportView(ReceiptUser receiptUser, Header header, DateTime dateTime) {
+        ReportView reportView = ReportView.newInstance(receiptUser.getRid(), receiptUser.getUsername(), header);
+        reportView.setReceipts(landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), dateTime));
+        reportView.setHeader(header);
+        return reportView;
     }
 
     /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */
