@@ -23,8 +23,6 @@ import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
-import com.receiptofi.web.helper.ReceiptForMonth;
-import com.receiptofi.web.helper.ReceiptLandingView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +44,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -383,23 +379,5 @@ public final class LandingService {
 
     public List<NotificationEntity> notifications(String userProfileId) {
         return notificationService.notifications(userProfileId);
-    }
-
-    /**
-     *
-     * @param allReceiptsForThisMonth
-     * @param monthYear
-     * @return
-     */
-    public ReceiptForMonth getReceiptForMonth(List<ReceiptEntity> allReceiptsForThisMonth, DateTime monthYear) {
-        String pattern = "MMM, yyyy";
-        DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
-
-        ReceiptForMonth receiptForMonth = ReceiptForMonth.newInstance();
-        receiptForMonth.setMonthYear(dtf.print(monthYear));
-        for(ReceiptEntity receiptEntity : allReceiptsForThisMonth) {
-            receiptForMonth.addReceipt(ReceiptLandingView.newInstance(receiptEntity));
-        }
-        return receiptForMonth;
     }
 }

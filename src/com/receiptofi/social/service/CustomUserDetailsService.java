@@ -3,7 +3,6 @@ package com.receiptofi.social.service;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
@@ -11,10 +10,11 @@ import com.receiptofi.service.AccountService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.social.annotation.Social;
+import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.config.SocialConfig;
 import com.receiptofi.social.connect.ConnectionService;
+import com.receiptofi.social.domain.site.ReceiptUser;
 import com.receiptofi.utils.RandomString;
-import com.receiptofi.web.util.Registration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +60,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private AccountService accountService;
     @Autowired private ConnectionService connectionService;
     @Autowired private GenerateUserIdManager generateUserIdManager;
-    @Autowired private Registration registration;
+    @Autowired private RegistrationConfig registrationConfig;
 
     /**
      * @param email - lower case string
@@ -102,7 +102,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
-        if(registration.isRegistrationTurnedOn()) {
+        if(registrationConfig.isRegistrationTurnedOn()) {
             return userAccount.isActive() && userAccount.isAccountValidated();
         }
 
