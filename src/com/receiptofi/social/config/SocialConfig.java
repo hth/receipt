@@ -63,7 +63,7 @@ public class SocialConfig {
     private AccountService accountService;
 
     @Autowired
-    private Registration registration;
+    private RegistrationConfig registrationConfig;
 
     /**
      * When a new provider is added to the app, register its {@link org.springframework.social.connect.ConnectionFactory} here.
@@ -98,7 +98,7 @@ public class SocialConfig {
         logger.info("Initializing ProviderSignInController");
         ConnectionFactoryLocator connFactLocator = connectionFactoryLocator();
         UsersConnectionRepository usrConnRepo = usersConnectionRepository();
-        SignInAdapterImpl signInAdapter = new SignInAdapterImpl(requestCache, customUserDetailsService, registration);
+        SignInAdapterImpl signInAdapter = new SignInAdapterImpl(requestCache, customUserDetailsService, registrationConfig);
         ProviderSignInController controller = new ProviderSignInController(connFactLocator, usrConnRepo, signInAdapter);
 
         controller.setSignUpUrl("/signup");

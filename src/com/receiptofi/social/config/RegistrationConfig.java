@@ -24,8 +24,8 @@ import org.springframework.ui.ModelMap;
  */
 @Component
 @Scope(BeanDefinition.SCOPE_SINGLETON)
-public class Registration {
-    private static final Logger log = LoggerFactory.getLogger(Registration.class);
+public class RegistrationConfig {
+    private static final Logger log = LoggerFactory.getLogger(RegistrationConfig.class);
 
     @Value("${registration.turned.on}")
     private boolean registrationTurnedOn;

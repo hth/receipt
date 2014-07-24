@@ -9,7 +9,7 @@ import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
-import com.receiptofi.social.config.Registration;
+import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.utils.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final AccountService accountService;
 
     @Autowired
-    private Registration registration;
+    private RegistrationConfig registrationConfig;
 
     @Autowired
     private ProviderConfig providerConfig;
@@ -82,7 +82,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         );
         UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(RandomString.newInstance().nextString());
         userAccount.setUserAuthentication(userAuthentication);
-        registration.changeUserAccountActiveState(userAccount);
+        registrationConfig.changeUserAccountActiveState(userAccount);
         log.info("new account created user={} provider={}", userAccount.getReceiptUserId(), userAccount.getProviderId());
         mongoTemplate.insert(userAccount);
     }
@@ -170,7 +170,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                         RandomString.newInstance().nextString()
                 );
                 userAccountEntity.setUserAuthentication(userAuthentication);
-                registration.changeUserAccountActiveState(userAccount);
+                registrationConfig.changeUserAccountActiveState(userAccount);
                 log.info("new account created user={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
             } else {
                 userAccountEntity.setUpdated();

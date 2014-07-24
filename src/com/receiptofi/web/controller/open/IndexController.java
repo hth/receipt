@@ -1,6 +1,6 @@
 package com.receiptofi.web.controller.open;
 
-import com.receiptofi.social.config.Registration;
+import com.receiptofi.social.config.RegistrationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ public final class IndexController {
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    private Registration registration;
+    private RegistrationConfig registrationConfig;
 
     /**
      * isEnabled() false exists when properties registration.turned.on is false and user is trying to gain access
@@ -39,7 +39,7 @@ public final class IndexController {
             return "index";
         }
 
-        if(registration.validateIfRegistrationIsAllowed(map, authentication)) {
+        if(registrationConfig.validateIfRegistrationIsAllowed(map, authentication)) {
             return "index";
         }
 
