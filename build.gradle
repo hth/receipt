@@ -2,14 +2,26 @@ apply plugin: 'idea'
 
 allprojects{
     group = 'com.receiptofi'
-    version = ''
+    version = '0.1'
 }
 
 subprojects{
     apply plugin: 'java'
 
+    //apply plugin: 'checkstyle' //for java code conventions
+    apply plugin: 'jdepend' //for dependency analysis
+    //apply plugin: 'findbugs' //for static code analysis
+    apply plugin: 'pmd'
+
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = false
+        }
+    }
 
     repositories {
         mavenCentral()
@@ -127,6 +139,12 @@ project(':domain') {
     }
 }
 
+project(':service') {
+    dependencies {
+        compile project(':common'), project(':domain')
+    }
+}
+
 project(':security') {
     apply plugin: 'war'
 
@@ -135,18 +153,10 @@ project(':security') {
     }
 
     dependencies {
-        compile project(':common')
-        compile project(':domain')
+        compile project(':common'), project(':domain')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
-    }
-}
-
-project(':service') {
-    dependencies {
-        compile project(':common')
-        compile project(':domain')
     }
 }
 
@@ -158,9 +168,7 @@ project(':social') {
     }
 
     dependencies {
-        compile project(':common')
-        compile project(':domain')
-        compile project(':service')
+        compile project(':common'), project(':domain'), project(':service')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
@@ -175,19 +183,25 @@ project(':web') {
     }
 
     dependencies {
-        compile project(':common')
-        compile project(':domain')
-        compile project(':security')
-        compile project(':social')
-        compile project(':service')
+        compile project(':common'), project(':domain'), project(':security'), project(':social'), project(':service')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
     }
 }
 
+task deleteUnwantedWar(type: Delete) {
+    delete "social/build/libs/social.war", "security/build/libs/security.war"
+}
+
+task webJar(type: Jar, dependsOn: deleteUnwantedWar) {
+    classifier = 'web'
+    from subprojects.sourceSets.main.output
+    include 'com/receiptofi/web/**'
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.6'
 }
 
-defaultTasks 'clean', 'build'
+defaultTasks 'clean', 'build', 'war'
