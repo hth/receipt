@@ -78,7 +78,7 @@ public final class ReceiptController extends BaseController {
         return new ModelAndView(NEXT_PAGE);
 	}
 
-    //@SuppressWarnings("PMD.EmptyIfStmt")
+    @SuppressWarnings("PMD.EmptyIfStmt")
 	@RequestMapping(method = RequestMethod.POST, params="delete")
 	public String delete(@ModelAttribute("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();

@@ -1,15 +1,67 @@
 apply plugin: 'idea'
 
-allprojects{
-    group = 'com.receiptofi'
-    version = ''
+ext {
+    webInf = file('/WEB-INF')
+    lib = file("$webInf/lib")
+    classes = file("$webInf/classes")
+    conf = file("$classes/conf")
+    images = file("$classes/images")
+
+    warDevDir = file("$buildDir/explodedWar/dev")
+    warDevWebInfDir = file("$warDevDir$webInf")
+    warDevLibDir = file("$warDevDir$lib")
+    warDevClassesDir = file("$warDevDir$classes")
+    warDevConfDir = file("$warDevDir$conf")
+    warDevWebInfClassesImagesDir = file("$warDevDir$images")
+
+    warTestDir = file("$buildDir/explodedWar/test")
+    warTestWebInfDir = file("$warTestDir$webInf")
+    warTestLibDir = file("$warTestDir$lib")
+    warTestClassesDir = file("$warTestDir$classes")
+    warTestConfDir = file("$warTestDir$conf")
+    warTestWebInfClassesImagesDir = file("$warTestDir$images")
+
+    warProdDir = file("$buildDir/explodedWar/prod")
+    warProdWebInfDir = file("$warProdDir$webInf")
+    warProdLibDir = file("$warProdDir$lib")
+    warProdClassesDir = file("$warProdDir$classes")
+    warProdConfDir = file("$warProdDir$conf")
+    warProdWebInfClassesImagesDir = file("$warProdDir$images")
 }
 
-subprojects{
+allprojects {
+    group = 'com.receiptofi'
+    version = '0.9.0'
+}
+
+subprojects {
     apply plugin: 'java'
+
+    //apply plugin: 'checkstyle' //for java code conventions
+    apply plugin: 'jdepend' //for dependency analysis
+    //apply plugin: 'findbugs' //for static code analysis
+    apply plugin: 'pmd'
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
+
+    jar {
+        manifest {
+            attributes(
+                    "Implementation-Vendor": "Receiptofi Inc",
+                    "Implementation-Title": rootProject.name,
+                    "Implementation-Version": allprojects.version,
+                    "Copyright" : "2014, Receiptofi Inc"
+            )
+        }
+    }
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = false
+        }
+    }
 
     repositories {
         mavenCentral()
@@ -103,64 +155,54 @@ subprojects{
 
         testCompile group: 'junit', name: 'junit', version: '4.+'
     }
-
-    sourceSets {
-        main {
-            java {
-                srcDirs = ['src']
-            }
-        }
-        test {
-            java {
-                srcDirs = ['test']
-            }
-        }
-    }
 }
 
 project(':common') {
+    jar.baseName = 'receiptofi-common'
 }
 
 project(':domain') {
+    jar.baseName = 'receiptofi-domain'
+
     dependencies {
         compile project(':common')
     }
 }
 
+project(':service') {
+    jar.baseName = 'receiptofi-service'
+
+    dependencies {
+        compile project(':common'), project(':domain')
+    }
+}
+
 project(':security') {
     apply plugin: 'war'
+    jar.baseName = 'receiptofi-security'
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        compile project(':common')
-        compile project(':domain')
+        compile project(':common'), project(':domain')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
     }
 }
 
-project(':service') {
-    dependencies {
-        compile project(':common')
-        compile project(':domain')
-    }
-}
-
 project(':social') {
     apply plugin: 'war'
+    jar.baseName = 'receiptofi-social'
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        compile project(':common')
-        compile project(':domain')
-        compile project(':service')
+        compile project(':common'), project(':domain'), project(':service')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
@@ -169,17 +211,14 @@ project(':social') {
 
 project(':web') {
     apply plugin: 'war'
+    jar.baseName = 'receiptofi-web'
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        compile project(':common')
-        compile project(':domain')
-        compile project(':security')
-        compile project(':social')
-        compile project(':service')
+        compile project(':common'), project(':domain'), project(':security'), project(':social'), project(':service')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
@@ -187,7 +226,205 @@ project(':web') {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.6'
+    gradleVersion = '2.0'
 }
 
-defaultTasks 'clean', 'build'
+task copyDevJars(type: Copy) {
+    from 'common/build/libs'
+    from 'domain/build/libs'
+    from 'service/build/libs'
+    from 'security/build/libs'
+    from 'social/build/libs'
+    from 'web/build/libs'
+    into warDevLibDir
+    include '**/*.jar'
+}
+
+task copyTestJars(type: Copy) {
+    from 'common/build/libs'
+    from 'domain/build/libs'
+    from 'service/build/libs'
+    from 'security/build/libs'
+    from 'social/build/libs'
+    from 'web/build/libs'
+    into warTestLibDir
+    include '**/*.jar'
+}
+
+task copyProdJars(type: Copy) {
+    from 'common/build/libs'
+    from 'domain/build/libs'
+    from 'service/build/libs'
+    from 'security/build/libs'
+    from 'social/build/libs'
+    from 'web/build/libs'
+    into warProdLibDir
+    include '**/*.jar'
+}
+
+task prepDevWar(dependsOn: [copyDevJars]) << {
+    warDevClassesDir.mkdirs()
+    warDevConfDir.mkdirs()
+
+    copy {
+        from 'web/web'
+        into warDevDir
+        exclude '**/*.classes'
+    }
+
+    copy {
+        from 'web/environment/dev/dev.properties'
+        into warDevConfDir
+    }
+
+    copy {
+        from 'web/resources/conf/application-messages.properties'
+        from 'web/resources/conf/config.properties'
+        from 'web/resources/conf/pass.properties'
+        from 'web/resources/conf/redis.properties'
+        into warDevConfDir
+    }
+
+    copy {
+        from 'web/environment/dev/logback.xml'
+        from 'web/resources/conf/messages.properties'
+        into warDevClassesDir
+    }
+
+    copy {
+        from 'web/environment/dev/receipt-servlet.xml'
+        into warDevWebInfDir
+    }
+
+    copy {
+        from 'web/web/static/images'
+        into warDevWebInfClassesImagesDir
+    }
+}
+
+task prepTestWar(dependsOn: [copyTestJars]) << {
+    warTestClassesDir.mkdirs()
+    warTestConfDir.mkdirs()
+
+    copy {
+        from 'web/web'
+        into warTestDir
+        exclude '**/*.classes'
+    }
+
+    copy {
+        from 'web/environment/test/qa.properties'
+        into warTestConfDir
+    }
+
+    copy {
+        from 'web/resources/conf/application-messages.properties'
+        from 'web/resources/conf/config.properties'
+        from 'web/resources/conf/pass.properties'
+        from 'web/resources/conf/redis.properties'
+        into warTestConfDir
+    }
+
+    copy {
+        from 'web/environment/test/logback.xml'
+        from 'web/resources/conf/messages.properties'
+        into warTestClassesDir
+    }
+
+    copy {
+        from 'web/environment/test/receipt-servlet.xml'
+        into warTestWebInfDir
+    }
+
+    copy {
+        from 'web/web/static/images'
+        into warTestWebInfClassesImagesDir
+    }
+}
+
+task prepProdWar(dependsOn: [copyProdJars]) << {
+    warProdClassesDir.mkdirs()
+    warProdConfDir.mkdirs()
+
+    copy {
+        from 'web/web'
+        into warProdDir
+        exclude '**/*.classes'
+    }
+
+    copy {
+        from 'web/environment/prod/prod.properties'
+        into warProdConfDir
+    }
+
+    copy {
+        from 'web/resources/conf/application-messages.properties'
+        from 'web/resources/conf/config.properties'
+        from 'web/resources/conf/pass.properties'
+        from 'web/resources/conf/redis.properties'
+        into warProdConfDir
+    }
+
+    copy {
+        from 'web/environment/prod/logback.xml'
+        from 'web/resources/conf/messages.properties'
+        into warProdClassesDir
+    }
+
+    copy {
+        from 'web/environment/prod/receipt-servlet.xml'
+        into warProdWebInfDir
+    }
+
+    copy {
+        from 'web/web/static/images'
+        into warProdWebInfClassesImagesDir
+    }
+}
+
+task cleanDev(type: Delete) {
+    delete warDevDir
+}
+
+task cleanTest(type: Delete) {
+    delete warTestDir
+}
+
+task cleanProd(type: Delete) {
+    delete warProdDir
+}
+
+task clean(dependsOn: [cleanDev, cleanTest, cleanProd]) {
+    delete buildDir
+}
+
+task prepWar(dependsOn: [prepDevWar, prepTestWar, prepProdWar]) {
+
+}
+
+task devWar(type: War, dependsOn: prepDevWar) {
+    from warDevDir
+    version ""
+    destinationDir = file("$buildDir/war/dev")
+    baseName = 'receiptofi-dev'
+}
+
+task testWar(type: War, dependsOn: prepTestWar) {
+    from warTestDir
+    version ""
+    destinationDir = file("$buildDir/war/test")
+    baseName = 'receiptofi-test'
+}
+
+task prodWar(type: War, dependsOn: prepProdWar) {
+    from warProdDir
+    version ""
+    destinationDir = file("$buildDir/war/prod")
+    baseName = 'receiptofi-prod'
+}
+
+task war(dependsOn: [devWar, testWar, prodWar]) {
+
+}
+
+defaultTasks 'clean', 'jar'
