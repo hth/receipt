@@ -1,5 +1,9 @@
 apply plugin: 'idea'
 
+if (!hasProperty('env')) {
+    env = System.env['GRADLE_ENV']
+}
+
 ext {
     webInf = file('/WEB-INF')
     lib = file("$webInf/lib")
@@ -7,26 +11,12 @@ ext {
     conf = file("$classes/conf")
     images = file("$classes/images")
 
-    warDevDir = file("$buildDir/explodedWar/dev")
-    warDevWebInfDir = file("$warDevDir$webInf")
-    warDevLibDir = file("$warDevDir$lib")
-    warDevClassesDir = file("$warDevDir$classes")
-    warDevConfDir = file("$warDevDir$conf")
-    warDevWebInfClassesImagesDir = file("$warDevDir$images")
-
-    warTestDir = file("$buildDir/explodedWar/test")
-    warTestWebInfDir = file("$warTestDir$webInf")
-    warTestLibDir = file("$warTestDir$lib")
-    warTestClassesDir = file("$warTestDir$classes")
-    warTestConfDir = file("$warTestDir$conf")
-    warTestWebInfClassesImagesDir = file("$warTestDir$images")
-
-    warProdDir = file("$buildDir/explodedWar/prod")
-    warProdWebInfDir = file("$warProdDir$webInf")
-    warProdLibDir = file("$warProdDir$lib")
-    warProdClassesDir = file("$warProdDir$classes")
-    warProdConfDir = file("$warProdDir$conf")
-    warProdWebInfClassesImagesDir = file("$warProdDir$images")
+    warDir = file("$buildDir/explodedWar/$env")
+    warWebInfDir = file("$warDir$webInf")
+    warLibDir = file("$warDir$lib")
+    warClassesDir = file("$warDir$classes")
+    warConfDir = file("$warDir$conf")
+    warWebInfClassesImagesDir = file("$warDir$images")
 
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
@@ -232,36 +222,14 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
 }
 
-task copyDevJars(type: Copy) {
+task copyJars(type: Copy) {
     from 'common/build/libs'
     from 'domain/build/libs'
     from 'service/build/libs'
     from 'security/build/libs'
     from 'social/build/libs'
     from 'web/build/libs'
-    into warDevLibDir
-    include '**/*.jar'
-}
-
-task copyTestJars(type: Copy) {
-    from 'common/build/libs'
-    from 'domain/build/libs'
-    from 'service/build/libs'
-    from 'security/build/libs'
-    from 'social/build/libs'
-    from 'web/build/libs'
-    into warTestLibDir
-    include '**/*.jar'
-}
-
-task copyProdJars(type: Copy) {
-    from 'common/build/libs'
-    from 'domain/build/libs'
-    from 'service/build/libs'
-    from 'security/build/libs'
-    from 'social/build/libs'
-    from 'web/build/libs'
-    into warProdLibDir
+    into warLibDir
     include '**/*.jar'
 }
 
@@ -272,19 +240,19 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task prepDevWar(dependsOn: [unzip, copyDevJars]) << {
-    warDevClassesDir.mkdirs()
-    warDevConfDir.mkdirs()
+task prepWar(dependsOn: [unzip, copyJars]) << {
+    warClassesDir.mkdirs()
+    warConfDir.mkdirs()
 
     copy {
         from 'web/web'
-        into warDevDir
+        into warDir
         exclude '**/*.classes'
     }
 
     copy {
-        from 'web/environment/dev/dev.properties'
-        into warDevConfDir
+        from "web/environment/$env/$env.properties"
+        into warConfDir
     }
 
     copy {
@@ -292,164 +260,40 @@ task prepDevWar(dependsOn: [unzip, copyDevJars]) << {
         from 'web/resources/conf/config.properties'
         from 'web/resources/conf/pass.properties'
         from 'web/resources/conf/redis.properties'
-        into warDevConfDir
+        into warConfDir
     }
 
     copy {
-        from 'web/environment/dev/logback.xml'
+        from "web/environment/$env/logback.xml"
         from 'web/resources/conf/messages.properties'
-        into warDevClassesDir
+        into warClassesDir
     }
 
     copy {
-        from 'web/environment/dev/receipt-servlet.xml'
-        into warDevWebInfDir
+        from "web/environment/$env/receipt-servlet.xml"
+        into warWebInfDir
     }
 
     copy {
         from 'web/web/static/images'
-        into warDevWebInfClassesImagesDir
+        into warWebInfClassesImagesDir
     }
 
     copy {
         from unzipLibDir
-        into warDevLibDir
+        into warLibDir
     }
 }
 
-task prepTestWar(dependsOn: [unzip, copyTestJars]) << {
-    warTestClassesDir.mkdirs()
-    warTestConfDir.mkdirs()
-
-    copy {
-        from 'web/web'
-        into warTestDir
-        exclude '**/*.classes'
-    }
-
-    copy {
-        from 'web/environment/test/qa.properties'
-        into warTestConfDir
-    }
-
-    copy {
-        from 'web/resources/conf/application-messages.properties'
-        from 'web/resources/conf/config.properties'
-        from 'web/resources/conf/pass.properties'
-        from 'web/resources/conf/redis.properties'
-        into warTestConfDir
-    }
-
-    copy {
-        from 'web/environment/test/logback.xml'
-        from 'web/resources/conf/messages.properties'
-        into warTestClassesDir
-    }
-
-    copy {
-        from 'web/environment/test/receipt-servlet.xml'
-        into warTestWebInfDir
-    }
-
-    copy {
-        from 'web/web/static/images'
-        into warTestWebInfClassesImagesDir
-    }
-
-    copy {
-        from unzipLibDir
-        into warTestLibDir
-    }
-}
-
-task prepProdWar(dependsOn: [unzip, copyProdJars]) << {
-    warProdClassesDir.mkdirs()
-    warProdConfDir.mkdirs()
-
-    copy {
-        from 'web/web'
-        into warProdDir
-        exclude '**/*.classes'
-    }
-
-    copy {
-        from 'web/environment/prod/prod.properties'
-        into warProdConfDir
-    }
-
-    copy {
-        from 'web/resources/conf/application-messages.properties'
-        from 'web/resources/conf/config.properties'
-        from 'web/resources/conf/pass.properties'
-        from 'web/resources/conf/redis.properties'
-        into warProdConfDir
-    }
-
-    copy {
-        from 'web/environment/prod/logback.xml'
-        from 'web/resources/conf/messages.properties'
-        into warProdClassesDir
-    }
-
-    copy {
-        from 'web/environment/prod/receipt-servlet.xml'
-        into warProdWebInfDir
-    }
-
-    copy {
-        from 'web/web/static/images'
-        into warProdWebInfClassesImagesDir
-    }
-
-    copy {
-        from unzipLibDir
-        into warProdLibDir
-    }
-}
-
-task cleanDev(type: Delete) {
-    delete warDevDir
-}
-
-task cleanTest(type: Delete) {
-    delete warTestDir
-}
-
-task cleanProd(type: Delete) {
-    delete warProdDir
-}
-
-task clean(dependsOn: [cleanDev, cleanTest, cleanProd]) {
+task clean(type: Delete) {
     delete buildDir
 }
 
-task prepWar(dependsOn: [prepDevWar, prepTestWar, prepProdWar]) {
-
-}
-
-task devWar(type: War, dependsOn: prepDevWar) {
-    from warDevDir
-    baseName = 'receiptofi-dev'
+task war(type: War, dependsOn: prepWar) {
+    from warDir
+    baseName = "receiptofi-$env"
     version ""
-    destinationDir = file("$buildDir/war/dev")
-}
-
-task testWar(type: War, dependsOn: prepTestWar) {
-    from warTestDir
-    baseName = 'receiptofi-test'
-    version ""
-    destinationDir = file("$buildDir/war/test")
-}
-
-task prodWar(type: War, dependsOn: prepProdWar) {
-    from warProdDir
-    baseName = 'receiptofi-prod'
-    version ""
-    destinationDir = file("$buildDir/war/prod")
-}
-
-task war(dependsOn: [devWar, testWar, prodWar]) {
-
+    destinationDir = file("$buildDir/war/$env")
 }
 
 defaultTasks 'clean', 'jar'
