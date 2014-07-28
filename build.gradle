@@ -27,6 +27,9 @@ ext {
     warProdClassesDir = file("$warProdDir$classes")
     warProdConfDir = file("$warProdDir$conf")
     warProdWebInfClassesImagesDir = file("$warProdDir$images")
+
+    unzipDir = file("${buildDir}/unpacked/dist")
+    unzipLibDir = file("$unzipDir$lib")
 }
 
 allprojects {
@@ -262,7 +265,14 @@ task copyProdJars(type: Copy) {
     include '**/*.jar'
 }
 
-task prepDevWar(dependsOn: [copyDevJars]) << {
+task unzip(type: Copy, dependsOn: [':web:war']) {
+    def zipFile = file('web/build/libs/web-0.9.0.war')
+
+    from zipTree(zipFile)
+    into unzipDir
+}
+
+task prepDevWar(dependsOn: [unzip, copyDevJars]) << {
     warDevClassesDir.mkdirs()
     warDevConfDir.mkdirs()
 
@@ -300,9 +310,14 @@ task prepDevWar(dependsOn: [copyDevJars]) << {
         from 'web/web/static/images'
         into warDevWebInfClassesImagesDir
     }
+
+    copy {
+        from unzipLibDir
+        into warDevLibDir
+    }
 }
 
-task prepTestWar(dependsOn: [copyTestJars]) << {
+task prepTestWar(dependsOn: [unzip, copyTestJars]) << {
     warTestClassesDir.mkdirs()
     warTestConfDir.mkdirs()
 
@@ -340,9 +355,14 @@ task prepTestWar(dependsOn: [copyTestJars]) << {
         from 'web/web/static/images'
         into warTestWebInfClassesImagesDir
     }
+
+    copy {
+        from unzipLibDir
+        into warTestLibDir
+    }
 }
 
-task prepProdWar(dependsOn: [copyProdJars]) << {
+task prepProdWar(dependsOn: [unzip, copyProdJars]) << {
     warProdClassesDir.mkdirs()
     warProdConfDir.mkdirs()
 
@@ -380,6 +400,11 @@ task prepProdWar(dependsOn: [copyProdJars]) << {
         from 'web/web/static/images'
         into warProdWebInfClassesImagesDir
     }
+
+    copy {
+        from unzipLibDir
+        into warProdLibDir
+    }
 }
 
 task cleanDev(type: Delete) {
@@ -404,23 +429,23 @@ task prepWar(dependsOn: [prepDevWar, prepTestWar, prepProdWar]) {
 
 task devWar(type: War, dependsOn: prepDevWar) {
     from warDevDir
+    baseName = 'receiptofi-dev'
     version ""
     destinationDir = file("$buildDir/war/dev")
-    baseName = 'receiptofi-dev'
 }
 
 task testWar(type: War, dependsOn: prepTestWar) {
     from warTestDir
+    baseName = 'receiptofi-test'
     version ""
     destinationDir = file("$buildDir/war/test")
-    baseName = 'receiptofi-test'
 }
 
 task prodWar(type: War, dependsOn: prepProdWar) {
     from warProdDir
+    baseName = 'receiptofi-prod'
     version ""
     destinationDir = file("$buildDir/war/prod")
-    baseName = 'receiptofi-prod'
 }
 
 task war(dependsOn: [devWar, testWar, prodWar]) {
