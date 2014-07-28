@@ -43,6 +43,7 @@ subprojects {
             attributes(
                     "Implementation-Vendor": "Receiptofi Inc",
                     "Implementation-Title": rootProject.name,
+                    "Build Environment": "$env",
                     "Implementation-Version": allprojects.version,
                     "Copyright" : "2014, Receiptofi Inc"
             )
