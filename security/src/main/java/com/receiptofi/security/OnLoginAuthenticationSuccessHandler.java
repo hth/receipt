@@ -49,7 +49,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if(isAlwaysUseDefaultTargetUrl() || (targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
+        if(isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
             return;
