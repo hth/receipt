@@ -38,7 +38,7 @@
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/pass.properties"                    order="3" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/qa.properties"                      order="4" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/test.properties"                    order="4" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/application-messages.properties"    order="5" ignore-unresolvable="true" />
 
