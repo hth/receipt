@@ -291,7 +291,7 @@ task clean(type: Delete) {
 
 task war(type: War, dependsOn: prepWar) {
     from warDir
-    baseName = "receiptofi-$env"
+    baseName = "receipt-$env"
     version ""
     destinationDir = file("$buildDir/war/$env")
 }
