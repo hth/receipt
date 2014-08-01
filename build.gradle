@@ -261,6 +261,7 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
         from 'web/resources/conf/application-messages.properties'
         from 'web/resources/conf/config.properties'
         from 'web/resources/conf/pass.properties'
+        from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
         from 'web/resources/conf/redis.properties'
         into warConfDir
     }
