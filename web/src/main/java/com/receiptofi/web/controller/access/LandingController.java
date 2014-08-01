@@ -20,7 +20,7 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
-import com.receiptofi.social.domain.site.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;

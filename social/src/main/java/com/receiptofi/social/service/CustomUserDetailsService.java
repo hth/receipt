@@ -13,7 +13,7 @@ import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.config.SocialConfig;
 import com.receiptofi.social.connect.ConnectionService;
-import com.receiptofi.social.domain.site.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

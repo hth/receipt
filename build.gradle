@@ -147,6 +147,8 @@ subprojects {
         compile 'javax.validation:validation-api:1.1.0.Final'
 
         testCompile group: 'junit', name: 'junit', version: '4.+'
+        testCompile 'org.mockito:mockito-all:1.9.5'
+        testCompile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.46.0'
     }
 }
 

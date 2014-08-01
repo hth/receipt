@@ -5,7 +5,7 @@ import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
-import com.receiptofi.social.domain.site.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.BizForm;
 import com.receiptofi.web.util.PerformanceProfiling;

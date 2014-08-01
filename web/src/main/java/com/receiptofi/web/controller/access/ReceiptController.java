@@ -11,7 +11,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.social.domain.site.ReceiptUser;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.ReceiptForm;
 import com.receiptofi.web.helper.ReceiptLandingView;
