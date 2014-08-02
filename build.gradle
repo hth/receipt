@@ -32,11 +32,12 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
-
-    //apply plugin: 'checkstyle' //for java code conventions
-    apply plugin: 'jdepend' //for dependency analysis
-    //apply plugin: 'findbugs' //for static code analysis
+    apply plugin: 'checkstyle'  //for java code conventions
+    apply plugin: 'jdepend'     //for dependency analysis
+    apply plugin: 'findbugs'    //for static code analysis
     apply plugin: 'pmd'
+    apply plugin: 'jacoco'      //for code coverage
+    apply plugin: 'jdepend'
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -321,31 +322,27 @@ task clean(type: Delete) {
 
 task war(type: War, dependsOn: prepWar) {
     doFirst {
+        baseName = "receipt-$env"
+        version ""
+
         if (env == 'test' || env == 'prod') {
+            // This adds escape character to message.properties; if you would like to avoid updating file at runtime
+            // then create a new file 'versionFile.name' in your favorite location and add the new file as below
+            //
+            // from(rootDir) {
+            //      include versionFile.name
+            // }
+
             ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
                 entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
             }
 
-            baseName = "receipt-$env-" + System.getenv().BUILD_NUMBER?.toInteger()
-        }
-
-        if(env == 'dev') {
-            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
-                entry(key: "build.version", value: 'hello')
-            }
-
-            baseName = "receipt-$env"
+            version System.getenv().BUILD_NUMBER?.toInteger()
         }
     }
 
     from warDir
-    version ""
-
-//    from(rootDir) {
-//        include versionFile.name
-//    }
-
     destinationDir = file("$buildDir/war/$env")
 }
 
-defaultTasks 'clean', 'jar'
+defaultTasks 'clean', 'jar', 'war'
