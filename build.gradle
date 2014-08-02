@@ -41,6 +41,10 @@ subprojects {
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
 
+    pmd {
+        ignoreFailures = true
+    }
+
     jar {
         manifest {
             attributes(
@@ -268,6 +272,7 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
         from 'web/resources/conf/application-messages.properties'
         from 'web/resources/conf/config.properties'
         from 'web/resources/conf/redis.properties'
+
         if (env == 'test' || env == 'prod') {
             if(passFile.exists()) {
                 from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
@@ -277,14 +282,14 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
         }
 
         if(env == 'dev') {
-            println 'Development environment, getting local pass file'
+            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
             if(passFileLocal.exists()) {
                 from 'web/resources/conf/pass.properties'
             } else {
                 throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
             }
-
         }
+
         into warConfDir
     }
 
@@ -315,6 +320,20 @@ task clean(type: Delete) {
 }
 
 task war(type: War, dependsOn: prepWar) {
+    doFirst {
+        if (env == 'test' || env == 'prod') {
+            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
+                entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
+            }
+        }
+
+        if(env == 'dev') {
+            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
+                entry(key: "build.version", value: 'hello')
+            }
+        }
+    }
+
     from warDir
     baseName = "receipt-$env"
     version ""
