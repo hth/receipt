@@ -322,9 +322,6 @@ task clean(type: Delete) {
 
 task war(type: War, dependsOn: prepWar) {
     doFirst {
-        baseName = "receipt-$env"
-        version ""
-
         if (env == 'test' || env == 'prod') {
             // This adds escape character to message.properties; if you would like to avoid updating file at runtime
             // then create a new file 'versionFile.name' in your favorite location and add the new file as below
@@ -336,9 +333,13 @@ task war(type: War, dependsOn: prepWar) {
             ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
                 entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
             }
-
-            version System.getenv().BUILD_NUMBER?.toInteger()
         }
+    }
+
+    baseName = "receipt-$env"
+    version ""
+    if (env == 'test' || env == 'prod') {
+        version System.getenv().BUILD_NUMBER?.toInteger()
     }
 
     from warDir
