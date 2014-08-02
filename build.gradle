@@ -20,6 +20,9 @@ ext {
 
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
+
+    passFile = file('/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties')
+    passFileLocal = file('web/resources/conf/pass.properties')
 }
 
 allprojects {
@@ -150,9 +153,9 @@ subprojects {
 
         compile 'javax.validation:validation-api:1.1.0.Final'
 
-        testCompile group: 'junit', name: 'junit', version: '4.+'
-        testCompile 'org.mockito:mockito-all:1.9.5'
-        testCompile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.46.0'
+        compile group: 'junit', name: 'junit', version: '4.+'
+        compile 'org.mockito:mockito-all:1.9.5'
+        compile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.46.0'
     }
 }
 
@@ -264,9 +267,24 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
     copy {
         from 'web/resources/conf/application-messages.properties'
         from 'web/resources/conf/config.properties'
-        from 'web/resources/conf/pass.properties'
-        from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
         from 'web/resources/conf/redis.properties'
+        if (env == 'test' || env == 'prod') {
+            if(passFile.exists()) {
+                from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
+            } else {
+                throw new Exception("Required pass file does not exists: $passFile.canonicalPath")
+            }
+        }
+
+        if(env == 'dev') {
+            println 'Development environment, getting local pass file'
+            if(passFileLocal.exists()) {
+                from 'web/resources/conf/pass.properties'
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+            }
+
+        }
         into warConfDir
     }
 
@@ -300,6 +318,11 @@ task war(type: War, dependsOn: prepWar) {
     from warDir
     baseName = "receipt-$env"
     version ""
+
+//    from(rootDir) {
+//        include versionFile.name
+//    }
+
     destinationDir = file("$buildDir/war/$env")
 }
 
