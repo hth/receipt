@@ -32,12 +32,12 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'checkstyle'  //for java code conventions
+    //apply plugin: 'checkstyle'  //for java code conventions
     apply plugin: 'jdepend'     //for dependency analysis
-    apply plugin: 'findbugs'    //for static code analysis
+    //apply plugin: 'findbugs'    //for static code analysis
     apply plugin: 'pmd'
-    apply plugin: 'jacoco'      //for code coverage
-    apply plugin: 'jdepend'
+    //apply plugin: 'jacoco'      //for code coverage
+    //apply plugin: 'jdepend'
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -339,7 +339,7 @@ task war(type: War, dependsOn: prepWar) {
 
         if(env == 'dev') {
             ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
-                entry(key: "build.version", value: 'hello')
+                entry(key: "build.version", value: 'dev')
             }
 
             baseName = "receipt-$env"
