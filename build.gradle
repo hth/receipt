@@ -342,6 +342,10 @@ task war(type: War, dependsOn: prepWar) {
         version System.getenv().BUILD_NUMBER?.toInteger()
     }
 
+    if (env == 'dev') {
+        version ""
+    }
+
     from warDir
     destinationDir = file("$buildDir/war/$env")
 }
