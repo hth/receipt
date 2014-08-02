@@ -157,9 +157,9 @@ subprojects {
 
         compile 'javax.validation:validation-api:1.1.0.Final'
 
-        compile group: 'junit', name: 'junit', version: '4.+'
-        compile 'org.mockito:mockito-all:1.9.5'
-        compile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.46.0'
+        testCompile group: 'junit', name: 'junit', version: '4.+'
+        testCompile 'org.mockito:mockito-all:1.9.5'
+        testCompile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.46.0'
     }
 }
 
@@ -325,17 +325,20 @@ task war(type: War, dependsOn: prepWar) {
             ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
                 entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
             }
+
+            baseName = "receipt-$env-" + System.getenv().BUILD_NUMBER?.toInteger()
         }
 
         if(env == 'dev') {
             ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
                 entry(key: "build.version", value: 'hello')
             }
+
+            baseName = "receipt-$env"
         }
     }
 
     from warDir
-    baseName = "receipt-$env"
     version ""
 
 //    from(rootDir) {
