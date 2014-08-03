@@ -28,7 +28,7 @@ import org.joda.time.DateTime;
 public abstract class BaseEntity implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(BaseEntity.class);
 
-	@Id
+    @Id
 	protected String id;
 
 	@Version
