@@ -1,4 +1,4 @@
 receipt
 =======
 
-Main Repository
+Receipt Web Application
