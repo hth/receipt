@@ -23,23 +23,22 @@ import org.joda.time.DateTime;
 /**
  * @author hitender
  * @since Dec 23, 2012 2:02:10 AM
- *
  */
 public abstract class BaseEntity implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(BaseEntity.class);
 
     @Id
-	protected String id;
+    protected String id;
 
-	@Version
+    @Version
     @Field("V")
-	private Integer version;
+    private Integer version;
 
     @Field("U")
-	private Date updated = DateUtil.nowTime();
+    private Date updated = DateUtil.nowTime();
 
     @Field("C")
-	private Date created = DateUtil.nowTime();
+    private Date created = DateUtil.nowTime();
 
     @Field("A")
     private boolean active = true;
@@ -47,17 +46,42 @@ public abstract class BaseEntity implements Serializable {
     @Field("D")
     private boolean deleted = false;
 
-	public BaseEntity() {
-		super();
-	}
+    public BaseEntity() {
+        super();
+    }
 
-	public String getId() {
-		return id;
-	}
+    /**
+     * http://thierrywasyl.wordpress.com/2011/05/12/get-annotations-fields-value-easily/
+     *
+     * @param classType
+     * @param annotationType
+     * @param attributeName
+     * @return Collection Name
+     */
+    @SuppressWarnings("rawtypes")
+    public static String getClassAnnotationValue(Class<?> classType, Class annotationType, String attributeName) {
+        String value = null;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+        @SuppressWarnings("unchecked")
+        Annotation annotation = classType.getAnnotation(annotationType);
+        if(annotation != null) {
+            try {
+                value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
+            } catch (Exception annotationException) {
+                log.error("annotation reading error={}", annotationException);
+            }
+        }
+
+        return value;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public boolean isActive() {
         return active;
@@ -88,61 +112,34 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public Integer getVersion() {
-		return version;
-	}
+        return version;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	@DateTimeFormat(iso = ISO.NONE)
-	public Date getUpdated() {
-		return updated;
-	}
+    @DateTimeFormat(iso = ISO.NONE)
+    public Date getUpdated() {
+        return updated;
+    }
 
-	public void setUpdated() {
-		this.updated = DateTime.now().toDate();
-	}
+    public void setUpdated() {
+        this.updated = DateTime.now().toDate();
+    }
 
-	@DateTimeFormat(iso = ISO.NONE)
-	public Date getCreated() {
-		return created;
-	}
+    @DateTimeFormat(iso = ISO.NONE)
+    public Date getCreated() {
+        return created;
+    }
 
     @Deprecated
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
     public void setCreateAndUpdate(Date created) {
         this.created = created;
         this.updated = created;
     }
-
-	/**
-	 *
-	 * http://thierrywasyl.wordpress.com/2011/05/12/get-annotations-fields-value-easily/
-	 *
-	 * @param classType
-	 * @param annotationType
-	 * @param attributeName
-	 * @return Collection Name
-	 */
-	@SuppressWarnings("rawtypes")
-	public static String getClassAnnotationValue(Class<?> classType, Class annotationType, String attributeName) {
-		String value = null;
-
-		@SuppressWarnings("unchecked")
-		Annotation annotation = classType.getAnnotation(annotationType);
-		if (annotation != null) {
-			try {
-				value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
-			} catch (Exception annotationException) {
-                log.error("annotation reading error={}", annotationException);
-			}
-		}
-
-		return value;
-	}
-
 }
