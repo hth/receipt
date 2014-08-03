@@ -40,10 +40,6 @@ subprojects {
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
 
-    pmd {
-        ignoreFailures = true
-    }
-
     checkstyle {
         ignoreFailures = true
     }
@@ -58,6 +54,15 @@ subprojects {
         omitVisitors = ["FindNonShortCircuit"]
 //        includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
 //        excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
+    }
+
+    jdepend {
+        ignoreFailures = true
+        reportsDir = file("$project.buildDir/reports/jdepend")
+    }
+
+    pmd {
+        ignoreFailures = true
     }
 
     jar {
