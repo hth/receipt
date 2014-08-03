@@ -186,8 +186,8 @@ subprojects {
 
     tasks.withType(JDepend) {
         reports {
-            text.enabled = true
             xml.enabled = true
+            text.enabled = false
         }
     }
 
