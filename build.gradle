@@ -41,7 +41,32 @@ subprojects {
     targetCompatibility = 1.7
 
     pmd {
-        ignoreFailures = false
+        ignoreFailures = true
+
+        ruleSets = [
+                "basic",
+                "braces",
+                "naming",
+                "android",
+                "clone",
+                "codesize",
+                "controversial",
+                "design",
+                "finalizers",
+                "imports",
+                "j2ee",
+                "javabeans",
+                "junit",
+                "logging-jakarta-commons",
+                "logging-java",
+                "migrating",
+                "optimizations",
+                "strictexception",
+                "strings",
+                "sunsecure",
+                "typeresolution",
+                "unusedcode"
+        ]
     }
 
     checkstyle {
