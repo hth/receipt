@@ -33,7 +33,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'  //for java code conventions, you can use sonar instead but it need DB
     apply plugin: 'findbugs'    //for static code analysis
-    apply plugin: 'jdepend'     //for dependency analysis
+    //apply plugin: 'jdepend'     //for dependency analysis
     apply plugin: 'pmd'
     apply plugin: 'jacoco'      //for code coverage
 
