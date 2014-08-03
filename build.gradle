@@ -176,6 +176,27 @@ subprojects {
         testCompile 'org.mockito:mockito-all:1.9.5'
         testCompile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.46.0'
     }
+
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    tasks.withType(JDepend) {
+        reports {
+            text.enabled = false
+            xml.enabled = true
+        }
+    }
+
+    tasks.withType(Pmd) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
 }
 
 project(':common') {
