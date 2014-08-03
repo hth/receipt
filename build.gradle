@@ -50,10 +50,10 @@ subprojects {
 
     findbugs {
         toolVersion = "3.0.0"
-        ignoreFailures = false
+        ignoreFailures = true
         reportsDir = file("$project.buildDir/reports/findbugs")
         effort = "max"
-        reportLevel = "high"
+        reportLevel = "medium"
         visitors = ["FindSqlInjection", "SwitchFallthrough"]
         omitVisitors = ["FindNonShortCircuit"]
 //        includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
