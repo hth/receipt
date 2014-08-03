@@ -179,21 +179,21 @@ subprojects {
 
     tasks.withType(FindBugs) {
         reports {
-            xml.enabled = false
+            xml.enabled = true
             html.enabled = true
         }
     }
 
     tasks.withType(JDepend) {
         reports {
-            text.enabled = false
+            text.enabled = true
             xml.enabled = true
         }
     }
 
     tasks.withType(Pmd) {
         reports {
-            xml.enabled = false
+            xml.enabled = true
             html.enabled = true
         }
     }
