@@ -283,6 +283,7 @@ project(':social') {
 project(':web') {
     apply plugin: 'war'
     jar.baseName = 'receiptofi-web'
+    war.baseName = 'receiptofi-web'
 
     repositories {
         mavenCentral()
@@ -312,7 +313,7 @@ task copyJars(type: Copy) {
 }
 
 task unzip(type: Copy, dependsOn: [':web:war']) {
-    def zipFile = file('web/build/libs/web-0.9.0.war')
+    def zipFile = file('web/build/libs/receiptofi-web-0.9.0.war')
 
     from zipTree(zipFile)
     into unzipDir
