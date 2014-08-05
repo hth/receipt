@@ -31,6 +31,7 @@ allprojects {
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
+
     apply plugin: 'checkstyle'  //for java code conventions, you can use sonar instead but it need DB
     apply plugin: 'findbugs'    //for static code analysis
     apply plugin: 'jdepend'     //for dependency analysis, Jenkins plugin does not use this feature
@@ -240,14 +241,6 @@ project(':domain') {
     }
 }
 
-project(':service') {
-    jar.baseName = 'receiptofi-service'
-
-    dependencies {
-        compile project(':common'), project(':domain')
-    }
-}
-
 project(':security') {
     apply plugin: 'war'
     jar.baseName = 'receiptofi-security'
@@ -261,6 +254,14 @@ project(':security') {
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
+    }
+}
+
+project(':service') {
+    jar.baseName = 'receiptofi-service'
+
+    dependencies {
+        compile project(':common'), project(':domain')
     }
 }
 
@@ -304,8 +305,8 @@ task wrapper(type: Wrapper) {
 task copyJars(type: Copy) {
     from 'common/build/libs'
     from 'domain/build/libs'
-    from 'service/build/libs'
     from 'security/build/libs'
+    from 'service/build/libs'
     from 'social/build/libs'
     from 'web/build/libs'
     into warLibDir
@@ -416,4 +417,4 @@ task war(type: War, dependsOn: prepWar) {
     destinationDir = file("$buildDir/war/$env")
 }
 
-defaultTasks 'clean', 'jar', 'war'
+defaultTasks 'clean', 'build', 'jar', 'war'
