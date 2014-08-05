@@ -31,6 +31,7 @@ allprojects {
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
+
     apply plugin: 'checkstyle'  //for java code conventions, you can use sonar instead but it need DB
     apply plugin: 'findbugs'    //for static code analysis
     apply plugin: 'jdepend'     //for dependency analysis, Jenkins plugin does not use this feature
@@ -416,4 +417,4 @@ task war(type: War, dependsOn: prepWar) {
     destinationDir = file("$buildDir/war/$env")
 }
 
-defaultTasks 'clean', 'jar', 'war'
+defaultTasks 'clean', 'build', 'jar', 'war'
