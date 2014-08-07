@@ -418,4 +418,104 @@ task war(type: War, dependsOn: prepWar) {
     destinationDir = file("$buildDir/war/$env")
 }
 
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        common(MavenPublication) {
+            artifactId 'common'
+            artifact 'common/build/libs/'+ baseName + '-common-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'private repo')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+
+        domain(MavenPublication) {
+            artifactId 'domain'
+            artifact 'domain/build/libs/' + baseName + '-domain-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'private repo')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+
+        service(MavenPublication) {
+            artifactId 'service'
+            artifact 'service/build/libs/' + baseName + '-service-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'private repo')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+
+        social(MavenPublication) {
+            artifactId 'social'
+            artifact 'social/build/libs/' + baseName + '-social-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'private repo')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+        }
+    }
+}
+
 defaultTasks 'clean', 'build', 'jar', 'war'
