@@ -21,6 +21,8 @@ ext {
 
     passFile = file('/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties')
     passFileLocal = file('web/resources/conf/pass.properties')
+
+    baseName = "receiptofi"
 }
 
 allprojects {
@@ -230,11 +232,11 @@ subprojects {
 }
 
 project(':common') {
-    jar.baseName = 'receiptofi-common'
+    jar.baseName = baseName + '-common'
 }
 
 project(':domain') {
-    jar.baseName = 'receiptofi-domain'
+    jar.baseName = baseName + '-domain'
 
     dependencies {
         compile project(':common')
@@ -243,7 +245,7 @@ project(':domain') {
 
 project(':security') {
     apply plugin: 'war'
-    jar.baseName = 'receiptofi-security'
+    jar.baseName = baseName + '-security'
 
     repositories {
         mavenCentral()
@@ -258,7 +260,7 @@ project(':security') {
 }
 
 project(':service') {
-    jar.baseName = 'receiptofi-service'
+    jar.baseName = baseName + '-service'
 
     dependencies {
         compile project(':common'), project(':domain')
@@ -267,7 +269,7 @@ project(':service') {
 
 project(':social') {
     apply plugin: 'war'
-    jar.baseName = 'receiptofi-social'
+    jar.baseName = baseName + '-social'
 
     repositories {
         mavenCentral()
@@ -283,8 +285,8 @@ project(':social') {
 
 project(':web') {
     apply plugin: 'war'
-    jar.baseName = 'receiptofi-web'
-    war.baseName = 'receiptofi-web'
+    jar.baseName = baseName + '-web'
+    war.baseName = baseName + '-web'
 
     repositories {
         mavenCentral()
@@ -314,7 +316,7 @@ task copyJars(type: Copy) {
 }
 
 task unzip(type: Copy, dependsOn: [':web:war']) {
-    def zipFile = file('web/build/libs/receiptofi-web-0.9.0.war')
+    def zipFile = file('web/build/libs/' + baseName + '-web-' + version + '.war')
 
     from zipTree(zipFile)
     into unzipDir

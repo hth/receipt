@@ -39,6 +39,7 @@ public final class UploadReceiptImage {
     private File file;
     private String userProfileId;
     private FileTypeEnum fileType;
+    private String blobId;
 
     private UploadReceiptImage() { }
 
@@ -121,5 +122,13 @@ public final class UploadReceiptImage {
         metaData.put("USER_PROFILE_ID", getUserProfileId());
         metaData.put("USER_PROFILE_ID_AND_FILENAME", getUserProfileId() + UNDER_SCORE + getOriginalFileName());
         return metaData;
+    }
+
+    public String getBlobId() {
+        return blobId;
+    }
+
+    public void setBlobId(String blobId) {
+        this.blobId = blobId;
     }
 }
