@@ -97,7 +97,7 @@ subprojects {
                     "Implementation-Vendor": "Receiptofi Inc",
                     "Implementation-Title": rootProject.name,
                     "Implementation-Version": allprojects.version + " $env",
-                    "Copyright" : "2014, Receiptofi Inc"
+                    "Copyright": "2014, Receiptofi Inc"
             )
         }
     }
@@ -342,16 +342,16 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
         from 'web/resources/conf/redis.properties'
 
         if (env == 'test' || env == 'prod') {
-            if(passFile.exists()) {
+            if (passFile.exists()) {
                 from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
             } else {
                 throw new Exception("Required pass file does not exists: $passFile.canonicalPath")
             }
         }
 
-        if(env == 'dev') {
+        if (env == 'dev') {
             println "Development environment, getting local pass file $passFileLocal.canonicalPath"
-            if(passFileLocal.exists()) {
+            if (passFileLocal.exists()) {
                 from 'web/resources/conf/pass.properties'
             } else {
                 throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
@@ -404,7 +404,7 @@ task war(type: War, dependsOn: prepWar) {
             baseName = "receipt-$env-" + System.getenv().BUILD_NUMBER?.toInteger()
         }
 
-        if(env == 'dev') {
+        if (env == 'dev') {
             ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
                 entry(key: "build.version", value: 'dev')
             }
@@ -424,7 +424,7 @@ publishing {
     publications {
         common(MavenPublication) {
             artifactId 'common'
-            artifact 'common/build/libs/'+ baseName + '-common-' + version + '.jar'
+            artifact 'common/build/libs/' + baseName + '-common-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
