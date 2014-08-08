@@ -274,6 +274,7 @@ public final class LandingService {
             File scaled = scaleImage(uploadReceiptImage);
             uploadReceiptImage.setFile(scaled);
             receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
+            uploadReceiptImage.setBlobId(receiptBlobId);
 
             documentEntity = DocumentEntity.newInstance();
             documentEntity.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
