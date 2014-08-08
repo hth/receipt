@@ -3,10 +3,10 @@
  */
 package com.receiptofi.utils;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,9 +22,13 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public final class DateUtil {
     public static final int MINUTE_IN_SECONDS = 60;
+
     public static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
+
     public static final int HOURS = 24;
+
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
+
     private static final Logger log = LoggerFactory.getLogger(DateUtil.class);
 
     private DateUtil() {
@@ -44,8 +48,8 @@ public final class DateUtil {
      */
     public static Date getDateFromString(String dateStr) {
         String dateString = StringUtils.trim(dateStr.replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
-        for(DateType dateType : DateType.values()) {
-            if(dateString.matches(dateType.getRegex())) {
+        for (DateType dateType : DateType.values()) {
+            if (dateString.matches(dateType.getRegex())) {
                 return DateTime.parse(dateString, dateType.getFormatter()).toDate();
             }
         }
@@ -64,9 +68,7 @@ public final class DateUtil {
         return new DateTime(date);
     }
 
-    /**
-     * @return DateTime of type Joda Time
-     */
+    /** @return DateTime of type Joda Time */
     public static DateTime now() {
         return DateTime.now();
     }
@@ -124,13 +126,13 @@ public final class DateUtil {
     @Deprecated
     public static String getDurationStr(Date date) {
         int time = DateUtil.duration(toDateTime(date)).getSeconds();
-        if(time < DateUtil.MINUTE_IN_SECONDS) {
+        if (time < DateUtil.MINUTE_IN_SECONDS) {
             return time + " Seconds";
 
-        } else if(time / DateUtil.MINUTE_IN_SECONDS < DateUtil.MINUTE_IN_SECONDS) {
+        } else if (time / DateUtil.MINUTE_IN_SECONDS < DateUtil.MINUTE_IN_SECONDS) {
             return time / DateUtil.MINUTE_IN_SECONDS + " Minutes";
 
-        } else if(time / DateUtil.HOUR_IN_SECONDS < HOURS) {
+        } else if (time / DateUtil.HOUR_IN_SECONDS < HOURS) {
             return time / DateUtil.HOUR_IN_SECONDS + " Hours";
 
         } else {
@@ -154,8 +156,11 @@ public final class DateUtil {
         FRM_11("\\d{1,2}/\\d{1,2}/\\d{2}", "12/26/12", "MM/dd/yy"),
         FRM_12("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}\\s(PM|AM)", "12/26/12 7:30 PM", "MM/dd/yy hh:mm a"),
         FRM_13("\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}(PM|AM)", "12/26/12 7:30PM", "MM/dd/yy hh:mma"),;
+
         private final String regex;
+
         private final String example;
+
         private final DateTimeFormatter formatter;
 
         private DateType(String regex, String example, String formatter) {
@@ -168,7 +173,7 @@ public final class DateUtil {
             return regex;
         }
 
-        @SuppressWarnings("unused")
+        @SuppressWarnings ("unused")
         public String getExample() {
             return example;
         }

@@ -3,12 +3,12 @@
  */
 package com.receiptofi.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -59,7 +59,7 @@ public final class HashText {
     }
 
     public static boolean checkPassword(String password_plaintext, String stored_hash) {
-        if(null == stored_hash || !stored_hash.startsWith("$2a$")) {
+        if (null == stored_hash || !stored_hash.startsWith("$2a$")) {
             throw new IllegalArgumentException("Invalid hash provided for comparison");
         }
         return BCrypt.checkpw(password_plaintext, stored_hash);
@@ -67,7 +67,7 @@ public final class HashText {
 
     private static String hashCode(String text, MessageDigest md) {
         DateTime time = DateUtil.now();
-        if(md == null) {
+        if (md == null) {
             log.info("Un-Initialized MessageDigest");
             return null;
         } else {
@@ -77,15 +77,15 @@ public final class HashText {
 
             // convert the byte to hex format method 1
             StringBuilder sb = new StringBuilder();
-            for(byte aByteData : byteData) {
+            for (byte aByteData : byteData) {
                 sb.append(Integer.toString(aByteData & 0xff + 0x100, 16).substring(1));
             }
 
             // convert the byte to hex format method 2
             StringBuilder hexString = new StringBuilder();
-            for(byte aByteData : byteData) {
+            for (byte aByteData : byteData) {
                 String hex = Integer.toHexString(0xff & aByteData);
-                if(hex.length() == 1) {
+                if (hex.length() == 1) {
                     hexString.append('0');
                 }
                 hexString.append(hex);
