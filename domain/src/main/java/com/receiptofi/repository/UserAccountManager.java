@@ -8,6 +8,8 @@ import com.receiptofi.domain.UserAccountEntity;
  */
 public interface UserAccountManager extends RepositoryManager<UserAccountEntity> {
     UserAccountEntity findByReceiptUserId(String rid);
+
     UserAccountEntity findByUserId(String mail);
+
     UserAccountEntity findByProviderUserId(String providerUserId);
 }

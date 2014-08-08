@@ -1,8 +1,8 @@
 package com.receiptofi.domain.social;
 
-import com.receiptofi.domain.BaseEntity;
-
 import javax.validation.constraints.NotNull;
+
+import com.receiptofi.domain.BaseEntity;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -14,27 +14,28 @@ import org.springframework.security.web.authentication.rememberme.PersistentReme
  * User: hitender
  * Date: 3/30/14 3:27 PM
  */
-@Document(collection = "REMEMBER_ME_TOKEN")
-@CompoundIndexes({
-        @CompoundIndex(name = "remember_username_idx", def = "{'UN': 1}"),
-        @CompoundIndex(name = "remember_series_idx", def = "{'S': 1}")
+@Document (collection = "REMEMBER_ME_TOKEN")
+@CompoundIndexes ({
+        @CompoundIndex (name = "remember_username_idx", def = "{'UN': 1}"),
+        @CompoundIndex (name = "remember_series_idx", def = "{'S': 1}")
 })
 public final class RememberMeTokenEntity extends BaseEntity {
 
     @NotNull
-    @Field("UN")
+    @Field ("UN")
     private String username;
 
     @NotNull
-    @Field("S")
+    @Field ("S")
     private String series;
 
     @NotNull
-    @Field("TV")
+    @Field ("TV")
     private String tokenValue;
 
-    @SuppressWarnings("unused")
-    private RememberMeTokenEntity() {}
+    @SuppressWarnings ("unused")
+    private RememberMeTokenEntity() {
+    }
 
     public RememberMeTokenEntity(PersistentRememberMeToken persistentToken) {
         this.series = persistentToken.getSeries();

@@ -1,16 +1,12 @@
 package com.receiptofi.repository;
 
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -19,6 +15,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * User: hitender
@@ -39,7 +39,7 @@ public final class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public void save(NotificationEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
@@ -66,7 +66,7 @@ public final class NotificationManagerImpl implements NotificationManager {
         Criteria criteria2 = where("NOTIFIED").is(true);
         Sort sort = new Sort(Sort.Direction.DESC, "C");
         Query query = query(criteria1).addCriteria(criteria2).addCriteria(isNotDeleted()).with(sort);
-        if(limit != NotificationManager.ALL) {
+        if (limit != NotificationManager.ALL) {
             query.limit(limit);
         }
         return mongoTemplate.find(query, NotificationEntity.class, TABLE);

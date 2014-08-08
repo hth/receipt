@@ -1,14 +1,9 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.MileageEntity;
-
 import java.util.List;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.MileageEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -21,6 +16,12 @@ import org.springframework.stereotype.Repository;
 import org.joda.time.DateTime;
 
 import com.mongodb.WriteResult;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -39,7 +40,7 @@ public class MileageManagerImpl implements MileageManager {
 
     @Override
     public void save(MileageEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);

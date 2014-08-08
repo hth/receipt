@@ -19,11 +19,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Date: 4/22/13
  * Time: 10:16 PM
  */
-@Document(collection = "BIZ_NAME")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_name_idx", def = "{'N': 1}",  unique = true),
-} )
-@JsonIgnoreProperties({
+@Document (collection = "BIZ_NAME")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "biz_name_idx", def = "{'N': 1}", unique = true),
+})
+@JsonIgnoreProperties ({
 
         "id",
         "version",
@@ -32,20 +32,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         "active",
         "deleted"
 })
-@JsonAutoDetect(
+@JsonAutoDetect (
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 public final class BizNameEntity extends BaseEntity {
 
-    @JsonProperty("name")
+    @JsonProperty ("name")
     @NotNull
-    @Field("N")
+    @Field ("N")
     private String businessName;
 
     /* To make bean happy */
-    public BizNameEntity() {}
+    public BizNameEntity() {
+    }
 
     public static BizNameEntity newInstance() {
         return new BizNameEntity();

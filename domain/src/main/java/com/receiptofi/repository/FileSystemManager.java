@@ -1,8 +1,8 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.FileSystemEntity;
-
 import java.util.Collection;
+
+import com.receiptofi.domain.FileSystemEntity;
 
 /**
  * User: hitender

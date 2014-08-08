@@ -12,27 +12,28 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 7/19/13
  * Time: 8:32 AM
  */
-@Document(collection = "EVAL_FEEDBACK")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "eval_feedback_idx",    def = "{'USER_PROFILE_ID': 1, 'C': 1}",  unique=true),
-} )
+@Document (collection = "EVAL_FEEDBACK")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "eval_feedback_idx", def = "{'USER_PROFILE_ID': 1, 'C': 1}", unique = true),
+})
 public final class EvalFeedbackEntity extends BaseEntity {
 
-    @Field("FEEDBACK")
+    @Field ("FEEDBACK")
     private String feedback;
 
-    @Field("ATTACHMENT_BLOB_ID")
+    @Field ("ATTACHMENT_BLOB_ID")
     private String attachmentBlobId;
 
     @NotNull
-    @Field("RATE")
+    @Field ("RATE")
     private int rating;
 
     @NotNull
-    @Field("USER_PROFILE_ID")
+    @Field ("USER_PROFILE_ID")
     private String userProfileId;
 
-    private EvalFeedbackEntity() {}
+    private EvalFeedbackEntity() {
+    }
 
     public static EvalFeedbackEntity newInstance(String feedback, int rating, String userProfileId) {
         EvalFeedbackEntity evalFeedbackEntity = new EvalFeedbackEntity();

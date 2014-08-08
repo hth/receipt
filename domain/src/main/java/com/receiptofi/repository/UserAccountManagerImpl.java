@@ -1,14 +1,11 @@
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +13,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * User: hitender
@@ -42,7 +42,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public void save(UserAccountEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
-            if(object.getId() != null) {
+            if (object.getId() != null) {
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);

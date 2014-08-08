@@ -1,23 +1,23 @@
 package com.receiptofi.repository;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -38,7 +38,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public void save(FileSystemEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
@@ -55,7 +55,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     }
 
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
-        for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
+        for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
             deleteHard(fileSystemEntity);
         }
     }
@@ -69,7 +69,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     }
 
     public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {
-        for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
+        for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
             deleteSoft(fileSystemEntity);
         }
     }

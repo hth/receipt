@@ -18,11 +18,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Date: 6/11/13
  * Time: 3:22 AM
  */
-@Document(collection = "COMMENT")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "comment_idx", def = "{'ID': 1}"),
-} )
-@JsonIgnoreProperties({
+@Document (collection = "COMMENT")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "comment_idx", def = "{'ID': 1}"),
+})
+@JsonIgnoreProperties ({
         "textLength",
         "commentType",
 
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
         "active",
         "deleted"
 })
-@JsonAutoDetect(
+@JsonAutoDetect (
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
@@ -41,16 +41,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public final class CommentEntity extends BaseEntity {
 
     //XXX TODO @Value annotation is not working, find why
-    @Value("${textLength:250}")
+    @Value ("${textLength:250}")
     private int textLength = 250;
 
-    @Field("T")
+    @Field ("T")
     private String text;
 
-    @Field("CT_E")
+    @Field ("CT_E")
     private CommentTypeEnum commentType;
 
-    public CommentEntity() {}
+    public CommentEntity() {
+    }
 
     public static CommentEntity newInstance(CommentTypeEnum commentType) {
         CommentEntity commentEntity = new CommentEntity();

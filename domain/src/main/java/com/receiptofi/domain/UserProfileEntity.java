@@ -1,18 +1,17 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.ProviderEnum;
-import com.receiptofi.domain.types.UserLevelEnum;
-
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.domain.types.UserLevelEnum;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.social.facebook.api.EducationEntry;
@@ -25,126 +24,127 @@ import com.google.common.collect.Lists;
  * User: hitender
  * Date: 4/13/14 2:19 AM
  */
-@Document(collection = "USER_PROFILE")
-@CompoundIndexes({
-        @CompoundIndex(name = "user_profile_provider_uid_em_idx",   def = "{'RID': -1, 'UID': -1, 'PID': 1, 'EM' : 1}", unique = true)
+@Document (collection = "USER_PROFILE")
+@CompoundIndexes ({
+        @CompoundIndex (name = "user_profile_provider_uid_em_idx", def = "{'RID': -1, 'UID': -1, 'PID': 1, 'EM' : 1}", unique = true)
 })
 public final class UserProfileEntity extends BaseEntity {
 
     @NotNull
-    @Field("RID")
+    @Field ("RID")
     private String receiptUserId;
 
     @NotNull
-    @Field("UID")
+    @Field ("UID")
     private String userId;
 
     @NotNull
-    @Field("PID")
+    @Field ("PID")
     private ProviderEnum providerId;
 
-    @Field("UN")
+    @Field ("UN")
     private String username;
 
-    @Field("N")
+    @Field ("N")
     private String name;
 
-    @Field("FN")
+    @Field ("FN")
     private String firstName;
 
-    @Field("MN")
+    @Field ("MN")
     private String middleName;
 
-    @Field("LN")
+    @Field ("LN")
     private String lastName;
 
-    @Field("GE")
+    @Field ("GE")
     private String gender;
 
-    @Field("LO")
+    @Field ("LO")
     private Locale locale;
 
-    @Field("URL")
+    @Field ("URL")
     private String link; //profile URL
 
-    @Field("WS")
+    @Field ("WS")
     private String website;
 
-    @Field("EM")
+    @Field ("EM")
     private String email;
 
-    @Field("TP_ID")
+    @Field ("TP_ID")
     private String thirdPartyId;
 
-    @Field("TZ")
+    @Field ("TZ")
     private Float timezone;
 
-    @Field("UT")
+    @Field ("UT")
     private Date updatedTime;
 
-    @Field("VR")
+    @Field ("VR")
     private Boolean verified;
 
-    @Field("AB")
+    @Field ("AB")
     private String about;
 
-    @Field("BI")
+    @Field ("BI")
     private String bio;
 
-    @Field("BD")
+    @Field ("BD")
     private String birthday;
 
-    @Field("LK")
+    @Field ("LK")
     private Reference location;
 
-    @Field("HT")
+    @Field ("HT")
     private Reference hometown;
 
-    @Field("II")
+    @Field ("II")
     private List<String> interestedIn;
 
-    @Field("IP")
+    @Field ("IP")
     private List<Reference> inspirationalPeople;
 
-    @Field("LA")
+    @Field ("LA")
     private List<Reference> languages;
 
-    @Field("SP")
+    @Field ("SP")
     private List<Reference> sports;
 
-    @Field("FT")
+    @Field ("FT")
     private List<Reference> favoriteTeams;
 
-    @Field("FA")
+    @Field ("FA")
     private List<Reference> favoriteAthletes;
 
-    @Field("RL")
+    @Field ("RL")
     private String religion;
 
-    @Field("PO")
+    @Field ("PO")
     private String political;
 
-    @Field("QU")
+    @Field ("QU")
     private String quotes;
 
-    @Field("RS")
+    @Field ("RS")
     private String relationshipStatus;
 
-    @Field("SO")
+    @Field ("SO")
     private Reference significantOther;
 
-    @Field("WE")
+    @Field ("WE")
     private List<WorkEntry> work;
 
-    @Field("EE")
+    @Field ("EE")
     private List<EducationEntry> education;
 
     @NotNull
-    @Field("USER_LEVEL_ENUM")
+    @Field ("USER_LEVEL_ENUM")
     private UserLevelEnum level = UserLevelEnum.USER;
 
     /** To make bean happy */
-    public UserProfileEntity() {}
+    public UserProfileEntity() {
+    }
 
     private UserProfileEntity(String email, String firstName, String lastName, String receiptUserId) {
         super();
@@ -154,15 +154,15 @@ public final class UserProfileEntity extends BaseEntity {
         this.receiptUserId = receiptUserId;
     }
 
-	/**
-	 * This method is used when the Entity is created for the first time.
-	 *
-	 * @param firstName
-	 * @param lastName
-	 * @return
-	 */
-	public static UserProfileEntity newInstance(String email, String firstName, String lastName, String receiptUserId) {
-		return new UserProfileEntity(email, firstName, lastName, receiptUserId);
+    /**
+     * This method is used when the Entity is created for the first time.
+     *
+     * @param firstName
+     * @param lastName
+     * @return
+     */
+    public static UserProfileEntity newInstance(String email, String firstName, String lastName, String receiptUserId) {
+        return new UserProfileEntity(email, firstName, lastName, receiptUserId);
     }
 
     public String getReceiptUserId() {
@@ -438,7 +438,7 @@ public final class UserProfileEntity extends BaseEntity {
     }
 
     public void addWork(WorkEntry work) {
-        if(this.work == null) {
+        if (this.work == null) {
             this.work = Lists.newArrayList();
         }
         this.work.add(work);

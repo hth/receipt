@@ -1,8 +1,8 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.ExpenseTagEntity;
-
 import java.util.List;
+
+import com.receiptofi.domain.ExpenseTagEntity;
 
 /**
  * User: hitender
