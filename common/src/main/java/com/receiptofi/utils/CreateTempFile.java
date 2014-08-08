@@ -1,10 +1,10 @@
 package com.receiptofi.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -24,7 +24,7 @@ public final class CreateTempFile {
 
     public static File file(String name, String ext) throws IOException {
         try {
-            if(name.startsWith(TEMP_FILE_START_WITH)) {
+            if (name.startsWith(TEMP_FILE_START_WITH)) {
                 return File.createTempFile(name + "-", ext.startsWith(".") ? ext : "." + ext);
             } else {
                 return File.createTempFile(TEMP_FILE_START_WITH + "-" + name + "-", ext.startsWith(".") ? ext : "." + ext);
@@ -51,8 +51,8 @@ public final class CreateTempFile {
     }
 
     private static String addFileExtension(String filename, FileTypeEnum fileTypeEnum) {
-        if(fileTypeEnum != null) {
-            switch(fileTypeEnum) {
+        if (fileTypeEnum != null) {
+            switch (fileTypeEnum) {
                 case XLS:
                     return filename + ".xls";
                 case TXT:

@@ -1,14 +1,14 @@
 package com.receiptofi.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,10 +27,9 @@ public final class Maths {
     /** Scale for Display is always two */
     public static final int SCALE_TWO = 2;
 
-    /**
-     * Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places.
-     */
+    /** Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places. */
     public static final int SCALE_FOUR = 4;
+
     public static final int SCALE_SIX = 6;
 
     //double[] values = { 1.0, 3.5, 123.4567, 10.0 };
@@ -47,7 +46,7 @@ public final class Maths {
     }
 
     public static BigDecimal add(String a, String b) {
-        if(StringUtils.isNotEmpty(b) && StringUtils.isNotEmpty(a) && isNumeric(a) && isNumeric(b)) {
+        if (StringUtils.isNotEmpty(b) && StringUtils.isNotEmpty(a) && isNumeric(a) && isNumeric(b)) {
             BigDecimal x = new BigDecimal(a);
             BigDecimal y = new BigDecimal(b);
             return add(x, y);
@@ -61,18 +60,17 @@ public final class Maths {
 
     public static BigDecimal add(BigDecimal a, double b) {
         try {
-            if(Double.isNaN(b)) {
+            if (Double.isNaN(b)) {
                 throw new ArithmeticException("Value is not a number: ' " + b + " '");
             }
             return add(a, Double.toString(b));
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             throw new ArithmeticException(exce.getLocalizedMessage());
         }
     }
 
     /**
-     *
-     * @param from - Higher than value
+     * @param from  - Higher than value
      * @param value - Lower than from
      * @return
      */
@@ -89,9 +87,8 @@ public final class Maths {
     }
 
     /**
-     *
      * @param divide - Value to be divided
-     * @param by - Divide by this
+     * @param by     - Divide by this
      * @return
      */
     public static BigDecimal divide(BigDecimal divide, BigDecimal by) {
@@ -158,8 +155,8 @@ public final class Maths {
         return multiply(new BigDecimal(value.toString()), new BigDecimal(withThis.toString()));
     }
 
-    public static  BigDecimal multiply(String value, String withThis) {
-        return  multiply(new BigDecimal(value), new BigDecimal(withThis));
+    public static BigDecimal multiply(String value, String withThis) {
+        return multiply(new BigDecimal(value), new BigDecimal(withThis));
     }
 
     public static BigDecimal multiply(BigDecimal value, int withThis) {
@@ -178,13 +175,12 @@ public final class Maths {
     }
 
     /**
-     *
      * @param taxedAmount
      * @param withoutTaxedAmount
      * @return
      */
     public static BigDecimal calculateTax(Double taxedAmount, BigDecimal withoutTaxedAmount) {
-        if(taxedAmount == 0 || withoutTaxedAmount.compareTo(BigDecimal.ZERO) == 0) {
+        if (taxedAmount == 0 || withoutTaxedAmount.compareTo(BigDecimal.ZERO) == 0) {
             return BigDecimal.ZERO;
         }
         return divide(taxedAmount, withoutTaxedAmount);
