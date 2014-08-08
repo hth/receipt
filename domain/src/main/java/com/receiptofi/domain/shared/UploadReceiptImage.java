@@ -3,9 +3,9 @@
  */
 package com.receiptofi.domain.shared;
 
-import java.io.File;
-
 import com.receiptofi.domain.types.FileTypeEnum;
+
+import java.io.File;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -16,21 +16,24 @@ import com.mongodb.DBObject;
 
 /**
  * This class acts as a form and entity. Its shared across multiple layers. Used in persisting Image file.
+ *
  * File condition takes precedent over MultipartFile.
  * Note: When file is populated then code should give precedent to it otherwise MultipartFile fileData is default.
  *
  * @author hitender
+ * @since Jan 3, 2013 12:56:16 AM
+ *
  * @see http://www.ioncannon.net/programming/975/spring-3-file-upload-example/
+ *
  *      For GridFsTemplate
  * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
- * @since Jan 3, 2013 12:56:16 AM
  */
 public final class UploadReceiptImage {
-    public static final String UNDER_SCORE = "_";
-    public static final String SCALED = UNDER_SCORE + "Scaled";
+    public static final String UNDER_SCORE  = "_";
+    public static final String SCALED       = UNDER_SCORE + "Scaled";
 
     //Default is MultipartFile
-    private MultipartFile fileData;
+	private MultipartFile fileData;
 
     //Has precedent if not null (if populated)
     private File file;
@@ -38,20 +41,19 @@ public final class UploadReceiptImage {
     private FileTypeEnum fileType;
     private String blobId;
 
-    private UploadReceiptImage() {
-    }
+    private UploadReceiptImage() { }
 
-    public static UploadReceiptImage newInstance() {
-        return new UploadReceiptImage();
-    }
+	public static UploadReceiptImage newInstance() {
+		return new UploadReceiptImage();
+	}
 
-    public MultipartFile getFileData() {
-        return fileData;
-    }
+	public MultipartFile getFileData() {
+		return fileData;
+	}
 
-    public void setFileData(MultipartFile fileData) {
-        this.fileData = fileData;
-    }
+	public void setFileData(MultipartFile fileData) {
+		this.fileData = fileData;
+	}
 
     public File getFile() {
         return file;
@@ -72,7 +74,7 @@ public final class UploadReceiptImage {
     }
 
     public String getOriginalFileName() {
-        if (containsFile()) {
+        if(containsFile()) {
             return FilenameUtils.getBaseName(fileData.getOriginalFilename()) +
                     SCALED +
                     "." +
@@ -82,8 +84,8 @@ public final class UploadReceiptImage {
         }
     }
 
-    public String getFileName() {
-        if (containsFile()) {
+	public String getFileName() {
+        if(containsFile()) {
             return getUserProfileId() +
                     UNDER_SCORE +
                     FilenameUtils.getBaseName(fileData.getOriginalFilename()) +
@@ -91,7 +93,7 @@ public final class UploadReceiptImage {
                     "." +
                     FilenameUtils.getExtension(fileData.getOriginalFilename());
         } else {
-            return getUserProfileId() +
+		    return getUserProfileId() +
                     UNDER_SCORE +
                     fileData.getOriginalFilename();
         }

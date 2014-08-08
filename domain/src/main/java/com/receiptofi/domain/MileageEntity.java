@@ -1,13 +1,13 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.DateUtil;
+
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,50 +26,52 @@ import org.joda.time.Days;
  * User: hitender
  * Date: 12/13/13 12:38 AM
  */
-@Document (collection = "MILEAGE")
-@CompoundIndexes ({
-        @CompoundIndex (name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'USER_PROFILE_ID': -1}", unique = true),
-        @CompoundIndex (name = "mileage_s_idx", def = "{'S': -1, 'USER_PROFILE_ID': -1}", unique = true)
+@Document(collection = "MILEAGE")
+@CompoundIndexes({
+        @CompoundIndex(name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'USER_PROFILE_ID': -1}", unique = true),
+        @CompoundIndex(name = "mileage_s_idx", def = "{'S': -1, 'USER_PROFILE_ID': -1}", unique = true)
 })
 public final class MileageEntity extends BaseEntity {
 
     @NotNull
-    @Field ("S")
+    @Field("S")
     private int start;
 
-    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME)
-    @Field ("SD")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Field("SD")
     private Date startDate;
 
-    @Field ("E")
+    @Field("E")
     private int end;
 
-    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME)
-    @Field ("ED")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Field("ED")
     private Date endDate;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
+    @Field("USER_PROFILE_ID")
     private String userProfileId;
 
     @NotNull
-    @Field ("DOC_ID")
+    @Field("DOC_ID")
     private String documentId;
 
     @DBRef
-    @Field ("FILES")
+    @Field("FILES")
     private Collection<FileSystemEntity> fileSystemEntities;
 
     @DBRef
-    @Field ("N")
+    @Field("N")
     private CommentEntity mileageNotes;
 
-    /** To keep bean happy */
+    /**
+     * To keep bean happy
+     */
     public MileageEntity() {
     }
 
     public MileageEntity(FileSystemEntity fileSystemEntity, String userProfileId) {
-        if (fileSystemEntities == null) {
+        if(fileSystemEntities == null) {
             fileSystemEntities = new LinkedList<>();
         }
         fileSystemEntities.add(fileSystemEntity);
@@ -77,12 +79,14 @@ public final class MileageEntity extends BaseEntity {
         this.startDate = getCreated();
     }
 
-    /** To be used during merge operation */
+    /**
+     * To be used during merge operation
+     */
     public void mergeEndingMileage(MileageEntity mileageEntity) {
-        if (!mileageEntity.isComplete()) {
+        if(!mileageEntity.isComplete()) {
             this.end = mileageEntity.getStart();
             this.endDate = mileageEntity.getStartDate();
-            if (mileageNotes != null) {
+            if(mileageNotes != null) {
                 mileageNotes.setText(mergeComments(mileageEntity).toString());
             }
             fileSystemEntities.add(mileageEntity.getFileSystemEntities().iterator().next());
@@ -92,7 +96,7 @@ public final class MileageEntity extends BaseEntity {
     private StringBuilder mergeComments(MileageEntity mileageEntity) {
         StringBuilder mergedText = new StringBuilder();
         mergedText.append(mileageNotes == null ? StringUtils.EMPTY : mileageNotes.getText());
-        if (mergedText.toString().length() > 0) {
+        if(mergedText.toString().length() > 0) {
             mergedText.append("\n\n");
         }
         mergedText.append(mileageEntity.getMileageNotes() == null ? StringUtils.EMPTY : mileageEntity.getMileageNotes().getText());
@@ -101,7 +105,7 @@ public final class MileageEntity extends BaseEntity {
 
     public MileageEntity splitMileage() {
         FileSystemEntity fileSystemEntity = null;
-        for (FileSystemEntity fse : getFileSystemEntities()) {
+        for(FileSystemEntity fse : getFileSystemEntities()) {
             fileSystemEntity = fse;
         }
         MileageEntity m2 = new MileageEntity(fileSystemEntity, getUserProfileId());
@@ -173,7 +177,7 @@ public final class MileageEntity extends BaseEntity {
     }
 
     public void addFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
-        if (this.fileSystemEntities == null) {
+        if(this.fileSystemEntities == null) {
             this.fileSystemEntities = new ArrayList<>();
         }
         this.fileSystemEntities.addAll(fileSystemEntities);
@@ -204,7 +208,7 @@ public final class MileageEntity extends BaseEntity {
 
     @Transient
     public String tripDays() {
-        if (startDate == null) {
+        if(startDate == null) {
             return StringUtils.EMPTY;
         }
 
@@ -218,9 +222,9 @@ public final class MileageEntity extends BaseEntity {
             case 1:
                 return "1 day trip";
             default:
-                if (days > 0) {
+                if(days > 0) {
                     return days + " days trip";
-                } else if (days < 0) {
+                } else if(days < 0) {
                     return "Trip end day greater";
                 } else {
                     return StringUtils.EMPTY;

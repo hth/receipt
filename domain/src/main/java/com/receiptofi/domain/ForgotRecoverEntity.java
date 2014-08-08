@@ -12,18 +12,18 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 6/4/13
  * Time: 12:02 AM
  */
-@Document (collection = "FORGOT_RECOVER")
-@CompoundIndexes (value = {
-        @CompoundIndex (name = "forgot_recover_idx", def = "{'RID': 0, 'AUTH' : 0}", unique = true)
-})
+@Document(collection = "FORGOT_RECOVER")
+@CompoundIndexes(value = {
+        @CompoundIndex(name = "forgot_recover_idx",     def = "{'RID': 0, 'AUTH' : 0}", unique = true)
+} )
 public final class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field("RID")
     private final String receiptUserId;
 
     @NotNull
-    @Field ("AUTH")
+    @Field("AUTH")
     private final String authenticationKey;
 
     private ForgotRecoverEntity(String receiptUserId, String authenticationKey) {

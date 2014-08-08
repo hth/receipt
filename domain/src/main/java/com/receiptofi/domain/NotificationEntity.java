@@ -1,10 +1,10 @@
 package com.receiptofi.domain;
 
-import javax.validation.constraints.NotNull;
-
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,33 +17,34 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 6/30/13
  * Time: 1:29 PM
  */
-@Document (collection = "NOTIFICATION")
+@Document(collection = "NOTIFICATION")
 public final class NotificationEntity extends BaseEntity {
     private static final Logger log = LoggerFactory.getLogger(NotificationEntity.class);
     private static final int OFF_SET = 0;
     private static final int MAX_WIDTH = 45;
 
     @NotNull
-    @Field ("MESSAGE")
+    @Field("MESSAGE")
     private String message;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
+    @Field("USER_PROFILE_ID")
     private String userProfileId;
 
     @NotNull
-    @Field ("NOTIFIED")
+    @Field("NOTIFIED")
     private boolean notified = false;
 
     @NotNull
-    @Field ("NOTIFICATION_ENUM")
+    @Field("NOTIFICATION_ENUM")
     private NotificationTypeEnum notificationType;
 
-    /** Could be a receipt id or Document id */
+    /**
+     * Could be a receipt id or Document id
+     */
     private String referenceId;
 
-    private NotificationEntity() {
-    }
+    private NotificationEntity() {}
 
     public static NotificationEntity newInstance(NotificationTypeEnum notificationType) {
         NotificationEntity notificationEntity = new NotificationEntity();
@@ -101,7 +102,7 @@ public final class NotificationEntity extends BaseEntity {
      * @return
      */
     public String getNotificationMessage4Display() {
-        switch (notificationType) {
+        switch(notificationType) {
             case MESSAGE:
                 return getMessage();
             case DOCUMENT:
@@ -119,7 +120,7 @@ public final class NotificationEntity extends BaseEntity {
     }
 
     public String getNotificationMessage() {
-        switch (notificationType) {
+        switch(notificationType) {
             case MESSAGE:
                 return getMessage();
             case DOCUMENT:

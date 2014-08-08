@@ -33,13 +33,14 @@ public final class AppendAdditionalFields {
 
     /**
      * Appends BaseEntity fields
+     *
      * This method updates the version and last update date for a Entity that is updated directly by a query
      *
      * @param update
      * @return
      */
     public static Update entityUpdate(Update update) {
-        if (update == null) {
+        if(update == null) {
             log.error("Update cannot be null");
         } else {
             return update.set("U", DateUtil.nowTime()).inc("V", 1);

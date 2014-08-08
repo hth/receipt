@@ -9,10 +9,7 @@ import com.receiptofi.domain.UserProfileEntity;
  */
 public interface EmailValidateManager extends RepositoryManager<EmailValidateEntity> {
     EmailValidateEntity findByAuthenticationKey(String auth);
-
     void invalidateAllEntries(EmailValidateEntity object);
-
     EmailValidateEntity reInviteActiveInvite(String email, UserProfileEntity invitedBy);
-
     EmailValidateEntity find(String email);
 }

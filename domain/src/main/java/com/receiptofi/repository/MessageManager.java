@@ -1,14 +1,15 @@
 package com.receiptofi.repository;
 
-import java.util.List;
-
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+
+import java.util.List;
 
 import com.mongodb.WriteResult;
 
 /**
  * JMS Message Manager
+ *
  * User: hitender
  * Date: 4/6/13
  * Time: 7:28 PM
@@ -32,6 +33,7 @@ public interface MessageManager extends RepositoryManager<MessageDocumentEntity>
     /**
      * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.
      * Note: User has to complete all the messages in their queue before logging out of their shift.
+     *
      * TODO: May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
      *
      * @param receiptOCRId

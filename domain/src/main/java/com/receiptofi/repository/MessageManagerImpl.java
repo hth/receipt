@@ -1,13 +1,20 @@
 package com.receiptofi.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction.*;
+import static org.springframework.data.domain.Sort.Order;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,14 +29,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static org.springframework.data.domain.Sort.Direction.ASC;
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.domain.Sort.Order;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -48,7 +47,7 @@ public final class MessageManagerImpl implements MessageManager {
             }}
     );
 
-    @Value ("${messageQueryLimit:10}")
+    @Value("${messageQueryLimit:10}")
     private int messageQueryLimit;
 
     @Autowired private MongoTemplate mongoTemplate;
@@ -94,7 +93,7 @@ public final class MessageManagerImpl implements MessageManager {
 //                .append("DS_E", "OCR_PROCESSED");
 
         List<MessageDocumentEntity> list = findWithLimit(status);
-        for (MessageDocumentEntity object : list) {
+        for(MessageDocumentEntity object : list) {
             object.setEmailId(emailId);
             object.setUserProfileId(userProfileId);
             object.setRecordLocked(true);
@@ -132,7 +131,7 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public void save(MessageDocumentEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if (object.getId() != null) {
+        if(object.getId() != null) {
             object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
         }
         mongoTemplate.save(object, TABLE);

@@ -2,6 +2,7 @@ package com.receiptofi.domain.types;
 
 /**
  * Used in marking the images are for Receipt or Feedback
+ *
  * User: hitender
  * Date: 7/20/13
  * Time: 9:02 PM

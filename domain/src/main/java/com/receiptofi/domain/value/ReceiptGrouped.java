@@ -3,19 +3,20 @@
  */
 package com.receiptofi.domain.value;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
 import com.receiptofi.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import org.joda.time.DateTime;
 
 /**
  * @author hitender
  * @since Jan 12, 2013 6:25:15 PM
+ *
  */
 public final class ReceiptGrouped implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(ReceiptGrouped.class);
@@ -25,10 +26,11 @@ public final class ReceiptGrouped implements Serializable {
     private int month;
     private int day;
 
-    /** Used by mongo groupBy method */
-    @SuppressWarnings ("unused")
-    private ReceiptGrouped() {
-    }
+    /**
+     * Used by mongo groupBy method
+     */
+    @SuppressWarnings("unused")
+	private ReceiptGrouped() {}
 
     private ReceiptGrouped(BigDecimal total, int year, int month, int day) {
         this.total = total;
@@ -52,17 +54,17 @@ public final class ReceiptGrouped implements Serializable {
 
     //TODO: Note day should not be zero other wise gets an exception while setting the date with zero. May remove this code
     @Deprecated
-    public Date getDate() {
-        if (year == 0 || month == 0 || day == 0) {
+	public Date getDate() {
+        if(year == 0 || month == 0 || day == 0) {
             //This should never happen. Add validation in receipt during save.
             log.error("Setting now time as --> Year or month or day should not be zero. Year " + year + ", month: " + month + ", day: " + day);
             return DateUtil.now().toDate();
         }
-        return new DateTime(year, month, day, 0, 0).toDate();
-    }
+		return new DateTime(year, month, day, 0, 0).toDate();
+	}
 
     public DateTime getDateTime() {
-        if (year == 0 || month == 0) {
+        if(year == 0 || month == 0 ) {
             ////This should never happen. Add validation in receipt during save.
             log.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
             return DateUtil.now();
@@ -72,10 +74,9 @@ public final class ReceiptGrouped implements Serializable {
 
     /**
      * Used in display monthly expense bar name in bar chart
-     *
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String getMonthName() {
         return getDateTime().toString("MMM yyyy");
     }
@@ -93,7 +94,7 @@ public final class ReceiptGrouped implements Serializable {
     }
 
     public long dateInMillisForSorting() {
-        if (year == 0 || month == 0) {
+        if(year == 0 || month == 0) {
             //This should never happen. Add validation in receipt during save.
             log.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
             return DateUtil.now().getMillis();

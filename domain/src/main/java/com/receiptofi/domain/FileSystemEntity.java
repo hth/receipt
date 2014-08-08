@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * User: hitender
  * Date: 12/13/13 12:47 AM
  */
-@Document (collection = "FILE_SYSTEM")
-@JsonIgnoreProperties ({
+@Document(collection = "FILE_SYSTEM")
+@JsonIgnoreProperties({
         "height",
         "width",
 
@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         "active",
         "deleted"
 })
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
@@ -35,29 +35,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class FileSystemEntity extends BaseEntity {
 
     @NotNull
-    @Field ("BLOB_ID")
+    @Field("BLOB_ID")
     private String blobId;
 
     @NotNull
-    @Field ("H")
+    @Field("H")
     private int height;
 
     @NotNull
-    @Field ("W")
+    @Field("W")
     private int width;
 
-    @JsonProperty ("orientation")
+    @JsonProperty("orientation")
     @NotNull
-    @Field ("ORIENTATION")
+    @Field("ORIENTATION")
     private int imageOrientation = 0;
 
     @NotNull
-    @Field ("SEQUENCE")
+    @Field("SEQUENCE")
     private int sequence;
 
     /** To keep bean happy */
-    public FileSystemEntity() {
-    }
+    public FileSystemEntity() {}
 
     public FileSystemEntity(String blobId, BufferedImage bufferedImage, int imageOrientation, int sequence) {
         this.blobId = blobId;

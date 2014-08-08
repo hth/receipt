@@ -9,6 +9,5 @@ import com.receiptofi.repository.RepositoryManager;
  */
 public interface RememberMeTokenManager extends RepositoryManager<RememberMeTokenEntity> {
     RememberMeTokenEntity findBySeries(String series);
-
     void deleteTokensWithUsername(String username);
 }

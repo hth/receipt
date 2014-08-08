@@ -12,22 +12,22 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 5/26/13
  * Time: 4:01 PM
  */
-@Document (collection = "BROWSER")
-@CompoundIndexes (value = {
-        @CompoundIndex (name = "browser_idx", def = "{'U': 1}", unique = true),
-})
+@Document(collection = "BROWSER")
+@CompoundIndexes(value = {
+        @CompoundIndex(name = "browser_idx", def = "{'U': 1}", unique=true),
+} )
 public final class BrowserEntity extends BaseEntity {
 
     @NotNull
-    @Field ("CK")
+    @Field("CK")
     private String cookieId;
 
     @NotNull
-    @Field ("IP")
+    @Field("IP")
     private String ipAddress;
 
     @NotNull
-    @Field ("UA")
+    @Field("UA")
     private String userAgent;
 
     private BrowserEntity(String cookieId, String ipAddress, String userAgent) {

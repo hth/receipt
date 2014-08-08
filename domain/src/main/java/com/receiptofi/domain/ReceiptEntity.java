@@ -3,12 +3,12 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.utils.HashText;
+
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
-
-import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.utils.HashText;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,14 +32,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * @author hitender
  * @since Dec 26, 2012 12:09:01 AM
+ *
  */
-@Document (collection = "RECEIPT")
-@CompoundIndexes (value = {
-        @CompoundIndex (name = "receipt_idx", def = "{'FS': -1, 'USER_PROFILE_ID': -1}"),
-        @CompoundIndex (name = "receipt_unique_idx", def = "{'CHECK_SUM': -1}", unique = true),
-        @CompoundIndex (name = "receipt_expense_Report", def = "{'EXP_FILENAME': -1}")
-})
-@JsonIgnoreProperties ({
+@Document(collection = "RECEIPT")
+@CompoundIndexes(value = {
+        @CompoundIndex(name = "receipt_idx",           def = "{'FS': -1, 'USER_PROFILE_ID': -1}"),
+        @CompoundIndex(name = "receipt_unique_idx",    def = "{'CHECK_SUM': -1}", unique = true),
+        @CompoundIndex(name = "receipt_expense_Report",def = "{'EXP_FILENAME': -1}")
+} )
+@JsonIgnoreProperties({
         "receiptStatus",
         "year",
         "month",
@@ -55,174 +56,175 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         "active",
         "deleted"
 })
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 public final class ReceiptEntity extends BaseEntity {
 
-    @NotNull
-    @Field ("DS_E")
-    private DocumentStatusEnum receiptStatus;
+	@NotNull
+    @Field("DS_E")
+	private DocumentStatusEnum receiptStatus;
 
-    @JsonProperty ("files")
+    @JsonProperty("files")
     @DBRef
-    @Field ("FS")
-    private Collection<FileSystemEntity> fileSystemEntities;
+    @Field("FS")
+	private Collection<FileSystemEntity> fileSystemEntities;
 
-    @JsonProperty ("date")
+    @JsonProperty("date")
+	@NotNull
+    @DateTimeFormat(iso = ISO.DATE_TIME)
+    @Field("RECEIPT_DATE")
+	private Date receiptDate;
+
+	@NotNull
+    @Field("YEAR")
+	private int year;
+
+	@NotNull
+    @Field("MONTH")
+	private int month;
+
+	@NotNull
+    @Field("DAY")
+	private int day;
+
+	@NotNull
+	@NumberFormat(style = Style.CURRENCY)
+    @Field("TOTAL")
+	private Double total;
+
+	@NumberFormat(style = Style.CURRENCY)
+    @Field("TAX")
+	private Double tax = 0.00;
+
+    @JsonProperty("ptax")
     @NotNull
-    @DateTimeFormat (iso = ISO.DATE_TIME)
-    @Field ("RECEIPT_DATE")
-    private Date receiptDate;
-
-    @NotNull
-    @Field ("YEAR")
-    private int year;
-
-    @NotNull
-    @Field ("MONTH")
-    private int month;
-
-    @NotNull
-    @Field ("DAY")
-    private int day;
-
-    @NotNull
-    @NumberFormat (style = Style.CURRENCY)
-    @Field ("TOTAL")
-    private Double total;
-
-    @NumberFormat (style = Style.CURRENCY)
-    @Field ("TAX")
-    private Double tax = 0.00;
-
-    @JsonProperty ("ptax")
-    @NotNull
-    @NumberFormat (style = Style.PERCENT)
-    @Field ("PERCENT_TAX")
+    @NumberFormat(style = Style.PERCENT)
+    @Field("PERCENT_TAX")
     private String percentTax;
 
-    @JsonProperty ("rid")
-    @NotNull
-    @Field ("USER_PROFILE_ID")
-    private String userProfileId;
+    @JsonProperty("rid")
+	@NotNull
+    @Field("USER_PROFILE_ID")
+	private String userProfileId;
 
     @DBRef
-    @Field ("BIZ_NAME")
+    @Field("BIZ_NAME")
     private BizNameEntity bizName;
 
     @DBRef
-    @Field ("BIZ_STORE")
+    @Field("BIZ_STORE")
     private BizStoreEntity bizStore;
 
     @NotNull
-    @Field ("RECEIPT_OCR_ID")
+    @Field("RECEIPT_OCR_ID")
     private String receiptOCRId;
 
     @DBRef
-    @Field ("COMMENT_RECHECK")
+    @Field("COMMENT_RECHECK")
     private CommentEntity recheckComment;
 
     @DBRef
-    @Field ("COMMENT_NOTES")
+    @Field("COMMENT_NOTES")
     private CommentEntity notes;
 
     /**
      * Note: During recheck of a receipt EXP_FILENAME is dropped as this is
      * not persisted between the two event
      */
-    @JsonProperty ("expenseReport")
-    @Field ("EXP_FILENAME")
+    @JsonProperty("expenseReport")
+    @Field("EXP_FILENAME")
     private String expenseReportInFS;
 
-    /** Used to flush or avoid duplicate receipt entry */
-    @Field ("CHECK_SUM")
+    /**
+     * Used to flush or avoid duplicate receipt entry
+     */
+    @Field("CHECK_SUM")
     private String checksum;
 
     /** To keep bean happy */
-    public ReceiptEntity() {
-    }
+	public ReceiptEntity() {}
 
     @Deprecated
-    private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity fileSystemEntities, String userProfileId) {
-        super();
-        this.receiptDate = receiptDate;
-        this.total = total;
-        this.tax = tax;
-        this.receiptStatus = receiptStatus;
-        this.fileSystemEntities.add(fileSystemEntities);
-        this.userProfileId = userProfileId;
-    }
+	private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity fileSystemEntities, String userProfileId) {
+		super();
+		this.receiptDate = receiptDate;
+		this.total = total;
+		this.tax = tax;
+		this.receiptStatus = receiptStatus;
+		this.fileSystemEntities.add(fileSystemEntities);
+		this.userProfileId = userProfileId;
+	}
 
-    /**
-     * Use this method to create the Entity for OCR Entity
-     *
-     * @param receiptDate
-     * @param total
-     * @param tax
-     * @param receiptStatus
-     * @param receiptBlobId
-     * @param userProfileId
-     * @return
-     */
+	/**
+	 * Use this method to create the Entity for OCR Entity
+	 *
+	 * @param receiptDate
+	 * @param total
+	 * @param tax
+	 * @param receiptStatus
+	 * @param receiptBlobId
+	 * @param userProfileId
+	 * @return
+	 */
     @Deprecated
-    public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity receiptBlobId, String userProfileId) {
-        return new ReceiptEntity(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
-    }
+	public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity receiptBlobId, String userProfileId) {
+		return new ReceiptEntity(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
+	}
 
-    public static ReceiptEntity newInstance() {
-        return new ReceiptEntity();
-    }
+	public static ReceiptEntity newInstance() {
+		return new ReceiptEntity();
+	}
 
-    public DocumentStatusEnum getReceiptStatus() {
-        return receiptStatus;
-    }
+	public DocumentStatusEnum getReceiptStatus() {
+		return receiptStatus;
+	}
 
-    public void setReceiptStatus(DocumentStatusEnum receiptStatus) {
-        this.receiptStatus = receiptStatus;
-    }
+	public void setReceiptStatus(DocumentStatusEnum receiptStatus) {
+		this.receiptStatus = receiptStatus;
+	}
 
-    public Collection<FileSystemEntity> getFileSystemEntities() {
-        return fileSystemEntities;
-    }
+	public Collection<FileSystemEntity> getFileSystemEntities() {
+		return fileSystemEntities;
+	}
 
     public void setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
         this.fileSystemEntities = fileSystemEntities;
     }
 
     public Date getReceiptDate() {
-        return receiptDate;
-    }
+		return receiptDate;
+	}
 
-    public void setReceiptDate(Date receiptDate) {
+	public void setReceiptDate(Date receiptDate) {
         DateTime dt = new DateTime(receiptDate);
         this.year = dt.getYear();
         this.month = dt.getMonthOfYear();
         this.day = dt.getDayOfMonth();
-        this.receiptDate = receiptDate;
-    }
+		this.receiptDate = receiptDate;
+	}
 
-    public int getYear() {
-        return year;
-    }
+	public int getYear() {
+		return year;
+	}
 
-    public int getMonth() {
-        return month;
-    }
+	public int getMonth() {
+		return month;
+	}
 
-    public int getDay() {
-        return day;
-    }
+	public int getDay() {
+		return day;
+	}
 
-    public Double getTotal() {
-        return total;
-    }
+	public Double getTotal() {
+		return total;
+	}
 
-    public void setTotal(Double total) {
-        this.total = total;
-    }
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 
     /**
      * Used to show the value in notification
@@ -236,13 +238,13 @@ public final class ReceiptEntity extends BaseEntity {
         return currencyFormatter.format(getTotal());
     }
 
-    public Double getTax() {
-        return tax;
-    }
+	public Double getTax() {
+		return tax;
+	}
 
     public void setTax(Double tax) {
-        this.tax = tax;
-    }
+		this.tax = tax;
+	}
 
     /**
      * Percentage of tax paid for all the items that were taxed
@@ -255,7 +257,6 @@ public final class ReceiptEntity extends BaseEntity {
 
     /**
      * Percentage of tax paid for all the items that were taxed. Scaled till 6th value
-     *
      * @param percentTax - 0.666667
      */
     public void setPercentTax(String percentTax) {
@@ -272,13 +273,13 @@ public final class ReceiptEntity extends BaseEntity {
         return StringUtils.substring(this.percentTax, 0, 5);
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
-    }
+	public String getUserProfileId() {
+		return userProfileId;
+	}
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
-    }
+	public void setUserProfileId(String userProfileId) {
+		this.userProfileId = userProfileId;
+	}
 
     public BizNameEntity getBizName() {
         return bizName;
@@ -327,8 +328,8 @@ public final class ReceiptEntity extends BaseEntity {
     /**
      * Create for making sure no duplicate receipt could be entered. At a time, there can only be two status of receipt
      * co-exists
-     * 1) Receipt deleted
-     * 2) Receipt not deleted
+     *  1) Receipt deleted
+     *  2) Receipt not deleted
      */
     public void computeChecksum() {
         this.checksum = HashText.calculateChecksum(userProfileId, receiptDate, total, isDeleted());

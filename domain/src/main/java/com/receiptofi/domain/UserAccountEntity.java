@@ -1,11 +1,11 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.domain.types.RoleEnum;
+
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import com.receiptofi.domain.types.ProviderEnum;
-import com.receiptofi.domain.types.RoleEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,17 +15,19 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document (collection = "USER_ACCOUNT")
-@CompoundIndexes ({
-        @CompoundIndex (name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
-        @CompoundIndex (name = "user_account_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true),
-        @CompoundIndex (name = "user_account_rid_idx", def = "{'RID': 1}", unique = true)
+@Document(collection = "USER_ACCOUNT")
+@CompoundIndexes({
+        @CompoundIndex(name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
+        @CompoundIndex(name = "user_account_primary_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true),
+        @CompoundIndex(name = "user_account_rid_idx", def = "{'RID': 1}", unique = true)
 })
 public final class UserAccountEntity extends BaseEntity {
 
-    /** Unique Id throughout the system. This will never change. */
+    /**
+     * Unique Id throughout the system. This will never change.
+     */
     @NotNull
-    @Field ("RID")
+    @Field("RID")
     private String receiptUserId;
 
     /**
@@ -33,54 +35,56 @@ public final class UserAccountEntity extends BaseEntity {
      * It could be either matching provider's Id or email
      */
     @NotNull
-    @Field ("UID")
+    @Field("UID")
     private String userId;
 
-    @Field ("PID")
+    @Field("PID")
     private ProviderEnum providerId;
 
-    /** Provider User Id matches id's from social provider */
-    @Field ("PUID")
+    /**
+     * Provider User Id matches id's from social provider
+     */
+    @Field("PUID")
     private String providerUserId;
 
-    @Field ("DN")
+    @Field("DN")
     private String displayName;
 
-    @Field ("PURL")
+    @Field("PURL")
     private String profileUrl;
 
-    @Field ("IURL")
+    @Field("IURL")
     private String imageUrl;
 
-    @Field ("AT")
+    @Field("AT")
     private String accessToken;
 
-    @Field ("SE")
+    @Field("SE")
     private String secret;
 
-    @Field ("RT")
+    @Field("RT")
     private String refreshToken;
 
-    @Field ("ET")
+    @Field("ET")
     private Long expireTime;
 
-    @Field ("FN")
+    @Field("FN")
     private String firstName;
 
-    @Field ("LN")
+    @Field("LN")
     private String lastName;
 
-    @Field ("RE")
+    @Field("RE")
     private Set<RoleEnum> roles = new LinkedHashSet<RoleEnum>() {{
         add(RoleEnum.ROLE_USER);
     }};
 
     @DBRef
-    @Field ("USER_AUTHENTICATION")
+    @Field("USER_AUTHENTICATION")
     private UserAuthenticationEntity userAuthentication;
 
     //TODO on email change this should be reset to false and validation process has to be redone
-    @Field ("AV")
+    @Field("AV")
     private boolean isAccountValidated;
 
     private UserAccountEntity(
@@ -240,10 +244,10 @@ public final class UserAccountEntity extends BaseEntity {
     }
 
     public String getName() {
-        if (StringUtils.isNoneBlank(firstName, lastName)) {
+        if(StringUtils.isNoneBlank(firstName, lastName)) {
             return firstName + " " + lastName;
         }
-        if (StringUtils.isNotBlank(displayName)) {
+        if(StringUtils.isNotBlank(displayName)) {
             return displayName;
         }
         return userId;

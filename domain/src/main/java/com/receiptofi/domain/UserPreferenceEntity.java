@@ -12,16 +12,18 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @author hitender
  * @since Dec 23, 2012 1:48:36 AM
  */
-@Document (collection = "USER_PREFERENCE")
+@Document(collection = "USER_PREFERENCE")
 public final class UserPreferenceEntity extends BaseEntity {
 
     @DBRef
-    @Indexed (unique = true)
-    @Field ("USER_PROFILE")
+    @Indexed(unique = true)
+    @Field("USER_PROFILE")
     private UserProfileEntity userProfile;
 
-    /** To make bean happy */
-    @SuppressWarnings ("unused")
+    /**
+     * To make bean happy
+     */
+    @SuppressWarnings("unused")
     private UserPreferenceEntity() {
 
     }
