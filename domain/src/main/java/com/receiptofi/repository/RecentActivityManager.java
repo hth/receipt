@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.receiptofi.domain.RecentActivityEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.RecentActivityEnum;
 
 /**
@@ -15,5 +16,7 @@ import com.receiptofi.domain.types.RecentActivityEnum;
  */
 public interface RecentActivityManager extends RepositoryManager<RecentActivityEntity> {
 
-    List<RecentActivityEntity> findAll(String rid, Date since);
+    @Mobile
+    @SuppressWarnings("unused")
+    List<RecentActivityEntity> findAll(String rid, Date earliestUpdate);
 }

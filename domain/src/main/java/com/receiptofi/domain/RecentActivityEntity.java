@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import java.util.Date;
 
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.RecentActivityEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * User: hitender
  * Date: 8/9/14 2:55 PM
  */
+@Mobile
 @Document (collection = "RECENT_ACTIVITY")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "recent_activity_idx",    def = "{'RID': -1, 'RA': -1}", unique = true)

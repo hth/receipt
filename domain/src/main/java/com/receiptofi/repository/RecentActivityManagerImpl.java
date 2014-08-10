@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.RecentActivityEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.RecentActivityEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
  * User: hitender
  * Date: 8/9/14 4:05 PM
  */
+@Mobile
 @Repository
 public final class RecentActivityManagerImpl implements RecentActivityManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(RecentActivityEntity.class, Document.class, "collection");
@@ -52,8 +54,8 @@ public final class RecentActivityManagerImpl implements RecentActivityManager {
     }
 
     @Override
-    public List<RecentActivityEntity> findAll(String rid, Date since) {
-        return mongoTemplate.find(query(where("RID").is(rid).and("U").gte(since)), RecentActivityEntity.class, TABLE);
+    public List<RecentActivityEntity> findAll(String rid, Date earliestUpdate) {
+        return mongoTemplate.find(query(where("RID").is(rid).and("EL").gte(earliestUpdate)), RecentActivityEntity.class, TABLE);
     }
 
     @Override
