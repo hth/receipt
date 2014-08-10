@@ -11,9 +11,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * Mobile apps uses this data to find if there are any new updates on server before it starts fetching data.
  * User: hitender
@@ -23,24 +20,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "recent_activity_idx",    def = "{'RID': -1, 'RA': -1}", unique = true)
 } )
-@JsonAutoDetect (
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
-)
 public class RecentActivityEntity extends BaseEntity {
 
-    @JsonProperty ("rid")
     @NotNull
     @Field ("RID")
     private String userProfileId;
 
-    @JsonProperty ("updates")
     @NotNull
     @Field ("RA")
     private RecentActivityEnum recentActivity;
 
-    @JsonProperty ("earliest")
     @NotNull
     @Field ("EL")
     private Date earliestUpdate;
@@ -66,23 +55,11 @@ public class RecentActivityEntity extends BaseEntity {
         return userProfileId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
-    }
-
     public RecentActivityEnum getRecentActivity() {
         return recentActivity;
     }
 
-    public void setRecentActivity(RecentActivityEnum recentActivity) {
-        this.recentActivity = recentActivity;
-    }
-
     public Date getEarliestUpdate() {
         return earliestUpdate;
-    }
-
-    public void setEarliestUpdate(Date earliestUpdate) {
-        this.earliestUpdate = earliestUpdate;
     }
 }
