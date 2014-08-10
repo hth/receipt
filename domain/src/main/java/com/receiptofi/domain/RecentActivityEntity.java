@@ -62,4 +62,8 @@ public class RecentActivityEntity extends BaseEntity {
     public Date getEarliestUpdate() {
         return earliestUpdate;
     }
+
+    public void setEarliestUpdate(Date earliestUpdate) {
+        this.earliestUpdate = earliestUpdate;
+    }
 }
