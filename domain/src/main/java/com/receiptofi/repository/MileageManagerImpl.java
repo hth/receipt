@@ -2,7 +2,10 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MileageEntity;
+import com.receiptofi.domain.RecentActivityEntity;
+import com.receiptofi.domain.types.RecentActivityEnum;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
@@ -31,6 +34,7 @@ public class MileageManagerImpl implements MileageManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(MileageEntity.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
+    @Autowired private RecentActivityManager recentActivityManager;
 
     @Override
     public List<MileageEntity> getAllObjects() {
@@ -43,6 +47,13 @@ public class MileageManagerImpl implements MileageManager {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
+        recentActivityManager.save(
+                RecentActivityEntity.newInstance(
+                        object.getUserProfileId(),
+                        RecentActivityEnum.MILEAGE,
+                        object.getUpdated()
+                )
+        );
     }
 
     @Override
@@ -62,7 +73,7 @@ public class MileageManagerImpl implements MileageManager {
 
     @Override
     public long collectionSize() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override

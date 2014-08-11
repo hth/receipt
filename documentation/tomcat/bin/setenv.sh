@@ -3,5 +3,5 @@ export JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8
 -XX:MaxPermSize=256m -XX:+DisableExplicitGC"
 export CATALINA_HOME=/Library/Tomcat
 export JAVA_HOME=/Library/Java/Home
-export CATALINA_OPTS="-Xms2048M -Xmx4096M -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled"
+export CATALINA_OPTS="-Xms2048M -Xmx4096M -XX:+CMSClassUnloadingEnabled"
 export CATALINA_PID=/tmp/catalina.pid
