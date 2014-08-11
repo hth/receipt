@@ -116,6 +116,17 @@
             <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-jms_1.1_spec-1.1.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/74aca283cd4f4b4f3e425f5820cda58f44409547/jstl-1.2.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/3.2.10.RELEASE/d5327b3d4a74f224d32c338e83789ae877feb790/spring-aspects-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/3.2.10.RELEASE/e3e2d994a12385a06b485f898288138164df1b76/spring-instrument-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/3.2.10.RELEASE/8006ffbbee160566418b2e878905ff23a2ff4aaa/spring-instrument-tomcat-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/3.2.10.RELEASE/7f8c534b675abc5a486bc3a711bc7126e499f311/spring-jms-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/3.2.10.RELEASE/d04b3ed818423e9fb8f79eb08c0e55b50f06ab9b/spring-oxm-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/3.2.10.RELEASE/f157f4cb7d0805e7b22744aa6e94b04ab13b3388/spring-test-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/3.2.10.RELEASE/7aab6c85d54ad4d96e3c0961fc84c75b3a439e73/spring-web-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/3.2.10.RELEASE/fffb1508333d3aa43d6c0c4b5548c582bbdb378b/spring-webmvc-3.2.10.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.5.2.RELEASE/e1068e54062c16959edd00932ee81c808ee4ec4d/spring-data-mongodb-1.5.2.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.8.2.RELEASE/6362720986098362d43e124dc5047bbb71f0c42e/spring-data-commons-1.8.2.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/2.12.3/12b7358a7740af71a4a52349d014d526a7a26a65/mongo-java-driver-2.12.3.jar" />
           </element>
         </element>
       </root>
