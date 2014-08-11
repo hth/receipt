@@ -609,28 +609,30 @@
 
 <script>
     $(function() {
-        <spring:eval var="isReceipt" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).RECEIPT" />
-        <c:if test="${isReceipt}">
-            $('#activeReceipt').removeClass('hidden');
-            $('#activeMileage').hide();
-            $('#restricted-fine-uploader').hide();
-            $('#documentId').prop('disabled', true);
-        </c:if>
+        <c:if test="${!empty receiptDocumentForm.receiptDocument}">
+            <spring:eval var="isReceipt" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).RECEIPT" />
+            <c:if test="${isReceipt}">
+                $('#activeReceipt').removeClass('hidden');
+                $('#activeMileage').hide();
+                $('#restricted-fine-uploader').hide();
+                $('#documentId').prop('disabled', true);
+            </c:if>
 
-        <spring:eval var="isInvoice" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).INVOICE" />
-        <c:if test="${isInvoice}">
-            $('#activeReceipt').removeClass('hidden');
-            $('#activeMileage').hide();
-            $('#restricted-fine-uploader').hide();
-            $('#documentId').prop('disabled', true);
-        </c:if>
+            <spring:eval var="isInvoice" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).INVOICE" />
+            <c:if test="${isInvoice}">
+                $('#activeReceipt').removeClass('hidden');
+                $('#activeMileage').hide();
+                $('#restricted-fine-uploader').hide();
+                $('#documentId').prop('disabled', true);
+            </c:if>
 
-        <spring:eval var="isMileage" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).MILEAGE" />
-        <c:if test="${isMileage}">
-            $('#activeReceipt').hide();
-            $('#activeMileage').removeClass('hidden');
-            $('#restricted-fine-uploader').removeClass('hidden');
-            $('#documentId').prop('disabled', true);
+            <spring:eval var="isMileage" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).MILEAGE" />
+            <c:if test="${isMileage}">
+                $('#activeReceipt').hide();
+                $('#activeMileage').removeClass('hidden');
+                $('#restricted-fine-uploader').removeClass('hidden');
+                $('#documentId').prop('disabled', true);
+            </c:if>
         </c:if>
     });
 
