@@ -54,13 +54,7 @@ public class SocialConfig {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private GenerateUserIdManager generateUserIdManager;
-
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private RegistrationConfig registrationConfig;
@@ -124,9 +118,7 @@ public class SocialConfig {
         logger.info("Initializing mongoConnectionService");
         return new ConnectionServiceImpl(
                 mongoTemplate,
-                connectionConverter(),
-                generateUserIdManager,
-                accountService
+                connectionConverter()
         );
     }
 }

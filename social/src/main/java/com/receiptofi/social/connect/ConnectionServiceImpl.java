@@ -52,8 +52,12 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private final MongoTemplate mongoTemplate;
     private final ConnectionConverter connectionConverter;
-    private final GenerateUserIdManager generateUserIdManager;
-    private final AccountService accountService;
+
+    @Autowired
+    private GenerateUserIdManager generateUserIdManager;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private RegistrationConfig registrationConfig;
@@ -64,14 +68,10 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Autowired
     public ConnectionServiceImpl(
             MongoTemplate mongoTemplate,
-            ConnectionConverter connectionConverter,
-            GenerateUserIdManager generateUserIdManager,
-            AccountService accountService
+            ConnectionConverter connectionConverter
     ) {
         this.mongoTemplate = mongoTemplate;
         this.connectionConverter = connectionConverter;
-        this.generateUserIdManager = generateUserIdManager;
-        this.accountService = accountService;
     }
 
     public void create(String userId, Connection<?> userConn) {
