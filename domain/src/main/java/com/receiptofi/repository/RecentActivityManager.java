@@ -18,5 +18,5 @@ public interface RecentActivityManager extends RepositoryManager<RecentActivityE
 
     @Mobile
     @SuppressWarnings("unused")
-    List<RecentActivityEntity> findAll(String rid, Date earliestUpdate);
+    List<RecentActivityEntity> findAll(String rid, Date updated);
 }

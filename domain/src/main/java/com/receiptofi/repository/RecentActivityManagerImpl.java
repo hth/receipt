@@ -42,9 +42,20 @@ public final class RecentActivityManagerImpl implements RecentActivityManager {
         RecentActivityEntity recentActivity = findOne(object.getUserProfileId(), object.getRecentActivity());
         if (recentActivity == null) {
             mongoTemplate.save(object);
-        } else if (recentActivity.getEarliestUpdate().after(object.getEarliestUpdate())) {
-            recentActivity.setEarliestUpdate(object.getEarliestUpdate());
-            recentActivity.setUpdated();
+        } else {
+            switch(object.getRecentActivity()) {
+                case RECEIPT:
+                    if (recentActivity.getEarliestUpdate().after(object.getEarliestUpdate())) {
+                        recentActivity.setEarliestUpdate(object.getEarliestUpdate());
+                        recentActivity.setUpdated();
+                    }
+                    break;
+                default:
+                    if (recentActivity.getEarliestUpdate().before(object.getEarliestUpdate())) {
+                        recentActivity.setEarliestUpdate(object.getEarliestUpdate());
+                        recentActivity.setUpdated();
+                    }
+            }
             mongoTemplate.save(recentActivity);
         }
     }
@@ -54,8 +65,8 @@ public final class RecentActivityManagerImpl implements RecentActivityManager {
     }
 
     @Override
-    public List<RecentActivityEntity> findAll(String rid, Date earliestUpdate) {
-        return mongoTemplate.find(query(where("RID").is(rid).and("EL").gte(earliestUpdate)), RecentActivityEntity.class, TABLE);
+    public List<RecentActivityEntity> findAll(String rid, Date updated) {
+        return mongoTemplate.find(query(where("RID").is(rid).and("U").gte(updated)), RecentActivityEntity.class, TABLE);
     }
 
     @Override
