@@ -41,7 +41,7 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
         if(token != null) {
             return new PersistentRememberMeToken(token.getUsername(), token.getSeries(), token.getTokenValue(), token.getUpdated());
         }
-        //This can happen when data is reset. Returning null will send user to login page
+        /** This can happen when data is reset or token is missing. Returning null will send user to login page */
         return null;
     }
 
