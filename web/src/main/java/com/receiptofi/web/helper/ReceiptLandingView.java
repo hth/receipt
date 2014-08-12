@@ -40,8 +40,8 @@ public final class ReceiptLandingView {
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
         ReceiptLandingView receiptLandingView = new ReceiptLandingView();
         receiptLandingView.setId(receiptEntity.getId());
-        log.debug(receiptEntity.getBizName().toString());
-        log.debug(receiptEntity.toString());
+        log.info(receiptEntity.toString());
+        log.info(receiptEntity.getBizName().toString());
         receiptLandingView.setName(receiptEntity.getBizName().getBusinessName());
         receiptLandingView.setDate(receiptEntity.getReceiptDate());
         receiptLandingView.setTax(receiptEntity.getTax());
