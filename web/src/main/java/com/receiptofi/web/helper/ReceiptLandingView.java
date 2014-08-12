@@ -1,8 +1,6 @@
 package com.receiptofi.web.helper;
 
 import com.receiptofi.domain.ReceiptEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -17,7 +15,6 @@ import org.springframework.format.annotation.NumberFormat;
  * Time: 12:54 PM
  */
 public final class ReceiptLandingView {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptLandingView.class);
 
     private String id;
     private String name;
@@ -40,8 +37,6 @@ public final class ReceiptLandingView {
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
         ReceiptLandingView receiptLandingView = new ReceiptLandingView();
         receiptLandingView.setId(receiptEntity.getId());
-        log.info(receiptEntity.toString());
-        log.info(receiptEntity.getBizName().toString());
         receiptLandingView.setName(receiptEntity.getBizName().getBusinessName());
         receiptLandingView.setDate(receiptEntity.getReceiptDate());
         receiptLandingView.setTax(receiptEntity.getTax());
