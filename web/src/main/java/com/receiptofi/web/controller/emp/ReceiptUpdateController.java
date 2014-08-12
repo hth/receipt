@@ -255,8 +255,8 @@ public final class ReceiptUpdateController {
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
-        } catch(Exception exce) {
-            log.error("Error happened during rejecting receipt : " + receiptDocumentForm.getReceiptDocument().getId(), exce.getLocalizedMessage());
+        } catch(Exception e) {
+            log.error("Error happened during rejecting receipt={} reason={}", receiptDocumentForm.getReceiptDocument().getId(), e.getLocalizedMessage(), e);
 
             String message = "Receipt could not be processed for Reject. Contact administrator with Document # ";
             receiptDocumentForm.setErrorMessage(message + receiptDocumentForm.getReceiptDocument().getId());
