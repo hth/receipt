@@ -56,22 +56,41 @@ public final class PendingDocumentController {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        int pendingMissingReceipt = 0;
         List<DocumentEntity> pendingDocumentEntityList = documentPendingService.getAllPending(receiptUser.getRid());
         for(DocumentEntity documentEntity : pendingDocumentEntityList) {
-            for(FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
-                GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
-                String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
-                pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), documentEntity);
+            if(documentEntity.getFileSystemEntities() != null) {
+                for(FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
+                    GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
+                    String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
+                    pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), documentEntity);
+                }
+            } else {
+                log.error("pending document does not contains receipt documentId={}", documentEntity.getId());
+                ++ pendingMissingReceipt;
+            }
+        }
+        if(pendingMissingReceipt > 0) {
+            log.error("total pending documents missing receipts count={}", pendingMissingReceipt);
+        }
+
+        int rejectedMissingReceipt = 0;
+        List<DocumentEntity> rejectedDocumentEntityList = documentPendingService.getAllRejected(receiptUser.getRid());
+        for (DocumentEntity documentEntity : rejectedDocumentEntityList) {
+            if(documentEntity.getFileSystemEntities() != null) {
+                for (FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
+                    GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
+                    String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
+                    pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), documentEntity);
+                }
+            } else {
+                log.error("rejected document does not contains receipt documentId={}", documentEntity.getId());
+                ++ rejectedMissingReceipt;
             }
         }
 
-        List<DocumentEntity> rejectedDocumentEntityList = documentPendingService.getAllRejected(receiptUser.getRid());
-        for(DocumentEntity documentEntity : rejectedDocumentEntityList) {
-            for(FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
-                GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
-                String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
-                pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), documentEntity);
-            }
+        if(rejectedMissingReceipt > 0) {
+            log.error("total rejected documents missing receipts count={}", rejectedMissingReceipt);
         }
 
 		ModelAndView modelAndView = new ModelAndView(LIST_PENDING_DOCUMENTS);
