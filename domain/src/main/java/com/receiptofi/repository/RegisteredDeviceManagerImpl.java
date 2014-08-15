@@ -45,13 +45,13 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public boolean findOrRegisterWhenNotFound(String rid, String did) {
+    public RegisteredDeviceEntity registerDevice(String rid, String did) {
+        RegisteredDeviceEntity registeredDevice = RegisteredDeviceEntity.newInstance(rid, did);
         if (find(rid, did) == null) {
-            save(RegisteredDeviceEntity.newInstance(rid, did));
+            save(registeredDevice);
             log.info("registered device for rid={} did={}", rid, did);
-            return false;
         }
-        return true;
+        return registeredDevice;
     }
 
     /**
