@@ -7,9 +7,7 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.RecentActivityEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.domain.types.RecentActivityEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.utils.DateUtil;
@@ -18,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,7 +60,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     @Autowired private ItemManager itemManager;
     @Autowired private FileSystemManager fileSystemManager;
     @Autowired private StorageManager storageManager;
-    @Autowired private RecentActivityManager recentActivityManager;
 
 	@Override
     public List<ReceiptEntity> getAllObjects() {
@@ -105,6 +103,16 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         Sort sort = new Sort(DESC, "RECEIPT_DATE").and(new Sort(DESC, "C"));
         return mongoTemplate.find(query(criteria).with(sort), ReceiptEntity.class, TABLE);
+    }
+
+    @Override
+    public List<ReceiptEntity> getAllUpdatedReceiptSince(String userProfileId, Date since) {
+        Sort sort = new Sort(DESC, "RECEIPT_DATE").and(new Sort(DESC, "C"));
+        return mongoTemplate.find(
+                query(where("USER_PROFILE_ID").is(userProfileId).and("U").gte(since)).with(sort),
+                ReceiptEntity.class,
+                TABLE
+        );
     }
 
 	@Override
@@ -206,14 +214,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
             }
             object.computeChecksum();
 			mongoTemplate.save(object, TABLE);
-            recentActivityManager.save(
-                    RecentActivityEntity.newInstance(
-                            object.getUserProfileId(),
-                            RecentActivityEnum.RECEIPT,
-                            //Note: This has to be receipt date as mobile app will fetch data from this time forward
-                            object.getReceiptDate()
-                    )
-            );
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for ReceiptEntity={}", e);
             //todo should throw a better exception; this is highly likely to happen any time soon

@@ -8,6 +8,7 @@ import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.shared.UploadReceiptImage;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -99,6 +101,12 @@ public final class LandingService {
 
     public List<ReceiptEntity> getAllReceiptsForThisMonth(String profileId, DateTime monthYear) {
         return receiptManager.getAllReceiptsForThisMonth(profileId, monthYear);
+    }
+
+    @Mobile
+    @SuppressWarnings("unused")
+    public List<ReceiptEntity> getAllUpdatedReceiptSince(String profileId, Date since) {
+        return receiptManager.getAllUpdatedReceiptSince(profileId, since);
     }
 
     public Iterator<ReceiptGrouped> getReceiptGroupedByDate(String profileId) {
