@@ -4,10 +4,8 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.RecentActivityEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.RecentActivityEnum;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +36,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
 
 	private MongoTemplate mongoTemplate;
-    private RecentActivityManager recentActivityManager;
 
     @Autowired
-    public UserProfileManagerImpl(MongoTemplate mongoTemplate, RecentActivityManager recentActivityManager) {
+    public UserProfileManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
-        this.recentActivityManager = recentActivityManager;
     }
 
 	@Override
@@ -65,13 +61,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);
-            recentActivityManager.save(
-                    RecentActivityEntity.newInstance(
-                            object.getReceiptUserId(),
-                            RecentActivityEnum.PROFILE,
-                            object.getUpdated()
-                    )
-            );
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for UserProfileEntity={}", e);
 			throw new RuntimeException(e.getMessage());

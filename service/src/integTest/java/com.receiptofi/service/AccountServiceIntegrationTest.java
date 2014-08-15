@@ -8,8 +8,8 @@ import com.receiptofi.repository.ForgotRecoverManager;
 import com.receiptofi.repository.ForgotRecoverManagerImpl;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.repository.GenerateUserIdManagerImpl;
-import com.receiptofi.repository.RecentActivityManager;
-import com.receiptofi.repository.RecentActivityManagerImpl;
+import com.receiptofi.repository.RegisteredDeviceManager;
+import com.receiptofi.repository.RegisteredDeviceManagerImpl;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAccountManagerImpl;
 import com.receiptofi.repository.UserAuthenticationManager;
@@ -50,7 +50,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
     private UserPreferenceManager userPreferenceManager;
     private ForgotRecoverManager forgotRecoverManager;
     private GenerateUserIdManager generateUserIdManager;
-    private RecentActivityManager recentActivityManager;
+    private RegisteredDeviceManager registeredDeviceManager;
 
     private AccountService accountService;
 
@@ -59,8 +59,8 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
-        recentActivityManager = new RecentActivityManagerImpl(getMongoTemplate());
-        userProfileManager = new UserProfileManagerImpl(getMongoTemplate(), recentActivityManager);
+        registeredDeviceManager = new RegisteredDeviceManagerImpl(getMongoTemplate());
+        userProfileManager = new UserProfileManagerImpl(getMongoTemplate());
         userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
         generateUserIdManager = new GenerateUserIdManagerImpl(getMongoTemplate());

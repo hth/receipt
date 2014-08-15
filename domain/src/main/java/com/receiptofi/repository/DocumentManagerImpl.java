@@ -5,9 +5,7 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
-import com.receiptofi.domain.RecentActivityEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.domain.types.RecentActivityEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +37,6 @@ public final class DocumentManagerImpl implements DocumentManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
 
 	@Autowired private MongoTemplate mongoTemplate;
-    @Autowired private RecentActivityManager recentActivityManager;
 
 	@Override
 	public List<DocumentEntity> getAllObjects() {
@@ -59,13 +56,6 @@ public final class DocumentManagerImpl implements DocumentManager {
                 object.setUpdated();
             }
 			mongoTemplate.save(object, TABLE);
-            recentActivityManager.save(
-                    RecentActivityEntity.newInstance(
-                            object.getUserProfileId(),
-                            RecentActivityEnum.UPLOAD_DOCUMENT,
-                            object.getUpdated()
-                    )
-            );
 		} catch (DataIntegrityViolationException e) {
 			log.error("Duplicate record entry for DocumentEntity={}", e);
 			throw new RuntimeException(e.getMessage());

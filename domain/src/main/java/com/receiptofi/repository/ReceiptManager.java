@@ -6,9 +6,11 @@ package com.receiptofi.repository;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -69,6 +71,16 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId, DateTime monthYear);
+
+    /**
+     * Gets all updated receipts since specified time
+     *
+     * @param userProfileId
+     * @param since
+     * @return
+     */
+    @Mobile
+    List<ReceiptEntity> getAllUpdatedReceiptSince(String userProfileId, Date since);
 
     /**
      * Get receipts associated with year, month, day
