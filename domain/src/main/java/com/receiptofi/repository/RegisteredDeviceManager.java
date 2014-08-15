@@ -17,6 +17,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param did
      * @return
      */
+    @SuppressWarnings("unused")
     @Mobile
     RegisteredDeviceEntity lastAccessed(String rid, String did);
 
@@ -29,5 +30,5 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      */
     @SuppressWarnings("unused")
     @Mobile
-    boolean findOrRegisterWhenNotFound(String rid, String did);
+    RegisteredDeviceEntity registerDevice(String rid, String did);
 }
