@@ -402,7 +402,7 @@ task war(type: War, dependsOn: prepWar) {
                 entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
             }
 
-            baseName = "receipt-$env-" + System.getenv().BUILD_NUMBER?.toInteger()
+            baseName = "receipt-$env." + System.getenv().BUILD_NUMBER?.toInteger()
         }
 
         if (env == 'dev') {
