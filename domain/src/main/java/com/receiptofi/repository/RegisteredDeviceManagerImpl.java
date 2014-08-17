@@ -8,9 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
+
+import org.joda.time.DateTime;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -24,6 +26,9 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     private static final Logger log = LoggerFactory.getLogger(RegisteredDeviceManagerImpl.class);
     private MongoTemplate mongoTemplate;
+
+    @Value ("${production.switch}")
+    private String productionSwitch;
 
     @Autowired
     public RegisteredDeviceManagerImpl(MongoTemplate mongoTemplate) {
@@ -65,7 +70,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public RegisteredDeviceEntity lastAccessed(String rid, String did) {
         return mongoTemplate.findAndModify(
                 query(where("RID").is(rid).and("DID").is(did)),
-                update("U", new Date()),
+                update("U", productionSwitch.equals("ON") ? new Date() : DateTime.now().minusYears(1).toDate()),
                 RegisteredDeviceEntity.class
         );
     }
