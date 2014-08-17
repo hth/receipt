@@ -72,6 +72,10 @@ public final class Formatter {
         try {
             //Currently defaults to US
             //TODO set using locale
+            if(StringUtils.isBlank(phone)) {
+                log.debug("phone number blank");
+                return "";
+            }
             Phonenumber.PhoneNumber numberPrototype = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
             return FormatterSingleton.INSTANCE.phoneInstance().format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
