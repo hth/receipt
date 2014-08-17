@@ -43,7 +43,6 @@ public final class DocumentManagerImpl implements DocumentManager {
 		return mongoTemplate.findAll(DocumentEntity.class, TABLE);
 	}
 
-	//TODO invoke transaction here
 	@Override
 	public void save(DocumentEntity object) {
 		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
