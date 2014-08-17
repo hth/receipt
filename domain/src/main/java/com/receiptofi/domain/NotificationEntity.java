@@ -42,14 +42,19 @@ public final class NotificationEntity extends BaseEntity {
     /**
      * Could be a receipt id or Document id
      */
+    @NotNull
+    @Field("REF")
     private String referenceId;
 
+    @SuppressWarnings("unused")
     private NotificationEntity() {}
 
+    private NotificationEntity(NotificationTypeEnum notificationType) {
+        this.notificationType = notificationType;
+    }
+
     public static NotificationEntity newInstance(NotificationTypeEnum notificationType) {
-        NotificationEntity notificationEntity = new NotificationEntity();
-        notificationEntity.setNotificationType(notificationType);
-        return notificationEntity;
+        return new NotificationEntity(notificationType);
     }
 
     public String getMessage() {

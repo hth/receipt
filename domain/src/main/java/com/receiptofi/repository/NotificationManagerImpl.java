@@ -62,10 +62,13 @@ public final class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public List<NotificationEntity> getAllNotification(String userProfileId, int limit) {
-        Criteria criteria1 = where("USER_PROFILE_ID").is(userProfileId);
-        Criteria criteria2 = where("NOTIFIED").is(true);
-        Sort sort = new Sort(Sort.Direction.DESC, "C");
-        Query query = query(criteria1).addCriteria(criteria2).addCriteria(isNotDeleted()).with(sort);
+        Query query = query(
+                where(
+                        "USER_PROFILE_ID").is(userProfileId)
+                        .and("NOTIFIED").is(true)
+        ).addCriteria(isNotDeleted())
+                .with(new Sort(Sort.Direction.DESC, "C"));
+
         if(limit != NotificationManager.ALL) {
             query.limit(limit);
         }
