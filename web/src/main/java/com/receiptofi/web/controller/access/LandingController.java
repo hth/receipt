@@ -26,6 +26,7 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
+import com.receiptofi.web.form.NotificationForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.helper.json.Mileages;
@@ -86,13 +87,12 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 public final class LandingController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(LandingController.class);
 
-    @Autowired LandingService landingService;
-    @Autowired FileDBService fileDBService;
-    @Autowired MailService mailService;
-    @Autowired AccountService accountService;
-    @Autowired NotificationService notificationService;
-    @Autowired ReportService reportService;
-    @Autowired MileageService mileageService;
+    @Autowired private LandingService landingService;
+    @Autowired private MailService mailService;
+    @Autowired private AccountService accountService;
+    @Autowired private NotificationService notificationService;
+    @Autowired private ReportService reportService;
+    @Autowired private MileageService mileageService;
 
 	/**
 	 * Refers to landing.jsp
@@ -153,7 +153,7 @@ public final class LandingController extends BaseController {
 
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(receiptUser.getRid());
-        landingForm.setNotifications(notifications);
+        landingForm.setNotificationForm(NotificationForm.newInstance(notifications));
 
         /** Mileage */
         List<MileageEntity> mileageEntityList = mileageService.getMileageForThisMonth(receiptUser.getRid(), time);
