@@ -169,9 +169,9 @@ public final class ReceiptUpdateController {
             ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
             List<ItemEntity> items = receiptDocumentForm.getItemEntity(receipt);
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
-            DocumentEntity documentForm = receiptDocumentForm.getReceiptDocument();
+            DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
-            documentUpdateService.turkReceipt(receipt, items, documentForm);
+            documentUpdateService.turkReceipt(receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
@@ -218,8 +218,8 @@ public final class ReceiptUpdateController {
 
         try {
             MileageEntity mileage = receiptDocumentForm.getMileageEntity();
-            DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
-            documentUpdateService.turkMileage(mileage, receiptOCR);
+            DocumentEntity document = receiptDocumentForm.getReceiptDocument();
+            documentUpdateService.turkMileage(mileage, document);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
@@ -236,27 +236,53 @@ public final class ReceiptUpdateController {
 
     /**
      * Reject receipt since it can't be processed or its not a receipt
-     *
      * @param receiptDocumentForm
+     * @param redirectAttrs
      * @return
      */
     @RequestMapping(value = "/submit", method = RequestMethod.POST, params="receipt-reject")
-    public ModelAndView reject(
+    public ModelAndView rejectReceipt(
             @ModelAttribute("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             RedirectAttributes redirectAttrs
     ) {
+        return rejectDocument(receiptDocumentForm, redirectAttrs);
+    }
+
+    /**
+     * Reject receipt since it can't be processed or its not a receipt
+     * @param receiptDocumentForm
+     * @param redirectAttrs
+     * @return
+     */
+    @RequestMapping(value = "/submitMileage", method = RequestMethod.POST, params="mileage-reject")
+    public ModelAndView rejectMileage(
+            @ModelAttribute("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm,
+
+            RedirectAttributes redirectAttrs
+    ) {
+        return rejectDocument(receiptDocumentForm, redirectAttrs);
+    }
+
+    /**
+     * Rejects any document
+     * @param receiptDocumentForm
+     * @param redirectAttrs
+     * @return
+     */
+    private ModelAndView rejectDocument(ReceiptDocumentForm receiptDocumentForm, RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
-        log.info("Beginning of Rejecting Document: " + receiptDocumentForm.getReceiptDocument().getId());
+        log.info("Beginning of Rejecting document={}", receiptDocumentForm.getReceiptDocument().getId());
         try {
-            DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
-            documentUpdateService.turkReject(receiptOCR);
+            DocumentEntity document = receiptDocumentForm.getReceiptDocument();
+            documentUpdateService.turkReject(document.getId(), document.getDocumentOfType());
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception e) {
-            log.error("Error happened during rejecting receipt={} reason={}", receiptDocumentForm.getReceiptDocument().getId(), e.getLocalizedMessage(), e);
+            log.error("Error happened during rejecting document={} reason={}", receiptDocumentForm.getReceiptDocument().getId(), e.getLocalizedMessage(), e);
 
             String message = "Receipt could not be processed for Reject. Contact administrator with Document # ";
             receiptDocumentForm.setErrorMessage(message + receiptDocumentForm.getReceiptDocument().getId());
@@ -310,9 +336,9 @@ public final class ReceiptUpdateController {
             ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
             List<ItemEntity> items = receiptDocumentForm.getItemEntity(receipt);
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
-            DocumentEntity receiptOCR = receiptDocumentForm.getReceiptDocument();
+            DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
-            documentUpdateService.turkReceiptReCheck(receipt, items, receiptOCR);
+            documentUpdateService.turkReceiptReCheck(receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {

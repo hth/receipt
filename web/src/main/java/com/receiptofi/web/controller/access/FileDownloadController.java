@@ -65,7 +65,7 @@ public final class FileDownloadController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/receiptimage/{imageId}")
-	public void getReceipt(@PathVariable String imageId, HttpServletRequest request, HttpServletResponse response) {
+	public void getDocumentImage(@PathVariable String imageId, HttpServletRequest request, HttpServletResponse response) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
