@@ -329,8 +329,8 @@ public final class ReceiptUpdateController {
     private void loadBasedOnAppropriateUserLevel(String receiptOCRId, ReceiptDocumentForm receiptDocumentForm, HttpServletRequest request) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        DocumentEntity receipt = documentUpdateService.loadActiveDocumentById(receiptOCRId);
-        if(receipt == null || receipt.isDeleted()) {
+        DocumentEntity document = documentUpdateService.loadActiveDocumentById(receiptOCRId);
+        if(document == null || document.isDeleted()) {
             if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR")) {
                 log.warn("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
                 receiptDocumentForm.setErrorMessage("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
@@ -338,16 +338,16 @@ public final class ReceiptUpdateController {
                 log.warn("No such receipt exists. Request made by: " + receiptUser.getRid());
                 receiptDocumentForm.setErrorMessage("No such receipt exists");
             }
-        } else if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR") || receipt.getUserProfileId().equalsIgnoreCase(receiptUser.getRid())) {
+        } else if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR") || document.getUserProfileId().equalsIgnoreCase(receiptUser.getRid())) {
             //Important: The condition below makes sure when validation fails it does not over write the item list
             if(receiptDocumentForm.getReceiptDocument() == null && receiptDocumentForm.getItems() == null) {
-                receiptDocumentForm.setReceiptDocument(receipt);
+                receiptDocumentForm.setReceiptDocument(document);
 
-                List<ItemEntityOCR> items = documentUpdateService.loadItemsOfReceipt(receipt);
+                List<ItemEntityOCR> items = documentUpdateService.loadItemsOfReceipt(document);
                 receiptDocumentForm.setItems(items);
             }
             //helps load the image on failure
-            receiptDocumentForm.getReceiptDocument().setFileSystemEntities(receipt.getFileSystemEntities());
+            receiptDocumentForm.getReceiptDocument().setFileSystemEntities(document.getFileSystemEntities());
         } else {
             log.warn("Un-authorized access by user: " + receiptUser.getRid() + ", accessing receipt: " + receiptOCRId);
         }

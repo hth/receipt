@@ -14,7 +14,6 @@ import java.util.List;
  * Date: 7/6/13
  * Time: 3:18 PM
  */
-//TODO to be used and everything should be a JSON
 public final class LandingForm {
 
     private ReceiptForMonth receiptForMonth;
@@ -26,8 +25,8 @@ public final class LandingForm {
     private List<LandingDonutChart> bizByExpenseTypes;
     private String bizNames;
 
-    List<NotificationEntity> notifications;
-    List<MileageEntity> mileageEntities;
+    private NotificationForm notificationForm;
+    private List<MileageEntity> mileageEntities;
     private String mileages;
     private int mileageMonthlyTotal;
 
@@ -85,12 +84,12 @@ public final class LandingForm {
         this.bizNames = bizNames;
     }
 
-    public List<NotificationEntity> getNotifications() {
-        return notifications;
+    public NotificationForm getNotificationForm() {
+        return notificationForm;
     }
 
-    public void setNotifications(List<NotificationEntity> notifications) {
-        this.notifications = notifications;
+    public void setNotificationForm(NotificationForm notificationForm) {
+        this.notificationForm = notificationForm;
     }
 
     public List<MileageEntity> getMileageEntities() {

@@ -76,7 +76,7 @@ public final class FileDownloadController {
                 log.warn("GridFSDBFile is null; failedToFindImage="+ imageId);
 				String pathToWeb = request.getServletContext().getRealPath(File.separator);
     			File file = FileUtils.getFile(pathToWeb + imageNotFound);
-//                File file = FileUtils.getFile(pathToWeb + "/static/images/no_image_found.jpg");
+                //File file = FileUtils.getFile(pathToWeb + "/static/images/no_image_found.jpg");
 				BufferedImage bi = ImageIO.read(file);
                 setContentType(file, response);
 				OutputStream out = response.getOutputStream();
@@ -84,14 +84,13 @@ public final class FileDownloadController {
 				out.close();
 			} else {
                 log.debug("Length: " + gridFSDBFile.getLength() + ", MetaData: " + gridFSDBFile.getMetaData());
+                response.setContentType(gridFSDBFile.getContentType());
 				gridFSDBFile.writeTo(response.getOutputStream());
-				response.setContentType(gridFSDBFile.getContentType());
 			}
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
 		} catch (IOException e) {
-			log.error("Exception occurred during image retrieval" + e.getLocalizedMessage());
-			log.error("Image retrieval error occurred: " + imageId + " for user : " + receiptUser.getRid());
+			log.error("Image retrieval error occurred for imageId={} rid={} reason={}", imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
 		}
 	}
