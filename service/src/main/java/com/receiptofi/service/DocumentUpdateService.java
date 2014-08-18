@@ -7,6 +7,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.CommentManager;
@@ -279,15 +280,15 @@ public final class DocumentUpdateService {
 
     /**
      * Reject receipt when invalid or un-readable
-     *
-     * @param receiptOCR
+     * @param id
+     * @param documentOfType
      * @throws Exception
      */
-    public void turkReject(DocumentEntity receiptOCR) throws Exception {
+    public void turkReject(String id, DocumentOfTypeEnum documentOfType) throws Exception {
+        DocumentEntity document = loadActiveDocumentById(id);
         try {
-            DocumentEntity document = loadActiveDocumentById(receiptOCR.getId());
             document.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
-            document.setDocumentOfType(receiptOCR.getDocumentOfType());
+            document.setDocumentOfType(documentOfType);
             document.setBizName(null);
             document.setBizStore(null);
             document.inActive();
@@ -313,14 +314,14 @@ public final class DocumentUpdateService {
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.DOCUMENT, document);
 
         } catch(Exception exce) {
-            log.error("Revert all the transaction for ReceiptOCR={}. Rejection of a receipt failed, reason={}", receiptOCR.getId(), exce.getLocalizedMessage(), exce);
+            log.error("Revert all the transaction for ReceiptOCR={}. Rejection of a receipt failed, reason={}", document.getId(), exce.getLocalizedMessage(), exce);
 
-            receiptOCR.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
-            receiptOCR.active();
-            documentManager.save(receiptOCR);
+            document.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
+            document.active();
+            documentManager.save(document);
             //log.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-            messageManager.undoUpdateObject(receiptOCR.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
+            messageManager.undoUpdateObject(document.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
             //End of roll back
 
             log.info("Complete with rollback: throwing exception");
