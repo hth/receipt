@@ -99,7 +99,7 @@
             <table>
                 <tr>
                     <td style="vertical-align: top;">
-                        <table style="width: 400px" class="etable">
+                        <table style="width: 525px" class="etable">
                             <tr>
                                 <th style="padding: 3px; text-align: left;">&nbsp;</th>
                                 <th style="padding: 3px; text-align: left;">&nbsp;File Name</th>
@@ -137,7 +137,7 @@
             <table>
                 <tr>
                     <td style="vertical-align: top;">
-                        <table style="width: 400px" class="etable">
+                        <table style="width: 525px" class="etable">
                             <tr>
                                 <th style="padding: 3px; text-align: left;">&nbsp;</th>
                                 <th style="padding: 3px; text-align: left;">&nbsp;File Name</th>
