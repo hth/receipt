@@ -57,13 +57,12 @@ public final class FileDownloadController {
     @Value("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
     private String imageNotFound;
 
-	/**
-	 * This is used only to serve images of Receipt
-	 *
-	 * @param request
-	 * @param response
-	 * @return
-	 */
+    /**
+     * Servers images
+     * @param imageId
+     * @param request
+     * @param response
+     */
 	@RequestMapping(method = RequestMethod.GET, value = "/receiptimage/{imageId}")
 	public void getDocumentImage(@PathVariable String imageId, HttpServletRequest request, HttpServletResponse response) {
         DateTime time = DateUtil.now();
@@ -73,17 +72,15 @@ public final class FileDownloadController {
 			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
 
 			if(gridFSDBFile == null) {
-                log.warn("GridFSDBFile is null; failedToFindImage="+ imageId);
-				String pathToWeb = request.getServletContext().getRealPath(File.separator);
-    			File file = FileUtils.getFile(pathToWeb + imageNotFound);
-                //File file = FileUtils.getFile(pathToWeb + "/static/images/no_image_found.jpg");
+                log.warn("GridFSDBFile failed to find image={}", imageId);
+    			File file = FileUtils.getFile(request.getServletContext().getRealPath(File.separator) + imageNotFound);
 				BufferedImage bi = ImageIO.read(file);
                 setContentType(file, response);
 				OutputStream out = response.getOutputStream();
 				ImageIO.write(bi, getFormatForFile(file), out);
 				out.close();
 			} else {
-                log.debug("Length: " + gridFSDBFile.getLength() + ", MetaData: " + gridFSDBFile.getMetaData());
+                log.debug("Length={} MetaData={}", gridFSDBFile.getLength(), gridFSDBFile.getMetaData());
                 response.setContentType(gridFSDBFile.getContentType());
 				gridFSDBFile.writeTo(response.getOutputStream());
 			}
