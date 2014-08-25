@@ -15,8 +15,10 @@ import org.springframework.web.util.HtmlUtils;
  * User: hitender
  * Date: 11/24/13 11:28 AM
  */
-public class TextInputScrubber {
+public final class TextInputScrubber {
     private static Logger log = LoggerFactory.getLogger(TextInputScrubber.class);
+
+    private static final PolicyFactory factory = new HtmlPolicyBuilder().toFactory();
 
     public static String scrub(String text) {
         if(StringUtils.isBlank(text)) {
@@ -31,8 +33,6 @@ public class TextInputScrubber {
             return StringUtils.EMPTY;
         }
 
-        HtmlPolicyBuilder htmlPolicyBuilder = new HtmlPolicyBuilder();
-        PolicyFactory factory = htmlPolicyBuilder.toFactory();
         String scrubbedText = factory.sanitize(decoded);
 
         //Using Spring instead of StringEscapeUtils
