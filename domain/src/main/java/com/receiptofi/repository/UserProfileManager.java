@@ -5,7 +5,9 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,4 +36,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 	List<UserProfileEntity> searchAllByName(String name);
 
     UserProfileEntity findOneByMail(String emailId);
+
+    @Mobile
+    UserProfileEntity getProfileUpdateSince(String rid, Date since);
 }

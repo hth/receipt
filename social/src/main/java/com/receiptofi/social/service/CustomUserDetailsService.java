@@ -113,7 +113,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUserId(String uid) throws UsernameNotFoundException {
         log.info("login through Provider user={}", uid);
 
-        UserProfileEntity userProfile = userProfilePreferenceService.getUsingUserId(uid);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByUserId(uid);
         if(userProfile == null) {
             log.warn("not found user={}", uid);
             throw new UsernameNotFoundException("Error in retrieving user");
