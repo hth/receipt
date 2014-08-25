@@ -81,12 +81,8 @@ public final class UserProfilePreferenceService {
         return expenseTagManager.findOne(expenseTypeId);
     }
 
-    public void addExpenseType(ExpenseTagEntity expenseType) throws Exception {
-        try {
-            expenseTagManager.save(expenseType);
-        } catch (Exception e) {
-            throw e;
-        }
+    public void addExpenseType(ExpenseTagEntity expenseType) {
+        expenseTagManager.save(expenseType);
     }
 
     public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String receiptUserId) {
