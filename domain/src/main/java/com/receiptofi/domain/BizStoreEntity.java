@@ -15,10 +15,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * User: hitender
  * Date: 4/22/13
@@ -28,24 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @CompoundIndexes(value = {
         @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
 } )
-@JsonIgnoreProperties({
-        "phoneNumberBlank",
-        "lat",
-        "lng",
-        "bizName",
-
-        "id",
-        "version",
-        "updated",
-        "created",
-        "active",
-        "deleted"
-})
-@JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
-)
 public final class BizStoreEntity extends BaseEntity {
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
@@ -105,7 +83,6 @@ public final class BizStoreEntity extends BaseEntity {
         return phone;
     }
 
-    @JsonProperty("phone")
     public String getPhoneFormatted() {
         return Formatter.phone(phone);
     }

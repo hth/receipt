@@ -25,10 +25,6 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 import org.joda.time.DateTime;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * @author hitender
  * @since Dec 26, 2012 12:09:01 AM
@@ -40,39 +36,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         @CompoundIndex(name = "receipt_unique_idx",    def = "{'CHECK_SUM': -1}", unique = true),
         @CompoundIndex(name = "receipt_expense_Report",def = "{'EXP_FILENAME': -1}")
 } )
-@JsonIgnoreProperties({
-        "receiptStatus",
-        "year",
-        "month",
-        "day",
-        "tax",
-        "receiptOCRId",
-        "recheckComment",
-        "checksum",
-
-        "version",
-        "updated",
-        "created",
-        "active",
-        "deleted"
-})
-@JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
-)
 public final class ReceiptEntity extends BaseEntity {
 
 	@NotNull
     @Field("DS_E")
 	private DocumentStatusEnum receiptStatus;
 
-    @JsonProperty("files")
     @DBRef
     @Field("FS")
 	private Collection<FileSystemEntity> fileSystemEntities;
 
-    @JsonProperty("date")
 	@NotNull
     @DateTimeFormat(iso = ISO.DATE_TIME)
     @Field("RECEIPT_DATE")
@@ -99,14 +72,12 @@ public final class ReceiptEntity extends BaseEntity {
     @Field("TAX")
 	private Double tax = 0.00;
 
-    @JsonProperty("ptax")
     @NotNull
     @NumberFormat(style = Style.PERCENT)
     @Field("PERCENT_TAX")
     private String percentTax;
 
-    @JsonProperty("rid")
-	@NotNull
+    @NotNull
     @Field("USER_PROFILE_ID")
 	private String userProfileId;
 
@@ -134,7 +105,6 @@ public final class ReceiptEntity extends BaseEntity {
      * Note: During recheck of a receipt EXP_FILENAME is dropped as this is
      * not persisted between the two event
      */
-    @JsonProperty("expenseReport")
     @Field("EXP_FILENAME")
     private String expenseReportInFS;
 
