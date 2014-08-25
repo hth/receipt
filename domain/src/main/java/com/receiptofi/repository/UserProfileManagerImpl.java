@@ -4,12 +4,14 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.*;
@@ -134,6 +136,15 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public UserProfileEntity findOneByMail(String mail) {
         return mongoTemplate.findOne(query(where("EM").is(mail)), UserProfileEntity.class, TABLE);
+    }
+
+    @Override
+    public UserProfileEntity getProfileUpdateSince(String rid, Date since) {
+        return mongoTemplate.findOne(
+                query(where("RID").is(rid).and("U").gte(since)),
+                UserProfileEntity.class,
+                TABLE
+        );
     }
 
     @Override

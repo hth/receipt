@@ -1,12 +1,15 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +39,8 @@ public final class UserProfilePreferenceService {
         return userProfileManager.forProfilePreferenceFindByReceiptUserId(receiptUserId);
     }
 
-    public UserProfileEntity getUsingUserId(String userId) {
-        return userProfileManager.findByUserId(userId);
+    public UserProfileEntity findByUserId(String email) {
+        return userProfileManager.findByUserId(email);
     }
 
     public void updateProfile(UserProfileEntity userProfile) throws Exception {
@@ -46,6 +49,12 @@ public final class UserProfilePreferenceService {
 
     public UserPreferenceEntity loadFromProfile(UserProfileEntity userProfileEntity) {
         return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
+    }
+
+    @Mobile
+    @SuppressWarnings("unused")
+    public UserProfileEntity getProfileUpdateSince(String rid, Date since) {
+        return userProfileManager.getProfileUpdateSince(rid, since);
     }
 
     /**
