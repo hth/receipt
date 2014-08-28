@@ -123,7 +123,7 @@
                                     <spring:eval expression="receipt.tax" />
                                 </td>
                                 <td style="padding: 3px; text-align: right">
-                                    <a href="${pageContext.request.contextPath}/receipt/${receipt.id}.htm">
+                                    <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm">
                                         <spring:eval expression='receipt.total' />
                                     </a>
                                 </td>
