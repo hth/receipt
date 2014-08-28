@@ -152,7 +152,7 @@ subprojects {
         compile 'redis.clients:jedis:2.5.1'
 
         //1.5.2 has a problem of loading object based on Id and requires new Object Id
-        compile 'org.springframework.data:spring-data-mongodb:1.5.0.RELEASE'
+        compile 'org.springframework.data:spring-data-mongodb:1.5.4.RELEASE'
         compile 'org.springframework.data:spring-data-commons:1.8.2.RELEASE'
         compile 'org.mongodb:mongo-java-driver:2.12.3'
 
