@@ -92,6 +92,7 @@ Last and most important step is to verify if we have installed SSL certificate p
 
 Below are some nice online tools to help you with that:
 
+https://sslcheck.casecurity.org/en_US <br/>
 https://www.wormly.com/test_ssl <br/>
 https://sslcheck.globalsign.com/en_US/sslcheck
 
