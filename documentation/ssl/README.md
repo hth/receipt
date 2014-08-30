@@ -24,18 +24,17 @@ Note: www.example.com and example.com are not same. Use exactly same domain your
 - Paste CSR i.e. content of example.com.csr in GoDaddy web-interface. You will need to provide some more details, Try to match them to details in Step #1.
 - Depending on type of certificate, it may take some time for GoDaddy to approve your certificate.
 - Once certificate is approved, you can download it. For detailed instructions on downloading, please refer this.
-Promo: You can buy Thwate SSL certificates from us. We are a Thwate reseller but we sell cheaper than them! ;-)
 
 ###Step 3: Fix Intermediate Certificate Chain###
 
-The zip file you will get from Godaddy will contain 2 files: example.com.crt and gd_bundle.crt.
+The zip file you will get from Godaddy will contain 2 files: *example.com.crt* and *gd_bundle.crt*.
 
 One is your certificate and other is bundle i.e intermediate certificates. Nginx doesn’t have a special directive to specify path to certificate bundle/chain file. So we need to append bundle into SSL certificate file itself in a way that SSL certificate remains on top.
 
 You can do it simply by running following command:
 
     cat gd_bundle.crt >> example.com.crt
-Move this example.com.crt file to /var/www/example.com/cert/directory on nginx server.
+Move this *example.com.crt* file to <code>/var/www/example.com/cert/directory</code> on nginx server.
 
 ###Step 4: Adjusting Nginx Configuration###
 
@@ -62,7 +61,7 @@ Add following codes if you want to force SSL on your site.
     }
 Turn on SSL session cache for performance
 
-In file /etc/nginx/nginx.conf, inside http {..} block add following:
+In file */etc/nginx/nginx.conf*, inside <code>http {..}</code> block add following:
 
     http {
         ssl_session_cache   shared:SSL:10m;
