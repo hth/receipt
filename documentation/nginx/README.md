@@ -1,7 +1,7 @@
 Nginx setup
 ===========
 
-For [ssl-install/README.md](SSL configuration) follow this documentation
+For (SSL configuration)[ssl-install/README.md] follow this documentation
 
 Have an administrator account with Xcode pre-installed and **agreed** to Xcode agreement. 
 
