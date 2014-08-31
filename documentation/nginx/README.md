@@ -28,6 +28,6 @@ Then create file with name **ipfw.nginx.sh** at <code>/usr/local/startup/firewal
 
     sudo ipfw add 100 fwd 127.0.0.1,8080 tcp from any to me 80
     sudo ipfw add 110 fwd 127.0.0.1,8443 tcp from any to me 443
-Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <code>/Library/LaunchDaemons/ipfw.nginx.sh</code>, load the file with by running command 
+Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <code>/Library/LaunchDaemons/ipfw.nginx.plist</code>, load the file with by running command 
 
-    sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.sh
+    sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.plist
