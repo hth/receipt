@@ -37,3 +37,8 @@ Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <co
 
     sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.plist
     sudo launchctl unload -w /Library/LaunchDaemons/ipfw.nginx.plist
+    
+#### Static www for nginx
+Create mapping similar to **[nginx.conf](nginx.conf.md)** in <code>/data/www</code>
+
+Added file <code>index.html</code> inside newly created directory
