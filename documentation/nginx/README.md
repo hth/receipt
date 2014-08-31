@@ -31,3 +31,4 @@ Then create file with name **ipfw.nginx.sh** at <code>/usr/local/startup/firewal
 Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <code>/Library/LaunchDaemons/ipfw.nginx.plist</code>, load the file with by running command 
 
     sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.plist
+    sudo launchctl unload -w /Library/LaunchDaemons/ipfw.nginx.plist
