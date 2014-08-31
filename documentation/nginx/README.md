@@ -7,7 +7,7 @@ Start with installing [homebrew](http://brew.sh "homebrew").
 
 Then install nginx with help of <code>brew install nginx</code>. Once installed do not link anything yet. Open a new terminal to work on remaining steps.
 
-**Note**: use default port **8080** and **8443**
+**Note**: use default port **8080** and **8443**, will setup firewall redirect from **80** and **443** to nginx server ports
 
 ##### Create directory 
     /var/logs/nginx
