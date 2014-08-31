@@ -24,10 +24,13 @@ Replace default **[nginx.conf](nginx.conf.md)** file with the contents listed at
 ##### Create directory
     /usr/local/startup/firewall
 
-Then create file with name **ipfw.nginx.sh** at <code>/usr/local/startup/firewall</code>. Populate the file with following text. And save the file. Of course set the **permissions** to file correctly.
+Then create file with name **ipfw.nginx.sh** at <code>/usr/local/startup/firewall</code>. Populate the file with following text. And save the file. Of course set the **permissions** to file correctly and make its executable.
 
     sudo ipfw add 100 fwd 127.0.0.1,8080 tcp from any to me 80
     sudo ipfw add 110 fwd 127.0.0.1,8443 tcp from any to me 443
+Set the file to executable
+    
+    sudo chmod +x ipfw.ngnix.sh
 Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <code>/Library/LaunchDaemons/ipfw.nginx.plist</code>, load the file with by running command 
 
     sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.plist
