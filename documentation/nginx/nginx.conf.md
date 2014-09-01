@@ -1,4 +1,4 @@
-    #Date: Sep 01 4:15 AM
+    #Date: Sep 01 5:40 AM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip 
     worker_processes  1;
@@ -119,7 +119,7 @@
 
             access_log  /var/logs/nginx/prod.access.log main;        
 
-            ssl_protocols TLSv1.1 TLSv1.2;
+            sl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
             ssl_ciphers HIGH:!aNULL:!MD5;
             ssl_prefer_server_ciphers  on;
 
