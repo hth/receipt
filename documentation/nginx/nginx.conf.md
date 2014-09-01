@@ -1,5 +1,6 @@
-    #Date: Aug 31 4:30 PM
+    #Date: Aug 31 11:45 PM
     #user  nobody;
+    #IP Address 192.168.1.71 is related to the nginx installed ip 
     worker_processes  1;
 
     error_log  /var/logs/nginx/error.log;
@@ -43,7 +44,8 @@
 
         server {
             listen       8080;
-            server_name  localhost receiptofi.com;
+            server_name  localhost 192.168.1.71 receiptofi.com;
+            return  301  https://$host$request_uri; 
 
             #charset koi8-r;
 
@@ -108,7 +110,7 @@
         #
         server {
             listen       8443 ssl;
-            server_name  localhost receiptofi.com;
+            server_name  localhost 192.168.1.71 receiptofi.com;
 
             access_log  /var/logs/nginx/prod.access.log main;
 
