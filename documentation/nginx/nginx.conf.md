@@ -1,4 +1,4 @@
-    #Date: Aug 31 11:45 PM
+    #Date: Sep 01 3:05 AM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip 
     worker_processes  1;
@@ -33,7 +33,7 @@
         tcp_nopush     on;
 
         # Timeout for keep-alive connections. Server will close connections after this time.
-        keepalive_timeout  65;
+        keepalive_timeout  70;
 
         # Compression. Reduces the amount of data that needs to be transferred over the network
         gzip on;
@@ -106,19 +106,19 @@
         ssl_certificate      /var/cert/2b4bac234a6b92.crt;
         ssl_certificate_key  /var/cert/receiptofi.com.key;
 
+        ssl_session_cache    shared:SSL:10m;
+        ssl_session_timeout  10m;
+
         # HTTPS server
         #
         server {
             listen       8443 ssl;
             server_name  localhost 192.168.1.71 receiptofi.com;
 
-            access_log  /var/logs/nginx/prod.access.log main;
+            access_log  /var/logs/nginx/prod.access.log main;        
 
-            ssl_session_cache    shared:SSL:10m;
-            ssl_session_timeout  10m;
-
-            ssl_protocols SSLv3 TLSv1;
-            ssl_ciphers  HIGH:!aNULL:!MD5;
+            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+            ssl_ciphers HIGH:!aNULL:!MD5;
             ssl_prefer_server_ciphers  on;
 
             location / {
