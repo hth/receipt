@@ -1,4 +1,4 @@
-    #Date: Sep 01 3:05 AM
+    #Date: Sep 01 4:15 AM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip 
     worker_processes  1;
@@ -16,8 +16,10 @@
 
 
     http {
-        include       mime.types;
-        default_type  application/octet-stream;
+        include         mime.types;
+        # Todo add black listed ips here
+        #include         blockips.conf;
+        default_type    application/octet-stream;
 
         log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                           '$status $body_bytes_sent "$http_referer" '
@@ -122,8 +124,10 @@
             ssl_prefer_server_ciphers  on;
 
             location / {
-                root   /data/www;
-                index  index.html index.htm;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_pass http://localhost:9090;
             }
         }
 
