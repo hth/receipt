@@ -112,7 +112,7 @@
         # HTTPS server
         #
         server {
-            listen       8443 ssl;
+            listen       8443 ssl spdy;
             server_name  localhost 192.168.1.71 receiptofi.com;
 
             access_log  /var/logs/nginx/prod.access.log main;        
