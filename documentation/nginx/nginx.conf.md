@@ -22,12 +22,12 @@
                           '$status $body_bytes_sent "$http_referer" '
                           '"$http_user_agent" "$http_x_forwarded_for"';
 
-        # Sendfile copies data between one FD and other from within the kernel. 
+        # Sendfile copies data between one FD and other from within the kernel.
         # More efficient than read() + write(), since the requires transferring data to and from the user space.
         sendfile       on;
 
-        # Tcp_nopush causes nginx to attempt to send its HTTP response head in one packet, 
-        # instead of using partial frames. This is useful for prepending headers before calling sendfile, 
+        # Tcp_nopush causes nginx to attempt to send its HTTP response head in one packet,
+        # instead of using partial frames. This is useful for prepending headers before calling sendfile,
         # or for throughput optimization.
         tcp_nopush     on;
 
