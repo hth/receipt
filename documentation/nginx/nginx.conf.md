@@ -117,7 +117,7 @@
 
             access_log  /var/logs/nginx/prod.access.log main;        
 
-            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+            ssl_protocols TLSv1.1 TLSv1.2;
             ssl_ciphers HIGH:!aNULL:!MD5;
             ssl_prefer_server_ciphers  on;
 
