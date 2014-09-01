@@ -1,6 +1,6 @@
-    #Date: Sep 01 5:40 AM
+    #Date: Sep 01 1:32 PM
     #user  nobody;
-    #IP Address 192.168.1.71 is related to the nginx installed ip 
+    #IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
 
     error_log  /var/logs/nginx/error.log;
@@ -16,9 +16,10 @@
 
 
     http {
+        # Black listed ips bots resides here
+        include         blockips.conf;
+
         include         mime.types;
-        # Todo add black listed ips here
-        #include         blockips.conf;
         default_type    application/octet-stream;
 
         log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
@@ -47,7 +48,7 @@
         server {
             listen       8080;
             server_name  localhost 192.168.1.71 receiptofi.com;
-            return  301  https://$host$request_uri; 
+            return  301  https://$host$request_uri;
 
             #charset koi8-r;
 
@@ -117,7 +118,7 @@
             listen       8443 ssl;
             server_name  localhost 192.168.1.71 receiptofi.com;
 
-            access_log  /var/logs/nginx/prod.access.log main;        
+            access_log  /var/logs/nginx/prod.access.log main;
 
             ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
             ssl_ciphers HIGH:!aNULL:!MD5;
