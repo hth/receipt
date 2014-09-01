@@ -1,4 +1,5 @@
 #### Blocked ip from access
+	deny	12.202.58.155;
 	deny	24.11.97.106;
 	deny	24.44.5.10;
 	deny	24.87.161.224;
