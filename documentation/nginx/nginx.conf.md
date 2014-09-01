@@ -1,4 +1,4 @@
-    #Date: Aug 31 6:15 PM
+    #Date: Aug 31 7:52 PM
     #user  nobody;
     worker_processes  1;
 
@@ -44,6 +44,7 @@
         server {
             listen       8080;
             server_name  localhost receiptofi.com;
+            return  301  https://$host$request_uri; 
 
             #charset koi8-r;
 
