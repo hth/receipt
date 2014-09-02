@@ -34,6 +34,9 @@ One is your certificate and other is bundle i.e intermediate certificates. Nginx
 You can do it simply by running following command:
 
     cat gd_bundle.crt >> example.com.crt
+or
+
+    cat sf_bundle-g2-g1.crt >> 2bf57.crt 
 Move this *example.com.crt* file to <code>/var/www/example.com/cert/directory</code> on nginx server.
 
 ###Step 4: Adjusting Nginx Configuration###
