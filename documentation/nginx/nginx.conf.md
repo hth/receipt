@@ -1,4 +1,4 @@
-    #Date: Sep 01 11:00 PM
+    #Date: Sep 02 1:15 PM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
@@ -47,7 +47,7 @@
 
         server {
             listen       8080;
-            server_name  localhost 192.168.1.71 receiptofi.com test.receiptofi.com m.receiptofi.com test.m.receiptofi.com;
+            server_name  localhost 192.168.1.71 receiptofi.com prod.receiptofi.com prod.m.receiptofi.com test.receiptofi.com test.m.receiptofi.com;
             return  301  https://$host$request_uri;
 
             #charset koi8-r;
@@ -106,11 +106,15 @@
         #    }
         #}
 
-        ssl_certificate      /var/cert/2b395d25c3b068.crt;
+        ssl_certificate      /var/cert/2b1422dfda17f8.crt;
         ssl_certificate_key  /var/cert/receiptofi.com.key;
 
         ssl_session_cache    shared:SSL:10m;
         ssl_session_timeout  10m;
+
+        ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
 
         # HTTPS server
         #
@@ -118,29 +122,37 @@
             listen       8443 ssl;
             server_name  localhost 192.168.1.71 receiptofi.com;
 
-            access_log  /var/logs/nginx/prod.access.log main;
+            access_log  /var/logs/nginx/access.log main;
 
-            ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
-            ssl_ciphers HIGH:!aNULL:!MD5;
-            ssl_prefer_server_ciphers  on;
+            location / {
+                root /data/www;
+                index index.html;
+            }
+        }
+
+        server {
+            listen       8443 ssl;
+            server_name  prod.receiptofi.com;
+
+            access_log  /var/logs/nginx/prod.access.log main;
 
             location / {
                 proxy_set_header X-Forwarded-Host $host;
                 proxy_set_header X-Forwarded-Server $host;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_pass http://192.168.1.75:8080;
+
+                #proxy_set_header X-Real-IP $remote_addr;
+                #proxy_set_header Host $host;
+                #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             }
         }
 
         server {
             listen       8443 ssl;
-            server_name  m.receiptofi.com;
+            server_name  prod.m.receiptofi.com;
 
-            access_log  /var/logs/nginx/m.prod.access.log main;
-
-            ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
-            ssl_ciphers HIGH:!aNULL:!MD5;
-            ssl_prefer_server_ciphers  on;
+            access_log  /var/logs/nginx/prod.m.access.log main;
 
             location / {
                 proxy_set_header X-Forwarded-Host $host;
@@ -156,15 +168,6 @@
 
             access_log  /var/logs/nginx/test.access.log main;
 
-            ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
-            ssl_ciphers HIGH:!aNULL:!MD5;
-            ssl_prefer_server_ciphers  on;
-
-            #location / {
-            #    root /data/www;
-            #    index index.html;
-            #}
-
             location / {
                 proxy_set_header X-Forwarded-Host $host;
                 proxy_set_header X-Forwarded-Server $host;
@@ -178,10 +181,6 @@
             server_name  test.m.receiptofi.com;
 
             access_log  /var/logs/nginx/test.m.access.log main;
-
-            ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
-            ssl_ciphers HIGH:!aNULL:!MD5;
-            ssl_prefer_server_ciphers  on;
 
             location / {
                 proxy_set_header X-Forwarded-Host $host;
