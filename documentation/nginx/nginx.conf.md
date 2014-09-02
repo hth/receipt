@@ -1,4 +1,4 @@
-    #Date: Sep 02 1:15 PM
+    #Date: Sep 02 3:00 PM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
@@ -40,14 +40,15 @@
 
         # Compression. Reduces the amount of data that needs to be transferred over the network
         gzip on;
-        gzip_min_length 10240;
+        gzip_comp_level 2;
+        gzip_min_length 1000;
         gzip_proxied    expired no-cache no-store private auth;
         gzip_types      text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
         gzip_disable    "MSIE [1-6]\.";
 
         server {
             listen       8080;
-            server_name  localhost 192.168.1.71 receiptofi.com prod.receiptofi.com prod.m.receiptofi.com test.receiptofi.com test.m.receiptofi.com;
+            server_name  localhost 192.168.1.71 receiptofi.com prod.receiptofi.com test.receiptofi.com;
             return  301  https://$host$request_uri;
 
             #charset koi8-r;
@@ -137,28 +138,15 @@
             access_log  /var/logs/nginx/prod.access.log main;
 
             location / {
-                proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Server $host;
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+
+                proxy_set_header Host $http_host;
+                proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-NginX-Proxy true;
+
                 proxy_pass http://192.168.1.75:8080;
-
-                #proxy_set_header X-Real-IP $remote_addr;
-                #proxy_set_header Host $host;
-                #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            }
-        }
-
-        server {
-            listen       8443 ssl;
-            server_name  prod.m.receiptofi.com;
-
-            access_log  /var/logs/nginx/prod.m.access.log main;
-
-            location / {
-                proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Server $host;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_pass http://192.168.1.75:8080/receipt-mobile/;
             }
         }
 
@@ -169,25 +157,23 @@
             access_log  /var/logs/nginx/test.access.log main;
 
             location / {
-                proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Server $host;
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+
+                proxy_set_header Host $http_host;
+                proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-NginX-Proxy true;
+
                 proxy_pass http://localhost:9090;
+
+                # Subdomain test.m.receiptofi.com would be best in its own host, 
+                # current architecture suggest (my opinion) to have one domain 
+                # and other application(s) list as /x.domain.com/receipt-mobile/
+                #proxy_set_header X-Forwarded-Host $host;
+                #proxy_set_header X-Forwarded-Server $host;
+                #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                #proxy_pass http://localhost:9090/receipt-mobile/;
             }
         }
-
-        server {
-            listen       8443 ssl;
-            server_name  test.m.receiptofi.com;
-
-            access_log  /var/logs/nginx/test.m.access.log main;
-
-            location / {
-                proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Server $host;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_pass http://localhost:9090/receipt-mobile/;
-            }
-        }
-
     }
