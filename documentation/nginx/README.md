@@ -52,4 +52,9 @@ Add **A Host** to domain provider. Example below
 
 Note: **m** for mobile site
 
-Once subdomain are registered, add references in **[nginx.conf](nginx.conf.md)** 
+Once subdomain are registered, add references in **[nginx.conf](nginx.conf.md)**. Also, look out for firewall settings. Try <code>curl</code> from nginx host to validated working of Tomcat instance on another host. 
+
+**Note**: Curl check does not prove firewall settings are working.
+
+    curl http://192.168.1.75:8080 -H "host: prod.receiptofi.com" -v
+    curl http://192.168.1.75:8080/receipt-mobile/ -H "host: prod.m.receiptofi.com" -v
