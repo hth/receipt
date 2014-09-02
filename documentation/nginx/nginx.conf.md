@@ -1,4 +1,4 @@
-    #Date: Sep 02 3:00 PM
+    #Date: Sep 02 3:30 PM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
@@ -115,7 +115,7 @@
 
         ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers HIGH:!aNULL:!MD5;
-        ssl_prefer_server_ciphers  on;
+        ssl_prefer_server_ciphers on;
 
         # HTTPS server
         #
@@ -141,10 +141,10 @@
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
 
-                proxy_set_header Host $http_host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-NginX-Proxy true;
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
 
                 proxy_pass http://192.168.1.75:8080;
             }
@@ -160,19 +160,20 @@
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
 
-                proxy_set_header Host $http_host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-NginX-Proxy true;
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
 
                 proxy_pass http://localhost:9090;
 
-                # Subdomain test.m.receiptofi.com would be best in its own host, 
-                # current architecture suggest (my opinion) to have one domain 
-                # and other application(s) list as /x.domain.com/receipt-mobile/
-                #proxy_set_header X-Forwarded-Host $host;
-                #proxy_set_header X-Forwarded-Server $host;
-                #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                # Subdomain test.m.receiptofi.com would be best in its own host,
+                # current architecture suggest (my opinion) to have one domain
+                # and other application(s) list as /test.domain.com/receipt-mobile/
+                # instead of /test.m.domain.com/receipt-mobile/
+                #proxy_set_header   X-Forwarded-Host        $host;
+                #proxy_set_header   X-Forwarded-Server      $host;
+                #proxy_set_header   X-Forwarded-For         $proxy_add_x_forwarded_for;
                 #proxy_pass http://localhost:9090/receipt-mobile/;
             }
         }
