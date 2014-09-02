@@ -1,4 +1,4 @@
-    #Date: Sep 01 1:32 PM
+    #Date: Sep 01 6:32 PM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
@@ -47,7 +47,7 @@
 
         server {
             listen       8080;
-            server_name  localhost 192.168.1.71 receiptofi.com;
+            server_name  localhost 192.168.1.71 receiptofi.com test.receiptofi.com m.receiptofi.com test.m.receiptofi.com;
             return  301  https://$host$request_uri;
 
             #charset koi8-r;
@@ -129,6 +129,54 @@
                 proxy_set_header X-Forwarded-Server $host;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_pass http://localhost:9090;
+            }
+        }
+
+        server {
+            listen       8443 ssl;
+            server_name  m.receiptofi.com;
+
+            access_log  /var/logs/nginx/m.prod.access.log main;
+
+            ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+            ssl_ciphers HIGH:!aNULL:!MD5;
+            ssl_prefer_server_ciphers  on;
+
+            location / {
+                root /data/www;
+                index index.html;
+            }
+        }
+
+        server {
+            listen       8443 ssl;
+            server_name  test.receiptofi.com;
+
+            access_log  /var/logs/nginx/test.access.log main;
+
+            ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+            ssl_ciphers HIGH:!aNULL:!MD5;
+            ssl_prefer_server_ciphers  on;
+
+            location / {
+                root /data/www;
+                index index.html;
+            }
+        }
+
+        server {
+            listen       8443 ssl;
+            server_name  test.m.receiptofi.com;
+
+            access_log  /var/logs/nginx/test.m.access.log main;
+
+            ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+            ssl_ciphers HIGH:!aNULL:!MD5;
+            ssl_prefer_server_ciphers  on;
+
+            location / {
+                root /data/www;
+                index index.html;
             }
         }
 

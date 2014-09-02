@@ -42,3 +42,14 @@ Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <co
     
 #### Static www for nginx
 Create directory <code>/data/www</code> matching <code>root</code> mapping in **[nginx.conf](nginx.conf.md)**. Then add file <code>index.html</code> inside this newly created directory
+
+#### Subdomain support
+Add **A Host** to domain provider. Example below
+- receiptofi.com, (already exists as primary domain, hence no change here)
+- m.receiptofi.com, 
+- test.receiptofi.com,
+- test.m.receiptofi.com
+
+Note: **m** for mobile site
+
+Once subdomain are registered, add references in **[nginx.conf](nginx.conf.md)** 
