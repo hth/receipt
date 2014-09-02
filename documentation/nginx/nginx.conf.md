@@ -1,4 +1,4 @@
-    #Date: Sep 01 6:32 PM
+    #Date: Sep 01 11:00 PM
     #user  nobody;
     #IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
@@ -106,7 +106,7 @@
         #    }
         #}
 
-        ssl_certificate      /var/cert/2b4bac234a6b92.crt;
+        ssl_certificate      /var/cert/2b395d25c3b068.crt;
         ssl_certificate_key  /var/cert/receiptofi.com.key;
 
         ssl_session_cache    shared:SSL:10m;
@@ -128,7 +128,7 @@
                 proxy_set_header X-Forwarded-Host $host;
                 proxy_set_header X-Forwarded-Server $host;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_pass http://localhost:9090;
+                proxy_pass http://192.168.1.75:8080;
             }
         }
 
@@ -143,8 +143,10 @@
             ssl_prefer_server_ciphers  on;
 
             location / {
-                root /data/www;
-                index index.html;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_pass http://192.168.1.75:8080/receipt-mobile/;
             }
         }
 
@@ -158,9 +160,16 @@
             ssl_ciphers HIGH:!aNULL:!MD5;
             ssl_prefer_server_ciphers  on;
 
+            #location / {
+            #    root /data/www;
+            #    index index.html;
+            #}
+
             location / {
-                root /data/www;
-                index index.html;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_pass http://localhost:9090;
             }
         }
 
@@ -175,8 +184,10 @@
             ssl_prefer_server_ciphers  on;
 
             location / {
-                root /data/www;
-                index index.html;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_pass http://localhost:9090/receipt-mobile/;
             }
         }
 
