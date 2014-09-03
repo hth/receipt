@@ -52,4 +52,16 @@ Add **A Host** to domain provider. Example below
 
 Note: **m** for mobile site
 
-Once subdomain are registered, add references in **[nginx.conf](nginx.conf.md)** 
+Once subdomain are registered, add references in **[nginx.conf](nginx.conf.md)**. Also, look out for firewall settings. Try <code>curl</code> from nginx host to validated working of Tomcat instance on another host. 
+
+**Note**: Curl check does not prove firewall settings are working. But seems the issue was with the ssl certificate not able to recognize hostname as <code>/etc/hosts</code> did not contain the correct hostname. Make sure hostname exists, else <code>ssl</code> will reject the call silently when called from browser. This can be verfied with <code>httpie</code> installed using <code>brew install httpie</code>. Message was clear when the call was executed using <code>httpie</code>
+
+Httpie call to verify if server responds correctly. Looks like hostname mis-match occured.
+
+    http -v https://prod.receiptofi.com
+    http: error: SSLError: hostname 'prod.receiptofi.com' doesn't match 'receiptofi.com'
+
+Curl command to check is everything working fine.
+
+    curl http://192.168.1.75:8080 -H "host: prod.receiptofi.com" -v
+    curl http://192.168.1.75:8080/receipt-mobile/ -H "host: prod.receiptofi.com" -v
