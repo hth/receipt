@@ -56,7 +56,7 @@ Once subdomain are registered, add references in **[nginx.conf](nginx.conf.md)**
 
 **Note**: Curl check does not prove firewall settings are working. But seems the issue was with the ssl certificate not able to recognize hostname as <code>/etc/hosts</code> did not contain the correct hostname. Make sure hostname exists, else <code>ssl</code> will reject the call silently when called from browser. This can be verfied with <code>httpie</code> installed using <code>brew install httpie</code>. Message was clear when the call was executed using <code>httpie</code>
 
-Httpie call to verify if server responds correctly. Looks like hostname mis-match occured.
+Httpie call to verify if server responds correctly. Looks like hostname mis-match occured. Another thing to note is that the call between <code>nginx</code> and <code>Tomcat</code> would always be insecure. SSL is on <code>nginx</code>, so the call below is of less help but it did help point me in correct direction.
 
     http -v https://prod.receiptofi.com
     http: error: SSLError: hostname 'prod.receiptofi.com' doesn't match 'receiptofi.com'
