@@ -45,7 +45,7 @@ Create directory <code>/data/www</code> matching <code>root</code> mapping in **
 
 #### Subdomain support
 Add **A Host** to domain provider. Example below
-- receiptofi.com, (already exists as primary domain, hence no change here)
+- receiptofi.com, (already exists as primary domain, hence no change here. Static site)
 - prod.receiptofi.com, 
 - test.receiptofi.com,
 - *.m.receiptofi.com (on hold, until standalone server is deployed with mobile web app)
