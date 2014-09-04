@@ -20,7 +20,7 @@ sudo chmod +x /Library/Tomcat/bin/*.sh
 #Java setup
 http://www.cc.gatech.edu/~simpkins/teaching/gatech/cs2340/guides/java7-macosx.html
 
-Set JAVA symb link
+#Set JAVA symb link from above step
 sudo rm /usr/bin/java
 sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/bin/java /usr/bin/java
 
