@@ -1,8 +1,6 @@
-Follow the steps mentioned at
-	http://tomcat.apache.org/tomcat-7.0-doc/logging.html#Using_Log4j
+Follow the steps mentioned at http://tomcat.apache.org/tomcat-7.0-doc/logging.html#Using_Log4j
 
-Pick log4j from 'lib' folder. Download tomcat-juli.jar and tomcat-juli-adapters.jar that are available as an "extras"
-component for Tomcat
+Pick log4j from 'lib' folder. Download **tomcat-juli.jar** and **tomcat-juli-adapters.jar** that are available as an "extras" component for Tomcat
 
 If you want to configure Tomcat to use log4j globally:
 
