@@ -1,6 +1,7 @@
-    #Date: Sep 02 3:30 PM
-    #user  nobody;
-    #IP Address 192.168.1.71 is related to the nginx installed ip
+    # Date: Sep 03 07:30 PM
+    # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
+    # user  nobody;
+    # IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
 
     error_log  /var/logs/nginx/error.log;
@@ -107,7 +108,7 @@
         #    }
         #}
 
-        ssl_certificate      /var/cert/2b1422dfda17f8.crt;
+        ssl_certificate      /var/cert/277f903303df70.crt;
         ssl_certificate_key  /var/cert/receiptofi.com.key;
 
         ssl_session_cache    shared:SSL:10m;

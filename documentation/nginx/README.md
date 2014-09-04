@@ -27,6 +27,10 @@ Its prefered to set **root** access for firewall configuration
 
 ##### Create directory
     /usr/local/startup/firewall
+    
+In theory and practice, let the router's firewall do the port forwarding from 80 to 8080 and 443 to 8443. This firewall script will help internally to reach the host on port 80. Otherwise, will have to enter port number at each request internally. 
+
+Do not forget to do periodic port scan.
 
 Then create file with name **ipfw.nginx.sh** at <code>/usr/local/startup/firewall</code>. Populate the file with following text. And save the file. Of course, set the **permissions** to file correctly and make it executable. If script is not made executable then you would see error <code>Job failed to exec(3) for weird reason: 13</code>
 
