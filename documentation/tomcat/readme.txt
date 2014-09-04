@@ -20,6 +20,10 @@ sudo chmod +x /Library/Tomcat/bin/*.sh
 #Java setup
 http://www.cc.gatech.edu/~simpkins/teaching/gatech/cs2340/guides/java7-macosx.html
 
+Set JAVA symb link
+sudo rm /usr/bin/java
+sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/bin/java /usr/bin/java
+
 #Tomcat env and auto start set up
 http://stackoverflow.com/questions/6897476/tomcat-7-how-to-set-initial-heap-size-correctly
 http://stackoverflow.com/questions/6398053/cant-change-tomcat-7-heap-size/10950387#10950387
