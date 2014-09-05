@@ -17,6 +17,8 @@ http://wolfpaulus.com/jounal/mac/tomcat7
 - Make all scripts executable:
 -- sudo chmod +x /Library/Tomcat/bin/*.sh
 
+http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.html
+
 #### Java setup
 - http://www.cc.gatech.edu/~simpkins/teaching/gatech/cs2340/guides/java7-macosx.html
 
