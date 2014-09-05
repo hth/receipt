@@ -17,6 +17,8 @@ http://wolfpaulus.com/jounal/mac/tomcat7
 - Make all scripts executable:
 -- sudo chmod +x /Library/Tomcat/bin/*.sh
 
+http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.html
+
 #### Java setup
 - http://www.cc.gatech.edu/~simpkins/teaching/gatech/cs2340/guides/java7-macosx.html
 
@@ -30,7 +32,7 @@ http://wolfpaulus.com/jounal/mac/tomcat7
 - https://confluence.atlassian.com/display/CONF33/Start+Confluence+automatically+on+OS+X+using+launchd
 - http://www.manniwood.com/tomcat_stuff/index.html
 
-#### Run and check if tomcat is running
+#### Run and check if tomcat is running (plist files are rw-r-r)
 - sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist
 - sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist
 
