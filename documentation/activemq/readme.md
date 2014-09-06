@@ -12,10 +12,9 @@ And then change owner ship to local user ***db***
 
 	sudo chown -R db /Library/ActiveMQ
 	
-Create activemq.plist	
+Create activemq.plisl and let the owner be root
 	
 	sudo nano activemq.list
-	sudo chown db activemq.list 
 
 Load 	
 
