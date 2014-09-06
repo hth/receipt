@@ -16,6 +16,7 @@ Then install nginx with help of <code>brew install nginx</code>. Once installed 
     /var/logs/firewall          (set chown to root)
     /var/logs/receiptofi
     /var/logs/mongo
+    /var/logs/activemq
     /opt/receiptofi/expensofi   (for generating reports)
 
 ### Nginx Configuration  
