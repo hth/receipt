@@ -19,8 +19,8 @@ Create activemq.plist
 
 Load 	
 
-	sudo launchctl unload /Library/LaunchDaemons/activemq.plist
-	sudo launchctl load /Library/LaunchDaemons/activemq.plist
+	sudo launchctl unload -w /Library/LaunchDaemons/activemq.plist
+	sudo launchctl load -w /Library/LaunchDaemons/activemq.plist
 
 For local environment start active mq by
 
