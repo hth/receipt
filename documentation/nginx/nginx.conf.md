@@ -108,8 +108,8 @@
         #    }
         #}
 
-        ssl_certificate      /var/cert/277f903303df70.crt;
-        ssl_certificate_key  /var/cert/receiptofi.com.key;
+        ssl_certificate      /var/certs/277f903303df70.crt;
+        ssl_certificate_key  /var/certs/receiptofi.com.key;
 
         ssl_session_cache    shared:SSL:10m;
         ssl_session_timeout  10m;
