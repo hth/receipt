@@ -1,4 +1,4 @@
-***Don't forget to create for firewall log***
+***Don't forget to create directory for firewall log***
     
     /var/log/receiptofi/firewall/
 
