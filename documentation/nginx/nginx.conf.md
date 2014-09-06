@@ -1,4 +1,4 @@
-    # Date: Sep 03 07:30 PM
+    # Date: Sep 05 11:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -46,6 +46,8 @@
         gzip_proxied    expired no-cache no-store private auth;
         gzip_types      text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
         gzip_disable    "MSIE [1-6]\.";
+
+        client_max_body_size 10M;
 
         server {
             listen       8080;
@@ -108,8 +110,8 @@
         #    }
         #}
 
-        ssl_certificate      /var/cert/277f903303df70.crt;
-        ssl_certificate_key  /var/cert/receiptofi.com.key;
+        ssl_certificate      /var/certs/277f903303df70.crt;
+        ssl_certificate_key  /var/certs/receiptofi.com.key;
 
         ssl_session_cache    shared:SSL:10m;
         ssl_session_timeout  10m;

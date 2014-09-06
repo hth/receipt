@@ -13,7 +13,7 @@ http://wolfpaulus.com/jounal/mac/tomcat7
 - sudo rm -f /Library/Tomcat
 - sudo ln -s /usr/local/apache-tomcat-7.0.47 /Library/Tomcat
 - Change ownership of the /Library/Tomcat folder hierarchy:
-- sudo chown -R <your_username> /Library/Tomcat
+- sudo chown -R db /Library/Tomcat
 - Make all scripts executable:
 -- sudo chmod +x /Library/Tomcat/bin/*.sh
 
@@ -25,12 +25,17 @@ http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.ht
 #### Set JAVA symb link from above step
 - sudo rm /usr/bin/java
 - sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/bin/java /usr/bin/java
+- sudo rm /Library/Java/Home
+- sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home /Library/Java/Home
 
 #### Tomcat env and auto start set up
 - http://stackoverflow.com/questions/6897476/tomcat-7-how-to-set-initial-heap-size-correctly
 - http://stackoverflow.com/questions/6398053/cant-change-tomcat-7-heap-size/10950387#10950387
 - https://confluence.atlassian.com/display/CONF33/Start+Confluence+automatically+on+OS+X+using+launchd
 - http://www.manniwood.com/tomcat_stuff/index.html
+
+#### Create file receiptofi.plist and let the owner be root
+- sudo nano /Library/LaunchDaemons/receiptofi.plist
 
 #### Run and check if tomcat is running (plist files are rw-r-r)
 - sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist

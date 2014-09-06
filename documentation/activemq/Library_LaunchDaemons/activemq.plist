@@ -12,7 +12,7 @@
         <string>com.apache.activemq</string>
         <key>ProgramArguments</key>
         <array>
-            <string>/Library/ActiveMQ/bin/macosx/activemq</string>
+            <string>/Library/ActiveMQ/bin/activemq</string>
             <string>start</string>
         </array>
         <key>WorkingDirectory</key>
@@ -20,9 +20,9 @@
         <key>ServiceDescription</key>
         <string>Receiptofi ActiveMQ</string>
         <key>StandardErrorPath</key>
-        <string>/var/log/receiptofi/activemq/activemq.stderr.log</string>
+        <string>/var/logs/activemq/activemq.stderr.log</string>
         <key>StandardOutPath</key>
-        <string>/var/log/receiptofi/activemq/activemq.stdout.log</string>
+        <string>/var/logs/activemq/activemq.stdout.log</string>
         <key>UserName</key>
         <string>db</string>
     </dict>

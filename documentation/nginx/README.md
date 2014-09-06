@@ -15,6 +15,8 @@ Then install nginx with help of <code>brew install nginx</code>. Once installed 
     /var/logs/nginx
     /var/logs/firewall          (set chown to root)
     /var/logs/receiptofi
+    /var/logs/mongo
+    /var/logs/activemq
     /opt/receiptofi/expensofi   (for generating reports)
 
 ### Nginx Configuration  
@@ -39,7 +41,11 @@ Then create file with name **ipfw.nginx.sh** at <code>/usr/local/startup/firewal
 Set the file to executable and persmission set to **chown root**
 
     sudo chmod +x ipfw.ngnix.sh
-Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <code>/Library/LaunchDaemons/ipfw.nginx.plist</code>, load the file with by running command 
+Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <code>/Library/LaunchDaemons/ipfw.nginx.plist</code>, load the file with by running command. Let the owner be root.
+    
+    sudo nano /Library/LaunchDaemons/ipfw.nginx.plist
+    
+Then execute these commands to start <code>ngnix</code>    
 
     sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.plist
     sudo launchctl unload -w /Library/LaunchDaemons/ipfw.nginx.plist

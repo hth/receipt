@@ -24,9 +24,9 @@
         <key>ServiceDescription</key>
         <string>Confluence</string>
         <key>StandardErrorPath</key>
-        <string>/var/logs/receiptofi/tomcat/launchd.stderr.log</string>
+        <string>/var/logs/receiptofi/launchd.stderr.log</string>
         <key>StandardOutPath</key>
-        <string>/var/logs/receiptofi/tomcat/launchd.stdout.log</string>
+        <string>/var/logs/receiptofi/launchd.stdout.log</string>
         <key>UserName</key>
         <string>db</string>
     </dict>
