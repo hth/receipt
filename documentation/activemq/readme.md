@@ -12,7 +12,7 @@ And then change owner ship to local user ***db***
 
 	sudo chown -R db /Library/ActiveMQ
 	
-Create activemq.lsit	
+Create activemq.plist	
 
 	sudo launchctl unload /Library/LaunchDaemons/activemq.plist
 	sudo launchctl load /Library/LaunchDaemons/activemq.plist
