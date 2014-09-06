@@ -34,6 +34,9 @@ http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.ht
 - https://confluence.atlassian.com/display/CONF33/Start+Confluence+automatically+on+OS+X+using+launchd
 - http://www.manniwood.com/tomcat_stuff/index.html
 
+#### Create file receiptofi.plist and let the owner be root
+- sudo nano /Library/LaunchDaemons/receiptofi.plist
+
 #### Run and check if tomcat is running (plist files are rw-r-r)
 - sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist
 - sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist
