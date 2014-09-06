@@ -13,7 +13,7 @@ http://wolfpaulus.com/jounal/mac/tomcat7
 - sudo rm -f /Library/Tomcat
 - sudo ln -s /usr/local/apache-tomcat-7.0.47 /Library/Tomcat
 - Change ownership of the /Library/Tomcat folder hierarchy:
-- sudo chown -R <your_username> /Library/Tomcat
+- sudo chown -R db /Library/Tomcat
 - Make all scripts executable:
 -- sudo chmod +x /Library/Tomcat/bin/*.sh
 
