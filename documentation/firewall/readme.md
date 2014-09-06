@@ -1,5 +1,5 @@
 ***Don't forget to create directory for firewall log***
     
-    /var/log/receiptofi/firewall/
+    /var/logs/receiptofi/firewall/
 
     sudo ipfw list
