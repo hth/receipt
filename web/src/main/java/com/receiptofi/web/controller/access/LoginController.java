@@ -35,7 +35,7 @@ public final class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @Value("${loginPage:login}")
-    public String loginPage;
+    private String loginPage;
 
     //private UserAgentStringParser parser;
     private final CachedUserAgentStringParser parser;

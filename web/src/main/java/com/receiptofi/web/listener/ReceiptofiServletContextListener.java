@@ -77,7 +77,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     }
 
     private void stopServer() {
-        log.error("Stopping server now");
+        log.error("Stopping server now. Fix above failures.");
         System.exit(0);
     }
 }
