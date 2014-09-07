@@ -40,7 +40,6 @@
 
     <logger name="com.receiptofi" level="debug" />
     <logger name="com.receiptofi.web.filter.LogContextFilter" level="OFF" />
-    <logger name="org.spring" level="WARN" />
     <logger name="org.springframework.security" level="WARN" />
 
     <logger name="net.bull.javamelody." level="ON" />
