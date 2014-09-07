@@ -77,7 +77,7 @@ public final class DocumentUpdateService {
      * @param documentForm
      * @throws Exception
      */
-    public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity documentForm) {
+    public void turkProcessReceipt(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity documentForm) {
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(documentForm.getId());
 
@@ -154,7 +154,7 @@ public final class DocumentUpdateService {
      * @param receiptDocument
      * @throws Exception
      */
-    public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptDocument) {
+    public void turkProcessReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptDocument) {
         ReceiptEntity fetchedReceipt = null;
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(receiptDocument.getId());
@@ -280,12 +280,12 @@ public final class DocumentUpdateService {
 
     /**
      * Reject receipt when invalid or un-readable
-     * @param id
+     * @param documentId
      * @param documentOfType
      * @throws Exception
      */
-    public void turkReject(String id, DocumentOfTypeEnum documentOfType) {
-        DocumentEntity document = loadActiveDocumentById(id);
+    public void turkDocumentReject(String documentId, DocumentOfTypeEnum documentOfType) {
+        DocumentEntity document = loadActiveDocumentById(documentId);
         try {
             document.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
             document.setDocumentOfType(documentOfType);

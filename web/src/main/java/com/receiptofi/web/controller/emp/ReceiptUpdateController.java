@@ -171,7 +171,7 @@ public final class ReceiptUpdateController {
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
-            documentUpdateService.turkReceipt(receipt, items, document);
+            documentUpdateService.turkProcessReceipt(receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
@@ -277,7 +277,7 @@ public final class ReceiptUpdateController {
         log.info("Beginning of Rejecting document={}", receiptDocumentForm.getReceiptDocument().getId());
         try {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
-            documentUpdateService.turkReject(document.getId(), document.getDocumentOfType());
+            documentUpdateService.turkDocumentReject(document.getId(), document.getDocumentOfType());
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
@@ -338,7 +338,7 @@ public final class ReceiptUpdateController {
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
-            documentUpdateService.turkReceiptReCheck(receipt, items, document);
+            documentUpdateService.turkProcessReceiptReCheck(receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch(Exception exce) {
