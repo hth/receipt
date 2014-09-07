@@ -1,7 +1,7 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.EvalFeedbackEntity;
-import com.receiptofi.domain.shared.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.repository.EvalFeedbackManager;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public final class EvalFeedbackService {
         String blobId = StringUtils.EMPTY;
         try {
             if(fileData.getSize() > 0) {
-                UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
+                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(fileData);
                 uploadReceiptImage.setRid(receiptUserId);
                 uploadReceiptImage.setFileType(FileTypeEnum.FEEDBACK);

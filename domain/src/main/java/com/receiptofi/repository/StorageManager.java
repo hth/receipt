@@ -4,7 +4,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.shared.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -20,7 +20,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  *
  * Stores Receipt Image in GridFs
  */
-public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
+public interface StorageManager extends RepositoryManager<UploadDocumentImage> {
 
 	/**
 	 * Saves the image and return the bolb id
@@ -28,7 +28,7 @@ public interface StorageManager extends RepositoryManager<UploadReceiptImage> {
 	 * @return String - bolbId
 	 * @throws IOException
 	 */
-	String saveFile(UploadReceiptImage object) throws IOException;
+	String saveFile(UploadDocumentImage object) throws IOException;
 
 	GridFSDBFile get(String id);
 

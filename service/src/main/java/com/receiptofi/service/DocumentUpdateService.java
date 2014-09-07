@@ -77,7 +77,7 @@ public final class DocumentUpdateService {
      * @param documentForm
      * @throws Exception
      */
-    public void turkReceipt(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity documentForm) throws Exception {
+    public void turkProcessReceipt(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity documentForm) {
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(documentForm.getId());
 
@@ -140,9 +140,9 @@ public final class DocumentUpdateService {
                 messageManager.undoUpdateObject(documentForm.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.OCR_PROCESSED);
                 //End of roll back
 
-                log.info("Complete with rollback: throwing exception");
+                log.warn("Rollback complete for processing document");
             }
-            throw new Exception(exce.getLocalizedMessage());
+            throw new RuntimeException("Failed processing document " + exce);
         }
     }
 
@@ -154,7 +154,7 @@ public final class DocumentUpdateService {
      * @param receiptDocument
      * @throws Exception
      */
-    public void turkReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptDocument) throws Exception {
+    public void turkProcessReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptDocument) {
         ReceiptEntity fetchedReceipt = null;
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(receiptDocument.getId());
@@ -225,8 +225,8 @@ public final class DocumentUpdateService {
             updateMessageManager(receiptDocument, DocumentStatusEnum.TURK_REQUEST, DocumentStatusEnum.TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
-            sb.append(receipt.getTotalString());
-            sb.append(" '").append(receipt.getBizName().getBusinessName()).append("' ");
+            sb.append(receipt.getTotalString()).append(" '");
+            sb.append(receipt.getBizName().getBusinessName()).append("' ");
             sb.append("receipt re-checked");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
@@ -262,9 +262,9 @@ public final class DocumentUpdateService {
                 messageManager.undoUpdateObject(receiptDocument.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.TURK_REQUEST);
                 //End of roll back
 
-                log.info("Complete with rollback: throwing exception");
+                log.warn("Rollback complete for re-processing document");
             }
-            throw new Exception(exce.getLocalizedMessage());
+            throw new RuntimeException("Failed re-processing document " + exce);
         }
     }
 
@@ -280,12 +280,12 @@ public final class DocumentUpdateService {
 
     /**
      * Reject receipt when invalid or un-readable
-     * @param id
+     * @param documentId
      * @param documentOfType
      * @throws Exception
      */
-    public void turkReject(String id, DocumentOfTypeEnum documentOfType) throws Exception {
-        DocumentEntity document = loadActiveDocumentById(id);
+    public void turkDocumentReject(String documentId, DocumentOfTypeEnum documentOfType) {
+        DocumentEntity document = loadActiveDocumentById(documentId);
         try {
             document.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
             document.setDocumentOfType(documentOfType);
@@ -310,7 +310,7 @@ public final class DocumentUpdateService {
             DBObject dbObject =  gridFSDBFile.getMetaData();
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Could not process receipt '").append(dbObject.get("ORIGINAL_FILENAME")).append("'");
+            sb.append("Could not process document '").append(dbObject.get("ORIGINAL_FILENAME")).append("'");
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.DOCUMENT, document);
 
         } catch(Exception exce) {
@@ -324,7 +324,7 @@ public final class DocumentUpdateService {
             messageManager.undoUpdateObject(document.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
             //End of roll back
 
-            log.info("Complete with rollback: throwing exception");
+            log.warn("Rollback complete for rejecting document");
         }
     }
 

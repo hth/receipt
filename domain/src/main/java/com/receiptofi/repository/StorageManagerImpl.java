@@ -4,7 +4,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.shared.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public final class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
-	public List<UploadReceiptImage> getAllObjects() {
+	public List<UploadDocumentImage> getAllObjects() {
 		DBCursor dbCursor = gridFs.getFileList();
 		while(dbCursor.hasNext()) {
 			DBObject dbObject = dbCursor.next();
@@ -58,17 +58,17 @@ public final class StorageManagerImpl implements StorageManager {
 	}
 
 	@Override
-	public void save(UploadReceiptImage object) {
+	public void save(UploadDocumentImage object) {
 		persist(object);
 	}
 
 	@Override
-	public String saveFile(UploadReceiptImage object) throws IOException {
+	public String saveFile(UploadDocumentImage object) throws IOException {
 		return persist(object);
 	}
 
 	@Override
-	public UploadReceiptImage findOne(String id) {
+	public UploadDocumentImage findOne(String id) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
@@ -86,7 +86,7 @@ public final class StorageManagerImpl implements StorageManager {
     }
 
 	@Override
-	public void deleteHard(UploadReceiptImage object) {
+	public void deleteHard(UploadDocumentImage object) {
 		throw new UnsupportedOperationException("Method not implemented");
 	}
 
@@ -104,18 +104,19 @@ public final class StorageManagerImpl implements StorageManager {
         }
     }
 
-	private String persist(UploadReceiptImage uploadReceiptImage) {
+	private String persist(UploadDocumentImage uploadDocumentImage) {
 		boolean closeStreamOnPersist = true;
 		GridFSInputFile receiptBlob;
         try {
-            if(uploadReceiptImage.containsFile()) {
-                InputStream is = new FileInputStream(uploadReceiptImage.getFile());
-                receiptBlob = gridFs.createFile(is, uploadReceiptImage.getFileName(), closeStreamOnPersist);
+            if(uploadDocumentImage.containsFile()) {
+                InputStream is = new FileInputStream(uploadDocumentImage.getFile());
+                receiptBlob = gridFs.createFile(is, uploadDocumentImage.getFileName(), closeStreamOnPersist);
             } else {
                 receiptBlob = gridFs.createFile(
-                        uploadReceiptImage.getFileData().getInputStream(),
-                        uploadReceiptImage.getFileName(),
-                        closeStreamOnPersist);
+                        uploadDocumentImage.getFileData().getInputStream(),
+                        uploadDocumentImage.getFileName(),
+                        closeStreamOnPersist
+                );
             }
         } catch (IOException ioe) {
             log.error("Image persist error:{}", ioe);
@@ -126,9 +127,9 @@ public final class StorageManagerImpl implements StorageManager {
             return null;
         } else {
             receiptBlob.put("D", false);
-            receiptBlob.put("FILE_TYPE", uploadReceiptImage.getFileType().getName());
-            receiptBlob.setContentType(uploadReceiptImage.getFileData().getContentType());
-            receiptBlob.setMetaData(uploadReceiptImage.getMetaData());
+            receiptBlob.put("FILE_TYPE", uploadDocumentImage.getFileType().getName());
+            receiptBlob.setContentType(uploadDocumentImage.getFileData().getContentType());
+            receiptBlob.setMetaData(uploadDocumentImage.getMetaData());
 
             receiptBlob.save();
             return receiptBlob.getId().toString();
