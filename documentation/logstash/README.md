@@ -15,25 +15,25 @@ Note:
 - type => ***test_app*** is indexed; for prod it will be type => ***prod_app***
 - codec => multiline not sure how much beneficial
 
-		input {
-		    file {
-			    type => "test_app"
-		        path => ["/var/logs/receiptofi/receiptofi.log"]
-		        exclude => ["launchd.stderr.log", "launchd.stdout.log"]
-		        sincedb_path => "/opt/logstash/sincedb-access"
-		        tags => "test"
-		        codec => "json"
-		
-				# think about
-		        # stat_interval => 15
-		        # start_position => beginning
-		
-				# no need for this as line are clubbed together
-		        # codec => multiline {
-		        #  pattern => "^\s"
-		        #  what => "previous"
-		        # }
-		    }
+        input {
+            file {
+                type => "test_app"
+                path => ["/var/logs/receiptofi/receiptofi.log"]
+                exclude => ["launchd.stderr.log", "launchd.stdout.log"]
+                sincedb_path => "/opt/logstash/sincedb-access"
+                tags => "test"
+                codec => "json"
+
+                # think about
+                # stat_interval => 15
+                # start_position => beginning
+
+                # no need for this as line are clubbed together
+                # codec => multiline {
+                #  pattern => "^\s"
+                #  what => "previous"
+                # }
+            }
 
             file {
                 type => "test_mobile_app"
@@ -43,15 +43,15 @@ Note:
                 tags => "test_mobile"
                 codec => "json"
             }
-		}
-		
-		output {
-		    redis {
-		        host => "192.168.1.74"
-		        data_type => "list"
-		        key => "logstash"
-		    }
-		}
+        }
+
+        output {
+            redis {
+                host => "192.168.1.74"
+                data_type => "list"
+                key => "logstash"
+            }
+        }
 
 
 logstash.plist
