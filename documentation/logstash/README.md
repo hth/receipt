@@ -83,6 +83,7 @@ logstash.plist
 	bin/logstash agent --verbose -f /etc/logstash/conf.d/receiptofi.shipper.conf
 
 How to test configuration
+
 	bin/logstash agent --configtest --config /etc/logstash/conf.d/receiptofi.shipper.conf
 
 
@@ -90,6 +91,7 @@ How to test configuration
 	sudo launchctl load -w /Library/LaunchDaemons/logstash.plist
 
 Update firewall to allow redis on port 6379; and the reload firewall
+
 	sudo ipfw add 120 allow tcp from 192.168.1.74 to any dst-port 6379
 
 	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
