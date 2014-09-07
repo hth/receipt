@@ -15,6 +15,7 @@ Note:
 - type => ***test_app*** is indexed; for prod it will be type => ***prod_app***
 - codec => multiline not sure how much beneficial
 
+
 	input {
 		file {
 			type => "test_app"
