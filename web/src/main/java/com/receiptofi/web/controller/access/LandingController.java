@@ -14,7 +14,6 @@ import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.service.AccountService;
-import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
@@ -270,10 +269,10 @@ public final class LandingController extends BaseController {
             for (MultipartFile multipartFile : files) {
                 UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
-                uploadReceiptImage.setUserProfileId(rid);
+                uploadReceiptImage.setRid(rid);
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
-                    landingService.uploadReceipt(rid, uploadReceiptImage);
+                    landingService.uploadDocument(uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {
@@ -320,7 +319,7 @@ public final class LandingController extends BaseController {
             for (MultipartFile multipartFile : files) {
                 UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
-                uploadReceiptImage.setUserProfileId(receiptUser.getRid());
+                uploadReceiptImage.setRid(receiptUser.getRid());
                 uploadReceiptImage.setFileType(FileTypeEnum.MILEAGE);
                 try {
                     landingService.appendMileage(documentId, receiptUser.getRid(), uploadReceiptImage);

@@ -27,6 +27,7 @@ import com.receiptofi.utils.Maths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -42,6 +43,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,6 +76,9 @@ public final class LandingService {
     @Autowired private FileSystemService fileSystemService;
     @Autowired private ImageSplitService imageSplitService;
     @Autowired private ReceiptParserService receiptParserService;
+
+    @Value("${SCALE_UPLOAD_IMAGE_ON:false}")
+    private boolean scaledUploadImage;
 
     static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
         public int compare(ReceiptGrouped left, ReceiptGrouped right) {
@@ -262,14 +267,13 @@ public final class LandingService {
     /**
      * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS
      *
-     * @param userProfileId
      * @param uploadReceiptImage
      * @throws Exception
      */
-    public void uploadReceipt(String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
-        String receiptBlobId = null;
+    public void uploadDocument(UploadReceiptImage uploadReceiptImage) throws Exception {
+        String documentBlobId = null;
         DocumentEntity documentEntity = null;
-        FileSystemEntity fileSystemEntityUnScaled = null;
+        FileSystemEntity fileSystem = null;
         List<ItemEntityOCR> items;
         try {
             //No more using OCR
@@ -277,21 +281,27 @@ public final class LandingService {
             //String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
             //TODO remove Temp Code
             //String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
-            log.info("Translation: " + receiptOCRTranslation);
+            log.info("Upload document rid={} fileType={}", uploadReceiptImage.getRid(), uploadReceiptImage.getFileType());
 
-            File scaled = scaleImage(uploadReceiptImage);
-            uploadReceiptImage.setFile(scaled);
-            receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
-            uploadReceiptImage.setBlobId(receiptBlobId);
+            BufferedImage bufferedImage;
+            if(scaledUploadImage) {
+                File scaled = scaleImage(uploadReceiptImage);
+                uploadReceiptImage.setFile(scaled);
+                bufferedImage = imageSplitService.bufferedImage(scaled);
+            } else {
+                bufferedImage = imageSplitService.bufferedImage(uploadReceiptImage.getFileData().getInputStream());
+            }
+            documentBlobId = fileDBService.saveFile(uploadReceiptImage);
+            uploadReceiptImage.setBlobId(documentBlobId);
 
             documentEntity = DocumentEntity.newInstance();
             documentEntity.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
 
-            fileSystemEntityUnScaled = new FileSystemEntity(receiptBlobId, imageSplitService.bufferedImage(scaled), 0, 0);
-            fileSystemService.save(fileSystemEntityUnScaled);
-            documentEntity.addReceiptBlobId(fileSystemEntityUnScaled);
+            fileSystem = new FileSystemEntity(documentBlobId, bufferedImage, 0, 0);
+            fileSystemService.save(fileSystem);
+            documentEntity.addReceiptBlobId(fileSystem);
 
-            documentEntity.setUserProfileId(userProfileId);
+            documentEntity.setUserProfileId(uploadReceiptImage.getRid());
             //Cannot pre-select it for now
             //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
@@ -304,7 +314,7 @@ public final class LandingService {
             documentManager.save(documentEntity);
             itemOCRManager.saveObjects(items);
 
-            log.info("DocumentEntity @Id after save: " + documentEntity.getId());
+            log.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getUserProfileId());
             UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(documentEntity.getUserProfileId());
             senderJMS.send(documentEntity, userProfile);
         } catch (Exception exce) {
@@ -312,14 +322,14 @@ public final class LandingService {
             log.warn("Undo all the saves");
 
             int sizeFSInitial = fileDBService.getFSDBSize();
-            if(receiptBlobId != null) {
-                fileDBService.deleteHard(receiptBlobId);
+            if(documentBlobId != null) {
+                fileDBService.deleteHard(documentBlobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
             log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
 
-            if(fileSystemEntityUnScaled != null) {
-                fileSystemService.deleteHard(fileSystemEntityUnScaled);
+            if(fileSystem != null) {
+                fileSystemService.deleteHard(fileSystem);
             }
 
             long sizeReceiptInitial = documentManager.collectionSize();
@@ -348,10 +358,14 @@ public final class LandingService {
         }
     }
 
+    /**
+     * Scales uploaded document image
+     *
+     * @param uploadReceiptImage
+     * @return
+     * @throws IOException
+     */
     private File scaleImage(UploadReceiptImage uploadReceiptImage) throws IOException {
-//        receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
-//        log.info("File Id: " + receiptBlobId);
-
         MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
         File original = CreateTempFile.file(
                 "image_" +
@@ -362,8 +376,6 @@ public final class LandingService {
         commonsMultipartFile.transferTo(original);
         return imageSplitService.decreaseResolution(original);
     }
-
-
 
     /**
      * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS

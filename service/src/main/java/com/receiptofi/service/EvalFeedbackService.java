@@ -31,7 +31,7 @@ public final class EvalFeedbackService {
             if(fileData.getSize() > 0) {
                 UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
                 uploadReceiptImage.setFileData(fileData);
-                uploadReceiptImage.setUserProfileId(receiptUserId);
+                uploadReceiptImage.setRid(receiptUserId);
                 uploadReceiptImage.setFileType(FileTypeEnum.FEEDBACK);
 
                 blobId = fileDBService.saveFile(uploadReceiptImage);
