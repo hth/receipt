@@ -1,4 +1,4 @@
-    # Date: Sep 07 12:30 PM
+    # Date: Sep 07 3:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -51,12 +51,12 @@
 
         server {
             listen       8080;
-            server_name  localhost 192.168.1.71 receiptofi.com prod.receiptofi.com test.receiptofi.com;
+            server_name  localhost 192.168.1.71 receiptofi.com live.receiptofi.com test.receiptofi.com;
             return  301  https://$host$request_uri;
 
             #charset koi8-r;
 
-            access_log  /var/logs/nginx/prod.access.log main;
+            access_log  /var/logs/nginx/access.log main;
 
             location / {
                 root   /data/www;
