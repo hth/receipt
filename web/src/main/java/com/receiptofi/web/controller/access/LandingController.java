@@ -272,7 +272,7 @@ public final class LandingController extends BaseController {
                 uploadReceiptImage.setRid(rid);
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
-                    landingService.uploadReceipt(rid, uploadReceiptImage);
+                    landingService.uploadDocument(uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {

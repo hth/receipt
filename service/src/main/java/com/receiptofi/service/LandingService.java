@@ -267,12 +267,11 @@ public final class LandingService {
     /**
      * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS
      *
-     * @param userProfileId
      * @param uploadReceiptImage
      * @throws Exception
      */
-    public void uploadReceipt(String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
-        String receiptBlobId = null;
+    public void uploadDocument(UploadReceiptImage uploadReceiptImage) throws Exception {
+        String documentBlobId = null;
         DocumentEntity documentEntity = null;
         FileSystemEntity fileSystem = null;
         List<ItemEntityOCR> items;
@@ -292,17 +291,17 @@ public final class LandingService {
             } else {
                 bufferedImage = imageSplitService.bufferedImage(uploadReceiptImage.getFileData().getInputStream());
             }
-            receiptBlobId = fileDBService.saveFile(uploadReceiptImage);
-            uploadReceiptImage.setBlobId(receiptBlobId);
+            documentBlobId = fileDBService.saveFile(uploadReceiptImage);
+            uploadReceiptImage.setBlobId(documentBlobId);
 
             documentEntity = DocumentEntity.newInstance();
             documentEntity.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
 
-            fileSystem = new FileSystemEntity(receiptBlobId, bufferedImage, 0, 0);
+            fileSystem = new FileSystemEntity(documentBlobId, bufferedImage, 0, 0);
             fileSystemService.save(fileSystem);
             documentEntity.addReceiptBlobId(fileSystem);
 
-            documentEntity.setUserProfileId(userProfileId);
+            documentEntity.setUserProfileId(uploadReceiptImage.getRid());
             //Cannot pre-select it for now
             //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
@@ -323,8 +322,8 @@ public final class LandingService {
             log.warn("Undo all the saves");
 
             int sizeFSInitial = fileDBService.getFSDBSize();
-            if(receiptBlobId != null) {
-                fileDBService.deleteHard(receiptBlobId);
+            if(documentBlobId != null) {
+                fileDBService.deleteHard(documentBlobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
             log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
