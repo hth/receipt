@@ -43,6 +43,33 @@ Note:
                 tags => "test_mobile"
                 codec => "json"
             }
+
+            file {
+                type => "nginx"
+                path => ["/var/logs/nginx/*.log"]
+                exclude => ["test.access.log", "live.access.log"]
+                sincedb_path => "/opt/logstash/sincedb-access"
+                tags => "nginx"
+                codec => "json"
+            }
+
+            file {
+                type => "test_app_nginx"
+                path => ["/var/logs/nginx/test.access.log"]
+                exclude => ["access.log", "error.log", "live.access.log"]
+                sincedb_path => "/opt/logstash/sincedb-access"
+                tags => "test_nginx"
+                codec => "json"
+            }
+
+            file {
+                type => "test_app_mongo"
+                path => ["/var/logs/mongo/mongo.log"]
+                exclude => ["output.log"]
+                sincedb_path => "/opt/logstash/sincedb-access"
+                tags => "test_mongo"
+                codec => "json"
+            }
         }
 
         output {
