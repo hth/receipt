@@ -52,29 +52,23 @@ logstash.plist
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 	<plist version="1.0">
 	  <dict>
-		<key>KeepAlive</key>
-		<true/>
-		<key>Label</key>
-		<string>logstash</string>
-		<key>ProgramArguments</key>
-		<array>
-		  <string>/usr/local/logstash-1.4.1/bin/logstash</string>
-		  <string>agent</string>
-		  <string>-f</string>
-		  <string>/etc/logstash/conf.d/receiptofi.shipper.conf</string>
-		  <string>--log</string>
-		  <string>/var/log/logstash/logstash.log</string>
-		</array>
-		<key>RunAtLoad</key>
-		<true/>
-		<key>WorkingDirectory</key>
-		<string>/var/lib/logstash</string>
-		<!--
-		<key>StandardErrorPath</key>
-		<string>/var/log/logstash/logstash.log</string>
-		<key>StandardOutPath</key>
-		<string>/var/log/logstash/logstash.log</string>
-		-->
+	    <key>KeepAlive</key>
+	    <true/>
+	    <key>Label</key>
+	    <string>logstash</string>
+	    <key>ProgramArguments</key>
+	    <array>
+	      <string>/usr/local/Cellar/logstash/1.4.2/libexec/bin/logstash</string>
+	      <string>agent</string>
+	      <string>-f</string>
+	      <string>/usr/local/etc/logstash.conf</string>
+	      <string>--log</string>
+	      <string>/var/logs/logstash/logstash.log</string>
+	    </array>
+	    <key>RunAtLoad</key>
+	    <true/>
+	    <key>WorkingDirectory</key>
+	    <string>/usr/local/Cellar/logstash/1.4.2/libexec</string>
 	  </dict>
 	</plist>
 
