@@ -584,7 +584,7 @@
 		</tr>
 	</table>
 
-    <spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
+    <spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).USER" var="isValidForMap" />
     <div id="off_screen">
         <div id="map-canvas"></div>
     </div>
