@@ -37,7 +37,7 @@ public final class UploadReceiptImage {
 
     //Has precedent if not null (if populated)
     private File file;
-    private String userProfileId;
+    private String rid;
     private FileTypeEnum fileType;
     private String blobId;
 
@@ -86,25 +86,25 @@ public final class UploadReceiptImage {
 
 	public String getFileName() {
         if(containsFile()) {
-            return getUserProfileId() +
+            return getRid() +
                     UNDER_SCORE +
                     FilenameUtils.getBaseName(fileData.getOriginalFilename()) +
                     SCALED +
                     "." +
                     FilenameUtils.getExtension(fileData.getOriginalFilename());
         } else {
-		    return getUserProfileId() +
+		    return getRid() +
                     UNDER_SCORE +
                     fileData.getOriginalFilename();
         }
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getRid() {
+        return rid;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setRid(String rid) {
+        this.rid = rid;
     }
 
     public FileTypeEnum getFileType() {
@@ -119,8 +119,8 @@ public final class UploadReceiptImage {
         DBObject metaData = new BasicDBObject();
 
         metaData.put("ORIGINAL_FILENAME", getOriginalFileName());
-        metaData.put("USER_PROFILE_ID", getUserProfileId());
-        metaData.put("USER_PROFILE_ID_AND_FILENAME", getUserProfileId() + UNDER_SCORE + getOriginalFileName());
+        metaData.put("RID", getRid());
+        metaData.put("RID_AND_FILENAME", getRid() + UNDER_SCORE + getOriginalFileName());
         return metaData;
     }
 
@@ -130,5 +130,13 @@ public final class UploadReceiptImage {
 
     public void setBlobId(String blobId) {
         this.blobId = blobId;
+    }
+
+    @Override
+    public String toString() {
+        return "file=" + file +
+                ", rid='" + rid +
+                ", fileType=" + fileType +
+                ", blobId='" + blobId;
     }
 }

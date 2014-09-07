@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
+ * Store metadata of the document image
+ *
  * User: hitender
  * Date: 12/13/13 12:47 AM
  */
