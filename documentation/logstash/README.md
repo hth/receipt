@@ -25,11 +25,11 @@ Note:
 				tags => "test"
 				codec => "json"
 				
-				//think about
+				# think about
 				stat_interval => 15
 				start_position => beginning
 				
-				//no need for this as line are clubbed together
+				# no need for this as line are clubbed together
 				codec => multiline {
 				  pattern => "^\s"
 				  what => "previous"
