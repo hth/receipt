@@ -7,7 +7,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.shared.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -101,8 +101,8 @@ public final class LandingController extends BaseController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
 	public ModelAndView loadForm(
-            @ModelAttribute("uploadReceiptImage")
-            UploadReceiptImage uploadReceiptImage,
+            @ModelAttribute("uploadDocumentImage")
+            UploadDocumentImage uploadReceiptImage,
 
             @ModelAttribute("landingForm")
             LandingForm landingForm
@@ -267,7 +267,7 @@ public final class LandingController extends BaseController {
              * process files
              */
             for (MultipartFile multipartFile : files) {
-                UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
+                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
                 uploadReceiptImage.setRid(rid);
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
@@ -317,7 +317,7 @@ public final class LandingController extends BaseController {
              * process files
              */
             for (MultipartFile multipartFile : files) {
-                UploadReceiptImage uploadReceiptImage = UploadReceiptImage.newInstance();
+                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
                 uploadReceiptImage.setRid(receiptUser.getRid());
                 uploadReceiptImage.setFileType(FileTypeEnum.MILEAGE);

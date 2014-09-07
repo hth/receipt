@@ -1,6 +1,6 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.shared.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.utils.CreateTempFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +85,7 @@ public final class ImageSplitService {
         double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, 750, (int) (750/aspectRatio));
-        File scaled = CreateTempFile.file(FilenameUtils.getBaseName(file.getName()) + UploadReceiptImage.SCALED, FilenameUtils.getExtension(file.getName()));
+        File scaled = CreateTempFile.file(FilenameUtils.getBaseName(file.getName()) + UploadDocumentImage.SCALED, FilenameUtils.getExtension(file.getName()));
         ImageIO.write(bufferedImage, "png", scaled);
         return scaled;
     }

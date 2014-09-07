@@ -9,7 +9,7 @@ import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.shared.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
@@ -270,7 +270,7 @@ public final class LandingService {
      * @param uploadReceiptImage
      * @throws Exception
      */
-    public void uploadDocument(UploadReceiptImage uploadReceiptImage) throws Exception {
+    public void uploadDocument(UploadDocumentImage uploadReceiptImage) {
         String documentBlobId = null;
         DocumentEntity documentEntity = null;
         FileSystemEntity fileSystem = null;
@@ -353,8 +353,8 @@ public final class LandingService {
                 log.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
             }
 
-            log.info("Complete with rollback: throwing exception");
-            throw new Exception(exce);
+            log.warn("Complete with rollback: throwing exception");
+            throw new RuntimeException(exce);
         }
     }
 
@@ -365,7 +365,7 @@ public final class LandingService {
      * @return
      * @throws IOException
      */
-    private File scaleImage(UploadReceiptImage uploadReceiptImage) throws IOException {
+    private File scaleImage(UploadDocumentImage uploadReceiptImage) throws IOException {
         MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
         File original = CreateTempFile.file(
                 "image_" +
@@ -384,7 +384,7 @@ public final class LandingService {
      * @param uploadReceiptImage
      * @throws Exception
      */
-    public void appendMileage(String documentId, String userProfileId, UploadReceiptImage uploadReceiptImage) throws Exception {
+    public void appendMileage(String documentId, String userProfileId, UploadDocumentImage uploadReceiptImage) {
         throw new UnsupportedOperationException("");
     }
 

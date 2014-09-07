@@ -1,7 +1,7 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.shared.UploadReceiptImage;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.repository.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public final class FileDBService {
         return storageManager.getSize();
     }
 
-    public String saveFile(UploadReceiptImage uploadReceiptImage) throws IOException {
+    public String saveFile(UploadDocumentImage uploadReceiptImage) throws IOException {
         return storageManager.saveFile(uploadReceiptImage);
     }
 

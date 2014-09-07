@@ -28,7 +28,7 @@ import com.mongodb.DBObject;
  *      For GridFsTemplate
  * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
  */
-public final class UploadReceiptImage {
+public final class UploadDocumentImage {
     public static final String UNDER_SCORE  = "_";
     public static final String SCALED       = UNDER_SCORE + "Scaled";
 
@@ -41,10 +41,10 @@ public final class UploadReceiptImage {
     private FileTypeEnum fileType;
     private String blobId;
 
-    private UploadReceiptImage() { }
+    private UploadDocumentImage() { }
 
-	public static UploadReceiptImage newInstance() {
-		return new UploadReceiptImage();
+	public static UploadDocumentImage newInstance() {
+		return new UploadDocumentImage();
 	}
 
 	public MultipartFile getFileData() {
