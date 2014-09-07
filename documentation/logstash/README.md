@@ -1,71 +1,73 @@
+### Logstash steup
+
 Install java
 
 First Step:
 
-	Install Logstash on Shipper (Test machine)
+Install Logstash on Shipper (Test machine)
 	/etc/logstash/conf.d/receiptofi.shipper.conf
+	
+When installing through brew, create <code>logstash.conf</code> 
+	mkdir /usr/local/etc
+	touch logstash.conf
 
-	Note: type => "test_app" is indexed; for prod it will be type => "prod_app"
-	codec => multiline not sure how much beneficial
+Note: 
+- type => ***test_app*** is indexed; for prod it will be type => ***prod_app***
+- codec => multiline not sure how much beneficial
 
-	input {
-		file {
+		input {
+		   file {
 			type => "test_app"
-			path => ["/var/log/receiptofi/*.log"]
-			exclude => ["*.gz", "shipper.log"]
-			sincedb_path => "/opt/logstash/sincedb-access"
-			tags => "test"
-			codec => "json"
-
-			//think about
-			stat_interval => 15
-			start_position => beginning
-
-			//no need for this as line are clubbed together
-			codec => multiline {
-			  pattern => "^\s"
-			  what => "previous"
-			}
+		        path => ["/var/logs/receiptofi/*.log"]
+		        exclude => ["launchd.stderr.log", "launchd.stdout.log"]
+		        sincedb_path => "/opt/logstash/sincedb-access"
+		        tags => "test"
+		        codec => "json"
+		
+				# think about
+		        stat_interval => 15
+		        start_position => beginning
+		
+				# no need for this as line are clubbed together
+		        codec => multiline {
+		          pattern => "^\s"
+		          what => "previous"
+		        }
+		    }
 		}
-	}
-
-	output {
-		redis {
-			host => "192.168.1.74"
-			data_type => "list"
-			key => "logstash"
+		
+		output {
+		    redis {
+		        host => "192.168.1.74"
+		        data_type => "list"
+		        key => "logstash"
+		    }
 		}
-	}
 
-	logstash.plist
+
+logstash.plist
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 	<plist version="1.0">
 	  <dict>
-		<key>KeepAlive</key>
-		<true/>
-		<key>Label</key>
-		<string>logstash</string>
-		<key>ProgramArguments</key>
-		<array>
-		  <string>/usr/local/logstash-1.4.1/bin/logstash</string>
-		  <string>agent</string>
-		  <string>-f</string>
-		  <string>/etc/logstash/conf.d/receiptofi.shipper.conf</string>
-		  <string>--log</string>
-		  <string>/var/log/logstash/logstash.log</string>
-		</array>
-		<key>RunAtLoad</key>
-		<true/>
-		<key>WorkingDirectory</key>
-		<string>/var/lib/logstash</string>
-		<!--
-		<key>StandardErrorPath</key>
-		<string>/var/log/logstash/logstash.log</string>
-		<key>StandardOutPath</key>
-		<string>/var/log/logstash/logstash.log</string>
-		-->
+	    <key>KeepAlive</key>
+	    <true/>
+	    <key>Label</key>
+	    <string>logstash</string>
+	    <key>ProgramArguments</key>
+	    <array>
+	      <string>/usr/local/Cellar/logstash/1.4.2/libexec/bin/logstash</string>
+	      <string>agent</string>
+	      <string>-f</string>
+	      <string>/usr/local/etc/logstash.conf</string>
+	      <string>--log</string>
+	      <string>/var/logs/logstash/logstash.log</string>
+	    </array>
+	    <key>RunAtLoad</key>
+	    <true/>
+	    <key>WorkingDirectory</key>
+	    <string>/usr/local/Cellar/logstash/1.4.2/libexec</string>
 	  </dict>
 	</plist>
 
@@ -73,14 +75,16 @@ First Step:
 	Verbose
 	bin/logstash agent --verbose -f /etc/logstash/conf.d/receiptofi.shipper.conf
 
-	How to test configuration
+How to test configuration
+
 	bin/logstash agent --configtest --config /etc/logstash/conf.d/receiptofi.shipper.conf
 
 
-	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
-	sudo launchctl load /Library/LaunchDaemons/logstash.plist
+	sudo launchctl unload -w /Library/LaunchDaemons/logstash.plist
+	sudo launchctl load -w /Library/LaunchDaemons/logstash.plist
 
-	Update firewall to allow redis on port 6379; and the reload firewall
+Update firewall to allow redis on port 6379; and the reload firewall
+
 	sudo ipfw add 120 allow tcp from 192.168.1.74 to any dst-port 6379
 
 	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
@@ -136,8 +140,8 @@ Download redis
 	This will check the syntax
 	plutil -lint redis.plist
 
-	sudo launchctl unload /Library/LaunchDaemons/redis.plist
-	sudo launchctl load /Library/LaunchDaemons/redis.plist
+	sudo launchctl unload -w /Library/LaunchDaemons/redis.plist
+	sudo launchctl load -w /Library/LaunchDaemons/redis.plist
 
 	to check which ports are open
 	sudo lsof -i -P | grep -i "listen"
