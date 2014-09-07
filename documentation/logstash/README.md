@@ -15,7 +15,6 @@ Note:
 - type => ***test_app*** is indexed; for prod it will be type => ***prod_app***
 - codec => multiline not sure how much beneficial
 
-
 	input {
 		file {
 			type => "test_app"
@@ -24,11 +23,11 @@ Note:
 			sincedb_path => "/opt/logstash/sincedb-access"
 			tags => "test"
 			codec => "json"
-
+	
 			//think about
 			stat_interval => 15
 			start_position => beginning
-
+	
 			//no need for this as line are clubbed together
 			codec => multiline {
 			  pattern => "^\s"
@@ -45,7 +44,7 @@ Note:
 		}
 	}
 
-	logstash.plist
+logstash.plist
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
