@@ -16,24 +16,33 @@ Note:
 - codec => multiline not sure how much beneficial
 
 		input {
-		   file {
-			type => "test_app"
-		        path => ["/var/logs/receiptofi/*.log"]
+		    file {
+			    type => "test_app"
+		        path => ["/var/logs/receiptofi/receiptofi.log"]
 		        exclude => ["launchd.stderr.log", "launchd.stdout.log"]
 		        sincedb_path => "/opt/logstash/sincedb-access"
 		        tags => "test"
 		        codec => "json"
 		
 				# think about
-		        stat_interval => 15
-		        start_position => beginning
+		        # stat_interval => 15
+		        # start_position => beginning
 		
 				# no need for this as line are clubbed together
-		        codec => multiline {
-		          pattern => "^\s"
-		          what => "previous"
-		        }
+		        # codec => multiline {
+		        #  pattern => "^\s"
+		        #  what => "previous"
+		        # }
 		    }
+
+            file {
+                type => "test_mobile_app"
+                path => ["/var/logs/receiptofi/receiptofi-mobile.log"]
+                exclude => ["launchd.stderr.log", "launchd.stdout.log"]
+                sincedb_path => "/opt/logstash/sincedb-access"
+                tags => "test_mobile"
+                codec => "json"
+            }
 		}
 		
 		output {
