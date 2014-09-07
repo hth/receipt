@@ -1,0 +1,1 @@
+keytool -genkey -v -keystore android-receiptofi.keystore -alias receiptofi.com -keyalg RSA -keysize 2048 -validity 90
