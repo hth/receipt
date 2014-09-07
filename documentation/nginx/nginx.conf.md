@@ -1,4 +1,4 @@
-    # Date: Sep 05 11:30 PM
+    # Date: Sep 07 12:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -110,7 +110,7 @@
         #    }
         #}
 
-        ssl_certificate      /var/certs/277f903303df70.crt;
+        ssl_certificate      /var/certs/4067fb5fa5de9.crt;
         ssl_certificate_key  /var/certs/receiptofi.com.key;
 
         ssl_session_cache    shared:SSL:10m;
@@ -136,9 +136,9 @@
 
         server {
             listen       8443 ssl;
-            server_name  prod.receiptofi.com;
+            server_name  live.receiptofi.com;
 
-            access_log  /var/logs/nginx/prod.access.log main;
+            access_log  /var/logs/nginx/live.access.log main;
 
             location / {
                 proxy_buffers 16 4k;
