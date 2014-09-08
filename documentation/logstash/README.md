@@ -73,12 +73,12 @@ Note:
             }
             
             filter {
-	        if [type] = "nginx" {
-	            grok {
-	                match => ["message", "%{COMBINEDAPACHELOG}"]
-	            }
-	        }
-	    }
+		        if [type] = "nginx" {
+		            grok {
+		                match => ["message", "%{COMBINEDAPACHELOG}"]
+		            }
+		        }
+		    }
             
         }
 
