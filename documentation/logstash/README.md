@@ -70,6 +70,15 @@ Note:
                 tags => "test_mongo"
                 codec => "json"
             }
+            
+            filter {
+		        if [type] = "nginx" {
+		            grok {
+		                match => ["message", "%{IP:client} %{WORD:remote_user} %{HTTPDATE:time} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:status} %{NUMBER:bytes} %{WORD:referer} %{WORD:user_agent} %{WORD:forward}"]
+		            }
+		        }
+		    }
+            
         }
 
         output {
