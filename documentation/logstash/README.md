@@ -14,6 +14,18 @@ When installing through brew, create <code>logstash.conf</code>
 Note: 
 - type => ***test_app*** is indexed; for prod it will be type => ***prod_app***
 - codec => multiline not sure how much beneficial
+- http://grokdebug.herokuapp.com/ to test grok
+- Example http://www.logstashbook.com/code/6/shipper.conf
+
+Command to test conf
+
+	/usr/local/Cellar/logstash/1.4.2/libexec/bin/logstash --configtest --verbose -f /usr/local/etc/logstash.conf 
+	
+Command to run logstash
+
+	/usr/local/Cellar/logstash/1.4.2/libexec/bin/logstash agent --verbose -f /usr/local/etc/logstash.conf 
+
+Conf
 
         input {
             file {
@@ -71,6 +83,16 @@ Note:
                 codec => "json"
             }
         }
+        
+        
+		filter {
+		    if [type] == "nginx" {
+		        grok {
+		            match => ["message", "%{COMBINEDAPACHELOG}"]
+		            add_tag => ["grokked"]
+		        }
+		    }
+		}
 
         output {
             redis {
