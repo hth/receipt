@@ -16,6 +16,7 @@ Note:
 - codec => multiline not sure how much beneficial
 - http://grokdebug.herokuapp.com/ to test grok
 - Example http://www.logstashbook.com/code/6/shipper.conf
+- Grok patterns https://github.com/elasticsearch/logstash/blob/master/patterns/grok-patterns
 
 Command to test conf
 
