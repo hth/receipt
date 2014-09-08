@@ -14,6 +14,7 @@ When installing through brew, create <code>logstash.conf</code>
 Note: 
 - type => ***test_app*** is indexed; for prod it will be type => ***prod_app***
 - codec => multiline not sure how much beneficial
+- http://grokdebug.herokuapp.com/ to test grok
 
         input {
             file {
@@ -72,12 +73,12 @@ Note:
             }
             
             filter {
-		        if [type] = "nginx" {
-		            grok {
-		                match => ["message", "%{IP:client} %{WORD:remote_user} %{HTTPDATE:time} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:status} %{NUMBER:bytes} %{WORD:referer} %{WORD:user_agent} %{WORD:forward}"]
-		            }
-		        }
-		    }
+	        if [type] = "nginx" {
+	            grok {
+	                match => ["message", "%{COMBINEDAPACHELOG}"]
+	            }
+	        }
+	    }
             
         }
 
