@@ -169,7 +169,7 @@ Download redis
 	Note: Change the binding of redis.conf to 192.168.1.74. Just keep on ip address otherwise it gives (ECONNREFUSED) warn
 	sudo chown root:wheel redis.conf
 
-	redis.plist
+redis.plist
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -196,13 +196,15 @@ Download redis
 	</plist>
 
 
-	This will check the syntax
+This will check the syntax
+
 	plutil -lint redis.plist
 
 	sudo launchctl unload -w /Library/LaunchDaemons/redis.plist
 	sudo launchctl load -w /Library/LaunchDaemons/redis.plist
 
-	to check which ports are open
+To check which ports are open
+
 	sudo lsof -i -P | grep -i "listen"
 
 Install elastic search on Central
@@ -253,17 +255,20 @@ Install elastic search on Central
 	sudo launchctl unload /Library/LaunchDaemons/elasticsearch.plist
 	sudo launchctl load /Library/LaunchDaemons/elasticsearch.plist
 
-	To delete all index
+To delete all index
+
 	curl -XDELETE 'http://localhost:9200/*/'
 
-	To see stats
+To see stats
+
 	http://192.168.1.74:9200/_stats
 
 Install Logstash on Central Server
 
 	/etc/logstash/conf.d/receiptofi.central.conf
 	sudo chown root:wheel receiptofi.central.conf
-	Note: stdout {} - In a production environment you would probably disable this to prevent any excess noise being generated.
+
+Note: stdout {} - In a production environment you would probably disable this to prevent any excess noise being generated.
 
 	input {
 		redis {
@@ -316,8 +321,7 @@ Install Logstash on Central Server
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
 
-
-	logstash.web.plist
+logstash.web.plist
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
