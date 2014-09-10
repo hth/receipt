@@ -19,6 +19,7 @@
     http {
         # Black listed ips bots resides here
         include         blockips.conf;
+        include         ip.blocked.conf;
 
         include         mime.types;
         default_type    application/octet-stream;
@@ -110,7 +111,7 @@
         #    }
         #}
 
-        ssl_certificate      /var/certs/4067fb5fa5de9.crt;
+        ssl_certificate      /var/certs/43c7297ae5ac1.crt;
         ssl_certificate_key  /var/certs/receiptofi.com.key;
 
         ssl_session_cache    shared:SSL:10m;
