@@ -45,6 +45,7 @@ public final class ReceiptService {
     @Autowired private DocumentUpdateService documentUpdateService;
     @Autowired private StorageManager storageManager;
     @Autowired private ItemManager itemManager;
+    @Autowired private ItemService itemService;
     @Autowired private ItemOCRManager itemOCRManager;
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private FileUploadDocumentSenderJMS senderJMS;
@@ -73,16 +74,6 @@ public final class ReceiptService {
         int day = dateTime.getDayOfMonth();
 
         return receiptManager.findThisDayReceipts(year, month, day, userProfileId);
-    }
-
-    /**
-     * Find items for a receipt
-     *
-     * @param receiptEntity
-     * @return
-     */
-    public List<ItemEntity> findItems(ReceiptEntity receiptEntity) {
-        return itemManager.getWhereReceipt(receiptEntity);
     }
 
     /**
@@ -138,7 +129,7 @@ public final class ReceiptService {
             } else {
                 if(receipt.isActive()) {
                     receipt.inActive();
-                    List<ItemEntity> items = itemManager.getWhereReceipt(receipt);
+                    List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
 
                     DocumentEntity receiptOCR = documentManager.findOne(receipt.getReceiptOCRId(), userProfileId);
                     receiptOCR.active();
