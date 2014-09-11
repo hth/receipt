@@ -1,5 +1,16 @@
 package com.receiptofi.service;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -16,7 +27,6 @@ import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.DocumentManager;
-import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.UserProfileManager;
@@ -26,17 +36,6 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -60,7 +59,7 @@ import com.google.common.primitives.Longs;
  */
 @Service
 public final class LandingService {
-    private static final Logger log = LoggerFactory.getLogger(LandingService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LandingService.class);
 
     @Autowired private ReceiptManager receiptManager;
     @Autowired private DocumentManager documentManager;
@@ -280,7 +279,7 @@ public final class LandingService {
             //String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
             //TODO remove Temp Code
             //String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
-            log.info("Upload document rid={} fileType={}", uploadReceiptImage.getRid(), uploadReceiptImage.getFileType());
+            LOG.info("Upload document rid={} fileType={}", uploadReceiptImage.getRid(), uploadReceiptImage.getFileType());
 
             BufferedImage bufferedImage;
             if(scaledUploadImage) {
@@ -313,19 +312,19 @@ public final class LandingService {
             documentManager.save(documentEntity);
             itemOCRManager.saveObjects(items);
 
-            log.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getUserProfileId());
+            LOG.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getUserProfileId());
             UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(documentEntity.getUserProfileId());
             senderJMS.send(documentEntity, userProfile);
         } catch (Exception exce) {
-            log.error("Exception occurred during saving receipt={}", exce.getLocalizedMessage(), exce);
-            log.warn("Undo all the saves");
+            LOG.error("Exception occurred during saving receipt={}", exce.getLocalizedMessage(), exce);
+            LOG.warn("Undo all the saves");
 
             int sizeFSInitial = fileDBService.getFSDBSize();
             if(documentBlobId != null) {
                 fileDBService.deleteHard(documentBlobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
-            log.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
+            LOG.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
 
             if(fileSystem != null) {
                 fileSystemService.deleteHard(fileSystem);
@@ -341,18 +340,18 @@ public final class LandingService {
             long sizeItemFinal = itemOCRManager.collectionSize();
 
             if(sizeReceiptInitial == sizeReceiptFinal) {
-                log.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
+                LOG.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
             } else {
-                log.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Document: " + documentEntity.getId());
+                LOG.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Document: " + documentEntity.getId());
             }
 
             if(sizeItemInitial == sizeItemFinal) {
-                log.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
+                LOG.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
             } else {
-                log.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
+                LOG.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
             }
 
-            log.warn("Complete with rollback: throwing exception");
+            LOG.warn("Complete with rollback: throwing exception");
             throw new RuntimeException(exce);
         }
     }

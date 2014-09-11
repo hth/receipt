@@ -3,16 +3,16 @@
  */
 package com.receiptofi.repository;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
-
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import org.joda.time.DateTime;
 

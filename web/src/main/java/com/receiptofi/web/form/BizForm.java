@@ -1,11 +1,11 @@
 package com.receiptofi.web.form;
 
-import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.BizStoreEntity;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.BizStoreEntity;
 
 import org.apache.commons.lang3.StringUtils;
 

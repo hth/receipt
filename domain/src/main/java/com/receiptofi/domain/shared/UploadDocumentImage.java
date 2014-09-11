@@ -3,9 +3,9 @@
  */
 package com.receiptofi.domain.shared;
 
-import com.receiptofi.domain.types.FileTypeEnum;
-
 import java.io.File;
+
+import com.receiptofi.domain.types.FileTypeEnum;
 
 import org.apache.commons.io.FilenameUtils;
 

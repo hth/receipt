@@ -3,26 +3,26 @@
  */
 package com.receiptofi.web.controller.access;
 
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.service.FileDBService;
-import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.Formatter;
-import com.receiptofi.web.util.PerformanceProfiling;
-import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.service.FileDBService;
+import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.Formatter;
+import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
+import com.receiptofi.web.util.PerformanceProfiling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -48,7 +48,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 @Controller
 @RequestMapping(value = "/access/filedownload")
 public final class FileDownloadController {
-	private static final Logger log = LoggerFactory.getLogger(FileDownloadController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
 	@Autowired private FileDBService fileDBService;
     @Autowired private FileSystemProcessor fileSystemProcessor;
@@ -72,7 +72,7 @@ public final class FileDownloadController {
 			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
 
 			if(gridFSDBFile == null) {
-                log.warn("GridFSDBFile failed to find image={}", imageId);
+                LOG.warn("GridFSDBFile failed to find image={}", imageId);
     			File file = FileUtils.getFile(request.getServletContext().getRealPath(File.separator) + imageNotFound);
 				BufferedImage bi = ImageIO.read(file);
                 setContentType(file, response);
@@ -80,14 +80,14 @@ public final class FileDownloadController {
 				ImageIO.write(bi, getFormatForFile(file), out);
 				out.close();
 			} else {
-                log.debug("Length={} MetaData={}", gridFSDBFile.getLength(), gridFSDBFile.getMetaData());
+                LOG.debug("Length={} MetaData={}", gridFSDBFile.getLength(), gridFSDBFile.getMetaData());
                 response.setContentType(gridFSDBFile.getContentType());
 				gridFSDBFile.writeTo(response.getOutputStream());
 			}
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
 		} catch (IOException e) {
-			log.error("Image retrieval error occurred for imageId={} rid={} reason={}", imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+			LOG.error("Image retrieval error occurred for imageId={} rid={} reason={}", imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
 		}
 	}
@@ -106,7 +106,7 @@ public final class FileDownloadController {
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
         } catch (IOException e) {
-            log.error("Excel retrieval error occurred Receipt={} for user={} reason={}", receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+            LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}", receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
         }
     }

@@ -1,18 +1,17 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.ProviderEnum;
-import com.receiptofi.domain.types.UserLevelEnum;
-
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import javax.validation.constraints.NotNull;
+
+import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.social.facebook.api.EducationEntry;

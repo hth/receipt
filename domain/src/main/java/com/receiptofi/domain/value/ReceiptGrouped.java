@@ -3,13 +3,13 @@
  */
 package com.receiptofi.domain.value;
 
-import com.receiptofi.utils.DateUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.receiptofi.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.joda.time.DateTime;
 
@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
  *
  */
 public final class ReceiptGrouped implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptGrouped.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptGrouped.class);
 
     private BigDecimal total;
     private int year;
@@ -57,7 +57,7 @@ public final class ReceiptGrouped implements Serializable {
 	public Date getDate() {
         if(year == 0 || month == 0 || day == 0) {
             //This should never happen. Add validation in receipt during save.
-            log.error("Setting now time as --> Year or month or day should not be zero. Year " + year + ", month: " + month + ", day: " + day);
+            LOG.error("Setting now time as --> Year or month or day should not be zero. Year " + year + ", month: " + month + ", day: " + day);
             return DateUtil.now().toDate();
         }
 		return new DateTime(year, month, day, 0, 0).toDate();
@@ -66,7 +66,7 @@ public final class ReceiptGrouped implements Serializable {
     public DateTime getDateTime() {
         if(year == 0 || month == 0 ) {
             ////This should never happen. Add validation in receipt during save.
-            log.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
+            LOG.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
             return DateUtil.now();
         }
         return new DateTime(year, month, 1, 0, 0);
@@ -96,7 +96,7 @@ public final class ReceiptGrouped implements Serializable {
     public long dateInMillisForSorting() {
         if(year == 0 || month == 0) {
             //This should never happen. Add validation in receipt during save.
-            log.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
+            LOG.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
             return DateUtil.now().getMillis();
         }
         return new DateTime(year, month, 1, 0, 0).getMillis();

@@ -3,15 +3,15 @@
  */
 package com.receiptofi.service.routes;
 
-import com.receiptofi.domain.DocumentEntity;
-import com.receiptofi.domain.UserProfileEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
+
+import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.UserProfileEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public final class FileUploadDocumentSenderJMS {
-	private static final Logger log = LoggerFactory.getLogger(FileUploadDocumentSenderJMS.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentSenderJMS.class);
 
 	@Autowired private JmsTemplate jmsSenderTemplate;
 
@@ -50,6 +50,6 @@ public final class FileUploadDocumentSenderJMS {
 					}
 				}
 				);
-		log.info("Message sent ReceiptOCR={}, level={}", documentEntity.getId(), userProfile.getLevel().getDescription());
+		LOG.info("Message sent ReceiptOCR={}, level={}", documentEntity.getId(), userProfile.getLevel().getDescription());
     }
 }

@@ -1,5 +1,14 @@
 package com.receiptofi.web.controller.access;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -11,22 +20,13 @@ import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
 import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.view.ExpensofiExcelView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +57,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 @Controller
 @RequestMapping(value = "/access/expensofi")
 public final class ExpensofiController {
-    private static final Logger log = LoggerFactory.getLogger(ExpensofiController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
 
     @Autowired private ReceiptService receiptService;
     @Autowired private NotificationService notificationService;
@@ -89,7 +89,7 @@ public final class ExpensofiController {
                     AnchorFileInExcel anchorFileInExcel = new AnchorFileInExcel(IOUtils.toByteArray(is), gridFSDBFile.getContentType());
                     anchorFileInExcels.add(anchorFileInExcel);
                 } catch (IOException exce) {
-                    log.error("Failed to load receipt image: " + exce.getLocalizedMessage());
+                    LOG.error("Failed to load receipt image: " + exce.getLocalizedMessage());
                 } finally {
                     IOUtils.closeQuietly(is);
                 }
@@ -106,7 +106,7 @@ public final class ExpensofiController {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
                 return new ExcelFileName(filename).asJson();
             } catch (IOException e) {
-                log.error("Failure in creating and saving excel report to file system: " + e.getLocalizedMessage(), e);
+                LOG.error("Failure in creating and saving excel report to file system: " + e.getLocalizedMessage(), e);
             }
         }
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());

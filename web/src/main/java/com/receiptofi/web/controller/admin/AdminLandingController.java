@@ -3,6 +3,10 @@
  */
 package com.receiptofi.web.controller.admin;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AdminLandingService;
 import com.receiptofi.utils.DateUtil;
@@ -10,10 +14,6 @@ import com.receiptofi.web.form.UserSearchForm;
 import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/admin")
 public final class AdminLandingController {
-    private static final Logger log = LoggerFactory.getLogger(AdminLandingController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
     private static final String nextPage = "/admin/landing";
 
     @Autowired private AdminLandingService adminLandingService;

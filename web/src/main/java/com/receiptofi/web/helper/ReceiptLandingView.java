@@ -1,8 +1,8 @@
 package com.receiptofi.web.helper;
 
-import com.receiptofi.domain.ReceiptEntity;
-
 import java.util.Date;
+
+import com.receiptofi.domain.ReceiptEntity;
 
 import org.apache.commons.lang3.StringUtils;
 

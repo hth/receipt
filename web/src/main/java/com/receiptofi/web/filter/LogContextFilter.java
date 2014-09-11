@@ -1,9 +1,11 @@
 package com.receiptofi.web.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Pattern;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,12 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,7 +27,7 @@ import org.springframework.util.CollectionUtils;
  * Date: 4/3/14 10:46 PM
  */
 public class LogContextFilter implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(LogContextFilter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogContextFilter.class);
 
     private static final Pattern EXTRACT_ENDPOINT_PATTERN = Pattern.compile("\\A((?:/[a-z][a-zA-Z]{2,}+|/v1)+).*\\z");
     private static final String REQUEST_ID_MDC_KEY = "X-REQUEST-ID";
@@ -40,7 +40,7 @@ public class LogContextFilter implements Filter {
         String url = ((HttpServletRequest) req).getRequestURL().toString();
         String query = ((HttpServletRequest) req).getQueryString();
 
-        log.info("Request received:"
+        LOG.info("Request received:"
                 + " Host=\"" + getHeader(headerMap, "host") + "\""
                 + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
                 + " Accept=\"" + getHeader(headerMap, "accept") + "\""
@@ -74,10 +74,10 @@ public class LogContextFilter implements Filter {
     }
 
     public void init(FilterConfig filterConfig) {
-        log.info("initialized");
+        LOG.info("initialized");
     }
 
     public void destroy() {
-        log.info("destroyed");
+        LOG.info("destroyed");
     }
 }

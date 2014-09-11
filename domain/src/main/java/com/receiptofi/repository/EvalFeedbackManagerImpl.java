@@ -1,11 +1,11 @@
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.EvalFeedbackEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
-    private static final Logger log = LoggerFactory.getLogger(EvalFeedbackManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(EvalFeedbackEntity.class, Document.class, "collection");
 
     @Autowired

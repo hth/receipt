@@ -24,7 +24,7 @@ import com.google.common.hash.Hashing;
  * @since Dec 22, 2012 11:52:04 PM
  */
 public final class HashText {
-    private static final Logger log = LoggerFactory.getLogger(HashText.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HashText.class);
 
     // Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value.
     private static final int WORKLOAD = 15;
@@ -38,7 +38,7 @@ public final class HashText {
             MD1 = MessageDigest.getInstance("SHA-1");
             MD5 = MessageDigest.getInstance("SHA-512");
         } catch (NoSuchAlgorithmException exce) {
-            log.error("No hashing algorithm found={}", exce);
+            LOG.error("No hashing algorithm found={}", exce);
         }
     }
 
@@ -68,7 +68,7 @@ public final class HashText {
     private static String hashCode(String text, MessageDigest md) {
         DateTime time = DateUtil.now();
         if (md == null) {
-            log.info("Un-Initialized MessageDigest");
+            LOG.info("Un-Initialized MessageDigest");
             return null;
         } else {
             md.update(text.getBytes());

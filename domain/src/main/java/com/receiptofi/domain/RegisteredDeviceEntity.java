@@ -2,8 +2,6 @@ package com.receiptofi.domain;
 
 import javax.validation.constraints.NotNull;
 
-import java.util.Date;
-
 import com.receiptofi.domain.annotation.Mobile;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;

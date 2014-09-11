@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PurgeRejectedDocuments {
-    private static final Logger log = LoggerFactory.getLogger(PurgeRejectedDocuments.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PurgeRejectedDocuments.class);
 
     @Value ("${purgeRejectedDocumentAfterDay:7}")
     private int purgeRejectedDocumentAfterDay;

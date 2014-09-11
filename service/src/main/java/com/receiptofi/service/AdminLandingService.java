@@ -1,12 +1,12 @@
 package com.receiptofi.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserProfileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class AdminLandingService {
-    private static final Logger log = LoggerFactory.getLogger(AdminLandingService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AdminLandingService.class);
 
     @Autowired private UserProfileManager userProfileManager;
 
@@ -34,7 +34,7 @@ public final class AdminLandingService {
         for(UserProfileEntity userProfile : userProfileEntities) {
             users.add(userProfile.getFirstName() + ", " + userProfile.getLastName());
         }
-        log.debug("List of users={}", users);
+        LOG.debug("List of users={}", users);
         return users;
     }
 
@@ -45,7 +45,7 @@ public final class AdminLandingService {
      * @return
      */
     public List<UserProfileEntity> findAllUsers(String name) {
-        log.info("Search string for user name={}", name);
+        LOG.info("Search string for user name={}", name);
         return userProfileManager.searchAllByName(name);
     }
 }

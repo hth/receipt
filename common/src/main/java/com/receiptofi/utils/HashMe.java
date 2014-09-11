@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * @since Mar 25, 2013 2:36:27 PM
  */
 public final class HashMe {
-    private static final Logger log = LoggerFactory.getLogger(HashMe.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HashMe.class);
 
     public static final int PRIME = 16908799;
 
@@ -22,7 +22,7 @@ public final class HashMe {
         for (char chara : a) {
             hashVal = (127 * hashVal + chara) % PRIME;
         }
-        log.debug("Hash value : " + hashVal);
+        LOG.debug("Hash value : " + hashVal);
         return hashVal;
     }
 

@@ -1,23 +1,23 @@
 package com.receiptofi.repository;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public final class FileSystemManagerImpl implements FileSystemManager {
-    private static final Logger log = LoggerFactory.getLogger(FileSystemManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileSystemManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(FileSystemEntity.class, Document.class, "collection");
 
     @Autowired

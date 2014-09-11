@@ -1,9 +1,9 @@
 package com.receiptofi.web.form;
 
+import java.util.List;
+
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
-
-import java.util.List;
 
 /**
  * Used in displaying items with specific expense type

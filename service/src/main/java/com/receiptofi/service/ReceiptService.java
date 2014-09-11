@@ -1,5 +1,8 @@
 package com.receiptofi.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CommentEntity;
@@ -21,9 +24,6 @@ import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import org.joda.time.DateTime;
  */
 @Service
 public final class ReceiptService {
-    private static Logger log = LoggerFactory.getLogger(ReceiptService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptService.class);
 
     @Autowired private ReceiptManager receiptManager;
     @Autowired private DocumentManager documentManager;
@@ -109,7 +109,7 @@ public final class ReceiptService {
             receiptManager.deleteSoft(receipt);
             return true;
         } else {
-            log.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
+            LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
             throw new Exception("Receipt no longer exists");
         }
     }
@@ -124,7 +124,7 @@ public final class ReceiptService {
         try {
             ReceiptEntity receipt = receiptManager.findOne(receiptId, userProfileId);
             if(receipt.getReceiptOCRId() == null) {
-                log.error("No receiptOCR id found in Receipt={}, aborting the reopen process", receipt.getId());
+                LOG.error("No receiptOCR id found in Receipt={}, aborting the reopen process", receipt.getId());
                 throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
             } else {
                 if(receipt.isActive()) {
@@ -147,16 +147,16 @@ public final class ReceiptService {
                     itemOCRManager.saveObjects(ocrItems);
                     itemManager.deleteWhereReceipt(receipt);
 
-                    log.info("DocumentEntity @Id after save: " + receiptOCR.getId());
+                    LOG.info("DocumentEntity @Id after save: " + receiptOCR.getId());
                     UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(receiptOCR.getUserProfileId());
                     senderJMS.send(receiptOCR, userProfile);
                 } else {
-                    log.error("Attempt to invoke re-check on Receipt={}, Browser Back Action performed", receipt.getId());
+                    LOG.error("Attempt to invoke re-check on Receipt={}, Browser Back Action performed", receipt.getId());
                     throw new Exception("Receipt no longer exists");
                 }
             }
         } catch (Exception e) {
-            log.error("Exception during customer requesting receipt recheck operation, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Exception during customer requesting receipt recheck operation, reason={}", e.getLocalizedMessage(), e);
 
             //Need to send a well formatted error message to customer instead of jumbled mumbled exception stacktrace
             throw new Exception(
@@ -238,7 +238,7 @@ public final class ReceiptService {
             }
             return true;
         } catch (Exception exce) {
-            log.error("Failed updating notes for Receipt={}, reason={}", receiptId, exce.getLocalizedMessage(), exce);
+            LOG.error("Failed updating notes for Receipt={}, reason={}", receiptId, exce.getLocalizedMessage(), exce);
             return false;
         }
     }
@@ -271,7 +271,7 @@ public final class ReceiptService {
             }
             return true;
         } catch (Exception exce) {
-            log.error("Failed updating comment for Receipt={}, reason={}", receiptId, exce.getLocalizedMessage(), exce);
+            LOG.error("Failed updating comment for Receipt={}, reason={}", receiptId, exce.getLocalizedMessage(), exce);
             return false;
         }
     }
@@ -303,7 +303,7 @@ public final class ReceiptService {
             }
             return true;
         } catch (Exception exce) {
-            log.error("Failed updating comment for ReceiptOCR={}, reason={}", documentId, exce.getLocalizedMessage(), exce);
+            LOG.error("Failed updating comment for ReceiptOCR={}, reason={}", documentId, exce.getLocalizedMessage(), exce);
             return false;
         }
     }
@@ -348,7 +348,7 @@ public final class ReceiptService {
         try {
             receiptManager.save(receiptEntity);
         } catch (Exception e) {
-            log.error("Failed updating ReceiptEntity with Expense Report Filename, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed updating ReceiptEntity with Expense Report Filename, reason={}", e.getLocalizedMessage(), e);
             return false;
         }
         return true;

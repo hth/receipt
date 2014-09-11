@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  * Date: 8/17/14 11:37 AM
  */
 public class NotificationDetailForm {
-    private static final Logger log = LoggerFactory.getLogger(NotificationDetailForm.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationDetailForm.class);
 
     private static final int OFF_SET = 0;
     private static final int MAX_WIDTH = 43;
@@ -56,7 +56,7 @@ public class NotificationDetailForm {
             case MILEAGE:
                 return getMileageURL(referenceId, StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
             default:
-                log.error("Reached invalid condition");
+                LOG.error("Reached invalid condition");
                 return "";
         }
     }
@@ -78,7 +78,7 @@ public class NotificationDetailForm {
             case MILEAGE:
                 return getMileageURL(referenceId, message);
             default:
-                log.error("Reached invalid condition");
+                LOG.error("Reached invalid condition");
                 return "";
         }
     }

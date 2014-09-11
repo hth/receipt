@@ -1,5 +1,8 @@
 package com.receiptofi.web.validator;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
@@ -7,9 +10,6 @@ import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.ReceiptDocumentForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
-import java.text.ParseException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +24,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class ReceiptDocumentValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptDocumentValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -34,7 +34,7 @@ public final class ReceiptDocumentValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         ReceiptDocumentForm receiptDocumentForm = (ReceiptDocumentForm) obj;
-        log.debug("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
+        LOG.debug("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
 
         ValidationUtils.rejectIfEmptyOrWhitespace(
                 errors,
@@ -70,7 +70,7 @@ public final class ReceiptDocumentValidator implements Validator {
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
         if(receiptDocumentForm.getItems() == null) {
-            log.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", as no items were found");
+            LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", as no items were found");
             errors.rejectValue("receiptDocumentForm", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
         } else {
             boolean conditionFailed = false;
@@ -80,7 +80,7 @@ public final class ReceiptDocumentValidator implements Validator {
                     try {
                         subTotal = Maths.add(subTotal, Maths.multiply(Formatter.getCurrencyFormatted(item.getPrice()), item.getQuantity()));
                     } catch (ParseException | NumberFormatException exception) {
-                        log.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", with error message: " + exception.getLocalizedMessage());
+                        LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", with error message: " + exception.getLocalizedMessage());
                         errors.rejectValue("items[" + count + "].price", "field.currency", new Object[]{item.getPrice()}, "Unsupported currency format");
                     }
                 } else {
@@ -93,7 +93,7 @@ public final class ReceiptDocumentValidator implements Validator {
 
             /** This condition is added to make sure no receipt is added without at least one valid item in the list */
             if(conditionFailed && receiptDocumentForm.getItems().size() == conditionFailedCounter) {
-                log.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", as no items were found");
+                LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", as no items were found");
                 errors.rejectValue("receiptDocument", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
             }
         }
@@ -106,7 +106,7 @@ public final class ReceiptDocumentValidator implements Validator {
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
                     if(Maths.withInRange(submittedSubTotal, subTotal)) {
-                        log.warn("Found difference in Calculated subTotal: " + subTotal +
+                        LOG.warn("Found difference in Calculated subTotal: " + subTotal +
                                 ", submittedSubTotal: " + submittedSubTotal +
                                 ". Which is less than application specified diff of " +
                                 Maths.ACCEPTED_RANGE_IN_LOWEST_DENOMINATION);
@@ -118,7 +118,7 @@ public final class ReceiptDocumentValidator implements Validator {
 
                 } else if (comparedValue < 0) {
                     if(Maths.withInRange(submittedSubTotal, subTotal)) {
-                        log.warn("Found difference in Calculated subTotal: " + subTotal +
+                        LOG.warn("Found difference in Calculated subTotal: " + subTotal +
                                 ", submittedSubTotal: " + submittedSubTotal +
                                 ". Which is less than application specified diff of " +
                                 Maths.ACCEPTED_RANGE_IN_LOWEST_DENOMINATION);
@@ -156,7 +156,7 @@ public final class ReceiptDocumentValidator implements Validator {
                     }
                 }
             } catch (ParseException | NumberFormatException exception) {
-                log.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", with error message: " + exception.getLocalizedMessage());
+                LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", with error message: " + exception.getLocalizedMessage());
                 errors.rejectValue("receiptDocument.tax", "field.currency", new Object[]{receiptDocumentForm.getReceiptDocument().getTax()}, "Unsupported currency format");
             }
         }

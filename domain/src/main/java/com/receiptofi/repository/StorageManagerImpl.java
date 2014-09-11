@@ -3,17 +3,17 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.shared.UploadDocumentImage;
-import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
+
+import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.shared.UploadDocumentImage;
+import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
@@ -28,7 +28,7 @@ import com.mongodb.gridfs.GridFSInputFile;
  *
  */
 public final class StorageManagerImpl implements StorageManager {
-	private static final Logger log = LoggerFactory.getLogger(StorageManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(StorageManagerImpl.class);
 
 	private final GridFS gridFs;
 
@@ -36,8 +36,8 @@ public final class StorageManagerImpl implements StorageManager {
         try {
 		    gridFs = new GridFS(gridfsDb);
         } catch(com.mongodb.MongoException exception) {
-            log.error("Error in initializing MongoDB: Issue with getting the connection during server startup. " + exception.getLocalizedMessage());
-            log.error("Receiptofi Mongo DB: " + exception.getMessage());
+            LOG.error("Error in initializing MongoDB: Issue with getting the connection during server startup. " + exception.getLocalizedMessage());
+            LOG.error("Receiptofi Mongo DB: " + exception.getMessage());
             throw exception;
         }
 	}
@@ -92,14 +92,14 @@ public final class StorageManagerImpl implements StorageManager {
 
 	@Override
 	public void deleteHard(String id) {
-		log.debug("deleted GridFs object - " + id);
+		LOG.debug("deleted GridFs object - " + id);
 		gridFs.remove(new ObjectId(id));
 	}
 
     @Override
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
         for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
-            log.debug("deleted GridFs object - " + fileSystemEntity.getBlobId());
+            LOG.debug("deleted GridFs object - " + fileSystemEntity.getBlobId());
             gridFs.remove(new ObjectId(fileSystemEntity.getBlobId()));
         }
     }
@@ -119,7 +119,7 @@ public final class StorageManagerImpl implements StorageManager {
                 );
             }
         } catch (IOException ioe) {
-            log.error("Image persist error:{}", ioe);
+            LOG.error("Image persist error:{}", ioe);
             throw new RuntimeException(ioe.getCause());
         }
 
@@ -141,7 +141,7 @@ public final class StorageManagerImpl implements StorageManager {
 		try {
 			return gridFs.findOne(new ObjectId(id));
 		} catch(IllegalArgumentException iae) {
-			log.error("Submitted image id " + id + ", error message - " + iae.getLocalizedMessage());
+			LOG.error("Submitted image id " + id + ", error message - " + iae.getLocalizedMessage());
 			return null;
 		}
 	}

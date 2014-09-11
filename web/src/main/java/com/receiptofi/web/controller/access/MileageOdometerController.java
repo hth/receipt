@@ -4,8 +4,8 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.MileageForm;
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/access/modv")
 public final class MileageOdometerController {
-    private static final Logger log = LoggerFactory.getLogger(LandingController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private MileageService mileageService;
 
@@ -51,7 +51,7 @@ public final class MileageOdometerController {
             Model model
     ) {
         DateTime time = DateUtil.now();
-        log.info("Loading MileageEntity with id: " + mileageId);
+        LOG.info("Loading MileageEntity with id: " + mileageId);
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -68,7 +68,7 @@ public final class MileageOdometerController {
             if(mileageEntity == null) {
                 //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
                 //Possible condition of bookmark or trying to gain access to some unknown receipt
-                log.warn("rid={}, tried submitting an invalid mileage id={}", receiptUser.getRid(), mileageId);
+                LOG.warn("rid={}, tried submitting an invalid mileage id={}", receiptUser.getRid(), mileageId);
             } else {
                 mileageForm.setMileage(mileageEntity);
             }
@@ -89,7 +89,7 @@ public final class MileageOdometerController {
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
-        log.info("Delete mileage " + mileageForm.getMileage().getId());
+        LOG.info("Delete mileage " + mileageForm.getMileage().getId());
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -104,7 +104,7 @@ public final class MileageOdometerController {
                 return new ModelAndView("redirect:/access/modv/" + mileageForm.getMileage().getId() + ".htm");
             }
         } catch(Exception exce) {
-            log.error("Error occurred during receipt delete: Receipt Id: " + mileageForm.getMileage().getId() + ", error message: " + exce.getLocalizedMessage());
+            LOG.error("Error occurred during receipt delete: Receipt Id: " + mileageForm.getMileage().getId() + ", error message: " + exce.getLocalizedMessage());
             result.rejectValue("errorMessage", StringUtils.EMPTY, "Delete request failed to execute");
             redirectAttrs.addFlashAttribute("result", result);
 
@@ -131,12 +131,12 @@ public final class MileageOdometerController {
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
-        log.debug("Split mileage " + mileageForm.getMileage().getId());
+        LOG.debug("Split mileage " + mileageForm.getMileage().getId());
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             mileageService.split(mileageForm.getMileage().getId(), receiptUser.getRid());
         } catch(Exception exce) {
-            log.error("Error occurred during splitting mileage: Mileage={}, reason={}", mileageForm.getMileage().getId(), exce.getLocalizedMessage(), exce);
+            LOG.error("Error occurred during splitting mileage: Mileage={}, reason={}", mileageForm.getMileage().getId(), exce.getLocalizedMessage(), exce);
             result.rejectValue("errorMessage", StringUtils.EMPTY, exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
 

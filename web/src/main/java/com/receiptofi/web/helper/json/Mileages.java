@@ -1,9 +1,5 @@
 package com.receiptofi.web.helper.json;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.receiptofi.domain.MileageEntity;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -11,7 +7,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.receiptofi.domain.MileageEntity;
+
 import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * User: hitender

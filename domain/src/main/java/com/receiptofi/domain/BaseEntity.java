@@ -3,15 +3,13 @@
  */
 package com.receiptofi.domain;
 
-import com.receiptofi.utils.DateUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Date;
 
-import static org.springframework.format.annotation.DateTimeFormat.ISO;
+import com.receiptofi.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -20,12 +18,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import org.joda.time.DateTime;
 
+import static org.springframework.format.annotation.DateTimeFormat.ISO;
+
 /**
  * @author hitender
  * @since Dec 23, 2012 2:02:10 AM
  */
 public abstract class BaseEntity implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(BaseEntity.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseEntity.class);
 
     @Id
     protected String id;
@@ -68,7 +68,7 @@ public abstract class BaseEntity implements Serializable {
             try {
                 value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
             } catch (Exception annotationException) {
-                log.error("annotation reading error={}", annotationException);
+                LOG.error("annotation reading error={}", annotationException);
             }
         }
 

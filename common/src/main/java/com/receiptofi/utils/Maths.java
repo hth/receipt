@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
  * {@link http://java-performance.info/bigdecimal-vs-double-in-financial-calculations/}
  */
 public final class Maths {
-    private static volatile Logger log = LoggerFactory.getLogger(Maths.class);
+    private static volatile Logger LOG = LoggerFactory.getLogger(Maths.class);
 
     /** Accepted range in lowest denomination in cents here or any other currency */
     public static double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
@@ -41,7 +41,7 @@ public final class Maths {
     }
 
     public static BigDecimal add(BigDecimal a, BigDecimal b) {
-        //log.debug("addition: " + a + " + " + b + " = " + a.add(b));
+        //LOG.debug("addition: " + a + " + " + b + " = " + a.add(b));
         return a.add(b);
     }
 
@@ -78,7 +78,7 @@ public final class Maths {
         BigDecimal sub = from.subtract(value);
         //This was messing the tax percentage calculation by rounding to 2. Why round subtraction?
         //sub = sub.setScale(2, BigDecimal.ROUND_HALF_UP);
-        //log.debug("subtract: " + from + " - " + value + " = " + sub);
+        //LOG.debug("subtract: " + from + " - " + value + " = " + sub);
         return sub;
     }
 
@@ -98,7 +98,7 @@ public final class Maths {
             return division;
         } catch (ArithmeticException exception) {
             // This should never occur. If this occur the problem is likely to be in code than receipt data.
-            log.error("Tried Divide: " + divide + ", by: " + by + ". Message: " + exception.getLocalizedMessage());
+            LOG.error("Tried Divide: " + divide + ", by: " + by + ". Message: " + exception.getLocalizedMessage());
             return BigDecimal.ZERO;
         }
     }
@@ -135,7 +135,7 @@ public final class Maths {
     public static BigDecimal multiply(BigDecimal value, BigDecimal withThis) {
         BigDecimal multiplication = value.multiply(withThis);
         multiplication = multiplication.setScale(SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
-        //log.debug("multiply: " + value + " * " + withThis + " = " + multiplication);
+        //LOG.debug("multiply: " + value + " * " + withThis + " = " + multiplication);
         return multiplication;
     }
 

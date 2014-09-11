@@ -1,8 +1,8 @@
 package com.receiptofi.domain.social;
 
-import com.receiptofi.domain.BaseEntity;
-
 import javax.validation.constraints.NotNull;
+
+import com.receiptofi.domain.BaseEntity;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;

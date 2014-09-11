@@ -1,5 +1,12 @@
 package com.receiptofi.social.connect;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -13,16 +20,6 @@ import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.utils.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,9 +43,12 @@ import org.springframework.social.google.api.plus.Organization;
 import org.springframework.social.google.api.plus.Person;
 import org.springframework.util.MultiValueMap;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 @Social
 public class ConnectionServiceImpl implements ConnectionService {
-    private static final Logger log = LoggerFactory.getLogger(ConnectionServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ConnectionServiceImpl.class);
 
     private final MongoTemplate mongoTemplate;
     private final ConnectionConverter connectionConverter;
@@ -83,20 +83,20 @@ public class ConnectionServiceImpl implements ConnectionService {
         UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(RandomString.newInstance().nextString());
         userAccount.setUserAuthentication(userAuthentication);
         registrationConfig.changeUserAccountActiveState(userAccount);
-        log.info("new account created user={} provider={}", userAccount.getReceiptUserId(), userAccount.getProviderId());
+        LOG.info("new account created user={} provider={}", userAccount.getReceiptUserId(), userAccount.getProviderId());
         mongoTemplate.insert(userAccount);
     }
 
     public void update(String userId, Connection<?> userConn) {
         UserAccountEntity userAccountFromConnection = connectionConverter.convert(userId, userConn);
-        log.info("populated userAccountFromConnection={}", userAccountFromConnection);
+        LOG.info("populated userAccountFromConnection={}", userAccountFromConnection);
 
         UserAccountEntity userAccount = getUserAccountEntity(
                 userId,
                 userAccountFromConnection.getProviderId(),
                 userAccountFromConnection.getProviderUserId()
         );
-        log.info("fetched userAccount={}", userAccount);
+        LOG.info("fetched userAccount={}", userAccount);
         if(userAccount != null) {
             userAccount.setExpireTime(userAccountFromConnection.getExpireTime());
             userAccount.setAccessToken(userAccountFromConnection.getAccessToken());
@@ -105,7 +105,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             userAccount.setDisplayName(userAccountFromConnection.getDisplayName());
             userAccount.setUpdated();
 
-            log.info("fetched before save userAccount={}", userAccount);
+            LOG.info("fetched before save userAccount={}", userAccount);
             mongoTemplate.save(userAccount);
         } else {
             UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
@@ -126,7 +126,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         Google google = new GoogleTemplate(userAccountFromConnection.getAccessToken());
         Person googleUserProfile = google.plusOperations().getGoogleProfile();
         copyAndSaveGoogleToUserProfile(googleUserProfile, userAccount);
-        log.info("Google Id={}", googleUserProfile.getId());
+        LOG.info("Google Id={}", googleUserProfile.getId());
 
         // XXX TODO page Circle to get all the users in the circle
     }
@@ -135,7 +135,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         Facebook facebook = new FacebookTemplate(userAccountFromConnection.getAccessToken(), "notfoundexception");
         FacebookProfile userProfile = facebook.userOperations().getUserProfile();
         copyAndSaveFacebookToUserProfile(userProfile, userAccount);
-        log.info("Facebook Id={}", userProfile.getId());
+        LOG.info("Facebook Id={}", userProfile.getId());
 
         if(providerConfig.isPopulateSocialFriendOn()) {
             populateFacebookFriends(userAccount, facebook);
@@ -171,7 +171,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 );
                 userAccountEntity.setUserAuthentication(userAuthentication);
                 registrationConfig.changeUserAccountActiveState(userAccount);
-                log.info("new account created user={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
+                LOG.info("new account created user={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
             } else {
                 userAccountEntity.setUpdated();
             }
@@ -185,7 +185,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     public void copyAndSaveFacebookToUserProfile(FacebookProfile facebookUserProfile, UserAccountEntity userAccount) {
-        log.info("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
+        LOG.info("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
         UserProfileEntity userProfile = mongoTemplate.findOne(
                 query(where("UID").is(facebookUserProfile.getId())),
                 UserProfileEntity.class
@@ -212,7 +212,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             try {
                 mongoTemplate.save(userProfile);
             } catch (MappingException e) {
-                log.error("error found during updating userProfile from provider RID={} userId={} provider={} reason={}",
+                LOG.error("error found during updating userProfile from provider RID={} userId={} provider={} reason={}",
                         userProfile.getReceiptUserId(),
                         userProfile.getUserId(),
                         userProfile.getProviderId(),
@@ -224,12 +224,12 @@ public class ConnectionServiceImpl implements ConnectionService {
             //XXX TODO think about moving this up in previous method call
             updateUserIdWithEmailWhenPresent(userAccount, userProfile);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            log.error(e.getLocalizedMessage(), e);
+            LOG.error(e.getLocalizedMessage(), e);
         }
     }
 
     public void copyAndSaveGoogleToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
-        log.debug("copying googleUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
+        LOG.debug("copying googleUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
         UserProfileEntity userProfile = mongoTemplate.findOne(
                 query(where("UID").is(googleUserProfile.getId())),
                 UserProfileEntity.class
@@ -298,7 +298,7 @@ public class ConnectionServiceImpl implements ConnectionService {
      */
     private void updateUserIdWithEmailWhenPresent(UserAccountEntity userAccount, UserProfileEntity userProfile) {
         if(StringUtils.isNotBlank(userProfile.getEmail())) {
-            log.debug("about to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
+            LOG.debug("about to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
             userAccount.setUserId(userProfile.getEmail());
             mongoTemplate.save(userAccount);
         }
@@ -351,7 +351,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     public List<Connection<?>> getConnections(String userId, ProviderEnum providerId) {
-        log.info("PUID={} PID={}", userId, providerId);
+        LOG.info("PUID={} PID={}", userId, providerId);
         Query q = query(where("PUID").is(userId).and("PID").is(providerId));
         Sort sort = new Sort(Sort.Direction.ASC, "RE");
         return runQuery(q.with(sort));

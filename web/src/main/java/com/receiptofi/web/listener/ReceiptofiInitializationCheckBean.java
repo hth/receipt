@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ReceiptofiInitializationCheckBean {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptofiInitializationCheckBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptofiInitializationCheckBean.class);
 
     @Autowired private JmsTemplate jmsSenderTemplate;
 
@@ -26,15 +26,15 @@ public class ReceiptofiInitializationCheckBean {
     public void checkActiveMQ() {
         try {
             jmsSenderTemplate.getConnectionFactory().createConnection();
-            log.info("ActiveMQ messaging is available");
+            LOG.info("ActiveMQ messaging is available");
         } catch(JMSException e) {
-            log.error("ActiveMQ messaging is unavailable reason={}", e.getLocalizedMessage(), e);
+            LOG.error("ActiveMQ messaging is unavailable reason={}", e.getLocalizedMessage(), e);
             stopServer();
         }
     }
 
     private void stopServer() {
-        log.error("Stopping server now. Fix above failures.");
+        LOG.error("Stopping server now. Fix above failures.");
         System.exit(0);
     }
 }

@@ -1,7 +1,5 @@
 package com.receiptofi.social.config;
 
-import com.receiptofi.repository.GenerateUserIdManager;
-import com.receiptofi.service.AccountService;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.connect.ConnectionConverter;
 import com.receiptofi.social.connect.ConnectionServiceImpl;
@@ -36,7 +34,7 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
 @Configuration
 @Social
 public class SocialConfig {
-    private static final Logger logger = LoggerFactory.getLogger(SocialConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SocialConfig.class);
 
     @Value("${facebook.client.id}")
     private String facebookClientId;
@@ -66,7 +64,7 @@ public class SocialConfig {
     @Bean
     @Scope(value = "singleton", proxyMode = ScopedProxyMode.INTERFACES)
     public ConnectionFactoryLocator connectionFactoryLocator() {
-        logger.info("Initializing connectionFactoryLocator");
+        LOG.info("Initializing connectionFactoryLocator");
         ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
         registry.addConnectionFactory(new FacebookConnectionFactory(facebookClientId, facebookClientSecret));
         registry.addConnectionFactory(new GoogleConnectionFactory(googleClientId, googleClientSecret));
@@ -78,7 +76,7 @@ public class SocialConfig {
      */
     @Bean
     public UsersConnectionRepository usersConnectionRepository() {
-        logger.info("Initializing usersConnectionRepository");
+        LOG.info("Initializing usersConnectionRepository");
         MongoUsersConnectionRepository repository = new MongoUsersConnectionRepository(connectionFactoryLocator(), Encryptors.noOpText());
         repository.setConnectionSignUp(new SimpleConnectionSignUp());
         return repository;
@@ -89,7 +87,7 @@ public class SocialConfig {
      */
     @Bean
     public ProviderSignInController providerSignInController(RequestCache requestCache) {
-        logger.info("Initializing ProviderSignInController");
+        LOG.info("Initializing ProviderSignInController");
         ConnectionFactoryLocator connFactLocator = connectionFactoryLocator();
         UsersConnectionRepository usrConnRepo = usersConnectionRepository();
         SignInAdapterImpl signInAdapter = new SignInAdapterImpl(requestCache, customUserDetailsService, registrationConfig);
@@ -103,19 +101,19 @@ public class SocialConfig {
 
     @Bean
     public TextEncryptor textEncryptor() {
-        logger.info("Initializing textEncryptor");
+        LOG.info("Initializing textEncryptor");
         return Encryptors.noOpText();
     }
 
     @Bean
     public ConnectionConverter connectionConverter() {
-        logger.info("Initializing connectionConverter");
+        LOG.info("Initializing connectionConverter");
         return new ConnectionConverter(connectionFactoryLocator(), textEncryptor());
     }
 
     @Bean
     public ConnectionServiceImpl mongoConnectionService() {
-        logger.info("Initializing mongoConnectionService");
+        LOG.info("Initializing mongoConnectionService");
         return new ConnectionServiceImpl(
                 mongoTemplate,
                 connectionConverter()

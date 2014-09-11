@@ -3,14 +3,12 @@
  */
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,13 +18,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 /**
  * @author hitender
  * @since Dec 16, 2012 1:20:53 PM
  */
 @Repository
 public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
-	private static final Logger log = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(UserAuthenticationEntity.class, Document.class, "collection");
 
 	private MongoTemplate mongoTemplate;
@@ -50,7 +50,7 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for UserAuthenticationEntity:{} {}", e.getLocalizedMessage(), e);
+			LOG.error("Duplicate record entry for UserAuthenticationEntity:{} {}", e.getLocalizedMessage(), e);
 			throw new RuntimeException(e.getMessage());
 		}
 	}

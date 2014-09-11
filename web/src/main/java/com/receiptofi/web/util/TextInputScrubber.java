@@ -1,10 +1,10 @@
 package com.receiptofi.web.util;
 
+import java.net.URLDecoder;
+
 import org.owasp.html.HtmlPolicyBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.URLDecoder;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
  * Date: 11/24/13 11:28 AM
  */
 public final class TextInputScrubber {
-    private static Logger log = LoggerFactory.getLogger(TextInputScrubber.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TextInputScrubber.class);
 
     public static String scrub(String text) {
         if(StringUtils.isBlank(text)) {
@@ -24,7 +24,7 @@ public final class TextInputScrubber {
         try {
             decoded = URLDecoder.decode(text, "UTF-8");
         } catch(Exception exce) {
-            log.warn("Decode failed text={}", text, exce);
+            LOG.warn("Decode failed text={}", text, exce);
             return StringUtils.EMPTY;
         }
 

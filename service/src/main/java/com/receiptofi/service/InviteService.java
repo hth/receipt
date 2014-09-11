@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class InviteService {
-    private static Logger log = LoggerFactory.getLogger(InviteService.class);
+    private static Logger LOG = LoggerFactory.getLogger(InviteService.class);
 
     private final AccountService accountService;
     private final InviteManager inviteManager;
@@ -78,9 +78,9 @@ public final class InviteService {
                     StringUtils.EMPTY,
                     RandomString.newInstance(8).nextString()
             );
-        } catch (RuntimeException exception) {
-            log.error("Error occurred during creation of invited user: " + exception.getLocalizedMessage());
-            throw exception;
+        } catch (RuntimeException e) {
+            LOG.error("Error occurred during creation of invited user reason={}", e.getLocalizedMessage(), e);
+            throw e;
         }
 
         //Updating the record as inactive until user completes registration

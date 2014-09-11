@@ -3,6 +3,9 @@
  */
 package com.receiptofi.web.controller.open;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -11,15 +14,12 @@ import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.helper.AvailabilityStatus;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.UserRegistrationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,7 +43,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/open/registration")
 public final class AccountRegistrationController {
-    private static final Logger log = LoggerFactory.getLogger(AccountRegistrationController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
 
     @Value("${registrationPage:registration}")
     private String registrationPage;
@@ -81,7 +81,7 @@ public final class AccountRegistrationController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String loadForm() {
-        log.debug("New Account Registration invoked");
+        LOG.debug("New Account Registration invoked");
         return registrationPage;
     }
 
@@ -110,12 +110,12 @@ public final class AccountRegistrationController {
                     userRegistrationForm.getPassword()
             );
         } catch (RuntimeException exce) {
-            log.error(exce.getLocalizedMessage());
+            LOG.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
             return registrationPage;
         }
 
-        log.info("Registered new user Id={}", userAccount.getReceiptUserId());
+        LOG.info("Registered new user Id={}", userAccount.getReceiptUserId());
         redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
 
         EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(userAccount.getReceiptUserId(), userAccount.getUserId());
@@ -175,12 +175,12 @@ public final class AccountRegistrationController {
 
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);
         if(userProfileEntity != null && userProfileEntity.getEmail().equals(email)) {
-            log.info("Email={} provided during registration exists", email);
+            LOG.info("Email={} provided during registration exists", email);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             availabilityStatus = AvailabilityStatus.notAvailable(email);
             return String.format("{ \"valid\" : \"%s\", \"message\" : \"<b>%s</b> is already registered. %s\" }", availabilityStatus.isAvailable(), email, StringUtils.join(availabilityStatus.getSuggestions()));
         }
-        log.info("Email available={} for registration", email);
+        LOG.info("Email available={} for registration", email);
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
         availabilityStatus = AvailabilityStatus.available();
         return String.format("{ \"valid\" : \"%s\" }", availabilityStatus.isAvailable());

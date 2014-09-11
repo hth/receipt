@@ -1,8 +1,6 @@
 package com.receiptofi.web.controller.webapi.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,7 +10,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,13 +24,13 @@ import org.springframework.security.web.csrf.CsrfToken;
  */
 @WebFilter(urlPatterns={"/webapi/mobile/*"})
 public class MobileApiFilter implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(MobileApiFilter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MobileApiFilter.class);
 
     @Override
     public void init(FilterConfig config) throws ServletException {
         // If you have any <init-param> in web.xml, then you could get them
         // here by config.getInitParameter("name") and assign it as field.
-        log.info("Api filter initialized");
+        LOG.info("Api filter initialized");
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MobileApiFilter implements Filter {
     public void destroy() {
         // If you have assigned any expensive resources as field of
         // this Filter class, then you could clean/close them here.
-        log.info("Api filter destroyed");
+        LOG.info("Api filter destroyed");
     }
 }
 

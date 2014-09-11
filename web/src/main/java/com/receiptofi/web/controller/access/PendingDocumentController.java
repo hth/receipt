@@ -3,20 +3,20 @@
  */
 package com.receiptofi.web.controller.access;
 
+import java.util.List;
+
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentPendingService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
-import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.PendingReceiptForm;
 import com.receiptofi.web.form.ReceiptDocumentForm;
 import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,7 +41,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 @Controller
 @RequestMapping(value = "/access/pendingdocument")
 public final class PendingDocumentController {
-	private static final Logger log = LoggerFactory.getLogger(PendingDocumentController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PendingDocumentController.class);
 
 	private String LIST_PENDING_DOCUMENTS = "/pendingdocument";
     private String SHOW_DOCUMENT = "/document";
@@ -66,12 +66,12 @@ public final class PendingDocumentController {
                     pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), documentEntity);
                 }
             } else {
-                log.error("pending document does not contains receipt documentId={}", documentEntity.getId());
+                LOG.error("pending document does not contains receipt documentId={}", documentEntity.getId());
                 ++ pendingMissingReceipt;
             }
         }
         if(pendingMissingReceipt > 0) {
-            log.error("total pending documents missing receipts count={}", pendingMissingReceipt);
+            LOG.error("total pending documents missing receipts count={}", pendingMissingReceipt);
         }
 
         int rejectedMissingReceipt = 0;
@@ -84,13 +84,13 @@ public final class PendingDocumentController {
                     pendingReceiptForm.addRejected(originalFileName, gridFSDBFile.getLength(), documentEntity);
                 }
             } else {
-                log.error("rejected document does not contains receipt documentId={}", documentEntity.getId());
+                LOG.error("rejected document does not contains receipt documentId={}", documentEntity.getId());
                 ++ rejectedMissingReceipt;
             }
         }
 
         if(rejectedMissingReceipt > 0) {
-            log.error("total rejected documents missing receipts count={}", rejectedMissingReceipt);
+            LOG.error("total rejected documents missing receipts count={}", rejectedMissingReceipt);
         }
 
 		ModelAndView modelAndView = new ModelAndView(LIST_PENDING_DOCUMENTS);
@@ -136,7 +136,7 @@ public final class PendingDocumentController {
                     documentUpdateService.deleteRejectedReceiptOCR(receiptDocumentForm.getReceiptDocument());
                     break;
                 default:
-                    log.warn("default condition, delete document={}, documentStatus={} receiptId={}",
+                    LOG.warn("default condition, delete document={}, documentStatus={} receiptId={}",
                             receiptDocumentForm.getReceiptDocument().getId(),
                             receiptDocumentForm.getReceiptDocument().getDocumentStatus(),
                             receiptDocumentForm.getReceiptDocument().getReceiptId()

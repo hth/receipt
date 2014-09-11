@@ -13,11 +13,11 @@ import org.springframework.cache.annotation.Cacheable;
  * @deprecated could not use with Redis cacheable
  */
 public class RedisCachedUserAgentStringParser {
-    private static final Logger log = LoggerFactory.getLogger(RedisCachedUserAgentStringParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RedisCachedUserAgentStringParser.class);
 
     @Cacheable(value="name", condition="'hitender'.equals(#name)")
     public String getName(String name) {
-        log.info("Not from cache : " + name);
+        LOG.info("Not from cache : " + name);
         return "Hello " + name + "!";
     }
 }

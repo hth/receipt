@@ -1,16 +1,15 @@
 package com.receiptofi.service;
 
+import java.util.Date;
+import java.util.List;
+
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
-
-import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

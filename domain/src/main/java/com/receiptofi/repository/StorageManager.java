@@ -3,11 +3,11 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.shared.UploadDocumentImage;
-
 import java.io.IOException;
 import java.util.Collection;
+
+import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 
 import com.mongodb.gridfs.GridFSDBFile;
 

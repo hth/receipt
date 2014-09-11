@@ -19,7 +19,7 @@ import org.springframework.validation.Validator;
 @Component
 public final class UserLoginValidator implements Validator {
     @SuppressWarnings("unused")
-	private static final Logger log = LoggerFactory.getLogger(UserLoginValidator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserLoginValidator.class);
 
 	@Override
 	public boolean supports(Class<?> clazz) {

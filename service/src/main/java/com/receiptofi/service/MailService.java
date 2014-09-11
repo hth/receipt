@@ -1,5 +1,13 @@
 package com.receiptofi.service;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.InviteEntity;
@@ -20,16 +28,6 @@ import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.util.Assert;
 
+import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
+
 /**
  * User: hitender
  * Date: 6/9/13
@@ -49,7 +49,7 @@ import org.springframework.util.Assert;
  */
 @Service
 public final class MailService {
-    private static Logger log = LoggerFactory.getLogger(MailService.class);
+    private static Logger LOG = LoggerFactory.getLogger(MailService.class);
 
     @Autowired private AccountService accountService;
 
@@ -122,7 +122,7 @@ public final class MailService {
             } else {
                 helper.setTo(new InternetAddress(userAccount.getUserId(), userAccount.getName()));
             }
-            log.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userAccount.getUserId() : devSentTo);
+            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userAccount.getUserId() : devSentTo);
             sendMail(
                     userAccount.getName() + ": " + mailValidateSubject,
                     freemarkerToString("mail/self-signup.ftl", rootMap),
@@ -130,7 +130,7 @@ public final class MailService {
                     helper
             );
         } catch (IOException | TemplateException | MessagingException exception) {
-            log.error("Validation failure email for={}", userAccount.getUserId(), exception);
+            LOG.error("Validation failure email for={}", userAccount.getUserId(), exception);
             return false;
         }
         return true;
@@ -166,7 +166,7 @@ public final class MailService {
                 } else {
                     helper.setTo(new InternetAddress(emailId, userAccount.getName()));
                 }
-                log.info("Mail recovery send to={}", StringUtils.isEmpty(devSentTo) ? emailId : devSentTo);
+                LOG.info("Mail recovery send to={}", StringUtils.isEmpty(devSentTo) ? emailId : devSentTo);
                 sendMail(
                         userAccount.getName() + ": " + mailRecoverSubject,
                         freemarkerToString("mail/account-recover.ftl", rootMap),
@@ -175,7 +175,7 @@ public final class MailService {
                 );
                 return true;
             } catch (IOException | TemplateException | MessagingException exception) {
-                log.error("Recovery email={}", exception.getLocalizedMessage(), exception);
+                LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
                 return false;
             }
         }
@@ -201,9 +201,9 @@ public final class MailService {
             } catch (RuntimeException exception) {
                 if(inviteEntity != null) {
                     deleteInvite(inviteEntity);
-                    log.info("Due to failure in sending the invitation email. Deleting Invite={}, for={}", inviteEntity.getId(), inviteEntity.getEmail());
+                    LOG.info("Due to failure in sending the invitation email. Deleting Invite={}, for={}", inviteEntity.getId(), inviteEntity.getEmail());
                 }
-                log.error("Exception occurred during persisting InviteEntity, message={}", exception.getLocalizedMessage(), exception);
+                LOG.error("Exception occurred during persisting InviteEntity, message={}", exception.getLocalizedMessage(), exception);
             }
         }
         return false;
@@ -232,7 +232,7 @@ public final class MailService {
                     inviteManager.save(inviteEntity);
                 }
             } catch (Exception exception) {
-                log.error("Exception occurred during persisting InviteEntity, reason={}", exception.getLocalizedMessage(), exception);
+                LOG.error("Exception occurred during persisting InviteEntity, reason={}", exception.getLocalizedMessage(), exception);
                 return false;
             }
         }
@@ -254,7 +254,7 @@ public final class MailService {
             inviteManager.save(inviteEntity);
             return inviteEntity;
         } catch (Exception exception) {
-            log.error("Error occurred during creation of invited user={}", email, exception.getLocalizedMessage(), exception);
+            LOG.error("Error occurred during creation of invited user={}", email, exception.getLocalizedMessage(), exception);
             return null;
         }
     }
@@ -275,7 +275,7 @@ public final class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(new InternetAddress(inviteeEmail, emailAddressName));
             helper.setTo(StringUtils.isEmpty(devSentTo) ? email : devSentTo);
-            log.info("Invitation send to={}", (StringUtils.isEmpty(devSentTo) ? email : devSentTo));
+            LOG.info("Invitation send to={}", (StringUtils.isEmpty(devSentTo) ? email : devSentTo));
             sendMail(
                     mailInviteSubject + " - " + invitedBy.getName(),
                     freemarkerToString("mail/invite.ftl", rootMap),
@@ -283,7 +283,7 @@ public final class MailService {
                     helper
             );
         } catch (TemplateException | IOException | MessagingException exception) {
-            log.error("Invitation failure email inviteId={}, for={}, exception={}", inviteEntity.getId(), inviteEntity.getEmail(), exception);
+            LOG.error("Invitation failure email inviteId={}, for={}, exception={}", inviteEntity.getId(), inviteEntity.getEmail(), exception);
             throw new RuntimeException(exception);
         }
     }
@@ -302,7 +302,7 @@ public final class MailService {
         try {
             mailSender.send(message);
         } catch(MailSendException mailSendException) {
-            log.error("Mail send exception={}", mailSendException.getLocalizedMessage());
+            LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
             throw new MessagingException(mailSendException.getLocalizedMessage(), mailSendException);
         }
     }
@@ -319,7 +319,7 @@ public final class MailService {
      * @param inviteEntity
      */
     private void deleteInvite(InviteEntity inviteEntity) {
-        log.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
+        LOG.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
         UserProfileEntity userProfile = accountService.doesUserExists(inviteEntity.getEmail());
         UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
         UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();

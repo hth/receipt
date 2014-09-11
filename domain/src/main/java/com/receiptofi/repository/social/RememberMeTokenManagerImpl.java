@@ -1,13 +1,11 @@
 package com.receiptofi.repository.social;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.social.RememberMeTokenEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,13 +14,15 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 /**
  * User: hitender
  * Date: 3/30/14 7:38 PM
  */
 @Repository
 public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
-    private static final Logger log = LoggerFactory.getLogger(RememberMeTokenManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RememberMeTokenManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(RememberMeTokenEntity.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;

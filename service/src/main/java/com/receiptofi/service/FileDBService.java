@@ -1,13 +1,13 @@
 package com.receiptofi.service;
 
+import java.io.IOException;
+import java.util.Collection;
+
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.repository.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import com.mongodb.gridfs.GridFSDBFile;
  */
 @Service
 public final class FileDBService {
-    private static final Logger log = LoggerFactory.getLogger(FileDBService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileDBService.class);
 
     @Autowired private StorageManager storageManager;
 

@@ -14,7 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils;
  * Date: 9/21/13 10:16 PM
  */
 public final class CreateTempFile {
-    private static final Logger log = LoggerFactory.getLogger(CreateTempFile.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateTempFile.class);
 
     public enum FileTypeEnum {
         XLS, TXT, JPEG, JPG, PNG, PDF
@@ -30,7 +30,7 @@ public final class CreateTempFile {
                 return File.createTempFile(TEMP_FILE_START_WITH + "-" + name + "-", ext.startsWith(".") ? ext : "." + ext);
             }
         } catch (IOException e) {
-            log.error("Error creating temp file: " + e.getLocalizedMessage());
+            LOG.error("Error creating temp file: " + e.getLocalizedMessage());
             throw e;
         }
     }

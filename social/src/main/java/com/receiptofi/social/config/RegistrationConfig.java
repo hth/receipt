@@ -25,7 +25,7 @@ import org.springframework.ui.ModelMap;
 @Component
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 public class RegistrationConfig {
-    private static final Logger log = LoggerFactory.getLogger(RegistrationConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationConfig.class);
 
     @Value("${registration.turned.on}")
     private boolean registrationTurnedOn;
@@ -65,10 +65,10 @@ public class RegistrationConfig {
      */
     public void isRegistrationAllowed(UserAccountEntity userAccount) {
         if(registrationTurnedOn) {
-            log.info("registration is allowed, marking user={} active", userAccount.getReceiptUserId());
+            LOG.info("registration is allowed, marking user={} active", userAccount.getReceiptUserId());
             userAccount.active();
         } else {
-            log.info("registration is NOT allowed, marking user={} inactive", userAccount.getReceiptUserId());
+            LOG.info("registration is NOT allowed, marking user={} inactive", userAccount.getReceiptUserId());
             userAccount.inActive();
         }
     }
@@ -80,7 +80,7 @@ public class RegistrationConfig {
      * @return
      */
     public boolean checkRegistrationIsTurnedOn(UserDetails user) {
-        log.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), indexController);
+        LOG.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), indexController);
 
         if(user.isEnabled() || registrationTurnedOn) {
             return false;

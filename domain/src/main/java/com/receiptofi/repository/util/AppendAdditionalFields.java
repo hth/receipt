@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.query.Update;
  * Time: 10:47 PM
  */
 public final class AppendAdditionalFields {
-    private static final Logger log = LoggerFactory.getLogger(AppendAdditionalFields.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AppendAdditionalFields.class);
 
     public static Criteria isDeleted() {
         return Criteria.where("D").is(true);
@@ -41,7 +41,7 @@ public final class AppendAdditionalFields {
      */
     public static Update entityUpdate(Update update) {
         if(update == null) {
-            log.error("Update cannot be null");
+            LOG.error("Update cannot be null");
         } else {
             return update.set("U", DateUtil.nowTime()).inc("V", 1);
         }

@@ -3,6 +3,11 @@
  */
 package com.receiptofi.repository;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
@@ -12,15 +17,6 @@ import com.receiptofi.utils.DateUtil;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,6 +36,12 @@ import org.joda.time.DateTime;
 
 import com.mongodb.WriteResult;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 /**
  * @author hitender
  * @since Dec 26, 2012 9:16:44 PM
@@ -47,7 +49,7 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class ItemManagerImpl implements ItemManager {
-	private static final Logger log = LoggerFactory.getLogger(ItemManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ItemManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
 
 	@Autowired private MongoTemplate mongoTemplate;
@@ -67,7 +69,7 @@ public final class ItemManagerImpl implements ItemManager {
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ItemEntity={}", e);
+			LOG.error("Duplicate record entry for ItemEntity={}", e);
 			throw new RuntimeException(e.getMessage());
 		}
 	}
@@ -85,7 +87,7 @@ public final class ItemManagerImpl implements ItemManager {
                 sequence ++;
 			}
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
+			LOG.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		}
 	}
@@ -182,7 +184,7 @@ public final class ItemManagerImpl implements ItemManager {
 
             return mongoTemplate.find(query(criteria), ItemEntity.class, TABLE);
         } else {
-            log.error("One of the query is trying to get items for different User Profile Id: " + userProfileId + ", Item Id: " + itemEntity.getId());
+            LOG.error("One of the query is trying to get items for different User Profile Id: " + userProfileId + ", Item Id: " + itemEntity.getId());
             return new LinkedList<>();
         }
     }
@@ -241,7 +243,7 @@ public final class ItemManagerImpl implements ItemManager {
     public void updateItemWithExpenseType(ItemEntity item) throws Exception {
         ItemEntity foundItem = findOne(item.getId());
         if(foundItem == null) {
-            log.error("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
+            LOG.error("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
             throw new Exception("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
         } else {
             foundItem.setExpenseTag(item.getExpenseTag());

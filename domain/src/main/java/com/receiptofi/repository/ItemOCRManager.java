@@ -3,10 +3,10 @@
  */
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
-
-import java.util.List;
 
 import com.mongodb.WriteResult;
 

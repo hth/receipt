@@ -20,7 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  */
 @Service
 public final class EvalFeedbackService {
-    private static final Logger log = LoggerFactory.getLogger(EvalFeedbackService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackService.class);
 
     @Autowired EvalFeedbackManager evalFeedbackManager;
     @Autowired FileDBService fileDBService;
@@ -43,7 +43,7 @@ public final class EvalFeedbackService {
             }
             evalFeedbackManager.save(evalFeedbackEntity);
         } catch (Exception exce) {
-            log.error(exce.getLocalizedMessage());
+            LOG.error(exce.getLocalizedMessage());
         }
     }
 }

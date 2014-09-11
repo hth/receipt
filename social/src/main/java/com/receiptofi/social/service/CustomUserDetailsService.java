@@ -1,8 +1,14 @@
 package com.receiptofi.social.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
@@ -13,15 +19,9 @@ import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.config.SocialConfig;
 import com.receiptofi.social.connect.ConnectionService;
-import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,7 +52,7 @@ import com.google.gson.JsonObject;
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private static final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
@@ -69,18 +69,18 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        log.info("login through site, user={}", email);
+        LOG.info("login through site, user={}", email);
 
         //Always check user login with lower letter email case
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
         if(userProfile == null) {
-            log.warn("not found user={}", email);
+            LOG.warn("not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
 
-            log.warn("user={} accountValidated={}", userAccountEntity.getReceiptUserId(), userAccountEntity.isAccountValidated());
+            LOG.warn("user={} accountValidated={}", userAccountEntity.getReceiptUserId(), userAccountEntity.isAccountValidated());
 
             return new ReceiptUser(
                     userProfile.getEmail(),
@@ -111,11 +111,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Social
     public UserDetails loadUserByUserId(String uid) throws UsernameNotFoundException {
-        log.info("login through Provider user={}", uid);
+        LOG.info("login through Provider user={}", uid);
 
         UserProfileEntity userProfile = userProfilePreferenceService.findByUserId(uid);
         if(userProfile == null) {
-            log.warn("not found user={}", uid);
+            LOG.warn("not found user={}", uid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
@@ -269,7 +269,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private boolean isConnectionPopulated(List<Connection<?>> connections, String pid) {
         if(connections.size() == 0) {
-            log.warn("connection repository size is zero for pid={}", pid);
+            LOG.warn("connection repository size is zero for pid={}", pid);
             return false;
         }
         return true;

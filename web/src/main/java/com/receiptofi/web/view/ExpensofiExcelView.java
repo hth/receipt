@@ -1,12 +1,5 @@
 package com.receiptofi.web.view;
 
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.web.helper.AnchorFileInExcel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +8,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.web.helper.AnchorFileInExcel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -45,7 +45,7 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
  */
 @Component
 public final class ExpensofiExcelView extends AbstractExcelView {
-    private static final Logger log = LoggerFactory.getLogger(ExpensofiExcelView.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiExcelView.class);
 
     @Value("${expensofiReportLocation}")
     private String expensofiReportLocation;
@@ -142,7 +142,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             out = new FileOutputStream(new File(expensofiReportLocation + File.separator + filename));
 			workbook.write(out);
         } catch (IOException e) {
-            log.error(
+            LOG.error(
                     "Possible permission error while persisting file to file system={}{}{}, reason=",
                     expensofiReportLocation,
                     File.separator,
@@ -205,7 +205,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
         if(value instanceof String) {
             String str = (String) value;
-            log.debug("STRING: [" + str + ']');
+            LOG.debug("STRING: [{}]", str);
             if(str.startsWith("=")) {
                 cell.setCellFormula(str.substring(1));
             } else {
@@ -214,24 +214,24 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         } else if(value instanceof Date) {
-            log.debug("DATE:  " + value);
+            LOG.debug("DATE: {}", value);
             cell.setCellValue((Date) value);
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         } else if(value instanceof Double) {
-            log.debug("MONEY: " + value);
+            LOG.debug("MONEY: {}", value);
             cell.setCellValue(((Double) value));
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
             if(value == null) {
                 value = StringUtils.EMPTY;   // Ignore
             }
-            log.debug("OTHER: " + value + " (" + value.getClass() + ")");
+            LOG.debug("OTHER: {} ({})", value, value.getClass());
             cell.setCellValue(new HSSFRichTextString(value.toString()));
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         }
 
         cell.setCellStyle(style);
-        log.debug(" (" + style + ")");
+        LOG.debug(" ({})", style);
         return cell;
     }
 }

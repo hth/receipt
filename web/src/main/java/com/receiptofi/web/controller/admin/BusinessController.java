@@ -1,11 +1,14 @@
 package com.receiptofi.web.controller.admin;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
-import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.BizForm;
 import com.receiptofi.web.util.PerformanceProfiling;
@@ -13,9 +16,6 @@ import com.receiptofi.web.validator.BizSearchValidator;
 import com.receiptofi.web.validator.BizValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,7 +41,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/admin")
 public final class BusinessController {
-    private static final Logger log = LoggerFactory.getLogger(BusinessController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessController.class);
     private static final String NEXT_PAGE = "/admin/business";
     private static final String EDIT_PAGE = "/admin/businessEdit";
 
@@ -118,7 +118,7 @@ public final class BusinessController {
                 externalService.decodeAddress(bizStoreEntity);
                 bizService.saveStore(bizStoreEntity);
             } catch (Exception e) {
-                log.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
+                LOG.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
                 bizForm.setBizError("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
@@ -133,9 +133,9 @@ public final class BusinessController {
             bizNameEntity.setBusinessName(bizForm.getBusinessName());
             try {
                 bizService.saveName(bizNameEntity);
-                log.info("Business '" + bizNameEntity.getBusinessName() + "' updated successfully");
+                LOG.info("Business '" + bizNameEntity.getBusinessName() + "' updated successfully");
             } catch(Exception e) {
-                log.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
+                LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
@@ -180,13 +180,13 @@ public final class BusinessController {
             if(bizForm.getReceiptCount().get(bizStoreEntity.getId()) == 0) {
                 bizService.deleteBizStore(bizStoreEntity);
                 bizForm.setBizSuccess("Deleted store successfully");
-                log.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user={}", receiptUser.getRid());
+                LOG.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user={}", receiptUser.getRid());
 
                 //To make sure no orphan biz name are lingering around
                 if(bizService.countReceiptForBizName(bizNameEntity) == 0) {
                     bizService.deleteBizName(bizNameEntity);
                     bizForm.setBizSuccess("Deleted biz name successfully");
-                    log.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user={}", receiptUser.getRid());
+                    LOG.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user={}", receiptUser.getRid());
                 }
             } else {
                 bizForm.setBizError("Could not delete the store as its currently being referred by a receipt");
@@ -227,7 +227,7 @@ public final class BusinessController {
             try {
                 externalService.decodeAddress(bizStoreEntity);
             } catch (Exception e) {
-                log.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
+                LOG.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
                 bizForm.setBizError("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
@@ -245,7 +245,7 @@ public final class BusinessController {
                 bizService.saveNewBusinessAndOrStore(receiptEntity);
                 bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getBusinessName() + "' added successfully");
             } catch(Exception e) {
-                log.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
+                LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);

@@ -22,13 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public abstract class BaseController {
-	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private LoginService loginService;
 
     public String getAuth(String profileId) {
-        log.debug("Find user with profileId: " + profileId);
+        LOG.debug("Find user with profileId: " + profileId);
         return getAuth(userProfileManager.findByReceiptUserId(profileId));
     }
 

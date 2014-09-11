@@ -16,7 +16,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class InviteAuthenticateValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(InviteAuthenticateValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InviteAuthenticateValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -25,7 +25,7 @@ public final class InviteAuthenticateValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.debug("Executing validation");
+        LOG.debug("Executing validation");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[] { "First Name" });
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[] { "Last Name" });

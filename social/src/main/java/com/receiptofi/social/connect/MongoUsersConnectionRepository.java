@@ -1,11 +1,11 @@
 package com.receiptofi.social.connect;
 
-import com.receiptofi.domain.types.ProviderEnum;
-import com.receiptofi.social.annotation.Social;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.social.annotation.Social;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.encrypt.TextEncryptor;

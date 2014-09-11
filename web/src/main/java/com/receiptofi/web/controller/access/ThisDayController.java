@@ -1,5 +1,7 @@
 package com.receiptofi.web.controller.access;
 
+import java.util.List;
+
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ReceiptService;
@@ -7,8 +9,6 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +28,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/access/day")
 public final class ThisDayController {
-    private static final Logger log = LoggerFactory.getLogger(ThisDayController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ThisDayController.class);
     private static final String nextPage = "/day";
 
     @Autowired private ReceiptService receiptService;

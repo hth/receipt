@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class LoginService {
-    private static Logger log = LoggerFactory.getLogger(LoginService.class);
+    private static Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;
     @Autowired private UserAccountManager userAccountManager;
@@ -44,7 +44,7 @@ public final class LoginService {
                 browserManager.save(browserEntity);
             }
         } catch(Exception e) {
-            log.error("Moving on. Omitting this error={}", e.getLocalizedMessage(), e);
+            LOG.error("Moving on. Omitting this error={}", e.getLocalizedMessage(), e);
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.receiptofi.social.user;
 
-import com.receiptofi.social.annotation.Social;
-
 import java.util.concurrent.atomic.AtomicLong;
+
+import com.receiptofi.social.annotation.Social;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;

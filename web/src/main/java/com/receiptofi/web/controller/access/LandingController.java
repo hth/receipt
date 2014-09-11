@@ -3,11 +3,25 @@
  */
 package com.receiptofi.web.controller.access;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -19,7 +33,6 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
-import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
@@ -36,19 +49,6 @@ import com.receiptofi.web.rest.ReportView;
 import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +84,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 @Controller
 @RequestMapping(value = "/access")
 public final class LandingController extends BaseController {
-	private static final Logger log = LoggerFactory.getLogger(LandingController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private LandingService landingService;
     @Autowired private MailService mailService;
@@ -110,7 +110,7 @@ public final class LandingController extends BaseController {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        log.info("LandingController loadForm user={}, rid={}", receiptUser.getUsername(), receiptUser.getRid());
+        LOG.info("LandingController loadForm user={}, rid={}", receiptUser.getUsername(), receiptUser.getRid());
 
 		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
 
@@ -123,7 +123,7 @@ public final class LandingController extends BaseController {
         modelAndView.addObject("pendingCount", pendingCount);
 
         /** Receipt grouped by date */
-        log.info("Calculating calendar grouped expense");
+        LOG.info("Calculating calendar grouped expense");
         Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(receiptUser.getRid());
         landingForm.setReceiptGrouped(receiptGrouped);
 
@@ -138,12 +138,12 @@ public final class LandingController extends BaseController {
         }
 
         /** Used for charting in Expense Analysis tab */
-        log.info("Calculating Pie chart - item expense");
+        LOG.info("Calculating Pie chart - item expense");
         Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpenseForTheYear(receiptUser.getRid());
         modelAndView.addObject("itemExpenses", itemExpenses);
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1 */
-        log.info("Calculating Donut chart - receipt expense");
+        LOG.info("Calculating Donut chart - receipt expense");
         /** bizNames and bizByExpenseTypes added below to landingForm*/
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
 
@@ -197,7 +197,7 @@ public final class LandingController extends BaseController {
         landingForm.setReceiptForMonth(receiptForMonth);
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
-        log.info("Calculating Donut chart - receipt expense");
+        LOG.info("Calculating Donut chart - receipt expense");
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
         return modelAndView;
     }
@@ -252,7 +252,7 @@ public final class LandingController extends BaseController {
     public @ResponseBody
     String upload(HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
-        log.info("uploading document");
+        LOG.info("uploading document");
 
         String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
         String outcome = "{\"success\" : false}";
@@ -277,14 +277,14 @@ public final class LandingController extends BaseController {
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {
                     outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
-                    log.error("document upload failed reason={} rid={}", exce.getLocalizedMessage(), rid, exce);
+                    LOG.error("document upload failed reason={} rid={}", exce.getLocalizedMessage(), rid, exce);
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error to save document");
                 }
             }
         } else {
             //TODO test with IE
             //http://skillshared.blogspot.com/2012/08/java-class-for-valums-ajax-file.html
-            log.warn("Look like IE file upload");
+            LOG.warn("Look like IE file upload");
             String filename = httpServletRequest.getHeader("X-File-Name");
             InputStream is = httpServletRequest.getInputStream();
         }
@@ -304,7 +304,7 @@ public final class LandingController extends BaseController {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        log.info("Upload a mileage");
+        LOG.info("Upload a mileage");
         String outcome = "{\"success\" : false}";
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
@@ -327,14 +327,14 @@ public final class LandingController extends BaseController {
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {
                     outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
-                    log.error("Receipt upload reason={}, for rid={}", exce.getLocalizedMessage(), receiptUser.getRid(), exce);
+                    LOG.error("Receipt upload reason={}, for rid={}", exce.getLocalizedMessage(), receiptUser.getRid(), exce);
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
                 }
             }
         } else {
             //TODO test with IE
             //http://skillshared.blogspot.com/2012/08/java-class-for-valums-ajax-file.html
-            log.warn("Look like IE file upload");
+            LOG.warn("Look like IE file upload");
             String filename = httpServletRequest.getHeader("X-File-Name");
             InputStream is = httpServletRequest.getInputStream();
         }
@@ -352,7 +352,7 @@ public final class LandingController extends BaseController {
     public @ResponseBody
     LandingView loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
-        log.info("Web Service : " + profileId);
+        LOG.info("Web Service : " + profileId);
         return landingView(profileId, authKey, time);
     }
 
@@ -367,7 +367,7 @@ public final class LandingController extends BaseController {
     public @ResponseBody
     String loadJSON(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
-        log.info("JSON : " + profileId);
+        LOG.info("JSON : " + profileId);
         Base landingView = landingView(profileId, authKey, time);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -377,7 +377,7 @@ public final class LandingController extends BaseController {
         try {
             json = ow.writeValueAsString(landingView);
         } catch (IOException e) {
-            log.error(e.getLocalizedMessage());
+            LOG.error(e.getLocalizedMessage());
         }
 
         return json;
@@ -408,7 +408,7 @@ public final class LandingController extends BaseController {
             landingView.setReceipts(receipts);
             landingView.setStatus(Header.RESULT.SUCCESS);
 
-            log.info("Rest/JSON Service returned={}, rid={} ",profileId, userProfile.getReceiptUserId());
+            LOG.info("Rest/JSON Service returned={}, rid={} ",profileId, userProfile.getReceiptUserId());
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             return landingView;
@@ -457,7 +457,7 @@ public final class LandingController extends BaseController {
 
             return file;
         } catch (JAXBException | IOException e) {
-            log.error("Error while processing reporting template: " + e.getLocalizedMessage());
+            LOG.error("Error while processing reporting template: " + e.getLocalizedMessage());
             throw new RuntimeException("Error while processing reporting template");
         }
     }
@@ -477,7 +477,7 @@ public final class LandingController extends BaseController {
         String invitedUserEmail = StringUtils.lowerCase(emailId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        log.info("Invitation being sent to: " + invitedUserEmail);
+        LOG.info("Invitation being sent to: " + invitedUserEmail);
 
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
         if(isValid) {
@@ -507,15 +507,15 @@ public final class LandingController extends BaseController {
                     return "Unsuccessful in sending invitation: " + invitedUserEmail;
                 }
             } else if(userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
-                log.info(invitedUserEmail + ", already registered. Thanks!");
+                LOG.info(invitedUserEmail + ", already registered. Thanks!");
                 return invitedUserEmail + ", already registered. Thanks!";
             } else if(userProfileEntity.isDeleted()) {
-                log.info(invitedUserEmail + ", already registered but no longer with us. Appreciate!");
+                LOG.info(invitedUserEmail + ", already registered but no longer with us. Appreciate!");
 
                 //Have to send a positive message
                 return invitedUserEmail + ", already invited. Appreciate!";
             } else {
-                log.info(invitedUserEmail + ", already invited. Thanks!");
+                LOG.info(invitedUserEmail + ", already invited. Thanks!");
                 // TODO can put a condition to check or if user is still in invitation mode or has completed registration
                 // TODO Based on either condition we can let user recover password or re-send invitation
                 return invitedUserEmail + ", already invited. Thanks!";

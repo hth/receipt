@@ -1,8 +1,8 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.NotificationTypeEnum;
-
 import javax.validation.constraints.NotNull;
+
+import com.receiptofi.domain.types.NotificationTypeEnum;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

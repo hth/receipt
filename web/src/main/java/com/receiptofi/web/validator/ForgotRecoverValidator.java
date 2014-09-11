@@ -19,7 +19,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class ForgotRecoverValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(ForgotRecoverValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ForgotRecoverValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -28,7 +28,7 @@ public final class ForgotRecoverValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.debug("Executing validation");
+        LOG.debug("Executing validation");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email Id"});
 

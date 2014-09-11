@@ -1,5 +1,8 @@
 package com.receiptofi.web.controller.open;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.service.AccountService;
@@ -7,9 +10,6 @@ import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.social.config.RegistrationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,7 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping(value = "/open/validate")
 public final class ValidateEmailController {
-    private static final Logger log = LoggerFactory.getLogger(ValidateEmailController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ValidateEmailController.class);
 
     private final EmailValidateService emailValidateService;
     private final AccountService accountService;
@@ -55,14 +55,14 @@ public final class ValidateEmailController {
     public String validateEmail(@RequestParam("authenticationKey") String key, RedirectAttributes redirectAttrs, HttpServletResponse httpServletResponse) throws IOException {
         EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key);
         if(emailValidate == null) {
-            log.info("authentication failed for invalid auth={}", key);
+            LOG.info("authentication failed for invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         } else {
             UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getReceiptUserId());
             if(userAccount.isAccountValidated()) {
                 redirectAttrs.addFlashAttribute("success", "false");
-                log.info("authentication failed for user={}", userAccount.getReceiptUserId());
+                LOG.info("authentication failed for user={}", userAccount.getReceiptUserId());
             } else {
                 userAccount.setAccountValidated(true);
                 registrationConfig.isRegistrationAllowed(userAccount);
@@ -72,7 +72,7 @@ public final class ValidateEmailController {
                 emailValidate.setUpdated();
                 emailValidateService.saveEmailValidateEntity(emailValidate);
                 redirectAttrs.addFlashAttribute("success", "true");
-                log.info("authentication success for user={}", userAccount.getReceiptUserId());
+                LOG.info("authentication success for user={}", userAccount.getReceiptUserId());
             }
             return validateResult;
         }
