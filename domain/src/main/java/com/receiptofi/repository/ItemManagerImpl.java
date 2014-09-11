@@ -117,9 +117,9 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
 	@Override
-	public List<ItemEntity> getWhereReceipt(ReceiptEntity receipt) {
+	public List<ItemEntity> getAllItemsOfReceipt(String receiptId) {
 		Sort sort = new Sort(Direction.ASC, "SEQUENCE");
-		return mongoTemplate.find(query(where("RECEIPT.$id").is(new ObjectId(receipt.getId()))).with(sort), ItemEntity.class, TABLE);
+		return mongoTemplate.find(query(where("RECEIPT.$id").is(new ObjectId(receiptId))).with(sort), ItemEntity.class, TABLE);
 	}
 
     /**

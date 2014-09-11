@@ -24,7 +24,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
 	WriteResult updateObject(ItemEntity object);
 
-	List<ItemEntity> getWhereReceipt(ReceiptEntity receipt);
+	List<ItemEntity> getAllItemsOfReceipt(String receiptId);
 
     /**
      * Finds users item as the session supplies userProfileId

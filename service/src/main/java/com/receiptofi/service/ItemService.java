@@ -40,6 +40,10 @@ public final class ItemService {
         return itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(userProfileId);
     }
 
+    public List<ItemEntity> getAllItemsOfReceipt(String receiptId) {
+        return itemManager.getAllItemsOfReceipt(receiptId);
+    }
+
     /**
      * Calculate percentage values of the Expense Items
      *

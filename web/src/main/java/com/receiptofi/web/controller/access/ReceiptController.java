@@ -9,6 +9,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.BizNameManager;
+import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.domain.site.ReceiptUser;
@@ -50,6 +51,7 @@ public final class ReceiptController extends BaseController {
     private static String NEXT_PAGE_BY_BIZ = "/receiptByBiz";
 
     @Autowired private ReceiptService receiptService;
+    @Autowired private ItemService itemService;
     @Autowired private BizNameManager bizNameManager;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
@@ -66,7 +68,7 @@ public final class ReceiptController extends BaseController {
             //Possible condition of bookmark or trying to gain access to some unknown receipt
             log.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
-            List<ItemEntity> items = receiptService.findItems(receiptEntity);
+            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receiptEntity.getId());
             List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(receiptUser.getRid());
 
             receiptForm.setReceipt(receiptEntity);

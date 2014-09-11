@@ -70,7 +70,6 @@ public final class LandingService {
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private FileDBService fileDBService;
     @Autowired private FileUploadDocumentSenderJMS senderJMS;
-    @Autowired private ItemManager itemManager;
     @Autowired private ItemService itemService;
     @Autowired private NotificationService notificationService;
     @Autowired private FileSystemService fileSystemService;
@@ -184,7 +183,7 @@ public final class LandingService {
             BizNameEntity bizNameEntity = receipt.getBizName();
             bizNameEntity = bizNameManager.findOne(bizNameEntity.getId());
 
-            List<ItemEntity> itemEntities = itemManager.getWhereReceipt(receipt);
+            List<ItemEntity> itemEntities = itemService.getAllItemsOfReceipt(receipt.getId());
             if(itemEntities.size() > 0) {
                 Map<String, BigDecimal> itemMaps = new HashMap<>();
 
