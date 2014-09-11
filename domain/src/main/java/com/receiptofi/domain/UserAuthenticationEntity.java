@@ -25,7 +25,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         @CompoundIndex(name = "user_authentication_idx", def = "{'PA': 1, 'AU': 1}", unique = true)
 })
 public final class UserAuthenticationEntity extends BaseEntity {
-    private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEntity.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationEntity.class);
 
 	@NotNull
     @Field("PA")
