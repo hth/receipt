@@ -1,5 +1,9 @@
 package com.receiptofi.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -11,10 +15,6 @@ import com.receiptofi.utils.Formatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class FetcherService {
-    private static final Logger log = LoggerFactory.getLogger(FetcherService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FetcherService.class);
 
     @Autowired private ItemManager itemManager;
     @Autowired private BizNameManager bizNameManager;
@@ -39,9 +39,9 @@ public final class FetcherService {
      * @return
      */
     public Set<String> findDistinctBizName(String bizName) {
-        log.info("Search for Biz Name: " + bizName);
+        LOG.info("Search for Biz Name={}", bizName);
         Set<String> titles = bizNameManager.findAllDistinctBizStr(bizName);
-        log.info("found business.. total size " + titles.size());
+        LOG.info("found business count={}", titles.size());
         return titles;
     }
 
@@ -52,7 +52,7 @@ public final class FetcherService {
      * @return
      */
     public Set<String> findDistinctBizAddress(String bizAddress, String bizName) {
-        log.info("Search for Biz address: " + bizAddress + ", within Biz Name: " + bizName);
+        LOG.info("Search for Biz address={} within name={}", bizAddress, bizName);
         Set<String> address = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
@@ -62,7 +62,7 @@ public final class FetcherService {
                 address.add(bizStoreEntity.getAddress());
             }
 
-            log.info("found address(es).. total size " + list.size() + ", but unique items size: " + address.size());
+            LOG.info("found addresses count={} unique count={}", list.size(), address.size());
         }
         return address;
     }
@@ -74,7 +74,7 @@ public final class FetcherService {
      * @return
      */
     public Set<String> findDistinctBizPhone(String bizPhone, String bizAddress, String bizName) {
-        log.info("Search for Biz address: " + bizAddress + ", within Biz Name: " + bizName);
+        LOG.info("Search for Biz address={} within name={}",bizAddress, bizName);
         Set<String> phone = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
@@ -85,7 +85,7 @@ public final class FetcherService {
                 phone.add(Formatter.phone(bizStoreEntity.getPhone()));
             }
 
-            log.info("found item.. total size " + list.size() + ", but unique items size: " + phone.size());
+            LOG.info("found phones count={} unique count={}", list.size(), phone.size());
         }
         return phone;
     }
@@ -99,16 +99,16 @@ public final class FetcherService {
      * @return
      */
     public Set<String> findDistinctItems(String itemName, String bizName) {
-        log.info("Search for item name: " + itemName + ", within Biz Name: " + bizName);
+        LOG.info("Search for item name={} Biz Name={}", itemName, bizName);
         List<ItemEntity> itemList = itemManager.findItems(itemName, bizName);
 
-        Set<String> items = new HashSet<>();
+        Set<String> itemSet = new HashSet<>();
         for(ItemEntity re : itemList) {
-            items.add(re.getName());
+            itemSet.add(re.getName());
         }
 
-        log.info("found item.. total size " + itemList.size() + ", but unique items size: " + items.size());
-        return items;
+        LOG.info("found item count={} unique count={}", itemList.size(), itemSet.size());
+        return itemSet;
     }
 
     public void changeFSImageOrientation(String fileSystemId, int imageOrientation, String blobId) throws Exception {

@@ -1,9 +1,9 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.utils.DateUtil;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.receiptofi.utils.DateUtil;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;

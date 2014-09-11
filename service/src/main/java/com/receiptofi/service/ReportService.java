@@ -1,5 +1,12 @@
 package com.receiptofi.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
+import javax.xml.parsers.ParserConfigurationException;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -7,19 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+
+import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
 /**
  * User: hitender
@@ -27,7 +27,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
  */
 @Service
 public final class ReportService {
-    private static final Logger log = LoggerFactory.getLogger(ReportService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReportService.class);
 
     @Autowired LandingService landingService;
 
@@ -68,7 +68,7 @@ public final class ReportService {
 
             return freemarkerDo(rootMap);
         } catch (SAXException | ParserConfigurationException | IOException | TemplateException e) {
-            log.error("Error while processing reporting template: " + e.getLocalizedMessage());
+            LOG.error("Error while processing reporting template: " + e.getLocalizedMessage());
         }
         return null;
     }

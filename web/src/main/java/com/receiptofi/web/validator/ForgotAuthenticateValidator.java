@@ -16,7 +16,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class ForgotAuthenticateValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(ForgotAuthenticateValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ForgotAuthenticateValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -25,7 +25,7 @@ public final class ForgotAuthenticateValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.debug("Executing validation");
+        LOG.debug("Executing validation");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordSecond", "field.required", new Object[]{"Retype Password"});

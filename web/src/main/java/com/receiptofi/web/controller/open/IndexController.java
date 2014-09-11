@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public final class IndexController {
-    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
     private RegistrationConfig registrationConfig;
@@ -34,7 +34,7 @@ public final class IndexController {
     @RequestMapping(value = "/open/index", method = RequestMethod.GET)
     public String index(ModelMap map) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("Auth {}", authentication.getPrincipal().toString());
+        LOG.info("Auth {}", authentication.getPrincipal().toString());
         if(authentication instanceof AnonymousAuthenticationToken) {
             return "index";
         }

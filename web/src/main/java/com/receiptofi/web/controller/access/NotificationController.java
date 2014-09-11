@@ -4,8 +4,8 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.NotificationForm;
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/access/notification")
 public final class NotificationController {
-    private static final Logger log = LoggerFactory.getLogger(LandingController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private NotificationService notificationService;
 
@@ -41,7 +41,7 @@ public final class NotificationController {
     public ModelAndView loadForm() {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("LandingController loadForm: " + receiptUser.getRid());
+        LOG.info("LandingController loadForm: " + receiptUser.getRid());
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject(

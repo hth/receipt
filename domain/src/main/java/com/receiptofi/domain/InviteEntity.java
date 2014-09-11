@@ -1,8 +1,8 @@
 package com.receiptofi.domain;
 
-import org.hibernate.validator.constraints.Email;
-
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;

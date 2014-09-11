@@ -1,11 +1,11 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.ProviderEnum;
-import com.receiptofi.domain.types.RoleEnum;
-
-import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.validation.constraints.NotNull;
+
+import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.domain.types.RoleEnum;
 
 import org.apache.commons.lang3.StringUtils;
 

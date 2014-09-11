@@ -1,5 +1,7 @@
 package com.receiptofi.web.controller.emp;
 
+import java.util.List;
+
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -8,8 +10,6 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +29,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/emp")
 public final class EmpLandingController {
-    private static final Logger log = LoggerFactory.getLogger(EmpLandingController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EmpLandingController.class);
     private static final String nextPage = "/emp/landing";
 
     @Autowired EmpLandingService empLandingService;
@@ -38,7 +38,7 @@ public final class EmpLandingController {
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
     public ModelAndView empLanding() {
         DateTime time = DateUtil.now();
-        log.info("employee landed");
+        LOG.info("employee landed");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ModelAndView modelAndView = new ModelAndView(nextPage);

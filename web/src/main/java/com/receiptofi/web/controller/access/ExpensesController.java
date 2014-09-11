@@ -1,18 +1,18 @@
 package com.receiptofi.web.controller.access;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.ExpenseForm;
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +35,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/access/expenses")
 public final class ExpensesController {
-    private static final Logger log = LoggerFactory.getLogger(ExpensesController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExpensesController.class);
     private static final String nextPage = "/expenses";
 
     @Autowired private ItemService itemService;

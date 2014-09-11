@@ -24,7 +24,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
  */
 @Repository
 public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
-    private static final Logger log = LoggerFactory.getLogger(RegisteredDeviceManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegisteredDeviceManagerImpl.class);
     private MongoTemplate mongoTemplate;
 
     @Value ("${production.switch}")
@@ -54,7 +54,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         RegisteredDeviceEntity registeredDevice = RegisteredDeviceEntity.newInstance(rid, did);
         if (find(rid, did) == null) {
             save(registeredDevice);
-            log.info("registered device for rid={} did={}", rid, did);
+            LOG.info("registered device for rid={} did={}", rid, did);
         }
         return registeredDevice;
     }

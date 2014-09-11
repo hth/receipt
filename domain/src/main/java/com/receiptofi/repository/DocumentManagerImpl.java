@@ -3,17 +3,13 @@
  */
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,6 +22,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isDeleted;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 /**
  * @author hitender
  * @since Jan 6, 2013 1:29:44 PM
@@ -33,7 +36,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public final class DocumentManagerImpl implements DocumentManager {
-	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
 
 	@Autowired private MongoTemplate mongoTemplate;
@@ -56,7 +59,7 @@ public final class DocumentManagerImpl implements DocumentManager {
             }
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for DocumentEntity={}", e);
+			LOG.error("Duplicate record entry for DocumentEntity={}", e);
 			throw new RuntimeException(e.getMessage());
 		}
 	}

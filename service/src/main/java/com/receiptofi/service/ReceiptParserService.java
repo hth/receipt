@@ -3,16 +3,16 @@
  */
 package com.receiptofi.service;
 
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.types.TaxEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class ReceiptParserService {
-	private static final Logger log = LoggerFactory.getLogger(ReceiptParserService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ReceiptParserService.class);
 	private static Pattern item = Pattern.compile("[-+]?[$]?[-+]?[0-9]*\\.[0-9]{2}[\\s]?[\\w{1}]?$"); // PP I $246456.99 $2.99
 	private static Pattern date = Pattern.compile("[0-9]{1,2}[/|-|\\.][0-9]{1,2}[/|-|\\.][19|20]?[0-9]{2}"); // DATETIME: 12/26/2012 5:29:44 PM
 
@@ -41,14 +41,14 @@ public final class ReceiptParserService {
 			Matcher dateMatcher = date.matcher(s);
 			if (itemMatcher.find()) {
 				save = save + s;
-				log.debug(save);
+				LOG.debug(save);
 				items.add(processItem(save, sequence, documentEntity));
 				s = StringUtils.EMPTY;
 			} else if (dateMatcher.find()) {
 				// http://stackoverflow.com/questions/600733/using-java-to-find-substring-of-a-bigger-string-using-regular-expression
 				// String date = d.group(1);
 
-				log.debug("Found date - ", s);
+				LOG.debug("Found date - ", s);
 				documentEntity.setReceiptDate(s.trim());
 			}
 			save = s;
@@ -65,10 +65,10 @@ public final class ReceiptParserService {
 
 		//Used for global name. This is hidden from user.
 		//String globalName = name.replaceAll("[^A-Za-z ]", "").replaceAll("\\s+", " ");
-		//log.debug("'" + globalName.trim() + "'");
+		//LOG.debug("'" + globalName.trim() + "'");
 
 		String price = itemString.substring(itemString.lastIndexOf("\t") + 1);
-		log.debug("Item name : " + name + ", Item price : " + price);
+		LOG.debug("Item name : " + name + ", Item price : " + price);
 
 		ItemEntityOCR itemOCR = ItemEntityOCR.newInstance();
         itemOCR.setName(name.trim());

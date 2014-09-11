@@ -3,6 +3,11 @@
  */
 package com.receiptofi.repository;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
@@ -14,16 +19,6 @@ import com.receiptofi.utils.DateUtil;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,6 +38,13 @@ import org.springframework.stereotype.Repository;
 
 import org.joda.time.DateTime;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 /**
  * @author hitender
  * @since Dec 26, 2012 9:17:04 PM
@@ -50,7 +52,7 @@ import org.joda.time.DateTime;
  */
 @Repository
 public final class ReceiptManagerImpl implements ReceiptManager {
-	private static final Logger log = LoggerFactory.getLogger(ReceiptManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
 
     @Value("${displayMonths:13}")
@@ -215,7 +217,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
             object.computeChecksum();
 			mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ReceiptEntity={}", e);
+			LOG.error("Duplicate record entry for ReceiptEntity={}", e);
             //todo should throw a better exception; this is highly likely to happen any time soon
             throw new RuntimeException(e.getMessage());
 		}

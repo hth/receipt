@@ -1,9 +1,5 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.BizStoreEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,6 +7,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
+
+import com.receiptofi.domain.BizStoreEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ import com.google.gson.JsonParser;
  */
 @Service
 public final class ExternalService {
-    private static final Logger log = LoggerFactory.getLogger(ExternalService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExternalService.class);
 
     private static final String ADDRESS_DECODE_URL = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
 
@@ -52,7 +52,7 @@ public final class ExternalService {
             populateBizStore(output, bizStoreEntity);
         } catch (MalformedURLException e) {
             String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " +  bizStoreEntity.getAddress();
-            log.error("URL: " + result + ", " + e.getLocalizedMessage());
+            LOG.error("URL: " + result + ", " + e.getLocalizedMessage());
             throw new MalformedURLException("URL: " + result + ", " + e.getLocalizedMessage());
         } catch (IOException e) {
             String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " +  bizStoreEntity.getAddress();

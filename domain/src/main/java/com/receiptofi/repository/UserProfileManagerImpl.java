@@ -3,20 +3,15 @@
  */
 package com.receiptofi.repository;
 
+import java.util.Date;
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,6 +22,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 /**
  * @author hitender
  * @since Dec 23, 2012 3:45:47 AM
@@ -34,7 +33,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public final class UserProfileManagerImpl implements UserProfileManager {
-	private static final Logger log = LoggerFactory.getLogger(UserProfileManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserProfileManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
 
 	private MongoTemplate mongoTemplate;
@@ -56,7 +55,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 //            if(findByEmail(object.getEmailId()) == null)
 //			    mongoTemplate.save(object, TABLE);
 //            else {
-//                log.error("User seems to be already registered: " + object.getEmailId());
+//                LOG.error("User seems to be already registered: " + object.getEmailId());
 //                throw new Exception("User already registered with email: " + object.getEmailId());
 //            }
             if(object.getId() != null) {
@@ -64,7 +63,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for UserProfileEntity={}", e);
+			LOG.error("Duplicate record entry for UserProfileEntity={}", e);
 			throw new RuntimeException(e.getMessage());
 		}
 	}

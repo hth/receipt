@@ -1,18 +1,13 @@
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,6 +16,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 /**
  * User: hitender
  * Date: 6/9/13
@@ -28,7 +30,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public final class InviteManagerImpl implements InviteManager {
-    private static final Logger log = LoggerFactory.getLogger(InviteManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InviteManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(InviteEntity.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;

@@ -3,12 +3,12 @@
  */
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.DocumentOfTypeEnum;
-import com.receiptofi.domain.types.DocumentStatusEnum;
-
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.validation.constraints.NotNull;
+
+import com.receiptofi.domain.types.DocumentOfTypeEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;

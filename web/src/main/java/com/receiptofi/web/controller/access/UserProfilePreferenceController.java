@@ -3,6 +3,11 @@
  */
 package com.receiptofi.web.controller.access;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
@@ -12,17 +17,12 @@ import com.receiptofi.service.AccountService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.UserProfilePreferenceForm;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.ExpenseTypeValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,7 +51,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/access/userprofilepreference")
 public final class UserProfilePreferenceController {
-	private static final Logger log = LoggerFactory.getLogger(UserProfilePreferenceController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
 	private static final String nextPage = "/userprofilepreference";
 
@@ -127,7 +127,7 @@ public final class UserProfilePreferenceController {
             ExpenseTagEntity expenseType = ExpenseTagEntity.newInstance(expenseTypeForm.getTagName(), receiptUser.getRid());
             userProfilePreferenceService.addExpenseType(expenseType);
         } catch (Exception e) {
-            log.error(e.getLocalizedMessage());
+            LOG.error(e.getLocalizedMessage());
             result.rejectValue("expName", StringUtils.EMPTY, e.getLocalizedMessage());
         }
 
@@ -245,7 +245,7 @@ public final class UserProfilePreferenceController {
             userProfilePreferenceService.updateProfile(userProfile);
         } catch (Exception exce) {
             //XXX todo should there be two phase commit
-            log.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
+            LOG.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
             userProfilePreferenceForm.setErrorMessage("Failed updating user profile " + exce.getLocalizedMessage());
         }
 

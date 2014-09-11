@@ -1,10 +1,10 @@
 package com.receiptofi.domain;
 
+import javax.validation.constraints.NotNull;
+
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import org.hibernate.validator.constraints.Email;
-
-import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

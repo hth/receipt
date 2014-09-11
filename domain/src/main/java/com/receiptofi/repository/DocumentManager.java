@@ -3,9 +3,9 @@
  */
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.DocumentEntity;
-
 import java.util.List;
+
+import com.receiptofi.domain.DocumentEntity;
 
 /**
  * @author hitender

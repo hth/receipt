@@ -1,9 +1,9 @@
 package com.receiptofi.web.cache;
 
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.TimeUnit;
 
 import net.sf.uadetector.ReadableUserAgent;
 import net.sf.uadetector.UserAgentStringParser;
@@ -20,7 +20,7 @@ import com.google.common.cache.CacheBuilder;
  * @see http://uadetector.sourceforge.net/usage.html#usage_in_a_servlet
  */
 public final class CachedUserAgentStringParser implements UserAgentStringParser {
-    private static final Logger log = LoggerFactory.getLogger(CachedUserAgentStringParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CachedUserAgentStringParser.class);
 
     private static UserAgentStringParser parser = UADetectorServiceFactory.getCachingAndUpdatingParser();
 
@@ -53,7 +53,7 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
     public ReadableUserAgent parse(final String userAgentString) {
         ReadableUserAgent result = cache.getIfPresent(userAgentString);
         if (result == null) {
-            log.info("Cache : No : UserAgentString: " + userAgentString);
+            LOG.info("Cache : No : UserAgentString: {}", userAgentString);
             result = parser.parse(userAgentString);
             cache.put(userAgentString, result);
         }
@@ -62,6 +62,6 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
 
     @Override
     public void shutdown() {
-        log.info("Shutting down - uadetector - UserAgentStringParser");
+        LOG.info("Shutting down - uadetector - UserAgentStringParser");
     }
 }

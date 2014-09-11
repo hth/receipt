@@ -29,7 +29,7 @@ public final class DateUtil {
 
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
 
-    private static final Logger log = LoggerFactory.getLogger(DateUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
 
     private DateUtil() {
     }
@@ -54,7 +54,7 @@ public final class DateUtil {
             }
         }
 
-        log.error("Unsupported date condition reached: Not supported date string : " + dateString);
+        LOG.error("Unsupported date condition reached: Not supported date string : " + dateString);
         throw new IllegalArgumentException("Unsupported date condition reached: Not supported date string : " + dateString);
     }
 

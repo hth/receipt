@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "/access")
 public class AccessDeniedController {
-    private static final Logger log = LoggerFactory.getLogger(AccessDeniedController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessDeniedController.class);
 
     /**
      * Handles and retrieves the denied JSP page. This is shown whenever a regular user
@@ -26,7 +26,7 @@ public class AccessDeniedController {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping(value = "/denied", method = RequestMethod.GET)
     public String getDeniedPage() {
-        log.debug("Received request to show denied page");
+        LOG.debug("Received request to show denied page");
         return "denied";
     }
 }

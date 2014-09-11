@@ -1,11 +1,5 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.shared.UploadDocumentImage;
-import com.receiptofi.utils.CreateTempFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,6 +7,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.imageio.ImageIO;
+
+import com.receiptofi.domain.shared.UploadDocumentImage;
+import com.receiptofi.utils.CreateTempFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class ImageSplitService {
-    private static final Logger log = LoggerFactory.getLogger(ImageSplitService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ImageSplitService.class);
 
     //TODO remove main
     public static void main(String[] args) throws IOException {
@@ -37,8 +37,7 @@ public final class ImageSplitService {
 
     public void splitImage(File file) throws IOException {
         BufferedImage image = bufferedImage(file);
-        log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
-
+        LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
         splitImage(image);
     }
 
@@ -62,13 +61,13 @@ public final class ImageSplitService {
                 gr.dispose();
             }
         }
-        log.debug("Splitting done");
+        LOG.debug("Splitting done");
 
         //writing mini images into image files
         for (int i = 0; i < imgs.length; i++) {
             ImageIO.write(imgs[i], "png", CreateTempFile.file("image_" + i + "-", "png"));
         }
-        log.debug("Mini images created");
+        LOG.debug("Mini images created");
     }
 
     /**
@@ -81,7 +80,7 @@ public final class ImageSplitService {
     public File decreaseResolution(File file) throws IOException {
         BufferedImage image = bufferedImage(file);
 
-        log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
+        LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
         double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, 750, (int) (750/aspectRatio));
@@ -99,7 +98,7 @@ public final class ImageSplitService {
     public void decreaseResolution(InputStream is, OutputStream os) throws IOException {
         BufferedImage image = bufferedImage(is);
 
-        log.debug("W: " + image.getWidth() + ", " + "H: " + image.getHeight());
+        LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
         double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));

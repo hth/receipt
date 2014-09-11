@@ -3,15 +3,15 @@
  */
 package com.receiptofi.utils;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
  * @since Jan 9, 2013 11:13:30 PM
  */
 public final class Formatter {
-    private static final Logger log = LoggerFactory.getLogger(Formatter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Formatter.class);
 
     //Defaults to US
     private static final String FORMAT_TO_US = "US";
@@ -50,14 +50,14 @@ public final class Formatter {
                     Object object = FormatterSingleton.INSTANCE.engine().eval(value);
                     d = new BigDecimal(object.toString()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
                 } catch (ScriptException se) {
-                    log.error("Error parsing number value: " + value + ", exception: " + se);
+                    LOG.error("Error parsing number value: " + value + ", exception: " + se);
                     throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
                 }
                 //d = new BigDecimal(value).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
             }
             return d;
         } catch (NumberFormatException nfe) {
-            log.error("Error parsing number value: " + value + ", exception: " + nfe);
+            LOG.error("Error parsing number value: " + value + ", exception: " + nfe);
             throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + nfe);
         }
     }
@@ -73,13 +73,13 @@ public final class Formatter {
             //Currently defaults to US
             //TODO set using locale
             if(StringUtils.isBlank(phone)) {
-                log.debug("phone number blank");
+                LOG.debug("phone number blank");
                 return "";
             }
             Phonenumber.PhoneNumber numberPrototype = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
             return FormatterSingleton.INSTANCE.phoneInstance().format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
-            log.error("NumberParseException was thrown while parsing the phone number : " + e.toString());
+            LOG.error("NumberParseException was thrown while parsing the phone number : " + e.toString());
             return StringUtils.EMPTY;
         }
     }

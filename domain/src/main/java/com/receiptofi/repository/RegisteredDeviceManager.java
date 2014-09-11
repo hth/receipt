@@ -1,7 +1,5 @@
 package com.receiptofi.repository;
 
-import java.util.List;
-
 import com.receiptofi.domain.RegisteredDeviceEntity;
 import com.receiptofi.domain.annotation.Mobile;
 

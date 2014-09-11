@@ -1,5 +1,9 @@
 package com.receiptofi.web.controller.open;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -10,16 +14,12 @@ import com.receiptofi.service.InviteService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.form.InviteAuthenticateForm;
+import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.InviteAuthenticateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,7 +43,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/open/invite")
 public final class InviteController {
-    private static final Logger log = LoggerFactory.getLogger(ForgotController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ForgotController.class);
 
     @Value("${authenticatePage:/invite/authenticate}")
     private String authenticatePage;
@@ -138,7 +138,7 @@ public final class InviteController {
                     redirectAttrs.addFlashAttribute(SUCCESS, "true");
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
                 } catch (Exception e) {
-                    log.error("Error during updating of the old authentication keys={}", e.getLocalizedMessage(), e);
+                    LOG.error("Error during updating of the old authentication keys={}", e.getLocalizedMessage(), e);
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
                     redirectAttrs.addFlashAttribute(SUCCESS, "false");
                 }
@@ -157,7 +157,7 @@ public final class InviteController {
         if(StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
             return authenticateConfirmPage;
         }
-        log.warn("ah! some just tried access={}", authenticateConfirmPage);
+        LOG.warn("ah! some just tried access={}", authenticateConfirmPage);
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
     }

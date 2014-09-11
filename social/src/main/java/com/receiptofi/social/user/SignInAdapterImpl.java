@@ -1,17 +1,17 @@
 package com.receiptofi.social.user;
 
+import java.util.Collection;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +35,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Profile(value = "DEV")
 @Social
 public final class SignInAdapterImpl implements SignInAdapter {
-    private static final Logger log = LoggerFactory.getLogger(SignInAdapterImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SignInAdapterImpl.class);
 
     private static final String completeProfileController = "/access/completeprofile.htm";
 
@@ -53,7 +53,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
         UserDetails user;
         if(localUserId.contains("@")) {
-            log.info("signin in user={} from receiptofi login page", localUserId);
+            LOG.info("signin in user={} from receiptofi login page", localUserId);
             user = customUserDetailsService.loadUserByUsername(StringUtils.lowerCase(localUserId));
         } else {
             userSignedInUsingProvider(localUserId, request);
@@ -69,9 +69,9 @@ public final class SignInAdapterImpl implements SignInAdapter {
     private void userSignedInUsingProvider(String localUserId, NativeWebRequest request) {
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         if(servletWebRequest.getRequest().getRequestURI().contains(ProviderEnum.FACEBOOK.name().toLowerCase())) {
-            log.info("signin in user={} provider={}", localUserId, ProviderEnum.FACEBOOK);
+            LOG.info("signin in user={} provider={}", localUserId, ProviderEnum.FACEBOOK);
         } else if(servletWebRequest.getRequest().getRequestURI().contains(ProviderEnum.GOOGLE.name().toLowerCase())) {
-            log.info("signin in user={} provider={}", localUserId, ProviderEnum.GOOGLE);
+            LOG.info("signin in user={} provider={}", localUserId, ProviderEnum.GOOGLE);
         }
     }
 
@@ -85,7 +85,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
         }
 
         if(isProfileNotComplete(user)) {
-            log.info("profile not complete, user={}", user.getUsername());
+            LOG.info("profile not complete, user={}", user.getUsername());
             return completeProfileController;
         }
 

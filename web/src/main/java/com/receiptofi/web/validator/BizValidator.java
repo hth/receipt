@@ -16,7 +16,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class BizValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(BizValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BizValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -25,7 +25,7 @@ public final class BizValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.debug("Executing validation");
+        LOG.debug("Executing validation");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(
                 errors,

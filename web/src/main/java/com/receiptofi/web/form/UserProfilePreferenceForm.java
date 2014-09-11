@@ -1,13 +1,13 @@
 package com.receiptofi.web.form;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 

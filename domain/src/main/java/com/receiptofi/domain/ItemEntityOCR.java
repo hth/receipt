@@ -3,10 +3,10 @@
  */
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.TaxEnum;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.receiptofi.domain.types.TaxEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;

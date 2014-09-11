@@ -1,5 +1,8 @@
 package com.receiptofi.service;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -11,9 +14,6 @@ import com.receiptofi.repository.MileageManager;
 import com.receiptofi.repository.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import org.joda.time.format.DateTimeFormat;
  */
 @Service
 public final class MileageService {
-    private static Logger log = LoggerFactory.getLogger(MileageService.class);
+    private static Logger LOG = LoggerFactory.getLogger(MileageService.class);
 
     @Autowired private MileageManager mileageManager;
     @Autowired private CommentManager commentManager;
@@ -90,10 +90,10 @@ public final class MileageService {
                 }
             }
         } catch (RuntimeException re) {
-            log.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, re.getLocalizedMessage(), re);
+            LOG.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, re.getLocalizedMessage(), re);
             throw new RuntimeException("Merge failed to save " + re.getLocalizedMessage());
         } catch(Exception exception) {
-            log.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, exception.getLocalizedMessage(), exception);
+            LOG.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, exception.getLocalizedMessage(), exception);
             throw new RuntimeException("Merge failed to save");
         }
         throw new RuntimeException("Merge failed as one or both could not be merged");
@@ -113,7 +113,7 @@ public final class MileageService {
                 return list;
             }
         } catch(Exception exception) {
-            log.error("Split failed to save, id={}, reason={}", id, exception.getLocalizedMessage(), exception);
+            LOG.error("Split failed to save, id={}, reason={}", id, exception.getLocalizedMessage(), exception);
             throw new RuntimeException("Split failed to save");
         }
         throw new RuntimeException("Could not process split");
@@ -159,7 +159,7 @@ public final class MileageService {
             }
             return true;
         } catch (Exception exce) {
-            log.error("Failed updating notes for mileage={}, reason={}", mileageId, exce.getLocalizedMessage(), exce);
+            LOG.error("Failed updating notes for mileage={}, reason={}", mileageId, exce.getLocalizedMessage(), exce);
             return false;
         }
     }

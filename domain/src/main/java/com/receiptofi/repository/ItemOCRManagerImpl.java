@@ -3,19 +3,14 @@
  */
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,6 +25,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 /**
  * @author hitender
  * @since Jan 6, 2013 1:35:47 PM
@@ -37,7 +37,7 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class ItemOCRManagerImpl implements ItemOCRManager {
-	private static final Logger log = LoggerFactory.getLogger(ItemOCRManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ItemOCRManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemEntityOCR.class, Document.class, "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
@@ -56,7 +56,7 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
             }
             mongoTemplate.save(object, TABLE);
 		} catch (DataIntegrityViolationException e) {
-			log.error("Duplicate record entry for ItemEntityOCR={}", e);
+			LOG.error("Duplicate record entry for ItemEntityOCR={}", e);
 			throw new RuntimeException(e.getMessage());
 		}
 	}

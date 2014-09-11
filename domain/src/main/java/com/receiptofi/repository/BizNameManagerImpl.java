@@ -1,14 +1,11 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.BizNameEntity;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.BizNameEntity;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,6 +15,9 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * User: hitender

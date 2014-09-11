@@ -18,7 +18,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class BizSearchValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(BizSearchValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BizSearchValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -27,7 +27,7 @@ public final class BizSearchValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        log.debug("Executing validation");
+        LOG.debug("Executing validation");
 
         BizForm bizForm = (BizForm) obj;
         if(StringUtils.isEmpty(bizForm.getBusinessName()) &&

@@ -1,8 +1,8 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.MileageEntity;
-
 import java.util.List;
+
+import com.receiptofi.domain.MileageEntity;
 
 import org.joda.time.DateTime;
 

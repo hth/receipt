@@ -3,13 +3,12 @@
  */
 package com.receiptofi.domain;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.constraints.NotNull;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import javax.validation.constraints.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -26,7 +25,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         @CompoundIndex(name = "user_authentication_idx", def = "{'PA': 1, 'AU': 1}", unique = true)
 })
 public final class UserAuthenticationEntity extends BaseEntity {
-    private static Logger log = LoggerFactory.getLogger(UserAuthenticationEntity.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationEntity.class);
 
 	@NotNull
     @Field("PA")
@@ -79,7 +78,7 @@ public final class UserAuthenticationEntity extends BaseEntity {
         try {
             return URLEncoder.encode(authenticationKey, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            log.error("failed to encode authenticationKey reason={}", e.getLocalizedMessage(), e);
+            LOG.error("failed to encode authenticationKey reason={}", e.getLocalizedMessage(), e);
         }
         return authenticationKey;
     }

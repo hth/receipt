@@ -1,22 +1,20 @@
 package com.receiptofi.web.controller.ajax;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.helper.json.MileageDateUpdateResponse;
 import com.receiptofi.web.helper.json.Mileages;
+import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,6 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.joda.time.DateTime;
 
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+
 /**
  * User: hitender
  * Date: 1/6/14 12:05 AM
@@ -37,7 +37,7 @@ import org.joda.time.DateTime;
 @Controller
 @RequestMapping(value = "/ws/m")
 public final class MileageWebService {
-    private static Logger log = LoggerFactory.getLogger(MileageWebService.class);
+    private static Logger LOG = LoggerFactory.getLogger(MileageWebService.class);
 
     @Autowired private MileageService mileageService;
 
@@ -90,7 +90,7 @@ public final class MileageWebService {
                 return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
         } else {
-            log.warn("Access denied.", SC_FORBIDDEN);
+            LOG.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
@@ -119,7 +119,7 @@ public final class MileageWebService {
                 return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
         } else {
-            log.warn("Access denied.", SC_FORBIDDEN);
+            LOG.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
@@ -155,7 +155,7 @@ public final class MileageWebService {
             }
 
         } else {
-            log.warn("Access denied.", SC_FORBIDDEN);
+            LOG.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }
@@ -198,7 +198,7 @@ public final class MileageWebService {
                 return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip end date");
             }
         } else {
-            log.warn("Access denied.", SC_FORBIDDEN);
+            LOG.warn("Access denied.", SC_FORBIDDEN);
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access directly");
             return "{}";
         }

@@ -1,5 +1,12 @@
 package com.receiptofi.service;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.DocumentEntity;
@@ -8,13 +15,6 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class BizService {
-    private static final Logger log = LoggerFactory.getLogger(BizService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BizService.class);
 
     @Autowired private BizNameManager bizNameManager;
     @Autowired private BizStoreManager bizStoreManager;
@@ -102,7 +102,7 @@ public final class BizService {
                 receiptEntity.setBizName(bizNameEntity);
                 receiptEntity.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException | IOException e) {
-                log.error(e.getLocalizedMessage());
+                LOG.error(e.getLocalizedMessage());
 
                 if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
                     bizNameManager.deleteHard(bizNameEntity);
@@ -121,7 +121,7 @@ public final class BizService {
                     receiptEntity.setBizName(bizName);
                     receiptEntity.setBizStore(bizStoreEntity);
                 } catch (DuplicateKeyException | IOException e) {
-                    log.error(e.getLocalizedMessage());
+                    LOG.error(e.getLocalizedMessage());
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getBusinessName());
                 }
@@ -153,7 +153,7 @@ public final class BizService {
                 document.setBizName(bizNameEntity);
                 document.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException e) {
-                log.error(e.getLocalizedMessage());
+                LOG.error(e.getLocalizedMessage());
 
                 if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
                     bizNameManager.deleteHard(bizNameEntity);
@@ -172,7 +172,7 @@ public final class BizService {
                     document.setBizName(bizName);
                     document.setBizStore(bizStoreEntity);
                 } catch (DuplicateKeyException e) {
-                    log.error(e.getLocalizedMessage());
+                    LOG.error(e.getLocalizedMessage());
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     throw new Exception("Address and Phone already registered with another Business Name: " + biz.getBizName().getBusinessName());
                 }

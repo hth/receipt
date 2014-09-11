@@ -1,11 +1,11 @@
 package com.receiptofi.web.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.receiptofi.domain.NotificationEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: hitender
@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 9:57 PM
  */
 public final class NotificationForm {
-    private static final Logger log = LoggerFactory.getLogger(NotificationForm.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationForm.class);
 
     private List<NotificationDetailForm> notifications = new ArrayList<>();
 

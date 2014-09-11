@@ -1,13 +1,13 @@
 package com.receiptofi.web.controller.access;
 
-import com.receiptofi.domain.site.ReceiptUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import com.receiptofi.domain.site.ReceiptUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value = "/access/signoff")
 public final class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
-    private static final Logger log = LoggerFactory.getLogger(SignOff.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SignOff.class);
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -36,7 +36,7 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
             receiptUserId = ((ReceiptUser) authentication.getPrincipal()).getRid();
         }
 
-        log.info("Logout from={} and user={}", extractEndpoint(request.getHeader("Referer"), request.getContextPath()), receiptUserId);
+        LOG.info("Logout from={} and user={}", extractEndpoint(request.getHeader("Referer"), request.getContextPath()), receiptUserId);
         super.onLogoutSuccess(request, response, authentication);
     }
 

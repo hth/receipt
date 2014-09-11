@@ -3,12 +3,12 @@
  */
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.utils.HashText;
-
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
+import javax.validation.constraints.NotNull;
+
+import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.utils.HashText;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,5 +1,7 @@
 package com.receiptofi.service;
 
+import java.util.LinkedHashSet;
+
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -18,8 +20,6 @@ import com.receiptofi.utils.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class AccountService {
-    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 
     private final UserAccountManager userAccountManager;
     private final UserAuthenticationManager userAuthenticationManager;
@@ -92,7 +92,7 @@ public final class AccountService {
         try {
             userAuthentication = getUserAuthenticationEntity(password);
         } catch (Exception e) {
-            log.error("During saving UserAuthenticationEntity={}", e.getLocalizedMessage(), e);
+            LOG.error("During saving UserAuthenticationEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("error saving user authentication ", e);
         }
 
@@ -115,7 +115,7 @@ public final class AccountService {
             );
             userProfileManager.save(userProfile);
         } catch (Exception e) {
-            log.error("During saving UserProfileEntity={}", e.getLocalizedMessage(), e);
+            LOG.error("During saving UserProfileEntity={}", e.getLocalizedMessage(), e);
 
             //Roll back
             userAuthenticationManager.deleteHard(userAuthentication);
@@ -126,7 +126,7 @@ public final class AccountService {
             UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userProfile);
             userPreferenceManager.save(userPreferenceEntity);
         } catch (Exception e) {
-            log.error("During saving UserPreferenceEntity={}", e.getLocalizedMessage(), e);
+            LOG.error("During saving UserPreferenceEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("error saving user preference ", e);
         }
 

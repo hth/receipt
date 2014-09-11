@@ -1,14 +1,14 @@
 package com.receiptofi.security;
 
-import com.receiptofi.domain.types.RoleEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
+import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Collection;
+
+import com.receiptofi.domain.types.RoleEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
  * Date: 5/28/14 12:42 AM
  */
 public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private static final Logger log = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
 
     private RequestCache requestCache = new HttpSessionRequestCache();
 
@@ -62,7 +62,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         String targetUrl = determineTargetUrl(authentication);
 
         if(response.isCommitted()) {
-            log.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+            LOG.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
 

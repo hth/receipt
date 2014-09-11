@@ -19,7 +19,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class UserRegistrationValidator implements Validator {
-	private static final Logger log = LoggerFactory.getLogger(UserRegistrationValidator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidator.class);
 
 	public static final String EMAIL_REGEX = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
 
@@ -30,7 +30,7 @@ public final class UserRegistrationValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		log.debug("Executing validation");
+		LOG.debug("Executing validation");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[] { "First Name" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[] { "Last Name" });
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[] { "Email ID" });

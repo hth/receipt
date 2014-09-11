@@ -3,12 +3,12 @@
  */
 package com.receiptofi.repository;
 
+import java.util.Date;
+import java.util.List;
+
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author hitender

@@ -1,20 +1,13 @@
 package com.receiptofi.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
-import static org.springframework.data.domain.Sort.Direction.*;
-import static org.springframework.data.domain.Sort.Order;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,6 +23,14 @@ import org.springframework.stereotype.Repository;
 
 import com.mongodb.WriteResult;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.domain.Sort.Order;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 /**
  * User: hitender
  * Date: 4/6/13
@@ -37,7 +38,7 @@ import com.mongodb.WriteResult;
  */
 @Repository
 public final class MessageManagerImpl implements MessageManager {
-    private static final Logger log = LoggerFactory.getLogger(MessageManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MessageManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
 
     private static final Sort SORT_BY_USER_LEVEL_AND_CREATED = new Sort(
@@ -106,7 +107,7 @@ public final class MessageManagerImpl implements MessageManager {
                 try {
                     save(object);
                 } catch (Exception e1) {
-                    log.error("Update failed: " + object.toString());
+                    LOG.error("Update failed: " + object.toString());
                 }
             }
         }

@@ -1,11 +1,11 @@
 package com.receiptofi.web.util;
 
+import java.util.Arrays;
+import java.util.Date;
+
 import com.receiptofi.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.Date;
 
 import org.joda.time.DateTime;
 
@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
  * Time: 11:39 AM
  */
 public final class PerformanceProfiling {
-    private static final Logger log = LoggerFactory.getLogger(PerformanceProfiling.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PerformanceProfiling.class);
     private static final int QUARTER_SECOND = 250;
     private static final int HALF_SECOND = 500;
     private static boolean TIME_UNIT_MS = true;
@@ -32,8 +32,8 @@ public final class PerformanceProfiling {
      */
     public static <T> Date log(Class<T> type, String... message) {
         Date time = DateUtil.nowTime();
-        if(log.isDebugEnabled()) {
-            log.debug(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
+        if(LOG.isDebugEnabled()) {
+            LOG.debug(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
         }
         return time;
     }
@@ -48,14 +48,14 @@ public final class PerformanceProfiling {
      */
     public static <T> void log(Class<T> type, DateTime time, String... message) {
         if(System.currentTimeMillis() - time.getMillis() > QUARTER_SECOND) {
-            if(log.isWarnEnabled()) {
-                log.warn("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+            if(LOG.isWarnEnabled()) {
+                LOG.warn("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
             }
         } else {
-            if(log.isDebugEnabled()) {
-                log.debug("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
-            } else if(log.isInfoEnabled()) {
-                log.info("{}  {}, {}, duration={} seconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+            if(LOG.isDebugEnabled()) {
+                LOG.debug("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+            } else if(LOG.isInfoEnabled()) {
+                LOG.info("{}  {}, {}, duration={} seconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
             }
         }
     }

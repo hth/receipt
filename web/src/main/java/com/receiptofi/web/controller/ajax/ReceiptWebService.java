@@ -1,5 +1,13 @@
 package com.receiptofi.web.controller.ajax;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FetcherService;
@@ -9,16 +17,6 @@ import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.HashText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+
 /**
  * User: hitender
  * Date: 4/19/13
@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/ws/r")
 public final class ReceiptWebService {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptWebService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptWebService.class);
 
     @Autowired private FetcherService fetcherService;
     @Autowired private LandingService landingService;
@@ -61,7 +61,7 @@ public final class ReceiptWebService {
         try {
             return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessName) {
-            log.error("Error fetching business number, error={}", fetchBusinessName);
+            LOG.error("Error fetching business number, error={}", fetchBusinessName);
             return new HashSet<>();
         }
     }
@@ -83,7 +83,7 @@ public final class ReceiptWebService {
         try {
             return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessAddress) {
-            log.error("Error fetching business address, error={}", fetchBusinessAddress);
+            LOG.error("Error fetching business address, error={}", fetchBusinessAddress);
             return new HashSet<>();
         }
     }
@@ -110,7 +110,7 @@ public final class ReceiptWebService {
                     StringUtils.stripToEmpty(businessName)
             );
         } catch (Exception fetchingPhone) {
-            log.error("Error fetching phone number, error={}", fetchingPhone);
+            LOG.error("Error fetching phone number, error={}", fetchingPhone);
             return new HashSet<>();
         }
     }
@@ -132,7 +132,7 @@ public final class ReceiptWebService {
         try {
             return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchingItems) {
-            log.error("Error fetching items, error={}", fetchingItems);
+            LOG.error("Error fetching items, error={}", fetchingItems);
             return new HashSet<>();
         }
     }
@@ -157,7 +157,7 @@ public final class ReceiptWebService {
         try {
             return landingService.pendingReceipt(receiptUser.getRid());
         } catch (Exception pendingReceipt) {
-            log.error("Error fetching items, error={}", pendingReceipt);
+            LOG.error("Error fetching items, error={}", pendingReceipt);
             return 0;
         }
     }
@@ -197,7 +197,7 @@ public final class ReceiptWebService {
 
             return documentUpdateService.hasReceiptWithSimilarChecksum(checkSum);
         } catch (ParseException parseException) {
-            log.error("Ajax checkForDuplicate failed to parse total, error={}", parseException);
+            LOG.error("Ajax checkForDuplicate failed to parse total, error={}", parseException);
             throw parseException;
         }
     }
@@ -247,7 +247,7 @@ public final class ReceiptWebService {
                 return true;
             } catch (Exception failedToChangeImageOrientation) {
                 //Do nothing with the error message
-                log.error("Failed to change orientation of the image, error={}", failedToChangeImageOrientation);
+                LOG.error("Failed to change orientation of the image, error={}", failedToChangeImageOrientation);
                 return false;
             }
         } else {

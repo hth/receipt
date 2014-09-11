@@ -1,14 +1,14 @@
 package com.receiptofi.web.listener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.Properties;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.util.Assert;
 
@@ -17,28 +17,28 @@ import org.springframework.util.Assert;
  * Date: 9/21/13 8:15 PM
  */
 public class ReceiptofiServletContextListener implements ServletContextListener {
-    private static final Logger log = LoggerFactory.getLogger(ReceiptofiServletContextListener.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptofiServletContextListener.class);
 
     private Properties config = new Properties();
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         //TODO make clean shutdown for quartz. This prevent now from tomcat shutdown
-        log.info("Receiptofi context destroyed");
+        LOG.info("Receiptofi context destroyed");
     }
 
     @Override
     public void contextInitialized(ServletContextEvent arg0) {
-        log.info("Receiptofi context initialized");
+        LOG.info("Receiptofi context initialized");
 
         try {
             config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"));
         } catch (IOException e) {
-            log.error("could not load config properties file reason={}",  e.getLocalizedMessage(), e);
+            LOG.error("could not load config properties file reason={}",  e.getLocalizedMessage(), e);
         }
 
         if(hasAccessToFileSystem()) {
-            log.info("Found and has access, to directory={}", config.get("expensofiReportLocation"));
+            LOG.info("Found and has access, to directory={}", config.get("expensofiReportLocation"));
         }
     }
 
@@ -61,7 +61,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
                     throw new AccessDeniedException("Cannot delete, from location=" + config.get("expensofiReportLocation"));
                 }
             } catch(IOException e) {
-                log.error(
+                LOG.error(
                         "Possible permission deny to location={}, reason={}",
                         config.get("expensofiReportLocation"),
                         e.getLocalizedMessage(),
@@ -70,14 +70,14 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
                 stopServer();
             }
         } else {
-            log.error("File system directory does not exists, location={}", config.get("expensofiReportLocation"));
+            LOG.error("File system directory does not exists, location={}", config.get("expensofiReportLocation"));
             stopServer();
         }
         return true;
     }
 
     private void stopServer() {
-        log.error("Stopping server now. Fix above failures.");
+        LOG.error("Stopping server now. Fix above failures.");
         System.exit(0);
     }
 }

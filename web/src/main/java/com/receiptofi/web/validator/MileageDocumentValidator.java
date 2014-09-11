@@ -15,7 +15,7 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class MileageDocumentValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(MileageDocumentValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MileageDocumentValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -25,7 +25,7 @@ public final class MileageDocumentValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         ReceiptDocumentForm receiptDocumentForm = (ReceiptDocumentForm) obj;
-        log.debug("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
+        LOG.debug("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mileage.start", "field.required", new Object[]{"Start"});
 

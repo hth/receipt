@@ -1,11 +1,10 @@
 package com.receiptofi.web.controller.webapi;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/webapi/mobile/get")
 public class GetController {
-    private static Logger log = LoggerFactory.getLogger(GetController.class);
+    private static Logger LOG = LoggerFactory.getLogger(GetController.class);
 
     @Value("${web.access.api.token}")
     private String webApiAccessToken;
@@ -42,11 +41,11 @@ public class GetController {
     String get(
             @RequestHeader("X-R-API-MOBILE") String apiAccessToken,
             HttpServletResponse httpServletResponse) throws IOException {
-        log.debug("getter called to populate session and CSRF");
+        LOG.debug("getter called to populate session and CSRF");
         if(webApiAccessToken.equals(apiAccessToken)) {
             return "{}";
         }
-        log.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
+        LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
         return null;
     }

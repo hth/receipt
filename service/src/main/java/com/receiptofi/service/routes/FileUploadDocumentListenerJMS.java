@@ -3,14 +3,14 @@
  */
 package com.receiptofi.service.routes;
 
+import java.util.Map;
+
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.MessageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public final class FileUploadDocumentListenerJMS {
-	private static final Logger log = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);
 
     @Autowired private MessageManager messageManager;
 
@@ -53,6 +53,6 @@ public final class FileUploadDocumentListenerJMS {
         MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, documentStatusEnum);
         messageManager.save(object);
 
-		log.info("Message received id={}, user level={}, and persisted with id={}", id, level, object.getId());
+		LOG.info("Message received id={}, user level={}, and persisted with id={}", id, level, object.getId());
 	}
 }

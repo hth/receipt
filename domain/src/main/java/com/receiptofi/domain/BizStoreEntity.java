@@ -1,8 +1,8 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.utils.Formatter;
-
 import javax.validation.constraints.NotNull;
+
+import com.receiptofi.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
 

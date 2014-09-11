@@ -1,18 +1,18 @@
 package com.receiptofi.web.controller.access;
 
-import com.receiptofi.service.LoginService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
-import com.receiptofi.web.cache.CachedUserAgentStringParser;
-import com.receiptofi.web.form.UserLoginForm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
+
+import com.receiptofi.service.LoginService;
+import com.receiptofi.utils.DateUtil;
+import com.receiptofi.web.cache.CachedUserAgentStringParser;
+import com.receiptofi.web.form.UserLoginForm;
+import com.receiptofi.web.util.PerformanceProfiling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +32,7 @@ import net.sf.uadetector.ReadableUserAgent;
 @Controller
 @RequestMapping(value = "/login")
 public final class LoginController {
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     @Value("${loginPage:login}")
     private String loginPage;
@@ -62,12 +62,12 @@ public final class LoginController {
 
     @PostConstruct
     public void init() {
-        log.info("Init of login controller");
+        LOG.info("Init of login controller");
     }
 
     @PreDestroy
     public void cleanUp() {
-        log.info("Cleanup of login controller");
+        LOG.info("Cleanup of login controller");
     }
 
     /**
@@ -78,7 +78,7 @@ public final class LoginController {
     @RequestMapping(method = RequestMethod.GET)
     public String loadForm(Locale locale, HttpServletRequest request) {
         DateTime time = DateUtil.now();
-        log.info("Locale Type={}", locale);
+        LOG.info("Locale Type={}", locale);
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();
@@ -87,7 +87,7 @@ public final class LoginController {
             String cookieId = cookie.getValue();
             String ip = getClientIpAddress(request);
 
-            log.info("cookie={}, ip={}, user-agent={}", cookieId, ip, agent);
+            LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, agent);
             loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString());
         }
 
@@ -119,7 +119,7 @@ public final class LoginController {
             ip = request.getRemoteAddr();
         }
         if(ip == null) {
-            log.warn("IP Address found is NULL");
+            LOG.warn("IP Address found is NULL");
         }
         return ip;
     }

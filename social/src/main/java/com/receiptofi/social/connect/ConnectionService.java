@@ -1,13 +1,12 @@
 package com.receiptofi.social.connect;
 
-import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.types.ProviderEnum;
-
 import java.util.List;
 import java.util.Set;
 
+import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.ProviderEnum;
+
 import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionData;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.google.api.plus.Person;
