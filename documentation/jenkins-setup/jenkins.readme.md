@@ -1,37 +1,37 @@
 Jenkins Plist
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>StandardOutPath</key>
-    <string>/var/log/jenkins/jenkins.log</string>
-    <key>StandardErrorPath</key>
-    <string>/var/log/jenkins/jenkins.log</string>
-        <key>EnvironmentVariables</key>
-        <dict>
-                <key>JENKINS_HOME</key>
-                <string>/Users/Shared/Jenkins/Home</string>
-        </dict>
-        <key>GroupName</key>
-        <string>daemon</string>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>org.jenkins-ci</string>
-        <key>ProgramArguments</key>
-        <array>
-                <string>/bin/bash</string>
-                <string>/Library/Application Support/Jenkins/jenkins-runner.sh</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>UserName</key>
-        <string>jenkins</string>
-        <key>SessionCreate</key>
-        <true />
-</dict>
-</plist>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>StandardOutPath</key>
+        <string>/var/log/jenkins/jenkins.log</string>
+        <key>StandardErrorPath</key>
+        <string>/var/log/jenkins/jenkins.log</string>
+            <key>EnvironmentVariables</key>
+            <dict>
+                    <key>JENKINS_HOME</key>
+                    <string>/Users/Shared/Jenkins/Home</string>
+            </dict>
+            <key>GroupName</key>
+            <string>daemon</string>
+            <key>KeepAlive</key>
+            <true/>
+            <key>Label</key>
+            <string>org.jenkins-ci</string>
+            <key>ProgramArguments</key>
+            <array>
+                    <string>/bin/bash</string>
+                    <string>/Library/Application Support/Jenkins/jenkins-runner.sh</string>
+            </array>
+            <key>RunAtLoad</key>
+            <true/>
+            <key>UserName</key>
+            <string>jenkins</string>
+            <key>SessionCreate</key>
+            <true />
+    </dict>
+    </plist>
 
 ————————————————
 
@@ -48,32 +48,32 @@ localhost:8080/systemInfo
 
 History 
 
-maudes-Mac-mini:Users maude$ history
-    1  java -version
-    2  echo $PATH
-    3  echo $JAVA_HOME
-    4  cd ..
-    5  ls -al
-    6  sudo passwd jenkins
-    7  sudo ln -s /Users/Shared/Jenkins/ /Users/jenkins
-    8  sudo chown jenkins:jenkins /Users/jenkins
-    9  cd /Users/jenkins/
-   10  cd Downloads/
-   11  cd Downloads/
-   12  su jenkins
-   13  exit
-   14  cd /Users/jenkins/Downloads/
-   15  exit
-   16  su jenkins
-   17  history
-   18  sudo visudo
-   19  ls -al
-   20  cd /usr/local/
-   21  ls -al
-   22  cd /usr/local/
-   23  ls -al
-   24  exit
-   25  history
+    maudes-Mac-mini:Users maude$ history
+        1  java -version
+        2  echo $PATH
+        3  echo $JAVA_HOME
+        4  cd ..
+        5  ls -al
+        6  sudo passwd jenkins
+        7  sudo ln -s /Users/Shared/Jenkins/ /Users/jenkins
+        8  sudo chown jenkins:jenkins /Users/jenkins
+        9  cd /Users/jenkins/
+       10  cd Downloads/
+       11  cd Downloads/
+       12  su jenkins
+       13  exit
+       14  cd /Users/jenkins/Downloads/
+       15  exit
+       16  su jenkins
+       17  history
+       18  sudo visudo
+       19  ls -al
+       20  cd /usr/local/
+       21  ls -al
+       22  cd /usr/local/
+       23  ls -al
+       24  exit
+       25  history
 
 ———————————
 
