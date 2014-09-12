@@ -44,6 +44,7 @@ Gradle setup for Jenkins - Use GradleWrapper and set just the 'Task'
 
 Jenkins System Info
 localhost:8080/systemInfo
+
 ———————
 
 History 
