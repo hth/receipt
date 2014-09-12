@@ -78,6 +78,7 @@ History
 
 ———————————
 To increase heap size 
+
     sudo defaults write /Library/Preferences/org.jenkins-ci heapSize 8192M
     sudo launchctl unload -w /Library/LaunchAgents/org.jenkins-ci.plist
     sudo launchctl load -w /Library/LaunchAgents/org.jenkins-ci.plist
