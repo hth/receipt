@@ -35,7 +35,7 @@ Jenkins Plist
 
 ————————————————
 
-War file location — /Applications/Jenkins
+War file location — <code>/Applications/Jenkins</code>
 -rw-r--r--   1 root  wheel  67098064 Feb 14 15:47 jenkins.war
 
 no @ sign; remove that next time
