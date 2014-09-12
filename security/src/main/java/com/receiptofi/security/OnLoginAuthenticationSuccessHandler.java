@@ -26,14 +26,12 @@ import org.springframework.util.StringUtils;
  */
 public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
-
-    private RequestCache requestCache = new HttpSessionRequestCache();
-
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final RequestCache requestCache = new HttpSessionRequestCache();
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws ServletException, IOException {
-        if(request.getHeader("cookie") != null) {
+        if (request.getHeader("cookie") != null) {
             handle(request, response, authentication);
             clearAuthenticationAttributes(request);
         }
@@ -44,12 +42,12 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
          */
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-        if(savedRequest == null) {
+        if (savedRequest == null) {
             clearAuthenticationAttributes(request);
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if(isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter))) {
+        if (isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
             return;
@@ -61,7 +59,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
 
-        if(response.isCommitted()) {
+        if (response.isCommitted()) {
             LOG.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
@@ -77,27 +75,27 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         boolean isUser = false, isSup = false, isEmp = false, isAdmin = false;
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        for(GrantedAuthority grantedAuthority : authorities) {
-            if(grantedAuthority.getAuthority().equals(RoleEnum.ROLE_USER.name())) {
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if (grantedAuthority.getAuthority().equals(RoleEnum.ROLE_USER.name())) {
                 isUser = true;
                 break;
-            } else if(grantedAuthority.getAuthority().equals(RoleEnum.ROLE_SUPERVISOR.name())) {
+            } else if (grantedAuthority.getAuthority().equals(RoleEnum.ROLE_SUPERVISOR.name())) {
                 isSup = true;
                 break;
-            } else if(grantedAuthority.getAuthority().equals(RoleEnum.ROLE_TECHNICIAN.name())) {
+            } else if (grantedAuthority.getAuthority().equals(RoleEnum.ROLE_TECHNICIAN.name())) {
                 isEmp = true;
                 break;
-            } else if(grantedAuthority.getAuthority().equals(RoleEnum.ROLE_ADMIN.name())) {
+            } else if (grantedAuthority.getAuthority().equals(RoleEnum.ROLE_ADMIN.name())) {
                 isAdmin = true;
                 break;
             }
         }
 
-        if(isAdmin) {
+        if (isAdmin) {
             return "/admin/landing.htm";
-        } else if(isSup || isEmp) {
+        } else if (isSup || isEmp) {
             return "/emp/landing.htm";
-        } else if(isUser) {
+        } else if (isUser) {
             return "/access/landing.htm";
         } else {
             throw new IllegalStateException();
