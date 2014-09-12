@@ -74,8 +74,13 @@ History
        23  ls -al
        24  exit
        25  history
+       26  sudo defaults write /Library/Preferences/org.jenkins-ci heapSize 8192M
 
 ———————————
+To increase heap size 
+    sudo defaults write /Library/Preferences/org.jenkins-ci heapSize 8192M
+    sudo launchctl unload -w /Library/LaunchAgents/org.jenkins-ci.plist
+    sudo launchctl load -w /Library/LaunchAgents/org.jenkins-ci.plist
 
 
 Jenkins setup on OXS
