@@ -63,7 +63,10 @@ public class UserFromMobileController {
             }
             Assert.notNull(map);
             try {
-                return customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid")), map.get("at"));
+                String response = customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid")), map.get("at"));
+                //TODO(hth) remove or set to debug
+                LOG.info("response for mobile social login={}", response);
+                return response;
             } catch(HttpClientErrorException e) {
                 LOG.error("error pid={} reason={}", map.get("pid"), e.getLocalizedMessage(), e);
 
