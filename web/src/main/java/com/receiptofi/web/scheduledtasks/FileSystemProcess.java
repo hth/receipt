@@ -19,12 +19,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
+ * Can be used for deleting various kinds of files.
+ * Deletes excel report files.
+ * Deletes xml file generate for supporting excel files.
+ *
  * User: hitender
  * Date: 12/7/13 2:18 PM
  */
 @Component
-public class FileSystemProcessor {
-    private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcessor.class);
+public class FileSystemProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);
 
     @Value("${expensofiReportLocation}")
     private String expensofiReportLocation;
