@@ -34,6 +34,7 @@
 
     <logger name="net.bull.javamelody." level="ON" />
     <logger name="org.apache.activemq" level="OFF"/>
+    <logger name="org.apache" level="OFF"/>
     <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
 
     <root level="all">

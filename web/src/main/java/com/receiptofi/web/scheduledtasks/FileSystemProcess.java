@@ -19,12 +19,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
+ * Can be used for deleting various kinds of files.
+ * Deletes excel report files.
+ * Deletes xml file generate for supporting excel files.
+ *
  * User: hitender
  * Date: 12/7/13 2:18 PM
  */
 @Component
-public class FileSystemProcessor {
-    private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcessor.class);
+public class FileSystemProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);
 
     @Value("${expensofiReportLocation}")
     private String expensofiReportLocation;
@@ -37,7 +41,7 @@ public class FileSystemProcessor {
     //for every two second use */2 * * * * ? where as cron string blow run every day at 12:00 AM
     @Scheduled(cron="0 0 0 * * ?")
     public void removeExpiredExcelFiles() {
-        LOG.info("FileSystemProcessor.removeExpiredExcelFiles begins");
+        LOG.info("begins");
         int count = 0, found = 0;
         try {
             AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(deleteExcelFileAfterDay).toDate());
@@ -49,10 +53,11 @@ public class FileSystemProcessor {
                 receiptService.removeExpensofiFilenameReference(filename);
                 count++;
             }
-        } finally {
-            LOG.info("FileSystemProcessor.removeExpiredExcelFiles : deletedExcelFile={}, foundExcelFile={}", count, found);
+        } catch(Exception e) {
+            LOG.error("found error={}", e.getLocalizedMessage(), e);
+        }finally {
+            LOG.info("delete complete deletedExcelFile={}, foundExcelFile={}", count, found);
         }
-
     }
 
     public File getExcelFile(String filename) {

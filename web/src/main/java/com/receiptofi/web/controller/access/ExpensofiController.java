@@ -22,7 +22,7 @@ import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
-import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
+import com.receiptofi.web.scheduledtasks.FileSystemProcess;
 import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.view.ExpensofiExcelView;
 import org.slf4j.Logger;
@@ -63,7 +63,7 @@ public final class ExpensofiController {
     @Autowired private NotificationService notificationService;
     @Autowired private FileDBService fileDBService;
     @Autowired private ItemAnalyticService itemAnalyticService;
-    @Autowired private FileSystemProcessor fileSystemProcessor;
+    @Autowired private FileSystemProcess fileSystemProcess;
     @Autowired private ExpensofiExcelView expensofiExcelView;
 
     @RequestMapping(value = "/items", method = RequestMethod.POST)
@@ -115,7 +115,7 @@ public final class ExpensofiController {
 
     private void updateReceiptWithExcelFilename(ReceiptEntity receiptEntity, String filename) {
         if(StringUtils.isNotEmpty(receiptEntity.getExpenseReportInFS())) {
-            fileSystemProcessor.removeExpiredExcel(receiptEntity.getExpenseReportInFS());
+            fileSystemProcess.removeExpiredExcel(receiptEntity.getExpenseReportInFS());
         }
         receiptEntity.setExpenseReportInFS(filename);
         receiptService.updateReceiptWithExpReportFilename(receiptEntity);

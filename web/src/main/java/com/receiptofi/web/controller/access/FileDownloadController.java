@@ -19,7 +19,7 @@ import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
-import com.receiptofi.web.scheduledtasks.FileSystemProcessor;
+import com.receiptofi.web.scheduledtasks.FileSystemProcess;
 import com.receiptofi.web.util.PerformanceProfiling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public final class FileDownloadController {
 	private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
 	@Autowired private FileDBService fileDBService;
-    @Autowired private FileSystemProcessor fileSystemProcessor;
+    @Autowired private FileSystemProcess fileSystemProcess;
     @Autowired private ReceiptService receiptService;
 
     @Value("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
@@ -101,7 +101,7 @@ public final class FileDownloadController {
             ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
             setHeaderForExcel(receiptEntity, response);
 
-            InputStream inputStream = new FileInputStream(fileSystemProcessor.getExcelFile(receiptEntity.getExpenseReportInFS()));
+            InputStream inputStream = new FileInputStream(fileSystemProcess.getExcelFile(receiptEntity.getExpenseReportInFS()));
             IOUtils.copy(inputStream, response.getOutputStream());
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
