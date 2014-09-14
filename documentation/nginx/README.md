@@ -57,6 +57,7 @@ Then execute these commands to start <code>ngnix</code>
     
 When firewall is not configured, you would see error like 
 
+    curl -ik -X POST -H "Content-Type: application/json" -d '{"pid": "FACEBOOK","at": "C"}' https://test.receiptofi.com/receipt-mobile/authenticate.json
     curl: (7) Failed connect to test.receiptofi.com:443; Connection refused
     
 #### Static www for nginx
