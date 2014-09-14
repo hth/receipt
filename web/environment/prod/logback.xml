@@ -29,6 +29,7 @@
     </appender>
 
     <logger name="com.receiptofi" level="debug" />
+    <logger name="com.receiptofi.web.controller.webapi.UserFromMobileController" level="debug" />
     <logger name="com.receiptofi.web.filter.LogContextFilter" level="ON" />
     <logger name="org.springframework" level="OFF" />
 
