@@ -39,6 +39,10 @@ Then create file with name **ipfw.nginx.sh** at <code>/usr/local/startup/firewal
 
     sudo ipfw add 100 fwd 127.0.0.1,8080 tcp from any to me 80
     sudo ipfw add 110 fwd 127.0.0.1,8443 tcp from any to me 443
+    sudo ipfw add 120 allow tcp from 192.168.1.74 to any dst-port 6379
+    
+<code>port 6379</code> is for logstash    
+    
 Set the file to executable and persmission set to **chown root**
 
     sudo chmod +x ipfw.ngnix.sh
@@ -50,6 +54,10 @@ Then execute these commands to start <code>ngnix</code>
 
     sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.plist
     sudo launchctl unload -w /Library/LaunchDaemons/ipfw.nginx.plist
+    
+When firewall is not configured, you would see error like 
+
+    curl: (7) Failed connect to test.receiptofi.com:443; Connection refused
     
 #### Static www for nginx
 Create directory <code>/data/www</code> matching <code>root</code> mapping in **[nginx.conf](nginx.conf.md)**. Then add file <code>index.html</code> inside this newly created directory
