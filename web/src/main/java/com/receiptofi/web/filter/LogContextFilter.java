@@ -74,10 +74,10 @@ public class LogContextFilter implements Filter {
     }
 
     public void init(FilterConfig filterConfig) {
-        LOG.info("initialized");
+        LOG.info("Initialized logContextFilter");
     }
 
     public void destroy() {
-        LOG.info("destroyed");
+        LOG.info("Destroyed logContextFilter");
     }
 }
