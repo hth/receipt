@@ -5,11 +5,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
-	<link rel="icon" type="image/x-icon" 			href="${protocol}://${host}:${port}/static/images/circle-leaf-sized_small.png" />
-	<link rel="shortcut icon" type="image/x-icon" 	href="${protocol}://${host}:${port}/static/images/circle-leaf-sized_small.png" />
+	<link rel="icon" type="image/x-icon" 		    href="${protocol}://${host}/static/images/circle-leaf-sized_small.png" />
+	<link rel="shortcut icon" type="image/x-icon"   href="${protocol}://${host}/static/images/circle-leaf-sized_small.png" />
 
-	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/static/jquery/css/receipt.css' />
-	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
+	<link rel='stylesheet' type='text/css' 		    href='${protocol}://${host}/static/jquery/css/receipt.css' />
+	<link rel='stylesheet' type='text/css' 		    href='${protocol}://${host}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
 
 	<style type="text/css">
 		#headerDiv, #contentDiv {
@@ -69,7 +69,7 @@
 <body>
 <div class="divTable" style="width: 810px">
 	<div class="divRow">
-		<div class="divOfCell250" style="height: 46px"><img src="${protocol}://${host}:${port}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
+		<div class="divOfCell250" style="height: 46px"><img src="${protocol}://${host}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
 		<div class="divOfCell250">
 			<h3>
 				<div class="dropdown" style="height: 17px">
@@ -137,7 +137,7 @@
 			<div id="contentDiv">
 				<div id="myContent" style="display: block;">
 					[#foreach fileSystemEntity in receipt.fileSystemEntities]
-					<img src="${protocol}://${host}:${port}/access/filedownload/receiptimage/${fileSystemEntity.blobId}.htm" style="width: 200px; height: 200px"/>
+					<img src="${protocol}://${host}/access/filedownload/receiptimage/${fileSystemEntity.blobId}.htm" style="width: 200px; height: 200px"/>
 					[/#foreach]
 				</div>
 			</div>

@@ -43,12 +43,6 @@ public final class ReportService {
     @Value("${host}")
     private String host;
 
-    @Value("${port}")
-    private String port;
-
-    @Value("${secure.port}")
-    private String securePort;
-
     public String monthlyReport(File file) {
         try {
             Map rootMap = new HashMap();
@@ -56,11 +50,6 @@ public final class ReportService {
 
             rootMap.put("protocol", https);
             rootMap.put("host", host);
-            if(rootMap.get("protocol").equals(https)) {
-                rootMap.put("port", securePort);
-            } else {
-                rootMap.put("port", port);
-            }
 
             return freemarkerDo(rootMap);
         } catch (SAXException | ParserConfigurationException | IOException | TemplateException e) {
@@ -68,7 +57,6 @@ public final class ReportService {
         }
         return null;
     }
-
 
     private String freemarkerDo(Map rootMap) throws IOException, TemplateException {
         Configuration cfg = freemarkerConfiguration.createConfiguration();
