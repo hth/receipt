@@ -1,4 +1,4 @@
-    # Date: Sep 07 3:30 PM
+    # Date: Sep 13 7:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
