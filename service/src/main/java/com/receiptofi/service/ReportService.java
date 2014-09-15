@@ -49,9 +49,6 @@ public final class ReportService {
     @Value("${secure.port}")
     private String securePort;
 
-    @Value("${app.name}")
-    private String appName;
-
     public String monthlyReport(File file) {
         try {
             Map rootMap = new HashMap();
@@ -64,7 +61,6 @@ public final class ReportService {
             } else {
                 rootMap.put("port", port);
             }
-            rootMap.put("appname", appName);
 
             return freemarkerDo(rootMap);
         } catch (SAXException | ParserConfigurationException | IOException | TemplateException e) {
