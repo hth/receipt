@@ -41,7 +41,7 @@ public class GetController {
     String get(
             @RequestHeader("X-R-API-MOBILE") String apiAccessToken,
             HttpServletResponse httpServletResponse) throws IOException {
-        LOG.debug("getter called to populate session and CSRF");
+        LOG.info("CSRF invoked");
         if(webApiAccessToken.equals(apiAccessToken)) {
             return "{}";
         }
