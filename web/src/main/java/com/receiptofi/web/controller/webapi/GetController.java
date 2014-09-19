@@ -41,7 +41,12 @@ public class GetController {
     String get(
             @RequestHeader("X-R-API-MOBILE") String apiAccessToken,
             HttpServletResponse httpServletResponse) throws IOException {
-        LOG.info("CSRF invoked");
+        LOG.info("CSRF invoked on Receipt Web Application");
+        try {
+            Thread.sleep(1000l);
+        } catch (InterruptedException e) {
+            LOG.error(e.getLocalizedMessage());
+        }
         if(webApiAccessToken.equals(apiAccessToken)) {
             return "{}";
         }
