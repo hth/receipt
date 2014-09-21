@@ -226,9 +226,7 @@ To check which ports are open
 
 Install elastic search on Central
 
-	Note: Elasticsearch is flaky to start when IP address is not available. This causes logstash to fail.
-			There is no way to fix it. Tried specifying static IP to the machine but that did not worked.
-			Currently, starts the machine, reload elasticsearch and logstash. Everything is jolly after this.
+Note: ***Elasticsearch is flaky to start when IP address is not available. This causes logstash to fail. There is no way to fix it. Tried specifying static IP to the machine but that did not worked. Currently, starts the machine, reload elasticsearch and logstash. Everything is jolly after this.***
 
 	/etc/elasticsearch/conf.d/elasticsearch.yml
 	sudo chown root:wheel elasticsearch.yml
@@ -276,6 +274,7 @@ To delete all index
 
 	curl -XDELETE 'http://localhost:9200/*/'
 	curl -XDELETE 'http://192.168.1.74:9200/logstash-2014.09.05/'
+	curl -XDELETE 'http://192.168.1.74:9200/logstash-2014.06.**/'
 
 To see stats, indices
 
