@@ -275,6 +275,7 @@ Install elastic search on Central
 To delete all index
 
 	curl -XDELETE 'http://localhost:9200/*/'
+	curl -XDELETE 'http://192.168.1.74:9200/logstash-2014.09.05/'
 
 To see stats, indices
 
