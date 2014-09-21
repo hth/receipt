@@ -1197,7 +1197,7 @@
                 <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
                     [
                         '<div class="mapContainer">' +
-                            '<div><h1>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h1></div>' +
+                            '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
                             '<div>' +
                                 '<div>${loc.bizStore.address}</div>' +
                             '</div>' +
