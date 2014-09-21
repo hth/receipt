@@ -3,3 +3,4 @@
     Allow: circle-leaf.jpg
     Allow: favicon.ico
     Disallow: /
+    
