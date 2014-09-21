@@ -61,7 +61,7 @@ When firewall is not configured, you would see error like
     curl: (7) Failed connect to test.receiptofi.com:443; Connection refused
     
 #### Static www for nginx
-Create directory <code>/data/www</code> matching <code>root</code> mapping in **[nginx.conf](nginx.conf.md)**. Then add file <code>index.html</code> inside this newly created directory
+Create directory <code>/data/www</code> matching <code>root</code> mapping in **[nginx.conf](nginx.conf.md)**. Then add file <code>index.html</code> inside this newly created directory. Do not forget to create ***robots.txt*** at root level.
 
 #### Subdomain support
 Add **A Host** to domain provider. Example below
