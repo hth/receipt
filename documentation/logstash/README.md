@@ -276,9 +276,11 @@ To delete all index
 
 	curl -XDELETE 'http://localhost:9200/*/'
 
-To see stats
+To see stats, indices
 
 	http://192.168.1.74:9200/_stats
+	http://192.168.1.74:9200/_cat/indices?v
+	http://192.168.1.74:9200/_all/_search?pretty
 
 Install Logstash on Central Server
 
@@ -343,28 +345,28 @@ logstash.web.plist
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 	<plist version="1.0">
-  		<dict>
-        	<key>KeepAlive</key>
-        	<true/>
-        	<key>Label</key>
-        	<string>logstash.web</string>
-        	<key>ProgramArguments</key>
-        	<array>
-          		<string>/usr/local/logstash-1.4.1/bin/logstash</string>
-          		<string>web</string>
-        	</array>
-        	<key>RunAtLoad</key>
-        	<true/>
-        	<key>WorkingDirectory</key>
-        	<string>/dev/null</string>
-        	<!--
-        	should be dev null I believe
-        	<key>StandardErrorPath</key>
-        	<string>/var/log/logstash/logstash.log</string>
-        	<key>StandardOutPath</key>
-        	<string>/var/log/logstash/logstash.log</string>
-        	-->
-  		</dict>
+	  	<dict>
+		<key>KeepAlive</key>
+		<true/>
+		<key>Label</key>
+		<string>logstash.web</string>
+		<key>ProgramArguments</key>
+		<array>
+	  		<string>/usr/local/logstash-1.4.1/bin/logstash</string>
+	  		<string>web</string>
+		</array>
+		<key>RunAtLoad</key>
+		<true/>
+		<key>WorkingDirectory</key>
+		<string>/dev/null</string>
+		<!--
+		should be dev null I believe
+		<key>StandardErrorPath</key>
+		<string>/var/log/logstash/logstash.log</string>
+		<key>StandardOutPath</key>
+		<string>/var/log/logstash/logstash.log</string>
+		-->
+	  	</dict>
 	</plist>
 
 	plutil -lint logstash.web.plist
