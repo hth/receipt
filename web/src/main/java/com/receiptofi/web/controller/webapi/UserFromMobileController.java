@@ -52,7 +52,7 @@ public class UserFromMobileController {
             @RequestBody String authenticationJson,
             @RequestHeader("X-R-API-MOBILE") String apiAccessToken,
             HttpServletResponse httpServletResponse) throws IOException {
-        LOG.debug("webApiAccessToken={}", webApiAccessToken);
+        LOG.info("webApiAccessToken={}", webApiAccessToken);
 
         if(webApiAccessToken.equals(apiAccessToken)) {
             Map<String, String> map = new HashMap<>();
@@ -63,10 +63,7 @@ public class UserFromMobileController {
             }
             Assert.notNull(map);
             try {
-                LOG.info("12 authenticateOrCreate called with pid={}", map.get("pid"));
-                String response = customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid")), map.get("at"));
-                LOG.info("13 mobile social login response={}", response);
-                return response;
+                return customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid")), map.get("at"));
             } catch(HttpClientErrorException e) {
                 LOG.error("error pid={} reason={}", map.get("pid"), e.getLocalizedMessage(), e);
 
