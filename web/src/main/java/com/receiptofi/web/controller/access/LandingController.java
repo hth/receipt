@@ -95,6 +95,9 @@ public final class LandingController extends BaseController {
     @Autowired private ReportService reportService;
     @Autowired private MileageService mileageService;
 
+    private static final String PATTERN = "MMM, yyyy";
+    private static final DateTimeFormatter DTF = DateTimeFormat.forPattern(PATTERN);
+
 	/**
 	 * Refers to landing.jsp
 	 */
@@ -188,9 +191,7 @@ public final class LandingController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("/z/landingTabs");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        String pattern = "MMM, yyyy";
-        DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
-        DateTime monthYear = dtf.parseDateTime(monthView);
+        DateTime monthYear = DTF.parseDateTime(monthView);
         if(previousOrNext.equalsIgnoreCase("next")) {
             monthYear = monthYear.minusMonths(1);
         }
@@ -263,12 +264,7 @@ public final class LandingController extends BaseController {
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if(isMultipart) {
             MultipartHttpServletRequest multipartHttpRequest = WebUtils.getNativeRequest(httpServletRequest, MultipartHttpServletRequest.class);
-            final List<MultipartFile> files = multipartHttpRequest.getFiles("qqfile");
-
-            if (files.size() == 0) {
-                LOG.error("Empty or no document uploaded");
-                throw new RuntimeException("Empty or no document uploaded");
-            }
+            final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
 
             for (MultipartFile multipartFile : files) {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
@@ -313,13 +309,8 @@ public final class LandingController extends BaseController {
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if(isMultipart) {
-            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
-            final List<MultipartFile> files = multipartHttpServletRequest.getFiles("qqfile");
-
-            if (files.size() == 0) {
-                LOG.error("Empty or no document uploaded");
-                throw new RuntimeException("Empty or no document uploaded");
-            }
+            MultipartHttpServletRequest multipartHttpRequest = (MultipartHttpServletRequest) httpServletRequest;
+            final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
 
             for (MultipartFile multipartFile : files) {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
@@ -344,6 +335,16 @@ public final class LandingController extends BaseController {
             InputStream is = httpServletRequest.getInputStream();
         }
         return outcome;
+    }
+
+    private List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
+        final List<MultipartFile> files = multipartHttpRequest.getFiles("qqfile");
+
+        if (files.size() == 0) {
+            LOG.error("Empty or no document uploaded");
+            throw new RuntimeException("Empty or no document uploaded");
+        }
+        return files;
     }
 
     /**
@@ -425,10 +426,8 @@ public final class LandingController extends BaseController {
     String generateReport(@PathVariable String monthYear) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Header header = Header.newInstance(getAuth(receiptUser.getRid()));
-        String pattern = "MMM, yyyy";
         try {
-            DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
-            DateTime dateTime = dtf.parseDateTime(monthYear);
+            DateTime dateTime = DTF.parseDateTime(monthYear);
             dateTime = dateTime.plusMonths(1).minusDays(1);
 
             header.setStatus(Header.RESULT.SUCCESS);
@@ -437,7 +436,7 @@ public final class LandingController extends BaseController {
             File file = populateDataForXML(reportView);
             return reportService.monthlyReport(file);
         } catch(RuntimeException e) {
-            header.setMessage("Invalid parameter. Correct format - " + pattern + " [Please provide parameter shown without quotes - 'Jan, 2013']");
+            header.setMessage("Invalid parameter. Correct format - " + PATTERN + " [Please provide parameter shown without quotes - 'Jan, 2014']");
             header.setStatus(Header.RESULT.FAILURE);
 
             ReportView reportView = getReportView(receiptUser, header, DateTime.now().minusYears(40));
