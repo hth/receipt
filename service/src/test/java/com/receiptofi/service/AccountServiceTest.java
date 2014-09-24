@@ -1,5 +1,8 @@
 package com.receiptofi.service;
 
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.*;
+
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
@@ -8,15 +11,13 @@ import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
 
 /**
  * User: hitender

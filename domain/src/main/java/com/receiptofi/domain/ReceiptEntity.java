@@ -3,14 +3,12 @@
  */
 package com.receiptofi.domain;
 
-import java.util.Collection;
-import java.util.Date;
-import javax.validation.constraints.NotNull;
-
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.utils.HashText;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.joda.time.DateTime;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -23,7 +21,9 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import org.joda.time.DateTime;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author hitender

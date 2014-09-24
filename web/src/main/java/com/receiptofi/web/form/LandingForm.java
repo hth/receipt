@@ -1,12 +1,12 @@
 package com.receiptofi.web.form;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.web.helper.ReceiptForMonth;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * User: hitender

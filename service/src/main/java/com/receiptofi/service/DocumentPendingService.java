@@ -1,12 +1,12 @@
 package com.receiptofi.service;
 
-import java.util.List;
-
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.repository.DocumentManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * User: hitender

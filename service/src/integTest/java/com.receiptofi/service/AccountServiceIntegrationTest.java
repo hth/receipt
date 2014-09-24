@@ -1,5 +1,15 @@
 package com.receiptofi.service;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+
 import com.receiptofi.IntegrationTests;
 import com.receiptofi.RealMongoForTests;
 import com.receiptofi.domain.ForgotRecoverEntity;
@@ -18,21 +28,12 @@ import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserPreferenceManagerImpl;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.repository.UserProfileManagerImpl;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
 /**
  * User: hitender

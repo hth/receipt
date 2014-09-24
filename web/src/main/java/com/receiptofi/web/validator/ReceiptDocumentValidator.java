@@ -1,15 +1,10 @@
 package com.receiptofi.web.validator;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.ReceiptDocumentForm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,6 +12,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
 
 /**
  * @author hitender

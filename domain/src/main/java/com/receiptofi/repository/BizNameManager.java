@@ -1,9 +1,9 @@
 package com.receiptofi.repository;
 
+import com.receiptofi.domain.BizNameEntity;
+
 import java.util.List;
 import java.util.Set;
-
-import com.receiptofi.domain.BizNameEntity;
 
 /**
  * User: hitender

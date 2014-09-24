@@ -1,6 +1,7 @@
 package com.receiptofi.service;
 
-import java.util.List;
+import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
@@ -19,8 +20,6 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.MessageManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.StorageManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,8 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.DBObject;
-import com.mongodb.gridfs.GridFSDBFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * User: hitender

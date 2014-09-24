@@ -1,10 +1,10 @@
 package com.receiptofi.web.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.web.helper.ReceiptOCRHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender

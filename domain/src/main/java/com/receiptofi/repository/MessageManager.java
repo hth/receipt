@@ -1,11 +1,11 @@
 package com.receiptofi.repository;
 
-import java.util.List;
+import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
-import com.mongodb.WriteResult;
+import java.util.List;
 
 /**
  * JMS Message Manager

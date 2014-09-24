@@ -1,11 +1,12 @@
 package com.receiptofi.web.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.receiptofi.domain.NotificationEntity;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender

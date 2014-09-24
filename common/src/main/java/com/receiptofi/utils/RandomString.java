@@ -3,7 +3,7 @@ package com.receiptofi.utils;
 import java.util.Random;
 
 /**
- * Auth keys generator
+ * Auth keys generator.
  * User: hitender
  * Date: 4/15/13
  * Time: 2:02 AM
@@ -12,15 +12,18 @@ import java.util.Random;
  */
 public final class RandomString {
 
-    private static int CHAR_SIZE = 32;
+    private static int CHARACTERSIZE = 32;
 
     private static final char[] symbols = new char[36];
 
     static {
-        for (int idx = 0; idx < 10; ++idx)
+        for (int idx = 0; idx < 10; ++idx) {
             symbols[idx] = (char) ('0' + idx);
-        for (int idx = 10; idx < 36; ++idx)
+        }
+
+        for (int idx = 10; idx < 36; ++idx) {
             symbols[idx] = (char) ('a' + idx - 10);
+        }
     }
 
     private final Random random = new Random();
@@ -35,7 +38,7 @@ public final class RandomString {
     }
 
     public static RandomString newInstance() {
-        return new RandomString(CHAR_SIZE);
+        return new RandomString(CHARACTERSIZE);
     }
 
     public static RandomString newInstance(int sizeOfString) {

@@ -3,8 +3,6 @@
  */
 package com.receiptofi.repository;
 
-import java.util.List;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ItemFeatureEntity;
 
@@ -13,6 +11,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author hitender

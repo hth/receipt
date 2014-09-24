@@ -1,9 +1,9 @@
 package com.receiptofi.web.helper;
 
+import com.google.gson.annotations.Since;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.annotations.Since;
 
 /**
  * Used as JSON and also as Object representation for Landing Page to show receipt data for that month

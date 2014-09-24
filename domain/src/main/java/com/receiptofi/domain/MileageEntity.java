@@ -1,15 +1,11 @@
 package com.receiptofi.domain;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import javax.validation.constraints.NotNull;
-
 import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -19,8 +15,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender
