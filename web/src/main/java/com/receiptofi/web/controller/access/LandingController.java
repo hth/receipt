@@ -55,6 +55,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -96,7 +97,8 @@ public final class LandingController extends BaseController {
 	/**
 	 * Refers to landing.jsp
 	 */
-	private static final String NEXT_PAGE_IS_CALLED_LANDING = "/landing";
+    @Value ("${nextPage:/landing}")
+    private String nextPage;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
@@ -112,7 +114,7 @@ public final class LandingController extends BaseController {
 
         LOG.info("LandingController loadForm user={}, rid={}", receiptUser.getUsername(), receiptUser.getRid());
 
-		ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_LANDING);
+		ModelAndView modelAndView = new ModelAndView(nextPage);
 
 		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), time);
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, time);
@@ -261,11 +263,12 @@ public final class LandingController extends BaseController {
         if(isMultipart) {
             MultipartHttpServletRequest multipartHttpRequest = WebUtils.getNativeRequest(httpServletRequest, MultipartHttpServletRequest.class);
             final List<MultipartFile> files = multipartHttpRequest.getFiles("qqfile");
-            Assert.state(files.size() > 0, "0 files exist");
 
-            /*
-             * process files
-             */
+            if (files.size() == 0) {
+                LOG.error("Empty or no document uploaded");
+                throw new RuntimeException("Empty or no document uploaded");
+            }
+
             for (MultipartFile multipartFile : files) {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
