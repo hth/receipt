@@ -1,8 +1,5 @@
 package com.receiptofi.service;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -12,14 +9,18 @@ import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.MileageManager;
 import com.receiptofi.repository.StorageManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender

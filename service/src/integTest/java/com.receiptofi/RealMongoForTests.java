@@ -1,5 +1,11 @@
 package com.receiptofi;
 
+import com.mongodb.DBCollection;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
+
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
@@ -22,12 +28,6 @@ import de.flapdoodle.embed.process.runtime.Network;
 import de.flapdoodle.embed.process.store.IArtifactStore;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-
-import org.springframework.data.mongodb.core.MongoTemplate;
-
-import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
 
 /**
  * User: hitender

@@ -1,16 +1,12 @@
 package com.receiptofi.web.controller.webapi;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.web.util.MobileSystemErrorCodeEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: hitender

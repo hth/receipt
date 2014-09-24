@@ -1,11 +1,7 @@
 package com.receiptofi.social.connect;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -18,8 +14,6 @@ import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
 import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.utils.RandomString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +37,15 @@ import org.springframework.social.google.api.plus.Organization;
 import org.springframework.social.google.api.plus.Person;
 import org.springframework.util.MultiValueMap;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 @Social
 public class ConnectionServiceImpl implements ConnectionService {

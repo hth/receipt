@@ -3,9 +3,6 @@
  */
 package com.receiptofi.web.controller.emp;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
@@ -18,8 +15,8 @@ import com.receiptofi.web.form.ReceiptDocumentForm;
 import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.MileageDocumentValidator;
 import com.receiptofi.web.validator.ReceiptDocumentValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.joda.time.DateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +31,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Class manages first processing of a receipt. That includes loading of a receipts by technician.

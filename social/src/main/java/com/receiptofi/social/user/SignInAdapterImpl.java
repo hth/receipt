@@ -1,17 +1,9 @@
 package com.receiptofi.social.user;
 
-import java.util.Collection;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.service.CustomUserDetailsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,6 +22,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Collection;
 
 @Component
 @Profile(value = "DEV")

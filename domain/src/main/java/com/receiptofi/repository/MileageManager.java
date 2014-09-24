@@ -1,10 +1,10 @@
 package com.receiptofi.repository;
 
-import java.util.List;
-
 import com.receiptofi.domain.MileageEntity;
 
 import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * User: hitender

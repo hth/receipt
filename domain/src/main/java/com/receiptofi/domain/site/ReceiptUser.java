@@ -1,12 +1,12 @@
 package com.receiptofi.domain.site;
 
-import java.util.Collection;
-
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+
+import java.util.Collection;
 
 /**
  * User: hitender

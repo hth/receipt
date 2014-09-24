@@ -1,11 +1,11 @@
 package com.receiptofi.domain;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

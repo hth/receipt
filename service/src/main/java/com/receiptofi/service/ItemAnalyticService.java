@@ -1,24 +1,25 @@
 package com.receiptofi.service;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.repository.ItemManager;
-import com.receiptofi.utils.Maths;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import org.joda.time.DateTime;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Longs;
+
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.repository.ItemManager;
+import com.receiptofi.utils.Maths;
+
+import org.joda.time.DateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * User: hitender

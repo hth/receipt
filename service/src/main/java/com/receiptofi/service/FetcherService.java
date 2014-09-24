@@ -1,9 +1,5 @@
 package com.receiptofi.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -12,11 +8,16 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.utils.Formatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender

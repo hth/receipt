@@ -3,20 +3,21 @@
  */
 package com.receiptofi.service;
 
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.types.TaxEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parses the data from OCR

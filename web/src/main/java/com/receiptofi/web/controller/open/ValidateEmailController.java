@@ -1,15 +1,10 @@
 package com.receiptofi.web.controller.open;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.social.config.RegistrationConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * User: hitender

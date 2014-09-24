@@ -3,11 +3,6 @@
  */
 package com.receiptofi.web.form;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
@@ -18,11 +13,17 @@ import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Maths;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author hitender

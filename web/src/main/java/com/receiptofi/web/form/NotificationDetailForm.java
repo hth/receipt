@@ -1,13 +1,14 @@
 package com.receiptofi.web.form;
 
-import java.util.Date;
-
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.types.NotificationTypeEnum;
+
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.Date;
 
 /**
  * User: hitender

@@ -1,12 +1,12 @@
 package com.receiptofi.service;
 
-import java.util.Collection;
-
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.repository.FileSystemManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 /**
  * User: hitender

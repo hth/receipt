@@ -1,7 +1,5 @@
 package com.receiptofi.repository;
 
-import java.util.List;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.GenerateUserIds;
 
@@ -12,6 +10,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * User: hitender

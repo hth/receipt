@@ -1,9 +1,7 @@
 package com.receiptofi.social.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -20,8 +18,6 @@ import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.config.SocialConfig;
 import com.receiptofi.social.connect.ConnectionService;
 import com.receiptofi.utils.RandomString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,8 +39,13 @@ import org.springframework.social.google.api.plus.Person;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender

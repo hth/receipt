@@ -1,8 +1,5 @@
 package com.receiptofi.social.connect;
 
-import java.util.List;
-import java.util.Set;
-
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 
@@ -11,6 +8,9 @@ import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.google.api.plus.Person;
 import org.springframework.util.MultiValueMap;
+
+import java.util.List;
+import java.util.Set;
 
 public interface ConnectionService {
     void create(String userId, Connection<?> userConn);

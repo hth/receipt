@@ -1,9 +1,9 @@
 package com.receiptofi.web.cache;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.cache.annotation.Cacheable;
 
 /**
  * User: hitender

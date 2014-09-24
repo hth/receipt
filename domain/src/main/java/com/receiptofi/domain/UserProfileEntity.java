@@ -1,9 +1,6 @@
 package com.receiptofi.domain;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import javax.validation.constraints.NotNull;
+import com.google.common.collect.Lists;
 
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -18,7 +15,10 @@ import org.springframework.social.facebook.api.EducationEntry;
 import org.springframework.social.facebook.api.Reference;
 import org.springframework.social.facebook.api.WorkEntry;
 
-import com.google.common.collect.Lists;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * User: hitender

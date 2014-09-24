@@ -3,10 +3,7 @@
  */
 package com.receiptofi.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.utils.Maths;
@@ -21,7 +18,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import static org.springframework.format.annotation.DateTimeFormat.ISO;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Represents each individual item on a receipt.

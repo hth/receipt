@@ -1,10 +1,10 @@
 package com.receiptofi.web.form;
 
-import java.util.List;
-
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+
+import java.util.List;
 
 /**
  * User: hitender
