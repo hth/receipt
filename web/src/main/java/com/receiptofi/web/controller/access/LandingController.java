@@ -54,7 +54,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -316,11 +315,12 @@ public final class LandingController extends BaseController {
         if(isMultipart) {
             MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
             final List<MultipartFile> files = multipartHttpServletRequest.getFiles("qqfile");
-            Assert.state(files.size() > 0, "0 files exist");
 
-            /*
-             * process files
-             */
+            if (files.size() == 0) {
+                LOG.error("Empty or no document uploaded");
+                throw new RuntimeException("Empty or no document uploaded");
+            }
+
             for (MultipartFile multipartFile : files) {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
