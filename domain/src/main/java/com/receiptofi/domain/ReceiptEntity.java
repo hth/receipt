@@ -21,9 +21,10 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author hitender
