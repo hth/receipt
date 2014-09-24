@@ -3,13 +3,13 @@ package com.receiptofi.web.validator;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.web.form.ExpenseTypeForm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * User: hitender

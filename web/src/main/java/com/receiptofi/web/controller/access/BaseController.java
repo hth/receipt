@@ -12,10 +12,10 @@ import com.receiptofi.web.rest.Header;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author hitender

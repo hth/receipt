@@ -15,10 +15,11 @@ import org.springframework.social.facebook.api.EducationEntry;
 import org.springframework.social.facebook.api.Reference;
 import org.springframework.social.facebook.api.WorkEntry;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

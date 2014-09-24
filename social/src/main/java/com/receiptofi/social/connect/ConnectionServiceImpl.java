@@ -18,6 +18,9 @@ import com.receiptofi.utils.RandomString;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.model.MappingException;
@@ -36,9 +39,6 @@ import org.springframework.social.google.api.impl.GoogleTemplate;
 import org.springframework.social.google.api.plus.Organization;
 import org.springframework.social.google.api.plus.Person;
 import org.springframework.util.MultiValueMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

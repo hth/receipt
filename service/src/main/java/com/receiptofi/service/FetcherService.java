@@ -9,11 +9,11 @@ import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.utils.Formatter;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;

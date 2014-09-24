@@ -11,9 +11,10 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import javax.validation.constraints.NotNull;
 
 @Document(collection = "USER_ACCOUNT")
 @CompoundIndexes({

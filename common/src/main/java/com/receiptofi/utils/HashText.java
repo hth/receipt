@@ -10,10 +10,10 @@ import com.google.common.hash.Hashing;
 
 import org.joda.time.DateTime;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

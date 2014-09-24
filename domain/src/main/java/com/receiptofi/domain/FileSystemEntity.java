@@ -3,9 +3,10 @@ package com.receiptofi.domain;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
 import java.awt.image.BufferedImage;
 import java.beans.Transient;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Store metadata of the document image

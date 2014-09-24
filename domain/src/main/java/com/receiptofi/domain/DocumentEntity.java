@@ -13,9 +13,10 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author hitender
