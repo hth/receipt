@@ -65,24 +65,47 @@ public final class ReceiptDocumentValidator implements Validator {
         try {
             DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
         } catch (IllegalArgumentException exce) {
-            errors.rejectValue("receiptDocument.receiptDate", "field.date", new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()}, "Unsupported date format");
+            errors.rejectValue(
+                    "receiptDocument.receiptDate", "field.date",
+                    new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
+                    "Unsupported date format");
         }
 
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
         if(receiptDocumentForm.getItems() == null) {
-            LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", as no items were found");
-            errors.rejectValue("receiptDocumentForm", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
+            LOG.error("Exception during update of receipt={}, as no items were found", receiptDocumentForm.getReceiptDocument().getId());
+            errors.rejectValue(
+                    "receiptDocumentForm",
+                    "item.required",
+                    new Object[]{"Item(s)"},
+                    "Items required to submit a receipt"
+            );
         } else {
             boolean conditionFailed = false;
             int conditionFailedCounter = 0;
             for (ItemEntityOCR item : receiptDocumentForm.getItems()) {
-                if (StringUtils.isNotEmpty(item.getName()) && StringUtils.isNotEmpty(item.getPrice()) && item.getQuantity() != null) {
+                if (StringUtils.isNotEmpty(item.getName()) &&
+                        StringUtils.isNotEmpty(item.getPrice()) &&
+                        item.getQuantity() != null) {
                     try {
-                        subTotal = Maths.add(subTotal, Maths.multiply(Formatter.getCurrencyFormatted(item.getPrice()), item.getQuantity()));
+                        subTotal = Maths.add(
+                                subTotal,
+                                Maths.multiply(Formatter.getCurrencyFormatted(item.getPrice()), item.getQuantity())
+                        );
                     } catch (ParseException | NumberFormatException exception) {
-                        LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", with error message: " + exception.getLocalizedMessage());
-                        errors.rejectValue("items[" + count + "].price", "field.currency", new Object[]{item.getPrice()}, "Unsupported currency format");
+                        LOG.error(
+                                "Exception during update of receipt={}, with error message={}",
+                                receiptDocumentForm.getReceiptDocument().getId(),
+                                exception.getLocalizedMessage(),
+                                exception
+                        );
+                        errors.rejectValue(
+                                "items[" + count + "].price",
+                                "field.currency",
+                                new Object[]{item.getPrice()},
+                                "Unsupported currency format"
+                        );
                     }
                 } else {
                     /** Count need to check the condition below */
@@ -94,8 +117,16 @@ public final class ReceiptDocumentValidator implements Validator {
 
             /** This condition is added to make sure no receipt is added without at least one valid item in the list */
             if(conditionFailed && receiptDocumentForm.getItems().size() == conditionFailedCounter) {
-                LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", as no items were found");
-                errors.rejectValue("receiptDocument", "item.required", new Object[]{"Item(s)"}, "Items required to submit a receipt");
+                LOG.error(
+                        "Exception during update of receipt={}, as no items were found",
+                        receiptDocumentForm.getReceiptDocument().getId()
+                );
+                errors.rejectValue(
+                        "receiptDocument",
+                        "item.required",
+                        new Object[]{"Item(s)"},
+                        "Items required to submit a receipt"
+                );
             }
         }
 
@@ -130,7 +161,12 @@ public final class ReceiptDocumentValidator implements Validator {
                     }
                 }
             } catch (ParseException | NumberFormatException e) {
-                errors.rejectValue("receiptDocument.subTotal", "field.currency", new Object[]{receiptDocumentForm.getReceiptDocument().getSubTotal()}, "Unsupported currency format");
+                errors.rejectValue(
+                        "receiptDocument.subTotal",
+                        "field.currency",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getSubTotal()},
+                        "Unsupported currency format"
+                );
             }
         }
 
@@ -140,12 +176,22 @@ public final class ReceiptDocumentValidator implements Validator {
             try {
                 total = Formatter.getCurrencyFormatted(receiptDocumentForm.getReceiptDocument().getTotal());
             } catch (ParseException | NumberFormatException e) {
-                errors.rejectValue("receiptDocument.total", "field.currency", new Object[]{receiptDocumentForm.getReceiptDocument().getTotal()}, "Unsupported currency format");
+                errors.rejectValue(
+                        "receiptDocument.total",
+                        "field.currency",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getTotal()},
+                        "Unsupported currency format"
+                );
             }
 
             try {
                 if(submittedSubTotal == null || total == null) {
-                    errors.rejectValue("receiptDocument.total", "field.currency.cannot.compute", new Object[]{receiptDocumentForm.getReceiptDocument().getTotal()}, "Cannot compute because of previous error(s)");
+                    errors.rejectValue(
+                            "receiptDocument.total",
+                            "field.currency.cannot.compute",
+                            new Object[]{receiptDocumentForm.getReceiptDocument().getTotal()},
+                            "Cannot compute because of previous error(s)"
+                    );
                 } else {
                     BigDecimal tax = Formatter.getCurrencyFormatted(receiptDocumentForm.getReceiptDocument().getTax());
                     //Since this is going to be displayed to user setting the scale to two.
@@ -157,8 +203,18 @@ public final class ReceiptDocumentValidator implements Validator {
                     }
                 }
             } catch (ParseException | NumberFormatException exception) {
-                LOG.error("Exception during update of receipt: " + receiptDocumentForm.getReceiptDocument().getId() + ", with error message: " + exception.getLocalizedMessage());
-                errors.rejectValue("receiptDocument.tax", "field.currency", new Object[]{receiptDocumentForm.getReceiptDocument().getTax()}, "Unsupported currency format");
+                LOG.error(
+                        "Exception during update of receipt={}, with error message={}",
+                        receiptDocumentForm.getReceiptDocument().getId(),
+                        exception.getLocalizedMessage(),
+                        exception
+                );
+                errors.rejectValue(
+                        "receiptDocument.tax",
+                        "field.currency",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getTax()},
+                        "Unsupported currency format"
+                );
             }
         }
     }

@@ -73,7 +73,7 @@ public final class Formatter {
         try {
             //Currently defaults to US
             //TODO set using locale
-            if(StringUtils.isBlank(phone)) {
+            if (StringUtils.isBlank(phone)) {
                 LOG.debug("phone number blank");
                 return "";
             }
