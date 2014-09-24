@@ -207,8 +207,7 @@ public final class DateUtil {
                 "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}(PM|AM)",
                 "12/26/12 7:30PM",
                 "MM/dd/yy hh:mma"
-        )
-        ;
+        );
 
         private final String regex;
 
