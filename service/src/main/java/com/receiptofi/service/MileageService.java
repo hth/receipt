@@ -55,8 +55,8 @@ public final class MileageService {
 
     public int mileageTotal(List<MileageEntity> mileageEntities) {
         int total = 0;
-        for(MileageEntity mileageEntity : mileageEntities) {
-            if(mileageEntity.isComplete()) {
+        for (MileageEntity mileageEntity : mileageEntities) {
+            if (mileageEntity.isComplete()) {
                 total += mileageEntity.getTotal();
             }
         }
@@ -68,24 +68,24 @@ public final class MileageService {
         MileageEntity m2 = mileageManager.findOne(id2, userProfileId);
 
         try {
-            if(m1 != null && m2 != null && !m1.isComplete() && !m2.isComplete()) {
-                if(Integer.compare(m1.getStart(), m2.getStart()) == 1) {
+            if (m1 != null && m2 != null && !m1.isComplete() && !m2.isComplete()) {
+                if (Integer.compare(m1.getStart(), m2.getStart()) == 1) {
                     m2.mergeEndingMileage(m1);
-                    if(m2.getMileageNotes() != null) {
+                    if (m2.getMileageNotes() != null) {
                         commentManager.save(m2.getMileageNotes());
                     }
                     mileageManager.save(m2);
                     mileageManager.deleteHard(m1);
                     return m2;
-                } else if(Integer.compare(m1.getStart(), m2.getStart()) == -1) {
+                } else if (Integer.compare(m1.getStart(), m2.getStart()) == -1) {
                     m1.mergeEndingMileage(m2);
-                    if(m1.getMileageNotes() != null) {
+                    if (m1.getMileageNotes() != null) {
                         commentManager.save(m1.getMileageNotes());
                     }
                     mileageManager.save(m1);
                     mileageManager.deleteHard(m2);
                     return m1;
-                } else if(Integer.compare(m1.getStart(), m2.getStart()) == 0) {
+                } else if (Integer.compare(m1.getStart(), m2.getStart()) == 0) {
                     //There should not be a duplicate data; it should have been rejected
                     throw new RuntimeException("as starting mileage are equal");
                 }
@@ -93,7 +93,7 @@ public final class MileageService {
         } catch (RuntimeException re) {
             LOG.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, re.getLocalizedMessage(), re);
             throw new RuntimeException("Merge failed to save " + re.getLocalizedMessage());
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             LOG.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, exception.getLocalizedMessage(), exception);
             throw new RuntimeException("Merge failed to save");
         }
@@ -103,7 +103,7 @@ public final class MileageService {
     public List<MileageEntity> split(String id, String userProfileId) {
         MileageEntity m1 = mileageManager.findOne(id, userProfileId);
         try {
-            if(m1 != null && m1.isComplete()) {
+            if (m1 != null && m1.isComplete()) {
                 MileageEntity m2 = m1.splitMileage();
                 mileageManager.save(m1);
                 mileageManager.save(m2);
@@ -113,7 +113,7 @@ public final class MileageService {
                 list.add(m1);
                 return list;
             }
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             LOG.error("Split failed to save, id={}, reason={}", id, exception.getLocalizedMessage(), exception);
             throw new RuntimeException("Split failed to save");
         }
@@ -144,7 +144,7 @@ public final class MileageService {
         MileageEntity mileageEntity = mileageManager.findOne(mileageId, userProfileId);
         CommentEntity commentEntity = mileageEntity.getMileageNotes();
         boolean commentEntityBoolean = false;
-        if(commentEntity == null) {
+        if (commentEntity == null) {
             commentEntityBoolean = true;
             commentEntity = CommentEntity.newInstance(CommentTypeEnum.NOTES);
             commentEntity.setText(notes);
@@ -154,7 +154,7 @@ public final class MileageService {
         try {
             commentEntity.setUpdated();
             commentManager.save(commentEntity);
-            if(commentEntityBoolean) {
+            if (commentEntityBoolean) {
                 mileageEntity.setMileageNotes(commentEntity);
                 mileageManager.save(mileageEntity);
             }
@@ -167,18 +167,19 @@ public final class MileageService {
 
     /**
      * Delete mileage and its associated data
+     *
      * @param mileageId - Mileage id to delete
      */
     public boolean deleteHardMileage(String mileageId, String userProfileId) throws Exception {
         MileageEntity mileage = mileageManager.findOne(mileageId, userProfileId);
-        if(mileage != null) {
+        if (mileage != null) {
             mileageManager.deleteHard(mileage);
             fileSystemService.deleteHard(mileage.getFileSystemEntities());
-            for(FileSystemEntity fileSystemEntity : mileage.getFileSystemEntities()) {
+            for (FileSystemEntity fileSystemEntity : mileage.getFileSystemEntities()) {
                 storageManager.deleteHard(fileSystemEntity.getBlobId());
             }
             DocumentEntity documentEntity = documentManager.findOne(mileage.getDocumentId(), userProfileId);
-            if(documentEntity != null) {
+            if (documentEntity != null) {
                 documentManager.deleteHard(documentEntity);
             }
             return true;

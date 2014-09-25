@@ -83,9 +83,9 @@ public final class ImageSplitService {
         BufferedImage image = bufferedImage(file);
 
         LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
-        double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
+        double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
-        BufferedImage bufferedImage = resizeImage(image, 750, (int) (750/aspectRatio));
+        BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
         File scaled = CreateTempFile.file(FilenameUtils.getBaseName(file.getName()) + UploadDocumentImage.SCALED, FilenameUtils.getExtension(file.getName()));
         ImageIO.write(bufferedImage, "png", scaled);
         return scaled;
@@ -101,7 +101,7 @@ public final class ImageSplitService {
         BufferedImage image = bufferedImage(is);
 
         LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
-        double aspectRatio = (double) image.getWidth(null)/(double) image.getHeight(null);
+        double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
         ImageIO.write(bufferedImage, "png", os);
@@ -135,9 +135,9 @@ public final class ImageSplitService {
         final Graphics2D graphics2D = bufferedImage.createGraphics();
         graphics2D.setComposite(AlphaComposite.Src);
         //below three lines are for RenderingHints for better image quality at cost of higher processing time
-        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.drawImage(image, 0, 0, width, height, null);
         graphics2D.dispose();
         return bufferedImage;

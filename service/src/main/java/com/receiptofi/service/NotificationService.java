@@ -40,7 +40,7 @@ public final class NotificationService {
         NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationTypeEnum);
         notificationEntity.setMessage(message);
         notificationEntity.setUserProfileId(userProfileId);
-        if(notified) {
+        if (notified) {
             notificationEntity.markAsNotified();
         }
         notificationEntity.setReferenceId(id);
@@ -60,7 +60,7 @@ public final class NotificationService {
      * @param userProfileId
      */
     public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String userProfileId) {
-        if(notificationTypeEnum == NotificationTypeEnum.MESSAGE) {
+        if (notificationTypeEnum == NotificationTypeEnum.MESSAGE) {
             addNotification(message, notificationTypeEnum, null, userProfileId, true);
         } else {
             throw new UnsupportedOperationException("Incorrect method call for Notification Type");
@@ -68,7 +68,6 @@ public final class NotificationService {
     }
 
     /**
-     *
      * @param message
      * @param notificationTypeEnum
      * @param supportedEntity

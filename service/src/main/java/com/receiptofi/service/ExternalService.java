@@ -52,11 +52,11 @@ public final class ExternalService {
 
             populateBizStore(output, bizStoreEntity);
         } catch (MalformedURLException e) {
-            String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " +  bizStoreEntity.getAddress();
+            String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " + bizStoreEntity.getAddress();
             LOG.error("URL: " + result + ", " + e.getLocalizedMessage());
             throw new MalformedURLException("URL: " + result + ", " + e.getLocalizedMessage());
         } catch (IOException e) {
-            String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " +  bizStoreEntity.getAddress();
+            String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " + bizStoreEntity.getAddress();
             throw new IOException("URL: " + result + ", " + e.getLocalizedMessage());
         }
     }
@@ -64,14 +64,14 @@ public final class ExternalService {
     /**
      * Populates address, lat, lng for address submitted
      *
-     * @param output - JSON returned by google web service
+     * @param output         - JSON returned by google web service
      * @param bizStoreEntity
      */
     private void populateBizStore(StringBuilder output, BizStoreEntity bizStoreEntity) {
         JsonElement root = new JsonParser().parse(output.toString());
         JsonArray results = root.getAsJsonObject().getAsJsonArray("results");
         Iterator<JsonElement> jsonElementIterator = results.iterator();
-        if(jsonElementIterator.hasNext()) {
+        if (jsonElementIterator.hasNext()) {
             JsonElement element = jsonElementIterator.next();
 
             JsonElement geometry = element.getAsJsonObject().get("geometry");

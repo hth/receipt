@@ -56,9 +56,9 @@ public final class BizService {
     public Set<BizStoreEntity> bizSearch(String businessName, String bizAddress, String bizPhone) {
         Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
 
-        if(StringUtils.isNotEmpty(businessName)) {
+        if (StringUtils.isNotEmpty(businessName)) {
             List<BizNameEntity> bizNameEntities = bizNameManager.findAllBizWithMatchingName(businessName);
-            for(BizNameEntity bizNameEntity : bizNameEntities) {
+            for (BizNameEntity bizNameEntity : bizNameEntities) {
                 List<BizStoreEntity> bizStores = bizStoreManager.findAllWithStartingAddressStartingPhone(bizAddress, bizPhone, bizNameEntity);
                 bizStoreEntities.addAll(bizStores);
             }
@@ -71,7 +71,7 @@ public final class BizService {
 
     public Map<String, Long> countReceiptForBizStore(Set<BizStoreEntity> bizStoreEntities) {
         Map<String, Long> bizReceiptCount = new HashMap<>();
-        for(BizStoreEntity bizStoreEntity : bizStoreEntities) {
+        for (BizStoreEntity bizStoreEntity : bizStoreEntities) {
             long count = receiptService.countAllReceiptForAStore(bizStoreEntity);
             bizReceiptCount.put(bizStoreEntity.getId(), count);
         }
@@ -92,7 +92,7 @@ public final class BizService {
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 
         BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
-        if(bizName == null) {
+        if (bizName == null) {
             try {
                 bizNameManager.save(bizNameEntity);
 
@@ -105,7 +105,7 @@ public final class BizService {
             } catch (DuplicateKeyException | IOException e) {
                 LOG.error(e.getLocalizedMessage());
 
-                if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
+                if (StringUtils.isNotEmpty(bizNameEntity.getId())) {
                     bizNameManager.deleteHard(bizNameEntity);
                 }
                 BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
@@ -113,7 +113,7 @@ public final class BizService {
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
-            if(bizStore == null) {
+            if (bizStore == null) {
                 try {
                     bizStoreEntity.setBizName(bizName);
                     externalService.decodeAddress(bizStoreEntity);
@@ -143,7 +143,7 @@ public final class BizService {
         BizStoreEntity bizStoreEntity = document.getBizStore();
 
         BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
-        if(bizName == null) {
+        if (bizName == null) {
             try {
                 bizNameManager.save(bizNameEntity);
 
@@ -156,7 +156,7 @@ public final class BizService {
             } catch (DuplicateKeyException e) {
                 LOG.error(e.getLocalizedMessage());
 
-                if(StringUtils.isNotEmpty(bizNameEntity.getId())) {
+                if (StringUtils.isNotEmpty(bizNameEntity.getId())) {
                     bizNameManager.deleteHard(bizNameEntity);
                 }
                 BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
@@ -164,7 +164,7 @@ public final class BizService {
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
-            if(bizStore == null) {
+            if (bizStore == null) {
                 try {
                     bizStoreEntity.setBizName(bizName);
                     externalService.decodeAddress(bizStoreEntity);

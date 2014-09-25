@@ -21,21 +21,20 @@ import java.util.Map;
 /**
  * @author hitender
  * @since Mar 30, 2013 11:46:45 AM
- *
  */
 @Component
 public final class FileUploadDocumentListenerJMS {
-	private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);
 
     @Autowired private MessageManager messageManager;
 
-	public void receive(Map<String, Object> message) throws Exception {
-		String id = (String) message.get("id");
-		String level = (String) message.get("level");
+    public void receive(Map<String, Object> message) throws Exception {
+        String id = (String) message.get("id");
+        String level = (String) message.get("level");
         int status = (Integer) message.get("status");
         DocumentStatusEnum documentStatusEnum = DocumentStatusEnum.OCR_PROCESSED;
 
-        switch(status) {
+        switch (status) {
             case 0:
                 documentStatusEnum = DocumentStatusEnum.OCR_PROCESSED;
                 break;
@@ -54,6 +53,6 @@ public final class FileUploadDocumentListenerJMS {
         MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, documentStatusEnum);
         messageManager.save(object);
 
-		LOG.info("Message received id={}, user level={}, and persisted with id={}", id, level, object.getId());
-	}
+        LOG.info("Message received id={}, user level={}, and persisted with id={}", id, level, object.getId());
+    }
 }

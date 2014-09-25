@@ -29,7 +29,7 @@ public final class EvalFeedbackService {
     public void addFeedback(String comment, int rating, CommonsMultipartFile fileData, String receiptUserId) {
         String blobId = StringUtils.EMPTY;
         try {
-            if(fileData.getSize() > 0) {
+            if (fileData.getSize() > 0) {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(fileData);
                 uploadReceiptImage.setRid(receiptUserId);
@@ -39,7 +39,7 @@ public final class EvalFeedbackService {
             }
 
             EvalFeedbackEntity evalFeedbackEntity = EvalFeedbackEntity.newInstance(comment, rating, receiptUserId);
-            if(!StringUtils.isEmpty(blobId)) {
+            if (!StringUtils.isEmpty(blobId)) {
                 evalFeedbackEntity.setAttachmentBlobId(blobId);
             }
             evalFeedbackManager.save(evalFeedbackEntity);

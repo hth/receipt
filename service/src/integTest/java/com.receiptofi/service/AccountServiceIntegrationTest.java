@@ -39,7 +39,7 @@ import org.junit.experimental.categories.Category;
  * User: hitender
  * Date: 2/25/14 1:02 AM
  */
-@Category(IntegrationTests.class)
+@Category (IntegrationTests.class)
 public class AccountServiceIntegrationTest extends RealMongoForTests {
     private String userProfileCollectionName = "USER_PROFILE";
     private DBCollection userProfileCollection;
@@ -135,7 +135,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
     }
 
     private void populateForgotRecoverCollection() {
-        for(String jsonOfUserProfile : FORGOT_RECOVER_DATA) {
+        for (String jsonOfUserProfile : FORGOT_RECOVER_DATA) {
             DBObject dbObject = (DBObject) JSON.parse(jsonOfUserProfile);
             forgotRecoverCollection.save(dbObject);
         }
@@ -143,14 +143,14 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
     }
 
     private void populateUserProfileCollection() {
-        for(String jsonOfUserProfile : USER_PROFILE_DATA) {
+        for (String jsonOfUserProfile : USER_PROFILE_DATA) {
             DBObject dbObject = (DBObject) JSON.parse(jsonOfUserProfile);
             userProfileCollection.save(dbObject);
         }
         assertThat(userProfileCollection.getCount(), equalTo((long) USER_PROFILE_DATA.length));
     }
 
-    private static final String[] FORGOT_RECOVER_DATA = new String[] {
+    private static final String[] FORGOT_RECOVER_DATA = new String[]{
             "{\n" +
                     "    \"_id\" : {$oid: \"537305b23004599a154294a9\"},\n" +
                     "    \"USER_PROFILE_ID\" : \"5370907530041668259b38d1\",\n" +
@@ -163,7 +163,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
                     "}"
     };
 
-    private static final String[] USER_PROFILE_DATA = new String[] {
+    private static final String[] USER_PROFILE_DATA = new String[]{
             "{\n" +
                     "    \"_id\" : {$oid: \"537068ee3004ff079b5af89c\"},\n" +
                     "    \"RID\" : \"10000000001\",\n" +

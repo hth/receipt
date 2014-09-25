@@ -33,16 +33,16 @@ public final class ReportService {
 
     @Autowired LandingService landingService;
 
-    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @SuppressWarnings ("SpringJavaAutowiringInspection")
     @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
 
-    @Value("${http}")
+    @Value ("${http}")
     private String http;
 
-    @Value("${https}")
+    @Value ("${https}")
     private String https;
 
-    @Value("${host}")
+    @Value ("${host}")
     private String host;
 
     public String monthlyReport(File file) {

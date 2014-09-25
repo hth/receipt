@@ -45,11 +45,11 @@ public final class ItemAnalyticService {
     public BigDecimal calculateAveragePrice(Iterable<ItemEntity> items) {
         int count = 0;
         BigDecimal averagePrice = BigDecimal.ZERO;
-        for(ItemEntity item : items) {
+        for (ItemEntity item : items) {
             averagePrice = Maths.add(averagePrice, item.getPrice());
-            count ++;
+            count++;
         }
-        if(count == 0) {
+        if (count == 0) {
             return BigDecimal.ZERO;
         }
         averagePrice = Maths.divide(averagePrice, count);
@@ -106,7 +106,6 @@ public final class ItemAnalyticService {
 
     /**
      * Get all matching items and then sort descending based on receipt date and limit up to 15 (0,14)
-     *
      * Note: Providing a user profile id is redundant but its critical to make sure only the user of
      * that session is requesting its own list of items. Otherwise there could be privacy issues.
      *
@@ -119,14 +118,14 @@ public final class ItemAnalyticService {
 
         Ordering<ItemEntity> descendingOrder = descendingOrderForItems();
 
-        if(items.size() > 15) {
+        if (items.size() > 15) {
             return descendingOrder.sortedCopy(items).subList(0, 15);
         } else {
             return descendingOrder.sortedCopy(items);
         }
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     private List<ItemEntity> callDescendingOrdering(List<ItemEntity> items) {
         Ordering<ItemEntity> ordered = descendingOrderForItems();
         return ordered.sortedCopy(items);

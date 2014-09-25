@@ -72,35 +72,35 @@ public final class MailService {
 
     @Autowired private UserAccountManager userAccountManager;
 
-    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @SuppressWarnings ("SpringJavaAutowiringInspection")
     @Autowired
     private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
 
-    @Value("${do.not.reply.email}")
+    @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
 
-    @Value("${dev.sent.to}")
+    @Value ("${dev.sent.to}")
     private String devSentTo;
 
-    @Value("${invitee.email}")
+    @Value ("${invitee.email}")
     private String inviteeEmail;
 
-    @Value("${email.address.name}")
+    @Value ("${email.address.name}")
     private String emailAddressName;
 
-    @Value("${domain}")
+    @Value ("${domain}")
     private String domain;
 
-    @Value("${https}")
+    @Value ("${https}")
     private String https;
 
-    @Value("${mail.invite.subject}")
+    @Value ("${mail.invite.subject}")
     private String mailInviteSubject;
 
-    @Value("${mail.recover.subject}")
+    @Value ("${mail.recover.subject}")
     private String mailRecoverSubject;
 
-    @Value("${mail.validate.subject}")
+    @Value ("${mail.validate.subject}")
     private String mailValidateSubject;
 
     public boolean accountValidationEmail(UserAccountEntity userAccount, EmailValidateEntity accountValidate) {
@@ -120,7 +120,7 @@ public final class MailService {
             helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
 
             String sentTo = StringUtils.isEmpty(devSentTo) ? userAccount.getUserId() : devSentTo;
-            if(sentTo.equalsIgnoreCase(devSentTo)) {
+            if (sentTo.equalsIgnoreCase(devSentTo)) {
                 helper.setTo(new InternetAddress(devSentTo, emailAddressName));
             } else {
                 helper.setTo(new InternetAddress(userAccount.getUserId(), userAccount.getName()));
@@ -147,7 +147,7 @@ public final class MailService {
      */
     public boolean mailRecoverLink(String emailId) {
         UserAccountEntity userAccount = accountService.findByUserId(emailId);
-        if(userAccount != null && userAccount.isAccountValidated()) {
+        if (userAccount != null && userAccount.isAccountValidated()) {
             ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getReceiptUserId());
 
             Map<String, String> rootMap = new HashMap<>();
@@ -164,7 +164,7 @@ public final class MailService {
                 helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
 
                 String sentTo = StringUtils.isEmpty(devSentTo) ? emailId : devSentTo;
-                if(sentTo.equalsIgnoreCase(devSentTo)) {
+                if (sentTo.equalsIgnoreCase(devSentTo)) {
                     helper.setTo(new InternetAddress(devSentTo, emailAddressName));
                 } else {
                     helper.setTo(new InternetAddress(emailId, userAccount.getName()));
@@ -189,20 +189,20 @@ public final class MailService {
     /**
      * Used in sending the invitation for the first time
      *
-     * @param invitedUserEmail  Invited users email address
-     * @param invitedByRid Existing users email address
+     * @param invitedUserEmail Invited users email address
+     * @param invitedByRid     Existing users email address
      * @return
      */
     public boolean sendInvitation(String invitedUserEmail, String invitedByRid) {
         UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
-        if(invitedBy != null) {
+        if (invitedBy != null) {
             InviteEntity inviteEntity = null;
             try {
                 inviteEntity = inviteService.initiateInvite(invitedUserEmail, invitedBy);
                 formulateInvitationEmail(invitedUserEmail, invitedBy, inviteEntity);
                 return true;
             } catch (RuntimeException exception) {
-                if(inviteEntity != null) {
+                if (inviteEntity != null) {
                     deleteInvite(inviteEntity);
                     LOG.info("Due to failure in sending the invitation email. Deleting Invite={}, for={}", inviteEntity.getId(), inviteEntity.getEmail());
                 }
@@ -215,23 +215,23 @@ public final class MailService {
     /**
      * Helps in re-sending the invitation or to send new invitation to existing (pending) invitation by a new user.
      *
-     * @param emailId            Invited users email address
+     * @param emailId      Invited users email address
      * @param invitedByRid Existing users email address
      * @return
      */
     public boolean reSendInvitation(String emailId, String invitedByRid) {
         UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
-        if(invitedBy != null) {
+        if (invitedBy != null) {
             try {
                 InviteEntity inviteEntity = inviteService.reInviteActiveInvite(emailId, invitedBy);
                 boolean isNewInvite = false;
-                if(inviteEntity == null) {
+                if (inviteEntity == null) {
                     //Means invite exist by another user. Better to create a new invite for the requesting user
                     inviteEntity = reCreateAnotherInvite(emailId, invitedBy);
                     isNewInvite = true;
                 }
                 formulateInvitationEmail(emailId, invitedBy, inviteEntity);
-                if(!isNewInvite) {
+                if (!isNewInvite) {
                     inviteManager.save(inviteEntity);
                 }
             } catch (Exception exception) {
@@ -304,7 +304,7 @@ public final class MailService {
 
         try {
             mailSender.send(message);
-        } catch(MailSendException mailSendException) {
+        } catch (MailSendException mailSendException) {
             LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
             throw new MessagingException(mailSendException.getLocalizedMessage(), mailSendException);
         }

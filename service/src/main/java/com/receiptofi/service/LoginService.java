@@ -37,14 +37,14 @@ public final class LoginService {
     public void saveUpdateBrowserInfo(String cookieId, String ip, String userAgent) {
         try {
             BrowserEntity browserEntity = browserManager.findOne(cookieId);
-            if(browserEntity == null) {
+            if (browserEntity == null) {
                 browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent);
                 browserManager.save(browserEntity);
             } else {
                 browserEntity.setUpdated();
                 browserManager.save(browserEntity);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Moving on. Omitting this error={}", e.getLocalizedMessage(), e);
         }
     }
