@@ -11,6 +11,7 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
+import com.receiptofi.utils.HttpRequestResponseParser;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.form.ForgotAuthenticateForm;
 import com.receiptofi.web.form.ForgotRecoverForm;
@@ -165,16 +166,15 @@ public final class ForgotController {
             HttpServletResponse httpServletResponse
     ) throws IOException {
 
-        //referer is a weak check; strong check would be to check against the actual value of referer
-        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("referer"))) {
+        //TODO(hth) strengthen the check here as this can be hacked to get a dummy confirmation page
+        if (StringUtils.isNotBlank(success)) {
             return recoverConfirmPage;
         }
         LOG.warn(
-                "404 request access={} success={} referer={} header={}",
+                "404 request access={} success={} header={}",
                 recoverConfirmPage,
                 success,
-                httpServletRequest.getHeader("referer"),
-                printHeader(httpServletRequest)
+                HttpRequestResponseParser.printHeader(httpServletRequest)
         );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
@@ -267,16 +267,5 @@ public final class ForgotController {
             }
             return modelAndView;
         }
-    }
-
-    private String printHeader(HttpServletRequest httpServletRequest) {
-        StringBuilder stringBuilder = new StringBuilder();
-        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = httpServletRequest.getHeader(headerName);
-            stringBuilder.append(headerName).append(":").append(headerValue).append(",");
-        }
-        return stringBuilder.toString();
     }
 }

@@ -42,6 +42,7 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
             receiptUserId = ((ReceiptUser) authentication.getPrincipal()).getRid();
         }
 
+        //TODO(hth) because of proxy referer will not be available and would be blank
         LOG.info(
                 "Logout from={} and user={}",
                 extractEndpoint(request.getHeader("referer"), request.getContextPath()),

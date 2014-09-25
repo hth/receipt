@@ -10,6 +10,7 @@ import com.receiptofi.service.InviteService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
+import com.receiptofi.utils.HttpRequestResponseParser;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.form.InviteAuthenticateForm;
 import com.receiptofi.web.util.PerformanceProfiling;
@@ -159,14 +160,15 @@ public final class InviteController {
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("referer"))) {
+        //TODO(hth) strengthen the check here as this can be hacked to get a dummy confirmation page
+        if (StringUtils.isNotBlank(success)) {
             return authenticateConfirmPage;
         }
         LOG.warn(
-                "404 request access={} success={} referer={}",
+                "404 request access={} success={} header={}",
                 authenticateConfirmPage,
                 success,
-                httpServletRequest.getHeader("referer")
+                HttpRequestResponseParser.printHeader(httpServletRequest)
         );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
