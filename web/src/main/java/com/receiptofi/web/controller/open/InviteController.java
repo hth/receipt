@@ -96,6 +96,7 @@ public final class InviteController {
     public String completeInvitation(
             @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm inviteAuthenticateForm,
+
             RedirectAttributes redirectAttrs,
             BindingResult result
     ) {
@@ -154,6 +155,7 @@ public final class InviteController {
     public String success(
             @ModelAttribute ("success")
             String success,
+
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException {

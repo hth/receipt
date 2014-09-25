@@ -39,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -169,10 +170,11 @@ public final class ForgotController {
             return recoverConfirmPage;
         }
         LOG.warn(
-                "404 request access={} success={} referer={}",
+                "404 request access={} success={} referer={} header={}",
                 recoverConfirmPage,
                 success,
-                httpServletRequest.getHeader("referer")
+                httpServletRequest.getHeader("referer"),
+                printHeader(httpServletRequest)
         );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
@@ -265,5 +267,16 @@ public final class ForgotController {
             }
             return modelAndView;
         }
+    }
+
+    private String printHeader(HttpServletRequest httpServletRequest) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = httpServletRequest.getHeader(headerName);
+            stringBuilder.append(headerName).append(":").append(headerValue).append(",");
+        }
+        return stringBuilder.toString();
     }
 }
