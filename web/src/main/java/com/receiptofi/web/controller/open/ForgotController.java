@@ -168,7 +168,12 @@ public final class ForgotController {
         if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
             return recoverConfirmPage;
         }
-        LOG.warn("ah! some just tried access={}", recoverConfirmPage);
+        LOG.warn(
+                "404 some just tried access={} success={} referer={}",
+                recoverConfirmPage,
+                success,
+                httpServletRequest.getHeader("Referer")
+        );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
     }
