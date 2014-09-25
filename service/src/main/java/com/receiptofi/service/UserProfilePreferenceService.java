@@ -51,7 +51,7 @@ public final class UserProfilePreferenceService {
     }
 
     @Mobile
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public UserProfileEntity getProfileUpdateSince(String rid, Date since) {
         return userProfileManager.getProfileUpdateSince(rid, since);
     }
@@ -85,7 +85,7 @@ public final class UserProfilePreferenceService {
     }
 
     public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String receiptUserId) {
-        if(changeStatTo.equalsIgnoreCase("true")) {
+        if (changeStatTo.equalsIgnoreCase("true")) {
             expenseTagManager.changeVisibility(expenseTypeId, false, receiptUserId);
         } else {
             expenseTagManager.changeVisibility(expenseTypeId, true, receiptUserId);

@@ -64,7 +64,6 @@ public final class ReceiptService {
     }
 
     /**
-     *
      * @param dateTime
      * @param userProfileId
      * @return
@@ -79,28 +78,29 @@ public final class ReceiptService {
 
     /**
      * Delete a Receipt and its associated data
+     *
      * @param receiptId - Receipt id to delete
      */
     public boolean deleteReceipt(String receiptId, String userProfileId) throws Exception {
         ReceiptEntity receipt = receiptManager.findOne(receiptId, userProfileId);
-        if(receipt == null) {
+        if (receipt == null) {
             return false;
         }
-        if(receipt.isActive()) {
+        if (receipt.isActive()) {
             itemManager.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
             storageManager.deleteSoft(receipt.getFileSystemEntities());
 
-            if(receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
+            if (receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
                 commentManager.deleteHard(receipt.getRecheckComment());
             }
-            if(receipt.getNotes() != null && !StringUtils.isEmpty(receipt.getNotes().getId())) {
+            if (receipt.getNotes() != null && !StringUtils.isEmpty(receipt.getNotes().getId())) {
                 commentManager.deleteHard(receipt.getNotes());
             }
 
-            if(!StringUtils.isEmpty(receipt.getReceiptOCRId())) {
+            if (!StringUtils.isEmpty(receipt.getReceiptOCRId())) {
                 DocumentEntity documentEntity = documentManager.findOne(receipt.getReceiptOCRId(), userProfileId);
-                if(documentEntity != null) {
+                if (documentEntity != null) {
                     itemOCRManager.deleteWhereReceipt(documentEntity);
                     documentManager.deleteHard(documentEntity);
                     receipt.setReceiptOCRId(null);
@@ -117,6 +117,7 @@ public final class ReceiptService {
 
     /**
      * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items. Then delete all the items.
+     *
      * @param receiptId
      * @param userProfileId
      * @throws Exception
@@ -124,11 +125,11 @@ public final class ReceiptService {
     public void reopen(String receiptId, String userProfileId) throws Exception {
         try {
             ReceiptEntity receipt = receiptManager.findOne(receiptId, userProfileId);
-            if(receipt.getReceiptOCRId() == null) {
+            if (receipt.getReceiptOCRId() == null) {
                 LOG.error("No receiptOCR id found in Receipt={}, aborting the reopen process", receipt.getId());
                 throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
             } else {
-                if(receipt.isActive()) {
+                if (receipt.isActive()) {
                     receipt.inActive();
                     List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
 
@@ -169,7 +170,6 @@ public final class ReceiptService {
     }
 
 
-
     /**
      * Used when data is read from Receipt and Item Entity during re-check process
      *
@@ -180,8 +180,8 @@ public final class ReceiptService {
     public List<ItemEntityOCR> getItemEntityFromItemEntityOCR(List<ItemEntity> items, DocumentEntity receiptOCR) {
         List<ItemEntityOCR> listOfItems = new ArrayList<>();
 
-        for(ItemEntity item : items) {
-            if(StringUtils.isNotEmpty(item.getName())) {
+        for (ItemEntity item : items) {
+            if (StringUtils.isNotEmpty(item.getName())) {
                 ItemEntityOCR itemOCR = ItemEntityOCR.newInstance();
                 itemOCR.setName(item.getName());
                 itemOCR.setPrice(item.getPrice().toString());
@@ -223,7 +223,7 @@ public final class ReceiptService {
         ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
         CommentEntity commentEntity = receiptEntity.getNotes();
         boolean commentEntityBoolean = false;
-        if(commentEntity == null) {
+        if (commentEntity == null) {
             commentEntityBoolean = true;
             commentEntity = CommentEntity.newInstance(CommentTypeEnum.NOTES);
             commentEntity.setText(notes);
@@ -233,7 +233,7 @@ public final class ReceiptService {
         try {
             commentEntity.setUpdated();
             commentManager.save(commentEntity);
-            if(commentEntityBoolean) {
+            if (commentEntityBoolean) {
                 receiptEntity.setNotes(commentEntity);
                 receiptManager.save(receiptEntity);
             }
@@ -256,7 +256,7 @@ public final class ReceiptService {
         ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
         CommentEntity commentEntity = receiptEntity.getRecheckComment();
         boolean commentEntityBoolean = false;
-        if(commentEntity == null) {
+        if (commentEntity == null) {
             commentEntityBoolean = true;
             commentEntity = CommentEntity.newInstance(CommentTypeEnum.RECHECK);
             commentEntity.setText(comment);
@@ -266,7 +266,7 @@ public final class ReceiptService {
         try {
             commentEntity.setUpdated();
             commentManager.save(commentEntity);
-            if(commentEntityBoolean) {
+            if (commentEntityBoolean) {
                 receiptEntity.setRecheckComment(commentEntity);
                 receiptManager.save(receiptEntity);
             }
@@ -288,7 +288,7 @@ public final class ReceiptService {
         DocumentEntity documentEntity = documentUpdateService.loadActiveDocumentById(documentId);
         CommentEntity commentEntity = documentEntity.getRecheckComment();
         boolean commentEntityBoolean = false;
-        if(commentEntity == null) {
+        if (commentEntity == null) {
             commentEntityBoolean = true;
             commentEntity = CommentEntity.newInstance(CommentTypeEnum.RECHECK);
             commentEntity.setText(comment);
@@ -298,7 +298,7 @@ public final class ReceiptService {
         try {
             commentEntity.setUpdated();
             commentManager.save(commentEntity);
-            if(commentEntityBoolean) {
+            if (commentEntityBoolean) {
                 documentEntity.setRecheckComment(commentEntity);
                 documentManager.save(documentEntity);
             }
@@ -310,7 +310,6 @@ public final class ReceiptService {
     }
 
     /**
-     *
      * @param bizNameEntity
      * @param userProfileId
      * @return

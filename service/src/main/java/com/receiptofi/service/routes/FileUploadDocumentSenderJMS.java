@@ -23,34 +23,33 @@ import javax.jms.Session;
 /**
  * @author hitender
  * @since Mar 30, 2013 2:42:21 AM
- *
  */
 @Component
 public final class FileUploadDocumentSenderJMS {
-	private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentSenderJMS.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentSenderJMS.class);
 
-	@Autowired private JmsTemplate jmsSenderTemplate;
+    @Autowired private JmsTemplate jmsSenderTemplate;
 
-    @Value("${queue-name}")
+    @Value ("${queue-name}")
     private String queueName;
 
-	public void send(final DocumentEntity documentEntity, final UserProfileEntity userProfile) {
+    public void send(final DocumentEntity documentEntity, final UserProfileEntity userProfile) {
         jmsSenderTemplate.send(queueName,
-				new MessageCreator() {
-					public Message createMessage(Session session) throws JMSException {
-						MapMessage mapMessage = session.createMapMessage();
-						mapMessage.setString("id", documentEntity.getId());
-						mapMessage.setString("level", userProfile.getLevel().getDescription());
+                new MessageCreator() {
+                    public Message createMessage(Session session) throws JMSException {
+                        MapMessage mapMessage = session.createMapMessage();
+                        mapMessage.setString("id", documentEntity.getId());
+                        mapMessage.setString("level", userProfile.getLevel().getDescription());
                         mapMessage.setInt("status", documentEntity.getDocumentStatus().ordinal());
 
-						//This does not work since this values has to be set after sending the message. It will always default to 4.
-						mapMessage.setJMSPriority(userProfile.getLevel().getMessagePriorityJMS());
+                        //This does not work since this values has to be set after sending the message. It will always default to 4.
+                        mapMessage.setJMSPriority(userProfile.getLevel().getMessagePriorityJMS());
 
-						mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
-						return mapMessage;
-					}
-				}
-				);
-		LOG.info("Message sent ReceiptOCR={}, level={}", documentEntity.getId(), userProfile.getLevel().getDescription());
+                        mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
+                        return mapMessage;
+                    }
+                }
+        );
+        LOG.info("Message sent ReceiptOCR={}, level={}", documentEntity.getId(), userProfile.getLevel().getDescription());
     }
 }

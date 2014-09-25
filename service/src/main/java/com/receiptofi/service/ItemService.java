@@ -56,7 +56,7 @@ public final class ItemService {
 
         //Find sum of all items for particular expense
         List<ExpenseTagEntity> expenseTypeEntities = expenseTagManager.activeExpenseTypes(profileId);
-        for(ExpenseTagEntity expenseTagEntity : expenseTypeEntities) {
+        for (ExpenseTagEntity expenseTagEntity : expenseTypeEntities) {
 
             BigDecimal sum = ZERO;
             //Todo this query take a long time. Optimize it. Almost 150ms through this loop
@@ -69,7 +69,7 @@ public final class ItemService {
         netSum = populateWithUnAssignedItems(expenseItems, netSum, profileId);
 
         // Calculate percentage
-        for(String key : expenseItems.keySet()) {
+        for (String key : expenseItems.keySet()) {
             BigDecimal percent = Maths.percent(expenseItems.get(key));
             expenseItems.put(key, (netSum == ZERO) ? ZERO : Maths.divide(percent, netSum));
             //percent = Maths.divide(percent, netSum);
@@ -89,7 +89,7 @@ public final class ItemService {
     private BigDecimal calculateSum(BigDecimal sum, List<ItemEntity> items) {
         Assert.notNull(sum);
         BigDecimal newSum = sum;
-        for(ItemEntity item : items) {
+        for (ItemEntity item : items) {
             newSum = calculateTotalCost(newSum, item);
         }
         return newSum;
@@ -97,6 +97,7 @@ public final class ItemService {
 
     /**
      * Finds all the un-assigned items for the user
+     *
      * @param expenseItems
      * @param netSum
      * @param profileId
@@ -106,7 +107,7 @@ public final class ItemService {
         List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(profileId);
         Assert.notNull(netSum);
         BigDecimal newNetSum = netSum;
-        if(unassignedItems.isEmpty()) {
+        if (unassignedItems.isEmpty()) {
             BigDecimal sum = calculateSum(ZERO, unassignedItems);
             newNetSum = Maths.add(newNetSum, sum);
             expenseItems.put("Un-Assigned", sum);

@@ -23,7 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * User: hitender
  * Date: 2/19/14 11:21 PM
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith (MockitoJUnitRunner.class)
 public class AccountServiceTest {
 
     @Mock private UserAuthenticationManager userAuthenticationManager;
@@ -67,7 +67,7 @@ public class AccountServiceTest {
         verify(forgotRecoverManager, atLeastOnce()).save(any(ForgotRecoverEntity.class));
     }
 
-    @Test(expected = Exception.class)
+    @Test (expected = Exception.class)
     public void testInitiateAccountRecovery_Fails_When_Saving() throws Exception {
         doThrow(new Exception()).when(forgotRecoverManager).save((ForgotRecoverEntity) anyObject());
         when(userProfileManager.findOneByMail(anyString())).thenReturn(new UserProfileEntity());

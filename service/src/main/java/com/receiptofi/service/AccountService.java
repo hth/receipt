@@ -41,7 +41,7 @@ public final class AccountService {
     private final ForgotRecoverManager forgotRecoverManager;
     private final GenerateUserIdManager generateUserIdManager;
 
-    @Value("${domain}")
+    @Value ("${domain}")
     private String domain;
 
     @Autowired
@@ -74,11 +74,12 @@ public final class AccountService {
     }
 
     public UserAccountEntity findByProviderUserId(String providerUserId) {
-        return  userAccountManager.findByProviderUserId(providerUserId);
+        return userAccountManager.findByProviderUserId(providerUserId);
     }
 
     /**
      * Create a new account
+     *
      * @param email
      * @param firstName
      * @param lastName
@@ -175,7 +176,7 @@ public final class AccountService {
 
     public UserAccountEntity changeAccountRolesToMatchUserLevel(String receiptUserId, UserLevelEnum userLevel) {
         UserAccountEntity userAccountEntity = findByReceiptUserId(receiptUserId);
-        switch(userLevel) {
+        switch (userLevel) {
             case TECHNICIAN:
                 userAccountEntity.setRoles(
                         new LinkedHashSet<RoleEnum>() {{

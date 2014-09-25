@@ -46,7 +46,7 @@ public abstract class RealMongoForTests {
         Command command = Command.MongoD;
 
         int port = Network.getFreeServerPort();
-        String host= "localhost";
+        String host = "localhost";
 
         IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
         ITempNaming executableNaming = new UUIDTempNaming();
@@ -85,7 +85,7 @@ public abstract class RealMongoForTests {
     }
 
     protected MongoTemplate getMongoTemplate() {
-        if(mongoTemplate == null) {
+        if (mongoTemplate == null) {
             mongoTemplate = new MongoTemplate(mongo, DATABASE_NAME);
         }
         return mongoTemplate;

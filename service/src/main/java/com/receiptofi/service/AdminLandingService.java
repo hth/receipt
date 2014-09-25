@@ -32,7 +32,7 @@ public final class AdminLandingService {
     public List<String> findMatchingUsers(String name) {
         List<String> users = new ArrayList<>();
         List<UserProfileEntity> userProfileEntities = userProfileManager.searchAllByName(name);
-        for(UserProfileEntity userProfile : userProfileEntities) {
+        for (UserProfileEntity userProfile : userProfileEntities) {
             users.add(userProfile.getFirstName() + ", " + userProfile.getLastName());
         }
         LOG.debug("List of users={}", users);

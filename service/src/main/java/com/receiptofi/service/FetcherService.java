@@ -47,7 +47,6 @@ public final class FetcherService {
     }
 
     /**
-     *
      * @param bizAddress
      * @param bizName
      * @return
@@ -57,9 +56,9 @@ public final class FetcherService {
         Set<String> address = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        if(bizNameEntity != null) {
+        if (bizNameEntity != null) {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizAddress, bizNameEntity, BizStoreManager.ADDRESS);
-            for(BizStoreEntity bizStoreEntity : list) {
+            for (BizStoreEntity bizStoreEntity : list) {
                 address.add(bizStoreEntity.getAddress());
             }
 
@@ -69,20 +68,19 @@ public final class FetcherService {
     }
 
     /**
-     *
      * @param bizAddress
      * @param bizName
      * @return
      */
     public Set<String> findDistinctBizPhone(String bizPhone, String bizAddress, String bizName) {
-        LOG.info("Search for Biz address={} within name={}",bizAddress, bizName);
+        LOG.info("Search for Biz address={} within name={}", bizAddress, bizName);
         Set<String> phone = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        if(bizNameEntity != null) {
+        if (bizNameEntity != null) {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, BizStoreManager.PHONE);
 
-            for(BizStoreEntity bizStoreEntity : list) {
+            for (BizStoreEntity bizStoreEntity : list) {
                 phone.add(Formatter.phone(bizStoreEntity.getPhone()));
             }
 
@@ -104,7 +102,7 @@ public final class FetcherService {
         List<ItemEntity> itemList = itemManager.findItems(itemName, bizName);
 
         Set<String> itemSet = new HashSet<>();
-        for(ItemEntity re : itemList) {
+        for (ItemEntity re : itemList) {
             itemSet.add(re.getName());
         }
 
@@ -114,7 +112,7 @@ public final class FetcherService {
 
     public void changeFSImageOrientation(String fileSystemId, int imageOrientation, String blobId) throws Exception {
         FileSystemEntity fileSystemEntity = fileSystemService.findById(fileSystemId);
-        if(blobId.equalsIgnoreCase(fileSystemEntity.getBlobId())) {
+        if (blobId.equalsIgnoreCase(fileSystemEntity.getBlobId())) {
             fileSystemEntity.setImageOrientation(fileSystemEntity.getImageOrientation() + imageOrientation);
             fileSystemEntity.switchHeightAndWidth();
             fileSystemService.save(fileSystemEntity);

@@ -76,7 +76,7 @@ public final class LandingService {
     @Autowired private ImageSplitService imageSplitService;
     @Autowired private ReceiptParserService receiptParserService;
 
-    @Value("${SCALE_UPLOAD_IMAGE_ON:false}")
+    @Value ("${SCALE_UPLOAD_IMAGE_ON:false}")
     private boolean scaledUploadImage;
 
     static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
@@ -108,7 +108,7 @@ public final class LandingService {
     }
 
     @Mobile
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public List<ReceiptEntity> getAllUpdatedReceiptSince(String profileId, Date since) {
         return receiptManager.getAllUpdatedReceiptSince(profileId, since);
     }
@@ -138,8 +138,8 @@ public final class LandingService {
         List<ReceiptGrouped> sortedList = Lists.newArrayList(receiptGroupedList);
 
         /** In case there is just receipts for one month then add empty data to show the chart pretty for at least two additional months */
-        if(sortedList.size() < 3) {
-            if(sortedList.size() == 1) {
+        if (sortedList.size() < 3) {
+            if (sortedList.size() == 1) {
                 ReceiptGrouped receiptGrouped = sortedList.get(0);
                 DateTime dateTime = receiptGrouped.getDateTime();
 
@@ -151,7 +151,7 @@ public final class LandingService {
                 ReceiptGrouped r2 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
                 sortedList.add(r2);
 
-            } else if(sortedList.size() == 2) {
+            } else if (sortedList.size() == 2) {
                 ReceiptGrouped receiptGrouped = sortedList.get(0);
                 DateTime dateTime = receiptGrouped.getDateTime();
 
@@ -179,26 +179,26 @@ public final class LandingService {
     public Map<String, Map<String, BigDecimal>> allBusinessByExpenseType(List<ReceiptEntity> receipts) {
         Map<String, Map<String, BigDecimal>> maps = new HashMap<>();
 
-        for(ReceiptEntity receipt : receipts) {
+        for (ReceiptEntity receipt : receipts) {
             BizNameEntity bizNameEntity = receipt.getBizName();
             bizNameEntity = bizNameManager.findOne(bizNameEntity.getId());
 
             List<ItemEntity> itemEntities = itemService.getAllItemsOfReceipt(receipt.getId());
-            if(itemEntities.size() > 0) {
+            if (itemEntities.size() > 0) {
                 Map<String, BigDecimal> itemMaps = new HashMap<>();
 
-                for(ItemEntity itemEntity : itemEntities) {
+                for (ItemEntity itemEntity : itemEntities) {
                     BigDecimal sum = BigDecimal.ZERO;
                     sum = itemService.calculateTotalCost(sum, itemEntity);
-                    if(itemEntity.getExpenseTag() == null) {
-                        if(itemMaps.containsKey("Un-Assigned")) {
+                    if (itemEntity.getExpenseTag() == null) {
+                        if (itemMaps.containsKey("Un-Assigned")) {
                             BigDecimal out = itemMaps.get("Un-Assigned");
                             itemMaps.put("Un-Assigned", Maths.add(out, sum));
                         } else {
                             itemMaps.put("Un-Assigned", sum);
                         }
                     } else {
-                        if(itemMaps.containsKey(itemEntity.getExpenseTag().getTagName())) {
+                        if (itemMaps.containsKey(itemEntity.getExpenseTag().getTagName())) {
                             BigDecimal out = itemMaps.get(itemEntity.getExpenseTag().getTagName());
                             itemMaps.put(itemEntity.getExpenseTag().getTagName(), Maths.add(out, sum));
                         } else {
@@ -208,10 +208,10 @@ public final class LandingService {
                 }
 
                 String bizName = StringEscapeUtils.escapeEcmaScript(bizNameEntity.getBusinessName());
-                if(maps.containsKey(bizName)) {
+                if (maps.containsKey(bizName)) {
                     Map<String, BigDecimal> mapData = maps.get(bizName);
-                    for(String key : itemMaps.keySet()) {
-                        if(mapData.containsKey(key)) {
+                    for (String key : itemMaps.keySet()) {
+                        if (mapData.containsKey(key)) {
                             BigDecimal value = mapData.get(key);
                             BigDecimal existingSum = itemMaps.get(key);
                             mapData.put(key, Maths.add(existingSum, value));
@@ -250,7 +250,7 @@ public final class LandingService {
     private Map<String, BigDecimal> computeToDateExpense(List<ReceiptEntity> receipts) {
         BigDecimal tax = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
-        for(ReceiptEntity receipt : receipts) {
+        for (ReceiptEntity receipt : receipts) {
             tax = Maths.add(tax, receipt.getTax());
             total = Maths.add(total, receipt.getTotal());
         }
@@ -283,7 +283,7 @@ public final class LandingService {
             LOG.info("Upload document rid={} fileType={}", uploadReceiptImage.getRid(), uploadReceiptImage.getFileType());
 
             BufferedImage bufferedImage;
-            if(scaledUploadImage) {
+            if (scaledUploadImage) {
                 File scaled = scaleImage(uploadReceiptImage);
                 uploadReceiptImage.setFile(scaled);
                 bufferedImage = imageSplitService.bufferedImage(scaled);
@@ -321,32 +321,32 @@ public final class LandingService {
             LOG.warn("Undo all the saves");
 
             int sizeFSInitial = fileDBService.getFSDBSize();
-            if(documentBlobId != null) {
+            if (documentBlobId != null) {
                 fileDBService.deleteHard(documentBlobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
             LOG.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
 
-            if(fileSystem != null) {
+            if (fileSystem != null) {
                 fileSystemService.deleteHard(fileSystem);
             }
 
             long sizeReceiptInitial = documentManager.collectionSize();
             long sizeItemInitial = itemOCRManager.collectionSize();
-            if(documentEntity != null) {
+            if (documentEntity != null) {
                 itemOCRManager.deleteWhereReceipt(documentEntity);
                 documentManager.deleteHard(documentEntity);
             }
             long sizeReceiptFinal = documentManager.collectionSize();
             long sizeItemFinal = itemOCRManager.collectionSize();
 
-            if(sizeReceiptInitial == sizeReceiptFinal) {
+            if (sizeReceiptInitial == sizeReceiptFinal) {
                 LOG.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
             } else {
                 LOG.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Document: " + documentEntity.getId());
             }
 
-            if(sizeItemInitial == sizeItemFinal) {
+            if (sizeItemInitial == sizeItemFinal) {
                 LOG.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
             } else {
                 LOG.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
@@ -368,7 +368,7 @@ public final class LandingService {
         MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
         File original = CreateTempFile.file(
                 "image_" +
-                FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()),
+                        FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()),
                 FilenameUtils.getExtension(commonsMultipartFile.getOriginalFilename())
         );
 
