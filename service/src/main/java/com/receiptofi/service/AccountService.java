@@ -152,7 +152,7 @@ public final class AccountService {
         forgotRecoverManager.invalidateAllEntries(receiptUserId);
     }
 
-    public ForgotRecoverEntity findAccountAuthenticationForKey(String key) {
+    public ForgotRecoverEntity findByAuthenticationKey(String key) {
         return forgotRecoverManager.findByAuthenticationKey(key);
     }
 
