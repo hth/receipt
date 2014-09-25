@@ -11,7 +11,7 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
-import com.receiptofi.utils.HttpRequestResponseParser;
+import com.receiptofi.web.util.HttpRequestResponseParser;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.form.ForgotAuthenticateForm;
 import com.receiptofi.web.form.ForgotRecoverForm;
@@ -40,7 +40,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
