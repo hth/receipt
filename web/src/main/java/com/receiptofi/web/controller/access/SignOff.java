@@ -31,13 +31,22 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
     private static final Logger LOG = LoggerFactory.getLogger(SignOff.class);
 
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onLogoutSuccess(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Authentication authentication
+    ) throws IOException, ServletException {
+
         String receiptUserId = "Not Available";
         if (authentication.getPrincipal() != null) {
             receiptUserId = ((ReceiptUser) authentication.getPrincipal()).getRid();
         }
 
-        LOG.info("Logout from={} and user={}", extractEndpoint(request.getHeader("referer"), request.getContextPath()), receiptUserId);
+        LOG.info(
+                "Logout from={} and user={}",
+                extractEndpoint(request.getHeader("referer"), request.getContextPath()),
+                receiptUserId
+        );
         super.onLogoutSuccess(request, response, authentication);
     }
 
@@ -45,6 +54,7 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
      * Gets which end point user logged out from
      *
      * @param uri
+     * @param context
      * @return
      */
     private String extractEndpoint(String uri, String context) {
