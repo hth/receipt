@@ -165,14 +165,14 @@ public final class ForgotController {
     ) throws IOException {
 
         //referer is a weak check; strong check would be to check against the actual value of referer
-        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
+        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("referer"))) {
             return recoverConfirmPage;
         }
         LOG.warn(
-                "404 some just tried access={} success={} referer={}",
+                "404 request access={} success={} referer={}",
                 recoverConfirmPage,
                 success,
-                httpServletRequest.getHeader("Referer")
+                httpServletRequest.getHeader("referer")
         );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
