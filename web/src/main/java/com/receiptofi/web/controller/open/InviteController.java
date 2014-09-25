@@ -43,21 +43,21 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 1:48 PM
  */
 @Controller
-@RequestMapping(value = "/open/invite")
+@RequestMapping (value = "/open/invite")
 public final class InviteController {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotController.class);
 
-    @Value("${authenticatePage:/invite/authenticate}")
-    private String authenticatePage;
-
-    @Value("${authenticateResult:redirect:/open/invite/result.htm}")
-    private String authenticateResult;
-
-    @Value("${authenticateConfirmPage:/invite/authenticateConfirm}")
-    private String authenticateConfirmPage;
-
     /** Used in JSP page /invite/authenticateConfirm */
     private static final String SUCCESS = "success";
+
+    @Value ("${authenticatePage:/invite/authenticate}")
+    private String authenticatePage;
+
+    @Value ("${authenticateResult:redirect:/open/invite/result.htm}")
+    private String authenticateResult;
+
+    @Value ("${authenticateConfirmPage:/invite/authenticateConfirm}")
+    private String authenticateConfirmPage;
 
     @Autowired private AccountService accountService;
     @Autowired private LoginService loginService;
@@ -65,16 +65,16 @@ public final class InviteController {
     @Autowired private InviteAuthenticateValidator inviteAuthenticateValidator;
     @Autowired private UserProfileManager userProfileManager;
 
-    @RequestMapping(method = RequestMethod.GET, value = "authenticate")
+    @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String loadForm(
-            @RequestParam("authenticationKey")
+            @RequestParam ("authenticationKey")
             String key,
 
-            @ModelAttribute("inviteAuthenticateForm")
+            @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm inviteAuthenticateForm
     ) {
         InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(key);
-        if(inviteEntity != null) {
+        if (inviteEntity != null) {
             inviteAuthenticateForm.setEmailId(inviteEntity.getEmail());
             inviteAuthenticateForm.setFirstName(inviteEntity.getInvited().getFirstName());
             inviteAuthenticateForm.setLastName(inviteEntity.getInvited().getLastName());
@@ -86,14 +86,15 @@ public final class InviteController {
 
     /**
      * Completes user invitation sent through email
+     *
      * @param inviteAuthenticateForm
      * @param redirectAttrs
      * @param result
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, value = "authenticate", params = {"confirm_invitation"})
+    @RequestMapping (method = RequestMethod.POST, value = "authenticate", params = {"confirm_invitation"})
     public String completeInvitation(
-            @ModelAttribute("inviteAuthenticateForm")
+            @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm inviteAuthenticateForm,
             RedirectAttributes redirectAttrs,
             BindingResult result
@@ -105,7 +106,7 @@ public final class InviteController {
             return authenticatePage;
         } else {
             InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(inviteAuthenticateForm.getForgotAuthenticateForm().getAuthenticationKey());
-            if(inviteEntity == null) {
+            if (inviteEntity == null) {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
                 redirectAttrs.addFlashAttribute(SUCCESS, "false");
             } else {
@@ -149,17 +150,22 @@ public final class InviteController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/result")
+    @RequestMapping (method = RequestMethod.GET, value = "/result")
     public String success(
-            @ModelAttribute("success")
+            @ModelAttribute ("success")
             String success,
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        if(StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
+        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
             return authenticateConfirmPage;
         }
-        LOG.warn("ah! some just tried access={}", authenticateConfirmPage);
+        LOG.warn(
+                "404 some just tried access={} success={} referer={}",
+                authenticateConfirmPage,
+                success,
+                httpServletRequest.getHeader("Referer")
+        );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
     }
