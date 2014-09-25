@@ -49,33 +49,33 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 9:44 AM
  */
 @Controller
-@RequestMapping(value = "/open/forgot")
+@RequestMapping (value = "/open/forgot")
 public final class ForgotController {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotController.class);
 
-    @Value("${password:/forgot/password}")
-    private String passwordPage;
-
-    @Value("${recoverPage:/forgot/recover}")
-    private String recoverPage;
-
-    @Value("${recoverConfirmPage:/forgot/recoverConfirm}")
-    private String recoverConfirmPage;
-
-    @Value("${recoverConfirm:redirect:/open/forgot/recoverConfirm.htm}")
-    private String recoverConfirm;
-
-    @Value("${authenticatePage:/forgot/authenticate}")
-    private String authenticatePage;
-
-    @Value("${authenticationConfirmPage:/forgot/authenticateConfirm}")
-    private String authenticateConfirm;
-
     /** Used in RedirectAttributes */
-    private static final String SUCCESS_EMAIL   = "success_email";
+    private static final String SUCCESS_EMAIL = "success_email";
 
     /** Used in JSP page /forgot/authenticateConfirm */
-    private static final String SUCCESS         = "success";
+    private static final String SUCCESS = "success";
+
+    @Value ("${password:/forgot/password}")
+    private String passwordPage;
+
+    @Value ("${recoverPage:/forgot/recover}")
+    private String recoverPage;
+
+    @Value ("${recoverConfirmPage:/forgot/recoverConfirm}")
+    private String recoverConfirmPage;
+
+    @Value ("${recoverConfirm:redirect:/open/forgot/recoverConfirm.htm}")
+    private String recoverConfirm;
+
+    @Value ("${authenticatePage:/forgot/authenticate}")
+    private String authenticatePage;
+
+    @Value ("${authenticationConfirmPage:/forgot/authenticateConfirm}")
+    private String authenticateConfirm;
 
     @Autowired private AccountService accountService;
     @Autowired private ForgotRecoverValidator forgotRecoverValidator;
@@ -84,15 +84,15 @@ public final class ForgotController {
     @Autowired private MailService mailService;
     @Autowired private LoginService loginService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "password")
-    public String onPasswordLinkClicked(@ModelAttribute("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
+    @RequestMapping (method = RequestMethod.GET, value = "password")
+    public String onPasswordLinkClicked(@ModelAttribute ("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
         LOG.info("Password recovery page invoked");
         return passwordPage;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "password", params = {"forgot_password"})
+    @RequestMapping (method = RequestMethod.POST, value = "password", params = {"forgot_password"})
     public String emailUserForPasswordRecovery(
-            @ModelAttribute("forgotRecoverForm")
+            @ModelAttribute ("forgotRecoverForm")
             ForgotRecoverForm forgotRecoverForm,
 
             BindingResult result,
@@ -101,13 +101,18 @@ public final class ForgotController {
 
         DateTime time = DateUtil.now();
         forgotRecoverValidator.validate(forgotRecoverForm, result);
-        if(result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
+        if (result.hasErrors()) {
+            PerformanceProfiling.log(
+                    this.getClass(),
+                    time,
+                    Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "validation error"
+            );
             return passwordPage;
         }
 
         boolean status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
-        if(!status) {
+        if (!status) {
             LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getEmailId());
         }
 
@@ -118,22 +123,21 @@ public final class ForgotController {
     /**
      * Method just for changing the URL, hence have to use re-direct.
      * This could be an expensive call because of redirect.
-     *
      * Its redirected from RequestMethod.POST from
-     * @see AccountRegistrationController#recover(UserRegistrationForm, RedirectAttributes)
      *
      * @param userRegistrationForm
      * @return
+     * @see AccountRegistrationController#recover(UserRegistrationForm, RedirectAttributes)
      */
-    @RequestMapping(method = RequestMethod.GET, value = "recover")
+    @RequestMapping (method = RequestMethod.GET, value = "recover")
     public ModelAndView whenAccountAlreadyExists(
-            @ModelAttribute("userRegistrationForm")
+            @ModelAttribute ("userRegistrationForm")
             UserRegistrationForm userRegistrationForm,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.info("Recover password process initiated for user={}", userRegistrationForm.getEmailId());
-        if(StringUtils.isEmpty(userRegistrationForm.getEmailId())) {
+        if (StringUtils.isEmpty(userRegistrationForm.getEmailId())) {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
             return null;
         }
@@ -151,9 +155,9 @@ public final class ForgotController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(method = RequestMethod.GET, value = "recoverConfirm")
+    @RequestMapping (method = RequestMethod.GET, value = "recoverConfirm")
     public String showConfirmationPageForProcessingPasswordRecovery(
-            @ModelAttribute(SUCCESS_EMAIL)
+            @ModelAttribute (SUCCESS_EMAIL)
             String success,
 
             HttpServletRequest httpServletRequest,
@@ -161,7 +165,7 @@ public final class ForgotController {
     ) throws IOException {
 
         //referer is a weak check; strong check would be to check against the actual value of referer
-        if(StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
+        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
             return recoverConfirmPage;
         }
         LOG.warn("ah! some just tried access={}", recoverConfirmPage);
@@ -169,24 +173,24 @@ public final class ForgotController {
         return null;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "authenticate")
+    @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String whenClickedOnEmailLink(
-            @RequestParam("authenticationKey")
+            @RequestParam ("authenticationKey")
             String key,
 
             ForgotAuthenticateForm forgotAuthenticateForm
     ) {
-        ForgotRecoverEntity forgotRecoverEntity = accountService.findAccountAuthenticationForKey(key);
-        if(forgotRecoverEntity != null) {
+        ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(key);
+        if (forgotRecoverEntity != null) {
             forgotAuthenticateForm.setAuthenticationKey(key);
             forgotAuthenticateForm.setReceiptUserId(forgotRecoverEntity.getReceiptUserId());
         }
         return authenticatePage;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "authenticate", params = {"update_password"})
+    @RequestMapping (method = RequestMethod.POST, value = "authenticate", params = {"update_password"})
     public ModelAndView updatePassword(
-            @ModelAttribute("forgotAuthenticateForm")
+            @ModelAttribute ("forgotAuthenticateForm")
             ForgotAuthenticateForm forgotAuthenticateForm,
 
             BindingResult result
@@ -194,16 +198,30 @@ public final class ForgotController {
         DateTime time = DateUtil.now();
         forgotAuthenticateValidator.validate(forgotAuthenticateForm, result);
         if (result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+            PerformanceProfiling.log(
+                    this.getClass(),
+                    time,
+                    Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    " failure"
+            );
             return new ModelAndView(authenticatePage);
         } else {
-            ForgotRecoverEntity forgotRecoverEntity = accountService.findAccountAuthenticationForKey(forgotAuthenticateForm.getAuthenticationKey());
+            ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(
+                    forgotAuthenticateForm.getAuthenticationKey()
+            );
             ModelAndView modelAndView = new ModelAndView(authenticateConfirm);
-            if(forgotRecoverEntity == null) {
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+            if (forgotRecoverEntity == null) {
+                PerformanceProfiling.log(
+                        this.getClass(),
+                        time,
+                        Thread.currentThread().getStackTrace()[1].getMethodName(),
+                        " failure"
+                );
                 modelAndView.addObject(SUCCESS, false);
             } else {
-                UserProfileEntity userProfileEntity = userProfilePreferenceService.findByReceiptUserId(forgotRecoverEntity.getReceiptUserId());
+                UserProfileEntity userProfileEntity = userProfilePreferenceService.findByReceiptUserId(
+                        forgotRecoverEntity.getReceiptUserId()
+                );
                 Assert.notNull(userProfileEntity);
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
@@ -211,7 +229,9 @@ public final class ForgotController {
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
-                UserAuthenticationEntity userAuthenticationLoaded = loginService.findByReceiptUserId(userProfileEntity.getReceiptUserId()).getUserAuthentication();
+                UserAuthenticationEntity userAuthenticationLoaded = loginService.findByReceiptUserId(
+                        userProfileEntity.getReceiptUserId()
+                ).getUserAuthentication();
 
                 userAuthenticationEntity.setId(userAuthenticationLoaded.getId());
                 userAuthenticationEntity.setVersion(userAuthenticationLoaded.getVersion());
@@ -221,10 +241,20 @@ public final class ForgotController {
                     accountService.updateAuthentication(userAuthenticationEntity);
                     accountService.invalidateAllEntries(forgotRecoverEntity.getReceiptUserId());
                     modelAndView.addObject(SUCCESS, true);
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
+                    PerformanceProfiling.log(
+                            this.getClass(),
+                            time,
+                            Thread.currentThread().getStackTrace()[1].getMethodName(),
+                            " success"
+                    );
                 } catch (Exception e) {
-                    LOG.error("Error during updating of the old authentication keys: " + e.getLocalizedMessage());
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
+                    LOG.error("Error during updating of the old authentication key message={}", e.getLocalizedMessage(), e);
+                    PerformanceProfiling.log(
+                            this.getClass(),
+                            time,
+                            Thread.currentThread().getStackTrace()[1].getMethodName(),
+                            " failure"
+                    );
                     modelAndView.addObject(SUCCESS, false);
                 }
             }
