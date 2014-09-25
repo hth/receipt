@@ -157,14 +157,14 @@ public final class InviteController {
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("Referer"))) {
+        if (StringUtils.isNotBlank(success) && StringUtils.isNotBlank(httpServletRequest.getHeader("referer"))) {
             return authenticateConfirmPage;
         }
         LOG.warn(
-                "404 some just tried access={} success={} referer={}",
+                "404 request access={} success={} referer={}",
                 authenticateConfirmPage,
                 success,
-                httpServletRequest.getHeader("Referer")
+                httpServletRequest.getHeader("referer")
         );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;

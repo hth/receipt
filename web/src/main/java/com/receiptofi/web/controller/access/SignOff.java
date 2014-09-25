@@ -20,25 +20,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Custom logout override spring logout
- *
+ * Custom logout override spring logout.
  * User: hitender
  * Date: 7/2/13
  * Time: 10:41 PM
  */
 @Controller
-@RequestMapping(value = "/access/signoff")
+@RequestMapping (value = "/access/signoff")
 public final class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SignOff.class);
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String receiptUserId = "Not Available";
-        if(authentication.getPrincipal() != null) {
+        if (authentication.getPrincipal() != null) {
             receiptUserId = ((ReceiptUser) authentication.getPrincipal()).getRid();
         }
 
-        LOG.info("Logout from={} and user={}", extractEndpoint(request.getHeader("Referer"), request.getContextPath()), receiptUserId);
+        LOG.info("Logout from={} and user={}", extractEndpoint(request.getHeader("referer"), request.getContextPath()), receiptUserId);
         super.onLogoutSuccess(request, response, authentication);
     }
 
@@ -49,7 +48,7 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
      * @return
      */
     private String extractEndpoint(String uri, String context) {
-        if(StringUtils.isBlank(uri)) {
+        if (StringUtils.isBlank(uri)) {
             return "none";
         }
         String[] split = uri.split(context);
