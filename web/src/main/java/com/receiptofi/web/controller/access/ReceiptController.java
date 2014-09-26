@@ -64,8 +64,6 @@ public final class ReceiptController extends BaseController {
 
         ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
         if (receiptEntity == null) {
-            //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
-            //Possible condition of bookmark or trying to gain access to some unknown receipt
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(receiptEntity.getId());
@@ -74,7 +72,7 @@ public final class ReceiptController extends BaseController {
             receiptForm.setReceipt(receiptEntity);
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTypes);
-            LOG.debug("receiptForm={}", receiptForm);
+            LOG.info("receiptForm={}", receiptForm);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -136,7 +134,7 @@ public final class ReceiptController extends BaseController {
                 receiptService.updateItemWithExpenseType(item);
             } catch (Exception e) {
                 LOG.error("Error updating ExpenseType={}, for ItemEntity={}, reason={}", item.getExpenseTag().getId(), item.getId(), e.getLocalizedMessage(), e);
-                //TODO send error message back saying update unsuccessful.
+                //TODO(hth) send error message back saying update unsuccessful.
             }
         }
 
