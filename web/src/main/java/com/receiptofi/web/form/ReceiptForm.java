@@ -20,10 +20,9 @@ public final class ReceiptForm {
     /** Used for showing error messages to user when the request action fails to execute */
     String errorMessage;
 
-    /**
-     * Need for bean instantiation
-     */
-    private ReceiptForm() {}
+    /** Need for bean instantiation */
+    private ReceiptForm() {
+    }
 
     public static ReceiptForm newInstance(ReceiptEntity receipt, List<ItemEntity> items, List<ExpenseTagEntity> expenseTypes) {
         ReceiptForm receiptForm = new ReceiptForm();
@@ -57,12 +56,12 @@ public final class ReceiptForm {
         this.expenseTags = expenseTags;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
     public String getErrorMessage() {
         return this.errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     @Override
