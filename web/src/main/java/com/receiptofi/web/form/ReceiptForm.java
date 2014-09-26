@@ -64,4 +64,13 @@ public final class ReceiptForm {
     public String getErrorMessage() {
         return this.errorMessage;
     }
+
+    @Override
+    public String toString() {
+        return "ReceiptForm{" +
+                "receipt=" + receipt +
+                ", items=" + items +
+                ", expenseTags=" + expenseTags +
+                '}';
+    }
 }

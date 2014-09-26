@@ -59,7 +59,7 @@ public final class ReceiptController extends BaseController {
 	@RequestMapping(value = "/{receiptId}", method = RequestMethod.GET)
 	public ModelAndView loadForm(@PathVariable String receiptId, @ModelAttribute("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();
-        LOG.info("Loading Receipt Item with id: " + receiptId);
+        LOG.info("Loading Receipt Item with id={}", receiptId);
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -75,6 +75,7 @@ public final class ReceiptController extends BaseController {
             receiptForm.setReceipt(receiptEntity);
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTypes);
+            LOG.debug("receiptForm={}", receiptForm);
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
