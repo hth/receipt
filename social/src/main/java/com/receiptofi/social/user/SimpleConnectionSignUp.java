@@ -10,9 +10,9 @@ import java.util.concurrent.atomic.AtomicLong;
 @Social
 public final class SimpleConnectionSignUp implements ConnectionSignUp {
 
-	private final AtomicLong userIdSequence = new AtomicLong();
-	
-	public String execute(Connection<?> connection) {
-		return Long.toString(userIdSequence.incrementAndGet());
-	}
+    private final AtomicLong userIdSequence = new AtomicLong();
+
+    public String execute(Connection<?> connection) {
+        return Long.toString(userIdSequence.incrementAndGet());
+    }
 }

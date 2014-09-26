@@ -71,4 +71,13 @@ public final class ExpenseTagEntity extends BaseEntity {
     public void setReceiptUserId(String receiptUserId) {
         this.receiptUserId = receiptUserId;
     }
+
+    @Override
+    public String toString() {
+        return "ExpenseTagEntity{" +
+                "tagName='" + tagName + '\'' +
+                ", forYear=" + forYear +
+                ", receiptUserId='" + receiptUserId + '\'' +
+                '}';
+    }
 }
