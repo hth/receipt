@@ -13,12 +13,12 @@ import java.util.List;
  */
 public final class ReceiptForm {
 
-    ReceiptEntity receipt;
-    List<ItemEntity> items;
-    List<ExpenseTagEntity> expenseTags;
+    private ReceiptEntity receipt;
+    private List<ItemEntity> items;
+    private List<ExpenseTagEntity> expenseTags;
 
     /** Used for showing error messages to user when the request action fails to execute */
-    String errorMessage;
+    private String errorMessage;
 
     /** Need for bean instantiation */
     private ReceiptForm() {
