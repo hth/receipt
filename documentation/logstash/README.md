@@ -1,4 +1,4 @@
-### Logstash steup
+### Logstash setup
 
 Install java
 
