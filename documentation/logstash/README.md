@@ -70,11 +70,11 @@ Daemon to Load and Unload logstash on shipper
 	sudo launchctl unload -w /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load -w /Library/LaunchDaemons/logstash.plist
 
-Update firewall to allow redis on port 6379; and the reload firewall
+Update firewall to allow redis on ***port 6379***; and the reload firewall
 
 	sudo ipfw add 120 allow tcp from 192.168.1.74 to any dst-port 6379
 
-	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
+Note: ***The above steps should get it running on shipper. Since central is not yet created, shipper will throw warnings***
 
 #### Second Step to configure central:
 
