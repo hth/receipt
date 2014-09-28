@@ -128,6 +128,8 @@ This will check the syntax
 
 	plutil -lint redis.plist
 
+Daemon to Load and Unload redis on central
+
 	sudo launchctl unload -w /Library/LaunchDaemons/redis.plist
 	sudo launchctl load -w /Library/LaunchDaemons/redis.plist
 
@@ -178,9 +180,11 @@ File content for ***elasticsearch.plist***
 	  </dict>
 	</plist>
 
-Daemon to Load and Unload elasticsearch on central
+This will check the syntax
 
 	plutil -lint elasticsearch.plist
+
+Daemon to Load and Unload elasticsearch on central
 
 	sudo launchctl unload /Library/LaunchDaemons/elasticsearch.plist
 	sudo launchctl load /Library/LaunchDaemons/elasticsearch.plist
@@ -252,9 +256,11 @@ File content for ***logstash.plist***
 	  </dict>
 	</plist>
 
-Daemon to Load and Unload logstash on central
+This will check the syntax
 
 	plutil -lint logstash.plist
+
+Daemon to Load and Unload logstash on central
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
@@ -288,9 +294,11 @@ File content for ***logstash.web.plist***
 	  	</dict>
 	</plist>
 
-Daemon to Load and Unload logstash.web on central
+This will check the syntax
 
 	plutil -lint logstash.web.plist
+
+Daemon to Load and Unload logstash.web on central
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.web.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.web.plist
