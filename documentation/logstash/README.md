@@ -2,9 +2,10 @@
 
 Install java the box where you plan to use logstash
 
-First Step:
+#### First Step:
 
-Install Logstash on Shipper (Test/Prod machine)
+Install Logstash on Shipper which is ***Test*** and ***Prod*** machine. Shipper machine is any machine that pushes
+logs to central machine called ***Smoker*** in our environment
 
 	/etc/logstash/conf.d/receiptofi.shipper.conf
 	
@@ -74,7 +75,7 @@ Update firewall to allow redis on port 6379; and the reload firewall
 
 	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
 
-Second Step to configure central:
+#### Second Step to configure central:
 
 Download redis
 	move to /usr/local/redis-x-x-x
