@@ -1,10 +1,10 @@
 ### Logstash setup
 
-Install java
+Install java the box where you plan to use logstash
 
 First Step:
 
-Install Logstash on Shipper (Test machine)
+Install Logstash on Shipper (Test/Prod machine)
 	/etc/logstash/conf.d/receiptofi.shipper.conf
 	
 When installing through brew, create <code>logstash.conf</code> 
