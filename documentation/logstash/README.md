@@ -2,7 +2,7 @@
 
 Install java the box where you plan to use logstash
 
-#### First Step:
+#### First Step to configure shipper:
 
 Install Logstash on Shipper which is ***Test*** and ***Prod*** machine. Shipper machine is any machine that pushes
 logs to central machine called ***Smoker*** in our environment
