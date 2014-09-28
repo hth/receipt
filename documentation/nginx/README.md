@@ -9,6 +9,11 @@ Start with installing [homebrew](http://brew.sh "homebrew").
 
 Then install nginx with help of <code>brew install nginx</code>. Once installed do not link anything yet. Open a new terminal to work on remaining steps.
 
+Then execute these commands to start <code>ngnix</code>, this would be listed when brew installs ***nginx***
+
+    launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
+    launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
+
 **Note**: use default port **8080** and **8443**, will setup firewall redirect from **80** and **443** to nginx server ports
 
 ##### Create directory 
@@ -50,7 +55,7 @@ Then create file **[ipfw.nginx.plist](ipfw.nginx.plist.md)** under directory <co
     
     sudo nano /Library/LaunchDaemons/ipfw.nginx.plist
     
-Then execute these commands to start <code>ngnix</code>    
+Then execute these commands to start <code>ngnix firewall</code>
 
     sudo launchctl load -w /Library/LaunchDaemons/ipfw.nginx.plist
     sudo launchctl unload -w /Library/LaunchDaemons/ipfw.nginx.plist
