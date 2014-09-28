@@ -178,6 +178,8 @@ File content for ***elasticsearch.plist***
 	  </dict>
 	</plist>
 
+Daemon to Load and Unload elasticsearch on central
+
 	plutil -lint elasticsearch.plist
 
 	sudo launchctl unload /Library/LaunchDaemons/elasticsearch.plist
@@ -250,6 +252,8 @@ File content for ***logstash.plist***
 	  </dict>
 	</plist>
 
+Daemon to Load and Unload logstash on central
+
 	plutil -lint logstash.plist
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
@@ -283,6 +287,8 @@ File content for ***logstash.web.plist***
 		-->
 	  	</dict>
 	</plist>
+
+Daemon to Load and Unload logstash.web on central
 
 	plutil -lint logstash.web.plist
 
