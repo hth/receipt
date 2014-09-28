@@ -65,6 +65,7 @@ How to test configuration
 
 	bin/logstash agent --configtest --config /etc/logstash/conf.d/receiptofi.shipper.conf
 
+Daemon to Load and Unload logstash on shipper
 
 	sudo launchctl unload -w /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load -w /Library/LaunchDaemons/logstash.plist
