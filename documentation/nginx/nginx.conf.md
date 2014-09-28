@@ -1,4 +1,4 @@
-    # Date: Sep 27 7:30 PM
+    # Date: Sep 28 2:00 AM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -133,6 +133,25 @@
             location / {
                 root /data/www;
                 index index.html;
+            }
+        }
+
+        server {
+            listen          8443 ssl;
+            server_name     smoker.receiptofi.com;
+
+            access_log  /var/logs/nginx/smoker.access.log main;
+
+            location / {
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+
+                proxy_pass http://192.168.1.74:9292;
             }
         }
 
