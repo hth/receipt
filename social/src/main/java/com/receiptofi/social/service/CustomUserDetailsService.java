@@ -13,6 +13,7 @@ import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.config.SocialConfig;
@@ -54,7 +55,6 @@ import java.util.Set;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
-
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private SocialConfig socialConfig;
@@ -74,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         //Always check user login with lower letter email case
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
-        if(userProfile == null) {
+        if (userProfile == null) {
             LOG.warn("not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
@@ -103,7 +103,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
-        if(registrationConfig.isRegistrationTurnedOn()) {
+        if (registrationConfig.isRegistrationTurnedOn()) {
             return userAccount.isActive() && userAccount.isAccountValidated();
         }
 
@@ -115,7 +115,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOG.info("login through Provider user={}", uid);
 
         UserProfileEntity userProfile = userProfilePreferenceService.findByUserId(uid);
-        if(userProfile == null) {
+        if (userProfile == null) {
             LOG.warn("not found user={}", uid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
@@ -144,45 +144,50 @@ public class CustomUserDetailsService implements UserDetailsService {
         ConnectionRepository connectionRepository;
         List<Connection<?>> connections;
 
-        switch (provider) {
-            case FACEBOOK:
-                Facebook facebook = new FacebookTemplate(accessToken);
-                String facebookProfileId = facebook.userOperations().getUserProfile().getId();
+        try {
+            switch (provider) {
+                case FACEBOOK:
+                    Facebook facebook = new FacebookTemplate(accessToken);
+                    String facebookProfileId = facebook.userOperations().getUserProfile().getId();
 
-                userAccount = accountService.findByProviderUserId(facebookProfileId);
-                userConnectionRepository = socialConfig.usersConnectionRepository();
-                connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
-                if(userAccount == null) {
-                    userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
-                }
+                    userAccount = accountService.findByProviderUserId(facebookProfileId);
+                    userConnectionRepository = socialConfig.usersConnectionRepository();
+                    connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
+                    if (userAccount == null) {
+                        userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
+                    }
 
-                connections = connectionRepository.findConnections(provider.name());
-                Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
-                socialConfig.mongoConnectionService().update(facebookProfileId, connections.get(0));
-                break;
-            case GOOGLE:
-                Google google = new GoogleTemplate(accessToken);
-                String googleProfileId = google.plusOperations().getGoogleProfile().getId();
+                    connections = connectionRepository.findConnections(provider.name());
+                    Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
+                    socialConfig.mongoConnectionService().update(facebookProfileId, connections.get(0));
+                    break;
+                case GOOGLE:
+                    Google google = new GoogleTemplate(accessToken);
+                    String googleProfileId = google.plusOperations().getGoogleProfile().getId();
 
-                userAccount = accountService.findByProviderUserId(googleProfileId);
-                userConnectionRepository = socialConfig.usersConnectionRepository();
-                connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
-                if(userAccount == null) {
-                    userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
-                }
+                    userAccount = accountService.findByProviderUserId(googleProfileId);
+                    userConnectionRepository = socialConfig.usersConnectionRepository();
+                    connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
+                    if (userAccount == null) {
+                        userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
+                    }
 
-                connections = connectionRepository.findConnections(provider.name());
-                Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
-                socialConfig.mongoConnectionService().update(googleProfileId, connections.get(0));
-                break;
+                    connections = connectionRepository.findConnections(provider.name());
+                    Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
+                    socialConfig.mongoConnectionService().update(googleProfileId, connections.get(0));
+                    break;
+            }
+            if (null != userAccount) {
+                JsonObject result = new JsonObject();
+                result.addProperty("X-R-MAIL", userAccount.getUserId());
+                result.addProperty("X-R-AUTH", userAccount.getUserAuthentication().getAuthenticationKeyEncoded());
+                return new Gson().toJson(result);
+            }
+            return "{}";
+        } catch (UserAccountDuplicateException e) {
+            LOG.error("duplicate account error pid={} reason={}", provider, e.getLocalizedMessage(), e);
+            throw e;
         }
-        if(null != userAccount) {
-            JsonObject result = new JsonObject();
-            result.addProperty("X-R-MAIL", userAccount.getUserId());
-            result.addProperty("X-R-AUTH", userAccount.getUserAuthentication().getAuthenticationKeyEncoded());
-            return new Gson().toJson(result);
-        }
-        return "{}";
     }
 
     /**
@@ -193,12 +198,16 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param facebookProfile
      * @return
      */
-    private UserAccountEntity saveNewFacebookUserAccountEntity(String accessToken, ProviderEnum provider, FacebookProfile facebookProfile) {
-        UserAccountEntity userAccount;UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
+    private UserAccountEntity saveNewFacebookUserAccountEntity(
+            String accessToken,
+            ProviderEnum provider,
+            FacebookProfile facebookProfile
+    ) {
+        UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
                 RandomString.newInstance().nextString()
         );
 
-        userAccount = UserAccountEntity.newInstance(
+        UserAccountEntity userAccount = UserAccountEntity.newInstance(
                 generateUserIdManager.getNextAutoGeneratedUserId(),
                 facebookProfile.getId(),
                 facebookProfile.getFirstName(),
@@ -261,7 +270,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private Collection<? extends GrantedAuthority> getAuthorities(Set<RoleEnum> roles) {
         List<GrantedAuthority> authList = new ArrayList<>(4);
 
-        for(RoleEnum roleEnum : roles) {
+        for (RoleEnum roleEnum : roles) {
             authList.add(new SimpleGrantedAuthority(roleEnum.name()));
         }
 
@@ -269,7 +278,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private boolean isConnectionPopulated(List<Connection<?>> connections, String pid) {
-        if(connections.size() == 0) {
+        if (connections.size() == 0) {
             LOG.warn("connection repository size is zero for pid={}", pid);
             return false;
         }

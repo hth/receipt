@@ -10,6 +10,7 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
 import com.receiptofi.social.config.RegistrationConfig;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.model.MappingException;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -298,10 +300,21 @@ public class ConnectionServiceImpl implements ConnectionService {
      * @param userProfile
      */
     private void updateUserIdWithEmailWhenPresent(UserAccountEntity userAccount, UserProfileEntity userProfile) {
-        if(StringUtils.isNotBlank(userProfile.getEmail())) {
-            LOG.debug("about to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
-            userAccount.setUserId(userProfile.getEmail());
-            mongoTemplate.save(userAccount);
+        try {
+            if(StringUtils.isNotBlank(userProfile.getEmail())) {
+                LOG.debug("about to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
+                userAccount.setUserId(userProfile.getEmail());
+                mongoTemplate.save(userAccount);
+            }
+        } catch (DuplicateKeyException e) {
+            LOG.error(
+                    "account already exists userId={} with email={} reason={}",
+                    userAccount.getUserId(),
+                    userProfile.getEmail(),
+                    e.getLocalizedMessage(),
+                    e
+            );
+            throw new UserAccountDuplicateException("Found existing user with similar login", e);
         }
     }
 

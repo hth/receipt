@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.web.util.MobileSystemErrorCodeEnum;
@@ -35,28 +36,27 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 6/29/14 7:56 PM
  */
 @Controller
-@RequestMapping(value = "/webapi/mobile")
+@RequestMapping (value = "/webapi/mobile")
 public class UserFromMobileController {
     private static Logger LOG = LoggerFactory.getLogger(UserFromMobileController.class);
 
-    @Value("${web.access.api.token}")
+    @Value ("${web.access.api.token}")
     private String webApiAccessToken;
-
     @Autowired private CustomUserDetailsService customUserDetailsService;
 
-    @RequestMapping(
+    @RequestMapping (
             value = "/auth-create",
             method = RequestMethod.POST
     )
-    public
     @ResponseBody
-    String authenticateOrCreate(
+    public String authenticateOrCreate(
             @RequestBody String authenticationJson,
-            @RequestHeader("X-R-API-MOBILE") String apiAccessToken,
-            HttpServletResponse httpServletResponse) throws IOException {
+            @RequestHeader ("X-R-API-MOBILE") String apiAccessToken,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         LOG.info("webApiAccessToken={}", webApiAccessToken);
 
-        if(webApiAccessToken.equals(apiAccessToken)) {
+        if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, String> map = new HashMap<>();
             try {
                 map = ParseJsonStringToMap.jsonStringToMap(authenticationJson);
@@ -66,15 +66,28 @@ public class UserFromMobileController {
             Assert.notNull(map);
             try {
                 return customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid")), map.get("at"));
-            } catch(HttpClientErrorException e) {
+            } catch (HttpClientErrorException e) {
                 LOG.error("error pid={} reason={}", map.get("pid"), e.getLocalizedMessage(), e);
+                String appendToReason = StringUtils.isBlank(map.get("pid")) ? StringUtils.EMPTY : " " + map.get("pid");
 
                 JsonObject error = new JsonObject();
                 error.addProperty("httpStatusCode", e.getStatusCode().value());
                 error.addProperty("httpStatus", e.getStatusCode().name());
-                error.addProperty("reason", "denied by provider" + (StringUtils.isBlank(map.get("pid")) ? StringUtils.EMPTY : " " + map.get("pid")));
+                error.addProperty("reason", MobileSystemErrorCodeEnum.AUTHENTICATION.getMessage() + appendToReason);
                 error.addProperty("systemErrorCode", MobileSystemErrorCodeEnum.AUTHENTICATION.getCode());
                 error.addProperty("systemError", MobileSystemErrorCodeEnum.AUTHENTICATION.name());
+
+                JsonObject result = new JsonObject();
+                result.add("error", error);
+
+                return new Gson().toJson(result);
+            } catch (UserAccountDuplicateException e) {
+                LOG.error("duplicate account error pid={} reason={}", map.get("pid"), e.getLocalizedMessage(), e);
+
+                JsonObject error = new JsonObject();
+                error.addProperty("reason", MobileSystemErrorCodeEnum.SEVERE_ACCOUNT_DUPLICATE.getMessage());
+                error.addProperty("systemErrorCode", MobileSystemErrorCodeEnum.SEVERE_ACCOUNT_DUPLICATE.getCode());
+                error.addProperty("systemError", MobileSystemErrorCodeEnum.SEVERE_ACCOUNT_DUPLICATE.name());
 
                 JsonObject result = new JsonObject();
                 result.add("error", error);
