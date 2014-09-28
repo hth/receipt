@@ -147,6 +147,8 @@ Note: ***Elasticsearch is flaky to start when IP address is not available. This 
 
 	mkdir /var/lib/elasticsearch
 
+File content for ***elasticsearch.plist***
+
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 	<plist version="1.0">
@@ -216,6 +218,8 @@ Note: stdout {} - In a production environment you would probably disable this to
 		}
 	}
 
+File content for ***logstash.plist***
+
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 	<plist version="1.0">
@@ -251,7 +255,7 @@ Note: stdout {} - In a production environment you would probably disable this to
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
 
-logstash.web.plist
+File content for ***logstash.web.plist***
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
