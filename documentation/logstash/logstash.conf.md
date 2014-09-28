@@ -60,7 +60,7 @@
             path => ["/var/logs/nginx/smoker.access.log"]
             exclude => ["access.log", "error.log", "test.access.log", "live.access.log"]
             sincedb_path => "/opt/logstash/sincedb-access"
-            tags => "test_mongo"
+            tags => "smoker"
             codec => "json"
         }
 
