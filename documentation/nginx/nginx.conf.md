@@ -1,10 +1,11 @@
-    # Date: Sep 13 7:30 PM
+    # Date: Sep 27 7:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
     worker_processes  1;
 
     error_log  /var/logs/nginx/error.log;
+    #error_log  /var/logs/nginx/error.log debug;
     #error_log  logs/error.log  notice;
     #error_log  logs/error.log  info;
 
@@ -124,8 +125,8 @@
         # HTTPS server
         #
         server {
-            listen       8443 ssl;
-            server_name  localhost 192.168.1.71 receiptofi.com;
+            listen          8443 ssl;
+            server_name     localhost 192.168.1.71 receiptofi.com;
 
             access_log  /var/logs/nginx/access.log main;
 
@@ -136,8 +137,8 @@
         }
 
         server {
-            listen       8443 ssl;
-            server_name  live.receiptofi.com;
+            listen          8443 ssl;
+            server_name     live.receiptofi.com;
 
             access_log  /var/logs/nginx/live.access.log main;
 
@@ -155,8 +156,8 @@
         }
 
         server {
-            listen       8443 ssl;
-            server_name  test.receiptofi.com;
+            listen          8443 ssl;
+            server_name     test.receiptofi.com;
 
             access_log  /var/logs/nginx/test.access.log main;
 
@@ -169,7 +170,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
 
-                proxy_pass http://localhost:9090;
+                proxy_pass http://192.168.1.71:9090;
 
                 # Subdomain test.m.receiptofi.com would be best in its own host,
                 # current architecture suggest (my opinion) to have one domain

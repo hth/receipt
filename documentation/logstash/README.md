@@ -1,13 +1,16 @@
-### Logstash steup
+### Logstash setup
 
-Install java
+Install java the box where you plan to use logstash
 
-First Step:
+#### First Step to configure shipper
 
-Install Logstash on Shipper (Test machine)
+Install Logstash on Shipper which is ***Test*** and ***Prod*** machine. Shipper machine is any machine that pushes
+logs to central machine called ***Smoker*** in our environment
+
 	/etc/logstash/conf.d/receiptofi.shipper.conf
 	
 When installing through brew, create <code>logstash.conf</code> 
+
 	mkdir /usr/local/etc
 	touch logstash.conf
 
@@ -26,9 +29,9 @@ Command to run logstash
 
 	/usr/local/Cellar/logstash/1.4.2/libexec/bin/logstash agent --verbose -f /usr/local/etc/logstash.conf 
 
-Get Logstash conf **[logstash.conf](logstash.conf.md)**
+Populate Logstash conf for test shipper from here **[logstash.conf](logstash.conf.md)**
 
-logstash.plist
+File content for ***logstash.plist***
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -62,17 +65,18 @@ How to test configuration
 
 	bin/logstash agent --configtest --config /etc/logstash/conf.d/receiptofi.shipper.conf
 
+Daemon to Load and Unload logstash on shipper
 
 	sudo launchctl unload -w /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load -w /Library/LaunchDaemons/logstash.plist
 
-Update firewall to allow redis on port 6379; and the reload firewall
+Update firewall to allow redis on ***port 6379***; and the reload firewall
 
 	sudo ipfw add 120 allow tcp from 192.168.1.74 to any dst-port 6379
 
-	The above steps should get it running on shipper. Since central is not created yet it will throw warnings
+Note: ***The above steps should get it running on shipper. Since central is not yet created, shipper will throw warnings***
 
-Second Step to configure central:
+#### Second Step to configure central
 
 Download redis
 	move to /usr/local/redis-x-x-x
@@ -93,7 +97,7 @@ Download redis
 	Note: Change the binding of redis.conf to 192.168.1.74. Just keep on ip address otherwise it gives (ECONNREFUSED) warn
 	sudo chown root:wheel redis.conf
 
-redis.plist
+File content for ***redis.plist***
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -124,6 +128,8 @@ This will check the syntax
 
 	plutil -lint redis.plist
 
+Daemon to Load and Unload redis on central
+
 	sudo launchctl unload -w /Library/LaunchDaemons/redis.plist
 	sudo launchctl load -w /Library/LaunchDaemons/redis.plist
 
@@ -131,7 +137,7 @@ To check which ports are open
 
 	sudo lsof -i -P | grep -i "listen"
 
-Install elastic search on Central
+Install elasticsearch on Central
 
 Note: ***Elasticsearch is flaky to start when IP address is not available. This causes logstash to fail. There is no way to fix it. Tried specifying static IP to the machine but that did not worked. Currently, starts the machine, reload elasticsearch and logstash. Everything is jolly after this.***
 
@@ -142,6 +148,8 @@ Note: ***Elasticsearch is flaky to start when IP address is not available. This 
 	node.name: "smoker"
 
 	mkdir /var/lib/elasticsearch
+
+File content for ***elasticsearch.plist***
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -172,7 +180,11 @@ Note: ***Elasticsearch is flaky to start when IP address is not available. This 
 	  </dict>
 	</plist>
 
+This will check the syntax
+
 	plutil -lint elasticsearch.plist
+
+Daemon to Load and Unload elasticsearch on central
 
 	sudo launchctl unload /Library/LaunchDaemons/elasticsearch.plist
 	sudo launchctl load /Library/LaunchDaemons/elasticsearch.plist
@@ -212,6 +224,8 @@ Note: stdout {} - In a production environment you would probably disable this to
 		}
 	}
 
+File content for ***logstash.plist***
+
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 	<plist version="1.0">
@@ -242,12 +256,16 @@ Note: stdout {} - In a production environment you would probably disable this to
 	  </dict>
 	</plist>
 
+This will check the syntax
+
 	plutil -lint logstash.plist
+
+Daemon to Load and Unload logstash on central
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.plist
 
-logstash.web.plist
+File content for ***logstash.web.plist***
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -276,7 +294,11 @@ logstash.web.plist
 	  	</dict>
 	</plist>
 
+This will check the syntax
+
 	plutil -lint logstash.web.plist
+
+Daemon to Load and Unload logstash.web on central
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.web.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.web.plist
