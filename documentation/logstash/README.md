@@ -2,7 +2,7 @@
 
 Install java the box where you plan to use logstash
 
-#### First Step to configure shipper:
+#### First Step to configure shipper
 
 Install Logstash on Shipper which is ***Test*** and ***Prod*** machine. Shipper machine is any machine that pushes
 logs to central machine called ***Smoker*** in our environment
@@ -76,7 +76,7 @@ Update firewall to allow redis on ***port 6379***; and the reload firewall
 
 Note: ***The above steps should get it running on shipper. Since central is not yet created, shipper will throw warnings***
 
-#### Second Step to configure central:
+#### Second Step to configure central
 
 Download redis
 	move to /usr/local/redis-x-x-x
@@ -137,7 +137,7 @@ To check which ports are open
 
 	sudo lsof -i -P | grep -i "listen"
 
-Install elastic search on Central
+Install elasticsearch on Central
 
 Note: ***Elasticsearch is flaky to start when IP address is not available. This causes logstash to fail. There is no way to fix it. Tried specifying static IP to the machine but that did not worked. Currently, starts the machine, reload elasticsearch and logstash. Everything is jolly after this.***
 
