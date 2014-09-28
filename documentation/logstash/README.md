@@ -297,19 +297,21 @@ File content for ***logstash.web.plist***
 This will check the syntax
 
 	plutil -lint logstash.web.plist
-	
-Kibana exists in logstash
-
-	find /usr/local -name "config.js"
-	/usr/local/logstash-1.4.1/vendor/kibana/config.js
 
 Daemon to Load and Unload logstash.web on central
 
 	sudo launchctl unload /Library/LaunchDaemons/logstash.web.plist
 	sudo launchctl load /Library/LaunchDaemons/logstash.web.plist
 
-	see who can connect to redis by
+#### Kibana exists in logstash
+
+	find /usr/local -name "config.js"
+	/usr/local/logstash-1.4.1/vendor/kibana/config.js
+
+see who can connect to redis by executing command
+
 	client list
+	
 
 	........................ END ...............
 
