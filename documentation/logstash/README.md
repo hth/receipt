@@ -297,6 +297,11 @@ File content for ***logstash.web.plist***
 This will check the syntax
 
 	plutil -lint logstash.web.plist
+	
+Kibana exists in logstash
+
+	find /usr/local -name "config.js"
+	/usr/local/logstash-1.4.1/vendor/kibana/config.js
 
 Daemon to Load and Unload logstash.web on central
 
