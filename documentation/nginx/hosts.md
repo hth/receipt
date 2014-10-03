@@ -4,8 +4,7 @@
     192.168.1.75    live.receiptofi.com     live
     
 ##### Hosts content from dev machine
-
-192.168.1.71    receiptofi.com
+    192.168.1.71    receiptofi.com
 
     #Mongo Servers
     192.168.1.75    live.receiptofi.com
