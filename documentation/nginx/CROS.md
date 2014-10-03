@@ -1,4 +1,4 @@
-Example for CROS on nginx
+##### Example for CROS on nginx
 
 
     server {
