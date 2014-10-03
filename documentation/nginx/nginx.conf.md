@@ -1,4 +1,4 @@
-    # Date: Sep 28 2:00 AM
+    # Date: Oct 3 12:30 AM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -11,11 +11,9 @@
 
     #pid        logs/nginx.pid;
 
-
     events {
         worker_connections  1024;
     }
-
 
     http {
         # Black listed ips bots resides here
@@ -53,7 +51,7 @@
 
         server {
             listen       8080;
-            server_name  localhost 192.168.1.71 receiptofi.com live.receiptofi.com test.receiptofi.com;
+            server_name  192.168.1.71 receiptofi.com live.receiptofi.com test.receiptofi.com smoker.receiptofi.com;
             return  301  https://$host$request_uri;
 
             #charset koi8-r;
@@ -73,44 +71,7 @@
             location = /50x.html {
                 root   html;
             }
-
-            # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-            #
-            #location ~ \.php$ {
-            #    proxy_pass   http://127.0.0.1;
-            #}
-
-            # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-            #
-            #location ~ \.php$ {
-            #    root           html;
-            #    fastcgi_pass   127.0.0.1:9000;
-            #    fastcgi_index  index.php;
-            #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-            #    include        fastcgi_params;
-            #}
-
-            # deny access to .htaccess files, if Apache's document root
-            # concurs with nginx's one
-            #
-            #location ~ /\.ht {
-            #    deny  all;
-            #}
         }
-
-
-        # another virtual host using mix of IP-, name-, and port-based configuration
-        #
-        #server {
-        #    listen       8000;
-        #    listen       somename:8080;
-        #    server_name  somename  alias  another.alias;
-
-        #    location / {
-        #        root   html;
-        #        index  index.html index.htm;
-        #    }
-        #}
 
         ssl_certificate      /var/certs/43c7297ae5ac1.crt;
         ssl_certificate_key  /var/certs/receiptofi.com.key;
@@ -122,36 +83,15 @@
         ssl_ciphers HIGH:!aNULL:!MD5;
         ssl_prefer_server_ciphers on;
 
-        # HTTPS server
-        #
         server {
             listen          8443 ssl;
-            server_name     localhost 192.168.1.71 receiptofi.com;
+            server_name     192.168.1.71 receiptofi.com;
 
             access_log  /var/logs/nginx/access.log main;
 
             location / {
                 root /data/www;
                 index index.html;
-            }
-        }
-
-        server {
-            listen          8443 ssl;
-            server_name     smoker.receiptofi.com;
-
-            access_log  /var/logs/nginx/smoker.access.log main;
-
-            location / {
-                proxy_buffers 16 4k;
-                proxy_buffer_size 2k;
-
-                proxy_set_header    Host                    $http_host;
-                proxy_set_header    X-Real-IP               $remote_addr;
-                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
-                proxy_set_header    X-NginX-Proxy           true;
-
-                proxy_pass http://192.168.1.74:9292;
             }
         }
 
@@ -199,6 +139,60 @@
                 #proxy_set_header   X-Forwarded-Server      $host;
                 #proxy_set_header   X-Forwarded-For         $proxy_add_x_forwarded_for;
                 #proxy_pass http://localhost:9090/receipt-mobile/;
+            }
+        }
+
+        server {
+            listen          8443 ssl;
+            server_name     192.168.1.71 smoker.receiptofi.com;
+
+            access_log  /var/logs/nginx/smoker.access.log main;
+
+            location / {
+                root  /usr/local/kibana-3.1.0;
+                index  index.html  index.htm;
+            }
+
+            location ~ ^/_aliases$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/.*/_aliases$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/_nodes$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/.*/_search$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/.*/_mapping {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+
+            # Password protected end points
+            location ~ ^/kibana-int/dashboard/.*$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+                limit_except GET {
+                  proxy_pass http://192.168.1.74:9200;
+                  auth_basic "Restricted";
+                  auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+                }
+            }
+            
+            location ~ ^/kibana-int/temp.*$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+                limit_except GET {
+                    proxy_pass http://192.168.1.74:9200;
+                    auth_basic "Restricted";
+                    auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+                }
             }
         }
     }
