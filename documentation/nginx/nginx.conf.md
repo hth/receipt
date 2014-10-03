@@ -1,4 +1,4 @@
-    # Date: Oct 2 7:30 PM
+    # Date: Oct 3 12:30 AM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -51,7 +51,7 @@
 
         server {
             listen       8080;
-            server_name  localhost 192.168.1.71 receiptofi.com live.receiptofi.com test.receiptofi.com;
+            server_name  192.168.1.71 receiptofi.com live.receiptofi.com test.receiptofi.com smoker.receiptofi.com;
             return  301  https://$host$request_uri;
 
             #charset koi8-r;
@@ -85,7 +85,7 @@
 
         server {
             listen          8443 ssl;
-            server_name     localhost 192.168.1.71 receiptofi.com;
+            server_name     192.168.1.71 receiptofi.com;
 
             access_log  /var/logs/nginx/access.log main;
 
@@ -139,6 +139,60 @@
                 #proxy_set_header   X-Forwarded-Server      $host;
                 #proxy_set_header   X-Forwarded-For         $proxy_add_x_forwarded_for;
                 #proxy_pass http://localhost:9090/receipt-mobile/;
+            }
+        }
+
+        server {
+            listen          8443 ssl;
+            server_name     192.168.1.71 smoker.receiptofi.com;
+
+            access_log  /var/logs/nginx/smoker.access.log main;
+
+            location / {
+                root  /usr/local/kibana-3.1.0;
+                index  index.html  index.htm;
+            }
+
+            location ~ ^/_aliases$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/.*/_aliases$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/_nodes$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/.*/_search$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+            location ~ ^/.*/_mapping {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+            }
+
+            # Password protected end points
+            location ~ ^/kibana-int/dashboard/.*$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+                limit_except GET {
+                  proxy_pass http://192.168.1.74:9200;
+                  auth_basic "Restricted";
+                  auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+                }
+            }
+            
+            location ~ ^/kibana-int/temp.*$ {
+                proxy_pass http://192.168.1.74:9200;
+                proxy_read_timeout 90;
+                limit_except GET {
+                    proxy_pass http://192.168.1.74:9200;
+                    auth_basic "Restricted";
+                    auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+                }
             }
         }
     }
