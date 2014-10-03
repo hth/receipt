@@ -1,3 +1,5 @@
+Notice test and smoker and receiptofi are on same machine. They can be on different machine in future. 
+
 ##### Hosts content from nginx    
     192.168.1.71    receiptofi.com          test.receiptofi.com     smoker.receiptofi.com
     192.168.1.68    build.receiptofi.com    build
