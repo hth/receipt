@@ -144,7 +144,7 @@
 
         server {
             listen          8443 ssl;
-            server_name     192.168.1.71 smoker.receiptofi.com;
+            server_name     smoker.receiptofi.com;
 
             access_log  /var/logs/nginx/smoker.access.log main;
 
