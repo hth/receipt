@@ -1,4 +1,4 @@
-    # Date: Oct 3 12:30 AM
+    # Date: Oct 5 3:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -51,7 +51,7 @@
 
         server {
             listen       8080;
-            server_name  192.168.1.71 receiptofi.com live.receiptofi.com test.receiptofi.com smoker.receiptofi.com;
+            server_name  receiptofi.com live.receiptofi.com test.receiptofi.com smoker.receiptofi.com;
             return  301  https://$host$request_uri;
 
             #charset koi8-r;
@@ -85,7 +85,7 @@
 
         server {
             listen          8443 ssl;
-            server_name     192.168.1.71 receiptofi.com;
+            server_name     receiptofi.com;
 
             access_log  /var/logs/nginx/access.log main;
 
@@ -147,11 +147,15 @@
             server_name     smoker.receiptofi.com;
 
             access_log  /var/logs/nginx/smoker.access.log main;
+            error_log   /var/logs/nginx/smoker.error.log;
+
+            auth_basic "Receiptofi authorized users";
+            auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
 
             location / {
                 root  /usr/local/kibana-3.1.0;
-                index  index.html  index.htm;
-            }
+                index  index.html  index.htm;            
+            }       
 
             location ~ ^/_aliases$ {
                 proxy_pass http://192.168.1.74:9200;
@@ -179,19 +183,18 @@
                 proxy_pass http://192.168.1.74:9200;
                 proxy_read_timeout 90;
                 limit_except GET {
-                  proxy_pass http://192.168.1.74:9200;
-                  auth_basic "Restricted";
-                  auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+                    proxy_pass http://192.168.1.74:9200;
+                    # auth_basic "Receiptofi authorized users";
+                    # auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
                 }
             }
-            
             location ~ ^/kibana-int/temp.*$ {
                 proxy_pass http://192.168.1.74:9200;
                 proxy_read_timeout 90;
                 limit_except GET {
                     proxy_pass http://192.168.1.74:9200;
-                    auth_basic "Restricted";
-                    auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+                    # auth_basic "Receiptofi authorized users";
+                    # auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
                 }
             }
         }
