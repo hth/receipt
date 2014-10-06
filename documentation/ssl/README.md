@@ -1,4 +1,4 @@
-### Instead of this document, please follow SSL documentation insided nginx
+### Instead of this document, please follow SSL documentation under nginx
 
 
 Certificate could be created using openssl or keytool
