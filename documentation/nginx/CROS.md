@@ -1,4 +1,6 @@
-##### Example for CROS on nginx
+##### Example for CROS on nginx 
+
+***Note***: As of now CROS has not be used or required
 
 
     server {
