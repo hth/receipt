@@ -1,8 +1,8 @@
 ##### Change elasticsearch from localhost to where it is installed. 
 
-`Kibana` is installed on `nginx`. `Kibana` is just collection of static files. **config.js** under `Kibana` home directory should be changed from localhost to proper FQDN. In the example below, `elasticsearch` is installed on 192.168.1.74, but changing to local ip would work within local network, and will not work externally. This is because `config.js` is called by `Kibana`. `Kibana` tries the `Ajax` call using `FQDN` defined in `config.js` (here it is IP) to load data from `Elasticsearch`. Instead, of mapping to some local `IP`, it is better to change to subdomain like `es.receiptofi.com` for global calls to work. 
+`Kibana` is installed on `nginx`. `Kibana` is just collection of static files. **config.js** under `Kibana's` home directory should be changed from localhost to proper FQDN. In the example below, `elasticsearch` is installed on 192.168.1.74, but changing to local ip would work within local network, and will not work externally. This is because `config.js` is called by `Kibana`. `Kibana` tries the `Ajax` call using `FQDN` defined in `config.js` (here it is IP) to load data from `Elasticsearch`. Instead, of mapping to some local `IP`, it is better to change to subdomain like `es.receiptofi.com` for global calls to work. 
 
-But thats not enough. We do not want to expose internal port externally. Plus firewall allows only `80` and `443` ports. So we have to change the port to something similar to `Kibana` hosts port which is `8443`. Since `Kibana` is mapped on `SSL`. But `8443` port will not work for `elasticsearch`, as its running on `9200`. To make this work, we add mapping in `nginx` config that listen on port `8443` (firewall configured to changed 443 request to 8443), which in turns forward request to correct local ip and correct port `proxy_pass http://192.168.1.74:9200;`
+But thats not enough. We do not want to expose internal port externally. Plus firewall allows only `80` and `443` ports. So we have to change the port to something similar to `Kibana` hosts port which is on `8443`. Since `Kibana` is mapped on `SSL`. But `8443` port will not work for `elasticsearch`, as its running on `9200`. To make this work, we add mapping in `nginx` config that listen on port `8443` (firewall configured to changed 443 request to 8443), which in turns forward request to correct local ip and correct port `proxy_pass http://192.168.1.74:9200;`. This is what I call great dance between `Kibana + Elasticsearch + Nginx`
   
     /** Do this when access is for local network */
     elasticsearch: "http://192.168.1.74:9200",
@@ -10,7 +10,7 @@ But thats not enough. We do not want to expose internal port externally. Plus fi
     /** Do this when access is global */
     elasticsearch: "https://es.receiptofi.com",
     
-nginx.conf
+nginx.conf with secure authentication. Always secure `Elasticsearch` and `Kibana`. `Kibana` mapping obtained from https://github.com/elasticsearch/kibana/blob/master/sample/nginx.conf
 
     server {
         listen          8443 ssl;
@@ -39,3 +39,61 @@ Installed `Logstash` on `Central` has inbuilt vendor directory containing `Kiban
     /usr/local/logstash-1.4.1/vendor/kibana
     
 Note: Config under vendor currently is configured with FQDN but <code>localhost/default</code> setting should work as <code>elasticsearch</code> in on same machine as **Central** <code>logstash</code>.    
+
+For reference, Kibana mapping in nginx.conf
+
+    server {
+        listen          8443 ssl;
+        server_name     smoker.receiptofi.com;
+
+        access_log  /var/logs/nginx/smoker.access.log main;
+
+        auth_basic "Receiptofi Smoker authorized users";
+        auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+
+        location / {
+            root  /usr/local/kibana-3.1.0;
+            index  index.html  index.htm;            
+        }       
+
+        location ~ ^/_aliases$ {
+            proxy_pass http://192.168.1.74:9200;
+            proxy_read_timeout 90;
+        }
+        location ~ ^/.*/_aliases$ {
+            proxy_pass http://192.168.1.74:9200;
+            proxy_read_timeout 90;
+        }
+        location ~ ^/_nodes$ {
+            proxy_pass http://192.168.1.74:9200;
+            proxy_read_timeout 90;
+        }
+        location ~ ^/.*/_search$ {
+            proxy_pass http://192.168.1.74:9200;
+            proxy_read_timeout 90;
+        }
+        location ~ ^/.*/_mapping {
+            proxy_pass http://192.168.1.74:9200;
+            proxy_read_timeout 90;
+        }
+
+        # Password protected end points
+        location ~ ^/kibana-int/dashboard/.*$ {
+            proxy_pass http://192.168.1.74:9200;
+            proxy_read_timeout 90;
+            limit_except GET {
+                proxy_pass http://192.168.1.74:9200;
+                # auth_basic "Receiptofi authorized users";
+                # auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+            }
+        }
+        location ~ ^/kibana-int/temp.*$ {
+            proxy_pass http://192.168.1.74:9200;
+            proxy_read_timeout 90;
+            limit_except GET {
+                proxy_pass http://192.168.1.74:9200;
+                # auth_basic "Receiptofi authorized users";
+                # auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+            }
+        }
+    }
