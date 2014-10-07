@@ -1,4 +1,4 @@
-    # Date: Oct 5 3:30 PM
+    # Date: Oct 5 7:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -73,8 +73,8 @@
             }
         }
 
-        ssl_certificate      /var/certs/43c7297ae5ac1.crt;
-        ssl_certificate_key  /var/certs/receiptofi.com.key;
+        ssl_certificate      /var/certs/43e7702870992.crt;
+        ssl_certificate_key  /var/certs/www_receiptofi_com.key;
 
         ssl_session_cache    shared:SSL:10m;
         ssl_session_timeout  10m;
@@ -144,12 +144,33 @@
 
         server {
             listen          8443 ssl;
+            server_name     es.receiptofi.com;
+
+            access_log  /var/logs/nginx/es.access.log main;
+
+            auth_basic "Receiptofi ES authorized users";
+            auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+
+            location / {
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+
+                proxy_pass http://192.168.1.74:9200;
+            }
+        }
+
+        server {
+            listen          8443 ssl;
             server_name     smoker.receiptofi.com;
 
             access_log  /var/logs/nginx/smoker.access.log main;
-            error_log   /var/logs/nginx/smoker.error.log;
 
-            auth_basic "Receiptofi authorized users";
+            auth_basic "Receiptofi Smoker authorized users";
             auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
 
             location / {
