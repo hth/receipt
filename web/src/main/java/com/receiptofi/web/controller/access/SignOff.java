@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,26 +46,7 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
         }
 
         //TODO(hth) because of proxy referer will not be available and would be blank
-        LOG.info(
-                "Logout from={} and user={}",
-                extractEndpoint(request.getHeader("referer"), request.getContextPath()),
-                receiptUserId
-        );
+        LOG.info("Logout from={} and user={}", request.getServletPath(), receiptUserId);
         super.onLogoutSuccess(request, response, authentication);
-    }
-
-    /**
-     * Gets which end point user logged out from
-     *
-     * @param uri
-     * @param context
-     * @return
-     */
-    private String extractEndpoint(String uri, String context) {
-        if (StringUtils.isBlank(uri)) {
-            return "none";
-        }
-        String[] split = uri.split(context);
-        return split.length > 1 ? split[1] : "none";
     }
 }
