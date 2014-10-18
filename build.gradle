@@ -25,7 +25,7 @@ ext {
     baseName = "receiptofi"
 
     springGroup = 'org.springframework'
-    springVersion = '4.0.7.RELEASE'
+    springVersion = '4.1.1.RELEASE'
 
     springSecurityGroup = 'org.springframework.security'
     springSecurityVersion = '3.2.5.RELEASE'
