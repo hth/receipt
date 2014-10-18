@@ -45,60 +45,60 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author hitender
  * @since Jan 6, 2013 8:21:54 PM
- *
  */
 @Controller
-@RequestMapping(value = "/access/filedownload")
+@RequestMapping (value = "/access/filedownload")
 public final class FileDownloadController {
-	private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
-	@Autowired private FileDBService fileDBService;
+    @Autowired private FileDBService fileDBService;
     @Autowired private FileSystemProcess fileSystemProcess;
     @Autowired private ReceiptService receiptService;
 
-    @Value("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
+    @Value ("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
     private String imageNotFound;
 
     /**
      * Servers images
+     *
      * @param imageId
      * @param request
      * @param response
      */
-	@RequestMapping(method = RequestMethod.GET, value = "/receiptimage/{imageId}")
-	public void getDocumentImage(@PathVariable String imageId, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping (method = RequestMethod.GET, value = "/receiptimage/{imageId}")
+    public void getDocumentImage(@PathVariable String imageId, HttpServletRequest request, HttpServletResponse response) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		try {
-			GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
+        try {
+            GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
 
-			if(gridFSDBFile == null) {
+            if (gridFSDBFile == null) {
                 LOG.warn("GridFSDBFile failed to find image={}", imageId);
-    			File file = FileUtils.getFile(request.getServletContext().getRealPath(File.separator) + imageNotFound);
-				BufferedImage bi = ImageIO.read(file);
+                File file = FileUtils.getFile(request.getServletContext().getRealPath(File.separator) + imageNotFound);
+                BufferedImage bi = ImageIO.read(file);
                 setContentType(file.getName(), response);
                 response.setHeader("Content-Length", String.valueOf(file.length()));
                 response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
-				OutputStream out = response.getOutputStream();
-				ImageIO.write(bi, getFormatForImageIO(file.getName()), out);
-				out.close();
-			} else {
+                OutputStream out = response.getOutputStream();
+                ImageIO.write(bi, getFormatForImageIO(file.getName()), out);
+                out.close();
+            } else {
                 LOG.debug("Length={} MetaData={}", gridFSDBFile.getLength(), gridFSDBFile.getMetaData());
                 response.setContentType(gridFSDBFile.getContentType());
                 response.setHeader("Content-Length", String.valueOf(gridFSDBFile.getLength()));
                 response.setHeader("Content-Disposition", "inline; filename=" + imageId + "." + FilenameUtils.getExtension(gridFSDBFile.getFilename()));
-				gridFSDBFile.writeTo(response.getOutputStream());
-			}
+                gridFSDBFile.writeTo(response.getOutputStream());
+            }
 
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
-		} catch (IOException e) {
-			LOG.error("Image retrieval error occurred for imageId={} rid={} reason={}", imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
+        } catch (IOException e) {
+            LOG.error("Image retrieval error occurred for imageId={} rid={} reason={}", imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
-		}
-	}
+        }
+    }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/expensofi/{receiptId}")
+    @RequestMapping (method = RequestMethod.GET, value = "/expensofi/{receiptId}")
     public void getReport(@PathVariable String receiptId, HttpServletResponse response) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -110,7 +110,7 @@ public final class FileDownloadController {
             InputStream inputStream = new FileInputStream(fileSystemProcess.getExcelFile(receiptEntity.getExpenseReportInFS()));
             IOUtils.copy(inputStream, response.getOutputStream());
 
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),  true);
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         } catch (IOException e) {
             LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}", receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
@@ -124,9 +124,9 @@ public final class FileDownloadController {
 
     private void setContentType(String filename, HttpServletResponse response) {
         String extension = FilenameUtils.getExtension(filename);
-        if(extension.endsWith("jpg") || extension.endsWith("jpeg")) {
+        if (extension.endsWith("jpg") || extension.endsWith("jpeg")) {
             response.setContentType("image/jpeg");
-        } else if(extension.endsWith("gif")) {
+        } else if (extension.endsWith("gif")) {
             response.setContentType("image/gif");
         } else {
             response.setContentType("image/png");
@@ -135,9 +135,9 @@ public final class FileDownloadController {
 
     private String getFormatForImageIO(String filename) {
         String extension = FilenameUtils.getExtension(filename);
-        if(extension.endsWith("jpg") || extension.endsWith("jpeg")) {
+        if (extension.endsWith("jpg") || extension.endsWith("jpeg")) {
             return "jpg";
-        } else if(extension.endsWith("gif")) {
+        } else if (extension.endsWith("gif")) {
             return "gif";
         } else {
             return "png";
