@@ -13,7 +13,3 @@ Copy `jenkins.war` file to directory
 Start Jenkins
 
     sudo launchctl load -w /Library/LaunchDaemons/org.jenkins-ci.plist
-
-
-
-
