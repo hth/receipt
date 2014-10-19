@@ -1,7 +1,7 @@
 Upgrade Jenkins
 ===============
 
-Download latest war file to download folder
+Download latest `jenkins.war` file to download folder
 Stop Jenkins
 
     sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
