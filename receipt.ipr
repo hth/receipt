@@ -134,6 +134,8 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.53.0/c3692ae48f9a363baac3bc52ab0a9ed55c2662c5/javamelody-core-1.53.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.1.1.RELEASE/fdd73114384287fc3ec701165a9cc48d66cb6880/spring-messaging-4.1.1.RELEASE.jar" />
           </element>
+          <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/mongo-config.xml" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/receipt-servlet.xml" />
         </element>
       </root>
     </artifact>
@@ -345,4 +347,3 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
 </project>
-
