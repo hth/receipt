@@ -382,6 +382,11 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
     }
 
     copy {
+        from "web/environment/$env/mongo-config.xml"
+        into warWebInfDir
+    }
+
+    copy {
         from 'web/web/static/images'
         into warWebInfClassesImagesDir
     }

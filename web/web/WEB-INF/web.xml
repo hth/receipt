@@ -7,7 +7,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/security/secure.xml
-            /WEB-INF/mongo/mongo-config.xml
+            /WEB-INF/mongo-config.xml
             /WEB-INF/receipt-servlet.xml
         </param-value>
     </context-param>
