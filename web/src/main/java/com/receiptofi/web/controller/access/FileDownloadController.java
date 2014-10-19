@@ -85,7 +85,7 @@ public final class FileDownloadController {
                 out.close();
             } else {
                 LOG.debug("Length={} MetaData={}", gridFSDBFile.getLength(), gridFSDBFile.getMetaData());
-                response.setContentType(gridFSDBFile.getContentType());
+                setContentType(gridFSDBFile.getFilename(), response);
                 response.setHeader("Content-Length", String.valueOf(gridFSDBFile.getLength()));
                 response.setHeader("Content-Disposition", "inline; filename=" + imageId + "." + FilenameUtils.getExtension(gridFSDBFile.getFilename()));
                 gridFSDBFile.writeTo(response.getOutputStream());
