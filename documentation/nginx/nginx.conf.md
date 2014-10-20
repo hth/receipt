@@ -1,4 +1,4 @@
-    # Date: Oct 19 5:30 PM
+    # Date: Oct 19 6:00 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -48,6 +48,10 @@
         gzip_disable    "MSIE [1-6]\.";
 
         client_max_body_size 10M;
+
+        # Remember this setting for 365 days
+        add_header Strict-Transport-Security max-age=31536000;
+        add_header X-Frame-Options DENY;
 
         server {
             listen       8080;
