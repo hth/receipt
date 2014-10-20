@@ -50,7 +50,7 @@
         client_max_body_size 10M;
 
         # Remember this setting for 365 days
-        add_header Strict-Transport-Security max-age=31536000;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
         add_header X-Frame-Options DENY;
 
         server {
