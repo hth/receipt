@@ -1,4 +1,4 @@
-    # Date: Oct 5 7:30 PM
+    # Date: Oct 19 6:00 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -49,6 +49,10 @@
 
         client_max_body_size 10M;
 
+        # Remember this setting for 365 days
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
+        add_header X-Frame-Options DENY;
+
         server {
             listen       8080;
             server_name  receiptofi.com live.receiptofi.com test.receiptofi.com smoker.receiptofi.com;
@@ -79,7 +83,7 @@
         ssl_session_cache    shared:SSL:10m;
         ssl_session_timeout  10m;
 
-        ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers HIGH:!aNULL:!MD5;
         ssl_prefer_server_ciphers on;
 
@@ -175,8 +179,8 @@
 
             location / {
                 root  /usr/local/kibana-3.1.0;
-                index  index.html  index.htm;            
-            }       
+                index  index.html  index.htm;
+            }
 
             location ~ ^/_aliases$ {
                 proxy_pass http://192.168.1.74:9200;
