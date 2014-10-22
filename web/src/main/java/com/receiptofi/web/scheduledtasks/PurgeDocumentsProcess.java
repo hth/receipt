@@ -18,6 +18,9 @@ public class PurgeDocumentsProcess {
     @Value ("${purgeRejectedDocumentAfterDay:7}")
     private int purgeRejectedDocumentAfterDay;
 
+    @Value ("${purgeMaxDocumentsADay:1}")
+    private int purgeMaxDocumentsADay;
+
     @Scheduled (cron="0 0 0 * * ?")
     public void purgeRejectedDocument() {
 
