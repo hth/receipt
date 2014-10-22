@@ -11,5 +11,5 @@ export JAVA_OPTS="
 -XX:+CMSIncrementalMode"
 export CATALINA_HOME=/Library/Tomcat
 export JAVA_HOME=/Library/Java/Home
-export CATALINA_OPTS="-Xms2G -Xmx6G -XX:MaxPermSize=512M -XX:+UserParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Dcom.sun.management.jmxremote"
+export CATALINA_OPTS="-Xms2G -Xmx6G -XX:MaxPermSize=512M -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Dcom.sun.management.jmxremote"
 export CATALINA_PID=/tmp/catalina.pid
