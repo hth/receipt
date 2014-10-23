@@ -1,4 +1,4 @@
-package com.receiptofi.web.scheduledtasks;
+package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CreateTempFile;
@@ -56,7 +56,7 @@ public class FileSystemProcess {
             }
         } catch(Exception e) {
             LOG.error("found error={}", e.getLocalizedMessage(), e);
-        }finally {
+        } finally {
             LOG.info("delete complete deletedExcelFile={}, foundExcelFile={}", count, found);
         }
     }

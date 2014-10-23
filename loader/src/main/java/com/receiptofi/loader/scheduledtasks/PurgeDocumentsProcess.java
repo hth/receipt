@@ -1,4 +1,4 @@
-package com.receiptofi.web.scheduledtasks;
+package com.receiptofi.loader.scheduledtasks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +23,7 @@ public class PurgeDocumentsProcess {
 
     @Scheduled (cron="0 0 0 * * ?")
     public void purgeRejectedDocument() {
+        LOG.info("begins");
 
     }
 

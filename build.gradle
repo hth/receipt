@@ -282,6 +282,14 @@ project(':common') {
     jar.baseName = baseName + '-common'
 }
 
+project(':loader') {
+    jar.baseName = baseName + '-loader'
+
+    dependencies {
+        compile project(':common'), project(':service')
+    }
+}
+
 project(':domain') {
     jar.baseName = baseName + '-domain'
 
