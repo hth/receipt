@@ -23,7 +23,6 @@ import java.io.IOException;
  * Can be used for deleting various kinds of files.
  * Deletes excel report files.
  * Deletes xml file generate for supporting excel files.
- *
  * User: hitender
  * Date: 12/7/13 2:18 PM
  */
@@ -31,22 +30,22 @@ import java.io.IOException;
 public class FileSystemProcess {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);
 
-    @Value("${expensofiReportLocation}")
+    @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
 
-    @Value("${deleteExcelFileAfterDay:7}")
+    @Value ("${deleteExcelFileAfterDay:7}")
     private int deleteExcelFileAfterDay;
 
     //TODO(hth) add to AOP to turn on and off instead
-    @Value("${removeExpiredExcelFiles:ON}")
+    @Value ("${removeExpiredExcelFiles:ON}")
     private String removeExpiredExcelFiles;
 
     @Autowired private ReceiptService receiptService;
 
     //for every two second use */2 * * * * ? where as cron string blow run every day at 12:00 AM
-    @Scheduled(cron="0 0 0 * * ?")
+    @Scheduled (cron = "0 0 0 * * ?")
     public void removeExpiredExcelFiles() {
-        if(removeExpiredExcelFiles.equalsIgnoreCase("ON")) {
+        if (removeExpiredExcelFiles.equalsIgnoreCase("ON")) {
             LOG.info("feature is {}", removeExpiredExcelFiles);
             int count = 0, found = 0;
             try {
@@ -86,12 +85,12 @@ public class FileSystemProcess {
      *
      * @throws IOException
      */
-    @Scheduled(cron="0 0 9 * * ?")
+    @Scheduled (cron = "0 0 9 * * ?")
     public void removeTempFiles() throws IOException {
         File file = CreateTempFile.file("delete", ".xml");
         File directory = file.getParentFile();
 
-        if(directory.exists()) {
+        if (directory.exists()) {
             FilenameFilter textFilter = new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.startsWith(CreateTempFile.TEMP_FILE_START_WITH);
@@ -99,7 +98,7 @@ public class FileSystemProcess {
             };
 
             int numberOfFiles = directory.listFiles(textFilter).length;
-            for(File f : directory.listFiles(textFilter)) {
+            for (File f : directory.listFiles(textFilter)) {
                 LOG.debug("File={}{}{}", directory, File.separator, f.getName());
                 FileUtils.deleteQuietly(f);
             }

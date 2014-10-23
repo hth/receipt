@@ -10,11 +10,10 @@ import java.util.List;
 /**
  * @author hitender
  * @since Jan 6, 2013 1:29:22 PM
- *
  */
 public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
-	long numberOfPendingReceipts(String userProfileId);
+    long numberOfPendingReceipts(String userProfileId);
 
     DocumentEntity findOne(String documentId, String userProfileId);
 
@@ -40,7 +39,7 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
      * @param userProfileId
      * @return
      */
-	List<DocumentEntity> getAllPending(String userProfileId);
+    List<DocumentEntity> getAllPending(String userProfileId);
 
     /**
      * Get all the rejected receipts
@@ -49,4 +48,6 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
      * @return
      */
     List<DocumentEntity> getAllRejected(String userProfileId);
+
+    List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay);
 }

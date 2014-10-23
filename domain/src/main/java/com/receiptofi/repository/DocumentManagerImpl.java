@@ -14,6 +14,8 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
+import org.joda.time.DateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,6 +120,16 @@ public final class DocumentManagerImpl implements DocumentManager {
 
         Sort sort = new Sort(Direction.ASC, "C");
         return mongoTemplate.find(query.with(sort), DocumentEntity.class, TABLE);
+    }
+
+    @Override
+    public List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay) {
+        Query query = query(
+                where("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)
+                        .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay))
+        ).addCriteria(isNotActive()).addCriteria(isDeleted());
+
+        return mongoTemplate.find(query, DocumentEntity.class, TABLE);
     }
 
     @Override
