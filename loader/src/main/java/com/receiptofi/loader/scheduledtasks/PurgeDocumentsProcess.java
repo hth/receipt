@@ -45,7 +45,7 @@ public class PurgeDocumentsProcess {
                     documentManager.deleteHard(documentEntity);
                     count++;
 
-                    if(count == purgeMaxDocumentsADay && purgeMaxDocumentsADay > 0) {
+                    if (count == purgeMaxDocumentsADay && purgeMaxDocumentsADay > 0) {
                         LOG.info("reached purge documents per day max={}", purgeMaxDocumentsADay);
                         break;
                     }
