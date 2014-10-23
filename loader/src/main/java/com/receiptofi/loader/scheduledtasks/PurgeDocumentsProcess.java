@@ -21,6 +21,10 @@ public class PurgeDocumentsProcess {
     @Value ("${purgeMaxDocumentsADay:1}")
     private int purgeMaxDocumentsADay;
 
+    //TODO(hth) add to AOP to turn on and off instead
+    @Value("${purgeRejectedDocument:ON}")
+    private String purgeRejectedDocument;
+
     @Scheduled (cron="0 0 0 * * ?")
     public void purgeRejectedDocument() {
         LOG.info("begins");
