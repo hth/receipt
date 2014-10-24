@@ -52,11 +52,12 @@ public class PurgeDocumentsProcessTest {
         verify(documentManager, atMost(2)).deleteHard(any(DocumentEntity.class));
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void purgeException() {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, -1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
-        doThrow(new Exception()).when(documentManager).deleteHard((DocumentEntity) anyObject());
+        doThrow(Exception.class).when(documentManager).deleteHard((DocumentEntity) anyObject());
         purgeDocumentsProcess.purgeRejectedDocument();
+        verify(documentManager, atMost(1)).deleteHard(any(DocumentEntity.class));
     }
 }
