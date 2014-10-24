@@ -21,17 +21,32 @@ import java.util.List;
 public class PurgeDocumentsProcess {
     private static final Logger LOG = LoggerFactory.getLogger(PurgeDocumentsProcess.class);
 
-    @Value ("${purgeRejectedDocumentAfterDay:15}")
-    private int purgeRejectedDocumentAfterDay;
+    private DocumentManager documentManager;
 
-    @Value ("${purgeMaxDocumentsADay:1}")
+    private int purgeRejectedDocumentAfterDay;
     private int purgeMaxDocumentsADay;
 
     //TODO(hth) add to AOP to turn on and off instead
-    @Value ("${purgeRejectedDocument:ON}")
     private String purgeRejectedDocument;
 
-    @Autowired private DocumentManager documentManager;
+    @Autowired
+    public PurgeDocumentsProcess(
+            @Value ("${purgeRejectedDocumentAfterDay:15}")
+            int purgeRejectedDocumentAfterDay,
+
+            @Value ("${purgeMaxDocumentsADay:1}")
+            int purgeMaxDocumentsADay,
+
+            @Value ("${purgeRejectedDocument:ON}")
+            String purgeRejectedDocument,
+
+            DocumentManager documentManager
+    ) {
+        this.purgeRejectedDocumentAfterDay = purgeRejectedDocumentAfterDay;
+        this.purgeMaxDocumentsADay = purgeMaxDocumentsADay;
+        this.purgeRejectedDocument = purgeRejectedDocument;
+        this.documentManager = documentManager;
+    }
 
     @Scheduled (cron = "0 0 0 * * ?")
     public void purgeRejectedDocument() {
