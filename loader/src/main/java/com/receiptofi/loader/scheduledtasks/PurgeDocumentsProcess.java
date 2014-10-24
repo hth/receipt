@@ -29,6 +29,8 @@ public class PurgeDocumentsProcess {
     //TODO(hth) add to AOP to turn on and off instead
     private String purgeRejectedDocument;
 
+    private int count;
+
     @Autowired
     public PurgeDocumentsProcess(
             @Value ("${purgeRejectedDocumentAfterDay:15}")
@@ -52,7 +54,7 @@ public class PurgeDocumentsProcess {
     public void purgeRejectedDocument() {
         LOG.info("begins");
         if (purgeRejectedDocument.equalsIgnoreCase("ON")) {
-            int count = 0, found = 0;
+            int found = 0;
             try {
                 List<DocumentEntity> documents = documentManager.getAllRejected(purgeRejectedDocumentAfterDay);
                 found = documents.size();
@@ -73,5 +75,12 @@ public class PurgeDocumentsProcess {
         } else {
             LOG.info("feature is {}", purgeRejectedDocument);
         }
+    }
+
+    /**
+     * Counts number of rejected documents deleted
+     */
+    public int getCount() {
+        return count;
     }
 }
