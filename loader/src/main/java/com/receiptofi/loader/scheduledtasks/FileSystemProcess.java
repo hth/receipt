@@ -30,24 +30,41 @@ import java.io.IOException;
 public class FileSystemProcess {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);
 
-    @Value ("${expensofiReportLocation}")
-    private String expensofiReportLocation;
+    private ReceiptService receiptService;
 
-    @Value ("${deleteExcelFileAfterDay:7}")
+    private String expensofiReportLocation;
     private int deleteExcelFileAfterDay;
 
     //TODO(hth) add to AOP to turn on and off instead
-    @Value ("${removeExpiredExcelFiles:ON}")
     private String removeExpiredExcelFiles;
 
-    @Autowired private ReceiptService receiptService;
+    private int count;
+
+    @Autowired
+    public FileSystemProcess(
+            @Value ("${expensofiReportLocation}")
+            String expensofiReportLocation,
+
+            @Value ("${deleteExcelFileAfterDay:7}")
+            int deleteExcelFileAfterDay,
+
+            @Value ("${removeExpiredExcelFiles:ON}")
+            String removeExpiredExcelFiles,
+
+            ReceiptService receiptService
+    ) {
+        this.expensofiReportLocation = expensofiReportLocation;
+        this.deleteExcelFileAfterDay = deleteExcelFileAfterDay;
+        this.removeExpiredExcelFiles = removeExpiredExcelFiles;
+        this.receiptService = receiptService;
+    }
 
     //for every two second use */2 * * * * ? where as cron string blow run every day at 12:00 AM
     @Scheduled (cron = "0 0 0 * * ?")
     public void removeExpiredExcelFiles() {
         if (removeExpiredExcelFiles.equalsIgnoreCase("ON")) {
             LOG.info("feature is {}", removeExpiredExcelFiles);
-            int count = 0, found = 0;
+            int found = 0;
             try {
                 AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(deleteExcelFileAfterDay).toDate());
                 File directory = new File(expensofiReportLocation);
@@ -108,5 +125,12 @@ public class FileSystemProcess {
         }
 
         FileUtils.deleteQuietly(file);
+    }
+
+    /**
+     * Counts number of excel files deleted
+     */
+    public int getCount() {
+        return count;
     }
 }
