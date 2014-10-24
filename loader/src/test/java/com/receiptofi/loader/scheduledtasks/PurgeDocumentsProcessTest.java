@@ -58,6 +58,7 @@ public class PurgeDocumentsProcessTest {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, -1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         doThrow(Exception.class).when(documentManager).deleteHard((DocumentEntity) anyObject());
+        purgeDocumentsProcess.purgeRejectedDocument();
         assertEquals(0, purgeDocumentsProcess.getCount());
     }
 }
