@@ -1,5 +1,6 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.atMost;
@@ -57,7 +58,6 @@ public class PurgeDocumentsProcessTest {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, -1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         doThrow(Exception.class).when(documentManager).deleteHard((DocumentEntity) anyObject());
-        purgeDocumentsProcess.purgeRejectedDocument();
-        verify(documentManager, atMost(1)).deleteHard(any(DocumentEntity.class));
+        assertEquals(0, purgeDocumentsProcess.getCount());
     }
 }
