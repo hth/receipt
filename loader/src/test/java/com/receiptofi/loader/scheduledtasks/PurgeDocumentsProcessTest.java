@@ -29,7 +29,7 @@ public class PurgeDocumentsProcessTest {
     }
 
     @Test
-    public void whenPurgeIsTurnedOn() throws Exception {
+    public void whenPurgeIsTurnedOn() {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, 1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         purgeDocumentsProcess.purgeRejectedDocument();
@@ -37,7 +37,7 @@ public class PurgeDocumentsProcessTest {
     }
 
     @Test
-    public void whenPurgeIsTurnedOff() throws Exception {
+    public void whenPurgeIsTurnedOff() {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, 1, "OFF", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         purgeDocumentsProcess.purgeRejectedDocument();
@@ -45,7 +45,7 @@ public class PurgeDocumentsProcessTest {
     }
 
     @Test
-    public void purgeAll() throws Exception {
+    public void purgeAll() {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, -1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         purgeDocumentsProcess.purgeRejectedDocument();
@@ -53,7 +53,7 @@ public class PurgeDocumentsProcessTest {
     }
 
     @Test(expected = Exception.class)
-    public void purgeException() throws Exception {
+    public void purgeException() {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, -1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         doThrow(new Exception()).when(documentManager).deleteHard((DocumentEntity) anyObject());
