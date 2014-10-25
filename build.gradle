@@ -1,3 +1,5 @@
+apply plugin: 'maven-publish'
+
 if (!hasProperty('env')) {
     ext.env = System.env['GRADLE_ENV']
 }
@@ -253,6 +255,9 @@ subprojects {
             // remove standard output/error logging from --info builds
             // by assigning only 'failed' and 'skipped' events
             info.events = ["failed", "skipped"]
+
+            // Disable the test report for the individual test task
+            reports.html.enabled = false
         }
     }
 
@@ -479,7 +484,15 @@ task war(type: War, dependsOn: prepWar) {
     destinationDir = file("$buildDir/war/$env")
 }
 
-apply plugin: 'maven-publish'
+task testReport(type: TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+    // Include the results from the `test` task in all subprojects
+    reportOn subprojects*.test
+
+    doLast {
+        println "Test reports for all test complete"
+    }
+}
 
 publishing {
     publications {
@@ -579,4 +592,6 @@ publishing {
     }
 }
 
-defaultTasks 'clean', 'build', 'jar', 'war'
+//Line below is not required because defaultTasks order is followed
+//testReport.mustRunAfter war
+defaultTasks 'clean', 'build', 'jar', 'war', 'testReport'
