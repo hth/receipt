@@ -80,7 +80,7 @@ public class PurgeDocumentsProcess {
     /**
      * Counts number of rejected documents deleted
      */
-    public int getCount() {
+    protected int getCount() {
         return count;
     }
 }

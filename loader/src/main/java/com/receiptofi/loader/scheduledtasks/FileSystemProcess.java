@@ -38,7 +38,8 @@ public class FileSystemProcess {
     //TODO(hth) add to AOP to turn on and off instead
     private String removeExpiredExcelFiles;
 
-    private int count;
+    private int countOfDeletedExcelFiles;
+    private int countOfDeletedXmlFiles;
 
     @Autowired
     public FileSystemProcess(
@@ -73,12 +74,12 @@ public class FileSystemProcess {
                 for (String filename : files) {
                     removeExpiredExcel(getExcelFile(filename));
                     receiptService.removeExpensofiFilenameReference(filename);
-                    count++;
+                    countOfDeletedExcelFiles++;
                 }
             } catch (Exception e) {
                 LOG.error("found error={}", e.getLocalizedMessage(), e);
             } finally {
-                LOG.info("complete deletedExcelFile={}, foundExcelFile={}", count, found);
+                LOG.info("complete deletedExcelFile={}, foundExcelFile={}", countOfDeletedExcelFiles, found);
             }
         } else {
             LOG.info("feature is {}", removeExpiredExcelFiles);
@@ -114,12 +115,12 @@ public class FileSystemProcess {
                 }
             };
 
-            int numberOfFiles = directory.listFiles(textFilter).length;
+            int countOfDeletedXmlFiles = directory.listFiles(textFilter).length;
             for (File f : directory.listFiles(textFilter)) {
                 LOG.debug("File={}{}{}", directory, File.separator, f.getName());
                 FileUtils.deleteQuietly(f);
             }
-            LOG.info("removed total temp files count={}", numberOfFiles);
+            LOG.info("removed total temp files count={}", countOfDeletedXmlFiles);
         } else {
             LOG.info("{} directory doesn't exists", directory);
         }
@@ -127,10 +128,11 @@ public class FileSystemProcess {
         FileUtils.deleteQuietly(file);
     }
 
-    /**
-     * Counts number of excel files deleted
-     */
-    public int getCount() {
-        return count;
+    protected int getCountOfDeletedExcelFiles() {
+        return countOfDeletedExcelFiles;
+    }
+
+    protected int getCountOfDeletedXmlFiles() {
+        return countOfDeletedXmlFiles;
     }
 }
