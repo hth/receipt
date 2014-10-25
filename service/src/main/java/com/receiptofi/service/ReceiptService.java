@@ -38,7 +38,7 @@ import java.util.List;
  * Time: 1:09 PM
  */
 @Service
-public final class ReceiptService {
+public class ReceiptService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptService.class);
 
     @Autowired private ReceiptManager receiptManager;
