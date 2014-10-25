@@ -51,7 +51,7 @@ public class FileSystemProcessTest {
 
     @Test
     public void whenRemoveExpiredExcelException() throws Exception {
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService);
+        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
         doThrow(Exception.class).when(receiptService).removeExpensofiFilenameReference(anyString());
         fileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, atMost(1)).removeExpensofiFilenameReference(any(String.class));
