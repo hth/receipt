@@ -115,7 +115,7 @@ public class FileSystemProcess {
                 }
             };
 
-            int countOfDeletedXmlFiles = directory.listFiles(textFilter).length;
+            countOfDeletedXmlFiles = directory.listFiles(textFilter).length;
             for (File f : directory.listFiles(textFilter)) {
                 LOG.debug("File={}{}{}", directory, File.separator, f.getName());
                 FileUtils.deleteQuietly(f);

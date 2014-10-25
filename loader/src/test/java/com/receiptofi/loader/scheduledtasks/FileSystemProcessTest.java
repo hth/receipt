@@ -69,6 +69,6 @@ public class FileSystemProcessTest {
     public void removeTempFiles() throws Exception {
         fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
         fileSystemProcess.removeTempFiles();
-        assertEquals(0, fileSystemProcess.getCountOfDeletedXmlFiles());
+        assertEquals(1, fileSystemProcess.getCountOfDeletedXmlFiles());
     }
 }
