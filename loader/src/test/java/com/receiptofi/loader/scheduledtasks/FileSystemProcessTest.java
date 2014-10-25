@@ -59,6 +59,13 @@ public class FileSystemProcessTest {
     }
 
     @Test
+    public void removeExpiredExcel() {
+        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService);
+        fileSystemProcess.removeExpiredExcel(createdFile.getName());
+        assertFalse(createdFile.exists());
+    }
+
+    @Test
     public void removeTempFiles() throws Exception {
         fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
         fileSystemProcess.removeTempFiles();
