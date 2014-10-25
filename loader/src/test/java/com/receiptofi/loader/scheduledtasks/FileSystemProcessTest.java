@@ -2,14 +2,13 @@ package com.receiptofi.loader.scheduledtasks;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import com.receiptofi.domain.DocumentEntity;
+
 import com.receiptofi.service.ReceiptService;
 
 import java.io.File;
@@ -33,25 +32,24 @@ public class FileSystemProcessTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         createdFile = folder.newFile("file.xml");
+        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
     }
 
     @Test
-    public void whenRemoveExpiredExcelFilesIsTurnedOn() throws Exception {
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
+    public void whenRemoveExpiredExcelFilesIsTurnedOn() {
         fileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, atMost(1)).removeExpensofiFilenameReference(any(String.class));
     }
 
     @Test
-    public void whenRemoveExpiredExcelFilesIsTurnedOff() throws Exception {
+    public void whenRemoveExpiredExcelFilesIsTurnedOff() {
         fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService);
         fileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, never()).removeExpensofiFilenameReference(any(String.class));
     }
 
     @Test
-    public void whenRemoveExpiredExcelException() throws Exception {
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
+    public void whenRemoveExpiredExcelException() {
         doThrow(Exception.class).when(receiptService).removeExpensofiFilenameReference(anyString());
         fileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, atMost(1)).removeExpensofiFilenameReference(any(String.class));
@@ -60,14 +58,12 @@ public class FileSystemProcessTest {
 
     @Test
     public void removeExpiredExcel() {
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService);
         fileSystemProcess.removeExpiredExcel(createdFile.getName());
         assertFalse(createdFile.exists());
     }
 
     @Test
     public void removeTempFiles() throws Exception {
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
         fileSystemProcess.removeTempFiles();
         assertEquals(1, fileSystemProcess.getCountOfDeletedXmlFiles());
     }
