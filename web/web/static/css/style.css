@@ -356,6 +356,9 @@ div .sidebar-date form input {
     padding-left: 17px;
     font-family: "HelveticaNeueLTProCn", arial, sans-serif; }
 
+.si-general-text a, u {
+	text-decoration: none; }
+
 .si-date-text {
     color: #000;
     font-weight: bold;
