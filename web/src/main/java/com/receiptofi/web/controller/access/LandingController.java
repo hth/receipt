@@ -88,12 +88,23 @@ import javax.xml.bind.Marshaller;
 public final class LandingController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
-    @Autowired private LandingService landingService;
-    @Autowired private MailService mailService;
-    @Autowired private AccountService accountService;
-    @Autowired private NotificationService notificationService;
-    @Autowired private ReportService reportService;
-    @Autowired private MileageService mileageService;
+    @Autowired
+    private LandingService landingService;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private ReportService reportService;
+
+    @Autowired
+    private MileageService mileageService;
 
     private static final String PATTERN = "MMM, yyyy";
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern(PATTERN);
@@ -105,7 +116,10 @@ public final class LandingController extends BaseController {
     private String nextPage;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (value = "/landing", method = RequestMethod.GET)
+    @RequestMapping (
+            value = "/landing",
+            method = RequestMethod.GET
+    )
     public ModelAndView loadForm(
             @ModelAttribute ("uploadDocumentImage")
             UploadDocumentImage uploadReceiptImage,
@@ -184,10 +198,12 @@ public final class LandingController extends BaseController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (value = "/landing/monthly_expenses", method = RequestMethod.POST)
-    public
+    @RequestMapping (
+            value = "/landing/monthly_expenses",
+            method = RequestMethod.POST
+    )
     @ResponseBody
-    ModelAndView monthlyExpenses(
+    public ModelAndView monthlyExpenses(
             @RequestParam ("monthView") String monthView,
             @RequestParam ("buttonClick") String previousOrNext,
             @ModelAttribute ("landingForm") LandingForm landingForm
@@ -256,10 +272,11 @@ public final class LandingController extends BaseController {
      * @return
      */
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (method = RequestMethod.POST, value = "/landing/upload")
-    public
+    @RequestMapping (
+            method = RequestMethod.POST,
+            value = "/landing/upload")
     @ResponseBody
-    String upload(HttpServletRequest httpServletRequest) throws IOException {
+    public String upload(HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
         LOG.info("uploading document");
 
@@ -303,10 +320,12 @@ public final class LandingController extends BaseController {
      * @return
      */
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (method = RequestMethod.POST, value = "/landing/uploadmileage")
-    public
+    @RequestMapping (
+            method = RequestMethod.POST,
+            value = "/landing/uploadmileage"
+    )
     @ResponseBody
-    String uploadMileage(@PathVariable String documentId, HttpServletRequest httpServletRequest) throws IOException {
+    public String uploadMileage(@PathVariable String documentId, HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -360,10 +379,13 @@ public final class LandingController extends BaseController {
      * @param authKey
      * @return
      */
-    @RequestMapping (value = "/landing/user/{profileId}/auth/{authKey}.xml", method = RequestMethod.GET, produces = "application/xml")
-    public
+    @RequestMapping (
+            value = "/landing/user/{profileId}/auth/{authKey}.xml",
+            method = RequestMethod.GET,
+            produces = "application/xml"
+    )
     @ResponseBody
-    LandingView loadRest(@PathVariable String profileId, @PathVariable String authKey) {
+    public LandingView loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
         LOG.info("Web Service : " + profileId);
         return landingView(profileId, authKey, time);
@@ -376,10 +398,13 @@ public final class LandingController extends BaseController {
      * @param authKey
      * @return
      */
-    @RequestMapping (value = "/landing/user/{profileId}/auth/{authKey}.json", method = RequestMethod.GET, produces = "application/json")
-    public
+    @RequestMapping (
+            value = "/landing/user/{profileId}/auth/{authKey}.json",
+            method = RequestMethod.GET,
+            produces = "application/json"
+    )
     @ResponseBody
-    String loadJSON(@PathVariable String profileId, @PathVariable String authKey) {
+    public String loadJSON(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
         LOG.info("JSON : " + profileId);
         Base landingView = landingView(profileId, authKey, time);
@@ -429,10 +454,12 @@ public final class LandingController extends BaseController {
         }
     }
 
-    @RequestMapping (value = "/landing/report/{monthYear}", method = RequestMethod.GET)
-    public
+    @RequestMapping (
+            value = "/landing/report/{monthYear}",
+            method = RequestMethod.GET
+    )
     @ResponseBody
-    String generateReport(@PathVariable String monthYear) {
+    public String generateReport(@PathVariable String monthYear) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Header header = Header.newInstance(getAuth(receiptUser.getRid()));
         try {
@@ -483,10 +510,12 @@ public final class LandingController extends BaseController {
     }
 
     /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */
-    @RequestMapping (value = "/landing/invite", method = RequestMethod.POST)
-    public
+    @RequestMapping (
+            value = "/landing/invite",
+            method = RequestMethod.POST
+    )
     @ResponseBody
-    String invite(@RequestParam (value = "emailId") String emailId) {
+    public String invite(@RequestParam (value = "emailId") String emailId) {
         //Always lower case the email address
         String invitedUserEmail = StringUtils.lowerCase(emailId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

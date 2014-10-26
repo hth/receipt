@@ -26,8 +26,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,7 +39,8 @@ public final class DocumentManagerImpl implements DocumentManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<DocumentEntity> getAllObjects() {
