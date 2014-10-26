@@ -85,7 +85,8 @@ import javax.xml.bind.Marshaller;
  */
 @Controller
 @RequestMapping (value = "/access")
-public final class LandingController extends BaseController {
+@SuppressWarnings ("PMD.BeanMembersShouldSerialize")
+public class LandingController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired
