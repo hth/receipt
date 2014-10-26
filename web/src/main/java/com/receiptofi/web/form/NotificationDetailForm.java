@@ -86,14 +86,14 @@ public class NotificationDetailForm {
 
 
     private String getReceiptUpdateURL(String referenceId, String message) {
-        return "<a href=\"" + "./pendingdocument/" + referenceId + ".htm" + "\">" + message + "</a>";
+        return "<a class='notification' href=\"" + "./pendingdocument/" + referenceId + ".htm" + "\">" + message + "</a>";
     }
 
     private String getReceiptURL(String referenceId, String message) {
-        return "<a href=\"" + "./receipt/" + referenceId + ".htm" + "\">" + message + "</a>";
+        return "<a class='notification' href=\"" + "./receipt/" + referenceId + ".htm" + "\">" + message + "</a>";
     }
 
     private String getMileageURL(String referenceId, String message) {
-        return "<a href=\"" + "./modv/" + referenceId + ".htm" + "\">" + message + "</a>";
+        return "<a class='notification' href=\"" + "./modv/" + referenceId + ".htm" + "\">" + message + "</a>";
     }
 }
