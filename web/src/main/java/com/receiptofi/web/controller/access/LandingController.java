@@ -84,9 +84,9 @@ import javax.xml.bind.Marshaller;
  * @since Dec 17, 2012 3:19:01 PM
  */
 @Controller
-@RequestMapping(value = "/access")
+@RequestMapping (value = "/access")
 public final class LandingController extends BaseController {
-	private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private LandingService landingService;
     @Autowired private MailService mailService;
@@ -98,19 +98,19 @@ public final class LandingController extends BaseController {
     private static final String PATTERN = "MMM, yyyy";
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern(PATTERN);
 
-	/**
-	 * Refers to landing.jsp
-	 */
+    /**
+     * Refers to landing.jsp
+     */
     @Value ("${nextPage:/landing}")
     private String nextPage;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/landing", method = RequestMethod.GET)
-	public ModelAndView loadForm(
-            @ModelAttribute("uploadDocumentImage")
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (value = "/landing", method = RequestMethod.GET)
+    public ModelAndView loadForm(
+            @ModelAttribute ("uploadDocumentImage")
             UploadDocumentImage uploadReceiptImage,
 
-            @ModelAttribute("landingForm")
+            @ModelAttribute ("landingForm")
             LandingForm landingForm
     ) {
         DateTime time = DateUtil.now();
@@ -118,15 +118,18 @@ public final class LandingController extends BaseController {
 
         LOG.info("LandingController loadForm user={}, rid={}", receiptUser.getUsername(), receiptUser.getRid());
 
-		ModelAndView modelAndView = new ModelAndView(nextPage);
+        ModelAndView modelAndView = new ModelAndView(nextPage);
 
-		List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), time);
+        List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), time);
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, time);
         modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
         long pendingCount = landingService.pendingReceipt(receiptUser.getRid());
         modelAndView.addObject("pendingCount", pendingCount);
+
+        long rejectedCount = landingService.rejectedReceipt(receiptUser.getRid());
+        modelAndView.addObject("rejectedCount", rejectedCount);
 
         /** Receipt grouped by date */
         LOG.info("Calculating calendar grouped expense");
@@ -138,7 +141,7 @@ public final class LandingController extends BaseController {
         modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
         landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
 
-        if(receiptUser.getUserLevel().value >= UserLevelEnum.USER_COMMUNITY.value) {
+        if (receiptUser.getUserLevel().value >= UserLevelEnum.USER_COMMUNITY.value) {
             List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(receiptUser.getRid());
             landingForm.setReceiptGroupedByBizLocations(receiptGroupedByBizLocations);
         }
@@ -169,9 +172,9 @@ public final class LandingController extends BaseController {
         mileages.setMileages(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
         landingForm.setMileages(mileages.asJson());
 
-		PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
-	}
+    }
 
     /**
      * Loads monthly data for the selected month in the calendar
@@ -181,18 +184,19 @@ public final class LandingController extends BaseController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/landing/monthly_expenses", method = RequestMethod.POST)
-    public @ResponseBody
+    @RequestMapping (value = "/landing/monthly_expenses", method = RequestMethod.POST)
+    public
+    @ResponseBody
     ModelAndView monthlyExpenses(
-            @RequestParam("monthView") String monthView,
-            @RequestParam("buttonClick") String previousOrNext,
-            @ModelAttribute("landingForm") LandingForm landingForm
+            @RequestParam ("monthView") String monthView,
+            @RequestParam ("buttonClick") String previousOrNext,
+            @ModelAttribute ("landingForm") LandingForm landingForm
     ) throws IOException {
         ModelAndView modelAndView = new ModelAndView("/z/landingTabs");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DateTime monthYear = DTF.parseDateTime(monthView);
-        if(previousOrNext.equalsIgnoreCase("next")) {
+        if (previousOrNext.equalsIgnoreCase("next")) {
             monthYear = monthYear.minusMonths(1);
         }
 
@@ -216,7 +220,7 @@ public final class LandingController extends BaseController {
         List<LandingDonutChart> bizByExpenseTypes = new ArrayList<>();
         StringBuilder bizNames_sb = new StringBuilder();
         Map<String, Map<String, BigDecimal>> bizByExpenseTypeMap = landingService.allBusinessByExpenseType(receipts);
-        for(String bizName : bizByExpenseTypeMap.keySet()) {
+        for (String bizName : bizByExpenseTypeMap.keySet()) {
             //bizNames_sb.append("'").append(StringUtils.abbreviate(bizName, LandingDonutChart.OFF_SET, LandingDonutChart.MAX_WIDTH)).append("',");
             bizNames_sb.append("'").append(bizName).append("',");
 
@@ -224,14 +228,14 @@ public final class LandingController extends BaseController {
 
             BigDecimal sum = BigDecimal.ZERO;
             Map<String, BigDecimal> map = bizByExpenseTypeMap.get(bizName);
-            for(BigDecimal value : map.values()) {
+            for (BigDecimal value : map.values()) {
                 sum = Maths.add(sum, value);
             }
             landingDonutChart.setTotal(sum);
 
             StringBuilder expenseTypes = new StringBuilder();
             StringBuilder expenseValues = new StringBuilder();
-            for(String name : map.keySet()) {
+            for (String name : map.keySet()) {
                 expenseTypes.append("'").append(name).append("',");
                 expenseValues.append(map.get(name)).append(",");
             }
@@ -251,9 +255,10 @@ public final class LandingController extends BaseController {
      * @param httpServletRequest
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(method = RequestMethod.POST, value = "/landing/upload")
-    public @ResponseBody
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (method = RequestMethod.POST, value = "/landing/upload")
+    public
+    @ResponseBody
     String upload(HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
         LOG.info("uploading document");
@@ -262,7 +267,7 @@ public final class LandingController extends BaseController {
         String outcome = "{\"success\" : false}";
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
-        if(isMultipart) {
+        if (isMultipart) {
             MultipartHttpServletRequest multipartHttpRequest = WebUtils.getNativeRequest(httpServletRequest, MultipartHttpServletRequest.class);
             final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
 
@@ -297,9 +302,10 @@ public final class LandingController extends BaseController {
      * @param httpServletRequest
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(method = RequestMethod.POST, value = "/landing/uploadmileage")
-    public @ResponseBody
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (method = RequestMethod.POST, value = "/landing/uploadmileage")
+    public
+    @ResponseBody
     String uploadMileage(@PathVariable String documentId, HttpServletRequest httpServletRequest) throws IOException {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -308,7 +314,7 @@ public final class LandingController extends BaseController {
         String outcome = "{\"success\" : false}";
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
-        if(isMultipart) {
+        if (isMultipart) {
             MultipartHttpServletRequest multipartHttpRequest = (MultipartHttpServletRequest) httpServletRequest;
             final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
 
@@ -354,8 +360,9 @@ public final class LandingController extends BaseController {
      * @param authKey
      * @return
      */
-    @RequestMapping(value = "/landing/user/{profileId}/auth/{authKey}.xml", method = RequestMethod.GET, produces="application/xml")
-    public @ResponseBody
+    @RequestMapping (value = "/landing/user/{profileId}/auth/{authKey}.xml", method = RequestMethod.GET, produces = "application/xml")
+    public
+    @ResponseBody
     LandingView loadRest(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
         LOG.info("Web Service : " + profileId);
@@ -369,8 +376,9 @@ public final class LandingController extends BaseController {
      * @param authKey
      * @return
      */
-    @RequestMapping(value = "/landing/user/{profileId}/auth/{authKey}.json", method = RequestMethod.GET, produces="application/json")
-    public @ResponseBody
+    @RequestMapping (value = "/landing/user/{profileId}/auth/{authKey}.json", method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
     String loadJSON(@PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
         LOG.info("JSON : " + profileId);
@@ -399,7 +407,7 @@ public final class LandingController extends BaseController {
      */
     private LandingView landingView(String profileId, String authKey, DateTime time) {
         UserProfileEntity userProfile = authenticate(profileId, authKey);
-        if(userProfile == null) {
+        if (userProfile == null) {
             Header header = getHeaderForProfileOrAuthFailure();
             LandingView landingView = LandingView.newInstance(StringUtils.EMPTY, StringUtils.EMPTY, header);
 
@@ -414,15 +422,16 @@ public final class LandingController extends BaseController {
             landingView.setReceipts(receipts);
             landingView.setStatus(Header.RESULT.SUCCESS);
 
-            LOG.info("Rest/JSON Service returned={}, rid={} ",profileId, userProfile.getReceiptUserId());
+            LOG.info("Rest/JSON Service returned={}, rid={} ", profileId, userProfile.getReceiptUserId());
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             return landingView;
         }
     }
 
-    @RequestMapping(value = "/landing/report/{monthYear}", method = RequestMethod.GET)
-    public @ResponseBody
+    @RequestMapping (value = "/landing/report/{monthYear}", method = RequestMethod.GET)
+    public
+    @ResponseBody
     String generateReport(@PathVariable String monthYear) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Header header = Header.newInstance(getAuth(receiptUser.getRid()));
@@ -435,7 +444,7 @@ public final class LandingController extends BaseController {
             ReportView reportView = getReportView(receiptUser, header, dateTime);
             File file = populateDataForXML(reportView);
             return reportService.monthlyReport(file);
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             header.setMessage("Invalid parameter. Correct format - " + PATTERN + " [Please provide parameter shown without quotes - 'Jan, 2014']");
             header.setStatus(Header.RESULT.FAILURE);
 
@@ -474,9 +483,10 @@ public final class LandingController extends BaseController {
     }
 
     /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */
-    @RequestMapping(value = "/landing/invite", method = RequestMethod.POST)
-    public @ResponseBody
-    String invite(@RequestParam(value="emailId") String emailId) {
+    @RequestMapping (value = "/landing/invite", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String invite(@RequestParam (value = "emailId") String emailId) {
         //Always lower case the email address
         String invitedUserEmail = StringUtils.lowerCase(emailId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -484,7 +494,7 @@ public final class LandingController extends BaseController {
         LOG.info("Invitation being sent to: " + invitedUserEmail);
 
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
-        if(isValid) {
+        if (isValid) {
             UserProfileEntity userProfileEntity = accountService.doesUserExists(invitedUserEmail);
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
@@ -492,14 +502,14 @@ public final class LandingController extends BaseController {
              * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to limit
              * the number of invite.
              */
-            if(userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
+            if (userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 boolean status;
-                if(userProfileEntity == null) {
+                if (userProfileEntity == null) {
                     status = mailService.sendInvitation(invitedUserEmail, receiptUser.getRid());
                 } else {
                     status = mailService.reSendInvitation(invitedUserEmail, receiptUser.getRid());
                 }
-                if(status) {
+                if (status) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("Invitation sent to '").append(invitedUserEmail).append("'");
                     notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
@@ -510,10 +520,10 @@ public final class LandingController extends BaseController {
                     notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
                     return "Unsuccessful in sending invitation: " + invitedUserEmail;
                 }
-            } else if(userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
+            } else if (userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 LOG.info(invitedUserEmail + ", already registered. Thanks!");
                 return invitedUserEmail + ", already registered. Thanks!";
-            } else if(userProfileEntity.isDeleted()) {
+            } else if (userProfileEntity.isDeleted()) {
                 LOG.info(invitedUserEmail + ", already registered but no longer with us. Appreciate!");
 
                 //Have to send a positive message
@@ -530,7 +540,6 @@ public final class LandingController extends BaseController {
     }
 
     /**
-     *
      * @param allReceiptsForThisMonth
      * @param monthYear
      * @return
@@ -540,7 +549,7 @@ public final class LandingController extends BaseController {
 
         ReceiptForMonth receiptForMonth = ReceiptForMonth.newInstance();
         receiptForMonth.setMonthYear(dtf.print(monthYear));
-        for(ReceiptEntity receiptEntity : allReceiptsForThisMonth) {
+        for (ReceiptEntity receiptEntity : allReceiptsForThisMonth) {
             receiptForMonth.addReceipt(ReceiptLandingView.newInstance(receiptEntity));
         }
         return receiptForMonth;
