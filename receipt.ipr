@@ -1080,6 +1080,8 @@
     <dictionary name="hitender">
       <words>
         <w>beanvalidation</w>
+        <w>clearfix</w>
+        <w>textb</w>
       </words>
     </dictionary>
   </component>

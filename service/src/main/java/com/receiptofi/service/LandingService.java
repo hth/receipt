@@ -89,6 +89,10 @@ public final class LandingService {
         return documentManager.numberOfPendingReceipts(profileId);
     }
 
+    public long rejectedReceipt(String profileId) {
+        return documentManager.numberOfRejectedReceipts(profileId);
+    }
+
     /**
      * Do not use this open end query
      *
