@@ -356,6 +356,10 @@ div .sidebar-date form input {
     padding-left: 17px;
     font-family: "HelveticaNeueLTProCn", arial, sans-serif; }
 
+a.notification:hover, a.notification:visited, a.notification  {
+	text-decoration: none;
+	color: #000; }
+
 .si-date-text {
     color: #000;
     font-weight: bold;
@@ -371,10 +375,16 @@ div .sidebar-date form input {
     color: #000;
     font-weight: bold;
     font-size: 0.75em;
-    padding-top: 10px;
+    padding-top: 5px;
     display: inline-block;
     float: right;
     font-family: "HelveticaNeueLTProCn", arial, sans-serif; }
+
+a.view-more-text:hover, a.view-more-text:visited, a.view-more-text  {
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 1.0em;
+	color: #000; }
 
 .widget-title-text {
     color: #000;
