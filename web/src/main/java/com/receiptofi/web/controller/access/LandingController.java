@@ -575,10 +575,8 @@ public class LandingController extends BaseController {
      * @return
      */
     public ReceiptForMonth getReceiptForMonth(List<ReceiptEntity> allReceiptsForThisMonth, DateTime monthYear) {
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("MMM, yyyy");
-
         ReceiptForMonth receiptForMonth = ReceiptForMonth.newInstance();
-        receiptForMonth.setMonthYear(dtf.print(monthYear));
+        receiptForMonth.setMonthYearDateTime(monthYear);
         for (ReceiptEntity receiptEntity : allReceiptsForThisMonth) {
             receiptForMonth.addReceipt(ReceiptLandingView.newInstance(receiptEntity));
         }

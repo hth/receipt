@@ -19,6 +19,7 @@ public class NotificationDetailForm {
 
     private static final int OFF_SET = 0;
     private static final int MAX_WIDTH = 43;
+    private static final String CLASS = "class='notification'";
 
     private String referenceId;
     private String message;
@@ -42,10 +43,11 @@ public class NotificationDetailForm {
 
     /**
      * Displayed on Landing page
+     *
      * @return
      */
     public String getNotificationMessage4Display() {
-        switch(notificationType) {
+        switch (notificationType) {
             case MESSAGE:
                 return message;
             case DOCUMENT:
@@ -64,10 +66,11 @@ public class NotificationDetailForm {
 
     /**
      * Displayed on Notification page
+     *
      * @return
      */
     public String getNotificationMessage() {
-        switch(notificationType) {
+        switch (notificationType) {
             case MESSAGE:
                 return message;
             case DOCUMENT:
@@ -86,7 +89,7 @@ public class NotificationDetailForm {
 
 
     private String getReceiptUpdateURL(String referenceId, String message) {
-        return "<a class='notification' href=\"" + "./pendingdocument/" + referenceId + ".htm" + "\">" + message + "</a>";
+        return "<a " + CLASS + " href=\"" + "./pendingdocument/" + referenceId + ".htm" + "\">" + message + "</a>";
     }
 
     private String getReceiptURL(String referenceId, String message) {
