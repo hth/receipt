@@ -39,7 +39,7 @@ public final class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public void save(NotificationEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
@@ -61,15 +61,14 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public List<NotificationEntity> getAllNotification(String userProfileId, int limit) {
+    public List<NotificationEntity> getNotifications(String userProfileId, int start, int limit) {
         Query query = query(
-                where(
-                        "USER_PROFILE_ID").is(userProfileId)
-                        .and("NOTIFIED").is(true)
-        ).addCriteria(isNotDeleted())
+                where("USER_PROFILE_ID").is(userProfileId).and("NOTIFIED").is(true))
+                .addCriteria(isNotDeleted())
+                .skip(start)
                 .with(new Sort(Sort.Direction.DESC, "C"));
 
-        if(limit != NotificationManager.ALL) {
+        if (limit != NotificationManager.ALL) {
             query.limit(limit);
         }
         return mongoTemplate.find(query, NotificationEntity.class, TABLE);
