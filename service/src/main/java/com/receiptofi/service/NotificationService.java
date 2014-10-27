@@ -100,8 +100,8 @@ public final class NotificationService {
      * @param userProfileId
      * @return
      */
-    public List<NotificationEntity> notifications(String userProfileId, int limit) {
-        return notificationManager.getAllNotification(userProfileId, limit);
+    public List<NotificationEntity> getAllNotifications(String userProfileId, int limit) {
+        return notificationManager.getNotifications(userProfileId, 0, limit);
     }
 
     /**
@@ -111,6 +111,16 @@ public final class NotificationService {
      * @return
      */
     public List<NotificationEntity> notifications(String userProfileId) {
-        return notifications(userProfileId, NotificationManager.LIMIT_FIVE);
+        return getAllNotifications(userProfileId, NotificationManager.LIMIT_FIVE);
+    }
+
+    /**
+     * List last five notification in descending order
+     *
+     * @param userProfileId
+     * @return
+     */
+    public List<NotificationEntity> notificationsPaginated(String userProfileId, int start) {
+        return notificationManager.getNotifications(userProfileId, start, NotificationManager.LIMIT_FIVE);
     }
 }
