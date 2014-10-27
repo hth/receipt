@@ -18,9 +18,9 @@ public final class NotificationForm {
 
     private List<NotificationDetailForm> notifications = new ArrayList<>();
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     private NotificationForm(List<NotificationEntity> notifications) {
-        for(NotificationEntity notification : notifications) {
+        for (NotificationEntity notification : notifications) {
             NotificationDetailForm notificationDetailForm = NotificationDetailForm.newInstance(notification);
             this.notifications.add(notificationDetailForm);
         }

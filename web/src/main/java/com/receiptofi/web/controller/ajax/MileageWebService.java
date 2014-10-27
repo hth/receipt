@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 1/6/14 12:05 AM
  */
 @Controller
-@RequestMapping(value = "/ws/m")
+@RequestMapping (value = "/ws/m")
 public final class MileageWebService {
     private static Logger LOG = LoggerFactory.getLogger(MileageWebService.class);
 
@@ -49,10 +49,9 @@ public final class MileageWebService {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/f.json", method = RequestMethod.POST, produces="application/json")
-    public @ResponseBody
-    String fetch() throws IOException {
-
+    @RequestMapping (value = "/f.json", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String fetch() throws IOException {
         DateTime time = DateUtil.now();
 
         Mileages mileages = new Mileages();
@@ -67,11 +66,10 @@ public final class MileageWebService {
         return mileages.asJson();
     }
 
-    @RequestMapping(value = "/m.json", method = RequestMethod.POST, produces="application/json")
-    public @ResponseBody
-    String merge(@RequestBody String ids, HttpServletResponse httpServletResponse) throws IOException {
-
-        if(ids.length() > 0) {
+    @RequestMapping (value = "/m.json", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String merge(@RequestBody String ids, HttpServletResponse httpServletResponse) throws IOException {
+        if (ids.length() > 0) {
             try {
                 Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(ids);
                 MileageEntity mileageEntity = mileageService.merge(
@@ -88,7 +86,7 @@ public final class MileageWebService {
                         )
                 );
                 return mileages.asJson();
-            } catch(Exception exception) {
+            } catch (Exception exception) {
                 return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
         } else {
@@ -98,11 +96,10 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping(value = "/s.json", method = RequestMethod.POST, produces="application/json")
-    public @ResponseBody
-    String split(@RequestBody String id, HttpServletResponse httpServletResponse) throws IOException {
-
-        if(id.length() > 0) {
+    @RequestMapping (value = "/s.json", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String split(@RequestBody String id, HttpServletResponse httpServletResponse) throws IOException {
+        if (id.length() > 0) {
             try {
                 List<MileageEntity> mileageEntities = mileageService.split(
                         ParseJsonStringToMap.jsonStringToMap(id).get("id"),
@@ -117,7 +114,7 @@ public final class MileageWebService {
                         )
                 );
                 return mileages.asJson();
-            } catch(Exception exception) {
+            } catch (Exception exception) {
                 return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
         } else {
@@ -127,32 +124,34 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping(value = "/msd", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody
-    String updateMileageStartDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
-
-        if(mileageInfo.length() > 0) {
+    @RequestMapping (value = "/msd", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public String updateMileageStartDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
+        if (mileageInfo.length() > 0) {
             Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
                 MileageEntity mileageEntity = mileageService.getMileage(
                         map.get("id"),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
-                if(mileageEntity == null) {
-                    return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip start date as record below no longer exists. Please hit browser refresh.");
+                if (mileageEntity == null) {
+                    return createJSONUsingMileageDateUpdateResponse(
+                            false,
+                            "Failed to update trip start date as record below no longer exists. Please hit browser refresh."
+                    );
                 } else {
                     boolean status = mileageService.updateStartDate(
                             map.get("id"),
                             StringUtils.remove(map.get("msd"), "\""),
                             ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                     );
-                    if(status) {
+                    if (status) {
                         return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
                     } else {
                         return createJSONUsingMileageDateUpdateResponse(status, "Failed to update trip start date");
                     }
                 }
-            } catch(RuntimeException re) {
+            } catch (RuntimeException re) {
                 return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip start date");
             }
 
@@ -163,40 +162,46 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping(value = "/med", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody
-    String updateMileageEndDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
+    @RequestMapping (value = "/med", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public String updateMileageEndDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
 
 //        HttpHeaders responseHeaders = new HttpHeaders();
 //        responseHeaders.add("Content-Type", "application/json;charset=UTF-8");
 //        return new ResponseEntity<>(mileageDateUpdateResponse.asJson(), responseHeaders, HttpStatus.OK);
 
-        if(mileageInfo.length() > 0) {
+        if (mileageInfo.length() > 0) {
             Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
                 MileageEntity mileageEntity = mileageService.getMileage(
                         map.get("id"),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
-                if(mileageEntity == null) {
-                    return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip end date as record below no longer exists. Please hit browser refresh.");
+                if (mileageEntity == null) {
+                    return createJSONUsingMileageDateUpdateResponse(
+                            false,
+                            "Failed to update trip end date as record below no longer exists. Please hit browser refresh."
+                    );
                 } else {
-                    if(mileageEntity.isComplete()) {
+                    if (mileageEntity.isComplete()) {
                         boolean status = mileageService.updateEndDate(
                                 map.get("id"),
                                 StringUtils.remove(map.get("med"), "\""),
                                 ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                         );
-                        if(status) {
+                        if (status) {
                             return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
                         } else {
                             return createJSONUsingMileageDateUpdateResponse(status, "Failed to update trip end date");
                         }
                     } else {
-                        return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip end date. Record no longer represent mileage driven. Please hit browser refresh.");
+                        return createJSONUsingMileageDateUpdateResponse(
+                                false,
+                                "Failed to update trip end date. Record no longer represent mileage driven. Please hit browser refresh."
+                        );
                     }
                 }
-            } catch(RuntimeException re) {
+            } catch (RuntimeException re) {
                 return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip end date");
             }
         } else {
