@@ -322,11 +322,5 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="severity" value="warning"/>
         </module>
 
-        <rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis">
-            <properties>
-                <property name="violationSuppressRegex" value="^Found 'UR'-anomaly.*"/>
-            </properties>
-        </rule>
-
     </module>
 </module>
