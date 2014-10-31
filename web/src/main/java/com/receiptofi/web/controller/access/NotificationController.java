@@ -86,7 +86,8 @@ public final class NotificationController {
 
         List<String> notifications = new LinkedList<>();
         for (NotificationDetailForm notificationDetailForm : notificationForm.getNotifications()) {
-            notificationDetailForm.getNotificationMessage4Display();
+            String messageForDisplay = notificationDetailForm.getNotificationMessageForDisplay();
+            LOG.debug(messageForDisplay);
             notifications.add(
                     notificationDetailForm.getHref() +
                             ":" +

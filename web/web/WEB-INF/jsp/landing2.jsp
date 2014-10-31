@@ -161,7 +161,7 @@
 				<c:forEach var="notification" items="${landingForm.notificationForm.notifications}" varStatus="status">
 					<li class="si-list">
 						<img alt="indication icon" src="${pageContext.request.contextPath}/static/img/indication-icon.png">
-						<span class="si-general-text">${notification.notificationMessage4Display}</span>
+						<span class="si-general-text">${notification.notificationMessageForDisplay}</span>
 						<span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
 					</li>
 				</c:forEach>
