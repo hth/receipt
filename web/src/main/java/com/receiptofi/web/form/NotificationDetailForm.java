@@ -53,7 +53,7 @@ public class NotificationDetailForm {
      *
      * @return
      */
-    public String getNotificationMessage4Display() {
+    public String getNotificationMessageForDisplay() {
         switch (notificationType) {
             case MESSAGE:
                 return message;

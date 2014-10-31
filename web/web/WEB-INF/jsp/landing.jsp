@@ -564,7 +564,7 @@
                             <c:when test="${!empty landingForm.notificationForm.notifications}">
                             <c:forEach var="notification" items="${landingForm.notificationForm.notifications}" varStatus="status">
                             <div class="bd">
-                                <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.notificationMessage4Display}</div>
+                                <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.notificationMessageForDisplay}</div>
                             </div>
                             </c:forEach>
                             </c:when>
