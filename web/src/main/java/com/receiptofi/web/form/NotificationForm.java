@@ -2,9 +2,6 @@ package com.receiptofi.web.form;
 
 import com.receiptofi.domain.NotificationEntity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +11,12 @@ import java.util.List;
  * Time: 9:57 PM
  */
 public final class NotificationForm {
-    private static final Logger LOG = LoggerFactory.getLogger(NotificationForm.class);
-
     private List<NotificationDetailForm> notifications = new ArrayList<>();
+    private String count;
 
     @SuppressWarnings ("unused")
-    private NotificationForm(List<NotificationEntity> notifications) {
+    private NotificationForm(String count, List<NotificationEntity> notifications) {
+        this.count = count;
         for (NotificationEntity notification : notifications) {
             NotificationDetailForm notificationDetailForm = NotificationDetailForm.newInstance(notification);
             this.notifications.add(notificationDetailForm);
@@ -27,10 +24,18 @@ public final class NotificationForm {
     }
 
     public static NotificationForm newInstance(List<NotificationEntity> notifications) {
-        return new NotificationForm(notifications);
+        return new NotificationForm("", notifications);
+    }
+
+    public static NotificationForm newInstance(long count, List<NotificationEntity> notifications) {
+        return new NotificationForm(String.valueOf(count), notifications);
     }
 
     public List<NotificationDetailForm> getNotifications() {
         return this.notifications;
+    }
+
+    public String getCount() {
+        return count;
     }
 }

@@ -14,4 +14,6 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
     static int ALL = -1;
 
     List<NotificationEntity> getNotifications(String userProfileId, int start, int limit);
+
+    long notificationCount(String userProfileId);
 }

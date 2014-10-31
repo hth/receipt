@@ -1,5 +1,6 @@
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.NotificationService;
@@ -33,7 +34,7 @@ import java.util.List;
  * Time: 9:51 PM
  */
 @Controller
-@RequestMapping(value = "/access")
+@RequestMapping (value = "/access")
 public final class NotificationController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
@@ -42,11 +43,11 @@ public final class NotificationController {
     /**
      * maps to notification.jsp
      */
-    @Value("${next.page:/notification}")
+    @Value ("${next.page:/notification}")
     private String nextPage;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping(
+    @RequestMapping (
             value = "/notification",
             method = RequestMethod.GET
     )
@@ -55,18 +56,19 @@ public final class NotificationController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("LandingController loadForm: " + receiptUser.getRid());
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject(
-                "notificationForm",
-                NotificationForm.newInstance(notificationService.getAllNotifications(receiptUser.getRid(), NotificationManager.ALL))
+        List<NotificationEntity> notifications = notificationService.getAllNotifications(
+                receiptUser.getRid(),
+                NotificationManager.ALL
         );
 
+        ModelAndView modelAndView = new ModelAndView(nextPage);
+        modelAndView.addObject("notificationForm", NotificationForm.newInstance(notifications.size(), notifications));
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping(
+    @RequestMapping (
             value = "/notificationPaginated/{current}",
             method = RequestMethod.GET,
             headers = "Accept=application/json",
@@ -74,7 +76,7 @@ public final class NotificationController {
     )
     @ResponseBody
     public List<String> paginatedNotification(
-            @PathVariable("current")
+            @PathVariable ("current")
             int current
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -84,7 +86,14 @@ public final class NotificationController {
 
         List<String> notifications = new LinkedList<>();
         for (NotificationDetailForm notificationDetailForm : notificationForm.getNotifications()) {
-            notifications.add(notificationDetailForm.getNotificationMessage4Display());
+            notificationDetailForm.getNotificationMessage4Display();
+            notifications.add(
+                    notificationDetailForm.getHref() +
+                            ":" +
+                            notificationDetailForm.getAbbreviatedMessage() +
+                            ":" +
+                            notificationDetailForm.getCreatedStr()
+            );
         }
 
         return notifications;

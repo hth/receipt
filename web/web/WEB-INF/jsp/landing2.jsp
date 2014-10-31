@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="scroll" ng-controller="Main">
 <head>
 <meta charset="utf-8" />
 <meta name="description" content="" />
@@ -11,6 +11,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
 
 <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
+
 <script>
     function init() {
         window.addEventListener('scroll', function(e){
@@ -27,6 +30,40 @@
         });
     }
     window.onload = init();
+</script>
+<script>
+	function Main($scope, $http) {
+		$scope.items = [];
+
+		var page = 5;
+		$scope.loadMore = function() {
+			$http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm').success(function(data) {
+				for (var i = 0; i < 5; i++) {
+					var d = data[i].split(":");
+					console.log(d[0] + ":" + d[1] + ":" + d[2]);
+					$scope.items.push({href : d[0], message : d[1], created : d[2]});
+				}
+			}).error(function(data) {
+				console.log('Request failed ' + data);
+				$scope.response = 'Request failed';
+			});
+			page += 5;
+			console.log($scope.items);
+		};
+		$scope.loadMore();
+	}
+
+	angular.module('scroll', []).directive('whenScrolled', function() {
+		return function(scope, elm, attr) {
+			var raw = elm[0];
+
+			elm.bind('scroll', function() {
+				if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+					scope.$apply(attr.whenScrolled);
+				}
+			});
+		};
+	});
 </script>
 </head>
 
@@ -115,9 +152,9 @@
     	</div>
     	<div class="sidebar-indication">
     		<div class="si-title">
-    			<h1 class="widget-title-text">Notifications</h1>
+    			<h1 class="widget-title-text">Notifications (${landingForm.notificationForm.count})</h1>
     		</div>
-    		<div class="si-list-holder">
+    		<div class="si-list-holder" when-scrolled="loadMore()">
 				<c:choose>
 				<c:when test="${!empty landingForm.notificationForm.notifications}">
     			<ul>
@@ -128,19 +165,25 @@
 						<span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
 					</li>
 				</c:forEach>
+					<li class="si-list" ng-repeat="i in items">
+						<img alt="indication icon" src="${pageContext.request.contextPath}/static/img/indication-icon.png">
+						<span class="si-general-text"><a class='notification' href="{{i.href}}">{{i.message}}</a></span>
+						<span class="si-date-text">{{i.created}}</span>
+					</li>
     			</ul>
 				</c:when>
 				<c:otherwise>
 					<p class="si-general-text">There are no Notifications &nbsp;</p>
 				</c:otherwise>
 				</c:choose>
-
-				<c:if test="${!empty landingForm.notificationForm.notifications}">
-    			<p class="view-more-text">
-					<a class="view-more-text" href="${pageContext.request.contextPath}/access/notification.htm">View All Notifications</a>
-				</p>
-				</c:if>
     		</div>
+			<div class="si-footer">
+			<c:if test="${!empty landingForm.notificationForm.notifications}">
+				<p class="view-more-text">
+					<a class="view-more-text" ng-href="${pageContext.request.contextPath}/access/notification.htm">View All Notifications</a>
+				</p>
+			</c:if>
+			</div>
     	</div>
     	<div class="sidebar-date">
     		<div class="gd-title">

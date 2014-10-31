@@ -123,4 +123,8 @@ public final class NotificationService {
     public List<NotificationEntity> notificationsPaginated(String userProfileId, int start) {
         return notificationManager.getNotifications(userProfileId, start, NotificationManager.LIMIT_FIVE);
     }
+
+    public long notificationCount(String userProfileId) {
+        return notificationManager.notificationCount(userProfileId);
+    }
 }

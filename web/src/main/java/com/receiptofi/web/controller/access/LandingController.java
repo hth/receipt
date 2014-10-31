@@ -176,7 +176,12 @@ public class LandingController extends BaseController {
 
         /** Notification */
         List<NotificationEntity> notifications = landingService.notifications(receiptUser.getRid());
-        landingForm.setNotificationForm(NotificationForm.newInstance(notifications));
+        landingForm.setNotificationForm(
+                NotificationForm.newInstance(
+                        landingService.notificationCount(receiptUser.getRid()),
+                        notifications
+                )
+        );
 
         /** Mileage */
         List<MileageEntity> mileageEntityList = mileageService.getMileageForThisMonth(receiptUser.getRid(), time);
