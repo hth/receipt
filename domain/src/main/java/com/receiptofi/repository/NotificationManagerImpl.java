@@ -73,4 +73,14 @@ public final class NotificationManagerImpl implements NotificationManager {
         }
         return mongoTemplate.find(query, NotificationEntity.class, TABLE);
     }
+
+    @Override
+    public long notificationCount(String userProfileId) {
+        return mongoTemplate.count(
+                new Query(where("USER_PROFILE_ID").is(userProfileId)
+                        .and("NOTIFIED").is(true))
+                        .addCriteria(isNotDeleted()),
+                NotificationEntity.class
+        );
+    }
 }

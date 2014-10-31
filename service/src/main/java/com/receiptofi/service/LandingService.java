@@ -404,4 +404,8 @@ public final class LandingService {
     public List<NotificationEntity> notifications(String userProfileId) {
         return notificationService.notifications(userProfileId);
     }
+
+    public long notificationCount(String userProfileId) {
+        return notificationService.notificationCount(userProfileId);
+    }
 }

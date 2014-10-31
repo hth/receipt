@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -17,11 +18,13 @@ import java.util.Date;
 public class NotificationDetailForm {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationDetailForm.class);
 
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd");
     private static final int OFF_SET = 0;
-    private static final int MAX_WIDTH = 43;
+    private static final int MAX_WIDTH = 53;
     private static final String CLASS = "class='notification'";
 
     private String referenceId;
+    private String href;
     private String message;
     private NotificationTypeEnum notificationType;
     private Date created;
@@ -41,6 +44,10 @@ public class NotificationDetailForm {
         return created;
     }
 
+    public String getCreatedStr() {
+        return sdf.format(created);
+    }
+
     /**
      * Displayed on Landing page
      *
@@ -51,13 +58,17 @@ public class NotificationDetailForm {
             case MESSAGE:
                 return message;
             case DOCUMENT:
-                return getReceiptUpdateURL(referenceId, StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                this.href = "./pendingdocument/" + referenceId + ".htm";
+                return getReceiptUpdateURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
             case RECEIPT:
-                return getReceiptURL(referenceId, StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                this.href = "./receipt/" + referenceId + ".htm";
+                return getReceiptURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
             case EXPENSE_REPORT:
-                return getReceiptURL(referenceId, StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                this.href = "./receipt/" + referenceId + ".htm";
+                return getReceiptURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
             case MILEAGE:
-                return getMileageURL(referenceId, StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                this.href = "./modv/" + referenceId + ".htm";
+                return getMileageURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
             default:
                 LOG.error("Reached invalid condition");
                 return "";
@@ -74,13 +85,13 @@ public class NotificationDetailForm {
             case MESSAGE:
                 return message;
             case DOCUMENT:
-                return getReceiptUpdateURL(referenceId, message);
+                return getReceiptUpdateURL(message);
             case RECEIPT:
-                return getReceiptURL(referenceId, message);
+                return getReceiptURL(message);
             case EXPENSE_REPORT:
-                return getReceiptURL(referenceId, message);
+                return getReceiptURL(message);
             case MILEAGE:
-                return getMileageURL(referenceId, message);
+                return getMileageURL(message);
             default:
                 LOG.error("Reached invalid condition");
                 return "";
@@ -88,15 +99,23 @@ public class NotificationDetailForm {
     }
 
 
-    private String getReceiptUpdateURL(String referenceId, String message) {
-        return "<a " + CLASS + " href=\"" + "./pendingdocument/" + referenceId + ".htm" + "\">" + message + "</a>";
+    private String getReceiptUpdateURL(String message) {
+        return "<a " + CLASS + " href=\"" + href + "\">" + message + "</a>";
     }
 
-    private String getReceiptURL(String referenceId, String message) {
-        return "<a class='notification' href=\"" + "./receipt/" + referenceId + ".htm" + "\">" + message + "</a>";
+    private String getReceiptURL(String message) {
+        return "<a " + CLASS + " href=\"" + href + "\">" + message + "</a>";
     }
 
-    private String getMileageURL(String referenceId, String message) {
-        return "<a class='notification' href=\"" + "./modv/" + referenceId + ".htm" + "\">" + message + "</a>";
+    private String getMileageURL(String message) {
+        return "<a " + CLASS + " href=\"" + href + "\">" + message + "</a>";
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public String getAbbreviatedMessage() {
+        return StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH);
     }
 }
