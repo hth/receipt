@@ -19,7 +19,7 @@ public class ExcelFileName {
         this.filename = filename;
     }
 
-    @JsonProperty("filename")
+    @JsonProperty ("filename")
     public String getFilename() {
         return this.filename;
     }

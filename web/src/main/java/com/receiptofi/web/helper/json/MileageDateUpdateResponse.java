@@ -15,13 +15,13 @@ import java.io.Writer;
  */
 public class MileageDateUpdateResponse {
 
-    @JsonProperty("s")
+    @JsonProperty ("s")
     private boolean success = false;
 
-    @JsonProperty("d")
+    @JsonProperty ("d")
     private String days;
 
-    @JsonProperty("m")
+    @JsonProperty ("m")
     private String message = StringUtils.EMPTY;
 
     public boolean isSuccess() {

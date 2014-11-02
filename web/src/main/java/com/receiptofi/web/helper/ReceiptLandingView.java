@@ -19,20 +19,21 @@ public final class ReceiptLandingView {
     private String id;
     private String name;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME)
     private Date date;
 
-    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private Double tax;
 
-    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private Double total;
 
     private String userProfileId;
     private String bizNameForId;
     private String expenseReportInFS;
 
-    private ReceiptLandingView() {}
+    private ReceiptLandingView() {
+    }
 
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
         ReceiptLandingView receiptLandingView = new ReceiptLandingView();

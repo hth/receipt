@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * Helps in profiling the duration it takes to complete a task
+ * Helps in profiling the duration it takes to complete a task.
  * User: hitender
  * Date: 4/7/13
  * Time: 11:39 AM

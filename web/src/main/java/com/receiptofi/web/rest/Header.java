@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Header is part of all the REST messages
+ * Header is part of all the REST messages.
  * User: hitender
  * Date: 4/14/13
  * Time: 6:53 PM

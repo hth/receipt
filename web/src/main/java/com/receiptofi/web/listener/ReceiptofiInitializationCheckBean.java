@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
 
 /**
- * Checks if all vital setup are running before starting server
+ * Checks if all vital setup are running before starting server.
  * User: hitender
  * Date: 9/6/14 1:52 PM
  */
