@@ -14,13 +14,8 @@ import java.io.IOException;
  * Date: 9/21/13 10:16 PM
  */
 public final class CreateTempFile {
-    private static final Logger LOG = LoggerFactory.getLogger(CreateTempFile.class);
-
-    public enum FileTypeEnum {
-        XLS, TXT, JPEG, JPG, PNG, PDF
-    }
-
     public static final String TEMP_FILE_START_WITH = "Receiptofi";
+    private static final Logger LOG = LoggerFactory.getLogger(CreateTempFile.class);
 
     public static File file(String name, String ext) throws IOException {
         try {
@@ -68,5 +63,9 @@ public final class CreateTempFile {
             }
         }
         return filename;
+    }
+
+    public enum FileTypeEnum {
+        XLS, TXT, JPEG, JPG, PNG, PDF
     }
 }

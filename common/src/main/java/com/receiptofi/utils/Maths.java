@@ -19,18 +19,16 @@ import java.text.ParsePosition;
  * {@link http://java-performance.info/bigdecimal-vs-double-in-financial-calculations/}
  */
 public final class Maths {
-    private static volatile Logger LOG = LoggerFactory.getLogger(Maths.class);
-
-    /** Accepted range in lowest denomination in cents here or any other currency */
-    public static double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
-
     /** Scale for Display is always two */
     public static final int SCALE_TWO = 2;
 
     /** Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places. */
     public static final int SCALE_FOUR = 4;
-
     public static final int SCALE_SIX = 6;
+
+    /** Accepted range in lowest denomination in cents here or any other currency */
+    public static double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
+    private static volatile Logger LOG = LoggerFactory.getLogger(Maths.class);
 
     //double[] values = { 1.0, 3.5, 123.4567, 10.0 };
     //output 1 3.5 123.457 10
