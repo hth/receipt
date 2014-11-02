@@ -219,6 +219,20 @@ header h1 {
 	height: 54px;
 	border-bottom: 1px dotted #919191; }
 
+.si-list-footer {
+	font-weight: bold;
+	font-size: 0.75em;
+	font-family: arial, helvetica, sans-serif;
+	margin-top: 20px;
+	text-align: center;
+	display: block; }
+
+.si-list-footer-success {
+	color: green; }
+
+.si-list-footer-error {
+	color: darkred; }
+
 .si-footer {
 	width: 280px;
 	height: 14px;
@@ -375,7 +389,7 @@ a.notification:hover, a.notification:visited, a.notification  {
     color: #000;
     font-weight: bold;
     font-size: 0.75em;
-    padding-top: 15px;
+    padding-top: 22px;
     display: inline-block;
     width: 64px;
     vertical-align: top;
@@ -417,7 +431,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text  {
     font-size: 0.75em;
     vertical-align: middle;
     display: inline-block;
-    width: 108px;
+    width: 118px;
     line-height: 50px;
     padding-left: 7px;
     font-family: "HelveticaNeueLTProCn", arial, sans-serif; }
