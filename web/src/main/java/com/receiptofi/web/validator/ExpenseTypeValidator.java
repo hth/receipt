@@ -29,12 +29,12 @@ public final class ExpenseTypeValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[] { "Tag Name" });
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[]{"Tag Name"});
 
         ExpenseTypeForm expenseTypeForm = (ExpenseTypeForm) obj;
-        if(expenseTypeForm.getTagName() != null && expenseTypeForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
+        if (expenseTypeForm.getTagName() != null && expenseTypeForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
             LOG.error("Size of the Expense Tag Name larger than " + EXPENSE_TAG_MAX_CHAR + " : " + expenseTypeForm.getTagName());
-            errors.rejectValue("tagName", "expenseTag.tagName", new Object[] {EXPENSE_TAG_MAX_CHAR}, "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters ");
+            errors.rejectValue("tagName", "expenseTag.tagName", new Object[]{EXPENSE_TAG_MAX_CHAR}, "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters ");
         }
     }
 }

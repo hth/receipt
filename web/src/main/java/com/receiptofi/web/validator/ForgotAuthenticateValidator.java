@@ -32,22 +32,22 @@ public final class ForgotAuthenticateValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordSecond", "field.required", new Object[]{"Retype Password"});
 
         ForgotAuthenticateForm faa = (ForgotAuthenticateForm) obj;
-        if(!faa.isEqual()) {
-            errors.rejectValue("password", "field.unmatched", new Object[] { "" }, "Password entered value does not match");
-            errors.rejectValue("passwordSecond", "field.unmatched", new Object[] { "" }, "Password entered value does not match");
+        if (!faa.isEqual()) {
+            errors.rejectValue("password", "field.unmatched", new Object[]{""}, "Password entered value does not match");
+            errors.rejectValue("passwordSecond", "field.unmatched", new Object[]{""}, "Password entered value does not match");
         }
 
         if (faa.getPassword().length() < 4) {
             errors.rejectValue("password",
                     "field.length",
-                    new Object[] { Integer.valueOf("4") },
+                    new Object[]{Integer.valueOf("4")},
                     "Minimum length of four characters");
         }
 
         if (faa.getPasswordSecond().length() < 4) {
             errors.rejectValue("passwordSecond",
                     "field.length",
-                    new Object[] { Integer.valueOf("4") },
+                    new Object[]{Integer.valueOf("4")},
                     "Minimum length of four characters");
         }
     }

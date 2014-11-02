@@ -19,26 +19,26 @@ import org.springframework.validation.Validator;
  */
 @Component
 public final class UserLoginValidator implements Validator {
-    @SuppressWarnings("unused")
-	private static final Logger LOG = LoggerFactory.getLogger(UserLoginValidator.class);
+    @SuppressWarnings ("unused")
+    private static final Logger LOG = LoggerFactory.getLogger(UserLoginValidator.class);
 
-	@Override
-	public boolean supports(Class<?> clazz) {
-		return UserLoginForm.class.equals(clazz);
-	}
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return UserLoginForm.class.equals(clazz);
+    }
 
-	@Override
-	public void validate(Object obj, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[] { "Email ID" });
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[] { "Password" });
+    @Override
+    public void validate(Object obj, Errors errors) {
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email ID"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
 
-		UserLoginForm userLoginForm = (UserLoginForm) obj;
-		if (!userLoginForm.getEmailId().matches(UserRegistrationValidator.EMAIL_REGEX)) {
-			errors.rejectValue("emailId", "field.email.address.not.valid", new Object[] { userLoginForm.getEmailId() }, "Email Address provided is not valid");
-		}
+        UserLoginForm userLoginForm = (UserLoginForm) obj;
+        if (!userLoginForm.getEmailId().matches(UserRegistrationValidator.EMAIL_REGEX)) {
+            errors.rejectValue("emailId", "field.email.address.not.valid", new Object[]{userLoginForm.getEmailId()}, "Email Address provided is not valid");
+        }
 
-		if (userLoginForm.getPassword().length() < 4) {
-			errors.rejectValue("password", "field.length", new Object[] { Integer.valueOf("4") }, "Minimum length of four characters");
-		}
-	}
+        if (userLoginForm.getPassword().length() < 4) {
+            errors.rejectValue("password", "field.length", new Object[]{Integer.valueOf("4")}, "Minimum length of four characters");
+        }
+    }
 }

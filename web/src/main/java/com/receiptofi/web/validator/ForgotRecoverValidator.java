@@ -34,13 +34,13 @@ public final class ForgotRecoverValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email Id"});
 
         ForgotRecoverForm frf = (ForgotRecoverForm) obj;
-        if(StringUtils.isNotEmpty(frf.getCaptcha())) {
-            errors.rejectValue("captcha", "field.unmatched", new Object[] { "" }, "Entered value does not match");
+        if (StringUtils.isNotEmpty(frf.getCaptcha())) {
+            errors.rejectValue("captcha", "field.unmatched", new Object[]{""}, "Entered value does not match");
         }
 
         EmailValidator emailValidator = EmailValidator.getInstance();
-        if(!emailValidator.isValid(frf.getEmailId())) {
-            errors.rejectValue("emailId", "field.email.address.not.valid", new Object[] { frf.getEmailId() }, "Email Address provided is not valid");
+        if (!emailValidator.isValid(frf.getEmailId())) {
+            errors.rejectValue("emailId", "field.email.address.not.valid", new Object[]{frf.getEmailId()}, "Email Address provided is not valid");
         }
     }
 }

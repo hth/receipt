@@ -33,7 +33,7 @@ public final class MileageDocumentValidator implements Validator {
         if (receiptDocumentForm.getMileageEntity().getStart() == 0 && !errors.hasErrors()) {
             errors.rejectValue("mileage.start",
                     "mileage.start",
-                    new Object[] { Integer.valueOf("0") },
+                    new Object[]{Integer.valueOf("0")},
                     "Number should be greater than zero");
         }
     }
