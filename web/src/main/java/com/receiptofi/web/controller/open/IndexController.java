@@ -32,15 +32,15 @@ public final class IndexController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/open/index", method = RequestMethod.GET)
+    @RequestMapping (value = "/open/index", method = RequestMethod.GET)
     public String index(ModelMap map) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LOG.info("Auth {}", authentication.getPrincipal().toString());
-        if(authentication instanceof AnonymousAuthenticationToken) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
             return "index";
         }
 
-        if(registrationConfig.validateIfRegistrationIsAllowed(map, authentication)) {
+        if (registrationConfig.validateIfRegistrationIsAllowed(map, authentication)) {
             return "index";
         }
 

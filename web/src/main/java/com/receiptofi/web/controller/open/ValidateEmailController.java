@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 5/17/14 9:54 PM
  */
 @Controller
-@RequestMapping(value = "/open/validate")
+@RequestMapping (value = "/open/validate")
 public final class ValidateEmailController {
     private static final Logger LOG = LoggerFactory.getLogger(ValidateEmailController.class);
 
@@ -37,13 +37,13 @@ public final class ValidateEmailController {
     private final AccountService accountService;
     private final RegistrationConfig registrationConfig;
 
-    @Value("${emailValidate:redirect:/open/validate/result.htm}")
+    @Value ("${emailValidate:redirect:/open/validate/result.htm}")
     private String validateResult;
 
-    @Value("${emailValidatePage:validate/success}")
+    @Value ("${emailValidatePage:validate/success}")
     private String validateSuccessPage;
 
-    @Value("${emailValidatePage:validate/failure}")
+    @Value ("${emailValidatePage:validate/failure}")
     private String validateFailurePage;
 
     @Autowired
@@ -53,16 +53,16 @@ public final class ValidateEmailController {
         this.registrationConfig = registrationConfig;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String validateEmail(@RequestParam("authenticationKey") String key, RedirectAttributes redirectAttrs, HttpServletResponse httpServletResponse) throws IOException {
+    @RequestMapping (method = RequestMethod.GET)
+    public String validateEmail(@RequestParam ("authenticationKey") String key, RedirectAttributes redirectAttrs, HttpServletResponse httpServletResponse) throws IOException {
         EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key);
-        if(emailValidate == null) {
+        if (emailValidate == null) {
             LOG.info("authentication failed for invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         } else {
             UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getReceiptUserId());
-            if(userAccount.isAccountValidated()) {
+            if (userAccount.isAccountValidated()) {
                 redirectAttrs.addFlashAttribute("success", "false");
                 LOG.info("authentication failed for user={}", userAccount.getReceiptUserId());
             } else {
@@ -80,9 +80,9 @@ public final class ValidateEmailController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/result")
-    public String success(@ModelAttribute("success") String success, HttpServletResponse httpServletResponse) throws IOException {
-        if(StringUtils.isNotBlank(success)) {
+    @RequestMapping (method = RequestMethod.GET, value = "/result")
+    public String success(@ModelAttribute ("success") String success, HttpServletResponse httpServletResponse) throws IOException {
+        if (StringUtils.isNotBlank(success)) {
             return Boolean.valueOf(success) ? validateSuccessPage : validateFailurePage;
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
