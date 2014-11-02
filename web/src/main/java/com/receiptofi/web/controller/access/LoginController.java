@@ -32,11 +32,11 @@ import javax.servlet.http.HttpServletRequest;
  * @since Dec 16, 2012 6:12:17 PM
  */
 @Controller
-@RequestMapping(value = "/login")
+@RequestMapping (value = "/login")
 public final class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${loginPage:login}")
+    @Value ("${loginPage:login}")
     private String loginPage;
 
     //private UserAgentStringParser parser;
@@ -57,7 +57,7 @@ public final class LoginController {
      * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
      * @info: OR you could just replace it in Form Request method getReceiptUser model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
      */
-    @ModelAttribute("userLoginForm")
+    @ModelAttribute ("userLoginForm")
     public UserLoginForm getUserLoginForm() {
         return UserLoginForm.newInstance();
     }
@@ -77,14 +77,14 @@ public final class LoginController {
      *
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping (method = RequestMethod.GET)
     public String loadForm(Locale locale, HttpServletRequest request) {
         DateTime time = DateUtil.now();
         LOG.info("Locale Type={}", locale);
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
         Cookie[] cookies = request.getCookies();
-        if(cookies != null && cookies.length > 0) {
+        if (cookies != null && cookies.length > 0) {
             Cookie cookie = cookies[0];
             String cookieId = cookie.getValue();
             String ip = getClientIpAddress(request);
@@ -105,22 +105,22 @@ public final class LoginController {
      */
     private String getClientIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
         }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-        if(ip == null) {
+        if (ip == null) {
             LOG.warn("IP Address found is NULL");
         }
         return ip;

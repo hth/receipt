@@ -23,7 +23,8 @@ public final class ItemAnalyticForm {
     private int days;
     private String message;
 
-    private ItemAnalyticForm() {}
+    private ItemAnalyticForm() {
+    }
 
     public static ItemAnalyticForm newInstance() {
         return new ItemAnalyticForm();

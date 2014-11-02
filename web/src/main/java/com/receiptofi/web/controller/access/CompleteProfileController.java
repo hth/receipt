@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Date: 5/10/14 10:31 AM
  */
 @Controller
-@RequestMapping(value = "/access/completeprofile")
+@RequestMapping (value = "/access/completeprofile")
 public final class CompleteProfileController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${maxSkipProfileUpdate:5}")
+    @Value ("${maxSkipProfileUpdate:5}")
     private int maxSkipProfileUpdate;
 
     /**
@@ -32,7 +32,7 @@ public final class CompleteProfileController {
      *
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping (method = RequestMethod.GET)
     public String completeProfile() {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -41,7 +41,7 @@ public final class CompleteProfileController {
     }
 
     //XXX TODO complete this to update profile; can skip max of 5 times should be configurable
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping (method = RequestMethod.POST)
     public String updateProfile() {
         return "redirect:/access/landing.htm";
     }

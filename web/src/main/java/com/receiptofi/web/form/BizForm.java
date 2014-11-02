@@ -29,7 +29,8 @@ public final class BizForm {
     private String bizSuccess;
 
     /** To make bean happy */
-    private BizForm() {}
+    private BizForm() {
+    }
 
     public static BizForm newInstance() {
         return new BizForm();
@@ -108,7 +109,7 @@ public final class BizForm {
     }
 
     public void setBizError(String bizError) {
-        if(StringUtils.isEmpty(this.bizError))  {
+        if (StringUtils.isEmpty(this.bizError)) {
             this.bizError = bizError;
         } else {
             this.bizError = this.bizError + ", " + bizError;
@@ -120,7 +121,7 @@ public final class BizForm {
     }
 
     public void setBizSuccess(String bizSuccess) {
-        if(StringUtils.isEmpty(this.bizSuccess)) {
+        if (StringUtils.isEmpty(this.bizSuccess)) {
             this.bizSuccess = bizSuccess;
         } else {
             this.bizSuccess = this.bizSuccess + ", " + bizSuccess;

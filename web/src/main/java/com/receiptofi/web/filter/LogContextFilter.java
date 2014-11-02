@@ -42,12 +42,12 @@ public class LogContextFilter implements Filter {
         String query = ((HttpServletRequest) req).getQueryString();
 
         LOG.info("Request received:"
-                + " Host=\"" + getHeader(headerMap, "host") + "\""
-                + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
-                + " Accept=\"" + getHeader(headerMap, "accept") + "\""
-                + " ForwardedFor=\"" + getHeader(headerMap, "x-forwarded-for") + "\""
-                + " Endpoint=\"" + extractEndpoint(url) + "\""
-                + " URL=\"" + url + (query == null ? "" : "?" + query) + "\""
+                        + " Host=\"" + getHeader(headerMap, "host") + "\""
+                        + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
+                        + " Accept=\"" + getHeader(headerMap, "accept") + "\""
+                        + " ForwardedFor=\"" + getHeader(headerMap, "x-forwarded-for") + "\""
+                        + " Endpoint=\"" + extractEndpoint(url) + "\""
+                        + " URL=\"" + url + (query == null ? "" : "?" + query) + "\""
         );
         chain.doFilter(req, res);
     }

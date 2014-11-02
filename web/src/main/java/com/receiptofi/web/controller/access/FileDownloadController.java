@@ -7,11 +7,11 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
-import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.apache.commons.io.FileUtils;

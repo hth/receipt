@@ -20,10 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author hitender
  * @since Mar 28, 2013 2:00:46 PM
- *
  */
 public abstract class BaseController {
-	private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private LoginService loginService;
@@ -39,10 +38,10 @@ public abstract class BaseController {
     }
 
     public UserProfileEntity authenticate(String profileId, String authKey) {
-        if(isValid(profileId, authKey)) {
+        if (isValid(profileId, authKey)) {
             UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(profileId);
             UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-            if(checkAuthKey(authKey, userAccountEntity)) {
+            if (checkAuthKey(authKey, userAccountEntity)) {
                 return userProfile;
             }
             return null;
@@ -51,7 +50,6 @@ public abstract class BaseController {
     }
 
     /**
-     *
      * @param authKey
      * @param userAccount
      * @return
@@ -62,6 +60,7 @@ public abstract class BaseController {
 
     /**
      * Validates if the Profile Id and Auth Key is not empty and valid as Object ID
+     *
      * @param profileId
      * @param authKey
      * @return
@@ -72,6 +71,7 @@ public abstract class BaseController {
 
     /**
      * Header for failure
+     *
      * @return
      */
     public Header getHeaderForProfileOrAuthFailure() {

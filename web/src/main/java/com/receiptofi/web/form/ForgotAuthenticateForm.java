@@ -12,7 +12,8 @@ public final class ForgotAuthenticateForm {
     private String receiptUserId;
     private String authenticationKey;
 
-    private ForgotAuthenticateForm() { }
+    private ForgotAuthenticateForm() {
+    }
 
     public static ForgotAuthenticateForm newInstance() {
         return new ForgotAuthenticateForm();

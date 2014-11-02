@@ -16,7 +16,8 @@ public final class PendingReceiptForm {
     List<ReceiptOCRHelper> pending = new ArrayList<>();
     List<ReceiptOCRHelper> rejected = new ArrayList<>();
 
-    private PendingReceiptForm() {}
+    private PendingReceiptForm() {
+    }
 
     public static PendingReceiptForm newInstance() {
         return new PendingReceiptForm();

@@ -12,7 +12,8 @@ public final class ForgotRecoverForm {
     private String emailId;
     private String captcha;
 
-    private ForgotRecoverForm() {}
+    private ForgotRecoverForm() {
+    }
 
     public static ForgotRecoverForm newInstance() {
         return new ForgotRecoverForm();

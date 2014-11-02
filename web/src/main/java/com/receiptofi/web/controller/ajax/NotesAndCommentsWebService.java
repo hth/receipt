@@ -22,49 +22,48 @@ import java.util.Map;
 
 /**
  * Update for all Ajax Calls
- *
  * User: hitender
  * Date: 7/22/13
  * Time: 8:57 PM
  */
 @Controller
-@RequestMapping(value = "/ws/nc")
+@RequestMapping (value = "/ws/nc")
 public final class NotesAndCommentsWebService {
-     private static final Logger LOG = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
     @Autowired private ReceiptService receiptService;
     @Autowired private MileageService mileageService;
 
-    @RequestMapping(value = "/rn", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody
-    boolean saveReceiptNotes(@RequestBody String body) throws IOException {
+    @RequestMapping (value = "/rn", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public boolean saveReceiptNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt notes updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateReceiptNotes(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
     }
 
-    @RequestMapping(value ="/mn", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody
-    boolean saveMileageNotes(@RequestBody String body) throws IOException {
+    @RequestMapping (value = "/mn", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public boolean saveMileageNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Note updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
         return mileageService.updateMileageNotes(TextInputScrubber.scrub(map.get("notes")), map.get("mileageId"), receiptUser.getRid());
     }
 
-    @RequestMapping(value = "/rc", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody
-    boolean saveReceiptRecheckComment(@RequestBody String body) throws IOException {
+    @RequestMapping (value = "/rc", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public boolean saveReceiptRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt recheck comment updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateReceiptComment(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
     }
 
-    @RequestMapping(value = "/dc", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody
-    boolean saveDocumentRecheckComment(@RequestBody String body) throws IOException {
+    @RequestMapping (value = "/dc", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public boolean saveDocumentRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Document recheck comment updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);

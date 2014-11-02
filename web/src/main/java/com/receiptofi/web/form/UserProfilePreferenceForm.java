@@ -29,7 +29,8 @@ public final class UserProfilePreferenceForm {
     private String errorMessage;
     private String successMessage;
 
-    private UserProfilePreferenceForm() {}
+    private UserProfilePreferenceForm() {
+    }
 
     public static UserProfilePreferenceForm newInstance() {
         return new UserProfilePreferenceForm();
@@ -89,7 +90,7 @@ public final class UserProfilePreferenceForm {
     }
 
     public void setErrorMessage(String errorMessage) {
-        if(StringUtils.isEmpty(this.errorMessage))  {
+        if (StringUtils.isEmpty(this.errorMessage)) {
             this.errorMessage = errorMessage;
         } else {
             this.errorMessage = this.errorMessage + ", " + errorMessage;
@@ -101,7 +102,7 @@ public final class UserProfilePreferenceForm {
     }
 
     public void setSuccessMessage(String successMessage) {
-        if(StringUtils.isEmpty(this.successMessage)) {
+        if (StringUtils.isEmpty(this.successMessage)) {
             this.successMessage = successMessage;
         } else {
             this.successMessage = this.successMessage + ", " + successMessage;

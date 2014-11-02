@@ -40,7 +40,7 @@ import java.util.Set;
  * Time: 4:22 PM
  */
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping (value = "/admin")
 public final class BusinessController {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessController.class);
     private static final String NEXT_PAGE = "/admin/business";
@@ -52,8 +52,8 @@ public final class BusinessController {
     @Autowired private BizValidator bizValidator;
     @Autowired private BizSearchValidator bizSearchValidator;
 
-    @RequestMapping(value = "/business", method = RequestMethod.GET)
-    public ModelAndView loadSearchForm(@ModelAttribute("bizForm") BizForm bizForm, Model model) {
+    @RequestMapping (value = "/business", method = RequestMethod.GET)
+    public ModelAndView loadSearchForm(@ModelAttribute ("bizForm") BizForm bizForm, Model model) {
 
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
@@ -63,17 +63,17 @@ public final class BusinessController {
         return new ModelAndView(NEXT_PAGE);
     }
 
-    @RequestMapping(value = "/business/edit", method = RequestMethod.GET)
+    @RequestMapping (value = "/business/edit", method = RequestMethod.GET)
     public ModelAndView editStore(
-            @RequestParam("nameId") String nameId,
-            @RequestParam("storeId") String storeId,
-            @ModelAttribute("bizForm") BizForm bizForm
+            @RequestParam ("nameId") String nameId,
+            @RequestParam ("storeId") String storeId,
+            @ModelAttribute ("bizForm") BizForm bizForm
     ) {
         ModelAndView modelAndView = new ModelAndView(EDIT_PAGE);
         BizNameEntity bizNameEntity = bizService.findName(nameId);
         bizForm.setBizNameEntity(bizNameEntity);
 
-        if(StringUtils.isNotEmpty(storeId)) {
+        if (StringUtils.isNotEmpty(storeId)) {
             BizStoreEntity bizStoreEntity = bizService.findStore(storeId);
             bizForm.setBizStore(bizStoreEntity);
         }
@@ -87,7 +87,7 @@ public final class BusinessController {
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "reset")
+    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "reset")
     public String reset(RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", BizForm.newInstance());
@@ -98,20 +98,19 @@ public final class BusinessController {
 
     /**
      * Edit Biz Name and or Biz Address, Phone.
-     *
      * No validation is performed.
      *
      * @param bizForm
      * @return
      */
-    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "edit")
-    public String editBiz(@ModelAttribute("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
+    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "edit")
+    public String editBiz(@ModelAttribute ("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStoreEntity;
-        if(StringUtils.isNotEmpty(bizForm.getAddressId())) {
+        if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
             bizStoreEntity = bizService.findStore(bizForm.getAddressId());
             bizStoreEntity.setAddress(bizForm.getAddress());
             bizStoreEntity.setPhone(bizForm.getPhone());
@@ -129,13 +128,13 @@ public final class BusinessController {
         }
 
         BizNameEntity bizNameEntity;
-        if(StringUtils.isNotEmpty(bizForm.getNameId())) {
+        if (StringUtils.isNotEmpty(bizForm.getNameId())) {
             bizNameEntity = bizService.findName(bizForm.getNameId());
             bizNameEntity.setBusinessName(bizForm.getBusinessName());
             try {
                 bizService.saveName(bizNameEntity);
                 LOG.info("Business '" + bizNameEntity.getBusinessName() + "' updated successfully");
-            } catch(Exception e) {
+            } catch (Exception e) {
                 LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
 
@@ -156,14 +155,13 @@ public final class BusinessController {
     /**
      * Delete Biz Name and or Biz Address, Phone. when there are no active or inactive receipts referring to any of the
      * stores.
-     *
      * No validation is performed.
      *
      * @param bizForm
      * @return
      */
-    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "delete_store")
-    public String deleteBizStore(@ModelAttribute("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
+    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "delete_store")
+    public String deleteBizStore(@ModelAttribute ("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -171,20 +169,20 @@ public final class BusinessController {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStoreEntity;
-        if(StringUtils.isNotEmpty(bizForm.getAddressId())) {
+        if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
             bizStoreEntity = bizService.findStore(bizForm.getAddressId());
             BizNameEntity bizNameEntity = bizStoreEntity.getBizName();
 
             Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
             bizStoreEntities.add(bizStoreEntity);
             bizForm.setReceiptCount(bizService.countReceiptForBizStore(bizStoreEntities));
-            if(bizForm.getReceiptCount().get(bizStoreEntity.getId()) == 0) {
+            if (bizForm.getReceiptCount().get(bizStoreEntity.getId()) == 0) {
                 bizService.deleteBizStore(bizStoreEntity);
                 bizForm.setBizSuccess("Deleted store successfully");
                 LOG.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user={}", receiptUser.getRid());
 
                 //To make sure no orphan biz name are lingering around
-                if(bizService.countReceiptForBizName(bizNameEntity) == 0) {
+                if (bizService.countReceiptForBizName(bizNameEntity) == 0) {
                     bizService.deleteBizName(bizNameEntity);
                     bizForm.setBizSuccess("Deleted biz name successfully");
                     LOG.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user={}", receiptUser.getRid());
@@ -203,13 +201,12 @@ public final class BusinessController {
     }
 
     /**
-     *
      * @param bizForm
      * @param result
      * @return
      */
-    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "add")
-    public String addBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
+    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "add")
+    public String addBiz(@ModelAttribute ("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
@@ -245,7 +242,7 @@ public final class BusinessController {
             try {
                 bizService.saveNewBusinessAndOrStore(receiptEntity);
                 bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getBusinessName() + "' added successfully");
-            } catch(Exception e) {
+            } catch (Exception e) {
                 LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
 
@@ -254,7 +251,7 @@ public final class BusinessController {
                 return "redirect:" + NEXT_PAGE + ".htm";
             }
 
-            if(receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
+            if (receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
                 redirectAttrs.addFlashAttribute("bizStore", receiptEntity.getBizStore());
                 bizForm.setLast10BizStore(bizService.getAllStoresForBusinessName(receiptEntity));
             } else {
@@ -274,8 +271,8 @@ public final class BusinessController {
      * @param result
      * @return
      */
-    @RequestMapping(value = "/business", method = RequestMethod.POST, params = "search")
-    public String searchBiz(@ModelAttribute("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
+    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "search")
+    public String searchBiz(@ModelAttribute ("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
 
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);

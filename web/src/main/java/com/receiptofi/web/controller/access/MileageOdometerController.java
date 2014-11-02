@@ -32,21 +32,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Date: 1/13/14 8:25 AM
  */
 @Controller
-@RequestMapping(value = "/access/modv")
+@RequestMapping (value = "/access/modv")
 public final class MileageOdometerController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private MileageService mileageService;
 
-    @Value("${MODEL_VIEW:/mileage}")
+    @Value ("${MODEL_VIEW:/mileage}")
     private String NEXT_PAGE;
 
-    @RequestMapping(value = "/{mileageId}", method = RequestMethod.GET)
+    @RequestMapping (value = "/{mileageId}", method = RequestMethod.GET)
     public ModelAndView loadForm(
             @PathVariable
             String mileageId,
 
-            @ModelAttribute("mileageForm")
+            @ModelAttribute ("mileageForm")
             MileageForm mileageForm,
 
             Model model
@@ -66,7 +66,7 @@ public final class MileageOdometerController {
             mileageForm.setMileage(mileageEntity);
         } else {
             MileageEntity mileageEntity = mileageService.getMileage(mileageId, receiptUser.getRid());
-            if(mileageEntity == null) {
+            if (mileageEntity == null) {
                 //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
                 //Possible condition of bookmark or trying to gain access to some unknown receipt
                 LOG.warn("rid={}, tried submitting an invalid mileage id={}", receiptUser.getRid(), mileageId);
@@ -81,9 +81,9 @@ public final class MileageOdometerController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST, params="delete")
+    @RequestMapping (method = RequestMethod.POST, params = "delete")
     public ModelAndView delete(
-            @ModelAttribute("mileageForm")
+            @ModelAttribute ("mileageForm")
             MileageForm mileageForm,
 
             BindingResult result,
@@ -95,7 +95,7 @@ public final class MileageOdometerController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            if(!mileageService.deleteHardMileage(mileageForm.getMileage().getId(), receiptUser.getRid())) {
+            if (!mileageService.deleteHardMileage(mileageForm.getMileage().getId(), receiptUser.getRid())) {
                 redirectAttrs.addFlashAttribute("result", result);
 
                 mileageForm.setErrorMessage("Delete request failed to execute");
@@ -104,7 +104,7 @@ public final class MileageOdometerController {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in deleting mileage");
                 return new ModelAndView("redirect:/access/modv/" + mileageForm.getMileage().getId() + ".htm");
             }
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             LOG.error("Error occurred during receipt delete: Receipt Id: " + mileageForm.getMileage().getId() + ", error message: " + exce.getLocalizedMessage());
             result.rejectValue("errorMessage", StringUtils.EMPTY, "Delete request failed to execute");
             redirectAttrs.addFlashAttribute("result", result);
@@ -123,9 +123,9 @@ public final class MileageOdometerController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST, params="split")
+    @RequestMapping (method = RequestMethod.POST, params = "split")
     public ModelAndView split(
-            @ModelAttribute("mileageForm")
+            @ModelAttribute ("mileageForm")
             MileageForm mileageForm,
 
             BindingResult result,
@@ -136,7 +136,7 @@ public final class MileageOdometerController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             mileageService.split(mileageForm.getMileage().getId(), receiptUser.getRid());
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             LOG.error("Error occurred during splitting mileage: Mileage={}, reason={}", mileageForm.getMileage().getId(), exce.getLocalizedMessage(), exce);
             result.rejectValue("errorMessage", StringUtils.EMPTY, exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
