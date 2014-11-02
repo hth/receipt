@@ -62,4 +62,3 @@ public class MobileApiFilter implements Filter {
         LOG.info("Api filter destroyed");
     }
 }
-
