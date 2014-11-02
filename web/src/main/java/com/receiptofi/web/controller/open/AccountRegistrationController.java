@@ -111,11 +111,12 @@ public final class AccountRegistrationController {
 
         UserAccountEntity userAccount;
         try {
-            userAccount = accountService.executeCreationOfNewAccount(
+            userAccount = accountService.createNewAccount(
                     userRegistrationForm.getEmailId(),
                     userRegistrationForm.getFirstName(),
                     userRegistrationForm.getLastName(),
-                    userRegistrationForm.getPassword()
+                    userRegistrationForm.getPassword(),
+                    userRegistrationForm.getBirthday()
             );
         } catch (RuntimeException exce) {
             LOG.error(exce.getLocalizedMessage());

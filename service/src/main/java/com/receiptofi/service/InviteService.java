@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 public final class InviteService {
     private static Logger LOG = LoggerFactory.getLogger(InviteService.class);
 
-    private final AccountService accountService;
-    private final InviteManager inviteManager;
-    private final UserProfileManager userProfileManager;
-    private final UserAccountManager userAccountManager;
+    private AccountService accountService;
+    private InviteManager inviteManager;
+    private UserProfileManager userProfileManager;
+    private UserAccountManager userAccountManager;
 
     @Autowired
     public InviteService(
@@ -73,11 +73,12 @@ public final class InviteService {
         UserAccountEntity userAccount;
         try {
             //First save is performed
-            userAccount = accountService.executeCreationOfNewAccount(
+            userAccount = accountService.createNewAccount(
                     invitedUserEmail,
                     StringUtils.EMPTY,
                     StringUtils.EMPTY,
-                    RandomString.newInstance(8).nextString()
+                    RandomString.newInstance(8).nextString(),
+                    StringUtils.EMPTY
             );
         } catch (RuntimeException e) {
             LOG.error("Error occurred during creation of invited user reason={}", e.getLocalizedMessage(), e);
