@@ -59,6 +59,19 @@ public final class BizStoreEntity extends BaseEntity {
     }
 
     /**
+     * Strip all the characters other than number
+     *
+     * @param phone
+     * @return
+     */
+    public static String phoneCleanup(String phone) {
+        if (StringUtils.isNotEmpty(phone)) {
+            return phone.replaceAll("[^0-9]", StringUtils.EMPTY);
+        }
+        return phone;
+    }
+
+    /**
      * For web display of the address
      *
      * @return
@@ -84,10 +97,6 @@ public final class BizStoreEntity extends BaseEntity {
         return phone;
     }
 
-    public String getPhoneFormatted() {
-        return Formatter.phone(phone);
-    }
-
     /**
      * Remove everything other than numbers. Do the formatting on client side
      *
@@ -99,6 +108,10 @@ public final class BizStoreEntity extends BaseEntity {
         } else {
             this.phone = phoneCleanup(phone);
         }
+    }
+
+    public String getPhoneFormatted() {
+        return Formatter.phone(phone);
     }
 
     public double getLat() {
@@ -123,18 +136,5 @@ public final class BizStoreEntity extends BaseEntity {
 
     public void setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
-    }
-
-    /**
-     * Strip all the characters other than number
-     *
-     * @param phone
-     * @return
-     */
-    public static String phoneCleanup(String phone) {
-        if (StringUtils.isNotEmpty(phone)) {
-            return phone.replaceAll("[^0-9]", StringUtils.EMPTY);
-        }
-        return phone;
     }
 }

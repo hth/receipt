@@ -70,12 +70,12 @@ public final class NotificationEntity extends BaseEntity {
         return notified;
     }
 
-    public void markAsNotified() {
-        setNotified(true);
-    }
-
     public void setNotified(boolean notified) {
         this.notified = notified;
+    }
+
+    public void markAsNotified() {
+        setNotified(true);
     }
 
     public NotificationTypeEnum getNotificationType() {

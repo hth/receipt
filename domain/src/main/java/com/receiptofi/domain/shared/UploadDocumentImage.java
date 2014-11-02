@@ -57,6 +57,10 @@ public final class UploadDocumentImage {
         return file;
     }
 
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     /**
      * File condition takes precedent over MultipartFile.
      * Note: When file is populated then code should give precedent to it otherwise MultipartFile fileData is default.
@@ -65,10 +69,6 @@ public final class UploadDocumentImage {
      */
     public boolean containsFile() {
         return file != null;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     public String getOriginalFileName() {

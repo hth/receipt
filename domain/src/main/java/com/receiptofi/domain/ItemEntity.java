@@ -84,10 +84,6 @@ public final class ItemEntity extends BaseEntity {
     public ItemEntity() {
     }
 
-    public static ItemEntity newInstance() {
-        return new ItemEntity();
-    }
-
     private ItemEntity(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
         super();
         this.name = name;
@@ -97,6 +93,10 @@ public final class ItemEntity extends BaseEntity {
         this.userProfileId = userProfileId;
         this.sequence = sequence;
         this.receiptDate = receipt.getReceiptDate();
+    }
+
+    public static ItemEntity newInstance() {
+        return new ItemEntity();
     }
 
     /**

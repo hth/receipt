@@ -97,15 +97,15 @@ public final class DocumentEntity extends BaseEntity {
         return fileSystemEntities;
     }
 
+    public void setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
+        this.fileSystemEntities = fileSystemEntities;
+    }
+
     public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
         if (this.fileSystemEntities == null) {
             this.fileSystemEntities = new ArrayList<>();
         }
         this.fileSystemEntities.add(receiptBlobId);
-    }
-
-    public void setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
-        this.fileSystemEntities = fileSystemEntities;
     }
 
     public String getReceiptDate() {

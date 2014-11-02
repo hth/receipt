@@ -18,6 +18,14 @@ import org.hibernate.validator.constraints.Email;
 @Document (collection = "MESSAGE_DOCUMENT")
 public final class MessageDocumentEntity extends BaseEntity {
 
+    @Email
+    @Field ("EM")
+    String emailId;
+
+    @NotNull
+    @Field ("USER_PROFILE_ID")
+    String userProfileId;
+
     //TODO change to document id
     @NotNull
     @Field ("RECEIPT_OCR_ID")
@@ -27,14 +35,6 @@ public final class MessageDocumentEntity extends BaseEntity {
     @Field ("USER_LEVEL_ENUM")
     private UserLevelEnum level = UserLevelEnum.USER;
 
-    @Email
-    @Field ("EM")
-    String emailId;
-
-    @NotNull
-    @Field ("USER_PROFILE_ID")
-    String userProfileId;
-
     @NotNull
     @Field ("LOCKED")
     private boolean recordLocked = false;
@@ -43,6 +43,7 @@ public final class MessageDocumentEntity extends BaseEntity {
     @Field ("DS_E")
     private DocumentStatusEnum documentStatus;
 
+    @SuppressWarnings("unused")
     private MessageDocumentEntity() {
     }
 
