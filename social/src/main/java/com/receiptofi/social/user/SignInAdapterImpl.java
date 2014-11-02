@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Component
-@Profile(value = "DEV")
+@Profile (value = "DEV")
 @Social
 public final class SignInAdapterImpl implements SignInAdapter {
     private static final Logger LOG = LoggerFactory.getLogger(SignInAdapterImpl.class);
@@ -54,7 +54,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
 
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
         UserDetails user;
-        if(localUserId.contains("@")) {
+        if (localUserId.contains("@")) {
             LOG.info("signin in user={} from receiptofi login page", localUserId);
             user = customUserDetailsService.loadUserByUsername(StringUtils.lowerCase(localUserId));
         } else {
@@ -70,9 +70,9 @@ public final class SignInAdapterImpl implements SignInAdapter {
 
     private void userSignedInUsingProvider(String localUserId, NativeWebRequest request) {
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
-        if(servletWebRequest.getRequest().getRequestURI().contains(ProviderEnum.FACEBOOK.name().toLowerCase())) {
+        if (servletWebRequest.getRequest().getRequestURI().contains(ProviderEnum.FACEBOOK.name().toLowerCase())) {
             LOG.info("signin in user={} provider={}", localUserId, ProviderEnum.FACEBOOK);
-        } else if(servletWebRequest.getRequest().getRequestURI().contains(ProviderEnum.GOOGLE.name().toLowerCase())) {
+        } else if (servletWebRequest.getRequest().getRequestURI().contains(ProviderEnum.GOOGLE.name().toLowerCase())) {
             LOG.info("signin in user={} provider={}", localUserId, ProviderEnum.GOOGLE);
         }
     }
@@ -82,16 +82,16 @@ public final class SignInAdapterImpl implements SignInAdapter {
         HttpServletResponse nativeRes = request.getNativeResponse(HttpServletResponse.class);
         SavedRequest saved = requestCache.getRequest(nativeReq, nativeRes);
 
-        if(registrationConfig.checkRegistrationIsTurnedOn(user)) {
+        if (registrationConfig.checkRegistrationIsTurnedOn(user)) {
             return registrationConfig.getIndexController();
         }
 
-        if(isProfileNotComplete(user)) {
+        if (isProfileNotComplete(user)) {
             LOG.info("profile not complete, user={}", user.getUsername());
             return completeProfileController;
         }
 
-        if(saved == null) {
+        if (saved == null) {
             return null;
         }
 
@@ -101,7 +101,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
     }
 
     private void removeAuthenticationAttributes(HttpSession session) {
-        if(session == null) {
+        if (session == null) {
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);

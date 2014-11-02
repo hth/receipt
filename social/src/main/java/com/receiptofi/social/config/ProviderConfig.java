@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Social
 public class ProviderConfig {
 
-    @Value("${populate.social.friend.on:false}")
+    @Value ("${populate.social.friend.on:false}")
     private boolean populateSocialFriendOn;
 
     public boolean isPopulateSocialFriendOn() {

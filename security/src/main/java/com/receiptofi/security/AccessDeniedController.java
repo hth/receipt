@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Date: 3/30/14 1:28 AM
  */
 @Controller
-@RequestMapping(value = "/access")
+@RequestMapping (value = "/access")
 public class AccessDeniedController {
     private static final Logger LOG = LoggerFactory.getLogger(AccessDeniedController.class);
 
@@ -23,8 +23,8 @@ public class AccessDeniedController {
      *
      * @return the name of the JSP page
      */
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(value = "/denied", method = RequestMethod.GET)
+    @PreAuthorize ("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (value = "/denied", method = RequestMethod.GET)
     public String getDeniedPage() {
         LOG.debug("Received request to show denied page");
         return "denied";

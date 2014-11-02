@@ -63,7 +63,7 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
         ProviderEnum providerId = ProviderEnum.valueOf(connection.getKey().getProviderId().toUpperCase());
         List<String> result = connectionService.getUserIds(providerId, connection.getKey().getProviderUserId());
 
-        if(result == null || result.size() == 0) {
+        if (result == null || result.size() == 0) {
             connectionService.create(connection.getKey().getProviderUserId(), connection);
             result = new ArrayList<String>() {{
                 add(connection.getKey().getProviderUserId());
@@ -78,7 +78,7 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
     }
 
     public ConnectionRepository createConnectionRepository(String userId) {
-        if(userId == null) {
+        if (userId == null) {
             throw new IllegalArgumentException("userId cannot be null");
         }
         return new MongoConnectionRepository(userId, connectionService, connectionFactoryLocator, textEncryptor);

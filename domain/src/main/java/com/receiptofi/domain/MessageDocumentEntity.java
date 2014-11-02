@@ -43,7 +43,7 @@ public final class MessageDocumentEntity extends BaseEntity {
     @Field ("DS_E")
     private DocumentStatusEnum documentStatus;
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     private MessageDocumentEntity() {
     }
 

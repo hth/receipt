@@ -37,16 +37,16 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
 public class SocialConfig {
     private static final Logger LOG = LoggerFactory.getLogger(SocialConfig.class);
 
-    @Value("${facebook.client.id}")
+    @Value ("${facebook.client.id}")
     private String facebookClientId;
 
-    @Value("${facebook.client.secret}")
+    @Value ("${facebook.client.secret}")
     private String facebookClientSecret;
 
-    @Value("${google.client.id}")
+    @Value ("${google.client.id}")
     private String googleClientId;
 
-    @Value("${google.client.secret}")
+    @Value ("${google.client.secret}")
     private String googleClientSecret;
 
     @Autowired
@@ -60,10 +60,11 @@ public class SocialConfig {
 
     /**
      * When a new provider is added to the app, register its {@link org.springframework.social.connect.ConnectionFactory} here.
+     *
      * @see org.springframework.social.google.connect.GoogleConnectionFactory
      */
     @Bean
-    @Scope(value = "singleton", proxyMode = ScopedProxyMode.INTERFACES)
+    @Scope (value = "singleton", proxyMode = ScopedProxyMode.INTERFACES)
     public ConnectionFactoryLocator connectionFactoryLocator() {
         LOG.info("Initializing connectionFactoryLocator");
         ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
