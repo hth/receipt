@@ -43,20 +43,20 @@ import javax.servlet.http.HttpServletResponse;
  * @since Dec 24, 2012 3:13:26 PM
  */
 @Controller
-@RequestMapping(value = "/open/registration")
+@RequestMapping (value = "/open/registration")
 public final class AccountRegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
 
-    @Value("${registrationPage:registration}")
+    @Value ("${registrationPage:registration}")
     private String registrationPage;
 
-    @Value("${registrationSuccess:redirect:/open/registration/success.htm}")
+    @Value ("${registrationSuccess:redirect:/open/registration/success.htm}")
     private String registrationSuccess;
 
-    @Value("${registrationSuccessPage:registrationsuccess}")
+    @Value ("${registrationSuccessPage:registrationsuccess}")
     private String registrationSuccessPage;
 
-    @Value("${recover:redirect:/open/forgot/recover.htm}")
+    @Value ("${recover:redirect:/open/forgot/recover.htm}")
     private String recover;
 
     private final UserRegistrationValidator userRegistrationValidator;
@@ -76,28 +76,34 @@ public final class AccountRegistrationController {
         this.emailValidateService = emailValidateService;
     }
 
-    @ModelAttribute("userRegistrationForm")
+    @ModelAttribute ("userRegistrationForm")
     public UserRegistrationForm getUserRegistrationForm() {
         return UserRegistrationForm.newInstance();
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping (method = RequestMethod.GET)
     public String loadForm() {
         LOG.debug("New Account Registration invoked");
         return registrationPage;
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = {"signup"})
-    public String post(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, RedirectAttributes redirectAttrs, BindingResult result) {
+    @RequestMapping (method = RequestMethod.POST, params = {"signup"})
+    public String post(
+            @ModelAttribute ("userRegistrationForm")
+            UserRegistrationForm userRegistrationForm,
+
+            RedirectAttributes redirectAttrs,
+            BindingResult result
+    ) {
         DateTime time = DateUtil.now();
         userRegistrationValidator.validate(userRegistrationForm, result);
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
             return registrationPage;
         }
 
         UserProfileEntity userProfile = accountService.doesUserExists(userRegistrationForm.getEmailId());
-        if(userProfile != null) {
+        if (userProfile != null) {
             userRegistrationValidator.accountExists(userRegistrationForm, result);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "account exists");
             return registrationPage;
@@ -129,14 +135,15 @@ public final class AccountRegistrationController {
 
     /**
      * Starts the account recovery process
+     *
      * @param email
      * @param httpServletResponse
      * @return
      * @throws IOException
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/success")
-    public String success(@ModelAttribute("email") String email, HttpServletResponse httpServletResponse) throws IOException {
-        if(StringUtils.isNotBlank(email)) {
+    @RequestMapping (method = RequestMethod.GET, value = "/success")
+    public String success(@ModelAttribute ("email") String email, HttpServletResponse httpServletResponse) throws IOException {
+        if (StringUtils.isNotBlank(email)) {
             return registrationSuccessPage;
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -146,23 +153,25 @@ public final class AccountRegistrationController {
 
     /**
      * Starts the account recovery process
+     *
      * @param userRegistrationForm
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, params = {"recover"})
-    public String recover(@ModelAttribute("userRegistrationForm") UserRegistrationForm userRegistrationForm, RedirectAttributes redirectAttrs) {
+    @RequestMapping (method = RequestMethod.POST, params = {"recover"})
+    public String recover(@ModelAttribute ("userRegistrationForm") UserRegistrationForm userRegistrationForm, RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("userRegistrationForm", userRegistrationForm);
         return recover;
     }
 
     /**
      * Ajax call to check if the account is available to register.
+     *
      * @param body
      * @return
      * @throws IOException
      */
-    @RequestMapping(
+    @RequestMapping (
             value = "/availability",
             method = RequestMethod.POST,
             headers = "Accept=application/json",
@@ -172,11 +181,11 @@ public final class AccountRegistrationController {
     @ResponseBody
     String getAvailability(@RequestBody String body) throws IOException {
         DateTime time = DateUtil.now();
-        String email =  StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("email"));
+        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("email"));
         AvailabilityStatus availabilityStatus;
 
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);
-        if(userProfileEntity != null && userProfileEntity.getEmail().equals(email)) {
+        if (userProfileEntity != null && userProfileEntity.getEmail().equals(email)) {
             LOG.info("Email={} provided during registration exists", email);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             availabilityStatus = AvailabilityStatus.notAvailable(email);

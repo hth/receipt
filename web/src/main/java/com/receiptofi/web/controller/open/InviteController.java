@@ -10,9 +10,9 @@ import com.receiptofi.service.InviteService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
-import com.receiptofi.web.util.HttpRequestResponseParser;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.form.InviteAuthenticateForm;
+import com.receiptofi.web.util.HttpRequestResponseParser;
 import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.InviteAuthenticateValidator;
 
