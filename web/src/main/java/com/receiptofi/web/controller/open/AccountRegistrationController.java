@@ -178,9 +178,8 @@ public final class AccountRegistrationController {
             headers = "Accept=application/json",
             produces = "application/json"
     )
-    public
     @ResponseBody
-    String getAvailability(@RequestBody String body) throws IOException {
+    public String getAvailability(@RequestBody String body) throws IOException {
         DateTime time = DateUtil.now();
         String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("email"));
         AvailabilityStatus availabilityStatus;
