@@ -36,7 +36,7 @@ public final class UserRegistrationValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[]{"Last Name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email ID"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthday", "field.required", new Object[]{"Birthday"});
+        //ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthday", "field.required", new Object[]{"Birthday"});
 
         UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
         if (userRegistration.getFirstName().length() < 4) {
@@ -67,7 +67,7 @@ public final class UserRegistrationValidator implements Validator {
                     "Minimum length of four characters");
         }
 
-        if (!userRegistration.getBirthday().matches(BIRTHDAY_REGEX)) {
+        if (userRegistration.getBirthday().length() > 0 && !userRegistration.getBirthday().matches(BIRTHDAY_REGEX)) {
             errors.rejectValue("birthday",
                     "field.birthday.not.valid",
                     new Object[]{userRegistration.getBirthday()},
