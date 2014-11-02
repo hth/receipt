@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
 @Mobile
 @Document (collection = "REGISTERED_DEVICE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "registered_device_idx",    def = "{'RID': -1, 'DID': -1}", unique = true)
-} )
+        @CompoundIndex (name = "registered_device_idx", def = "{'RID': -1, 'DID': -1}", unique = true)
+})
 public class RegisteredDeviceEntity extends BaseEntity {
 
     @NotNull

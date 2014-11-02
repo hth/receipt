@@ -15,23 +15,24 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 6/11/13
  * Time: 3:22 AM
  */
-@Document(collection = "COMMENT")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "comment_idx", def = "{'ID': 1}"),
-} )
+@Document (collection = "COMMENT")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "comment_idx", def = "{'ID': 1}"),
+})
 public final class CommentEntity extends BaseEntity {
 
     //XXX TODO @Value annotation is not working, find why
-    @Value("${textLength:250}")
+    @Value ("${textLength:250}")
     private int textLength = 250;
 
-    @Field("T")
+    @Field ("T")
     private String text;
 
-    @Field("CT_E")
+    @Field ("CT_E")
     private CommentTypeEnum commentType;
 
-    public CommentEntity() {}
+    public CommentEntity() {
+    }
 
     public static CommentEntity newInstance(CommentTypeEnum commentType) {
         CommentEntity commentEntity = new CommentEntity();

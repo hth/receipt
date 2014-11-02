@@ -41,7 +41,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public void save(BizStoreEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
@@ -64,7 +64,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
         Query query = query(where("ADDRESS").is(bizStoreEntity.getAddress()));
 
-        if(StringUtils.isNotEmpty(bizStoreEntity.getPhone())) {
+        if (StringUtils.isNotEmpty(bizStoreEntity.getPhone())) {
             query.addCriteria(where("PHONE").is(bizStoreEntity.getPhone()));
         }
 
@@ -74,14 +74,14 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
         Criteria criteriaA = new Criteria();
-        if(StringUtils.isNotEmpty(bizAddress)) {
+        if (StringUtils.isNotEmpty(bizAddress)) {
             criteriaA.and("ADDRESS").regex(bizAddress, "i");
         }
-        if(StringUtils.isNotEmpty(bizPhone)) {
+        if (StringUtils.isNotEmpty(bizPhone)) {
             criteriaA.and("PHONE").regex(bizPhone, "i");
         }
 
-        if(bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
+        if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
             return mongoTemplate.find(query(criteriaB).addCriteria(criteriaA).limit(STORE_LIMIT), BizStoreEntity.class, TABLE);
         } else {
@@ -92,21 +92,21 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
         Query query = null;
-        if(StringUtils.isNotEmpty(bizAddress)) {
+        if (StringUtils.isNotEmpty(bizAddress)) {
             query = query(where("ADDRESS").regex("^" + bizAddress, "i"));
         }
-        if(StringUtils.isNotEmpty(bizPhone)) {
+        if (StringUtils.isNotEmpty(bizPhone)) {
             Criteria criteria = where("PHONE").regex("^" + bizPhone, "i");
-            if(query == null) {
+            if (query == null) {
                 query = query(criteria);
             } else {
                 query.addCriteria(criteria);
             }
         }
 
-        if(bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
+        if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
             Criteria criteriaA = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-            if(query == null) {
+            if (query == null) {
                 query = query(criteriaA);
             } else {
                 query.addCriteria(criteriaA);
@@ -118,7 +118,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
         Query query;
-        if(StringUtils.isBlank(bizAddress)) {
+        if (StringUtils.isBlank(bizAddress)) {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
             query = query(criteriaB);
@@ -135,7 +135,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
         Query query;
-        if(StringUtils.isBlank(bizPhone)) {
+        if (StringUtils.isBlank(bizPhone)) {
             Criteria criteriaB = where("ADDRESS").is(bizAddress);
             Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 

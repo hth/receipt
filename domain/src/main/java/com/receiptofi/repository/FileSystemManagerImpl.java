@@ -40,7 +40,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public void save(FileSystemEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
@@ -57,7 +57,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     }
 
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
-        for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
+        for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
             deleteHard(fileSystemEntity);
         }
     }
@@ -71,7 +71,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     }
 
     public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {
-        for(FileSystemEntity fileSystemEntity : fileSystemEntities) {
+        for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
             deleteSoft(fileSystemEntity);
         }
     }

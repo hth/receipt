@@ -27,44 +27,44 @@ import java.util.List;
  */
 @Repository
 public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
-	private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(UserAuthenticationEntity.class, Document.class, "collection");
 
-	private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     public UserAuthenticationManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
-	@Override
-	public List<UserAuthenticationEntity> getAllObjects() {
-		return mongoTemplate.findAll(UserAuthenticationEntity.class, TABLE);
-	}
+    @Override
+    public List<UserAuthenticationEntity> getAllObjects() {
+        return mongoTemplate.findAll(UserAuthenticationEntity.class, TABLE);
+    }
 
-	@Override
-	public void save(UserAuthenticationEntity object) {
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-		try {
-            if(object.getId() != null) {
+    @Override
+    public void save(UserAuthenticationEntity object) {
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+        try {
+            if (object.getId() != null) {
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);
-		} catch (DataIntegrityViolationException e) {
-			LOG.error("Duplicate record entry for UserAuthenticationEntity:{} {}", e.getLocalizedMessage(), e);
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Duplicate record entry for UserAuthenticationEntity:{} {}", e.getLocalizedMessage(), e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
-	@Override
-	public UserAuthenticationEntity findOne(String id) {
-		return mongoTemplate.findOne(query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
-	}
+    @Override
+    public UserAuthenticationEntity findOne(String id) {
+        return mongoTemplate.findOne(query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
+    }
 
-	@Override
-	public void deleteHard(UserAuthenticationEntity object) {
-		mongoTemplate.remove(object, TABLE);
-	}
+    @Override
+    public void deleteHard(UserAuthenticationEntity object) {
+        mongoTemplate.remove(object, TABLE);
+    }
 
     @Override
     public long collectionSize() {

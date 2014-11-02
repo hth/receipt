@@ -49,7 +49,7 @@ public final class MessageManagerImpl implements MessageManager {
             }}
     );
 
-    @Value("${messageQueryLimit:10}")
+    @Value ("${messageQueryLimit:10}")
     private int messageQueryLimit;
 
     @Autowired private MongoTemplate mongoTemplate;
@@ -95,7 +95,7 @@ public final class MessageManagerImpl implements MessageManager {
 //                .append("DS_E", "OCR_PROCESSED");
 
         List<MessageDocumentEntity> list = findWithLimit(status);
-        for(MessageDocumentEntity object : list) {
+        for (MessageDocumentEntity object : list) {
             object.setEmailId(emailId);
             object.setUserProfileId(userProfileId);
             object.setRecordLocked(true);
@@ -133,7 +133,7 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public void save(MessageDocumentEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
         }
         mongoTemplate.save(object, TABLE);

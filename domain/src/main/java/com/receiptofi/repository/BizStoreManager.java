@@ -31,6 +31,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @return
      */
     List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity);
+
     List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity);
 
     /**
@@ -58,7 +59,6 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @param bizNameEntity
      * @param limit
      * @return
-     *
      * @deprecated replaced by findAllWithStartingAddressStartingPhone
      */
     @Deprecated

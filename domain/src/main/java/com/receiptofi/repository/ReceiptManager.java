@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * @author hitender
  * @since Dec 26, 2012 3:09:48 PM
- *
  */
 public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
@@ -41,6 +40,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
     /**
      * Find all receipts with BizName for the user
+     *
      * @param bizNameEntity
      * @param userProfileId
      * @return
@@ -53,7 +53,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param userProfileId
      * @return
      */
-	List<ReceiptEntity> getAllReceipts(String userProfileId);
+    List<ReceiptEntity> getAllReceipts(String userProfileId);
 
     /**
      * Get receipts only the selected year
@@ -62,7 +62,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param startOfTheYear
      * @return
      */
-	List<ReceiptEntity> getAllReceiptsForTheYear(String userProfileId, DateTime startOfTheYear);
+    List<ReceiptEntity> getAllReceiptsForTheYear(String userProfileId, DateTime startOfTheYear);
 
     /**
      * Gets user receipts for current month

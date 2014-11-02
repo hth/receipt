@@ -49,7 +49,7 @@ public final class ExpenseTagManagerImpl implements ExpenseTagManager {
     @Override
     public void save(ExpenseTagEntity object) {
         try {
-            if(object.getId() != null) {
+            if (object.getId() != null) {
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);
@@ -82,10 +82,10 @@ public final class ExpenseTagManagerImpl implements ExpenseTagManager {
     public List<ExpenseTagEntity> activeExpenseTypes(String receiptUserId) {
         return mongoTemplate.find(
                 query(where("RID").is(receiptUserId)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
                 ).with(new Sort(ASC, "TAG")),
                 ExpenseTagEntity.class,
                 TABLE

@@ -15,28 +15,28 @@ import org.hibernate.validator.constraints.Email;
  * Date: 6/9/13
  * Time: 2:06 PM
  */
-@Document(collection = "INVITE")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "invite_email_idx",   def = "{'EM': 0}", unique = false),
-        @CompoundIndex(name = "invite_key_idx",     def = "{'AU' : 0}", unique = true)
-} )
+@Document (collection = "INVITE")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "invite_email_idx", def = "{'EM': 0}", unique = false),
+        @CompoundIndex (name = "invite_key_idx", def = "{'AU' : 0}", unique = true)
+})
 public final class InviteEntity extends BaseEntity {
 
     @NotNull
-    @Field("EM")
+    @Field ("EM")
     @Email
     private String email;
 
     @NotNull
-    @Field("AU")
+    @Field ("AU")
     private String authenticationKey;
 
     @DBRef
-    @Field("IN")
+    @Field ("IN")
     private UserProfileEntity invited;
 
     @DBRef
-    @Field("IN_BY")
+    @Field ("IN_BY")
     private UserAccountEntity invitedBy;
 
     public static InviteEntity newInstance(String email, String authenticationKey, UserProfileEntity invited, UserAccountEntity invitedBy) {

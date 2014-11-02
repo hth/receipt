@@ -33,7 +33,7 @@ public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
 
     @Override
     public void save(EvalFeedbackEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);

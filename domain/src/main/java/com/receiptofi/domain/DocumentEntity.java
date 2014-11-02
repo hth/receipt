@@ -21,108 +21,108 @@ import javax.validation.constraints.NotNull;
 /**
  * @author hitender
  * @since Jan 6, 2013 1:04:43 PM
- *
  */
-@Document(collection = "DOCUMENT")
-@CompoundIndexes({ @CompoundIndex(name = "document_idx", def = "{'FS': 1, 'USER_PROFILE_ID': 1}") })
+@Document (collection = "DOCUMENT")
+@CompoundIndexes ({@CompoundIndex (name = "document_idx", def = "{'FS': 1, 'USER_PROFILE_ID': 1}")})
 public final class DocumentEntity extends BaseEntity {
 
-	@NotNull
-    @Field("DS_E")
-	private DocumentStatusEnum documentStatus;
+    @NotNull
+    @Field ("DS_E")
+    private DocumentStatusEnum documentStatus;
 
     @DBRef
-    @Field("FS")
-	private Collection<FileSystemEntity> fileSystemEntities;
+    @Field ("FS")
+    private Collection<FileSystemEntity> fileSystemEntities;
 
-	@NotNull
-    @Field("RECEIPT_DATE")
-	private String receiptDate;
+    @NotNull
+    @Field ("RECEIPT_DATE")
+    private String receiptDate;
 
     @Transient
-    @Field("SUB_TOTAL")
+    @Field ("SUB_TOTAL")
     private String subTotal;
 
-	@NotNull
-    @Field("TOTAL")
-	private String total;
+    @NotNull
+    @Field ("TOTAL")
+    private String total;
 
-	@NotNull
-    @Field("TAX")
-	private String tax = "0.00";
+    @NotNull
+    @Field ("TAX")
+    private String tax = "0.00";
 
-	@NotNull
-    @Field("USER_PROFILE_ID")
-	private String userProfileId;
+    @NotNull
+    @Field ("USER_PROFILE_ID")
+    private String userProfileId;
 
     @DBRef
-    @Field("BIZ_NAME")
+    @Field ("BIZ_NAME")
     private BizNameEntity bizName;
 
     @DBRef
-    @Field("BIZ_STORE")
+    @Field ("BIZ_STORE")
     private BizStoreEntity bizStore;
 
-    @Field("RECEIPT_ID")
+    @Field ("RECEIPT_ID")
     private String receiptId;
 
     @DBRef
-    @Field("COMMENT_RECHECK")
+    @Field ("COMMENT_RECHECK")
     private CommentEntity recheckComment;
 
     @DBRef
-    @Field("COMMENT_NOTES")
+    @Field ("COMMENT_NOTES")
     private CommentEntity notes;
 
     @NotNull
-    @Field("DOCUMENT_TYPE")
+    @Field ("DOCUMENT_TYPE")
     private DocumentOfTypeEnum documentOfType;
 
     /** To keep bean happy */
-	public DocumentEntity() {}
+    public DocumentEntity() {
+    }
 
-	public static DocumentEntity newInstance() {
-		return new DocumentEntity();
-	}
+    public static DocumentEntity newInstance() {
+        return new DocumentEntity();
+    }
 
-	public DocumentStatusEnum getDocumentStatus() {
-		return documentStatus;
-	}
+    public DocumentStatusEnum getDocumentStatus() {
+        return documentStatus;
+    }
 
-	public void setDocumentStatus(DocumentStatusEnum documentStatus) {
-		this.documentStatus = documentStatus;
-	}
+    public void setDocumentStatus(DocumentStatusEnum documentStatus) {
+        this.documentStatus = documentStatus;
+    }
 
     public Collection<FileSystemEntity> getFileSystemEntities() {
-		return fileSystemEntities;
-	}
-
-	public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
-        if(this.fileSystemEntities == null) {
-            this.fileSystemEntities = new ArrayList<>();
-        }
-		this.fileSystemEntities.add(receiptBlobId);
-	}
+        return fileSystemEntities;
+    }
 
     public void setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
         this.fileSystemEntities = fileSystemEntities;
     }
 
+    public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
+        if (this.fileSystemEntities == null) {
+            this.fileSystemEntities = new ArrayList<>();
+        }
+        this.fileSystemEntities.add(receiptBlobId);
+    }
+
     public String getReceiptDate() {
-		return receiptDate;
-	}
+        return receiptDate;
+    }
 
-	public void setReceiptDate(String receiptDate) {
-		this.receiptDate = receiptDate;
-	}
+    public void setReceiptDate(String receiptDate) {
+        this.receiptDate = receiptDate;
+    }
 
-	public String getTotal() {
-		return total;
-	}
+    public String getTotal() {
+        return total;
+    }
 
-	public void setTotal(String total) {
-		this.total = total;
-	}
+    public void setTotal(String total) {
+        this.total = total;
+    }
 
     public String getSubTotal() {
         return subTotal;
@@ -133,20 +133,20 @@ public final class DocumentEntity extends BaseEntity {
     }
 
     public String getTax() {
-		return tax;
-	}
+        return tax;
+    }
 
-	public void setTax(String tax) {
-		this.tax = tax;
-	}
+    public void setTax(String tax) {
+        this.tax = tax;
+    }
 
     public String getUserProfileId() {
-		return userProfileId;
-	}
+        return userProfileId;
+    }
 
-	public void setUserProfileId(String userProfileId) {
-		this.userProfileId = userProfileId;
-	}
+    public void setUserProfileId(String userProfileId) {
+        this.userProfileId = userProfileId;
+    }
 
     public BizNameEntity getBizName() {
         return bizName;
@@ -188,7 +188,7 @@ public final class DocumentEntity extends BaseEntity {
         this.notes = notes;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public DocumentOfTypeEnum getDocumentOfType() {
         return documentOfType;
     }

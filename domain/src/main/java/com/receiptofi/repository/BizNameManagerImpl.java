@@ -39,7 +39,7 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public void save(BizNameEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);

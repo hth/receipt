@@ -16,15 +16,14 @@ import java.util.List;
 /**
  * @author hitender
  * @since Dec 26, 2012 3:10:11 PM
- *
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {
 
-	void saveObjects(List<ItemEntity> objects) throws Exception;
+    void saveObjects(List<ItemEntity> objects) throws Exception;
 
-	WriteResult updateObject(ItemEntity object);
+    WriteResult updateObject(ItemEntity object);
 
-	List<ItemEntity> getAllItemsOfReceipt(String receiptId);
+    List<ItemEntity> getAllItemsOfReceipt(String receiptId);
 
     /**
      * Finds users item as the session supplies userProfileId
@@ -38,18 +37,18 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     /**
      * Gets items with specified name until the specified date
      *
-     * @param name - Name of the item
+     * @param name         - Name of the item
      * @param untilThisDay - Show result from this day onwards
      * @return
      */
-	List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay);
+    List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay);
 
     /**
      * Gets items with specified name until the specified date
      *
-     * @param name - Name of the item
+     * @param name          - Name of the item
      * @param userProfileId
-     * @param untilThisDay - Show result from this day onwards
+     * @param untilThisDay  - Show result from this day onwards
      * @return
      */
     List<ItemEntity> findAllByNameLimitByDays(String name, String userProfileId, DateTime untilThisDay);
@@ -69,7 +68,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      *
      * @param receipt
      */
-	void deleteWhereReceipt(ReceiptEntity receipt);
+    void deleteWhereReceipt(ReceiptEntity receipt);
 
     /**
      * Marks an entity deleted but does not delete it

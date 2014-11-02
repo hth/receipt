@@ -12,34 +12,35 @@ import javax.validation.constraints.NotNull;
  * Date: 6/30/13
  * Time: 1:29 PM
  */
-@Document(collection = "NOTIFICATION")
+@Document (collection = "NOTIFICATION")
 public final class NotificationEntity extends BaseEntity {
 
     @NotNull
-    @Field("MESSAGE")
+    @Field ("MESSAGE")
     private String message;
 
     @NotNull
-    @Field("USER_PROFILE_ID")
+    @Field ("USER_PROFILE_ID")
     private String userProfileId;
 
     @NotNull
-    @Field("NOTIFIED")
+    @Field ("NOTIFIED")
     private boolean notified = false;
 
     @NotNull
-    @Field("NOTIFICATION_ENUM")
+    @Field ("NOTIFICATION_ENUM")
     private NotificationTypeEnum notificationType;
 
     /**
      * Could be a receipt id or Document id
      */
     @NotNull
-    @Field("REF")
+    @Field ("REF")
     private String referenceId;
 
-    @SuppressWarnings("unused")
-    private NotificationEntity() {}
+    @SuppressWarnings ("unused")
+    private NotificationEntity() {
+    }
 
     private NotificationEntity(NotificationTypeEnum notificationType) {
         this.notificationType = notificationType;
@@ -69,12 +70,12 @@ public final class NotificationEntity extends BaseEntity {
         return notified;
     }
 
-    public void markAsNotified() {
-        setNotified(true);
-    }
-
     public void setNotified(boolean notified) {
         this.notified = notified;
+    }
+
+    public void markAsNotified() {
+        setNotified(true);
     }
 
     public NotificationTypeEnum getNotificationType() {
