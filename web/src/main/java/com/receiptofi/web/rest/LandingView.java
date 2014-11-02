@@ -20,26 +20,27 @@ import javax.xml.bind.annotation.XmlType;
  * http://glassfish.java.net/nonav/javaee5/api/javax/xml/bind/annotation/XmlElements.html
  */
 //@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="landingView")
-@XmlRootElement(name="landingView")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
-@XmlType(name="home", propOrder = { "userId", "emailId", "pendingCount", "receipts" })
+@XmlRootElement (name = "landingView")
+@XmlAccessorType (XmlAccessType.FIELD)
+@XmlAccessorOrder (XmlAccessOrder.ALPHABETICAL)
+@XmlType (name = "home", propOrder = {"userId", "emailId", "pendingCount", "receipts"})
 public final class LandingView extends Base {
 
-    @XmlElement(name = "userId", type = String.class, required = true)
+    @XmlElement (name = "userId", type = String.class, required = true)
     private String userId;
 
-    @XmlElement(name = "emailId", type = String.class, required = true)
+    @XmlElement (name = "emailId", type = String.class, required = true)
     private String emailId;
 
-    @XmlElement(name = "pendingCount", type = Long.class, required = false)
+    @XmlElement (name = "pendingCount", type = Long.class, required = false)
     private long pendingCount;
 
-    @XmlElementWrapper(name = "receipts")
-    @XmlElement(name = "receipt")
+    @XmlElementWrapper (name = "receipts")
+    @XmlElement (name = "receipt")
     protected List<ReceiptEntity> receipts;
 
-    public LandingView() { }
+    public LandingView() {
+    }
 
     private LandingView(String userId, String emailId, Header header) {
         super.setHeader(header);
@@ -52,7 +53,7 @@ public final class LandingView extends Base {
     }
 
     /** Required for JSON */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public String getUserId() {
         return userId;
     }
@@ -66,7 +67,7 @@ public final class LandingView extends Base {
     }
 
     /** Required for JSON */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public long getPendingCount() {
         return pendingCount;
     }
@@ -76,7 +77,7 @@ public final class LandingView extends Base {
     }
 
     /** Required for JSON */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public List<ReceiptEntity> getReceipts() {
         return receipts;
     }
