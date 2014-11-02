@@ -28,7 +28,7 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
     @Override
     public void updateToken(String series, String tokenValue, Date lastUsed) {
         RememberMeTokenEntity token = rememberMeTokenManager.findBySeries(series);
-        if (token != null){
+        if (token != null) {
             token.setTokenValue(tokenValue);
             token.setUpdated();
             rememberMeTokenManager.save(token);
@@ -38,8 +38,13 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
         RememberMeTokenEntity token = rememberMeTokenManager.findBySeries(seriesId);
-        if(token != null) {
-            return new PersistentRememberMeToken(token.getUsername(), token.getSeries(), token.getTokenValue(), token.getUpdated());
+        if (token != null) {
+            return new PersistentRememberMeToken(
+                    token.getUsername(),
+                    token.getSeries(),
+                    token.getTokenValue(),
+                    token.getUpdated()
+            );
         }
         /** This can happen when data is reset or token is missing. Returning null will send user to login page */
         return null;
