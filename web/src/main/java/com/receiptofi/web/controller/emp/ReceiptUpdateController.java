@@ -41,44 +41,42 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Class manages first processing of a receipt. That includes loading of a receipts by technician.
  * Updating of a receipt by technician. Same is true for recheck of receipt by technician.
- *
  * This same class is used for showing the pending receipt to user
  *
  * @author hitender
  * @since Jan 7, 2013 2:13:22 AM
  */
 @Controller
-@RequestMapping(value = "/emp")
+@RequestMapping (value = "/emp")
 public final class ReceiptUpdateController {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptUpdateController.class);
 
-	private static final String NEXT_PAGE_UPDATE        = "/update";
-    private static final String NEXT_PAGE_RECHECK       = "/recheck";
+    private static final String NEXT_PAGE_UPDATE = "/update";
+    private static final String NEXT_PAGE_RECHECK = "/recheck";
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
     @Autowired private DocumentUpdateService documentUpdateService;
     @Autowired private MileageDocumentValidator mileageDocumentValidator;
 
-    @Value("${duplicate.receipt}")
+    @Value ("${duplicate.receipt}")
     private String duplicateReceiptMessage;
 
     /**
      * For Technician: Loads new receipts.
      * For User :Method helps user to load either pending new receipt or pending recheck receipt.
-     *
      * Added logic to make sure only the user of the receipt or technician can see the receipt.
      *
      * @param receiptOCRId
      * @param receiptDocumentForm
      * @return
      */
-	@RequestMapping(value = "/update/{receiptOCRId}", method = RequestMethod.GET)
-	public ModelAndView update(
+    @RequestMapping (value = "/update/{receiptOCRId}", method = RequestMethod.GET)
+    public ModelAndView update(
             @PathVariable
             String receiptOCRId,
 
-            @ModelAttribute("receiptDocumentForm")
+            @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             Model model,
@@ -86,7 +84,7 @@ public final class ReceiptUpdateController {
     ) {
         updateReceipt(receiptOCRId, receiptDocumentForm, model, httpServletRequest);
         return new ModelAndView(NEXT_PAGE_UPDATE);
-	}
+    }
 
     private void updateReceipt(String receiptOCRId, ReceiptDocumentForm receiptDocumentForm, Model model, HttpServletRequest httpServletRequest) {
         DateTime time = DateUtil.now();
@@ -97,7 +95,7 @@ public final class ReceiptUpdateController {
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
-        } else if(model.asMap().containsKey("receiptDocumentForm")) {
+        } else if (model.asMap().containsKey("receiptDocumentForm")) {
             //errorMessage here contains any other logical error found
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(receiptOCRId, receiptDocumentForm, httpServletRequest);
@@ -115,12 +113,12 @@ public final class ReceiptUpdateController {
      * @param receiptDocumentForm
      * @return
      */
-    @RequestMapping(value = "/recheck/{receiptOCRId}", method = RequestMethod.GET)
+    @RequestMapping (value = "/recheck/{receiptOCRId}", method = RequestMethod.GET)
     public ModelAndView recheck(
             @PathVariable
             String receiptOCRId,
 
-            @ModelAttribute("receiptDocumentForm")
+            @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             Model model,
@@ -137,9 +135,9 @@ public final class ReceiptUpdateController {
      * @param result
      * @return
      */
-	@RequestMapping(value = "/submit", method = RequestMethod.POST, params= "receipt-submit")
-	public ModelAndView submit(
-            @ModelAttribute("receiptDocumentForm")
+    @RequestMapping (value = "/submit", method = RequestMethod.POST, params = "receipt-submit")
+    public ModelAndView submit(
+            @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             BindingResult result,
@@ -147,17 +145,17 @@ public final class ReceiptUpdateController {
     ) {
         DateTime time = DateUtil.now();
         LOG.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
-		receiptDocumentValidator.validate(receiptDocumentForm, result);
-		if (result.hasErrors()) {
+        receiptDocumentValidator.validate(receiptDocumentForm, result);
+        if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
-		}
+        }
 
         try {
-            if(documentUpdateService.hasReceiptWithSimilarChecksum(receiptDocumentForm.getReceiptEntity().getChecksum())) {
+            if (documentUpdateService.hasReceiptWithSimilarChecksum(receiptDocumentForm.getReceiptEntity().getChecksum())) {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -176,7 +174,7 @@ public final class ReceiptUpdateController {
             documentUpdateService.turkProcessReceipt(receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             LOG.error("Error in Submit Process, reason={}", exce.getLocalizedMessage(), exce);
 
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
@@ -185,7 +183,7 @@ public final class ReceiptUpdateController {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
-	}
+    }
 
     /**
      * Process receipt after submitted by technician
@@ -194,16 +192,16 @@ public final class ReceiptUpdateController {
      * @param result
      * @return
      */
-    @RequestMapping(value = "/submitMileage", method = RequestMethod.POST, params= "mileage-submit")
+    @RequestMapping (value = "/submitMileage", method = RequestMethod.POST, params = "mileage-submit")
     public ModelAndView submitMileage(
-            @ModelAttribute("receiptDocumentForm")
+            @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
-        switch(receiptDocumentForm.getReceiptDocument().getDocumentOfType()) {
+        switch (receiptDocumentForm.getReceiptDocument().getDocumentOfType()) {
             case MILEAGE:
                 LOG.info("Mileage : ");
                 break;
@@ -225,7 +223,7 @@ public final class ReceiptUpdateController {
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             LOG.error("Error in Submit Process, reason={}", exce.getLocalizedMessage(), exce);
 
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
@@ -238,13 +236,14 @@ public final class ReceiptUpdateController {
 
     /**
      * Reject receipt since it can't be processed or its not a receipt
+     *
      * @param receiptDocumentForm
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping(value = "/submit", method = RequestMethod.POST, params="receipt-reject")
+    @RequestMapping (value = "/submit", method = RequestMethod.POST, params = "receipt-reject")
     public ModelAndView rejectReceipt(
-            @ModelAttribute("receiptDocumentForm")
+            @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             RedirectAttributes redirectAttrs
@@ -254,13 +253,14 @@ public final class ReceiptUpdateController {
 
     /**
      * Reject receipt since it can't be processed or its not a receipt
+     *
      * @param receiptDocumentForm
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping(value = "/submitMileage", method = RequestMethod.POST, params="mileage-reject")
+    @RequestMapping (value = "/submitMileage", method = RequestMethod.POST, params = "mileage-reject")
     public ModelAndView rejectMileage(
-            @ModelAttribute("receiptDocumentForm")
+            @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             RedirectAttributes redirectAttrs
@@ -270,6 +270,7 @@ public final class ReceiptUpdateController {
 
     /**
      * Rejects any document
+     *
      * @param receiptDocumentForm
      * @param redirectAttrs
      * @return
@@ -283,7 +284,7 @@ public final class ReceiptUpdateController {
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Error happened during rejecting document={} reason={}", receiptDocumentForm.getReceiptDocument().getId(), e.getLocalizedMessage(), e);
 
             String message = "Receipt could not be processed for Reject. Contact administrator with Document # ";
@@ -302,9 +303,9 @@ public final class ReceiptUpdateController {
      * @param result
      * @return
      */
-    @RequestMapping(value = "/recheck", method = RequestMethod.POST)
+    @RequestMapping (value = "/recheck", method = RequestMethod.POST)
     public ModelAndView recheck(
-            @ModelAttribute("receiptDocumentForm")
+            @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             BindingResult result,
@@ -324,7 +325,7 @@ public final class ReceiptUpdateController {
         try {
             //TODO: Note should not happen as the condition to check for duplicate has already been satisfied when receipt was first processed.
             // Unless Technician has changed the date or some data. Date change should be exclude during re-check. Something to think about.
-            if(documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getChecksum(), receiptDocumentForm.getReceiptEntity().getId())) {
+            if (documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getChecksum(), receiptDocumentForm.getReceiptEntity().getId())) {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -343,7 +344,7 @@ public final class ReceiptUpdateController {
             documentUpdateService.turkProcessReceiptReCheck(receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             LOG.error("Error in Recheck process: " + exce.getLocalizedMessage());
 
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
@@ -358,17 +359,17 @@ public final class ReceiptUpdateController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DocumentEntity document = documentUpdateService.loadActiveDocumentById(receiptOCRId);
-        if(document == null || document.isDeleted()) {
-            if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR")) {
+        if (document == null || document.isDeleted()) {
+            if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR")) {
                 LOG.warn("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
                 receiptDocumentForm.setErrorMessage("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
             } else {
                 LOG.warn("No such receipt exists. Request made by: " + receiptUser.getRid());
                 receiptDocumentForm.setErrorMessage("No such receipt exists");
             }
-        } else if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR") || document.getUserProfileId().equalsIgnoreCase(receiptUser.getRid())) {
+        } else if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR") || document.getUserProfileId().equalsIgnoreCase(receiptUser.getRid())) {
             //Important: The condition below makes sure when validation fails it does not over write the item list
-            if(receiptDocumentForm.getReceiptDocument() == null && receiptDocumentForm.getItems() == null) {
+            if (receiptDocumentForm.getReceiptDocument() == null && receiptDocumentForm.getItems() == null) {
                 receiptDocumentForm.setReceiptDocument(document);
 
                 List<ItemEntityOCR> items = documentUpdateService.loadItemsOfReceipt(document);

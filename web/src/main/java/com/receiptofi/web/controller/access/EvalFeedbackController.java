@@ -33,13 +33,13 @@ import javax.servlet.http.HttpServletRequest;
  * Time: 8:19 AM
  */
 @Controller
-@RequestMapping(value = "/access/eval")
+@RequestMapping (value = "/access/eval")
 public final class EvalFeedbackController {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackController.class);
 
     /* Refers to feedback.jsp and next one to feedbackConfirm.jsp */
-    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK            = "/eval/feedback";
-    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM    = "/eval/feedbackConfirm";
+    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK = "/eval/feedback";
+    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM = "/eval/feedbackConfirm";
 
     /* For confirming which page to show */
     private static final String SUCCESS_EVAL = "success_eval_feedback";
@@ -47,8 +47,8 @@ public final class EvalFeedbackController {
     @Autowired EvalFeedbackService evalFeedbackService;
     @Autowired EvalFeedbackValidator evalFeedbackValidator;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/feedback")
-    public ModelAndView loadForm(@ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
+    @RequestMapping (method = RequestMethod.GET, value = "/feedback")
+    public ModelAndView loadForm(@ModelAttribute ("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -58,8 +58,8 @@ public final class EvalFeedbackController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/feedback")
-    public ModelAndView postForm(@ModelAttribute("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm,
+    @RequestMapping (method = RequestMethod.POST, value = "/feedback")
+    public ModelAndView postForm(@ModelAttribute ("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm,
                                  HttpServletRequest httpServletRequest, BindingResult result) {
 
         DateTime time = DateUtil.now();
@@ -86,14 +86,14 @@ public final class EvalFeedbackController {
      * @return
      * @throws java.io.IOException
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/feedbackConfirm")
+    @RequestMapping (method = RequestMethod.GET, value = "/feedbackConfirm")
     public String recoverConfirm(HttpServletRequest httpServletRequest) throws IOException {
         Enumeration<String> attributes = httpServletRequest.getSession().getAttributeNames();
-        while(attributes.hasMoreElements()) {
+        while (attributes.hasMoreElements()) {
             String attributeName = attributes.nextElement();
-            if(attributeName.equals(SUCCESS_EVAL)) {
+            if (attributeName.equals(SUCCESS_EVAL)) {
                 boolean condition = (boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EVAL);
-                if(condition) {
+                if (condition) {
                     httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, false);
                     return NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM;
                 }

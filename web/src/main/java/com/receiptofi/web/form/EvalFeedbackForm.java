@@ -16,32 +16,32 @@ public final class EvalFeedbackForm {
 
     private CommonsMultipartFile fileData;
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public String getComment() {
         return comment;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public void setComment(String comment) {
         this.comment = comment;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public int getRating() {
         return rating;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public void setRating(int rating) {
         this.rating = rating;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public CommonsMultipartFile getFileData() {
         return fileData;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public void setFileData(CommonsMultipartFile fileData) {
         this.fileData = fileData;
     }

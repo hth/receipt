@@ -6,14 +6,13 @@ import java.math.BigDecimal;
 
 /**
  * Contains data associated to be shown on donut pie chart
- *
  * User: hitender
  * Date: 5/25/13
  * Time: 11:17 AM
  */
 public final class LandingDonutChart {
-    public static final int OFF_SET     = 0;
-    public static final int MAX_WIDTH   = 8;
+    public static final int OFF_SET = 0;
+    public static final int MAX_WIDTH = 8;
 
     private String bizName;
     private String bizNameForId;
@@ -21,8 +20,9 @@ public final class LandingDonutChart {
     private String expenseTags;
     private String expenseValues;
 
-    @SuppressWarnings("unused")
-    private LandingDonutChart() {}
+    @SuppressWarnings ("unused")
+    private LandingDonutChart() {
+    }
 
     private LandingDonutChart(String bizName) {
         this.bizName = bizName;

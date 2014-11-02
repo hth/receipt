@@ -11,6 +11,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.NotificationTypeEnum;
+import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
@@ -19,7 +20,6 @@ import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
-import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.view.ExpensofiExcelView;
 
@@ -56,7 +56,7 @@ import java.util.List;
  * Date: 11/30/13 2:45 AM
  */
 @Controller
-@RequestMapping(value = "/access/expensofi")
+@RequestMapping (value = "/access/expensofi")
 public final class ExpensofiController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
 
@@ -67,22 +67,22 @@ public final class ExpensofiController {
     @Autowired private FileSystemProcess fileSystemProcess;
     @Autowired private ExpensofiExcelView expensofiExcelView;
 
-    @RequestMapping(value = "/items", method = RequestMethod.POST)
-    public @ResponseBody
-    String expensofi(@RequestBody String itemIds, Model model) throws IOException {
+    @RequestMapping (value = "/items", method = RequestMethod.POST)
+    @ResponseBody
+    public String expensofi(@RequestBody String itemIds, Model model) throws IOException {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         JsonArray jsonItems = getJsonElements(itemIds);
         List<ItemEntity> items = getItemEntities(receiptUser.getRid(), jsonItems);
 
-        if(!items.isEmpty()) {
+        if (!items.isEmpty()) {
             model.addAttribute("items", items);
             Assert.notNull(model.asMap().get("items"));
 
             ReceiptEntity receiptEntity = items.get(0).getReceipt();
             Collection<AnchorFileInExcel> anchorFileInExcels = new LinkedList<>();
-            for(FileSystemEntity fileId : receiptEntity.getFileSystemEntities()) {
+            for (FileSystemEntity fileId : receiptEntity.getFileSystemEntities()) {
                 GridFSDBFile gridFSDBFile = fileDBService.getFile(fileId.getBlobId());
                 InputStream is = null;
                 try {
@@ -115,7 +115,7 @@ public final class ExpensofiController {
     }
 
     private void updateReceiptWithExcelFilename(ReceiptEntity receiptEntity, String filename) {
-        if(StringUtils.isNotEmpty(receiptEntity.getExpenseReportInFS())) {
+        if (StringUtils.isNotEmpty(receiptEntity.getExpenseReportInFS())) {
             fileSystemProcess.removeExpiredExcel(receiptEntity.getExpenseReportInFS());
         }
         receiptEntity.setExpenseReportInFS(filename);
@@ -124,7 +124,7 @@ public final class ExpensofiController {
 
     private List<ItemEntity> getItemEntities(String receiptUserId, JsonArray jsonItems) {
         List<ItemEntity> items = new ArrayList<>();
-        for(Object jsonItem : jsonItems) {
+        for (Object jsonItem : jsonItems) {
             ItemEntity ie = itemAnalyticService.findItemById(jsonItem.toString().substring(1, jsonItem.toString().length() - 1), receiptUserId);
             items.add(ie);
         }

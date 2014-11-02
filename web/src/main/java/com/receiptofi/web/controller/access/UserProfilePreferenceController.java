@@ -47,27 +47,26 @@ import java.util.Map;
  *
  * @author hitender
  * @since Jan 14, 2013 11:06:41 PM
- *
  */
 @Controller
-@RequestMapping(value = "/access/userprofilepreference")
+@RequestMapping (value = "/access/userprofilepreference")
 public final class UserProfilePreferenceController {
-	private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
-	private static final String nextPage = "/userprofilepreference";
+    private static final String nextPage = "/userprofilepreference";
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private AccountService accountService;
     @Autowired private ItemService itemService;
     @Autowired private ExpenseTypeValidator expenseTypeValidator;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-	@RequestMapping(value = "/i", method = RequestMethod.GET)
-	public ModelAndView loadForm(
-            @ModelAttribute("expenseTypeForm")
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (value = "/i", method = RequestMethod.GET)
+    public ModelAndView loadForm(
+            @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            @ModelAttribute("userProfilePreferenceForm")
+            @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm,
 
             Model model
@@ -83,25 +82,25 @@ public final class UserProfilePreferenceController {
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-		return modelAndView;
-	}
+        return modelAndView;
+    }
 
     /**
      * Used for adding Expense Type
-     *
      * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
+     *
      * @param userProfilePreferenceForm
      * @param expenseTypeForm
      * @param result
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value="/i", method = RequestMethod.POST)
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (value = "/i", method = RequestMethod.POST)
     public String addExpenseTag(
-            @ModelAttribute("userProfilePreferenceForm")
+            @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm,
 
-            @ModelAttribute("expenseTypeForm")
+            @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
             BindingResult result,
@@ -146,18 +145,18 @@ public final class UserProfilePreferenceController {
      * @param changeStatTo
      * @return
      */
-    @RequestMapping(value="/expenseTagVisible", method = RequestMethod.GET)
+    @RequestMapping (value = "/expenseTagVisible", method = RequestMethod.GET)
     public ModelAndView changeExpenseTypeVisibleStatus(
-            @RequestParam(value="id") String expenseTagId,
-            @RequestParam(value="status") String changeStatTo,
-            @ModelAttribute("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-            @ModelAttribute("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
+            @RequestParam (value = "id") String expenseTagId,
+            @RequestParam (value = "status") String changeStatTo,
+            @ModelAttribute ("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute ("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
     ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //Secondary check. In case some one tries to be smart by passing parameters in URL :)
-        if(itemService.countItemsUsingExpenseType(expenseTagId, receiptUser.getRid()) == 0) {
+        if (itemService.countItemsUsingExpenseType(expenseTagId, receiptUser.getRid()) == 0) {
             userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTagId, changeStatTo, receiptUser.getRid());
         }
 
@@ -179,16 +178,16 @@ public final class UserProfilePreferenceController {
      * @return
      * @throws IOException
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/their", method = RequestMethod.GET)
-	public ModelAndView getUser(
-            @RequestParam("id")
+    @PreAuthorize ("hasRole('ROLE_ADMIN')")
+    @RequestMapping (value = "/their", method = RequestMethod.GET)
+    public ModelAndView getUser(
+            @RequestParam ("id")
             String rid,
 
-            @ModelAttribute("expenseTypeForm")
+            @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            @ModelAttribute("userProfilePreferenceForm")
+            @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm
     ) throws IOException {
         DateTime time = DateUtil.now();
@@ -198,7 +197,7 @@ public final class UserProfilePreferenceController {
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 
-	}
+    }
 
     private void populateUserProfilePreferenceForm(String rid, UserProfilePreferenceForm userProfilePreferenceForm) {
         UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid);
@@ -213,13 +212,13 @@ public final class UserProfilePreferenceController {
      * @return
      * @throws IOException
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@RequestMapping(value="/update", method = RequestMethod.POST)
-	public String updateUser(
-            @ModelAttribute("expenseTypeForm")
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN')")
+    @RequestMapping (value = "/update", method = RequestMethod.POST)
+    public String updateUser(
+            @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            @ModelAttribute("userProfilePreferenceForm")
+            @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm
     ) throws IOException {
         DateTime time = DateUtil.now();
@@ -228,8 +227,8 @@ public final class UserProfilePreferenceController {
                 userProfilePreferenceForm.getUserProfile().getReceiptUserId()
         );
         userProfile.setLevel(userProfilePreferenceForm.getUserProfile().getLevel());
-        if(!userProfilePreferenceForm.isActive() || !userProfile.isActive()) {
-            if(userProfilePreferenceForm.isActive()) {
+        if (!userProfilePreferenceForm.isActive() || !userProfile.isActive()) {
+            if (userProfilePreferenceForm.isActive()) {
                 userProfile.active();
             } else {
                 userProfile.inActive();
@@ -252,14 +251,14 @@ public final class UserProfilePreferenceController {
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
-	}
+    }
 
-	/**
-	 * @param nextPage
+    /**
+     * @param nextPage
      * @param userProfilePreference
-	 * @return
-	 */
-	private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, UserProfilePreferenceForm userProfilePreference) {
+     * @return
+     */
+    private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, UserProfilePreferenceForm userProfilePreference) {
         DateTime time = DateUtil.now();
 
         UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreference.getUserProfile());
@@ -269,9 +268,9 @@ public final class UserProfilePreferenceController {
                 ).getUserAuthentication()
         );
 
-		ModelAndView modelAndView = new ModelAndView(nextPage);
+        ModelAndView modelAndView = new ModelAndView(nextPage);
         userProfilePreference.setUserPreference(userPreference);
-        if(expenseTypeForm != null) {
+        if (expenseTypeForm != null) {
             modelAndView.addObject("expenseTypeForm", expenseTypeForm);
         }
 
@@ -280,8 +279,8 @@ public final class UserProfilePreferenceController {
 
         Map<String, Long> expenseTypeCount = new HashMap<>();
         int count = 0;
-        for(ExpenseTagEntity expenseType : expenseTypes) {
-            if(expenseType.isActive()) {
+        for (ExpenseTagEntity expenseType : expenseTypes) {
+            if (expenseType.isActive()) {
                 count++;
             }
 
@@ -295,6 +294,6 @@ public final class UserProfilePreferenceController {
         userProfilePreference.setVisibleExpenseTags(count);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-		return modelAndView;
-	}
+        return modelAndView;
+    }
 }

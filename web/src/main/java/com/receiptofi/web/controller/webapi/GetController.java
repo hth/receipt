@@ -20,11 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 7/2/14 11:54 PM
  */
 @Controller
-@RequestMapping(value = "/webapi/mobile/get")
+@RequestMapping (value = "/webapi/mobile/get")
 public class GetController {
     private static Logger LOG = LoggerFactory.getLogger(GetController.class);
 
-    @Value("${web.access.api.token}")
+    @Value ("${web.access.api.token}")
     private String webApiAccessToken;
 
     /**
@@ -32,7 +32,7 @@ public class GetController {
      *
      * @return
      */
-    @RequestMapping(
+    @RequestMapping (
             method = RequestMethod.GET,
             headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"
@@ -40,10 +40,10 @@ public class GetController {
     public
     @ResponseBody
     String get(
-            @RequestHeader("X-R-API-MOBILE") String apiAccessToken,
+            @RequestHeader ("X-R-API-MOBILE") String apiAccessToken,
             HttpServletResponse httpServletResponse) throws IOException {
         LOG.debug("CSRF invoked to create token for Mobile");
-        if(webApiAccessToken.equals(apiAccessToken)) {
+        if (webApiAccessToken.equals(apiAccessToken)) {
             return "{}";
         }
         LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);

@@ -27,15 +27,15 @@ import java.util.List;
  * Time: 1:23 AM
  */
 @Controller
-@RequestMapping(value = "/access/day")
+@RequestMapping (value = "/access/day")
 public final class ThisDayController {
     private static final Logger LOG = LoggerFactory.getLogger(ThisDayController.class);
     private static final String nextPage = "/day";
 
     @Autowired private ReceiptService receiptService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView getThisDay(@RequestParam("date") String date) {
+    @RequestMapping (method = RequestMethod.GET)
+    public ModelAndView getThisDay(@RequestParam ("date") String date) {
         DateTime time = DateUtil.now();
 
         Long longDate = Long.parseLong(date);

@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * This view generates an Excel report from receipt item objects.
- *
  * User: hitender
  * Date: 11/30/13 2:45 AM
  */
@@ -49,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 public final class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiExcelView.class);
 
-    @Value("${expensofiReportLocation}")
+    @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
 
     public static final HSSFCellStyle NO_STYLE = null;
@@ -60,12 +59,12 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request, HttpServletResponse response) {
         HSSFSheet sheet = workbook.createSheet();
 
         List<ItemEntity> items = (ArrayList) model.get("items");
-        if(items == null) {
+        if (items == null) {
             HSSFRow row = sheet.createRow(0);
             addToCell(row, 0, "Error creating spreadsheet", NO_STYLE);
             return;
@@ -102,7 +101,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         int nAccounts = items.size();
 
         // Content
-        for(short i = 0; i < nAccounts; i++) {
+        for (short i = 0; i < nAccounts; i++) {
             ItemEntity item = items.get(i);
             row = sheet.createRow(i + 1);
             addToCell(row, 0, item.getName(), NO_STYLE);
@@ -112,7 +111,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             addToCell(row, 4, item.getTotalPriceWithoutTax().doubleValue(), moneyStyle);
 
             String cc = null;
-            if(item.getExpenseTag() != null) {
+            if (item.getExpenseTag() != null) {
                 cc = item.getExpenseTag().getTagName();
             }
             addToCell(row, 5, cc == null ? "N/A" : cc, NO_STYLE);
@@ -129,10 +128,10 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         addToCell(row, 4, "=sum(D" + (nAccounts + 3) + ":E" + (nAccounts + 3) + ')', moneyStyle);
 
         Collection<AnchorFileInExcel> anchorFileInExcelCollection = (Collection) model.get("to_be_anchored_files");
-        for(AnchorFileInExcel anchorFileInExcel : anchorFileInExcelCollection) {
+        for (AnchorFileInExcel anchorFileInExcel : anchorFileInExcelCollection) {
             //Add receipt image
             byte[] imageBytes = anchorFileInExcel.getBytes();
-            String imageContentType =  anchorFileInExcel.getContentType();
+            String imageContentType = anchorFileInExcel.getContentType();
             anchorReceiptImage(imageBytes, imageContentType, workbook, sheet, row);
         }
     }
@@ -142,7 +141,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         try {
             Assert.notNull(expensofiReportLocation);
             out = new FileOutputStream(new File(expensofiReportLocation + File.separator + filename));
-			workbook.write(out);
+            workbook.write(out);
         } catch (IOException e) {
             LOG.error(
                     "Possible permission error while persisting file to file system={}{}{}, reason=",
@@ -153,7 +152,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
                     e
             );
         } finally {
-        	if(out != null) {
+            if (out != null) {
                 out.flush();
                 out.close();
             }
@@ -201,30 +200,30 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     private HSSFCell addToCell(HSSFRow row, int index, Object value, HSSFCellStyle style) {
         HSSFCell cell = row.createCell((short) index);
 
-        if(style == null) {
+        if (style == null) {
             style = cell.getCellStyle();
         }
 
-        if(value instanceof String) {
+        if (value instanceof String) {
             String str = (String) value;
             LOG.debug("STRING: [{}]", str);
-            if(str.startsWith("=")) {
+            if (str.startsWith("=")) {
                 cell.setCellFormula(str.substring(1));
             } else {
                 cell.setCellValue(new HSSFRichTextString(str));
             }
 
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        } else if(value instanceof Date) {
+        } else if (value instanceof Date) {
             LOG.debug("DATE: {}", value);
             cell.setCellValue((Date) value);
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        } else if(value instanceof Double) {
+        } else if (value instanceof Double) {
             LOG.debug("MONEY: {}", value);
             cell.setCellValue(((Double) value));
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
-            if(value == null) {
+            if (value == null) {
                 value = StringUtils.EMPTY;   // Ignore
             }
             LOG.debug("OTHER: {} ({})", value, value.getClass());

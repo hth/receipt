@@ -37,48 +37,47 @@ import java.util.List;
 /**
  * @author hitender
  * @since Jan 6, 2013 4:33:23 PM
- *
  */
 @Controller
-@RequestMapping(value = "/access/pendingdocument")
+@RequestMapping (value = "/access/pendingdocument")
 public final class PendingDocumentController {
-	private static final Logger LOG = LoggerFactory.getLogger(PendingDocumentController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PendingDocumentController.class);
 
-	private String LIST_PENDING_DOCUMENTS = "/pendingdocument";
+    private String LIST_PENDING_DOCUMENTS = "/pendingdocument";
     private String SHOW_DOCUMENT = "/document";
 
-	@Autowired private DocumentPendingService documentPendingService;
+    @Autowired private DocumentPendingService documentPendingService;
     @Autowired private DocumentUpdateService documentUpdateService;
     @Autowired private FileDBService fileDBService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView loadForm(@ModelAttribute("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
+    @RequestMapping (method = RequestMethod.GET)
+    public ModelAndView loadForm(@ModelAttribute ("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
 
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         int pendingMissingReceipt = 0;
         List<DocumentEntity> pendingDocumentEntityList = documentPendingService.getAllPending(receiptUser.getRid());
-        for(DocumentEntity documentEntity : pendingDocumentEntityList) {
-            if(documentEntity.getFileSystemEntities() != null) {
-                for(FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
+        for (DocumentEntity documentEntity : pendingDocumentEntityList) {
+            if (documentEntity.getFileSystemEntities() != null) {
+                for (FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
                     GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                     String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
                     pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), documentEntity);
                 }
             } else {
                 LOG.error("pending document does not contains receipt documentId={}", documentEntity.getId());
-                ++ pendingMissingReceipt;
+                ++pendingMissingReceipt;
             }
         }
-        if(pendingMissingReceipt > 0) {
+        if (pendingMissingReceipt > 0) {
             LOG.error("total pending documents missing receipts count={}", pendingMissingReceipt);
         }
 
         int rejectedMissingReceipt = 0;
         List<DocumentEntity> rejectedDocumentEntityList = documentPendingService.getAllRejected(receiptUser.getRid());
         for (DocumentEntity documentEntity : rejectedDocumentEntityList) {
-            if(documentEntity.getFileSystemEntities() != null) {
+            if (documentEntity.getFileSystemEntities() != null) {
                 for (FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
                     GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
                     String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
@@ -86,24 +85,24 @@ public final class PendingDocumentController {
                 }
             } else {
                 LOG.error("rejected document does not contains receipt documentId={}", documentEntity.getId());
-                ++ rejectedMissingReceipt;
+                ++rejectedMissingReceipt;
             }
         }
 
-        if(rejectedMissingReceipt > 0) {
+        if (rejectedMissingReceipt > 0) {
             LOG.error("total rejected documents missing receipts count={}", rejectedMissingReceipt);
         }
 
-		ModelAndView modelAndView = new ModelAndView(LIST_PENDING_DOCUMENTS);
-		modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
+        ModelAndView modelAndView = new ModelAndView(LIST_PENDING_DOCUMENTS);
+        modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-		return modelAndView;
-	}
+        return modelAndView;
+    }
 
-    @RequestMapping(value = "/{documentId}", method = RequestMethod.GET)
+    @RequestMapping (value = "/{documentId}", method = RequestMethod.GET)
     public ModelAndView showDocument(@PathVariable String documentId,
-                                     @ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
+                                     @ModelAttribute ("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
 
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -124,12 +123,12 @@ public final class PendingDocumentController {
      * @param receiptDocumentForm
      * @return
      */
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String delete(@ModelAttribute("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
+    @RequestMapping (value = "/delete", method = RequestMethod.POST)
+    public String delete(@ModelAttribute ("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
         //Check cannot delete a pending receipt which has been processed once, i.e. has receipt id
         //The check here is not required but its better to check before calling service method
-        if(StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReceiptId())) {
-            switch(receiptDocumentForm.getReceiptDocument().getDocumentStatus()) {
+        if (StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReceiptId())) {
+            switch (receiptDocumentForm.getReceiptDocument().getDocumentStatus()) {
                 case TURK_RECEIPT_REJECT:
                     documentUpdateService.deleteRejectedReceiptOCR(receiptDocumentForm.getReceiptDocument());
                     break;

@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 11:44 PM
  */
 @Controller
-@RequestMapping(value = "/ws/r")
+@RequestMapping (value = "/ws/r")
 public final class ReceiptWebService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptWebService.class);
 
@@ -51,15 +51,14 @@ public final class ReceiptWebService {
      * @param businessName
      * @return
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (
             value = "/find_company",
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    public
     @ResponseBody
-    Set<String> searchBusinessWithBusinessName(@RequestParam("term") String businessName) {
+    public Set<String> searchBusinessWithBusinessName(@RequestParam ("term") String businessName) {
         try {
             return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessName) {
@@ -73,15 +72,14 @@ public final class ReceiptWebService {
      * @param businessName
      * @return
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (
             value = "/find_address",
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    public
     @ResponseBody
-    Set<String> searchBiz(@RequestParam("term") String bizAddress, @RequestParam("nameParam") String businessName) {
+    public Set<String> searchBiz(@RequestParam ("term") String bizAddress, @RequestParam ("nameParam") String businessName) {
         try {
             return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessAddress) {
@@ -96,15 +94,14 @@ public final class ReceiptWebService {
      * @param bizAddress
      * @return
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (
             value = "/find_phone",
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    public
     @ResponseBody
-    Set<String> searchPhone(@RequestParam("term") String bizPhone, @RequestParam("nameParam") String businessName, @RequestParam("addressParam") String bizAddress) {
+    public Set<String> searchPhone(@RequestParam ("term") String bizPhone, @RequestParam ("nameParam") String businessName, @RequestParam ("addressParam") String bizAddress) {
         try {
             return fetcherService.findDistinctBizPhone(
                     StringUtils.stripToEmpty(bizPhone),
@@ -122,15 +119,14 @@ public final class ReceiptWebService {
      * @param businessName
      * @return
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (
             value = "/find_item",
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    public
     @ResponseBody
-    Set<String> searchItem(@RequestParam("term") String itemName, @RequestParam("nameParam") String businessName) {
+    public Set<String> searchItem(@RequestParam ("term") String itemName, @RequestParam ("nameParam") String businessName) {
         try {
             return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchingItems) {
@@ -145,15 +141,14 @@ public final class ReceiptWebService {
      * @return
      * @throws IOException
      */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (
             value = "/pending",
             method = RequestMethod.POST,
             headers = "Accept=application/json",
             produces = "application/json")
-    public
     @ResponseBody
-    long pendingReceipts() {
+    public long pendingReceipts() {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
@@ -173,19 +168,18 @@ public final class ReceiptWebService {
      * @return
      * @throws IOException
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (
             value = "/check_for_duplicate",
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
     //@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate Account")  // 409 //TODO something to think about
-    public
     @ResponseBody
-    boolean checkForDuplicate(
-            @RequestParam("date") String date,
-            @RequestParam("total") String total,
-            @RequestParam("userProfileId") String userProfileId
+    public boolean checkForDuplicate(
+            @RequestParam ("date") String date,
+            @RequestParam ("total") String total,
+            @RequestParam ("userProfileId") String userProfileId
     ) throws IOException, ParseException, NumberFormatException {
         try {
             Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
@@ -216,30 +210,27 @@ public final class ReceiptWebService {
      * @return
      * @throws IOException
      */
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (
             value = "/change_fs_image_orientation",
             method = RequestMethod.POST,
             headers = "Accept=application/json",
             produces = "application/json")
-    public
     @ResponseBody
-    boolean changeFSImageOrientation(
-            @RequestParam("fileSystemId") String fileSystemId,
-            @RequestParam("orientation") String imageOrientation,
-            @RequestParam("blobId") String blobId,
-            @RequestParam("userProfileId") String userProfileId,
+    public boolean changeFSImageOrientation(
+            @RequestParam ("fileSystemId") String fileSystemId,
+            @RequestParam ("orientation") String imageOrientation,
+            @RequestParam ("blobId") String blobId,
+            @RequestParam ("userProfileId") String userProfileId,
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if(request.isUserInRole("ROLE_ADMIN") ||
+        if (request.isUserInRole("ROLE_ADMIN") ||
                 request.isUserInRole("ROLE_TECHNICIAN") ||
                 request.isUserInRole("ROLE_SUPERVISOR") ||
-                userProfileId.equalsIgnoreCase(receiptUser.getRid()))
-        {
+                userProfileId.equalsIgnoreCase(receiptUser.getRid())) {
             try {
                 fetcherService.changeFSImageOrientation(
                         StringUtils.stripToEmpty(fileSystemId),

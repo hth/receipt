@@ -30,7 +30,8 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
             .expireAfterWrite(2, TimeUnit.HOURS)
             .build();
 
-    private CachedUserAgentStringParser() {}
+    private CachedUserAgentStringParser() {
+    }
 
     /**
      * SingletonHolder is loaded on the first execution of Singleton.getInstance()

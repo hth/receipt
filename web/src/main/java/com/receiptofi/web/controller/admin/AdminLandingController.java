@@ -35,15 +35,15 @@ import java.util.List;
  * @since Mar 26, 2013 1:14:24 AM
  */
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping (value = "/admin")
 public final class AdminLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
     private static final String nextPage = "/admin/landing";
 
     @Autowired private AdminLandingService adminLandingService;
 
-    @RequestMapping(value = "/landing", method = RequestMethod.GET)
-    public ModelAndView loadForm(@ModelAttribute("userSearchForm") UserSearchForm userSearchForm) {
+    @RequestMapping (value = "/landing", method = RequestMethod.GET)
+    public ModelAndView loadForm(@ModelAttribute ("userSearchForm") UserSearchForm userSearchForm) {
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("userSearchForm", userSearchForm);
         return modelAndView;
@@ -53,10 +53,9 @@ public final class AdminLandingController {
      * @param name Search for user name
      * @return
      */
-    @RequestMapping(value = "/find_user", method = RequestMethod.GET)
-    public
+    @RequestMapping (value = "/find_user", method = RequestMethod.GET)
     @ResponseBody
-    List<String> findUser(@RequestParam("term") String name) throws IOException {
+    public List<String> findUser(@RequestParam ("term") String name) throws IOException {
         return adminLandingService.findMatchingUsers(name);
     }
 
@@ -64,13 +63,13 @@ public final class AdminLandingController {
      * @param userSearchForm
      * @return
      */
-    @RequestMapping(value = "/landing", method = RequestMethod.POST)
-    public String loadUser(@ModelAttribute("userLoginForm") UserSearchForm userSearchForm, RedirectAttributes redirectAttrs) {
+    @RequestMapping (value = "/landing", method = RequestMethod.POST)
+    public String loadUser(@ModelAttribute ("userLoginForm") UserSearchForm userSearchForm, RedirectAttributes redirectAttrs) {
         DateTime time = DateUtil.now();
         List<UserProfileEntity> userProfileEntities = adminLandingService.findAllUsers(userSearchForm.getUserName());
 
         List<UserSearchForm> userSearchForms = new ArrayList<>();
-        for(UserProfileEntity user : userProfileEntities) {
+        for (UserProfileEntity user : userProfileEntities) {
             UserSearchForm userForm = UserSearchForm.newInstance(user);
             userSearchForms.add(userForm);
         }

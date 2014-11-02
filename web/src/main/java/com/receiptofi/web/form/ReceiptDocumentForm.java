@@ -28,52 +28,52 @@ import java.util.List;
 /**
  * @author hitender
  * @since Jan 7, 2013 9:30:32 AM
- *
  * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
 public final class ReceiptDocumentForm {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentForm.class);
 
-	DocumentEntity receiptDocument;
+    DocumentEntity receiptDocument;
     MileageEntity mileage;
-	List<ItemEntityOCR> items;
+    List<ItemEntityOCR> items;
 
     /** Used for showing error messages to user when the request action fails to execute */
     String errorMessage;
 
-	/**
-	 * Need for bean instantiation in ReceiptUpdateForm
-	 */
-	private ReceiptDocumentForm() {}
+    /**
+     * Need for bean instantiation in ReceiptUpdateForm
+     */
+    private ReceiptDocumentForm() {
+    }
 
-	private ReceiptDocumentForm(DocumentEntity receiptDocument, List<ItemEntityOCR> items) {
-		this.receiptDocument = receiptDocument;
-		this.items = items;
-	}
+    private ReceiptDocumentForm(DocumentEntity receiptDocument, List<ItemEntityOCR> items) {
+        this.receiptDocument = receiptDocument;
+        this.items = items;
+    }
 
-	public static ReceiptDocumentForm newInstance(DocumentEntity receipt, List<ItemEntityOCR> items) {
-		return new ReceiptDocumentForm(receipt, items);
-	}
+    public static ReceiptDocumentForm newInstance(DocumentEntity receipt, List<ItemEntityOCR> items) {
+        return new ReceiptDocumentForm(receipt, items);
+    }
 
-	public static ReceiptDocumentForm newInstance() {
-		return new ReceiptDocumentForm();
-	}
+    public static ReceiptDocumentForm newInstance() {
+        return new ReceiptDocumentForm();
+    }
 
-	public DocumentEntity getReceiptDocument() {
-		return receiptDocument;
-	}
+    public DocumentEntity getReceiptDocument() {
+        return receiptDocument;
+    }
 
-	public void setReceiptDocument(DocumentEntity receiptDocument) {
-		this.receiptDocument = receiptDocument;
-	}
+    public void setReceiptDocument(DocumentEntity receiptDocument) {
+        this.receiptDocument = receiptDocument;
+    }
 
-	public List<ItemEntityOCR> getItems() {
-		return items;
-	}
+    public List<ItemEntityOCR> getItems() {
+        return items;
+    }
 
-	public void setItems(List<ItemEntityOCR> items) {
-		this.items = items;
-	}
+    public void setItems(List<ItemEntityOCR> items) {
+        this.items = items;
+    }
 
     public MileageEntity getMileage() {
         return mileage;
@@ -91,19 +91,19 @@ public final class ReceiptDocumentForm {
         return this.errorMessage;
     }
 
-	@Override
-	public String toString() {
-		return "ReceiptDocumentForm [receiptDocument=" + receiptDocument + ", items=" + items + "]";
-	}
+    @Override
+    public String toString() {
+        return "ReceiptDocumentForm [receiptDocument=" + receiptDocument + ", items=" + items + "]";
+    }
 
-	public ReceiptEntity getReceiptEntity() throws NumberFormatException, ParseException {
+    public ReceiptEntity getReceiptEntity() throws NumberFormatException, ParseException {
         ReceiptEntity receipt = ReceiptEntity.newInstance();
         receipt.setReceiptDate(DateUtil.getDateFromString(receiptDocument.getReceiptDate()));
         receipt.setTotal(Formatter.getCurrencyFormatted(receiptDocument.getTotal()).doubleValue());
         receipt.setTax(Formatter.getCurrencyFormatted(receiptDocument.getTax()).doubleValue());
         receipt.setReceiptStatus(DocumentStatusEnum.TURK_PROCESSED);
         receipt.setUserProfileId(receiptDocument.getUserProfileId());
-		receipt.setCreated(receiptDocument.getCreated());
+        receipt.setCreated(receiptDocument.getCreated());
         receipt.setUpdated();
         receipt.setBizName(receiptDocument.getBizName());
         receipt.setBizStore(receiptDocument.getBizStore());
@@ -116,47 +116,46 @@ public final class ReceiptDocumentForm {
         receipt.setNotes(receiptDocument.getNotes());
 
         //This condition is mostly true for receipt when re-checked
-        if(StringUtils.isNotEmpty(receiptDocument.getReceiptId())) {
+        if (StringUtils.isNotEmpty(receiptDocument.getReceiptId())) {
             receipt.setId(receiptDocument.getReceiptId());
         }
 
-		return receipt;
-	}
+        return receipt;
+    }
 
-	/**
-	 *
-	 * @param receipt - Required receipt with Id
-	 * @return
-	 * @throws ParseException
-	 */
-	public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException, NumberFormatException {
-		List<ItemEntity> listOfItems = new ArrayList<>();
+    /**
+     * @param receipt - Required receipt with Id
+     * @return
+     * @throws ParseException
+     */
+    public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException, NumberFormatException {
+        List<ItemEntity> listOfItems = new ArrayList<>();
 
-		for(ItemEntityOCR itemOCR : items) {
-			if(itemOCR.getName().length() != 0) {
+        for (ItemEntityOCR itemOCR : items) {
+            if (itemOCR.getName().length() != 0) {
                 String name = itemOCR.getName().trim();
                 name = StringUtils.replace(name, "\t", " ");
                 name = name.replaceAll("\\s+", " ");
 
                 ItemEntity item = ItemEntity.newInstance();
-                item.setName(WordUtils.capitalize(WordUtils.capitalizeFully(name),  '.', '(', ')'));
+                item.setName(WordUtils.capitalize(WordUtils.capitalizeFully(name), '.', '(', ')'));
                 item.setPrice(Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue());
                 item.setQuantity(itemOCR.getQuantity());
                 item.setTaxed(itemOCR.getTaxed());
                 item.setSequence(itemOCR.getSequence());
                 item.setReceipt(receipt);
                 item.setUserProfileId(receipt.getUserProfileId());
-				item.setExpenseTag(itemOCR.getExpenseTag());
+                item.setExpenseTag(itemOCR.getExpenseTag());
                 item.setCreated(itemOCR.getCreated());
-				item.setUpdated();
+                item.setUpdated();
 
                 item.setBizName(receipt.getBizName());
-				listOfItems.add(item);
-			}
-		}
+                listOfItems.add(item);
+            }
+        }
 
-		return listOfItems;
-	}
+        return listOfItems;
+    }
 
     public MileageEntity getMileageEntity() {
         MileageEntity mileageEntity = new MileageEntity();
@@ -176,21 +175,21 @@ public final class ReceiptDocumentForm {
     public void updateItemWithTaxAmount(List<ItemEntity> items, ReceiptEntity receipt) {
         BigDecimal taxedItemTotalWithoutTax = BigDecimal.ZERO;
 
-        for(ItemEntity item : items) {
-            if(item.getTaxed() == TaxEnum.TAXED) {
+        for (ItemEntity item : items) {
+            if (item.getTaxed() == TaxEnum.TAXED) {
                 taxedItemTotalWithoutTax = Maths.add(taxedItemTotalWithoutTax, item.getTotalPriceWithoutTax());
             }
         }
 
         BigDecimal tax = Maths.calculateTax(receipt.getTax(), taxedItemTotalWithoutTax);
-        if(tax.compareTo(BigDecimal.ZERO) == 0) {
+        if (tax.compareTo(BigDecimal.ZERO) == 0) {
             receipt.setPercentTax("0.0000");
         } else {
             receipt.setPercentTax(tax.toString());
         }
 
-        for(ItemEntity item : items) {
-            if(item.getTaxed() == TaxEnum.TAXED) {
+        for (ItemEntity item : items) {
+            if (item.getTaxed() == TaxEnum.TAXED) {
                 BigDecimal taxedAmount = Maths.multiply(item.getPrice().toString(), receipt.getPercentTax());
                 item.setTax(new Double(taxedAmount.toString()));
             } else {

@@ -28,13 +28,12 @@ import java.util.List;
 
 /**
  * Lists out expenses related items. Call made from Pie chart on Tab 2
- *
  * User: hitender
  * Date: 5/23/13
  * Time: 11:28 PM
  */
 @Controller
-@RequestMapping(value = "/access/expenses")
+@RequestMapping (value = "/access/expenses")
 public final class ExpensesController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensesController.class);
     private static final String nextPage = "/expenses";
@@ -42,22 +41,22 @@ public final class ExpensesController {
     @Autowired private ItemService itemService;
     @Autowired private ExpensesService expensesService;
 
-    @RequestMapping(value = "{tag}", method = RequestMethod.GET)
-    public ModelAndView forExpenseType(@PathVariable String tag, @ModelAttribute("expenseForm") ExpenseForm expenseForm) {
+    @RequestMapping (value = "{tag}", method = RequestMethod.GET)
+    public ModelAndView forExpenseType(@PathVariable String tag, @ModelAttribute ("expenseForm") ExpenseForm expenseForm) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(receiptUser.getRid());
         List<ItemEntity> items = new ArrayList<>();
 
-        if(!tag.equalsIgnoreCase("Un-Assigned")) {
-            for(ExpenseTagEntity expenseTagEntity : expenseTypes) {
-                if(expenseTagEntity.getTagName().equalsIgnoreCase(tag)) {
+        if (!tag.equalsIgnoreCase("Un-Assigned")) {
+            for (ExpenseTagEntity expenseTagEntity : expenseTypes) {
+                if (expenseTagEntity.getTagName().equalsIgnoreCase(tag)) {
                     items = itemService.itemsForExpenseType(expenseTagEntity);
                     break;
                 }
             }
-        } else if(tag.equalsIgnoreCase("Un-Assigned")) {
+        } else if (tag.equalsIgnoreCase("Un-Assigned")) {
             items = itemService.itemsForUnAssignedExpenseType(receiptUser.getRid());
         }
 

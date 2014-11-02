@@ -32,31 +32,30 @@ import java.util.List;
 /**
  * @author hitender
  * @since Jan 9, 2013 10:23:55 PM
- *
  */
 @Controller
-@RequestMapping(value = "/access/itemanalytic")
+@RequestMapping (value = "/access/itemanalytic")
 public final class ItemAnalyticController {
-	private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticController.class);
-	private static final String nextPage = "/itemanalytic";
+    private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticController.class);
+    private static final String nextPage = "/itemanalytic";
 
     private static final int NINETY_DAYS = 90;
 
-	@Autowired private ItemAnalyticService itemAnalyticService;
+    @Autowired private ItemAnalyticService itemAnalyticService;
     @Autowired private ExpensesService expensesService;
 
-	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	public ModelAndView loadForm(@PathVariable String id, @ModelAttribute("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm) {
+    @RequestMapping (value = "{id}", method = RequestMethod.GET)
+    public ModelAndView loadForm(@PathVariable String id, @ModelAttribute ("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ItemEntity item = itemAnalyticService.findItemById(id, receiptUser.getRid());
-        if(item != null) {
+        if (item != null) {
             itemAnalyticForm.setItem(item);
             itemAnalyticForm.setDays(NINETY_DAYS);
 
             DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
-            if(item.getReceipt().getReceiptDate().before(untilThisDay.toDate())) {
+            if (item.getReceipt().getReceiptDate().before(untilThisDay.toDate())) {
                 itemAnalyticForm.setMessage("Since the item " + item.getName() + " was purchased more than " + NINETY_DAYS + " days ago no average could be calculated.");
             }
 
@@ -91,6 +90,6 @@ public final class ItemAnalyticController {
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
-	}
+    }
 
 }

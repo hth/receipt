@@ -28,15 +28,15 @@ import java.util.List;
  * Time: 11:32 AM
  */
 @Controller
-@RequestMapping(value = "/emp")
+@RequestMapping (value = "/emp")
 public final class EmpLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(EmpLandingController.class);
     private static final String nextPage = "/emp/landing";
 
     @Autowired EmpLandingService empLandingService;
 
-    @PreAuthorize("hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
-    @RequestMapping(value = "/landing", method = RequestMethod.GET)
+    @PreAuthorize ("hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (value = "/landing", method = RequestMethod.GET)
     public ModelAndView empLanding() {
         DateTime time = DateUtil.now();
         LOG.info("employee landed");
