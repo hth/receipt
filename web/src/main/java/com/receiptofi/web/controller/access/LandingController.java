@@ -240,11 +240,11 @@ public class LandingController extends BaseController {
      */
     private void populateReceiptExpenseDonutChartDetails(LandingForm landingForm, List<ReceiptEntity> receipts) {
         List<LandingDonutChart> bizByExpenseTypes = new ArrayList<>();
-        StringBuilder bizNames_sb = new StringBuilder();
+        StringBuilder bizNames = new StringBuilder();
         Map<String, Map<String, BigDecimal>> bizByExpenseTypeMap = landingService.allBusinessByExpenseType(receipts);
         for (String bizName : bizByExpenseTypeMap.keySet()) {
             //bizNames_sb.append("'").append(StringUtils.abbreviate(bizName, LandingDonutChart.OFF_SET, LandingDonutChart.MAX_WIDTH)).append("',");
-            bizNames_sb.append("'").append(bizName).append("',");
+            bizNames.append("'").append(bizName).append("',");
 
             LandingDonutChart landingDonutChart = LandingDonutChart.newInstance(bizName);
 
@@ -267,7 +267,7 @@ public class LandingController extends BaseController {
             bizByExpenseTypes.add(landingDonutChart);
         }
 
-        landingForm.setBizNames(bizNames_sb.toString().substring(0, bizNames_sb.toString().length() > 0 ? bizNames_sb.toString().length() - 1 : 0));
+        landingForm.setBizNames(bizNames.toString().substring(0, bizNames.toString().length() > 0 ? bizNames.toString().length() - 1 : 0));
         landingForm.setBizByExpenseTypes(bizByExpenseTypes);
     }
 
