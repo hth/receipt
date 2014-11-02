@@ -16,15 +16,6 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
-
-    <script>
-        $(function() {
-            $( "#datepicker" ).datepicker({
-                changeMonth: true,
-                changeYear: true
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="wrapper">
@@ -87,6 +78,13 @@
 </div>
 
 <script type="text/javascript">
+    $(function() {
+        $( "#datepicker" ).datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+
     $(document).ready(function() {
         // check name availability on focus lost
         $('#emailId').blur(function() {
