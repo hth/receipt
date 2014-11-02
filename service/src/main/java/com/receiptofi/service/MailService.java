@@ -55,21 +55,13 @@ public final class MailService {
     private static Logger LOG = LoggerFactory.getLogger(MailService.class);
 
     @Autowired private AccountService accountService;
-
     @Autowired private InviteService inviteService;
-
     @Autowired private JavaMailSenderImpl mailSender;
-
     @Autowired private LoginService loginService;
-
     @Autowired private InviteManager inviteManager;
-
     @Autowired private UserProfileManager userProfileManager;
-
     @Autowired private UserAuthenticationManager userAuthenticationManager;
-
     @Autowired private UserPreferenceManager userPreferenceManager;
-
     @Autowired private UserAccountManager userAccountManager;
 
     @SuppressWarnings ("SpringJavaAutowiringInspection")
@@ -297,7 +289,7 @@ public final class MailService {
         helper.setSubject(subject);
 
         //Attach image always at the end
-        URL url = this.getClass().getClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
+        URL url = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
         Assert.notNull(url);
         FileSystemResource res = new FileSystemResource(url.getPath());
         helper.addInline("receiptofi.logo", res);
