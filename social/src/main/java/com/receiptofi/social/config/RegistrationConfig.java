@@ -19,29 +19,28 @@ import org.springframework.ui.ModelMap;
 
 /**
  * Maintains if registration is allowed.
- *
  * User: hitender
  * Date: 6/22/14 7:30 PM
  */
 @Component
-@Scope(BeanDefinition.SCOPE_SINGLETON)
+@Scope (BeanDefinition.SCOPE_SINGLETON)
 public class RegistrationConfig {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationConfig.class);
 
-    @Value("${registration.turned.on}")
+    @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
 
-    @Value("${indexController:/open/index.htm}")
+    @Value ("${indexController:/open/index.htm}")
     private String indexController;
 
     public void changeUserAccountActiveState(UserAccountEntity userAccount) {
-        if(!registrationTurnedOn) {
+        if (!registrationTurnedOn) {
             userAccount.inActive();
         }
     }
 
     public boolean validateIfRegistrationIsAllowed(ModelMap map, Authentication authentication) {
-        if(!((UserDetails) authentication.getPrincipal()).isEnabled()) {
+        if (!((UserDetails) authentication.getPrincipal()).isEnabled()) {
             ReceiptUser receiptUser = (ReceiptUser) authentication.getPrincipal();
 
             SecurityContextHolder.getContext().setAuthentication(
@@ -65,7 +64,7 @@ public class RegistrationConfig {
      * @param userAccount
      */
     public void isRegistrationAllowed(UserAccountEntity userAccount) {
-        if(registrationTurnedOn) {
+        if (registrationTurnedOn) {
             LOG.info("registration is allowed, marking user={} active", userAccount.getReceiptUserId());
             userAccount.active();
         } else {
@@ -83,7 +82,7 @@ public class RegistrationConfig {
     public boolean checkRegistrationIsTurnedOn(UserDetails user) {
         LOG.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), indexController);
 
-        if(user.isEnabled() || registrationTurnedOn) {
+        if (user.isEnabled() || registrationTurnedOn) {
             return false;
         }
 

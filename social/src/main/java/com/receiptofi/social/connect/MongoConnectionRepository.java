@@ -44,13 +44,13 @@ public class MongoConnectionRepository implements ConnectionRepository {
 
         MultiValueMap<String, Connection<?>> connections = new LinkedMultiValueMap<>();
         Set<String> registeredProviderIds = this.connectionFactoryLocator.registeredProviderIds();
-        for(String registeredProviderId : registeredProviderIds) {
+        for (String registeredProviderId : registeredProviderIds) {
             connections.put(registeredProviderId, Collections.<Connection<?>>emptyList());
         }
 
-        for(Connection<?> connection : resultList) {
+        for (Connection<?> connection : resultList) {
             String providerId = connection.getKey().getProviderId();
-            if(connections.get(providerId).size() == 0) {
+            if (connections.get(providerId).size() == 0) {
                 connections.put(providerId, new LinkedList<Connection<?>>());
             }
             connections.add(providerId, connection);
@@ -62,27 +62,27 @@ public class MongoConnectionRepository implements ConnectionRepository {
         return connectionService.getConnections(userId, ProviderEnum.valueOf(providerId.toUpperCase()));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public <A> List<Connection<A>> findConnections(Class<A> apiType) {
         return (List<Connection<A>>) (List<?>) findConnections(getProviderId(apiType));
     }
 
     public MultiValueMap<String, Connection<?>> findConnectionsToUsers(MultiValueMap<String, String> providerUserIds) {
-        if(providerUserIds == null || providerUserIds.isEmpty()) {
+        if (providerUserIds == null || providerUserIds.isEmpty()) {
             throw new IllegalArgumentException("Unable to execute find: no providerUsers provided");
         }
 
         List<Connection<?>> resultList = connectionService.getConnections(userId, providerUserIds);
 
         MultiValueMap<String, Connection<?>> connectionsForUsers = new LinkedMultiValueMap<>();
-        for(Connection<?> connection : resultList) {
+        for (Connection<?> connection : resultList) {
             String providerId = connection.getKey().getProviderId();
             List<String> userIds = providerUserIds.get(providerId);
             List<Connection<?>> connections = connectionsForUsers.get(providerId);
-            if(connections == null) {
+            if (connections == null) {
                 //TODO re-check this code
                 connections = new ArrayList<>(userIds.size());
-                for(String userId : userIds) {
+                for (String userId : userIds) {
                     connections.add(null);
                 }
                 connectionsForUsers.put(providerId, connections);
@@ -106,7 +106,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public <A> Connection<A> getConnection(Class<A> apiType, String providerUserId) {
         String providerId = getProviderId(apiType);
         return (Connection<A>) getConnection(new ConnectionKey(providerId, providerUserId));
@@ -114,15 +114,15 @@ public class MongoConnectionRepository implements ConnectionRepository {
 
     public <A> Connection<A> getPrimaryConnection(Class<A> apiType) {
         ProviderEnum providerId = ProviderEnum.valueOf(getProviderId(apiType));
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings ("unchecked")
         Connection<A> connection = (Connection<A>) findPrimaryConnection(providerId);
-        if(connection == null) {
+        if (connection == null) {
             throw new NotConnectedException(providerId.toString());
         }
         return connection;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public <A> Connection<A> findPrimaryConnection(Class<A> apiType) {
         ProviderEnum providerId = ProviderEnum.valueOf(getProviderId(apiType).toUpperCase());
         return (Connection<A>) findPrimaryConnection(providerId);

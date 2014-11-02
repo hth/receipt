@@ -28,7 +28,7 @@ public class ConnectionConverter {
     }
 
     public Connection<?> convert(UserAccountEntity userAccount) {
-        if(userAccount == null) return null;
+        if (userAccount == null) return null;
 
         ConnectionData connectionData = fillConnectionData(userAccount);
         ConnectionFactory<?> connectionFactory = connectionFactoryLocator.getConnectionFactory(connectionData.getProviderId());
