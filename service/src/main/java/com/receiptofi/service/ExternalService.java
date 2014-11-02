@@ -82,8 +82,8 @@ public final class ExternalService {
             bizStoreEntity.setLng(lng);
 
             JsonElement formattedAddressElement = element.getAsJsonObject().get("formatted_address");
-            String formatted_address = formattedAddressElement.getAsString();
-            bizStoreEntity.setAddress(formatted_address);
+            String formattedAddress = formattedAddressElement.getAsString();
+            bizStoreEntity.setAddress(formattedAddress);
         }
     }
 }
