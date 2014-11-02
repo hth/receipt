@@ -37,18 +37,30 @@
 
 		var page = 5;
 		$scope.loadMore = function() {
-			$http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm').success(function(data) {
-				for (var i = 0; i < 5; i++) {
-					var d = data[i].split(":");
-					console.log(d[0] + ":" + d[1] + ":" + d[2]);
-					$scope.items.push({href : d[0], message : d[1], created : d[2]});
-				}
-			}).error(function(data) {
-				console.log('Request failed ' + data);
-				$scope.response = 'Request failed';
-			});
-			page += 5;
-			console.log($scope.items);
+			console.log("page:" + page + "," + "notificationCount:" + '${landingForm.notificationForm.count}');
+			if(page < '${landingForm.notificationForm.count}' - 1) {
+				$scope.loading = true;
+				$http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm')
+						.success(function(data, status) {
+							if(data.length <= 5) {
+								console.log('Request status ' + status + ":" + data.length + ":" + data);
+								for (var i = 0; i < 5 && page + i < '${landingForm.notificationForm.count}'; i++) {
+									var d = data[i].split(":");
+									console.log(d[0] + ":" + d[1] + ":" + d[2]);
+									$scope.items.push({href : d[0], message : d[1], created : d[2]});
+								}
+							} else {
+								$scope.failed = true;
+							}
+							$scope.loading = false;
+						}).error(function(data, status) {
+							console.log('Request error, data:' + data + ",status:");
+							$scope.loading = false;
+							$scope.failed = true;
+						});
+						page += 5;
+						console.log($scope.items);
+			}
 		};
 		$scope.loadMore();
 	}
@@ -171,6 +183,13 @@
 						<span class="si-date-text">{{i.created}}</span>
 					</li>
     			</ul>
+				<p class="si-list-footer si-list-footer-success" ng-show="loading">
+					<%--<img src="${pageContext.request.contextPath}/static/img/notification-loading.gif"/>--%>
+					<em>Loading ...</em>
+				</p>
+				<p class="si-list-footer si-list-footer-error" ng-show="failed">
+					<em>Failed to retrieve data</em>
+				</p>
 				</c:when>
 				<c:otherwise>
 					<p class="si-general-text">There are no Notifications &nbsp;</p>
