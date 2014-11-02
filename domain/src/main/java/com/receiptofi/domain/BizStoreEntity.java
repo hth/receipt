@@ -20,38 +20,39 @@ import javax.validation.constraints.NotNull;
  * Date: 4/22/13
  * Time: 10:16 PM
  */
-@Document(collection = "BIZ_STORE")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique=true),
-} )
+@Document (collection = "BIZ_STORE")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique = true),
+})
 public final class BizStoreEntity extends BaseEntity {
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
-    @Value("${phoneNumberBlank:000_000_0000}")
+    @Value ("${phoneNumberBlank:000_000_0000}")
     private String phoneNumberBlank;
 
     @NotNull
-    @Field("ADDRESS")
+    @Field ("ADDRESS")
     private String address;
 
     @NotNull
-    @Field("PHONE")
+    @Field ("PHONE")
     private String phone;
 
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
-    @Field("LAT")
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
+    @Field ("LAT")
     private double lat;
 
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
-    @Field("LNG")
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
+    @Field ("LNG")
     private double lng;
 
     @DBRef
-    @Field("BIZ_NAME")
+    @Field ("BIZ_NAME")
     private BizNameEntity bizName;
 
     /* To make bean happy */
-    public BizStoreEntity() {}
+    public BizStoreEntity() {
+    }
 
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
@@ -93,7 +94,7 @@ public final class BizStoreEntity extends BaseEntity {
      * @param phone
      */
     public void setPhone(String phone) {
-        if(StringUtils.isEmpty(phone)) {
+        if (StringUtils.isEmpty(phone)) {
             this.phone = phoneCleanup(phoneNumberBlank);
         } else {
             this.phone = phoneCleanup(phone);
@@ -131,7 +132,7 @@ public final class BizStoreEntity extends BaseEntity {
      * @return
      */
     public static String phoneCleanup(String phone) {
-        if(StringUtils.isNotEmpty(phone)) {
+        if (StringUtils.isNotEmpty(phone)) {
             return phone.replaceAll("[^0-9]", StringUtils.EMPTY);
         }
         return phone;

@@ -9,11 +9,11 @@ package com.receiptofi.domain.types;
  */
 public enum AccountTypeEnum {
 
-    PERSONAL("PERSONAL",                                "Personal"),
-    PERSONAL_HOME_BUSINESS("PERSONAL_HOME_BUSINESS",    "Personal & Home Business"),
-    SMALL_BUSINESS("SMALL_BUSINESS",                    "Small Business"),
-    SMALL_BUSINESS_CLIENT("SMALL_BUSINESS_CLIENT",      "Business with multiple clients"),
-    ENTERPRISE("ENTERPRISE",                            "Enterprise");
+    PERSONAL("PERSONAL", "Personal"),
+    PERSONAL_HOME_BUSINESS("PERSONAL_HOME_BUSINESS", "Personal & Home Business"),
+    SMALL_BUSINESS("SMALL_BUSINESS", "Small Business"),
+    SMALL_BUSINESS_CLIENT("SMALL_BUSINESS_CLIENT", "Business with multiple clients"),
+    ENTERPRISE("ENTERPRISE", "Enterprise");
 
     private final String description;
     private final String name;

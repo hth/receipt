@@ -43,7 +43,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public void save(UserAccountEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
-            if(object.getId() != null) {
+            if (object.getId() != null) {
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);

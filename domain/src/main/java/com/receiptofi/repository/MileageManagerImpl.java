@@ -40,7 +40,7 @@ public class MileageManagerImpl implements MileageManager {
 
     @Override
     public void save(MileageEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);

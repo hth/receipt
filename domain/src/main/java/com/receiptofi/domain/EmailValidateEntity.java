@@ -11,22 +11,22 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 5/17/14 4:49 PM
  */
-@Document(collection = "EMAIL_VALIDATE")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "email_valid_idx", def = "{'AUTH': 1}",  unique = true),
-} )
+@Document (collection = "EMAIL_VALIDATE")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "email_valid_idx", def = "{'AUTH': 1}", unique = true),
+})
 public final class EmailValidateEntity extends BaseEntity {
 
     @NotNull
-    @Field("RID")
+    @Field ("RID")
     private String receiptUserId;
 
     @NotNull
-    @Field("EM")
+    @Field ("EM")
     private String email;
 
     @NotNull
-    @Field("AUTH")
+    @Field ("AUTH")
     private String authenticationKey;
 
     private EmailValidateEntity(String receiptUserId, String email, String authenticationKey) {

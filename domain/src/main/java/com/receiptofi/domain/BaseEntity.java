@@ -32,19 +32,19 @@ public abstract class BaseEntity implements Serializable {
     protected String id;
 
     @Version
-    @Field("V")
+    @Field ("V")
     private Integer version;
 
-    @Field("U")
+    @Field ("U")
     private Date updated = DateUtil.nowTime();
 
-    @Field("C")
+    @Field ("C")
     private Date created = DateUtil.nowTime();
 
-    @Field("A")
+    @Field ("A")
     private boolean active = true;
 
-    @Field("D")
+    @Field ("D")
     private boolean deleted = false;
 
     public BaseEntity() {
@@ -59,13 +59,13 @@ public abstract class BaseEntity implements Serializable {
      * @param attributeName
      * @return Collection Name
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings ("rawtypes")
     public static String getClassAnnotationValue(Class<?> classType, Class annotationType, String attributeName) {
         String value = null;
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings ("unchecked")
         Annotation annotation = classType.getAnnotation(annotationType);
-        if(annotation != null) {
+        if (annotation != null) {
             try {
                 value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
             } catch (Exception annotationException) {
@@ -120,7 +120,7 @@ public abstract class BaseEntity implements Serializable {
         this.version = version;
     }
 
-    @DateTimeFormat(iso = ISO.NONE)
+    @DateTimeFormat (iso = ISO.NONE)
     public Date getUpdated() {
         return updated;
     }
@@ -129,7 +129,7 @@ public abstract class BaseEntity implements Serializable {
         this.updated = DateTime.now().toDate();
     }
 
-    @DateTimeFormat(iso = ISO.NONE)
+    @DateTimeFormat (iso = ISO.NONE)
     public Date getCreated() {
         return created;
     }

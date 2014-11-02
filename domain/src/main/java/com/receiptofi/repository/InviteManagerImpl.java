@@ -59,7 +59,7 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public void save(InviteEntity object) {
-        if(object.getId() != null) {
+        if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);

@@ -14,40 +14,39 @@ import org.springframework.data.mongodb.core.mapping.Field;
  *
  * @author hitender
  * @since Dec 26, 2012 1:47:36 PM
- *
  */
-@Document(collection = "ITEM_FEATURE")
+@Document (collection = "ITEM_FEATURE")
 public final class ItemFeatureEntity extends BaseEntity {
 
-	@DBRef
-    @Field("ITEM")
-	private ItemEntity itemEntity;
+    @DBRef
+    @Field ("ITEM")
+    private ItemEntity itemEntity;
 
-	private FeaturesOnItemEnum featureOnItem;
+    private FeaturesOnItemEnum featureOnItem;
 
-	private ItemFeatureEntity(FeaturesOnItemEnum featureOnItem, ItemEntity itemEntity) {
-		super();
-		this.featureOnItem = featureOnItem;
-		this.itemEntity = itemEntity;
-	}
+    private ItemFeatureEntity(FeaturesOnItemEnum featureOnItem, ItemEntity itemEntity) {
+        super();
+        this.featureOnItem = featureOnItem;
+        this.itemEntity = itemEntity;
+    }
 
-	/**
-	 * This method is used when the Entity is created for the first time.
-	 *
-	 * @param featureOnItem
-	 * @param itemEntity
-	 * @return
-	 */
-	public static ItemFeatureEntity newInstance(FeaturesOnItemEnum featureOnItem, ItemEntity itemEntity) {
-		return new ItemFeatureEntity(featureOnItem, itemEntity);
-	}
+    /**
+     * This method is used when the Entity is created for the first time.
+     *
+     * @param featureOnItem
+     * @param itemEntity
+     * @return
+     */
+    public static ItemFeatureEntity newInstance(FeaturesOnItemEnum featureOnItem, ItemEntity itemEntity) {
+        return new ItemFeatureEntity(featureOnItem, itemEntity);
+    }
 
-	public ItemEntity getItemEntity() {
-		return itemEntity;
-	}
+    public ItemEntity getItemEntity() {
+        return itemEntity;
+    }
 
-	public FeaturesOnItemEnum getFeatureOnItem() {
-		return featureOnItem;
-	}
+    public FeaturesOnItemEnum getFeatureOnItem() {
+        return featureOnItem;
+    }
 
 }

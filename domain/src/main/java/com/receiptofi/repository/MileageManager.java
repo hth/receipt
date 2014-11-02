@@ -13,7 +13,10 @@ import java.util.List;
 public interface MileageManager extends RepositoryManager<MileageEntity> {
 
     MileageEntity findOne(String id, String userProfileId);
+
     List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime startMonth, DateTime endMonth);
+
     boolean updateStartDate(String mileageId, DateTime startDate, String userProfileId);
+
     boolean updateEndDate(String mileageId, DateTime endDate, String userProfileId);
 }

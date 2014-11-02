@@ -15,35 +15,36 @@ import org.hibernate.validator.constraints.Email;
  * Date: 4/6/13
  * Time: 6:48 PM
  */
-@Document(collection = "MESSAGE_DOCUMENT")
+@Document (collection = "MESSAGE_DOCUMENT")
 public final class MessageDocumentEntity extends BaseEntity {
 
     //TODO change to document id
     @NotNull
-    @Field("RECEIPT_OCR_ID")
+    @Field ("RECEIPT_OCR_ID")
     private String documentId;
 
     @NotNull
-    @Field("USER_LEVEL_ENUM")
+    @Field ("USER_LEVEL_ENUM")
     private UserLevelEnum level = UserLevelEnum.USER;
 
     @Email
-    @Field("EM")
+    @Field ("EM")
     String emailId;
 
     @NotNull
-    @Field("USER_PROFILE_ID")
+    @Field ("USER_PROFILE_ID")
     String userProfileId;
 
     @NotNull
-    @Field("LOCKED")
+    @Field ("LOCKED")
     private boolean recordLocked = false;
 
     @NotNull
-    @Field("DS_E")
+    @Field ("DS_E")
     private DocumentStatusEnum documentStatus;
 
-    private MessageDocumentEntity() {}
+    private MessageDocumentEntity() {
+    }
 
     private MessageDocumentEntity(String documentId, UserLevelEnum level, DocumentStatusEnum documentStatus) {
         this.documentId = documentId;

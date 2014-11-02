@@ -14,6 +14,7 @@ import java.util.List;
 public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
     long numberOfPendingReceipts(String userProfileId);
+
     long numberOfRejectedReceipts(String userProfileId);
 
     DocumentEntity findOne(String documentId, String userProfileId);

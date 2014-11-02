@@ -15,18 +15,19 @@ import javax.validation.constraints.NotNull;
  * Date: 4/22/13
  * Time: 10:16 PM
  */
-@Document(collection = "BIZ_NAME")
-@CompoundIndexes(value = {
-        @CompoundIndex(name = "biz_name_idx", def = "{'N': 1}",  unique = true),
-} )
+@Document (collection = "BIZ_NAME")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "biz_name_idx", def = "{'N': 1}", unique = true),
+})
 public final class BizNameEntity extends BaseEntity {
 
     @NotNull
-    @Field("N")
+    @Field ("N")
     private String businessName;
 
     /* To make bean happy */
-    public BizNameEntity() {}
+    public BizNameEntity() {
+    }
 
     public static BizNameEntity newInstance() {
         return new BizNameEntity();

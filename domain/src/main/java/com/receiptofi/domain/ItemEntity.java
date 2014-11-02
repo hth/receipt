@@ -29,75 +29,75 @@ import javax.validation.constraints.Size;
  *
  * @author hitender
  * @since Dec 25, 2012 11:43:10 PM
- *
  */
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
-@Document(collection = "ITEM")
-@CompoundIndexes({ @CompoundIndex(name = "user_item_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}") })
+@Document (collection = "ITEM")
+@CompoundIndexes ({@CompoundIndex (name = "user_item_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}")})
 public final class ItemEntity extends BaseEntity {
 
-	@Size(min = 1, max = 128)
-    @Field("NAME")
-	private String name;
+    @Size (min = 1, max = 128)
+    @Field ("NAME")
+    private String name;
 
-	@NumberFormat(style = Style.CURRENCY)
-    @Field("PRICE")
-	private Double price;
+    @NumberFormat (style = Style.CURRENCY)
+    @Field ("PRICE")
+    private Double price;
 
     /**
      * Paid tax on an item
      */
-    @NumberFormat(style = Style.CURRENCY)
-    @Field("TAX")
+    @NumberFormat (style = Style.CURRENCY)
+    @Field ("TAX")
     private Double tax;
 
-    @Field("QUANTITY")
+    @Field ("QUANTITY")
     private Double quantity = 1.00;
 
-	@NotNull
-    @Field("TAX_ENUM")
-	private TaxEnum taxed = TaxEnum.NOT_TAXED;
+    @NotNull
+    @Field ("TAX_ENUM")
+    private TaxEnum taxed = TaxEnum.NOT_TAXED;
 
-	@NotNull
-    @Field("SEQUENCE")
-	private int sequence;
+    @NotNull
+    @Field ("SEQUENCE")
+    private int sequence;
 
-	@NotNull
-    @Field("USER_PROFILE_ID")
-	private String userProfileId;
+    @NotNull
+    @Field ("USER_PROFILE_ID")
+    private String userProfileId;
 
     @DBRef
-    @Field("RECEIPT")
+    @Field ("RECEIPT")
     private ReceiptEntity receipt;
 
-    @DateTimeFormat(iso = ISO.DATE_TIME)
-    @Field("R_D")
+    @DateTimeFormat (iso = ISO.DATE_TIME)
+    @Field ("R_D")
     private Date receiptDate;
 
     @DBRef
-    @Field("BIZ_NAME")
+    @Field ("BIZ_NAME")
     private BizNameEntity bizName;
 
     @DBRef
-    @Field("ET_R")
+    @Field ("ET_R")
     private ExpenseTagEntity expenseTag;
 
-	public ItemEntity() {}
+    public ItemEntity() {
+    }
 
     public static ItemEntity newInstance() {
         return new ItemEntity();
     }
 
-	private ItemEntity(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
-		super();
-		this.name = name;
-		this.price = price;
-		this.taxed = taxed;
-		this.receipt = receipt;
-		this.userProfileId = userProfileId;
-		this.sequence = sequence;
+    private ItemEntity(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
+        super();
+        this.name = name;
+        this.price = price;
+        this.taxed = taxed;
+        this.receipt = receipt;
+        this.userProfileId = userProfileId;
+        this.sequence = sequence;
         this.receiptDate = receipt.getReceiptDate();
-	}
+    }
 
     /**
      * This method is used when the Entity is created for the first time.
@@ -111,28 +111,29 @@ public final class ItemEntity extends BaseEntity {
      * @return
      */
     @Deprecated
-	public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
-		return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
-	}
+    public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
+        return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Double getPrice() {
-		return price;
-	}
+    public Double getPrice() {
+        return price;
+    }
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
     /**
      * Paid tax on an item
+     *
      * @return
      */
     public Double getTax() {
@@ -141,13 +142,14 @@ public final class ItemEntity extends BaseEntity {
 
     /**
      * Set computed tax for the item
+     *
      * @param tax
      */
     public void setTax(Double tax) {
         this.tax = tax;
     }
 
-    @NumberFormat(style = Style.CURRENCY)
+    @NumberFormat (style = Style.CURRENCY)
     @Transient
     public BigDecimal getTotalTax() {
         return Maths.multiply(tax, quantity);
@@ -161,45 +163,45 @@ public final class ItemEntity extends BaseEntity {
         this.quantity = quantity;
     }
 
-    @NumberFormat(style = Style.CURRENCY)
+    @NumberFormat (style = Style.CURRENCY)
     @Transient
     public BigDecimal getTotalPriceWithoutTax() {
         return Maths.multiply(price, quantity);
     }
 
-    @NumberFormat(style = Style.CURRENCY)
+    @NumberFormat (style = Style.CURRENCY)
     @Transient
     public BigDecimal getTotalPriceWithTax() {
         return Maths.add(getTotalPriceWithoutTax(), getTotalTax());
     }
 
     public TaxEnum getTaxed() {
-		return taxed;
-	}
+        return taxed;
+    }
 
-	public void setTaxed(TaxEnum taxed) {
-		this.taxed = taxed;
-	}
+    public void setTaxed(TaxEnum taxed) {
+        this.taxed = taxed;
+    }
 
-	public int getSequence() {
-		return sequence;
-	}
+    public int getSequence() {
+        return sequence;
+    }
 
-	public void setSequence(int sequence) {
-		this.sequence = sequence;
-	}
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
 
-	public ReceiptEntity getReceipt() {
-		return this.receipt;
-	}
+    public ReceiptEntity getReceipt() {
+        return this.receipt;
+    }
 
-	public void setReceipt(ReceiptEntity receipt) {
-		this.receipt = receipt;
-        if(receipt != null && receipt.getReceiptDate() != null) {
+    public void setReceipt(ReceiptEntity receipt) {
+        this.receipt = receipt;
+        if (receipt != null && receipt.getReceiptDate() != null) {
             //receipt null during reflection when just one of the field is populated
             this.receiptDate = receipt.getReceiptDate();
         }
-	}
+    }
 
     public Date getReceiptDate() {
         return receiptDate;
@@ -210,12 +212,12 @@ public final class ItemEntity extends BaseEntity {
     }
 
     public String getUserProfileId() {
-		return userProfileId;
-	}
+        return userProfileId;
+    }
 
-	public void setUserProfileId(String userProfileId) {
-		this.userProfileId = userProfileId;
-	}
+    public void setUserProfileId(String userProfileId) {
+        this.userProfileId = userProfileId;
+    }
 
     public BizNameEntity getBizName() {
         return bizName;
@@ -234,7 +236,7 @@ public final class ItemEntity extends BaseEntity {
     }
 
     @Override
-	public String toString() {
-		return "ItemEntity [name=" + name + ", price=" + price + ", taxed=" + taxed + ", receipt=" + receipt + "]";
-	}
+    public String toString() {
+        return "ItemEntity [name=" + name + ", price=" + price + ", taxed=" + taxed + ", receipt=" + receipt + "]";
+    }
 }
