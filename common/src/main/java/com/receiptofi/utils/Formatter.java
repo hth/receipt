@@ -23,6 +23,23 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+/** Define all singleton here */
+enum FormatterSingleton {
+    INSTANCE;
+
+    protected ScriptEngine engine() {
+        return new ScriptEngineManager().getEngineByName("JavaScript");
+    }
+
+    protected PhoneNumberUtil phoneInstance() {
+        return PhoneNumberUtil.getInstance();
+    }
+
+    protected NumberFormat currencyInstance() {
+        return NumberFormat.getCurrencyInstance();
+    }
+}
+
 /**
  * @author hitender
  * @since Jan 9, 2013 11:13:30 PM
@@ -87,22 +104,5 @@ public final class Formatter {
 
     public static String toSmallDate(Date date) {
         return SDF_SMALL.format(date);
-    }
-}
-
-/** Define all singleton here */
-enum FormatterSingleton {
-    INSTANCE;
-
-    protected ScriptEngine engine() {
-        return new ScriptEngineManager().getEngineByName("JavaScript");
-    }
-
-    protected PhoneNumberUtil phoneInstance() {
-        return PhoneNumberUtil.getInstance();
-    }
-
-    protected NumberFormat currencyInstance() {
-        return NumberFormat.getCurrencyInstance();
     }
 }
