@@ -52,8 +52,8 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     public void save(UserProfileEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
-//            if(findByEmail(object.getEmailId()) == null)
-//			    mongoTemplate.save(object, TABLE);
+//            if (findByEmail(object.getEmailId()) == null)
+//                mongoTemplate.save(object, TABLE);
 //            else {
 //                LOG.error("User seems to be already registered: " + object.getEmailId());
 //                throw new Exception("User already registered with email: " + object.getEmailId());

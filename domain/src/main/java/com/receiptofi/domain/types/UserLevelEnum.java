@@ -16,7 +16,7 @@ public enum UserLevelEnum {
     EMPLOYER_PAID("EMPLOYER_PAID", "Employer Paid", 40, UserLevelEnum.DEFAULT_JMS_LEVEL + 3),
     TECHNICIAN("TECHNICIAN", "Technician", 50, UserLevelEnum.DEFAULT_JMS_LEVEL + 4),
     SUPERVISOR("SUPERVISOR", "Supervisor", 60, UserLevelEnum.DEFAULT_JMS_LEVEL + 5),
-    ADMIN("ADMIN", "Admin", 70, UserLevelEnum.DEFAULT_JMS_LEVEL + 6),;
+    ADMIN("ADMIN", "Admin", 70, UserLevelEnum.DEFAULT_JMS_LEVEL + 6);
 
     //TODO to use JMS message setting in future. Currently message is picked based on level of the user.
     private static final int DEFAULT_JMS_LEVEL = 4;

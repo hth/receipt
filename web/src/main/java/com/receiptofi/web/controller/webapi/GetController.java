@@ -37,9 +37,8 @@ public class GetController {
             headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"
     )
-    public
     @ResponseBody
-    String get(
+    public String get(
             @RequestHeader ("X-R-API-MOBILE") String apiAccessToken,
             HttpServletResponse httpServletResponse) throws IOException {
         LOG.debug("CSRF invoked to create token for Mobile");
