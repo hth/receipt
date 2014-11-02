@@ -38,7 +38,8 @@ public final class BizNameEntity extends BaseEntity {
     }
 
     /**
-     * Cannot: Added Capitalize Fully feature to business businessName as the businessName has to be matching with business style
+     * Cannot: Added Capitalize Fully feature to business businessName as the businessName has to be matching with
+     * business style.
      *
      * @param businessName
      */
@@ -48,7 +49,7 @@ public final class BizNameEntity extends BaseEntity {
     }
 
     /**
-     * Escape String for Java Script
+     * Escape String for Java Script.
      *
      * @return
      */
