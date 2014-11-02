@@ -28,8 +28,8 @@ public final class InviteAuthenticateValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[] { "First Name" });
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[] { "Last Name" });
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First Name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[]{"Last Name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "forgotAuthenticateForm.password", "field.required", new Object[]{"Password"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "forgotAuthenticateForm.passwordSecond", "field.required", new Object[]{"Retype Password"});
 
@@ -37,33 +37,33 @@ public final class InviteAuthenticateValidator implements Validator {
         if (faa.getFirstName() != null && faa.getFirstName().length() < 4) {
             errors.rejectValue("firstName",
                     "field.length",
-                    new Object[] { Integer.valueOf("4") },
+                    new Object[]{Integer.valueOf("4")},
                     "Minimum length of four characters");
         }
 
         if (faa.getLastName() != null && faa.getLastName().length() < 4) {
             errors.rejectValue("lastName",
                     "field.length",
-                    new Object[] { Integer.valueOf("4") },
+                    new Object[]{Integer.valueOf("4")},
                     "Minimum length of four characters");
         }
 
-        if(!faa.getForgotAuthenticateForm().isEqual()) {
-            errors.rejectValue("forgotAuthenticateForm.password", "field.unmatched", new Object[] { "" }, "Password entered value does not match");
-            errors.rejectValue("forgotAuthenticateForm.passwordSecond", "field.unmatched", new Object[] { "" }, "Password entered value does not match");
+        if (!faa.getForgotAuthenticateForm().isEqual()) {
+            errors.rejectValue("forgotAuthenticateForm.password", "field.unmatched", new Object[]{""}, "Password entered value does not match");
+            errors.rejectValue("forgotAuthenticateForm.passwordSecond", "field.unmatched", new Object[]{""}, "Password entered value does not match");
         }
 
         if (faa.getForgotAuthenticateForm().getPassword().length() < 4) {
             errors.rejectValue("forgotAuthenticateForm.password",
                     "field.length",
-                    new Object[] { Integer.valueOf("4") },
+                    new Object[]{Integer.valueOf("4")},
                     "Minimum length of four characters");
         }
 
         if (faa.getForgotAuthenticateForm().getPasswordSecond().length() < 4) {
             errors.rejectValue("forgotAuthenticateForm.passwordSecond",
                     "field.length",
-                    new Object[] { Integer.valueOf("4") },
+                    new Object[]{Integer.valueOf("4")},
                     "Minimum length of four characters");
         }
     }

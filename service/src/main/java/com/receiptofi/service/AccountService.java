@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 
 /**
@@ -77,16 +78,13 @@ public final class AccountService {
         return userAccountManager.findByProviderUserId(providerUserId);
     }
 
-    /**
-     * Create a new account
-     *
-     * @param email
-     * @param firstName
-     * @param lastName
-     * @param password
-     * @return
-     */
-    public UserAccountEntity executeCreationOfNewAccount(String email, String firstName, String lastName, String password) {
+    public UserAccountEntity createNewAccount(
+            String email,
+            String firstName,
+            String lastName,
+            String password,
+            String birthday
+    ) {
         UserAccountEntity userAccount;
         UserAuthenticationEntity userAuthentication;
         UserProfileEntity userProfile;
@@ -113,7 +111,8 @@ public final class AccountService {
                     email,
                     firstName,
                     lastName,
-                    userAccount.getReceiptUserId()
+                    userAccount.getReceiptUserId(),
+                    birthday
             );
             userProfileManager.save(userProfile);
         } catch (Exception e) {

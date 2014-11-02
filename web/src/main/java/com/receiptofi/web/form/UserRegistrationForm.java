@@ -14,6 +14,7 @@ public final class UserRegistrationForm {
     private String firstName;
     private String lastName;
     private String emailId;
+    private String birthday;
     private String password;
 
     private UserRegistrationForm() {
@@ -50,6 +51,14 @@ public final class UserRegistrationForm {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public String getPassword() {

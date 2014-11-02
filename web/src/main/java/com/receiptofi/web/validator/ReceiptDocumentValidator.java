@@ -73,7 +73,7 @@ public final class ReceiptDocumentValidator implements Validator {
 
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
-        if(receiptDocumentForm.getItems() == null) {
+        if (receiptDocumentForm.getItems() == null) {
             LOG.error("Exception during update of receipt={}, as no items were found", receiptDocumentForm.getReceiptDocument().getId());
             errors.rejectValue(
                     "receiptDocumentForm",
@@ -110,13 +110,13 @@ public final class ReceiptDocumentValidator implements Validator {
                 } else {
                     /** Count need to check the condition below */
                     conditionFailed = true;
-                    conditionFailedCounter ++;
+                    conditionFailedCounter++;
                 }
                 count++;
             }
 
             /** This condition is added to make sure no receipt is added without at least one valid item in the list */
-            if(conditionFailed && receiptDocumentForm.getItems().size() == conditionFailedCounter) {
+            if (conditionFailed && receiptDocumentForm.getItems().size() == conditionFailedCounter) {
                 LOG.error(
                         "Exception during update of receipt={}, as no items were found",
                         receiptDocumentForm.getReceiptDocument().getId()
@@ -137,7 +137,7 @@ public final class ReceiptDocumentValidator implements Validator {
                 subTotal = Maths.adjustScale(subTotal);
                 int comparedValue = submittedSubTotal.compareTo(subTotal);
                 if (comparedValue > 0) {
-                    if(Maths.withInRange(submittedSubTotal, subTotal)) {
+                    if (Maths.withInRange(submittedSubTotal, subTotal)) {
                         LOG.warn("Found difference in Calculated subTotal: " + subTotal +
                                 ", submittedSubTotal: " + submittedSubTotal +
                                 ". Which is less than application specified diff of " +
@@ -149,15 +149,15 @@ public final class ReceiptDocumentValidator implements Validator {
                     }
 
                 } else if (comparedValue < 0) {
-                    if(Maths.withInRange(submittedSubTotal, subTotal)) {
+                    if (Maths.withInRange(submittedSubTotal, subTotal)) {
                         LOG.warn("Found difference in Calculated subTotal: " + subTotal +
                                 ", submittedSubTotal: " + submittedSubTotal +
                                 ". Which is less than application specified diff of " +
                                 Maths.ACCEPTED_RANGE_IN_LOWEST_DENOMINATION);
                     } else {
                         errors.rejectValue("receiptDocument.subTotal", "field.currency.match.second",
-                            new Object[]{receiptDocumentForm.getReceiptDocument().getSubTotal(), subTotal.toString()},
-                            "Summation not adding up");
+                                new Object[]{receiptDocumentForm.getReceiptDocument().getSubTotal(), subTotal.toString()},
+                                "Summation not adding up");
                     }
                 }
             } catch (ParseException | NumberFormatException e) {
@@ -185,7 +185,7 @@ public final class ReceiptDocumentValidator implements Validator {
             }
 
             try {
-                if(submittedSubTotal == null || total == null) {
+                if (submittedSubTotal == null || total == null) {
                     errors.rejectValue(
                             "receiptDocument.total",
                             "field.currency.cannot.compute",
@@ -196,7 +196,7 @@ public final class ReceiptDocumentValidator implements Validator {
                     BigDecimal tax = Formatter.getCurrencyFormatted(receiptDocumentForm.getReceiptDocument().getTax());
                     //Since this is going to be displayed to user setting the scale to two.
                     BigDecimal calculatedTotal = Maths.add(submittedSubTotal, tax).setScale(Maths.SCALE_TWO);
-                    if(calculatedTotal.compareTo(total) != 0) {
+                    if (calculatedTotal.compareTo(total) != 0) {
                         errors.rejectValue("receiptDocument.total", "field.receipt.total",
                                 new Object[]{receiptDocumentForm.getReceiptDocument().getTotal(), calculatedTotal.toString()},
                                 "Summation not adding up");

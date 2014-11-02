@@ -36,6 +36,11 @@
 				<td style="width: 30%"><form:input class="tooltip" path="lastName" title="Please provide your Last Name." /></td>
 				<td style="width: 51%"><form:errors path="lastName" cssClass="error" /></td>
 			</tr>
+            <tr>
+                <td style="text-align: right; width: 19%"><form:label for="birthday" path="birthday" cssErrorClass="error">Birthday:</form:label></td>
+                <td style="width: 30%"><form:input class="tooltip" path="birthday" title="Please provide your Birthday." id="datepicker" /></td>
+                <td style="width: 51%"><form:errors path="birthday" cssClass="error" id="birthday.errors" /></td>
+            </tr>
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
 				<td style="width: 30%"><form:input class="tooltip" path="emailId" title="Please provide a valid email address. A confirmation email will be sent to this address. This email address will also be your login to receipt-o-fi." /></td>
@@ -73,6 +78,13 @@
 </div>
 
 <script type="text/javascript">
+    $(function() {
+        $( "#datepicker" ).datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+
     $(document).ready(function() {
         // check name availability on focus lost
         $('#emailId').blur(function() {

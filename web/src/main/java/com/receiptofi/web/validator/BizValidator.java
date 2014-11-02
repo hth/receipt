@@ -32,13 +32,13 @@ public final class BizValidator implements Validator {
                 errors,
                 "businessName",
                 "field.required",
-                new Object[] { "Biz Name" }
+                new Object[]{"Biz Name"}
         );
         ValidationUtils.rejectIfEmptyOrWhitespace(
                 errors,
                 "address",
                 "field.required",
-                new Object[] { "Address" }
+                new Object[]{"Address"}
         );
     }
 }

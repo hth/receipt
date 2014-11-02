@@ -146,12 +146,13 @@ public final class UserProfileEntity extends BaseEntity {
     /** To make bean happy */
     public UserProfileEntity() {}
 
-    private UserProfileEntity(String email, String firstName, String lastName, String receiptUserId) {
+    private UserProfileEntity(String email, String firstName, String lastName, String receiptUserId, String birthday) {
         super();
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.receiptUserId = receiptUserId;
+        this.birthday = birthday;
     }
 
 	/**
@@ -161,8 +162,8 @@ public final class UserProfileEntity extends BaseEntity {
 	 * @param lastName
 	 * @return
 	 */
-	public static UserProfileEntity newInstance(String email, String firstName, String lastName, String receiptUserId) {
-		return new UserProfileEntity(email, firstName, lastName, receiptUserId);
+	public static UserProfileEntity newInstance(String email, String firstName, String lastName, String receiptUserId, String birthday) {
+		return new UserProfileEntity(email, firstName, lastName, receiptUserId, birthday);
     }
 
     public String getReceiptUserId() {
