@@ -17,23 +17,24 @@ import javax.xml.bind.annotation.XmlType;
  * User: hitender
  * Date: 9/6/13 9:27 PM
  */
-@XmlRootElement(name="reportView")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
-@XmlType(name="home", propOrder = { "userId", "emailId", "receipts" })
+@XmlRootElement (name = "reportView")
+@XmlAccessorType (XmlAccessType.FIELD)
+@XmlAccessorOrder (XmlAccessOrder.ALPHABETICAL)
+@XmlType (name = "home", propOrder = {"userId", "emailId", "receipts"})
 public final class ReportView extends Base {
 
-    @XmlElement(name = "userId", type = String.class, required = true)
+    @XmlElement (name = "userId", type = String.class, required = true)
     private String userId;
 
-    @XmlElement(name = "emailId", type = String.class, required = true)
+    @XmlElement (name = "emailId", type = String.class, required = true)
     private String emailId;
 
-    @XmlElementWrapper(name = "receipts")
-    @XmlElement(name = "receipt")
+    @XmlElementWrapper (name = "receipts")
+    @XmlElement (name = "receipt")
     protected List<ReceiptEntity> receipts;
 
-    public ReportView() { }
+    public ReportView() {
+    }
 
     private ReportView(String userId, String emailId, Header header) {
         super.setHeader(header);

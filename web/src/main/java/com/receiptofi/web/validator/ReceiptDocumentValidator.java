@@ -74,7 +74,10 @@ public final class ReceiptDocumentValidator implements Validator {
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
         if (receiptDocumentForm.getItems() == null) {
-            LOG.error("Exception during update of receipt={}, as no items were found", receiptDocumentForm.getReceiptDocument().getId());
+            LOG.error(
+                    "Exception during update of receipt={}, as no items were found",
+                    receiptDocumentForm.getReceiptDocument().getId()
+            );
             errors.rejectValue(
                     "receiptDocumentForm",
                     "item.required",

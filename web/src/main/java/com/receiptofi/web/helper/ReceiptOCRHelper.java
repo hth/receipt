@@ -12,7 +12,8 @@ public final class ReceiptOCRHelper {
     private long fileSize;
     private DocumentEntity documentEntity;
 
-    private ReceiptOCRHelper() {}
+    private ReceiptOCRHelper() {
+    }
 
     public static ReceiptOCRHelper newInstance(String fileName, long fileSize, DocumentEntity documentEntity) {
         ReceiptOCRHelper receiptOCRHelper = new ReceiptOCRHelper();

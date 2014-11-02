@@ -35,10 +35,10 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         try {
             config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"));
         } catch (IOException e) {
-            LOG.error("could not load config properties file reason={}",  e.getLocalizedMessage(), e);
+            LOG.error("could not load config properties file reason={}", e.getLocalizedMessage(), e);
         }
 
-        if(hasAccessToFileSystem()) {
+        if (hasAccessToFileSystem()) {
             LOG.info("Found and has access, to directory={}", config.get("expensofiReportLocation"));
         }
     }
@@ -46,22 +46,22 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     private boolean hasAccessToFileSystem() {
         Assert.notNull(config.get("expensofiReportLocation"));
         File directory = new File((String) config.get("expensofiReportLocation"));
-        if(directory.exists() && directory.isDirectory()) {
+        if (directory.exists() && directory.isDirectory()) {
             File file = new File(config.get("expensofiReportLocation") + File.separator + "receiptofi-expensofi.temp.delete.me");
             try {
-                if(!file.createNewFile()) {
+                if (!file.createNewFile()) {
                     throw new AccessDeniedException("Cannot create, to location=" + config.get("expensofiReportLocation"));
                 }
-                if(!file.canWrite()) {
+                if (!file.canWrite()) {
                     throw new AccessDeniedException("Cannot write, to location=" + config.get("expensofiReportLocation"));
                 }
-                if(!file.canRead()) {
+                if (!file.canRead()) {
                     throw new AccessDeniedException("Cannot read, to location=" + config.get("expensofiReportLocation"));
                 }
-                if(!file.delete()) {
+                if (!file.delete()) {
                     throw new AccessDeniedException("Cannot delete, from location=" + config.get("expensofiReportLocation"));
                 }
-            } catch(IOException e) {
+            } catch (IOException e) {
                 LOG.error(
                         "Possible permission deny to location={}, reason={}",
                         config.get("expensofiReportLocation"),

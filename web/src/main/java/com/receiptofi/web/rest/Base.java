@@ -17,15 +17,16 @@ import javax.xml.bind.annotation.XmlType;
  * http://docs.oracle.com/javaee/5/tutorial/doc/bnbcv.html
  * http://docs.oracle.com/cd/E13222_01/wls/docs103/webserv/data_types.html
  */
-@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="receipt_root")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "header" })
-@XmlSeeAlso({Header.class})
+@XmlRootElement (namespace = "http://receiptofi.com/schema/receipt/v1", name = "receipt_root")
+@XmlAccessorType (XmlAccessType.FIELD)
+@XmlType (propOrder = {"header"})
+@XmlSeeAlso ({Header.class})
 public class Base implements Serializable {
 
     protected Header header;
 
-    public Base() {}
+    public Base() {
+    }
 
     public Header getHeader() {
         return header;

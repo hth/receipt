@@ -11,8 +11,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * Helps in profiling the duration it takes to complete a task
- *
+ * Helps in profiling the duration it takes to complete a task.
  * User: hitender
  * Date: 4/7/13
  * Time: 11:39 AM
@@ -33,7 +32,7 @@ public final class PerformanceProfiling {
      */
     public static <T> Date log(Class<T> type, String... message) {
         Date time = DateUtil.nowTime();
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
         }
         return time;
@@ -48,21 +47,36 @@ public final class PerformanceProfiling {
      * @param <T>
      */
     public static <T> void log(Class<T> type, DateTime time, String... message) {
-        if(System.currentTimeMillis() - time.getMillis() > QUARTER_SECOND) {
-            if(LOG.isWarnEnabled()) {
-                LOG.warn("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+        if (System.currentTimeMillis() - time.getMillis() > QUARTER_SECOND) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("{}  {}, {}, duration={} milliseconds",
+                        type.getName(),
+                        Arrays.asList(message).toString(),
+                        time,
+                        computeDuration(time)
+                );
             }
         } else {
-            if(LOG.isDebugEnabled()) {
-                LOG.debug("{}  {}, {}, duration={} milliseconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
-            } else if(LOG.isInfoEnabled()) {
-                LOG.info("{}  {}, {}, duration={} seconds", type.getName(), Arrays.asList(message).toString(), time, computeDuration(time));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("{}  {}, {}, duration={} milliseconds",
+                        type.getName(),
+                        Arrays.asList(message).toString(),
+                        time,
+                        computeDuration(time)
+                );
+            } else if (LOG.isInfoEnabled()) {
+                LOG.info("{}  {}, {}, duration={} seconds",
+                        type.getName(),
+                        Arrays.asList(message).toString(),
+                        time,
+                        computeDuration(time)
+                );
             }
         }
     }
 
     private static String computeDuration(DateTime time) {
-        if(TIME_UNIT_MS) {
+        if (TIME_UNIT_MS) {
             return String.valueOf(System.currentTimeMillis() - time.getMillis());
         } else {
             return String.valueOf(DateUtil.duration(time).getSeconds());

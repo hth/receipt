@@ -8,28 +8,28 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Header is part of all the REST messages
- *
+ * Header is part of all the REST messages.
  * User: hitender
  * Date: 4/14/13
  * Time: 6:53 PM
  */
-@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="header")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
+@XmlRootElement (namespace = "http://receiptofi.com/schema/receipt/v1", name = "header")
+@XmlAccessorType (XmlAccessType.FIELD)
+@XmlAccessorOrder (XmlAccessOrder.ALPHABETICAL)
 public final class Header extends Base {
     public static enum RESULT {SUCCESS, FAILURE, INVALID_REQUEST, INVALID_DATA, AUTH_FAILURE}
 
-    @XmlElement(name = "authId", type = String.class, required = true)
+    @XmlElement (name = "authId", type = String.class, required = true)
     protected String authId;
 
-    @XmlElement(name = "status", required = true)
+    @XmlElement (name = "status", required = true)
     protected RESULT status = RESULT.FAILURE;
 
-    @XmlElement(name = "message", type = String.class, required = true, nillable = true)
+    @XmlElement (name = "message", type = String.class, required = true, nillable = true)
     protected String message;
 
-    public Header() {}
+    public Header() {
+    }
 
     private Header(String authId) {
         this.authId = authId;
@@ -37,6 +37,7 @@ public final class Header extends Base {
 
     /**
      * This is used in case there is a failure in Authorization
+     *
      * @return
      */
     public static Header newInstanceFailure() {
@@ -45,6 +46,7 @@ public final class Header extends Base {
 
     /**
      * Auth code is required for any REST CRUD activity
+     *
      * @param authId
      * @return
      */
@@ -53,7 +55,7 @@ public final class Header extends Base {
     }
 
     /** Required for JSON */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public String getAuthId() {
         return authId;
     }
@@ -63,7 +65,7 @@ public final class Header extends Base {
     }
 
     /** Required for JSON */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public RESULT getStatus() {
         return status;
     }
@@ -73,7 +75,7 @@ public final class Header extends Base {
     }
 
     /** Required for JSON */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public String getMessage() {
         return message;
     }

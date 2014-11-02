@@ -11,8 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
 
 /**
- * Checks if all vital setup are running before starting server
- *
+ * Checks if all vital setup are running before starting server.
  * User: hitender
  * Date: 9/6/14 1:52 PM
  */
@@ -27,7 +26,7 @@ public class ReceiptofiInitializationCheckBean {
         try {
             jmsSenderTemplate.getConnectionFactory().createConnection();
             LOG.info("ActiveMQ messaging is available");
-        } catch(JMSException e) {
+        } catch (JMSException e) {
             LOG.error("ActiveMQ messaging is unavailable reason={}", e.getLocalizedMessage(), e);
             stopServer();
         }

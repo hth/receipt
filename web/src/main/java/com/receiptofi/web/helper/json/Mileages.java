@@ -20,10 +20,10 @@ import java.util.List;
  */
 public final class Mileages {
 
-    @JsonProperty("ms")
+    @JsonProperty ("ms")
     private List<Mileage> mileages = new LinkedList<>();
 
-    @JsonProperty("mm")
+    @JsonProperty ("mm")
     private int monthlyMileage;
 
     public List<Mileage> getMileages() {
@@ -31,19 +31,19 @@ public final class Mileages {
     }
 
     public void setMileages(List<MileageEntity> mileages) {
-        for(MileageEntity mileageEntity : mileages) {
+        for (MileageEntity mileageEntity : mileages) {
             this.setMileages(mileageEntity);
         }
     }
 
     public void setMileages(MileageEntity mileageEntity) {
         this.mileages.add(Mileage.newInstance(mileageEntity.getId(),
-                mileageEntity.getStart(),
-                mileageEntity.getEnd(),
-                mileageEntity.getStartDate(),
-                mileageEntity.getEndDate(),
-                mileageEntity.getMileageNotes() == null ? StringUtils.EMPTY : mileageEntity.getMileageNotes().getText(),
-                mileageEntity.getTotal(), mileageEntity.isComplete())
+                        mileageEntity.getStart(),
+                        mileageEntity.getEnd(),
+                        mileageEntity.getStartDate(),
+                        mileageEntity.getEndDate(),
+                        mileageEntity.getMileageNotes() == null ? StringUtils.EMPTY : mileageEntity.getMileageNotes().getText(),
+                        mileageEntity.getTotal(), mileageEntity.isComplete())
         );
     }
 
@@ -70,32 +70,33 @@ public final class Mileages {
 
 class Mileage {
 
-    @JsonProperty("i")
+    @JsonProperty ("i")
     private String id;
 
-    @JsonProperty("s")
+    @JsonProperty ("s")
     private int start;
 
-    @JsonProperty("e")
+    @JsonProperty ("e")
     private int end;
 
-    @JsonProperty("sd")
+    @JsonProperty ("sd")
     private Date startDate;
 
-    @JsonProperty("ed")
+    @JsonProperty ("ed")
     private Date endDate;
 
-    @JsonProperty("n")
+    @JsonProperty ("n")
     private String notes;
 
-    @JsonProperty("t")
+    @JsonProperty ("t")
     private int total;
 
-    @JsonProperty("c")
+    @JsonProperty ("c")
     private boolean complete;
 
-    @SuppressWarnings("unused")
-    public Mileage() {}
+    @SuppressWarnings ("unused")
+    public Mileage() {
+    }
 
     private Mileage(String id, int start, int end, Date startDate, Date endDate, String notes, int total, boolean complete) {
         this.id = id;
@@ -132,7 +133,7 @@ class Mileage {
         return endDate;
     }
 
-    @JsonProperty("na")
+    @JsonProperty ("na")
     public String getNotesAbbreviated() {
         return StringUtils.abbreviate(notes, 22);
     }

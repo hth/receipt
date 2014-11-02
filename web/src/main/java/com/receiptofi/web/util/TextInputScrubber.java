@@ -17,14 +17,14 @@ public final class TextInputScrubber {
     private static final Logger LOG = LoggerFactory.getLogger(TextInputScrubber.class);
 
     public static String scrub(String text) {
-        if(StringUtils.isBlank(text)) {
+        if (StringUtils.isBlank(text)) {
             return text;
         }
 
         String decoded;
         try {
             decoded = URLDecoder.decode(text, "UTF-8");
-        } catch(Exception exce) {
+        } catch (Exception exce) {
             LOG.warn("Decode failed text={}", text, exce);
             return StringUtils.EMPTY;
         }
