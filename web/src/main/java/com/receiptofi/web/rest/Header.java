@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType (XmlAccessType.FIELD)
 @XmlAccessorOrder (XmlAccessOrder.ALPHABETICAL)
 public final class Header extends Base {
-    public static enum RESULT {SUCCESS, FAILURE, INVALID_REQUEST, INVALID_DATA, AUTH_FAILURE}
+    public enum RESULT {SUCCESS, FAILURE, INVALID_REQUEST, INVALID_DATA, AUTH_FAILURE}
 
     @XmlElement (name = "authId", type = String.class, required = true)
     protected String authId;

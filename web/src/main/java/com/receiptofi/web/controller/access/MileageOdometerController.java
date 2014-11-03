@@ -38,8 +38,8 @@ public final class MileageOdometerController {
 
     @Autowired private MileageService mileageService;
 
-    @Value ("${MODEL_VIEW:/mileage}")
-    private String NEXT_PAGE;
+    @Value ("${MileageOdometerController.nextPage:/mileage}")
+    private String nextPage;
 
     @RequestMapping (value = "/{mileageId}", method = RequestMethod.GET)
     public ModelAndView loadForm(
@@ -75,7 +75,7 @@ public final class MileageOdometerController {
             }
         }
 
-        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE);
+        ModelAndView modelAndView = new ModelAndView(nextPage);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
