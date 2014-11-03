@@ -36,7 +36,7 @@ public final class CreateTempFile {
 
     /**
      * Avoid unless required on file system to save file with file extension. User can be presented with correct file
-     * extension when set with correct content type in the response header
+     * extension when set with correct content type in the response header.
      *
      * @param fileTypeEnum
      * @return

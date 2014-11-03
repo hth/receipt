@@ -58,11 +58,11 @@ public final class HashText {
         return BCrypt.hashpw(text, BCrypt.gensalt(WORKLOAD));
     }
 
-    public static boolean checkPassword(String password_plaintext, String stored_hash) {
-        if (null == stored_hash || !stored_hash.startsWith("$2a$")) {
+    public static boolean checkPassword(String passwordPlainText, String storedHash) {
+        if (null == storedHash || !storedHash.startsWith("$2a$")) {
             throw new IllegalArgumentException("Invalid hash provided for comparison");
         }
-        return BCrypt.checkpw(password_plaintext, stored_hash);
+        return BCrypt.checkpw(passwordPlainText, storedHash);
     }
 
     private static String hashCode(String text, MessageDigest md) {

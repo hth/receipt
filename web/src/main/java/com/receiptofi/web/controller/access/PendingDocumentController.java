@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,8 +44,11 @@ import java.util.List;
 public final class PendingDocumentController {
     private static final Logger LOG = LoggerFactory.getLogger(PendingDocumentController.class);
 
-    private String LIST_PENDING_DOCUMENTS = "/pendingdocument";
-    private String SHOW_DOCUMENT = "/document";
+    @Value ("${PendingDocumentController.listPendingDocuments:/pendingdocument}")
+    private String listPendingDocuments;
+
+    @Value ("${PendingDocumentController.showDocument:/document}")
+    private String showDocument;
 
     @Autowired private DocumentPendingService documentPendingService;
     @Autowired private DocumentUpdateService documentUpdateService;
@@ -93,7 +97,7 @@ public final class PendingDocumentController {
             LOG.error("total rejected documents missing receipts count={}", rejectedMissingReceipt);
         }
 
-        ModelAndView modelAndView = new ModelAndView(LIST_PENDING_DOCUMENTS);
+        ModelAndView modelAndView = new ModelAndView(listPendingDocuments);
         modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -110,7 +114,7 @@ public final class PendingDocumentController {
         DocumentEntity documentEntity = documentUpdateService.findOne(documentId, receiptUser.getRid());
         receiptDocumentForm.setReceiptDocument(documentEntity);
 
-        ModelAndView modelAndView = new ModelAndView(SHOW_DOCUMENT);
+        ModelAndView modelAndView = new ModelAndView(showDocument);
         modelAndView.addObject("receiptDocumentForm", receiptDocumentForm);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
