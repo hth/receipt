@@ -1,5 +1,7 @@
 package com.receiptofi.service;
 
+import static com.receiptofi.domain.types.DocumentStatusEnum.*;
+
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 
@@ -96,12 +98,12 @@ public final class DocumentUpdateService {
             itemManager.saveObjects(items);
 
             bizService.saveNewBusinessAndOrStore(documentForm);
-            documentForm.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
+            documentForm.setDocumentStatus(TURK_PROCESSED);
             documentForm.setReceiptId(receipt.getId());
             documentForm.inActive();
             documentManager.save(documentForm);
 
-            updateMessageManager(documentForm, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
+            updateMessageManager(documentForm, OCR_PROCESSED, TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString());
@@ -110,7 +112,8 @@ public final class DocumentUpdateService {
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
         } catch (Exception exce) {
-            LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}", receipt.getId(), documentForm.getId(), exce.getLocalizedMessage(), exce);
+            LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}",
+                    receipt.getId(), documentForm.getId(), exce.getLocalizedMessage(), exce);
 
             //For rollback
             if (StringUtils.isNotEmpty(receipt.getId())) {
@@ -123,9 +126,11 @@ public final class DocumentUpdateService {
                 long sizeReceiptFinal = receiptManager.collectionSize();
                 long sizeItemFinal = itemManager.collectionSize();
                 if (sizeReceiptInitial == sizeReceiptFinal) {
-                    LOG.warn("Initial receipt size and Final receipt size are same={}:{}", sizeReceiptInitial, sizeReceiptFinal);
+                    LOG.warn("Initial receipt size and Final receipt size are same={}:{}",
+                            sizeReceiptInitial, sizeReceiptFinal);
                 } else {
-                    LOG.warn("Initial receipt size={}, Final receipt size={}. Removed Receipt={}", sizeReceiptInitial, sizeReceiptFinal, receipt.getId());
+                    LOG.warn("Initial receipt size={}, Final receipt size={}. Removed Receipt={}",
+                            sizeReceiptInitial, sizeReceiptFinal, receipt.getId());
                 }
 
                 if (sizeItemInitial == sizeItemFinal) {
@@ -134,11 +139,11 @@ public final class DocumentUpdateService {
                     LOG.warn("Initial item size={}, Final item size={}", sizeItemInitial, sizeItemFinal);
                 }
 
-                documentForm.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
+                documentForm.setDocumentStatus(OCR_PROCESSED);
                 documentManager.save(documentForm);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageManager.undoUpdateObject(documentForm.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.OCR_PROCESSED);
+                messageManager.undoUpdateObject(documentForm.getId(), false, TURK_PROCESSED, OCR_PROCESSED);
                 //End of roll back
 
                 LOG.warn("Rollback complete for processing document");
@@ -183,7 +188,7 @@ public final class DocumentUpdateService {
             itemManager.saveObjects(items);
 
             bizService.saveNewBusinessAndOrStore(receiptDocument);
-            receiptDocument.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
+            receiptDocument.setDocumentStatus(TURK_PROCESSED);
             receiptDocument.inActive();
 
             //Only recheck comments are updated by technician. Receipt notes are never modified
@@ -223,7 +228,7 @@ public final class DocumentUpdateService {
             receiptManager.save(receipt);
             documentManager.save(receiptDocument);
 
-            updateMessageManager(receiptDocument, DocumentStatusEnum.TURK_REQUEST, DocumentStatusEnum.TURK_PROCESSED);
+            updateMessageManager(receiptDocument, TURK_REQUEST, TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(receipt.getTotalString()).append(" '");
@@ -232,7 +237,8 @@ public final class DocumentUpdateService {
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
 
         } catch (Exception exce) {
-            LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}", receipt.getId(), receiptDocument.getId(), exce.getLocalizedMessage(), exce);
+            LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}",
+                    receipt.getId(), receiptDocument.getId(), exce.getLocalizedMessage(), exce);
 
             //For rollback
             if (StringUtils.isNotEmpty(receipt.getId())) {
@@ -245,9 +251,11 @@ public final class DocumentUpdateService {
                 long sizeReceiptFinal = receiptManager.collectionSize();
                 long sizeItemFinal = itemManager.collectionSize();
                 if (sizeReceiptInitial == sizeReceiptFinal) {
-                    LOG.warn("Initial receipt size and Final receipt size are same={}:{}", sizeReceiptInitial, sizeReceiptFinal);
+                    LOG.warn("Initial receipt size and Final receipt size are same={}:{}",
+                            sizeReceiptInitial, sizeReceiptFinal);
                 } else {
-                    LOG.warn("Initial receipt size={}, Final receipt size={}. Removed Receipt={}", sizeReceiptInitial, sizeReceiptFinal, receipt.getId());
+                    LOG.warn("Initial receipt size={}, Final receipt size={}. Removed Receipt={}",
+                            sizeReceiptInitial, sizeReceiptFinal, receipt.getId());
                 }
 
                 if (sizeItemInitial == sizeItemFinal) {
@@ -256,11 +264,11 @@ public final class DocumentUpdateService {
                     LOG.warn("Initial item size={}, Final item size={}", sizeItemInitial, sizeItemFinal);
                 }
 
-                receiptDocument.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
+                receiptDocument.setDocumentStatus(OCR_PROCESSED);
                 documentManager.save(receiptDocument);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageManager.undoUpdateObject(receiptDocument.getId(), false, DocumentStatusEnum.TURK_PROCESSED, DocumentStatusEnum.TURK_REQUEST);
+                messageManager.undoUpdateObject(receiptDocument.getId(), false, TURK_PROCESSED, TURK_REQUEST);
                 //End of roll back
 
                 LOG.warn("Rollback complete for re-processing document");
@@ -289,7 +297,7 @@ public final class DocumentUpdateService {
     public void turkDocumentReject(String documentId, DocumentOfTypeEnum documentOfType) {
         DocumentEntity document = loadActiveDocumentById(documentId);
         try {
-            document.setDocumentStatus(DocumentStatusEnum.TURK_RECEIPT_REJECT);
+            document.setDocumentStatus(TURK_RECEIPT_REJECT);
             document.setDocumentOfType(documentOfType);
             document.setBizName(null);
             document.setBizStore(null);
@@ -298,10 +306,10 @@ public final class DocumentUpdateService {
             documentManager.save(document);
 
             try {
-                messageManager.updateObject(document.getId(), DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_RECEIPT_REJECT);
+                messageManager.updateObject(document.getId(), OCR_PROCESSED, TURK_RECEIPT_REJECT);
             } catch (Exception exce) {
                 LOG.error(exce.getLocalizedMessage());
-                messageManager.undoUpdateObject(document.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
+                messageManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
                 throw exce;
             }
             itemOCRManager.deleteWhereReceipt(document);
@@ -316,14 +324,15 @@ public final class DocumentUpdateService {
             notificationService.addNotification(sb.toString(), NotificationTypeEnum.DOCUMENT, document);
 
         } catch (Exception exce) {
-            LOG.error("Revert all the transaction for ReceiptOCR={}. Rejection of a receipt failed, reason={}", document.getId(), exce.getLocalizedMessage(), exce);
+            LOG.error("Revert all the transaction for ReceiptOCR={}. Rejection of a receipt failed, reason={}",
+                    document.getId(), exce.getLocalizedMessage(), exce);
 
-            document.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
+            document.setDocumentStatus(OCR_PROCESSED);
             document.active();
             documentManager.save(document);
             //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-            messageManager.undoUpdateObject(document.getId(), false, DocumentStatusEnum.TURK_RECEIPT_REJECT, DocumentStatusEnum.OCR_PROCESSED);
+            messageManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
             //End of roll back
 
             LOG.warn("Rollback complete for rejecting document");
@@ -340,7 +349,8 @@ public final class DocumentUpdateService {
     public void deletePendingReceiptOCR(DocumentEntity receiptOCR) {
         DocumentEntity documentEntity = loadActiveDocumentById(receiptOCR.getId());
         if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReceiptId())) {
-            LOG.warn("User trying to delete processed Document={}, Receipt={}", receiptOCR.getId(), receiptOCR.getReceiptId());
+            LOG.warn("User trying to delete processed Document={}, Receipt={}",
+                    receiptOCR.getId(), receiptOCR.getReceiptId());
         } else {
             deleteReceiptOCR(documentEntity);
         }
@@ -356,7 +366,8 @@ public final class DocumentUpdateService {
     public void deleteRejectedReceiptOCR(DocumentEntity receiptOCR) {
         DocumentEntity documentEntity = loadRejectedDocumentById(receiptOCR.getId());
         if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReceiptId())) {
-            LOG.warn("User trying to delete processed Document={}, Receipt={}", receiptOCR.getId(), receiptOCR.getReceiptId());
+            LOG.warn("User trying to delete processed Document={}, Receipt={}",
+                    receiptOCR.getId(), receiptOCR.getReceiptId());
         } else {
             deleteReceiptOCR(documentEntity);
         }
@@ -430,12 +441,12 @@ public final class DocumentUpdateService {
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             documentForm.setVersion(documentEntity.getVersion());
-            documentForm.setDocumentStatus(DocumentStatusEnum.TURK_PROCESSED);
+            documentForm.setDocumentStatus(TURK_PROCESSED);
             documentForm.setReceiptId(mileageEntity.getId());
             documentForm.inActive();
             documentManager.save(documentForm);
 
-            updateMessageManager(documentForm, DocumentStatusEnum.OCR_PROCESSED, DocumentStatusEnum.TURK_PROCESSED);
+            updateMessageManager(documentForm, OCR_PROCESSED, TURK_PROCESSED);
 
             StringBuilder sb = new StringBuilder();
             sb.append(mileageEntity.getStart());
