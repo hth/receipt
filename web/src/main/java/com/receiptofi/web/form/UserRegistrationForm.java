@@ -71,6 +71,10 @@ public final class UserRegistrationForm {
 
     @Override
     public String toString() {
-        return "UserRegistrationForm [firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId + ", password=" + password + "]";
+        return "UserRegistrationForm [" +
+                "firstName=" + firstName + ", " +
+                "lastName=" + lastName + ", " +
+                "emailId=" + emailId + ", " +
+                "password=" + password + "]";
     }
 }

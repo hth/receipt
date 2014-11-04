@@ -43,19 +43,19 @@ public final class DateUtil {
      * 12/15/2012 PM 04:49:45
      * 08/29/2012 03:07 PM
      *
-     * @param dateStr
+     * @param dateAsStr
      * @return
      */
-    public static Date getDateFromString(String dateStr) {
-        String dateString = StringUtils.trim(dateStr.replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
+    public static Date getDateFromString(String dateAsStr) {
+        String date = StringUtils.trim(dateAsStr.replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
         for (DateType dateType : DateType.values()) {
-            if (dateString.matches(dateType.getRegex())) {
-                return DateTime.parse(dateString, dateType.getFormatter()).toDate();
+            if (date.matches(dateType.getRegex())) {
+                return DateTime.parse(date, dateType.getFormatter()).toDate();
             }
         }
 
-        LOG.error("Unsupported date condition reached: Not supported date string : " + dateString);
-        throw new IllegalArgumentException("Unsupported date condition reached: Not supported date string : " + dateString);
+        LOG.error("Unsupported date condition reached: Not supported date string : " + date);
+        throw new IllegalArgumentException("Unsupported date condition reached: Not supported date string : " + date);
     }
 
     /**
