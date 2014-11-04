@@ -2,15 +2,17 @@
 
 `Kibana` is installed on `nginx`. `Kibana` is just collection of static files. **config.js** under `Kibana's` home directory should be changed from localhost to proper FQDN. In the example below, `elasticsearch` is installed on 192.168.1.74, but changing to local ip would work within local network, and will not work externally. This is because `config.js` is called by `Kibana`. `Kibana` tries the `Ajax` call using `FQDN` defined in `config.js` (here it is IP) to load data from `Elasticsearch`. Instead, of mapping to some local `IP`, it is better to change to subdomain like `es.receiptofi.com` for global calls to work. 
 
-But thats not enough. We do not want to expose internal port externally. Plus firewall allows only `80` and `443` ports. So we have to change the port to something similar to `Kibana` hosts port which is on `8443`. Since `Kibana` is mapped on `SSL`. But `8443` port will not work for `elasticsearch`, as its running on `9200`. To make this work, we add mapping in `nginx` config that listen on port `8443` (firewall configured to changed 443 request to 8443), which in turns forward request to correct local ip and correct port `proxy_pass http://192.168.1.74:9200;`. This is what I call great dance between `Kibana + Elasticsearch + Nginx`
-  
+But that's not enough. We do not want to expose internal port externally. Plus firewall allows only `80` and `443` ports. So we have to change the port to something similar to `Kibana` hosts port which is on `8443`. Since `Kibana` is mapped on `SSL`. But `8443` port will not work for `elasticsearch`, as its running on `9200`. To make this work, we add mapping in `nginx` config that listen on port `8443` (firewall configured to changed 443 request to 8443), which in turns forward request to correct local ip and correct port `proxy_pass http://192.168.1.74:9200;`. This is what I call great dance between `Kibana + Elasticsearch + Nginx`
+
+`config.js` settings for local and global
+
     /** Do this when access is for local network */
     elasticsearch: "http://192.168.1.74:9200",
     
     /** Do this when access is global */
     elasticsearch: "https://es.receiptofi.com",
     
-nginx.conf with secure authentication. Always secure `Elasticsearch` and `Kibana`. `Kibana` mapping obtained from https://github.com/elasticsearch/kibana/blob/master/sample/nginx.conf
+`nginx.conf` with secure authentication. Always secure `Elasticsearch` and `Kibana`. `Kibana` mapping obtained from https://github.com/elasticsearch/kibana/blob/master/sample/nginx.conf
 
     server {
         listen          8443 ssl;

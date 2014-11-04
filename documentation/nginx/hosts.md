@@ -5,15 +5,15 @@ Notice `test.receiptofi.com` and `smoker.receiptofi.com` (`Kibana` is mapped as 
 for `Kibana` to work from external user request. And don't forget to make `Kibana` and `Elasticsearch` password protected.
 
 ##### Hosts content from nginx    
-    192.168.1.71    receiptofi.com          test.receiptofi.com     live.receiptofi.com     smoker.receiptofi.com   build.receiptofi.com    es.receiptofi.com
+    192.168.1.71    receiptofi.com          test.receiptofi.com     live.receiptofi.com     smoker.receiptofi.com   build.receiptofi.com    es.receiptofi.com   sonar.receiptofi.com
 
-    192.168.1.68    build
+    192.168.1.68    build   sonar
     192.168.1.74    es
     192.168.1.71    test    smoker
     192.168.1.75    live
 
 ##### Hosts content from dev machine
-    192.168.1.71    receiptofi.com  live.receiptofi.com     test.receiptofi.com     smoker.receiptofi.com   build.receiptofi.com    es.receiptofi.com
+    192.168.1.71    receiptofi.com  live.receiptofi.com     test.receiptofi.com     smoker.receiptofi.com   build.receiptofi.com    es.receiptofi.com   sonar.receiptofi.com
 
     #Mongo Servers
     192.168.1.75    m2
@@ -32,7 +32,7 @@ for `Kibana` to work from external user request. And don't forget to make `Kiban
     192.168.1.70    secondary2.receiptofi.com
     
     #Short hostname
-    192.168.1.68    build
+    192.168.1.68    build   sonar
     192.168.1.74    es
     192.168.1.71    test    smoker
     192.168.1.75    live
