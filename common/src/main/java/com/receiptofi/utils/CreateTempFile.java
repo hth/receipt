@@ -22,7 +22,9 @@ public final class CreateTempFile {
             if (name.startsWith(TEMP_FILE_START_WITH)) {
                 return File.createTempFile(name + "-", ext.startsWith(".") ? ext : "." + ext);
             } else {
-                return File.createTempFile(TEMP_FILE_START_WITH + "-" + name + "-", ext.startsWith(".") ? ext : "." + ext);
+                return File.createTempFile(
+                        TEMP_FILE_START_WITH + "-" + name + "-",
+                        ext.startsWith(".") ? ext : "." + ext);
             }
         } catch (IOException e) {
             LOG.error("Error creating temp file: " + e.getLocalizedMessage());
