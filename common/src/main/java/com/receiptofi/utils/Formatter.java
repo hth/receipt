@@ -23,6 +23,9 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import static com.google.i18n.phonenumbers.PhoneNumberUtil.*;
+import static com.google.i18n.phonenumbers.Phonenumber.*;
+
 /** Define all singleton here */
 enum FormatterSingleton {
     INSTANCE;
@@ -32,7 +35,7 @@ enum FormatterSingleton {
     }
 
     protected PhoneNumberUtil phoneInstance() {
-        return PhoneNumberUtil.getInstance();
+        return getInstance();
     }
 
     protected NumberFormat currencyInstance() {
@@ -56,7 +59,8 @@ public final class Formatter {
     public static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
 
     //Refer bug #3
-    //TODO may be change this method to support just item format and net format. Means have two method with scale of 2 and 4. 2 scale for total; and 4 scale for
+    //TODO(hth) may be change this method to support just item format and net format.
+    //TODO(hth) Means have two method with scale of 2 and 4. 2 scale for total; and 4 scale for
     public static BigDecimal getCurrencyFormatted(String value) throws ParseException, NumberFormatException {
         BigDecimal d;
         try {
@@ -94,8 +98,8 @@ public final class Formatter {
                 LOG.debug("phone number blank");
                 return "";
             }
-            Phonenumber.PhoneNumber numberPrototype = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
-            return FormatterSingleton.INSTANCE.phoneInstance().format(numberPrototype, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
+            PhoneNumber phoneNumber = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
+            return FormatterSingleton.INSTANCE.phoneInstance().format(phoneNumber, PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
             LOG.error("NumberParseException was thrown while parsing the phone number : " + e.toString());
             return StringUtils.EMPTY;
