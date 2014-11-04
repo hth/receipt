@@ -7,8 +7,8 @@ Install Homebrew on Build machine
 - After this try to change the ownership of folder using `chown` for `Jenkins` user
 - Command to change ownership within `local` directory
     
-    sudo chown -R jenkins:wheel share
+        sudo chown -R jenkins:wheel share
 - After that, change ownership of the folder `local` 
     
-    sudo chown jenkins:wheel local
+        sudo chown jenkins:wheel local
 - Now you are set to run command on jenkins who is still a standard user
