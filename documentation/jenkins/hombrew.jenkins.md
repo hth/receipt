@@ -12,3 +12,4 @@ Install Homebrew on Build machine
     
         sudo chown jenkins:wheel local
 - Now you are set to run command on jenkins who is still a standard user
+- Then change `/Library/Caches/Homebrew` to `jenkins:wheel` ownership because `homebrew` cannot write formulas to `/Library/Caches/Homebrew/Formulas` without correct permissions
