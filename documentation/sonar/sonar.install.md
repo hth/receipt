@@ -58,8 +58,11 @@ The above command looks at the `sonar-project.properties` to run analysis. Run a
 
 And then type
 
-    0   7   *   *   *   /location.to/sonar.sh
+    0   7   *   *   *   cd /absolute.path.from.root/location.to
+        && chmod 544 /absolute.path.from.root/location.to/sonar.sh
+        && /absolute.path.from.root/location.to/sonar.sh
+           >> /absolute.path.from.root/location.to/cron.txt
 
-And change mode to execute
+Remember change mode to execute
 
     chmod 544 sonar.sh
