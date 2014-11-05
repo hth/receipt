@@ -1,4 +1,4 @@
-    # Date: Nov 04 10:40 AM
+    # Date: Nov 04 04:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -169,6 +169,32 @@
                 proxy_set_header    X-NginX-Proxy           true;
 
                 proxy_pass http://192.168.1.68:9000;
+            }
+        }
+
+        server {
+            listen          8443 ssl;
+            server_name     build.receiptofi.com;
+
+            access_log  /var/logs/nginx/build.access.log main;
+
+            location / {
+                # block one workstation
+                deny    192.168.1.1;
+                # allow anyone in 192.168.1.0/24
+                allow   192.168.1.0/24;
+                # drop rest of the world
+                deny    all;
+
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+
+                proxy_pass http://192.168.1.68:8080;
             }
         }
 

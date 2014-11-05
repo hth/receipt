@@ -1,7 +1,7 @@
 Install Homebrew on Build machine
 =================================
 
-- Homebrew installation requires Admin privileges. For this to work, log in as `maude` (maude is the Admin)
+- Homebrew installation requires Admin privileges. For this to work, log in as `maude` (maude is the Admin on machine which has Jenkins)
 - Copy the URL to install Homebrew on command line
 - Once installation is complete run `brew doctor`
 - After this try to change the ownership of folder using `chown` for `Jenkins` user
