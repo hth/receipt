@@ -50,4 +50,4 @@ Refer: http://docs.codehaus.org/display/SONAR/Analyzing+with+Gradle
 
     sonar-runner -Dsonar.login=myLogin -Dsonar.password=myPassword
 
-The above command looks at the `sonar-project.properties` to run analysis
+The above command looks at the `sonar-project.properties` to run analysis. Run as `cron` once a day on test.
