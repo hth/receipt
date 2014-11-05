@@ -1,23 +1,10 @@
 apply plugin: 'maven-publish'
-apply plugin: 'sonar-runner'
-apply plugin: 'sonar'
 
 if (!hasProperty('env')) {
     ext.env = System.env['GRADLE_ENV']
 }
 
 println "Building for environment: $env"
-
-
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", "https://sonar.receiptofi.com"
-        property "sonar.jdbc.url", "jdbc:mysql://sonar:3306/sonar"
-        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-        property "sonar.jdbc.username", "sonar"
-        property "sonar.jdbc.password", "sonar"
-    }
-}
 
 ext {
     webInf = file('/WEB-INF')
