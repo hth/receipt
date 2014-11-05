@@ -51,3 +51,15 @@ Refer: http://docs.codehaus.org/display/SONAR/Analyzing+with+Gradle
     sonar-runner -Dsonar.login=myLogin -Dsonar.password=myPassword
 
 The above command looks at the `sonar-project.properties` to run analysis. Run as `cron` once a day on test.
+
+### Setting cron task
+
+    env EDITOR=nano crontab -e
+
+And then type
+
+    0   7   *   *   *   /location.to/sonar.sh
+
+And change mode to execute
+
+    chmod 544 sonar.sh
