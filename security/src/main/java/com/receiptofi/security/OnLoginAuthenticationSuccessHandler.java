@@ -79,7 +79,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     }
 
     /**
-     * Builds the landing URL according to the user role when they log in
+     * Builds the landing URL according to the user role when they log in.
      * Refer: http://www.baeldung.com/spring_redirect_after_login
      */
     protected String determineTargetUrl(Authentication authentication) {
@@ -101,6 +101,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 targetURL = "/admin/landing.htm";
                 break;
             default:
+                LOG.error("Role set is not defined");
                 throw new IllegalStateException("Role set is not defined");
         }
 
