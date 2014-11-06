@@ -218,7 +218,7 @@ public class LandingController extends BaseController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DateTime monthYear = DTF.parseDateTime(monthView);
-        if (previousOrNext.equalsIgnoreCase("next")) {
+        if ("next".equalsIgnoreCase(previousOrNext)) {
             monthYear = monthYear.minusMonths(1);
         }
 
@@ -371,7 +371,7 @@ public class LandingController extends BaseController {
     private List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
         final List<MultipartFile> files = multipartHttpRequest.getFiles("qqfile");
 
-        if (files.size() == 0) {
+        if (files.isEmpty()) {
             LOG.error("Empty or no document uploaded");
             throw new RuntimeException("Empty or no document uploaded");
         }
@@ -538,23 +538,21 @@ public class LandingController extends BaseController {
              * the number of invite.
              */
             if (userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
-                boolean status;
-                if (userProfileEntity == null) {
-                    status = mailService.sendInvitation(invitedUserEmail, receiptUser.getRid());
-                } else {
-                    status = mailService.reSendInvitation(invitedUserEmail, receiptUser.getRid());
-                }
+                boolean status = invokeCorrectInvitation(invitedUserEmail, receiptUser, userProfileEntity);
                 if (status) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Invitation sent to '").append(invitedUserEmail).append("'");
-                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
+                    notificationService.addNotification(
+                            "Invitation sent to '" + invitedUserEmail + "'",
+                            NotificationTypeEnum.MESSAGE,
+                            receiptUser.getRid());
+
                     return "Invitation Sent to: " + invitedUserEmail;
-                } else {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Unsuccessful in sending invitation to '").append(invitedUserEmail).append("'");
-                    notificationService.addNotification(sb.toString(), NotificationTypeEnum.MESSAGE, receiptUser.getRid());
-                    return "Unsuccessful in sending invitation: " + invitedUserEmail;
                 }
+                notificationService.addNotification(
+                        "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
+                        NotificationTypeEnum.MESSAGE,
+                        receiptUser.getRid());
+
+                return "Unsuccessful in sending invitation: " + invitedUserEmail;
             } else if (userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 LOG.info(invitedUserEmail + ", already registered. Thanks!");
                 return invitedUserEmail + ", already registered. Thanks!";
@@ -572,6 +570,16 @@ public class LandingController extends BaseController {
         } else {
             return "Invalid Email: " + invitedUserEmail;
         }
+    }
+
+    protected boolean invokeCorrectInvitation(String invitedUserEmail, ReceiptUser receiptUser, UserProfileEntity userProfileEntity) {
+        boolean status;
+        if (userProfileEntity == null) {
+            status = mailService.sendInvitation(invitedUserEmail, receiptUser.getRid());
+        } else {
+            status = mailService.reSendInvitation(invitedUserEmail, receiptUser.getRid());
+        }
+        return status;
     }
 
     /**
