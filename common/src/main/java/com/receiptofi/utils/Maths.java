@@ -28,7 +28,7 @@ public final class Maths {
 
     public static final int SCALE_SIX = 6;
     /** Accepted range in lowest denomination in cents here or any other currency */
-    public static double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
+    public static final double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
 
     //double[] values = { 1.0, 3.5, 123.4567, 10.0 };
     //output 1 3.5 123.457 10
