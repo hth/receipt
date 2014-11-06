@@ -95,6 +95,28 @@ public final class MailService {
     @Value ("${mail.validate.subject}")
     private String mailValidateSubject;
 
+    @Autowired
+    public MailService(AccountService accountService,
+                       InviteService inviteService,
+                       JavaMailSenderImpl mailSender,
+                       LoginService loginService,
+                       InviteManager inviteManager,
+                       UserProfileManager userProfileManager,
+                       UserAuthenticationManager userAuthenticationManager,
+                       UserPreferenceManager userPreferenceManager,
+                       UserAccountManager userAccountManager
+    ) {
+        this.accountService = accountService;
+        this.inviteService = inviteService;
+        this.mailSender = mailSender;
+        this.loginService = loginService;
+        this.inviteManager = inviteManager;
+        this.userProfileManager = userProfileManager;
+        this.userAuthenticationManager = userAuthenticationManager;
+        this.userPreferenceManager = userPreferenceManager;
+        this.userAccountManager = userAccountManager;
+    }
+
     public boolean accountValidationEmail(UserAccountEntity userAccount, EmailValidateEntity accountValidate) {
         Assert.notNull(userAccount);
         Map<String, String> rootMap = new HashMap<>();
