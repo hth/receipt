@@ -58,6 +58,9 @@ public final class Formatter {
 
     public static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
 
+    private Formatter() {
+    }
+
     //Refer bug #3
     //TODO(hth) may be change this method to support just item format and net format.
     //TODO(hth) Means have two method with scale of 2 and 4. 2 scale for total; and 4 scale for

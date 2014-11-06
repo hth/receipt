@@ -22,6 +22,9 @@ public final class PerformanceProfiling {
     private static final int HALF_SECOND = 500;
     private static boolean TIME_UNIT_MS = true;
 
+    private PerformanceProfiling() {
+    }
+
     /**
      * Logs the start of the process
      *

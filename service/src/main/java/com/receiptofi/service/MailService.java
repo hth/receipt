@@ -52,20 +52,17 @@ import freemarker.template.TemplateException;
  */
 @Service
 public final class MailService {
-    private static Logger LOG = LoggerFactory.getLogger(MailService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
 
-    @Autowired private AccountService accountService;
-    @Autowired private InviteService inviteService;
-    @Autowired private JavaMailSenderImpl mailSender;
-    @Autowired private LoginService loginService;
-    @Autowired private InviteManager inviteManager;
-    @Autowired private UserProfileManager userProfileManager;
-    @Autowired private UserAuthenticationManager userAuthenticationManager;
-    @Autowired private UserPreferenceManager userPreferenceManager;
-    @Autowired private UserAccountManager userAccountManager;
-
-    @SuppressWarnings ("SpringJavaAutowiringInspection")
-    @Autowired
+    private AccountService accountService;
+    private InviteService inviteService;
+    private JavaMailSenderImpl mailSender;
+    private LoginService loginService;
+    private InviteManager inviteManager;
+    private UserProfileManager userProfileManager;
+    private UserAuthenticationManager userAuthenticationManager;
+    private UserPreferenceManager userPreferenceManager;
+    private UserAccountManager userAccountManager;
     private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
 
     @Value ("${do.not.reply.email}")
@@ -94,6 +91,32 @@ public final class MailService {
 
     @Value ("${mail.validate.subject}")
     private String mailValidateSubject;
+
+    @Autowired
+    public MailService(AccountService accountService,
+                       InviteService inviteService,
+                       JavaMailSenderImpl mailSender,
+                       LoginService loginService,
+                       InviteManager inviteManager,
+                       UserProfileManager userProfileManager,
+                       UserAuthenticationManager userAuthenticationManager,
+                       UserPreferenceManager userPreferenceManager,
+                       UserAccountManager userAccountManager,
+
+                       @SuppressWarnings ("SpringJavaAutowiringInspection")
+                       FreeMarkerConfigurationFactoryBean freemarkerConfiguration
+    ) {
+        this.accountService = accountService;
+        this.inviteService = inviteService;
+        this.mailSender = mailSender;
+        this.loginService = loginService;
+        this.inviteManager = inviteManager;
+        this.userProfileManager = userProfileManager;
+        this.userAuthenticationManager = userAuthenticationManager;
+        this.userPreferenceManager = userPreferenceManager;
+        this.userAccountManager = userAccountManager;
+        this.freemarkerConfiguration = freemarkerConfiguration;
+    }
 
     public boolean accountValidationEmail(UserAccountEntity userAccount, EmailValidateEntity accountValidate) {
         Assert.notNull(userAccount);

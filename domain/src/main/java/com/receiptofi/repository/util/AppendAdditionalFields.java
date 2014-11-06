@@ -16,6 +16,9 @@ import org.springframework.data.mongodb.core.query.Update;
 public final class AppendAdditionalFields {
     private static final Logger LOG = LoggerFactory.getLogger(AppendAdditionalFields.class);
 
+    private AppendAdditionalFields() {
+    }
+
     public static Criteria isDeleted() {
         return Criteria.where("D").is(true);
     }

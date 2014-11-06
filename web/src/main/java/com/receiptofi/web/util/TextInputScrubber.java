@@ -16,6 +16,9 @@ import org.owasp.html.HtmlPolicyBuilder;
 public final class TextInputScrubber {
     private static final Logger LOG = LoggerFactory.getLogger(TextInputScrubber.class);
 
+    private TextInputScrubber() {
+    }
+
     public static String scrub(String text) {
         if (StringUtils.isBlank(text)) {
             return text;

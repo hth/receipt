@@ -98,14 +98,16 @@ public final class AccountRegistrationController {
         DateTime time = DateUtil.now();
         userRegistrationValidator.validate(userRegistrationForm, result);
         if (result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "validation error");
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "validation error");
             return registrationPage;
         }
 
         UserProfileEntity userProfile = accountService.doesUserExists(userRegistrationForm.getEmailId());
         if (userProfile != null) {
             userRegistrationValidator.accountExists(userRegistrationForm, result);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "account exists");
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "account exists");
             return registrationPage;
         }
 
@@ -120,17 +122,22 @@ public final class AccountRegistrationController {
             );
         } catch (RuntimeException exce) {
             LOG.error(exce.getLocalizedMessage());
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "failure in registering user");
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "failure in registering user");
             return registrationPage;
         }
 
         LOG.info("Registered new user Id={}", userAccount.getReceiptUserId());
         redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
 
-        EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(userAccount.getReceiptUserId(), userAccount.getUserId());
+        EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                userAccount.getReceiptUserId(),
+                userAccount.getUserId());
+
         mailService.accountValidationEmail(userAccount, accountValidate);
 
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                "success");
         return registrationSuccess;
     }
 
@@ -143,7 +150,12 @@ public final class AccountRegistrationController {
      * @throws IOException
      */
     @RequestMapping (method = RequestMethod.GET, value = "/success")
-    public String success(@ModelAttribute ("email") String email, HttpServletResponse httpServletResponse) throws IOException {
+    public String success(
+            @ModelAttribute ("email")
+            String email,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if (StringUtils.isNotBlank(email)) {
             return registrationSuccessPage;
         } else {
@@ -160,7 +172,12 @@ public final class AccountRegistrationController {
      * @return
      */
     @RequestMapping (method = RequestMethod.POST, params = {"recover"})
-    public String recover(@ModelAttribute ("userRegistrationForm") UserRegistrationForm userRegistrationForm, RedirectAttributes redirectAttrs) {
+    public String recover(
+            @ModelAttribute ("userRegistrationForm")
+            UserRegistrationForm userRegistrationForm,
+
+            RedirectAttributes redirectAttrs
+    ) {
         redirectAttrs.addFlashAttribute("userRegistrationForm", userRegistrationForm);
         return recover;
     }
@@ -187,12 +204,17 @@ public final class AccountRegistrationController {
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);
         if (userProfileEntity != null && userProfileEntity.getEmail().equals(email)) {
             LOG.info("Email={} provided during registration exists", email);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "success");
             availabilityStatus = AvailabilityStatus.notAvailable(email);
-            return String.format("{ \"valid\" : \"%s\", \"message\" : \"<b>%s</b> is already registered. %s\" }", availabilityStatus.isAvailable(), email, StringUtils.join(availabilityStatus.getSuggestions()));
+            return String.format("{ \"valid\" : \"%s\", \"message\" : \"<b>%s</b> is already registered. %s\" }",
+                    availabilityStatus.isAvailable(),
+                    email,
+                    StringUtils.join(availabilityStatus.getSuggestions()));
         }
         LOG.info("Email available={} for registration", email);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
+        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                "success");
         availabilityStatus = AvailabilityStatus.available();
         return String.format("{ \"valid\" : \"%s\" }", availabilityStatus.isAvailable());
     }

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class HttpRequestResponseParser {
 
+    private HttpRequestResponseParser() {
+    }
+
     public static String printHeader(HttpServletRequest httpServletRequest) {
         StringBuilder stringBuilder = new StringBuilder();
         Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
