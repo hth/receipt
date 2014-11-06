@@ -115,9 +115,9 @@ public final class MileageEntity extends BaseEntity {
 
         setEnd(0);
         setEndDate(null);
-        List<FileSystemEntity> fileSystemEntities = new LinkedList<>();
-        fileSystemEntities.add(getFileSystemEntities().iterator().next());
-        setFileSystemEntities(fileSystemEntities);
+        List<FileSystemEntity> fileSystems = new LinkedList<>();
+        fileSystems.add(getFileSystemEntities().iterator().next());
+        setFileSystemEntities(fileSystems);
         return m2;
     }
 
