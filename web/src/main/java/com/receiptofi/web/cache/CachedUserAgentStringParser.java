@@ -39,6 +39,9 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
      */
     private static class SingletonHolder {
         public static final CachedUserAgentStringParser INSTANCE = new CachedUserAgentStringParser();
+
+        private SingletonHolder() {
+        }
     }
 
     public static CachedUserAgentStringParser getInstance() {

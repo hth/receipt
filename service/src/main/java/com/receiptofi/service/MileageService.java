@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Service
 public final class MileageService {
-    private static Logger LOG = LoggerFactory.getLogger(MileageService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MileageService.class);
 
     @Autowired private MileageManager mileageManager;
     @Autowired private CommentManager commentManager;

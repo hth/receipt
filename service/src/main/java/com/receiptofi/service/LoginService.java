@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class LoginService {
-    private static Logger LOG = LoggerFactory.getLogger(LoginService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;
     @Autowired private UserAccountManager userAccountManager;

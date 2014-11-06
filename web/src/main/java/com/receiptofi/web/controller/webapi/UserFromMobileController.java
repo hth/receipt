@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping (value = "/webapi/mobile")
 public class UserFromMobileController {
-    private static Logger LOG = LoggerFactory.getLogger(UserFromMobileController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserFromMobileController.class);
 
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;

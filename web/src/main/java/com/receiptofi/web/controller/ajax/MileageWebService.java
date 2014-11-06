@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping (value = "/ws/m")
 public final class MileageWebService {
-    private static Logger LOG = LoggerFactory.getLogger(MileageWebService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MileageWebService.class);
 
     @Autowired private MileageService mileageService;
 

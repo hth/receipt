@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping (value = "/webapi/mobile/get")
 public class GetController {
-    private static Logger LOG = LoggerFactory.getLogger(GetController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetController.class);
 
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;

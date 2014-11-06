@@ -52,7 +52,7 @@ import freemarker.template.TemplateException;
  */
 @Service
 public final class MailService {
-    private static Logger LOG = LoggerFactory.getLogger(MailService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
 
     private AccountService accountService;
     private InviteService inviteService;

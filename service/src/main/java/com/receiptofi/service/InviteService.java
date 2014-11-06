@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class InviteService {
-    private static Logger LOG = LoggerFactory.getLogger(InviteService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InviteService.class);
 
     private AccountService accountService;
     private InviteManager inviteManager;
