@@ -54,18 +54,15 @@ import freemarker.template.TemplateException;
 public final class MailService {
     private static Logger LOG = LoggerFactory.getLogger(MailService.class);
 
-    @Autowired private AccountService accountService;
-    @Autowired private InviteService inviteService;
-    @Autowired private JavaMailSenderImpl mailSender;
-    @Autowired private LoginService loginService;
-    @Autowired private InviteManager inviteManager;
-    @Autowired private UserProfileManager userProfileManager;
-    @Autowired private UserAuthenticationManager userAuthenticationManager;
-    @Autowired private UserPreferenceManager userPreferenceManager;
-    @Autowired private UserAccountManager userAccountManager;
-
-    @SuppressWarnings ("SpringJavaAutowiringInspection")
-    @Autowired
+    private AccountService accountService;
+    private InviteService inviteService;
+    private JavaMailSenderImpl mailSender;
+    private LoginService loginService;
+    private InviteManager inviteManager;
+    private UserProfileManager userProfileManager;
+    private UserAuthenticationManager userAuthenticationManager;
+    private UserPreferenceManager userPreferenceManager;
+    private UserAccountManager userAccountManager;
     private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
 
     @Value ("${do.not.reply.email}")
@@ -104,7 +101,10 @@ public final class MailService {
                        UserProfileManager userProfileManager,
                        UserAuthenticationManager userAuthenticationManager,
                        UserPreferenceManager userPreferenceManager,
-                       UserAccountManager userAccountManager
+                       UserAccountManager userAccountManager,
+
+                       @SuppressWarnings ("SpringJavaAutowiringInspection")
+                       FreeMarkerConfigurationFactoryBean freemarkerConfiguration
     ) {
         this.accountService = accountService;
         this.inviteService = inviteService;
@@ -115,6 +115,7 @@ public final class MailService {
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
         this.userAccountManager = userAccountManager;
+        this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
     public boolean accountValidationEmail(UserAccountEntity userAccount, EmailValidateEntity accountValidate) {
