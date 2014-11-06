@@ -400,6 +400,10 @@
             <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-web-1.1.0.RELEASE.jar" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-jms_1.1_spec-1.1.1.jar" />
+            <element id="module-output" name="loader" />
+            <element id="module-output" name="common" />
+            <element id="module-output" name="service" />
+            <element id="module-output" name="domain" />
           </element>
           <element id="directory" name="lib">
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
@@ -504,6 +508,13 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.annotation/jsr250-api/1.0/5025422767732a1ab45d93abfea846513d742dcf/jsr250-api-1.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/3.2.8.RELEASE/8fc09a51ca267726ffd284ab4de7c02f667da2ad/spring-jdbc-3.2.8.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-core-1.1.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-facebook-1.1.1.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-google-1.0.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-security-1.1.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-web-1.1.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-jms_1.1_spec-1.1.1.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -529,6 +540,10 @@
             <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-web-1.1.0.RELEASE.jar" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-jms_1.1_spec-1.1.1.jar" />
+            <element id="module-output" name="loader" />
+            <element id="module-output" name="common" />
+            <element id="module-output" name="service" />
+            <element id="module-output" name="domain" />
           </element>
           <element id="directory" name="lib">
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
@@ -633,6 +648,13 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.annotation/jsr250-api/1.0/5025422767732a1ab45d93abfea846513d742dcf/jsr250-api-1.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/3.2.8.RELEASE/8fc09a51ca267726ffd284ab4de7c02f667da2ad/spring-jdbc-3.2.8.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-core-1.1.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-facebook-1.1.1.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-google-1.0.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-security-1.1.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/spring-social-web-1.1.0.RELEASE.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/geronimo-jms_1.1_spec-1.1.1.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -913,6 +935,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/loader" />
             <option value="$PROJECT_DIR$/security" />
             <option value="$PROJECT_DIR$/service" />
             <option value="$PROJECT_DIR$/social" />
@@ -1104,9 +1127,11 @@
   <component name="ProjectDictionaryState">
     <dictionary name="hitender">
       <words>
+        <w>IntelliJ</w>
         <w>beanvalidation</w>
         <w>classie</w>
         <w>clearfix</w>
+        <w>homebrew</w>
         <w>jscroll</w>
         <w>rightside</w>
         <w>textb</w>
