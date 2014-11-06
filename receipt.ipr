@@ -913,6 +913,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/loader" />
             <option value="$PROJECT_DIR$/security" />
             <option value="$PROJECT_DIR$/service" />
             <option value="$PROJECT_DIR$/social" />
@@ -1104,9 +1105,11 @@
   <component name="ProjectDictionaryState">
     <dictionary name="hitender">
       <words>
+        <w>IntelliJ</w>
         <w>beanvalidation</w>
         <w>classie</w>
         <w>clearfix</w>
+        <w>homebrew</w>
         <w>jscroll</w>
         <w>rightside</w>
         <w>textb</w>
