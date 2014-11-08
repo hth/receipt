@@ -1,8 +1,16 @@
 package com.receiptofi.service;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
-import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -31,15 +39,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.util.Assert;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -118,12 +117,19 @@ public final class MailService {
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
-    public boolean accountValidationEmail(UserAccountEntity userAccount, EmailValidateEntity accountValidate) {
-        Assert.notNull(userAccount);
+    /**
+     * Sends out email to validate account.
+     *
+     * @param userId
+     * @param name
+     * @param auth
+     * @return
+     */
+    public boolean accountValidationEmail(String userId, String name, String auth) {
         Map<String, String> rootMap = new HashMap<>();
-        rootMap.put("to", userAccount.getName());
-        rootMap.put("contact_email", userAccount.getUserId());
-        rootMap.put("link", accountValidate.getAuthenticationKey());
+        rootMap.put("to", name);
+        rootMap.put("contact_email", userId);
+        rootMap.put("link", auth);
         rootMap.put("domain", domain);
         rootMap.put("https", https);
 
@@ -134,28 +140,28 @@ public final class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
 
-            String sentTo = StringUtils.isEmpty(devSentTo) ? userAccount.getUserId() : devSentTo;
+            String sentTo = StringUtils.isEmpty(devSentTo) ? userId : devSentTo;
             if (sentTo.equalsIgnoreCase(devSentTo)) {
                 helper.setTo(new InternetAddress(devSentTo, emailAddressName));
             } else {
-                helper.setTo(new InternetAddress(userAccount.getUserId(), userAccount.getName()));
+                helper.setTo(new InternetAddress(userId, name));
             }
-            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userAccount.getUserId() : devSentTo);
+            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
             sendMail(
-                    userAccount.getName() + ": " + mailValidateSubject,
+                    name + ": " + mailValidateSubject,
                     freemarkerToString("mail/self-signup.ftl", rootMap),
                     message,
                     helper
             );
         } catch (IOException | TemplateException | MessagingException exception) {
-            LOG.error("Validation failure email for={}", userAccount.getUserId(), exception);
+            LOG.error("Validation failure email for={}", userId, exception);
             return false;
         }
         return true;
     }
 
     /**
-     * Send recover email to user of provided email id
+     * Send recover email to user of provided email id.
      * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
      *
      * @param emailId
@@ -202,7 +208,7 @@ public final class MailService {
     }
 
     /**
-     * Used in sending the invitation for the first time
+     * Used in sending the invitation for the first time.
      *
      * @param invitedUserEmail Invited users email address
      * @param invitedByRid     Existing users email address
@@ -258,7 +264,7 @@ public final class MailService {
     }
 
     /**
-     * Invitation is created by the new user
+     * Invitation is created by the new user.
      *
      * @param email
      * @param invitedBy
@@ -332,7 +338,7 @@ public final class MailService {
     }
 
     /**
-     * When invitation fails remove all the reference to the Invitation and the new user
+     * When invitation fails remove all the reference to the Invitation and the new user.
      *
      * @param inviteEntity
      */
