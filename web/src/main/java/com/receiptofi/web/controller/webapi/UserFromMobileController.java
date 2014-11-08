@@ -42,6 +42,7 @@ public class UserFromMobileController {
 
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;
+
     @Autowired private CustomUserDetailsService customUserDetailsService;
 
     @RequestMapping (
@@ -50,8 +51,12 @@ public class UserFromMobileController {
     )
     @ResponseBody
     public String authenticateOrCreate(
-            @RequestBody String authenticationJson,
-            @RequestHeader ("X-R-API-MOBILE") String apiAccessToken,
+            @RequestBody
+            String authenticationJson,
+
+            @RequestHeader ("X-R-API-MOBILE")
+            String apiAccessToken,
+
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.info("webApiAccessToken={}", webApiAccessToken);
@@ -61,7 +66,8 @@ public class UserFromMobileController {
             try {
                 map = ParseJsonStringToMap.jsonStringToMap(authenticationJson);
             } catch (IOException e) {
-                LOG.error("could not parse authenticationJson={} reason={}", authenticationJson, e.getLocalizedMessage(), e);
+                LOG.error("could not parse authenticationJson={} reason={}",
+                        authenticationJson, e.getLocalizedMessage(), e);
             }
             Assert.notNull(map);
             try {

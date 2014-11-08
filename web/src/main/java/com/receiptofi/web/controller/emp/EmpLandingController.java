@@ -44,17 +44,30 @@ public final class EmpLandingController {
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
 
-        //Note: findPending has to be before findUpdateWithLimit because records are update in the second query and this gets duplicates
-        List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(receiptUser.getUsername(), receiptUser.getRid(), DocumentStatusEnum.OCR_PROCESSED);
+        /**
+         * Note: findPending has to be before findUpdateWithLimit because records are update in the second query
+         * and this gets duplicates
+         */
+        List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(
+                receiptUser.getUsername(),
+                receiptUser.getRid(),
+                DocumentStatusEnum.OCR_PROCESSED);
         modelAndView.addObject("pending", pending);
 
-        List<MessageDocumentEntity> queue = empLandingService.queuedReceipts(receiptUser.getUsername(), receiptUser.getRid());
+        List<MessageDocumentEntity> queue = empLandingService.queuedReceipts(
+                receiptUser.getUsername(),
+                receiptUser.getRid());
         modelAndView.addObject("queue", queue);
 
-        List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(receiptUser.getUsername(), receiptUser.getRid(), DocumentStatusEnum.TURK_REQUEST);
+        List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(
+                receiptUser.getUsername(),
+                receiptUser.getRid(),
+                DocumentStatusEnum.TURK_REQUEST);
         modelAndView.addObject("recheckPending", recheckPending);
 
-        List<MessageDocumentEntity> recheck = empLandingService.recheck(receiptUser.getUsername(), receiptUser.getRid());
+        List<MessageDocumentEntity> recheck = empLandingService.recheck(
+                receiptUser.getUsername(),
+                receiptUser.getRid());
         modelAndView.addObject("recheck", recheck);
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());

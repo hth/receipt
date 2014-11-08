@@ -28,7 +28,7 @@ public class GetController {
     private String webApiAccessToken;
 
     /**
-     * Dummy call to populate header with CSRF token in filter
+     * Dummy call to populate header with CSRF token in filter.
      *
      * @return
      */
