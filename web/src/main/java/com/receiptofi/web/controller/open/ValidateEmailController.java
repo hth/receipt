@@ -1,5 +1,9 @@
 package com.receiptofi.web.controller.open;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.service.AccountService;
@@ -20,11 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 /**
+ * Validate email of a user from the email sent.
  * User: hitender
  * Date: 5/17/14 9:54 PM
  */
@@ -33,9 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 public final class ValidateEmailController {
     private static final Logger LOG = LoggerFactory.getLogger(ValidateEmailController.class);
 
-    private final EmailValidateService emailValidateService;
-    private final AccountService accountService;
-    private final RegistrationConfig registrationConfig;
+    private EmailValidateService emailValidateService;
+    private AccountService accountService;
+    private RegistrationConfig registrationConfig;
 
     @Value ("${emailValidate:redirect:/open/validate/result.htm}")
     private String validateResult;
@@ -47,14 +48,24 @@ public final class ValidateEmailController {
     private String validateFailurePage;
 
     @Autowired
-    public ValidateEmailController(EmailValidateService emailValidateService, AccountService accountService, RegistrationConfig registrationConfig) {
+    public ValidateEmailController(
+            EmailValidateService emailValidateService,
+            AccountService accountService,
+            RegistrationConfig registrationConfig
+    ) {
         this.emailValidateService = emailValidateService;
         this.accountService = accountService;
         this.registrationConfig = registrationConfig;
     }
 
     @RequestMapping (method = RequestMethod.GET)
-    public String validateEmail(@RequestParam ("authenticationKey") String key, RedirectAttributes redirectAttrs, HttpServletResponse httpServletResponse) throws IOException {
+    public String validateEmail(
+            @RequestParam ("authenticationKey")
+            String key,
+
+            RedirectAttributes redirectAttrs,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key);
         if (emailValidate == null) {
             LOG.info("authentication failed for invalid auth={}", key);

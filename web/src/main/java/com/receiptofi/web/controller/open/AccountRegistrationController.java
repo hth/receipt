@@ -134,7 +134,10 @@ public final class AccountRegistrationController {
                 userAccount.getReceiptUserId(),
                 userAccount.getUserId());
 
-        mailService.accountValidationEmail(userAccount, accountValidate);
+        mailService.accountValidationEmail(
+                userAccount.getUserId(),
+                userAccount.getName(),
+                accountValidate.getAuthenticationKey());
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
                 "success");
