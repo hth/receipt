@@ -254,7 +254,8 @@ public final class ForgotController {
                             " success"
                     );
                 } catch (Exception e) {
-                    LOG.error("Error during updating of the old authentication key message={}", e.getLocalizedMessage(), e);
+                    LOG.error("Error during updating of the old authentication key message={}",
+                            e.getLocalizedMessage(), e);
                     PerformanceProfiling.log(
                             this.getClass(),
                             time,

@@ -16,6 +16,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Generate CSRF token.
+ *
  * User: hitender
  * Date: 7/2/14 11:54 PM
  */
