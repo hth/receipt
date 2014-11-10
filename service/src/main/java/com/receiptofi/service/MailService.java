@@ -122,10 +122,10 @@ public final class MailService {
      *
      * @param userId
      * @param name
-     * @param auth
+     * @param auth - Authentication key to authenticate user when clicking link in mail
      * @return
      */
-    public boolean accountValidationEmail(String userId, String name, String auth) {
+    public boolean accountValidationMail(String userId, String name, String auth) {
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("to", name);
         rootMap.put("contact_email", userId);
@@ -220,7 +220,7 @@ public final class MailService {
             InviteEntity inviteEntity = null;
             try {
                 inviteEntity = inviteService.initiateInvite(invitedUserEmail, invitedBy);
-                formulateInvitationEmail(invitedUserEmail, invitedBy, inviteEntity);
+                formulateInvitationMail(invitedUserEmail, invitedBy, inviteEntity);
                 return true;
             } catch (RuntimeException exception) {
                 if (inviteEntity != null) {
@@ -251,7 +251,7 @@ public final class MailService {
                     inviteEntity = reCreateAnotherInvite(emailId, invitedBy);
                     isNewInvite = true;
                 }
-                formulateInvitationEmail(emailId, invitedBy, inviteEntity);
+                formulateInvitationMail(emailId, invitedBy, inviteEntity);
                 if (!isNewInvite) {
                     inviteManager.save(inviteEntity);
                 }
@@ -283,7 +283,7 @@ public final class MailService {
         }
     }
 
-    private void formulateInvitationEmail(String email, UserAccountEntity invitedBy, InviteEntity inviteEntity) {
+    private void formulateInvitationMail(String email, UserAccountEntity invitedBy, InviteEntity inviteEntity) {
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("from", invitedBy.getName());
         rootMap.put("fromEmail", invitedBy.getUserId());

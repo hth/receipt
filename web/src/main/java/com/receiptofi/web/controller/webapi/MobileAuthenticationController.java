@@ -32,13 +32,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Mobile social authentication service.
+ *
  * User: hitender
  * Date: 6/29/14 7:56 PM
  */
 @Controller
 @RequestMapping (value = "/webapi/mobile")
-public class UserFromMobileController {
-    private static final Logger LOG = LoggerFactory.getLogger(UserFromMobileController.class);
+public class MobileAuthenticationController {
+    private static final Logger LOG = LoggerFactory.getLogger(MobileAuthenticationController.class);
 
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;

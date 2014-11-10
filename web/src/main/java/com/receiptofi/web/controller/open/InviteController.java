@@ -74,13 +74,13 @@ public final class InviteController {
             @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm inviteAuthenticateForm
     ) {
-        InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(key);
-        if (inviteEntity != null) {
-            inviteAuthenticateForm.setEmailId(inviteEntity.getEmail());
-            inviteAuthenticateForm.setFirstName(inviteEntity.getInvited().getFirstName());
-            inviteAuthenticateForm.setLastName(inviteEntity.getInvited().getLastName());
+        InviteEntity invite = inviteService.findInviteAuthenticationForKey(key);
+        if (invite != null) {
+            inviteAuthenticateForm.setEmailId(invite.getEmail());
+            inviteAuthenticateForm.setFirstName(invite.getInvited().getFirstName());
+            inviteAuthenticateForm.setLastName(invite.getInvited().getLastName());
             inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key);
-            inviteAuthenticateForm.getForgotAuthenticateForm().setReceiptUserId(inviteEntity.getInvited().getReceiptUserId());
+            inviteAuthenticateForm.getForgotAuthenticateForm().setReceiptUserId(invite.getInvited().getReceiptUserId());
         }
         return authenticatePage;
     }
@@ -88,7 +88,7 @@ public final class InviteController {
     /**
      * Completes user invitation sent through email
      *
-     * @param inviteAuthenticateForm
+     * @param form
      * @param redirectAttrs
      * @param result
      * @return
@@ -96,50 +96,51 @@ public final class InviteController {
     @RequestMapping (method = RequestMethod.POST, value = "authenticate", params = {"confirm_invitation"})
     public String completeInvitation(
             @ModelAttribute ("inviteAuthenticateForm")
-            InviteAuthenticateForm inviteAuthenticateForm,
+            InviteAuthenticateForm form,
 
             RedirectAttributes redirectAttrs,
             BindingResult result
     ) {
         DateTime time = DateUtil.now();
-        inviteAuthenticateValidator.validate(inviteAuthenticateForm, result);
+        inviteAuthenticateValidator.validate(form, result);
         if (result.hasErrors()) {
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
             return authenticatePage;
         } else {
-            InviteEntity inviteEntity = inviteService.findInviteAuthenticationForKey(inviteAuthenticateForm.getForgotAuthenticateForm().getAuthenticationKey());
-            if (inviteEntity == null) {
+            InviteEntity invite =
+                    inviteService.findInviteAuthenticationForKey(form.getForgotAuthenticateForm().getAuthenticationKey());
+            if (invite == null) {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
                 redirectAttrs.addFlashAttribute(SUCCESS, "false");
             } else {
-                UserProfileEntity userProfileEntity = inviteEntity.getInvited();
-                userProfileEntity.setFirstName(inviteAuthenticateForm.getFirstName());
-                userProfileEntity.setLastName(inviteAuthenticateForm.getLastName());
-                userProfileEntity.active();
+                UserProfileEntity userProfile = invite.getInvited();
+                userProfile.setFirstName(form.getFirstName());
+                userProfile.setLastName(form.getLastName());
+                userProfile.active();
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
-                        HashText.computeBCrypt(inviteAuthenticateForm.getForgotAuthenticateForm().getPassword()),
+                        HashText.computeBCrypt(form.getForgotAuthenticateForm().getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
-                UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfileEntity.getReceiptUserId());
+                UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
 
-                userAuthenticationEntity.setId(userAccountEntity.getUserAuthentication().getId());
-                userAuthenticationEntity.setVersion(userAccountEntity.getUserAuthentication().getVersion());
-                userAuthenticationEntity.setCreated(userAccountEntity.getUserAuthentication().getCreated());
+                userAuthenticationEntity.setId(userAccount.getUserAuthentication().getId());
+                userAuthenticationEntity.setVersion(userAccount.getUserAuthentication().getVersion());
+                userAuthenticationEntity.setCreated(userAccount.getUserAuthentication().getCreated());
                 userAuthenticationEntity.setUpdated();
                 try {
-                    userProfileManager.save(userProfileEntity);
+                    userProfileManager.save(userProfile);
                     accountService.updateAuthentication(userAuthenticationEntity);
 
-                    userAccountEntity.setFirstName(userProfileEntity.getFirstName());
-                    userAccountEntity.setLastName(userProfileEntity.getLastName());
-                    userAccountEntity.active();
-                    userAccountEntity.setAccountValidated(true);
-                    userAccountEntity.setUserAuthentication(userAuthenticationEntity);
-                    accountService.saveUserAccount(userAccountEntity);
+                    userAccount.setFirstName(userProfile.getFirstName());
+                    userAccount.setLastName(userProfile.getLastName());
+                    userAccount.active();
+                    userAccount.setAccountValidated(true);
+                    userAccount.setUserAuthentication(userAuthenticationEntity);
+                    accountService.saveUserAccount(userAccount);
 
-                    inviteService.invalidateAllEntries(inviteEntity);
+                    inviteService.invalidateAllEntries(invite);
                     redirectAttrs.addFlashAttribute(SUCCESS, "true");
                     PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " success");
                 } catch (Exception e) {

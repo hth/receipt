@@ -134,7 +134,7 @@ public final class AccountRegistrationController {
                 userAccount.getReceiptUserId(),
                 userAccount.getUserId());
 
-        mailService.accountValidationEmail(
+        mailService.accountValidationMail(
                 userAccount.getUserId(),
                 userAccount.getName(),
                 accountValidate.getAuthenticationKey());
