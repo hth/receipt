@@ -3,15 +3,6 @@
  */
 package com.receiptofi.utils;
 
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,8 +14,17 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import static com.google.i18n.phonenumbers.PhoneNumberUtil.*;
-import static com.google.i18n.phonenumbers.Phonenumber.*;
+import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
+import static com.google.i18n.phonenumbers.PhoneNumberUtil.getInstance;
+import static com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Define all singleton here */
 enum FormatterSingleton {
@@ -48,15 +48,12 @@ enum FormatterSingleton {
  * @since Jan 9, 2013 11:13:30 PM
  */
 public final class Formatter {
-    private static final Logger LOG = LoggerFactory.getLogger(Formatter.class);
-
-    //Defaults to US
-    private static final String FORMAT_TO_US = "US";
-
     /** For double */
     public static final DecimalFormat DF = new DecimalFormat("#.##");
-
     public static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
+    private static final Logger LOG = LoggerFactory.getLogger(Formatter.class);
+    //Defaults to US
+    private static final String FORMAT_TO_US = "US";
 
     private Formatter() {
     }

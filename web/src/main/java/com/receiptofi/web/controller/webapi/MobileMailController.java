@@ -60,7 +60,7 @@ public class MobileMailController {
                 LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
             }
             Assert.notNull(map);
-            if(mailService.accountValidationMail(map.get("userId"), map.get("name"), map.get("auth"))) {
+            if (mailService.accountValidationMail(map.get("userId"), map.get("name"), map.get("auth"))) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");

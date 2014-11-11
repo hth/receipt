@@ -1,5 +1,7 @@
 package com.receiptofi.service;
 
+import java.util.LinkedHashSet;
+
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -22,8 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedHashSet;
 
 /**
  * User: hitender
@@ -79,6 +79,7 @@ public class AccountService {
 
     /**
      * Creates new user account. There are some rollback but this process should not fail.
+     *
      * @param mail
      * @param firstName
      * @param lastName
@@ -127,7 +128,7 @@ public class AccountService {
             LOG.error("During saving UserProfileEntity={}", e.getLocalizedMessage(), e);
 
             //Roll back
-            if(userAccount != null) {
+            if (userAccount != null) {
                 userAccountManager.deleteHard(userAccount);
             }
             userAuthenticationManager.deleteHard(userAuthentication);
