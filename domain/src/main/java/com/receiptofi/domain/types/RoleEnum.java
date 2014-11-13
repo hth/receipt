@@ -8,5 +8,6 @@ public enum RoleEnum {
     ROLE_USER,
     ROLE_TECHNICIAN,
     ROLE_SUPERVISOR,
+    ROLE_READ_ONLY,
     ROLE_ADMIN
 }

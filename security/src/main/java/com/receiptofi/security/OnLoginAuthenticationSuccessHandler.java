@@ -33,6 +33,12 @@ import javax.servlet.http.HttpServletResponse;
 })
 public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
+
+    public static final String ACCESS_LANDING_HTM = "/access/landing.htm";
+    public static final String EMP_LANDING_HTM = "/emp/landing.htm";
+    public static final String ADMIN_LANDING_HTM = "/admin/landing.htm";
+    public static final String DISPLAY_LANDING_HTM = "/display/landing.htm";
+
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -89,16 +95,19 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         GrantedAuthority grantedAuthority = authorities.iterator().next();
         switch (RoleEnum.valueOf(grantedAuthority.getAuthority())) {
             case ROLE_USER:
-                targetURL = "/access/landing.htm";
+                targetURL = ACCESS_LANDING_HTM;
                 break;
             case ROLE_SUPERVISOR:
-                targetURL = "/emp/landing.htm";
+                targetURL = EMP_LANDING_HTM;
                 break;
             case ROLE_TECHNICIAN:
-                targetURL = "/emp/landing.htm";
+                targetURL = EMP_LANDING_HTM;
                 break;
             case ROLE_ADMIN:
-                targetURL = "/admin/landing.htm";
+                targetURL = ADMIN_LANDING_HTM;
+                break;
+            case ROLE_READ_ONLY:
+                targetURL = DISPLAY_LANDING_HTM;
                 break;
             default:
                 LOG.error("Role set is not defined");
