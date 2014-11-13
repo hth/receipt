@@ -39,12 +39,8 @@ public final class FileUploadDocumentSenderJMS {
                     public Message createMessage(Session session) throws JMSException {
                         MapMessage mapMessage = session.createMapMessage();
                         mapMessage.setString("id", documentEntity.getId());
-                        mapMessage.setString("level", userProfile.getLevel().getDescription());
+                        mapMessage.setString("level", userProfile.getLevel().name());
                         mapMessage.setInt("status", documentEntity.getDocumentStatus().ordinal());
-
-                        //This does not work since this values has to be set after sending the message. It will always default to 4.
-                        mapMessage.setJMSPriority(userProfile.getLevel().getMessagePriorityJMS());
-
                         mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
                         return mapMessage;
                     }

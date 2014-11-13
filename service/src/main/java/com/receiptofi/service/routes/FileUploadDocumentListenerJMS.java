@@ -46,10 +46,7 @@ public final class FileUploadDocumentListenerJMS {
                 break;
         }
 
-        //TODO write unit test to make sure the new levels are added as per the format. Use Camel Format
-        /** Required to match the name for User Level */
-        String matchingName = StringUtils.replace(level, " ", "_");
-        UserLevelEnum levelEnum = UserLevelEnum.valueOf(matchingName.toUpperCase());
+        UserLevelEnum levelEnum = UserLevelEnum.valueOf(level);
         MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, documentStatusEnum);
         messageManager.save(object);
 

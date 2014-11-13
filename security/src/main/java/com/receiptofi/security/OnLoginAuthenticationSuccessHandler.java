@@ -55,7 +55,11 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
 
         /**
          * Refer: http://www.baeldung.com/2011/10/31/securing-a-restful-web-service-with-spring-security-3-1-part-3/
-         * To execute: curl -i -X POST -d emailId=some@mail.com -d password=realPassword http://localhost:8080/receipt/j_spring_security_check
+         * To execute:
+         * curl -i -X POST
+         * -d emailId=some@mail.com
+         * -d password=realPassword
+         * http://localhost:8080/receipt/j_spring_security_check
          */
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
 
@@ -64,7 +68,8 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter))) {
+        if (isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null &&
+                StringUtils.hasText(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
             return;
@@ -106,7 +111,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             case ROLE_ADMIN:
                 targetURL = ADMIN_LANDING_HTM;
                 break;
-            case ROLE_READ_ONLY:
+            case ROLE_SUPERVISOR_READ:
                 targetURL = DISPLAY_LANDING_HTM;
                 break;
             default:
