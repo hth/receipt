@@ -33,6 +33,12 @@ import javax.servlet.http.HttpServletResponse;
 })
 public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
+
+    public static final String ACCESS_LANDING_HTM = "/access/landing.htm";
+    public static final String EMP_LANDING_HTM = "/emp/landing.htm";
+    public static final String ADMIN_LANDING_HTM = "/admin/landing.htm";
+    public static final String DISPLAY_LANDING_HTM = "/display/landing.htm";
+
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -49,7 +55,11 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
 
         /**
          * Refer: http://www.baeldung.com/2011/10/31/securing-a-restful-web-service-with-spring-security-3-1-part-3/
-         * To execute: curl -i -X POST -d emailId=some@mail.com -d password=realPassword http://localhost:8080/receipt/j_spring_security_check
+         * To execute:
+         * curl -i -X POST
+         * -d emailId=some@mail.com
+         * -d password=realPassword
+         * http://localhost:8080/receipt/j_spring_security_check
          */
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
 
@@ -58,7 +68,8 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter))) {
+        if (isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null &&
+                StringUtils.hasText(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
             return;
@@ -89,16 +100,19 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         GrantedAuthority grantedAuthority = authorities.iterator().next();
         switch (RoleEnum.valueOf(grantedAuthority.getAuthority())) {
             case ROLE_USER:
-                targetURL = "/access/landing.htm";
+                targetURL = ACCESS_LANDING_HTM;
                 break;
             case ROLE_SUPERVISOR:
-                targetURL = "/emp/landing.htm";
+                targetURL = EMP_LANDING_HTM;
                 break;
             case ROLE_TECHNICIAN:
-                targetURL = "/emp/landing.htm";
+                targetURL = EMP_LANDING_HTM;
                 break;
             case ROLE_ADMIN:
-                targetURL = "/admin/landing.htm";
+                targetURL = ADMIN_LANDING_HTM;
+                break;
+            case ROLE_SUPERVISOR_READ:
+                targetURL = DISPLAY_LANDING_HTM;
                 break;
             default:
                 LOG.error("Role set is not defined");

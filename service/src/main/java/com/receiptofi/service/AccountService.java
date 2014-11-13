@@ -215,6 +215,12 @@ public class AccountService {
                         }}
                 );
                 break;
+            case SUPERVISOR_READ:
+                userAccountEntity.setRoles(
+                        new LinkedHashSet<RoleEnum>() {{
+                            add(RoleEnum.ROLE_SUPERVISOR_READ);
+                        }}
+                );
             default:
                 userAccountEntity.setRoles(
                         new LinkedHashSet<RoleEnum>() {{
