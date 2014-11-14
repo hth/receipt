@@ -53,7 +53,7 @@ public class PurgeDocumentsProcess {
     @Scheduled (cron = "0 0 0 * * ?")
     public void purgeRejectedDocument() {
         LOG.info("begins");
-        if (purgeRejectedDocument.equalsIgnoreCase("ON")) {
+        if ("ON".equalsIgnoreCase(purgeRejectedDocument)) {
             int found = 0;
             try {
                 List<DocumentEntity> documents = documentManager.getAllRejected(purgeRejectedDocumentAfterDay);
