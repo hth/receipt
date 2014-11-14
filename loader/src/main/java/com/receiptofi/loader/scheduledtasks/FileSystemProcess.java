@@ -63,7 +63,7 @@ public class FileSystemProcess {
     //for every two second use */2 * * * * ? where as cron string blow run every day at 12:00 AM
     @Scheduled (cron = "0 0 0 * * ?")
     public void removeExpiredExcelFiles() {
-        if (removeExpiredExcelFiles.equalsIgnoreCase("ON")) {
+        if ("ON".equalsIgnoreCase(removeExpiredExcelFiles)) {
             LOG.info("feature is {}", removeExpiredExcelFiles);
             int found = 0;
             try {
@@ -110,6 +110,7 @@ public class FileSystemProcess {
 
         if (directory.exists()) {
             FilenameFilter textFilter = new FilenameFilter() {
+                @Override
                 public boolean accept(File dir, String name) {
                     return name.startsWith(CreateTempFile.TEMP_FILE_START_WITH);
                 }
