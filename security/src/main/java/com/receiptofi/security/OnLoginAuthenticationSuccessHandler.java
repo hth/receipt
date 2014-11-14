@@ -82,7 +82,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         String targetUrl = determineTargetUrl(auth);
 
         if (res.isCommitted()) {
-            LOG.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+            LOG.debug("Response has already been committed. Unable to redirect endpoint={}", targetUrl);
             return;
         }
 
