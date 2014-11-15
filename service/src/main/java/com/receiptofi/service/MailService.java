@@ -178,7 +178,8 @@ public final class MailService {
         }
 
         if (userAccount.isAccountValidated()) {
-            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getReceiptUserId());
+            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(
+                    userAccount.getReceiptUserId());
 
             Map<String, String> rootMap = new HashMap<>();
             rootMap.put("to", userAccount.getName());
