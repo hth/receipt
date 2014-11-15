@@ -215,18 +215,26 @@ public class AccountService {
                         }}
                 );
                 break;
-            case SUPERVISOR_READ:
+            case ANALYSIS_READ:
                 userAccountEntity.setRoles(
                         new LinkedHashSet<RoleEnum>() {{
-                            add(RoleEnum.ROLE_SUPERVISOR_READ);
+                            add(RoleEnum.ROLE_ANALYSIS_READ);
                         }}
                 );
-            default:
+            case USER:
+            case USER_COMMUNITY:
+            case USER_PAID:
+            case EMPLOYER:
+            case EMPLOYER_COMMUNITY:
+            case EMPLOYER_PAID:
                 userAccountEntity.setRoles(
                         new LinkedHashSet<RoleEnum>() {{
                             add(RoleEnum.ROLE_USER);
                         }}
                 );
+            default:
+                LOG.error("Reached unreachable condition, UserLevel={}", userLevel.name());
+                throw new RuntimeException("Reached unreachable condition " + userLevel.name());
         }
         return userAccountEntity;
     }

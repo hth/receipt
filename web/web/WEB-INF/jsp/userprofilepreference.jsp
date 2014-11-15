@@ -229,7 +229,7 @@
 
                         <form:select path="userProfile.level" >
                             <form:option value="0" label="Select Account Type" />
-                            <form:options itemValue="name" itemLabel="description" />
+                            <form:options itemLabel="description" />
                         </form:select>
                     </div>
                 </div>
