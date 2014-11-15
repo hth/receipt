@@ -11,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -63,6 +64,7 @@ public final class MailService {
     private UserPreferenceManager userPreferenceManager;
     private UserAccountManager userAccountManager;
     private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+    private EmailValidateService emailValidateService;
 
     @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
@@ -101,6 +103,7 @@ public final class MailService {
                        UserAuthenticationManager userAuthenticationManager,
                        UserPreferenceManager userPreferenceManager,
                        UserAccountManager userAccountManager,
+                       EmailValidateService emailValidateService,
 
                        @SuppressWarnings ("SpringJavaAutowiringInspection")
                        FreeMarkerConfigurationFactoryBean freemarkerConfiguration
@@ -114,6 +117,7 @@ public final class MailService {
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
         this.userAccountManager = userAccountManager;
+        this.emailValidateService = emailValidateService;
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
@@ -168,7 +172,12 @@ public final class MailService {
      */
     public boolean mailRecoverLink(String emailId) {
         UserAccountEntity userAccount = accountService.findByUserId(emailId);
-        if (userAccount != null && userAccount.isAccountValidated()) {
+        if (userAccount == null) {
+            LOG.warn("could not recover user={}", emailId);
+            return false;
+        }
+
+        if (userAccount.isAccountValidated()) {
             ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getReceiptUserId());
 
             Map<String, String> rootMap = new HashMap<>();
@@ -187,10 +196,12 @@ public final class MailService {
                 String sentTo = StringUtils.isEmpty(devSentTo) ? emailId : devSentTo;
                 if (sentTo.equalsIgnoreCase(devSentTo)) {
                     helper.setTo(new InternetAddress(devSentTo, emailAddressName));
+                    LOG.info("Mail recovery send to={}", devSentTo);
                 } else {
                     helper.setTo(new InternetAddress(emailId, userAccount.getName()));
+                    LOG.info("Mail recovery send to={}", emailId);
                 }
-                LOG.info("Mail recovery send to={}", StringUtils.isEmpty(devSentTo) ? emailId : devSentTo);
+
                 sendMail(
                         userAccount.getName() + ": " + mailRecoverSubject,
                         freemarkerToString("mail/account-recover.ftl", rootMap),
@@ -202,13 +213,21 @@ public final class MailService {
                 LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
                 return false;
             }
+        } else {
+            /** Since account is not validated, send account validation email */
+            EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                    userAccount.getReceiptUserId(),
+                    userAccount.getUserId());
+
+            return accountValidationMail(
+                    userAccount.getUserId(),
+                    userAccount.getName(),
+                    accountValidate.getAuthenticationKey());
         }
-        //TODO make sure not validate email should not get link to recover password; they should be re-send email
-        return false;
     }
 
     /**
-     * Used in sending the invitation for the first time.
+     * Send invite.
      *
      * @param invitedUserEmail Invited users email address
      * @param invitedByRid     Existing users email address
@@ -234,7 +253,7 @@ public final class MailService {
     }
 
     /**
-     * Helps in re-sending the invitation or to send new invitation to existing (pending) invitation by a new user.
+     * Re-send invite or send new invitation to existing (pending) invite to user.
      *
      * @param emailId      Invited users email address
      * @param invitedByRid Existing users email address
@@ -270,7 +289,7 @@ public final class MailService {
      * @param invitedBy
      * @return
      */
-    public InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
+    private InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
         InviteEntity inviteEntity = inviteService.find(email);
         try {
             String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
@@ -307,12 +326,18 @@ public final class MailService {
                     helper
             );
         } catch (TemplateException | IOException | MessagingException exception) {
-            LOG.error("Invitation failure email inviteId={}, for={}, exception={}", inviteEntity.getId(), inviteEntity.getEmail(), exception);
+            LOG.error("Invitation failure email inviteId={}, for={}, exception={}",
+                    inviteEntity.getId(), inviteEntity.getEmail(), exception);
             throw new RuntimeException(exception);
         }
     }
 
-    private void sendMail(String subject, String text, MimeMessage message, MimeMessageHelper helper) throws MessagingException {
+    private void sendMail(
+            String subject,
+            String text,
+            MimeMessage message,
+            MimeMessageHelper helper
+    ) throws MessagingException {
         // use the true flag to indicate the text included is HTML
         helper.setText(text, true);
         helper.setSubject(subject);

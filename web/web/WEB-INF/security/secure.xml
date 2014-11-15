@@ -64,6 +64,9 @@
         <intercept-url pattern="/admin/**"
                        access="hasRole('ROLE_ADMIN')" />
 
+        <intercept-url pattern="/display/**"
+                       access="hasRole('ROLE_ANALYSIS_READ')" />
+
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('192.168.1.*')" />
         <form-login
