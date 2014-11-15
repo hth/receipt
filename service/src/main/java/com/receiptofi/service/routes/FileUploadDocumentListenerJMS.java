@@ -44,6 +44,9 @@ public final class FileUploadDocumentListenerJMS {
             case 2:
                 documentStatusEnum = DocumentStatusEnum.TURK_REQUEST;
                 break;
+            default:
+                LOG.error("Reached unreachable condition, status={}", status);
+                throw new RuntimeException("Reached unreachable condition " + status);
         }
 
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(level);
