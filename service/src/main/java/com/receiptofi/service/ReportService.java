@@ -55,7 +55,7 @@ public final class ReportService {
 
             return freemarkerDo(rootMap);
         } catch (SAXException | ParserConfigurationException | IOException | TemplateException e) {
-            LOG.error("Error while processing reporting template: " + e.getLocalizedMessage());
+            LOG.error("Error while processing reporting template reason={}", e.getLocalizedMessage(), e);
         }
         return null;
     }
