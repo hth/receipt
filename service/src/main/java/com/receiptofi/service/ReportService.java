@@ -28,16 +28,13 @@ import org.xml.sax.SAXException;
  * Date: 9/4/13 1:19 PM
  */
 @Service
-public final class ReportService {
+public class ReportService {
     private static final Logger LOG = LoggerFactory.getLogger(ReportService.class);
 
     @Autowired LandingService landingService;
 
     @SuppressWarnings ("SpringJavaAutowiringInspection")
     @Autowired private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
-
-    @Value ("${http}")
-    private String http;
 
     @Value ("${https}")
     private String https;
@@ -55,7 +52,7 @@ public final class ReportService {
 
             return freemarkerDo(rootMap);
         } catch (SAXException | ParserConfigurationException | IOException | TemplateException e) {
-            LOG.error("Error while processing reporting template: " + e.getLocalizedMessage());
+            LOG.error("Error while processing reporting template reason={}", e.getLocalizedMessage(), e);
         }
         return null;
     }
