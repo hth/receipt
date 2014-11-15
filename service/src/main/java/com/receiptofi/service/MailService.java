@@ -11,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -26,9 +27,6 @@ import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +64,7 @@ public final class MailService {
     private UserPreferenceManager userPreferenceManager;
     private UserAccountManager userAccountManager;
     private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
-
-    public enum MAIL {FAILURE, SUCCESS, ACCOUNT_NOT_VALIDATED}
+    private EmailValidateService emailValidateService;
 
     @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
@@ -106,6 +103,7 @@ public final class MailService {
                        UserAuthenticationManager userAuthenticationManager,
                        UserPreferenceManager userPreferenceManager,
                        UserAccountManager userAccountManager,
+                       EmailValidateService emailValidateService,
 
                        @SuppressWarnings ("SpringJavaAutowiringInspection")
                        FreeMarkerConfigurationFactoryBean freemarkerConfiguration
@@ -119,6 +117,7 @@ public final class MailService {
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
         this.userAccountManager = userAccountManager;
+        this.emailValidateService = emailValidateService;
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
@@ -171,11 +170,11 @@ public final class MailService {
      *
      * @param emailId
      */
-    public MAIL mailRecoverLink(String emailId) {
+    public boolean mailRecoverLink(String emailId) {
         UserAccountEntity userAccount = accountService.findByUserId(emailId);
         if (userAccount == null) {
             LOG.warn("could not recover user={}", emailId);
-            return MAIL.FAILURE;
+            return false;
         }
 
         if (userAccount.isAccountValidated()) {
@@ -209,20 +208,26 @@ public final class MailService {
                         message,
                         helper
                 );
-                return MAIL.SUCCESS;
+                return true;
             } catch (IOException | TemplateException | MessagingException exception) {
                 LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
-                return MAIL.FAILURE;
+                return false;
             }
         } else {
-            //TODO(hth) make sure not validate email should not get link to recover password; they should be re-send email
-            reSendInvitation(emailId, )
-            return MAIL.ACCOUNT_NOT_VALIDATED;
+            /** Since account is not validated, send account validation email */
+            EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                    userAccount.getReceiptUserId(),
+                    userAccount.getUserId());
+
+            return accountValidationMail(
+                    userAccount.getUserId(),
+                    userAccount.getName(),
+                    accountValidate.getAuthenticationKey());
         }
     }
 
     /**
-     * Used in sending the invitation for the first time.
+     * Send invite.
      *
      * @param invitedUserEmail Invited users email address
      * @param invitedByRid     Existing users email address
@@ -248,7 +253,7 @@ public final class MailService {
     }
 
     /**
-     * Helps in re-sending the invitation or to send new invitation to existing (pending) invitation by a new user.
+     * Re-send invite or send new invitation to existing (pending) invite to user.
      *
      * @param emailId      Invited users email address
      * @param invitedByRid Existing users email address
