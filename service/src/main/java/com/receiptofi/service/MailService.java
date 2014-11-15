@@ -51,20 +51,18 @@ import freemarker.template.TemplateException;
  * Time: 10:20 AM
  */
 @Service
-public final class MailService {
+public class MailService {
     private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
 
     private AccountService accountService;
     private InviteService inviteService;
     private JavaMailSenderImpl mailSender;
     private LoginService loginService;
-    private InviteManager inviteManager;
-    private UserProfileManager userProfileManager;
     private UserAuthenticationManager userAuthenticationManager;
-    private UserPreferenceManager userPreferenceManager;
     private UserAccountManager userAccountManager;
     private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
     private EmailValidateService emailValidateService;
+    private UserProfilePreferenceService userProfilePreferenceService;
 
     @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
@@ -98,12 +96,12 @@ public final class MailService {
                        InviteService inviteService,
                        JavaMailSenderImpl mailSender,
                        LoginService loginService,
-                       InviteManager inviteManager,
                        UserProfileManager userProfileManager,
                        UserAuthenticationManager userAuthenticationManager,
                        UserPreferenceManager userPreferenceManager,
                        UserAccountManager userAccountManager,
                        EmailValidateService emailValidateService,
+                       UserProfilePreferenceService userProfilePreferenceService,
 
                        @SuppressWarnings ("SpringJavaAutowiringInspection")
                        FreeMarkerConfigurationFactoryBean freemarkerConfiguration
@@ -112,12 +110,10 @@ public final class MailService {
         this.inviteService = inviteService;
         this.mailSender = mailSender;
         this.loginService = loginService;
-        this.inviteManager = inviteManager;
-        this.userProfileManager = userProfileManager;
         this.userAuthenticationManager = userAuthenticationManager;
-        this.userPreferenceManager = userPreferenceManager;
         this.userAccountManager = userAccountManager;
         this.emailValidateService = emailValidateService;
+        this.userProfilePreferenceService = userProfilePreferenceService;
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
@@ -178,7 +174,8 @@ public final class MailService {
         }
 
         if (userAccount.isAccountValidated()) {
-            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getReceiptUserId());
+            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(
+                    userAccount.getReceiptUserId());
 
             Map<String, String> rootMap = new HashMap<>();
             rootMap.put("to", userAccount.getName());
@@ -244,9 +241,11 @@ public final class MailService {
             } catch (RuntimeException exception) {
                 if (inviteEntity != null) {
                     deleteInvite(inviteEntity);
-                    LOG.info("Due to failure in sending the invitation email. Deleting Invite={}, for={}", inviteEntity.getId(), inviteEntity.getEmail());
+                    LOG.info("Due to failure in sending the invitation email. Deleting Invite={}, for={}",
+                            inviteEntity.getId(), inviteEntity.getEmail());
                 }
-                LOG.error("Exception occurred during persisting InviteEntity, message={}", exception.getLocalizedMessage(), exception);
+                LOG.error("Exception occurred during persisting InviteEntity, message={}",
+                        exception.getLocalizedMessage(), exception);
             }
         }
         return false;
@@ -272,10 +271,11 @@ public final class MailService {
                 }
                 formulateInvitationMail(emailId, invitedBy, inviteEntity);
                 if (!isNewInvite) {
-                    inviteManager.save(inviteEntity);
+                    inviteService.save(inviteEntity);
                 }
             } catch (Exception exception) {
-                LOG.error("Exception occurred during persisting InviteEntity, reason={}", exception.getLocalizedMessage(), exception);
+                LOG.error("Exception occurred during persisting InviteEntity, reason={}",
+                        exception.getLocalizedMessage(), exception);
                 return false;
             }
         }
@@ -294,10 +294,11 @@ public final class MailService {
         try {
             String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
             inviteEntity = InviteEntity.newInstance(email, auth, inviteEntity.getInvited(), invitedBy);
-            inviteManager.save(inviteEntity);
+            inviteService.save(inviteEntity);
             return inviteEntity;
         } catch (Exception exception) {
-            LOG.error("Error occurred during creation of invited user={}", email, exception.getLocalizedMessage(), exception);
+            LOG.error("Error occurred during creation of invited user={} reason={}",
+                    email, exception.getLocalizedMessage(), exception);
             return null;
         }
     }
@@ -374,10 +375,10 @@ public final class MailService {
         UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
         UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);
 
-        userPreferenceManager.deleteHard(userPreferenceEntity);
+        userProfilePreferenceService.deleteHard(userPreferenceEntity);
         userAuthenticationManager.deleteHard(userAuthenticationEntity);
         userAccountManager.deleteHard(userAccount);
-        userProfileManager.deleteHard(userProfile);
-        inviteManager.deleteHard(inviteEntity);
+        userProfilePreferenceService.deleteHard(userProfile);
+        inviteService.deleteHard(inviteEntity);
     }
 }
