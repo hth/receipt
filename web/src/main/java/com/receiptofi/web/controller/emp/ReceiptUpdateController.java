@@ -205,6 +205,9 @@ public final class ReceiptUpdateController {
             case MILEAGE:
                 LOG.info("Mileage : ");
                 break;
+            default:
+                LOG.error("Reached unreachable condition, DocumentOfType={}", receiptDocumentForm.getReceiptDocument().getDocumentOfType());
+                throw new RuntimeException("Reached unreachable condition " + receiptDocumentForm.getReceiptDocument().getDocumentOfType());
         }
 
         mileageDocumentValidator.validate(receiptDocumentForm, result);
