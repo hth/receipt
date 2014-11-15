@@ -69,7 +69,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +111,7 @@ public class LandingController extends BaseController {
 
     private static final String PATTERN = "MMM, yyyy";
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern(PATTERN);
+    private static final SimpleDateFormat SDF = new SimpleDateFormat(PATTERN);
 
     /**
      * Refers to landing.jsp
@@ -478,7 +481,11 @@ public class LandingController extends BaseController {
             File file = populateDataForXML(reportView);
             return reportService.monthlyReport(file);
         } catch (RuntimeException e) {
-            header.setMessage("Invalid parameter. Correct format - " + PATTERN + " [Please provide parameter shown without quotes - 'Jan, 2014']");
+            header.setMessage("Invalid parameter. Correct format - " +
+                    PATTERN +
+                    " [Please provide parameter shown without quotes - '" +
+                    SDF.format(new Date()) +
+                    "']");
             header.setStatus(Header.RESULT.FAILURE);
 
             ReportView reportView = getReportView(receiptUser, header, DateTime.now().minusYears(40));
@@ -534,8 +541,8 @@ public class LandingController extends BaseController {
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
              * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
-             * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to limit
-             * the number of invite.
+             * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
+             * limit the number of invite.
              */
             if (userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 boolean status = invokeCorrectInvitation(invitedUserEmail, receiptUser, userProfileEntity);

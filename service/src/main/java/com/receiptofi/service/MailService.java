@@ -27,6 +27,9 @@ import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +66,8 @@ public final class MailService {
     private UserPreferenceManager userPreferenceManager;
     private UserAccountManager userAccountManager;
     private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+
+    public enum MAIL {FAILURE, SUCCESS, ACCOUNT_NOT_VALIDATED}
 
     @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
@@ -166,9 +171,14 @@ public final class MailService {
      *
      * @param emailId
      */
-    public boolean mailRecoverLink(String emailId) {
+    public MAIL mailRecoverLink(String emailId) {
         UserAccountEntity userAccount = accountService.findByUserId(emailId);
-        if (userAccount != null && userAccount.isAccountValidated()) {
+        if (userAccount == null) {
+            LOG.warn("could not recover user={}", emailId);
+            return MAIL.FAILURE;
+        }
+
+        if (userAccount.isAccountValidated()) {
             ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getReceiptUserId());
 
             Map<String, String> rootMap = new HashMap<>();
@@ -187,24 +197,28 @@ public final class MailService {
                 String sentTo = StringUtils.isEmpty(devSentTo) ? emailId : devSentTo;
                 if (sentTo.equalsIgnoreCase(devSentTo)) {
                     helper.setTo(new InternetAddress(devSentTo, emailAddressName));
+                    LOG.info("Mail recovery send to={}", devSentTo);
                 } else {
                     helper.setTo(new InternetAddress(emailId, userAccount.getName()));
+                    LOG.info("Mail recovery send to={}", emailId);
                 }
-                LOG.info("Mail recovery send to={}", StringUtils.isEmpty(devSentTo) ? emailId : devSentTo);
+
                 sendMail(
                         userAccount.getName() + ": " + mailRecoverSubject,
                         freemarkerToString("mail/account-recover.ftl", rootMap),
                         message,
                         helper
                 );
-                return true;
+                return MAIL.SUCCESS;
             } catch (IOException | TemplateException | MessagingException exception) {
                 LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
-                return false;
+                return MAIL.FAILURE;
             }
+        } else {
+            //TODO(hth) make sure not validate email should not get link to recover password; they should be re-send email
+            reSendInvitation(emailId, )
+            return MAIL.ACCOUNT_NOT_VALIDATED;
         }
-        //TODO make sure not validate email should not get link to recover password; they should be re-send email
-        return false;
     }
 
     /**
@@ -270,7 +284,7 @@ public final class MailService {
      * @param invitedBy
      * @return
      */
-    public InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
+    private InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
         InviteEntity inviteEntity = inviteService.find(email);
         try {
             String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
@@ -307,12 +321,18 @@ public final class MailService {
                     helper
             );
         } catch (TemplateException | IOException | MessagingException exception) {
-            LOG.error("Invitation failure email inviteId={}, for={}, exception={}", inviteEntity.getId(), inviteEntity.getEmail(), exception);
+            LOG.error("Invitation failure email inviteId={}, for={}, exception={}",
+                    inviteEntity.getId(), inviteEntity.getEmail(), exception);
             throw new RuntimeException(exception);
         }
     }
 
-    private void sendMail(String subject, String text, MimeMessage message, MimeMessageHelper helper) throws MessagingException {
+    private void sendMail(
+            String subject,
+            String text,
+            MimeMessage message,
+            MimeMessageHelper helper
+    ) throws MessagingException {
         // use the true flag to indicate the text included is HTML
         helper.setText(text, true);
         helper.setSubject(subject);
