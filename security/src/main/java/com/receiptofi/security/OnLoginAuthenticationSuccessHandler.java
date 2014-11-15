@@ -111,7 +111,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             case ROLE_ADMIN:
                 targetURL = ADMIN_LANDING_HTM;
                 break;
-            case ROLE_SUPERVISOR_READ:
+            case ROLE_ANALYSIS_READ:
                 targetURL = DISPLAY_LANDING_HTM;
                 break;
             default:

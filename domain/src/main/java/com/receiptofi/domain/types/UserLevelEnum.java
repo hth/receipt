@@ -15,8 +15,8 @@ public enum UserLevelEnum {
     EMPLOYER_COMMUNITY("Employer Community", 40),
     EMPLOYER_PAID("Employer Paid", 40),
     TECHNICIAN("Technician", 50),
-    SUPERVISOR_READ("Supervisor Read", 60),
     SUPERVISOR("Supervisor", 60),
+    ANALYSIS_READ("Analysis Read", 65),
     ADMIN("Admin", 70);
 
     public final String description;

@@ -16,7 +16,7 @@ import java.util.Map;
  * Date: 8/11/13
  * Time: 7:31 PM
  */
-public final class UserProfilePreferenceForm {
+public class UserProfilePreferenceForm {
 
     private UserProfileEntity userProfile;
     private UserPreferenceEntity userPreference;

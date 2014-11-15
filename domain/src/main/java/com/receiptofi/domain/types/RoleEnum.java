@@ -13,7 +13,7 @@ public enum RoleEnum {
     ROLE_TECHNICIAN,
 
     /** Has read access */
-    ROLE_SUPERVISOR_READ,
+    ROLE_ANALYSIS_READ,
 
     /** Has complete access */
     ROLE_SUPERVISOR,
