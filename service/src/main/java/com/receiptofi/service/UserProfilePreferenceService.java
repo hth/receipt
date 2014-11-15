@@ -91,4 +91,12 @@ public final class UserProfilePreferenceService {
             expenseTagManager.changeVisibility(expenseTypeId, true, receiptUserId);
         }
     }
+
+    public void deleteHard(UserProfileEntity userProfile) {
+        userProfileManager.deleteHard(userProfile);
+    }
+
+    public void deleteHard(UserPreferenceEntity userPreference) {
+        userPreferenceManager.deleteHard(userPreference);
+    }
 }

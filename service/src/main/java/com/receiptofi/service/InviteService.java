@@ -112,4 +112,12 @@ public final class InviteService {
     public void invalidateAllEntries(InviteEntity inviteEntity) {
         inviteManager.invalidateAllEntries(inviteEntity);
     }
+
+    public void save(InviteEntity invite) {
+        inviteManager.save(invite);
+    }
+
+    public void deleteHard(InviteEntity invite) {
+        inviteManager.deleteHard(invite);
+    }
 }
