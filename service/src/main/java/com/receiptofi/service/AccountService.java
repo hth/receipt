@@ -221,6 +221,7 @@ public class AccountService {
                             add(RoleEnum.ROLE_ANALYSIS_READ);
                         }}
                 );
+                break;
             case USER:
             case USER_COMMUNITY:
             case USER_PAID:
@@ -232,6 +233,7 @@ public class AccountService {
                             add(RoleEnum.ROLE_USER);
                         }}
                 );
+                break;
             default:
                 LOG.error("Reached unreachable condition, UserLevel={}", userLevel.name());
                 throw new RuntimeException("Reached unreachable condition " + userLevel.name());
