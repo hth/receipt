@@ -15,7 +15,7 @@
 
     <style>
         body {background: #e6e6e6;margin: 0; padding: 20px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#666666;}
-        .error_page {width: 600px; padding: 50px; margin: auto;}
+        .error_page {width: 700px; padding: 50px; margin: auto;}
         .error_page h1 {margin: 20px 0 0;}
         .error_page p {margin: 10px 0; padding: 0;}
         a {color: #9caa6d; text-decoration:none;}
@@ -24,13 +24,27 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="error_page">
-        <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
-        <h1>Confirmation Page</h1>
-        <p>An email has been sent with information regarding recovering your account password</p>
-        <p>&nbsp;</p>
-        <p><a href="${pageContext.request.contextPath}/login.htm">Click to the login</a></p>
-    </div>
+    <spring:eval expression="success_email eq T(com.receiptofi.domain.types.MailTypeEnum).SUCCESS" var="mailSentType" />
+    <c:if test="${mailSentType}">
+        <div class="error_page">
+            <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
+            <h1>Confirmation Page</h1>
+            <p>An email has been sent with information regarding recovering your account password</p>
+            <p>&nbsp;</p>
+            <p><a href="${pageContext.request.contextPath}/login.htm">Click to the login</a></p>
+        </div>
+    </c:if>
+
+    <c:if test="${!mailSentType}">
+        <div class="error_page">
+            <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
+            <h1>Confirmation Page</h1>
+            <p>Since your email address has not being validate we have sent verification email.</p>
+            <p>Follow directions in email to validated your account and then follow the same steps to request password reset.</p>
+            <p>&nbsp;</p>
+            <p>Click here for <a href="${pageContext.request.contextPath}/login.htm">Login</a> page</p>
+        </div>
+    </c:if>
 </div>
 
 <div class="footer">

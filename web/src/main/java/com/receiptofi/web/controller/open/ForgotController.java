@@ -5,6 +5,7 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.MailService;
@@ -112,12 +113,14 @@ public final class ForgotController {
             return passwordPage;
         }
 
-        boolean status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
-        if (!status) {
+        MailTypeEnum status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
+        if (MailTypeEnum.FAILURE == status) {
             LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getEmailId());
         }
 
-        redirectAttrs.addFlashAttribute(SUCCESS_EMAIL, Boolean.toString(status));
+        redirectAttrs.addFlashAttribute(
+                SUCCESS_EMAIL,
+                status == MailTypeEnum.ACCOUNT_NOT_VALIDATED ? status : MailTypeEnum.SUCCESS);
         return recoverConfirm;
     }
 

@@ -18,7 +18,7 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.repository.InviteManager;
+import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
@@ -166,11 +166,11 @@ public class MailService {
      *
      * @param emailId
      */
-    public boolean mailRecoverLink(String emailId) {
+    public MailTypeEnum mailRecoverLink(String emailId) {
         UserAccountEntity userAccount = accountService.findByUserId(emailId);
         if (userAccount == null) {
             LOG.warn("could not recover user={}", emailId);
-            return false;
+            return MailTypeEnum.FAILURE;
         }
 
         if (userAccount.isAccountValidated()) {
@@ -205,10 +205,10 @@ public class MailService {
                         message,
                         helper
                 );
-                return true;
+                return MailTypeEnum.SUCCESS;
             } catch (IOException | TemplateException | MessagingException exception) {
                 LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
-                return false;
+                return MailTypeEnum.FAILURE;
             }
         } else {
             /** Since account is not validated, send account validation email */
@@ -216,10 +216,15 @@ public class MailService {
                     userAccount.getReceiptUserId(),
                     userAccount.getUserId());
 
-            return accountValidationMail(
+            boolean status = accountValidationMail(
                     userAccount.getUserId(),
                     userAccount.getName(),
                     accountValidate.getAuthenticationKey());
+
+            if(status) {
+                return MailTypeEnum.ACCOUNT_NOT_VALIDATED;
+            }
+            return MailTypeEnum.FAILURE;
         }
     }
 
