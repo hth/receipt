@@ -221,7 +221,7 @@ public class MailService {
                     userAccount.getName(),
                     accountValidate.getAuthenticationKey());
 
-            if(status) {
+            if (status) {
                 return MailTypeEnum.ACCOUNT_NOT_VALIDATED;
             }
             return MailTypeEnum.FAILURE;
