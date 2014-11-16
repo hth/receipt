@@ -16,6 +16,9 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Stores user account info and social account mapping.
+ */
 @Document (collection = "USER_ACCOUNT")
 @CompoundIndexes ({
         @CompoundIndex (name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
