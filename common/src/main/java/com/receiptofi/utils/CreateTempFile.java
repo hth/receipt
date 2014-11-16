@@ -8,12 +8,13 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 /**
  * User: hitender
  * Date: 9/21/13 10:16 PM
  */
-public final class CreateTempFile {
+public class CreateTempFile {
     public static final String TEMP_FILE_START_WITH = "Receiptofi";
     private static final Logger LOG = LoggerFactory.getLogger(CreateTempFile.class);
 
@@ -40,31 +41,31 @@ public final class CreateTempFile {
      * Avoid unless required on file system to save file with file extension. User can be presented with correct file
      * extension when set with correct content type in the response header.
      *
-     * @param fileExtensionTypeEnum
+     * @param fileExtension
      * @return
      */
-    private static String createRandomFilename(FileExtensionTypeEnum fileExtensionTypeEnum) {
-        return addFileExtension(createRandomFilename(), fileExtensionTypeEnum);
+    private String createRandomFilename(final FileExtensionTypeEnum fileExtension) {
+        return addFileExtension(createRandomFilename(), fileExtension);
     }
 
-    private static String addFileExtension(String filename, FileExtensionTypeEnum fileExtensionTypeEnum) {
-        if (fileExtensionTypeEnum != null) {
-            switch (fileExtensionTypeEnum) {
+    private String addFileExtension(final String filename, FileExtensionTypeEnum fileExtension) {
+        String filenameWithExtension = filename;
+        if (fileExtension != null) {
+            switch (fileExtension) {
                 case XLS:
-                    return filename + ".xls";
                 case TXT:
-                    return filename + ".txt";
                 case JPEG:
-                    return filename + ".jpeg";
                 case JPG:
-                    return filename + ".jpg";
                 case PNG:
-                    return filename + ".png";
                 case PDF:
-                    return filename + ".pdf";
+                    filenameWithExtension = filename + "." + StringUtils.lowerCase(fileExtension.name());
+                    break;
+                default:
+                    LOG.error("reached unsupported file extension={}", fileExtension);
+                    throw new RuntimeException("reached unsupported file extension " + fileExtension.name());
             }
         }
-        return filename;
+        return filenameWithExtension;
     }
 
     private enum FileExtensionTypeEnum {
