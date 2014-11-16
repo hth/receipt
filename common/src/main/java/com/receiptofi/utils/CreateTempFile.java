@@ -16,16 +16,19 @@ import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
  */
 public class CreateTempFile {
     public static final String TEMP_FILE_START_WITH = "Receiptofi";
+    public static final String DOT = ".";
+    public static final String DASH = "-";
+
     private static final Logger LOG = LoggerFactory.getLogger(CreateTempFile.class);
 
     public static File file(String name, String ext) throws IOException {
         try {
             if (name.startsWith(TEMP_FILE_START_WITH)) {
-                return File.createTempFile(name + "-", ext.startsWith(".") ? ext : "." + ext);
+                return File.createTempFile(name + DASH, ext.startsWith(DOT) ? ext : DOT + ext);
             } else {
                 return File.createTempFile(
-                        TEMP_FILE_START_WITH + "-" + name + "-",
-                        ext.startsWith(".") ? ext : "." + ext);
+                        TEMP_FILE_START_WITH + DASH + name + DASH,
+                        ext.startsWith(DOT) ? ext : DOT + ext);
             }
         } catch (IOException e) {
             LOG.error("Error creating temp file, reason={}", e.getLocalizedMessage(), e);
@@ -58,7 +61,7 @@ public class CreateTempFile {
                 case JPG:
                 case PNG:
                 case PDF:
-                    filenameWithExtension = filename + "." + StringUtils.lowerCase(fileExtension.name());
+                    filenameWithExtension = filename + DOT + StringUtils.lowerCase(fileExtension.name());
                     break;
                 default:
                     LOG.error("reached unsupported file extension={}", fileExtension);
