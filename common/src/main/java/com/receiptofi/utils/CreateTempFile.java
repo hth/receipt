@@ -40,16 +40,16 @@ public final class CreateTempFile {
      * Avoid unless required on file system to save file with file extension. User can be presented with correct file
      * extension when set with correct content type in the response header.
      *
-     * @param fileTypeEnum
+     * @param fileExtensionTypeEnum
      * @return
      */
-    private static String createRandomFilename(FileTypeEnum fileTypeEnum) {
-        return addFileExtension(createRandomFilename(), fileTypeEnum);
+    private static String createRandomFilename(FileExtensionTypeEnum fileExtensionTypeEnum) {
+        return addFileExtension(createRandomFilename(), fileExtensionTypeEnum);
     }
 
-    private static String addFileExtension(String filename, FileTypeEnum fileTypeEnum) {
-        if (fileTypeEnum != null) {
-            switch (fileTypeEnum) {
+    private static String addFileExtension(String filename, FileExtensionTypeEnum fileExtensionTypeEnum) {
+        if (fileExtensionTypeEnum != null) {
+            switch (fileExtensionTypeEnum) {
                 case XLS:
                     return filename + ".xls";
                 case TXT:
@@ -67,7 +67,7 @@ public final class CreateTempFile {
         return filename;
     }
 
-    public enum FileTypeEnum {
+    private enum FileExtensionTypeEnum {
         XLS, TXT, JPEG, JPG, PNG, PDF
     }
 }
