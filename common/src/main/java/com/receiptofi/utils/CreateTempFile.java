@@ -28,7 +28,7 @@ public class CreateTempFile {
                         ext.startsWith(".") ? ext : "." + ext);
             }
         } catch (IOException e) {
-            LOG.error("Error creating temp file: " + e.getLocalizedMessage());
+            LOG.error("Error creating temp file, reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
     }
