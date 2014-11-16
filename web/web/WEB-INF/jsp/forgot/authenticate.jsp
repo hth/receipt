@@ -72,8 +72,6 @@
             </tr>
         </table>
         </form:form>
-
-        <p><b>* Please update Receiptofi Mobile App with new Authorization Code found on 'Profile And Preferences' page</b></p>
     </c:if>
 </div>
 
