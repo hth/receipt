@@ -38,7 +38,7 @@
 			</tr>
             <tr>
                 <td style="text-align: right; width: 19%"><form:label for="birthday" path="birthday" cssErrorClass="error">Birthday:</form:label></td>
-                <td style="width: 30%"><form:input class="tooltip" path="birthday" title="Please provide your Birthday." id="datepicker" /></td>
+                <td style="width: 30%"><form:input class="tooltip" path="birthday" title="Please provide your Birthday. Accepted Date Format: 'MM/dd/yyyy" id="datepicker" /></td>
                 <td style="width: 51%"><form:errors path="birthday" cssClass="error" id="birthday.errors" /></td>
             </tr>
 			<tr>
