@@ -35,7 +35,11 @@ import java.util.List;
 @Repository
 public final class UserProfileManagerImpl implements UserProfileManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfileManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(UserProfileEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            UserProfileEntity.class,
+            Document.class,
+            "collection");
+
     private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -70,7 +74,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     @Override
     public UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object) {
-        return mongoTemplate.findOne(query(where("USER_AUTHENTICATION.$id").is(new ObjectId(object.getId()))), UserProfileEntity.class, TABLE);
+        return mongoTemplate.findOne(
+                query(where("USER_AUTHENTICATION.$id").is(new ObjectId(object.getId()))),
+                UserProfileEntity.class,
+                TABLE);
     }
 
     /**

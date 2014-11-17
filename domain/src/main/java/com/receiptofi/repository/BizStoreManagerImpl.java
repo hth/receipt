@@ -29,7 +29,10 @@ import java.util.List;
  */
 @Repository
 public final class BizStoreManagerImpl implements BizStoreManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(BizStoreEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            BizStoreEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -28,7 +28,10 @@ import java.util.List;
 @Repository
 public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(UserAuthenticationEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            UserAuthenticationEntity.class,
+            Document.class,
+            "collection");
 
     private MongoTemplate mongoTemplate;
 

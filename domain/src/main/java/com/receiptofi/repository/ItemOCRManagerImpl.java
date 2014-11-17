@@ -39,7 +39,10 @@ import java.util.List;
 @Repository
 public final class ItemOCRManagerImpl implements ItemOCRManager {
     private static final Logger LOG = LoggerFactory.getLogger(ItemOCRManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemEntityOCR.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            ItemEntityOCR.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -19,7 +19,7 @@ import org.springframework.validation.Validator;
 @Component
 public final class ExpenseTypeValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ExpenseTypeValidator.class);
-    private static int EXPENSE_TAG_MAX_CHAR = 6;
+    private static final int EXPENSE_TAG_MAX_CHAR = 6;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -33,8 +33,12 @@ public final class ExpenseTypeValidator implements Validator {
 
         ExpenseTypeForm expenseTypeForm = (ExpenseTypeForm) obj;
         if (expenseTypeForm.getTagName() != null && expenseTypeForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
-            LOG.error("Size of the Expense Tag Name larger than " + EXPENSE_TAG_MAX_CHAR + " : " + expenseTypeForm.getTagName());
-            errors.rejectValue("tagName", "expenseTag.tagName", new Object[]{EXPENSE_TAG_MAX_CHAR}, "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters ");
+            LOG.error("Expense Tag '{}' greater than size={} ", expenseTypeForm.getTagName(), EXPENSE_TAG_MAX_CHAR);
+            errors.rejectValue(
+                    "tagName",
+                    "expenseTag.tagName",
+                    new Object[]{EXPENSE_TAG_MAX_CHAR},
+                    "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters ");
         }
     }
 }

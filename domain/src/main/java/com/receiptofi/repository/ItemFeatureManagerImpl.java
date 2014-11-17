@@ -20,7 +20,10 @@ import java.util.List;
  */
 @Repository
 public final class ItemFeatureManagerImpl implements ItemFeatureManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemFeatureEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            ItemFeatureEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

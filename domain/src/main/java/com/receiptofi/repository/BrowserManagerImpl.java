@@ -20,7 +20,10 @@ import java.util.List;
  */
 @Repository
 public final class BrowserManagerImpl implements BrowserManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(BrowserEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            BrowserEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

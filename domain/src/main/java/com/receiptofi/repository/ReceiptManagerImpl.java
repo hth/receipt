@@ -54,7 +54,10 @@ import java.util.List;
 @Repository
 public final class ReceiptManagerImpl implements ReceiptManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(ReceiptEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            ReceiptEntity.class,
+            Document.class,
+            "collection");
 
     @Value ("${displayMonths:13}")
     int displayMonths;

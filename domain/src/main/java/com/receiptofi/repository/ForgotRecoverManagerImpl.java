@@ -26,7 +26,10 @@ import java.util.List;
  */
 @Repository
 public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(ForgotRecoverEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            ForgotRecoverEntity.class,
+            Document.class,
+            "collection");
 
     private MongoTemplate mongoTemplate;
 

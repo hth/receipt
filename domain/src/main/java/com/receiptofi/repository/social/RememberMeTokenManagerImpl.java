@@ -24,7 +24,10 @@ import java.util.List;
 @Repository
 public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     private static final Logger LOG = LoggerFactory.getLogger(RememberMeTokenManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(RememberMeTokenEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            RememberMeTokenEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 
@@ -63,6 +66,4 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     public long collectionSize() {
         throw new UnsupportedOperationException("Method not implemented");
     }
-
-
 }

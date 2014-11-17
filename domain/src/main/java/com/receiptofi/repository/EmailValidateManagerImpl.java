@@ -29,7 +29,10 @@ import java.util.List;
 @Repository
 public final class EmailValidateManagerImpl implements EmailValidateManager {
     private static final Logger LOG = LoggerFactory.getLogger(EmailValidateManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(EmailValidateEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            EmailValidateEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping (value = "/open/registration")
-public final class AccountRegistrationController {
+public class AccountRegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
 
     @Value ("${registrationPage:registration}")
@@ -118,8 +118,7 @@ public final class AccountRegistrationController {
                     userRegistrationForm.getFirstName(),
                     userRegistrationForm.getLastName(),
                     userRegistrationForm.getPassword(),
-                    userRegistrationForm.getBirthday()
-            );
+                    userRegistrationForm.getBirthday());
         } catch (RuntimeException exce) {
             LOG.error(exce.getLocalizedMessage());
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),

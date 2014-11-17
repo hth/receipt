@@ -40,7 +40,10 @@ import java.util.List;
 @Repository
 public final class MessageManagerImpl implements MessageManager {
     private static final Logger LOG = LoggerFactory.getLogger(MessageManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(MessageDocumentEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            MessageDocumentEntity.class,
+            Document.class,
+            "collection");
 
     private static final Sort SORT_BY_USER_LEVEL_AND_CREATED = new Sort(
             new ArrayList<Order>() {{
