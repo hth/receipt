@@ -22,7 +22,7 @@ public final class UserRegistrationValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidator.class);
 
     public static final String EMAIL_REGEX = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
-    public static final String BIRTHDAY_REGEX = "\\d{2}\\\\d{2}\\\\d{4}";
+    public static final String BIRTHDAY_REGEX = "\\d{2}/\\d{2}/\\d{4}";
 
     @Override
     public boolean supports(Class<?> clazz) {
