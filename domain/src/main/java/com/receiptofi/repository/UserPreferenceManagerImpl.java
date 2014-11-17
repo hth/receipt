@@ -26,7 +26,10 @@ import java.util.List;
  */
 @Repository
 public final class UserPreferenceManagerImpl implements UserPreferenceManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(UserPreferenceEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            UserPreferenceEntity.class,
+            Document.class,
+            "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -56,7 +59,9 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 
     @Override
     public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile) {
-        return mongoTemplate.findOne(query(where("USER_PROFILE.$id").is(new ObjectId(userProfile.getId()))), UserPreferenceEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("USER_PROFILE.$id").is(new ObjectId(userProfile.getId()))),
+                UserPreferenceEntity.class,
+                TABLE);
     }
 
     @Override

@@ -1,9 +1,13 @@
 package com.receiptofi.repository;
 
+import java.util.Date;
+import java.util.List;
+
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.RegisteredDeviceEntity;
 
 import org.joda.time.DateTime;
@@ -14,10 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * User: hitender
@@ -26,6 +28,11 @@ import java.util.List;
 @Repository
 public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     private static final Logger LOG = LoggerFactory.getLogger(RegisteredDeviceManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            RegisteredDeviceEntity.class,
+            Document.class,
+            "collection");
+
     private MongoTemplate mongoTemplate;
 
     @Value ("${production.switch}")
@@ -47,7 +54,10 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     private RegisteredDeviceEntity find(String rid, String did) {
-        return mongoTemplate.findOne(query(where("RID").is(rid).and("DID").is(did)), RegisteredDeviceEntity.class);
+        return mongoTemplate.findOne(
+                query(where("RID").is(rid).and("DID").is(did)),
+                RegisteredDeviceEntity.class,
+                TABLE);
     }
 
     @Override
@@ -72,7 +82,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         return mongoTemplate.findAndModify(
                 query(where("RID").is(rid).and("DID").is(did)),
                 update("U", productionSwitch.equals("ON") ? new Date() : DateTime.now().minusYears(1).toDate()),
-                RegisteredDeviceEntity.class
+                RegisteredDeviceEntity.class,
+                TABLE
         );
     }
 

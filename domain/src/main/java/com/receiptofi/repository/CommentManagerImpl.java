@@ -20,7 +20,10 @@ import java.util.List;
  */
 @Repository
 public final class CommentManagerImpl implements CommentManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(CommentEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            CommentEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

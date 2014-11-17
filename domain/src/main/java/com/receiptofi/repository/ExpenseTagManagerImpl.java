@@ -37,7 +37,10 @@ import java.util.List;
 @Repository
 public final class ExpenseTagManagerImpl implements ExpenseTagManager {
     private static final Logger LOG = LoggerFactory.getLogger(ExpenseTagManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(ExpenseTagEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            ExpenseTagEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -29,7 +29,10 @@ import java.util.List;
  */
 @Repository
 public class MileageManagerImpl implements MileageManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(MileageEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            MileageEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

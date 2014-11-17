@@ -25,7 +25,10 @@ import java.util.List;
 @Repository
 public class UserAccountManagerImpl implements UserAccountManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserAccountManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(UserAccountEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            UserAccountEntity.class,
+            Document.class,
+            "collection");
 
     private MongoTemplate mongoTemplate;
 

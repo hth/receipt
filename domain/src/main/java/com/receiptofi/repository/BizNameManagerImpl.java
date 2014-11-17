@@ -26,7 +26,10 @@ import java.util.Set;
  */
 @Repository
 public final class BizNameManagerImpl implements BizNameManager {
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(BizNameEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            BizNameEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired
     private MongoTemplate mongoTemplate;

@@ -51,7 +51,10 @@ import java.util.StringTokenizer;
 @Repository
 public final class ItemManagerImpl implements ItemManager {
     private static final Logger LOG = LoggerFactory.getLogger(ItemManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(ItemEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            ItemEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
     @Autowired private BizNameManager bizNameManager;

@@ -37,7 +37,10 @@ import java.util.List;
 @Repository
 public final class DocumentManagerImpl implements DocumentManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(DocumentEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            DocumentEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired
     private MongoTemplate mongoTemplate;

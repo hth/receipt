@@ -28,7 +28,10 @@ import java.util.List;
 @Repository
 public final class NotificationManagerImpl implements NotificationManager {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(NotificationEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            NotificationEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -33,7 +33,10 @@ import java.util.List;
 @Repository
 public final class InviteManagerImpl implements InviteManager {
     private static final Logger LOG = LoggerFactory.getLogger(InviteManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(InviteEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            InviteEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
 

@@ -28,7 +28,10 @@ import java.util.List;
 @Repository
 public final class FileSystemManagerImpl implements FileSystemManager {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(FileSystemEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            FileSystemEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired
     private MongoTemplate mongoTemplate;

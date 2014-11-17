@@ -21,7 +21,10 @@ import java.util.List;
 @Repository
 public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(EvalFeedbackEntity.class, Document.class, "collection");
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            EvalFeedbackEntity.class,
+            Document.class,
+            "collection");
 
     @Autowired
     private MongoTemplate mongoTemplate;

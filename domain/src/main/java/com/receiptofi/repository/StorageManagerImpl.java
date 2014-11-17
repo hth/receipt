@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.util.Assert;
+
 /**
  * @author hitender
  * @since Jan 3, 2013 3:09:08 AM
@@ -36,10 +38,11 @@ public final class StorageManagerImpl implements StorageManager {
     public StorageManagerImpl(DB gridfsDb) {
         try {
             gridFs = new GridFS(gridfsDb);
-        } catch (com.mongodb.MongoException exception) {
-            LOG.error("Error in initializing MongoDB: Issue with getting the connection during server startup. " + exception.getLocalizedMessage());
-            LOG.error("Receiptofi Mongo DB: " + exception.getMessage());
-            throw exception;
+        } catch (com.mongodb.MongoException e) {
+            LOG.error("Error initializing Receiptofi MongoDB: Issue getting connection at startup, reason={}",
+                    e.getLocalizedMessage(),
+                    e);
+            throw e;
         }
     }
 
@@ -93,14 +96,14 @@ public final class StorageManagerImpl implements StorageManager {
 
     @Override
     public void deleteHard(String id) {
-        LOG.debug("deleted GridFs object - " + id);
+        LOG.debug("deleted GridFs object={}", id);
         gridFs.remove(new ObjectId(id));
     }
 
     @Override
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
         for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
-            LOG.debug("deleted GridFs object - " + fileSystemEntity.getBlobId());
+            LOG.debug("deleted GridFs object={}", fileSystemEntity.getBlobId());
             gridFs.remove(new ObjectId(fileSystemEntity.getBlobId()));
         }
     }
@@ -111,30 +114,33 @@ public final class StorageManagerImpl implements StorageManager {
         try {
             if (uploadDocumentImage.containsFile()) {
                 InputStream is = new FileInputStream(uploadDocumentImage.getFile());
-                receiptBlob = gridFs.createFile(is, uploadDocumentImage.getFileName(), closeStreamOnPersist);
+                receiptBlob = gridFs.createFile(
+                        is,
+                        uploadDocumentImage.getFileName(),
+                        closeStreamOnPersist);
             } else {
                 receiptBlob = gridFs.createFile(
                         uploadDocumentImage.getFileData().getInputStream(),
                         uploadDocumentImage.getFileName(),
-                        closeStreamOnPersist
-                );
+                        closeStreamOnPersist);
             }
-        } catch (IOException ioe) {
-            LOG.error("Image persist error:{}", ioe);
+
+            if (receiptBlob == null) {
+                return null;
+            }
+            Assert.notNull(receiptBlob);
+        } catch (IOException | IllegalArgumentException ioe) {
+            LOG.error("Image persist error:{}", ioe.getLocalizedMessage(), ioe);
             throw new RuntimeException(ioe.getCause());
         }
 
-        if (receiptBlob == null) {
-            return null;
-        } else {
-            receiptBlob.put("D", false);
-            receiptBlob.put("FILE_TYPE", uploadDocumentImage.getFileType().getName());
-            receiptBlob.setContentType(uploadDocumentImage.getFileData().getContentType());
-            receiptBlob.setMetaData(uploadDocumentImage.getMetaData());
+        receiptBlob.put("D", false);
+        receiptBlob.put("FILE_TYPE", uploadDocumentImage.getFileType().getName());
+        receiptBlob.setContentType(uploadDocumentImage.getFileData().getContentType());
+        receiptBlob.setMetaData(uploadDocumentImage.getMetaData());
 
-            receiptBlob.save();
-            return receiptBlob.getId().toString();
-        }
+        receiptBlob.save();
+        return receiptBlob.getId().toString();
     }
 
     @Override
@@ -142,7 +148,7 @@ public final class StorageManagerImpl implements StorageManager {
         try {
             return gridFs.findOne(new ObjectId(id));
         } catch (IllegalArgumentException iae) {
-            LOG.error("Submitted image id " + id + ", error message - " + iae.getLocalizedMessage());
+            LOG.error("Submitted image id={}, reason={}", id, iae.getLocalizedMessage(), iae);
             return null;
         }
     }
