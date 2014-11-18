@@ -34,10 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
 
-    public static final String ACCESS_LANDING_HTM = "/access/landing.htm";
-    public static final String EMP_LANDING_HTM = "/emp/landing.htm";
-    public static final String ADMIN_LANDING_HTM = "/admin/landing.htm";
-    public static final String DISPLAY_LANDING_HTM = "/display/landing.htm";
+    private static final String ACCESS_LANDING_HTM = "/access/landing.htm";
+    private static final String EMP_LANDING_HTM = "/emp/landing.htm";
+    private static final String ADMIN_LANDING_HTM = "/admin/landing.htm";
+    private static final String DISPLAY_LANDING_HTM = "/display/landing.htm";
 
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
