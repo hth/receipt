@@ -39,6 +39,11 @@ import java.util.List;
  * Date: 4/25/13
  * Time: 2:09 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class DocumentUpdateService {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentUpdateService.class);
