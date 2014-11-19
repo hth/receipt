@@ -42,6 +42,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author hitender
  * @since Dec 24, 2012 3:13:26 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/open/registration")
 public class AccountRegistrationController {

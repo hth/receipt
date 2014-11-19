@@ -55,6 +55,11 @@ import java.util.List;
  * User: hitender
  * Date: 11/30/13 2:45 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/expensofi")
 public final class ExpensofiController {

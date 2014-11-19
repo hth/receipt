@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * User: hitender
  * Date: 5/10/14 10:31 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/completeprofile")
 public final class CompleteProfileController {

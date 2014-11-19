@@ -50,6 +50,11 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 6/4/13
  * Time: 9:44 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/open/forgot")
 public final class ForgotController {

@@ -46,6 +46,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author hitender
  * @since Jan 6, 2013 8:21:54 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/filedownload")
 public final class FileDownloadController {

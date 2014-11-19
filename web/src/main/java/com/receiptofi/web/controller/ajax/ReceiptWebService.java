@@ -38,6 +38,11 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 4/19/13
  * Time: 11:44 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/ws/r")
 public final class ReceiptWebService {

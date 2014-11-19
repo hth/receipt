@@ -34,6 +34,11 @@ import java.util.List;
  * @author hitender
  * @since Mar 26, 2013 1:14:24 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/admin")
 public final class AdminLandingController {

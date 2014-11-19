@@ -36,6 +36,11 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 1/6/14 12:05 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/ws/m")
 public final class MileageWebService {

@@ -32,6 +32,11 @@ import javax.servlet.http.HttpServletRequest;
  * Date: 7/19/13
  * Time: 8:19 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/eval")
 public final class EvalFeedbackController {

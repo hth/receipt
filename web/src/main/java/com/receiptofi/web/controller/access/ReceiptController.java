@@ -42,6 +42,11 @@ import java.util.List;
  * @author hitender
  * @since Jan 1, 2013 11:55:19 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/receipt")
 public final class ReceiptController extends BaseController {

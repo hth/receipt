@@ -23,6 +23,11 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 7/2/13
  * Time: 10:41 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/signoff")
 public final class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {

@@ -32,6 +32,11 @@ import java.util.List;
  * Date: 5/23/13
  * Time: 11:28 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/expenses")
 public final class ExpensesController {

@@ -43,6 +43,11 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 6/9/13
  * Time: 1:48 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/open/invite")
 public final class InviteController {

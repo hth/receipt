@@ -33,6 +33,11 @@ import java.util.List;
  * @author hitender
  * @since Jan 9, 2013 10:23:55 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/itemanalytic")
 public final class ItemAnalyticController {

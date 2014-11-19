@@ -33,6 +33,11 @@ import java.util.List;
  * Date: 7/1/13
  * Time: 9:51 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access")
 public final class NotificationController {

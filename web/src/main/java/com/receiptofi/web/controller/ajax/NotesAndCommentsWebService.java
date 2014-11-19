@@ -21,11 +21,16 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Update for all Ajax Calls
+ * Update for all Ajax Calls.
  * User: hitender
  * Date: 7/22/13
  * Time: 8:57 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/ws/nc")
 public final class NotesAndCommentsWebService {
