@@ -1,5 +1,10 @@
 package com.receiptofi.web.listener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.util.Assert;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -7,11 +12,6 @@ import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.util.Assert;
 
 /**
  * User: hitender

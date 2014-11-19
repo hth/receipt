@@ -1,10 +1,5 @@
 package com.receiptofi.domain;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 
@@ -15,6 +10,11 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Stores user account info and social account mapping.

@@ -1,7 +1,5 @@
 package com.receiptofi.domain;
 
-import javax.validation.constraints.NotNull;
-
 import com.receiptofi.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

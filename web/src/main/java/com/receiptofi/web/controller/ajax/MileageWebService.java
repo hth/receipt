@@ -1,11 +1,5 @@
 package com.receiptofi.web.controller.ajax;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import com.receiptofi.domain.MileageEntity;
@@ -31,6 +25,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender

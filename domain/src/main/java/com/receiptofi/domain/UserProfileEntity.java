@@ -1,11 +1,5 @@
 package com.receiptofi.domain;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.validation.constraints.NotNull;
-
 import com.google.common.collect.Lists;
 
 import com.receiptofi.domain.types.ProviderEnum;
@@ -20,6 +14,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.social.facebook.api.EducationEntry;
 import org.springframework.social.facebook.api.Reference;
 import org.springframework.social.facebook.api.WorkEntry;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

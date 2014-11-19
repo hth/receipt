@@ -1,7 +1,5 @@
 package com.receiptofi.web.cache;
 
-import java.util.concurrent.TimeUnit;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
@@ -11,6 +9,8 @@ import net.sf.uadetector.service.UADetectorServiceFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: hitender

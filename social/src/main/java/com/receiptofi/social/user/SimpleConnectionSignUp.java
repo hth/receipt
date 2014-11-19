@@ -1,11 +1,11 @@
 package com.receiptofi.social.user;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.receiptofi.social.annotation.Social;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 @Social
 public final class SimpleConnectionSignUp implements ConnectionSignUp {

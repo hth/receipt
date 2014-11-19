@@ -1,5 +1,7 @@
 package com.receiptofi.web.rest;
 
+import com.receiptofi.domain.ReceiptEntity;
+
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessOrder;
@@ -10,8 +12,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import com.receiptofi.domain.ReceiptEntity;
 
 /**
  * User: hitender

@@ -1,12 +1,5 @@
 package com.receiptofi.web.controller.access;
 
-import java.util.Locale;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
@@ -26,6 +19,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Locale;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author hitender

@@ -3,8 +3,6 @@
  */
 package com.receiptofi.repository;
 
-import java.util.List;
-
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isDeleted;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
@@ -29,6 +27,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author hitender
