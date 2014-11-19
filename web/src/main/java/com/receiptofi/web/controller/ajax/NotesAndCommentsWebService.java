@@ -1,8 +1,5 @@
 package com.receiptofi.web.controller.ajax;
 
-import java.io.IOException;
-import java.util.Map;
-
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.ReceiptService;
@@ -19,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Update for all Ajax Calls

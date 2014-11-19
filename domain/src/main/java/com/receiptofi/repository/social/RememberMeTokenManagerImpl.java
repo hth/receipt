@@ -1,7 +1,5 @@
 package com.receiptofi.repository.social;
 
-import java.util.List;
-
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import com.receiptofi.domain.BaseEntity;
@@ -16,6 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * User: hitender

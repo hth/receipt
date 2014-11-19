@@ -1,5 +1,13 @@
 package com.receiptofi.web.filter;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
+import org.springframework.util.CollectionUtils;
+
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -14,14 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
-import org.springframework.util.CollectionUtils;
 
 /**
  * User: hitender

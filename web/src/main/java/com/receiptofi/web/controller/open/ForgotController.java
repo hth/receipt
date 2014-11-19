@@ -1,10 +1,5 @@
 package com.receiptofi.web.controller.open;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 import com.receiptofi.domain.ForgotRecoverEntity;
@@ -44,6 +39,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender

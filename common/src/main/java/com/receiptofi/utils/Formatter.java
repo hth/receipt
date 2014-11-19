@@ -3,17 +3,6 @@
  */
 package com.receiptofi.utils;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.getInstance;
 import static com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
@@ -25,6 +14,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 /** Define all singleton here */
 enum FormatterSingleton {

@@ -3,10 +3,6 @@
  */
 package com.receiptofi.web.controller.emp;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
@@ -37,6 +33,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Class manages first processing of a receipt. That includes loading of a receipts by technician.

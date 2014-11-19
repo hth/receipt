@@ -1,7 +1,5 @@
 package com.receiptofi.domain.social;
 
-import javax.validation.constraints.NotNull;
-
 import com.receiptofi.domain.BaseEntity;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -9,6 +7,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

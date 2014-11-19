@@ -3,11 +3,6 @@
  */
 package com.receiptofi.domain;
 
-import java.util.Collection;
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.utils.HashText;
 
@@ -25,6 +20,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author hitender

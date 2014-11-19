@@ -1,7 +1,5 @@
 package com.receiptofi.service;
 
-import java.util.List;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.MileageEntity;
@@ -16,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * User: hitender
