@@ -6,6 +6,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.types.PaginationEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -75,7 +76,11 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
+    public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(
+            String bizAddress,
+            String bizPhone,
+            BizNameEntity bizNameEntity
+    ) {
         Criteria criteriaA = new Criteria();
         if (StringUtils.isNotEmpty(bizAddress)) {
             criteriaA.and("AD").regex(bizAddress, "i");
@@ -86,14 +91,24 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
         if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-            return mongoTemplate.find(query(criteriaB).addCriteria(criteriaA).limit(STORE_LIMIT), BizStoreEntity.class, TABLE);
+            return mongoTemplate.find(
+                    query(criteriaB).addCriteria(criteriaA).limit(PaginationEnum.TEN.getLimit()),
+                    BizStoreEntity.class,
+                    TABLE);
         } else {
-            return mongoTemplate.find(query(criteriaA).limit(STORE_LIMIT), BizStoreEntity.class, TABLE);
+            return mongoTemplate.find(
+                    query(criteriaA).limit(PaginationEnum.TEN.getLimit()),
+                    BizStoreEntity.class,
+                    TABLE);
         }
     }
 
     @Override
-    public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
+    public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(
+            String bizAddress,
+            String bizPhone,
+            BizNameEntity bizNameEntity
+    ) {
         Query query = null;
         if (StringUtils.isNotEmpty(bizAddress)) {
             query = query(where("AD").regex("^" + bizAddress, "i"));
@@ -115,11 +130,15 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 query.addCriteria(criteriaA);
             }
         }
-        return mongoTemplate.find(query.limit(STORE_LIMIT), BizStoreEntity.class, TABLE);
+        return mongoTemplate.find(query.limit(PaginationEnum.TEN.getLimit()), BizStoreEntity.class, TABLE);
     }
 
     @Override
-    public List<BizStoreEntity> getAllWithJustSpecificField(String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
+    public List<BizStoreEntity> getAllWithJustSpecificField(
+            String bizAddress,
+            BizNameEntity bizNameEntity,
+            String fieldName
+    ) {
         Query query;
         if (StringUtils.isBlank(bizAddress)) {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
@@ -136,7 +155,12 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
+    public List<BizStoreEntity> getAllWithJustSpecificField(
+            String bizPhone,
+            String bizAddress,
+            BizNameEntity bizNameEntity,
+            String fieldName
+    ) {
         Query query;
         if (StringUtils.isBlank(bizPhone)) {
             Criteria criteriaB = where("AD").is(bizAddress);
@@ -157,7 +181,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
         Sort sort = new Sort(Sort.Direction.DESC, "C");
-        return mongoTemplate.find(query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))).with(sort).limit(limit), BizStoreEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))).with(sort).limit(limit),
+                BizStoreEntity.class,
+                TABLE);
     }
 
     @Override

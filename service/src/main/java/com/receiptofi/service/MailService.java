@@ -324,7 +324,7 @@ public class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(new InternetAddress(inviteeEmail, emailAddressName));
             helper.setTo(StringUtils.isEmpty(devSentTo) ? email : devSentTo);
-            LOG.info("Invitation send to={}", (StringUtils.isEmpty(devSentTo) ? email : devSentTo));
+            LOG.info("Invitation send to={}", StringUtils.isEmpty(devSentTo) ? email : devSentTo);
             sendMail(
                     mailInviteSubject + " - " + invitedBy.getName(),
                     freemarkerToString("mail/invite.ftl", rootMap),

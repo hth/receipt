@@ -7,6 +7,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
+import com.receiptofi.domain.types.PaginationEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public final class NotificationManagerImpl implements NotificationManager {
                 .skip(start)
                 .with(new Sort(Sort.Direction.DESC, "C"));
 
-        if (limit != NotificationManager.ALL) {
+        if (limit != PaginationEnum.ALL.getLimit()) {
             query.limit(limit);
         }
         return mongoTemplate.find(query, NotificationEntity.class, TABLE);
