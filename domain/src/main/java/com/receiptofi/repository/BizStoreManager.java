@@ -11,7 +11,6 @@ import java.util.List;
  * Time: 11:20 PM
  */
 public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
-    int STORE_LIMIT = 10;
 
     //TODO use annotation instead
     /** Field name */

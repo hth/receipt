@@ -63,7 +63,7 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
         ProviderEnum providerId = ProviderEnum.valueOf(connection.getKey().getProviderId().toUpperCase());
         List<String> result = connectionService.getUserIds(providerId, connection.getKey().getProviderUserId());
 
-        if (result == null || result.size() == 0) {
+        if (result == null || result.isEmpty()) {
             connectionService.create(connection.getKey().getProviderUserId(), connection);
             result = new ArrayList<String>() {{
                 add(connection.getKey().getProviderUserId());

@@ -10,9 +10,6 @@ import java.util.List;
  * Time: 1:38 PM
  */
 public interface NotificationManager extends RepositoryManager<NotificationEntity> {
-    static int LIMIT_FIVE = 5;
-    static int ALL = -1;
-
     List<NotificationEntity> getNotifications(String receiptUserId, int start, int limit);
 
     long notificationCount(String receiptUserId);

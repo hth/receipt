@@ -6,7 +6,9 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.NotificationTypeEnum;
+import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.repository.NotificationManager;
+import com.receiptofi.repository.NotificationManagerImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +113,7 @@ public final class NotificationService {
      * @return
      */
     public List<NotificationEntity> notifications(String userProfileId) {
-        return getAllNotifications(userProfileId, NotificationManager.LIMIT_FIVE);
+        return getAllNotifications(userProfileId, PaginationEnum.FIVE.getLimit());
     }
 
     /**
@@ -121,7 +123,7 @@ public final class NotificationService {
      * @return
      */
     public List<NotificationEntity> notificationsPaginated(String userProfileId, int start) {
-        return notificationManager.getNotifications(userProfileId, start, NotificationManager.LIMIT_FIVE);
+        return notificationManager.getNotifications(userProfileId, start, PaginationEnum.FIVE.getLimit());
     }
 
     public long notificationCount(String userProfileId) {

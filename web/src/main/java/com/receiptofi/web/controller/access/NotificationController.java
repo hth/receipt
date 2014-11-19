@@ -2,7 +2,9 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.repository.NotificationManager;
+import com.receiptofi.repository.NotificationManagerImpl;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.NotificationDetailForm;
@@ -58,7 +60,7 @@ public final class NotificationController {
 
         List<NotificationEntity> notifications = notificationService.getAllNotifications(
                 receiptUser.getRid(),
-                NotificationManager.ALL
+                PaginationEnum.ALL.getLimit()
         );
 
         ModelAndView modelAndView = new ModelAndView(nextPage);

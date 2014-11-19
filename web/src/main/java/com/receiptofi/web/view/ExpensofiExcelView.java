@@ -220,7 +220,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         } else if (value instanceof Double) {
             LOG.debug("MONEY: {}", value);
-            cell.setCellValue(((Double) value));
+            cell.setCellValue((Double) value);
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
             if (value == null) {
