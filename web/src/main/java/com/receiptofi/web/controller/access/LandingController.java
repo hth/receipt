@@ -85,9 +85,13 @@ import javax.xml.bind.Marshaller;
  * @author hitender
  * @since Dec 17, 2012 3:19:01 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access")
-@SuppressWarnings ("PMD.BeanMembersShouldSerialize")
 public class LandingController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 

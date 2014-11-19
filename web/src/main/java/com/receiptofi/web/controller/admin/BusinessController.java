@@ -39,6 +39,11 @@ import java.util.Set;
  * Date: 7/30/13
  * Time: 4:22 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/admin")
 public final class BusinessController {

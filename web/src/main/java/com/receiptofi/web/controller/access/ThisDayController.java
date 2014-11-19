@@ -26,6 +26,11 @@ import java.util.List;
  * Date: 5/12/13
  * Time: 1:23 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/day")
 public final class ThisDayController {

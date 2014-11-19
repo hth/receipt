@@ -29,6 +29,11 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 5/17/14 9:54 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/open/validate")
 public final class ValidateEmailController {

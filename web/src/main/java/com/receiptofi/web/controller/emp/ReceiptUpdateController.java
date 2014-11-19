@@ -46,6 +46,11 @@ import javax.servlet.http.HttpServletRequest;
  * @author hitender
  * @since Jan 7, 2013 2:13:22 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/emp")
 public final class ReceiptUpdateController {

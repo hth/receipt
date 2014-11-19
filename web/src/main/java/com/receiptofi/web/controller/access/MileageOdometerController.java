@@ -31,6 +31,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * User: hitender
  * Date: 1/13/14 8:25 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/modv")
 public final class MileageOdometerController {

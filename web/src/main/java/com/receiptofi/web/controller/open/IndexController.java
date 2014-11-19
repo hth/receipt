@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * User: hitender
  * Date: 4/21/14 8:00 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 public final class IndexController {
     private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);

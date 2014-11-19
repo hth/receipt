@@ -14,9 +14,13 @@ import org.springframework.web.servlet.ModelAndView;
  * User: hitender
  * Date: 11/18/14 10:29 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/display")
-@SuppressWarnings ("PMD.BeanMembersShouldSerialize")
 public class DisplayLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(DisplayLandingController.class);
 

@@ -48,6 +48,11 @@ import java.util.Map;
  * @author hitender
  * @since Jan 14, 2013 11:06:41 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/userprofilepreference")
 public final class UserProfilePreferenceController {

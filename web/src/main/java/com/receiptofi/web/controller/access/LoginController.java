@@ -31,6 +31,11 @@ import javax.servlet.http.HttpServletRequest;
  * @author hitender
  * @since Dec 16, 2012 6:12:17 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/login")
 public final class LoginController {

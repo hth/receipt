@@ -39,6 +39,11 @@ import java.util.List;
  * @author hitender
  * @since Jan 6, 2013 4:33:23 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access/pendingdocument")
 public final class PendingDocumentController {
