@@ -73,7 +73,7 @@ public final class DocumentUpdateService {
     }
 
     /**
-     * This method is used when technician saves the processed receipt for the first time
+     * This method is used when technician saves the processed receipt for the first time.
      *
      * @param receipt
      * @param items
@@ -105,11 +105,14 @@ public final class DocumentUpdateService {
 
             updateMessageManager(documentForm, OCR_PROCESSED, TURK_PROCESSED);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(receipt.getTotalString());
-            sb.append(" '").append(receipt.getBizName().getBusinessName()).append("' ");
-            sb.append("receipt processed");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
+            notificationService.addNotification(
+                    receipt.getTotalString()
+                            + " '" +
+                            receipt.getBizName().getBusinessName() +
+                            "' " +
+                            "receipt processed",
+                    NotificationTypeEnum.RECEIPT,
+                    receipt);
 
         } catch (Exception exce) {
             LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}",
@@ -153,7 +156,7 @@ public final class DocumentUpdateService {
     }
 
     /**
-     * This method is executed when Technician is re-checking the receipt
+     * This method is executed when Technician is re-checking the receipt.
      *
      * @param receipt
      * @param items
@@ -230,11 +233,14 @@ public final class DocumentUpdateService {
 
             updateMessageManager(receiptDocument, TURK_REQUEST, TURK_PROCESSED);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(receipt.getTotalString()).append(" '");
-            sb.append(receipt.getBizName().getBusinessName()).append("' ");
-            sb.append("receipt re-checked");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.RECEIPT, receipt);
+            notificationService.addNotification(
+                    receipt.getTotalString() +
+                            " '" +
+                            receipt.getBizName().getBusinessName() +
+                            "' " +
+                            "receipt re-checked",
+                    NotificationTypeEnum.RECEIPT,
+                    receipt);
 
         } catch (Exception exce) {
             LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}",
@@ -288,7 +294,7 @@ public final class DocumentUpdateService {
     }
 
     /**
-     * Reject receipt when invalid or un-readable
+     * Reject receipt when invalid or un-readable.
      *
      * @param documentId
      * @param documentOfType
@@ -319,9 +325,12 @@ public final class DocumentUpdateService {
             GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
             DBObject dbObject = gridFSDBFile.getMetaData();
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("Could not process document '").append(dbObject.get("ORIGINAL_FILENAME")).append("'");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.DOCUMENT, document);
+            notificationService.addNotification(
+                    "Could not process document '" +
+                            dbObject.get("ORIGINAL_FILENAME") +
+                            "'",
+                    NotificationTypeEnum.DOCUMENT,
+                    document);
 
         } catch (Exception exce) {
             LOG.error("Revert all the transaction for ReceiptOCR={}. Rejection of a receipt failed, reason={}",
@@ -340,9 +349,9 @@ public final class DocumentUpdateService {
     }
 
     /**
-     * Delete all the associated data with Document like Item OCR, and
-     * Message Receipt Entity OCR including deletion of with Document
-     * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check
+     * Delete all the associated data with Document like Item OCR, and Message Receipt Entity OCR including
+     * deletion of with Document.
+     * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check.
      *
      * @param document
      */
@@ -357,9 +366,9 @@ public final class DocumentUpdateService {
     }
 
     /**
-     * Delete all the associated data with Document like Item OCR, and
-     * Message Receipt Entity OCR including deletion of with Document
-     * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check
+     * Delete all the associated data with Document like Item OCR, and Message Receipt Entity OCR including
+     * deletion of with Document.
+     * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check.
      *
      * @param document
      */
@@ -396,8 +405,9 @@ public final class DocumentUpdateService {
 
     /**
      * when Items are populated with just an Id of the expenseType. This normally happens during Re-Check condition.
-     * The following code makes sures objects are populated with just not id but with complete object instead
-     * //TODO in future keep an eye on this object as during save of an ItemEntity the @DBRef expenseType is saved as Id instead of an object. As of now it is saved and updated
+     * The following code makes sures objects are populated with just not id but with complete object instead.
+     * //TODO(hth) in future keep an eye on this object as during save of an ItemEntity the @DBRef expenseType is
+     * //TODO(hth) saved as Id instead of an object. As of now it is saved and updated
      *
      * @param item
      */
@@ -409,7 +419,7 @@ public final class DocumentUpdateService {
     }
 
     /**
-     * Condition to check if the record already exists
+     * Condition to check if the record already exists.
      *
      * @param checkSum
      * @return
@@ -448,11 +458,12 @@ public final class DocumentUpdateService {
 
             updateMessageManager(documentForm, OCR_PROCESSED, TURK_PROCESSED);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(mileageEntity.getStart());
-            sb.append(", ");
-            sb.append("odometer reading processed");
-            notificationService.addNotification(sb.toString(), NotificationTypeEnum.MILEAGE, mileageEntity);
+            notificationService.addNotification(
+                    String.valueOf(mileageEntity.getStart()) +
+                            ", " +
+                            "odometer reading processed",
+                    NotificationTypeEnum.MILEAGE,
+                    mileageEntity);
         } catch (DuplicateKeyException duplicateKeyException) {
             LOG.error(duplicateKeyException.getLocalizedMessage(), duplicateKeyException);
             throw new RuntimeException("Found existing record with similar odometer reading");
