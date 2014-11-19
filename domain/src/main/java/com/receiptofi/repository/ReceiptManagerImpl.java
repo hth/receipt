@@ -42,7 +42,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -345,7 +344,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     @Override
     public boolean notDeletedChecksumDuplicate(String checksum, String id) {
         //Active condition is required for re-check criteria
-        return mongoTemplate.find(checksumQueryIfDuplicateExists(checksum, id), ReceiptEntity.class, TABLE).size() > 0;
+        return !mongoTemplate.find(checksumQueryIfDuplicateExists(checksum, id), ReceiptEntity.class, TABLE).isEmpty();
     }
 
     @Override
@@ -355,7 +354,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public boolean hasRecordWithSimilarChecksum(String checksum) {
-        return mongoTemplate.find(checksumQuery(checksum), ReceiptEntity.class, TABLE).size() > 0;
+        return !mongoTemplate.find(checksumQuery(checksum), ReceiptEntity.class, TABLE).isEmpty();
     }
 
     @Override

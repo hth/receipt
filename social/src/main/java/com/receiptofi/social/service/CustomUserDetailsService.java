@@ -278,7 +278,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private boolean isConnectionPopulated(List<Connection<?>> connections, String pid) {
-        if (connections.size() == 0) {
+        if (connections.isEmpty()) {
             LOG.warn("connection repository size is zero for pid={}", pid);
             return false;
         }

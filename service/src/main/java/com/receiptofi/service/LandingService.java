@@ -188,7 +188,7 @@ public final class LandingService {
             bizNameEntity = bizNameManager.findOne(bizNameEntity.getId());
 
             List<ItemEntity> itemEntities = itemService.getAllItemsOfReceipt(receipt.getId());
-            if (itemEntities.size() > 0) {
+            if (!itemEntities.isEmpty()) {
                 Map<String, BigDecimal> itemMaps = new HashMap<>();
 
                 for (ItemEntity itemEntity : itemEntities) {
