@@ -14,33 +14,36 @@ import javax.validation.constraints.NotNull;
  */
 @Document (collection = "EVAL_FEEDBACK")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "eval_feedback_idx", def = "{'USER_PROFILE_ID': 1, 'C': 1}", unique = true),
+        @CompoundIndex (name = "eval_feedback_idx", def = "{'RID': 1, 'C': 1}", unique = true),
 })
 public final class EvalFeedbackEntity extends BaseEntity {
 
-    @Field ("FEEDBACK")
+    @Field ("FBK")
     private String feedback;
 
-    @Field ("ATTACHMENT_BLOB_ID")
+    @Field ("ABI")
     private String attachmentBlobId;
 
     @NotNull
-    @Field ("RATE")
+    @Field ("RT")
     private int rating;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field ("RID")
+    private String receiptUserId;
 
+    @SuppressWarnings("unused")
     private EvalFeedbackEntity() {
     }
 
-    public static EvalFeedbackEntity newInstance(String feedback, int rating, String userProfileId) {
-        EvalFeedbackEntity evalFeedbackEntity = new EvalFeedbackEntity();
-        evalFeedbackEntity.setFeedback(feedback);
-        evalFeedbackEntity.setRating(rating);
-        evalFeedbackEntity.setUserProfileId(userProfileId);
-        return evalFeedbackEntity;
+    private EvalFeedbackEntity(String feedback, int rating, String receiptUserId) {
+        this.feedback = feedback;
+        this.rating = rating;
+        this.receiptUserId = receiptUserId;
+    }
+
+    public static EvalFeedbackEntity newInstance(String feedback, int rating, String receiptUserId) {
+        return new EvalFeedbackEntity(feedback, rating, receiptUserId);
     }
 
     public String getFeedback() {
@@ -67,11 +70,11 @@ public final class EvalFeedbackEntity extends BaseEntity {
         this.rating = rating;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 }

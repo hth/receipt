@@ -105,9 +105,13 @@ public final class PendingDocumentController {
     }
 
     @RequestMapping (value = "/{documentId}", method = RequestMethod.GET)
-    public ModelAndView showDocument(@PathVariable String documentId,
-                                     @ModelAttribute ("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
+    public ModelAndView showDocument(
+            @PathVariable
+            String documentId,
 
+            @ModelAttribute ("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm
+    ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -131,21 +135,21 @@ public final class PendingDocumentController {
     public String delete(@ModelAttribute ("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
         //Check cannot delete a pending receipt which has been processed once, i.e. has receipt id
         //The check here is not required but its better to check before calling service method
-        if (StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReceiptId())) {
+        if (StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReferenceDocumentId())) {
             switch (receiptDocumentForm.getReceiptDocument().getDocumentStatus()) {
                 case TURK_RECEIPT_REJECT:
-                    documentUpdateService.deleteRejectedReceiptOCR(receiptDocumentForm.getReceiptDocument());
+                    documentUpdateService.deleteRejectedDocument(receiptDocumentForm.getReceiptDocument());
                     break;
                 case TURK_RECEIPT_DUPLICATE:
-                    documentUpdateService.deleteRejectedReceiptOCR(receiptDocumentForm.getReceiptDocument());
+                    documentUpdateService.deleteRejectedDocument(receiptDocumentForm.getReceiptDocument());
                     break;
                 default:
                     LOG.warn("default condition, delete document={}, documentStatus={} receiptId={}",
                             receiptDocumentForm.getReceiptDocument().getId(),
                             receiptDocumentForm.getReceiptDocument().getDocumentStatus(),
-                            receiptDocumentForm.getReceiptDocument().getReceiptId()
+                            receiptDocumentForm.getReceiptDocument().getReferenceDocumentId()
                     );
-                    documentUpdateService.deletePendingReceiptOCR(receiptDocumentForm.getReceiptDocument());
+                    documentUpdateService.deletePendingDocument(receiptDocumentForm.getReceiptDocument());
                     break;
             }
         }

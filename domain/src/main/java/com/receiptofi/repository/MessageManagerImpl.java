@@ -47,7 +47,7 @@ public final class MessageManagerImpl implements MessageManager {
 
     private static final Sort SORT_BY_USER_LEVEL_AND_CREATED = new Sort(
             new ArrayList<Order>() {{
-                add(new Order(DESC, "USER_LEVEL_ENUM"));
+                add(new Order(DESC, "ULE"));
                 add(new Order(ASC, "C"));
             }}
     );
@@ -69,18 +69,18 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
-        Query query = query(where("LOCKED").is(false).and("DS_E").is(status));
+        Query query = query(where("LOK").is(false).and("DS").is(status));
         query.with(SORT_BY_USER_LEVEL_AND_CREATED).limit(limit);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
     @Override
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status) {
-        return findUpdateWithLimit(emailId, userProfileId, status, messageQueryLimit);
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status) {
+        return findUpdateWithLimit(emailId, receiptUserId, status, messageQueryLimit);
     }
 
     @Override
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status, int limit) {
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
 //                    "{" +
@@ -95,18 +95,18 @@ public final class MessageManagerImpl implements MessageManager {
 
 //        BasicDBObject basicDBObject = new BasicDBObject()
 //                .append("recordLocked", false)
-//                .append("DS_E", "OCR_PROCESSED");
+//                .append("DS", "OCR_PROCESSED");
 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for (MessageDocumentEntity object : list) {
             object.setEmailId(emailId);
-            object.setUserProfileId(userProfileId);
+            object.setReceiptUserId(receiptUserId);
             object.setRecordLocked(true);
             try {
                 save(object);
             } catch (Exception e) {
                 object.setRecordLocked(false);
-                object.setUserProfileId(StringUtils.EMPTY);
+                object.setReceiptUserId(StringUtils.EMPTY);
                 object.setEmailId(StringUtils.EMPTY);
                 try {
                     save(object);
@@ -121,14 +121,14 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
-        Query query = query(where("LOCKED").is(true).and("DS_E").is(status).and("EM").is(emailId).and("USER_PROFILE_ID").is(userProfileId));
+        Query query = query(where("LOK").is(true).and("DS").is(status).and("EM").is(emailId).and("RID").is(userProfileId));
         query.with(SORT_BY_USER_LEVEL_AND_CREATED);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
     @Override
     public List<MessageDocumentEntity> findAllPending() {
-        Query query = query(where("LOCKED").is(true).and("DS_E").is(DocumentStatusEnum.OCR_PROCESSED));
+        Query query = query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.OCR_PROCESSED));
         query.with(SORT_BY_USER_LEVEL_AND_CREATED);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
@@ -148,20 +148,20 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public WriteResult updateObject(String receiptOCRId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
+    public WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = query(where("LOCKED").is(true).and("DS_E").is(statusFind).and("RECEIPT_OCR_ID").is(receiptOCRId));
-        Update update = update("DS_E", statusSet).set("A", false);
+        Query query = query(where("LOK").is(true).and("DS").is(statusFind).and("DID").is(documentId));
+        Update update = update("DS", statusSet).set("A", false);
         return mongoTemplate.updateFirst(query, entityUpdate(update), MessageDocumentEntity.class);
     }
 
     @Override
-    public WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
+    public WriteResult undoUpdateObject(String documentId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = query(where("LOCKED").is(true).and("DS_E").is(statusFind).and("A").is(false).and("RECEIPT_OCR_ID").is(receiptOCRId));
+        Query query = query(where("LOK").is(true).and("DS").is(statusFind).and("A").is(false).and("DID").is(documentId));
         Update update = update("recordLocked", false)
                 .set("A", true)
-                .set("DS_E", statusSet);
+                .set("DS", statusSet);
         return mongoTemplate.updateFirst(query, entityUpdate(update), MessageDocumentEntity.class);
     }
 
@@ -171,8 +171,8 @@ public final class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public void deleteAllForReceiptOCR(String receiptOCRId) {
-        Query query = query(where("RECEIPT_OCR_ID").is(receiptOCRId));
+    public void deleteAllForReceiptOCR(String documentId) {
+        Query query = query(where("DID").is(documentId));
         mongoTemplate.remove(query, MessageDocumentEntity.class);
     }
 

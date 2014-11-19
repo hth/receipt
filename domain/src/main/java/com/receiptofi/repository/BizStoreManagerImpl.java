@@ -61,14 +61,14 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     public BizStoreEntity noStore() {
-        return mongoTemplate.findOne(query(where("ADDRESS").is(StringUtils.EMPTY)), BizStoreEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("AD").is(StringUtils.EMPTY)), BizStoreEntity.class, TABLE);
     }
 
     public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
-        Query query = query(where("ADDRESS").is(bizStoreEntity.getAddress()));
+        Query query = query(where("AD").is(bizStoreEntity.getAddress()));
 
         if (StringUtils.isNotEmpty(bizStoreEntity.getPhone())) {
-            query.addCriteria(where("PHONE").is(bizStoreEntity.getPhone()));
+            query.addCriteria(where("PH").is(bizStoreEntity.getPhone()));
         }
 
         return mongoTemplate.findOne(query, BizStoreEntity.class, TABLE);
@@ -78,10 +78,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
         Criteria criteriaA = new Criteria();
         if (StringUtils.isNotEmpty(bizAddress)) {
-            criteriaA.and("ADDRESS").regex(bizAddress, "i");
+            criteriaA.and("AD").regex(bizAddress, "i");
         }
         if (StringUtils.isNotEmpty(bizPhone)) {
-            criteriaA.and("PHONE").regex(bizPhone, "i");
+            criteriaA.and("PH").regex(bizPhone, "i");
         }
 
         if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
@@ -96,10 +96,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity) {
         Query query = null;
         if (StringUtils.isNotEmpty(bizAddress)) {
-            query = query(where("ADDRESS").regex("^" + bizAddress, "i"));
+            query = query(where("AD").regex("^" + bizAddress, "i"));
         }
         if (StringUtils.isNotEmpty(bizPhone)) {
-            Criteria criteria = where("PHONE").regex("^" + bizPhone, "i");
+            Criteria criteria = where("PH").regex("^" + bizPhone, "i");
             if (query == null) {
                 query = query(criteria);
             } else {
@@ -126,7 +126,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
             query = query(criteriaB);
         } else {
-            Criteria criteriaA = where("ADDRESS").regex("^" + bizAddress, "i");
+            Criteria criteriaA = where("AD").regex("^" + bizAddress, "i");
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
             query = query(criteriaB).addCriteria(criteriaA);
@@ -139,13 +139,13 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName) {
         Query query;
         if (StringUtils.isBlank(bizPhone)) {
-            Criteria criteriaB = where("ADDRESS").is(bizAddress);
+            Criteria criteriaB = where("AD").is(bizAddress);
             Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
             query = query(criteriaC).addCriteria(criteriaB);
         } else {
-            Criteria criteriaA = where("PHONE").regex("^" + bizPhone, "i");
-            Criteria criteriaB = where("ADDRESS").is(bizAddress);
+            Criteria criteriaA = where("PH").regex("^" + bizPhone, "i");
+            Criteria criteriaB = where("AD").is(bizAddress);
             Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
 
             query = query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);

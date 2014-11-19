@@ -23,24 +23,24 @@ public final class MessageDocumentEntity extends BaseEntity {
     String emailId;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
-    String userProfileId;
+    @Field ("RID")
+    String receiptUserId;
 
     //TODO change to document id
     @NotNull
-    @Field ("RECEIPT_OCR_ID")
+    @Field ("DID")
     private String documentId;
 
     @NotNull
-    @Field ("USER_LEVEL_ENUM")
+    @Field ("ULE")
     private UserLevelEnum level = UserLevelEnum.USER;
 
     @NotNull
-    @Field ("LOCKED")
+    @Field ("LOK")
     private boolean recordLocked = false;
 
     @NotNull
-    @Field ("DS_E")
+    @Field ("DS")
     private DocumentStatusEnum documentStatus;
 
     @SuppressWarnings ("unused")
@@ -73,12 +73,12 @@ public final class MessageDocumentEntity extends BaseEntity {
         this.emailId = emailId;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public boolean isRecordLocked() {
@@ -104,7 +104,7 @@ public final class MessageDocumentEntity extends BaseEntity {
                 ", documentId='" + documentId + '\'' +
                 ", level=" + level +
                 ", emailId='" + emailId + '\'' +
-                ", userProfileId='" + userProfileId + '\'' +
+                ", receiptUserId='" + receiptUserId + '\'' +
                 ", recordLocked=" + recordLocked +
                 ", documentStatus=" + documentStatus +
                 '}';

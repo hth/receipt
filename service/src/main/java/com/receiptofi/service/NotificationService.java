@@ -39,7 +39,7 @@ public final class NotificationService {
     public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String id, String userProfileId, boolean notified) {
         NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationTypeEnum);
         notificationEntity.setMessage(message);
-        notificationEntity.setUserProfileId(userProfileId);
+        notificationEntity.setReceiptUserId(userProfileId);
         if (notified) {
             notificationEntity.markAsNotified();
         }
@@ -75,19 +75,19 @@ public final class NotificationService {
     public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, BaseEntity supportedEntity) {
         switch (notificationTypeEnum) {
             case EXPENSE_REPORT:
-                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getReceiptUserId(), true);
                 break;
             case RECEIPT:
-                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getReceiptUserId(), true);
                 break;
             case INVOICE:
-                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getReceiptUserId(), true);
                 break;
             case MILEAGE:
-                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((MileageEntity) supportedEntity).getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((MileageEntity) supportedEntity).getReceiptUserId(), true);
                 break;
             case DOCUMENT:
-                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((DocumentEntity) supportedEntity).getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((DocumentEntity) supportedEntity).getReceiptUserId(), true);
                 break;
             default:
                 throw new UnsupportedOperationException("Incorrect method call for Notification Type");

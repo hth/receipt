@@ -102,7 +102,7 @@ public final class ReceiptDocumentForm {
         receipt.setTotal(Formatter.getCurrencyFormatted(receiptDocument.getTotal()).doubleValue());
         receipt.setTax(Formatter.getCurrencyFormatted(receiptDocument.getTax()).doubleValue());
         receipt.setReceiptStatus(DocumentStatusEnum.TURK_PROCESSED);
-        receipt.setUserProfileId(receiptDocument.getUserProfileId());
+        receipt.setReceiptUserId(receiptDocument.getReceiptUserId());
         receipt.setCreated(receiptDocument.getCreated());
         receipt.setUpdated();
         receipt.setBizName(receiptDocument.getBizName());
@@ -111,13 +111,13 @@ public final class ReceiptDocumentForm {
 
         //If this is not set then user cannot reopen the a receipt for re-check.
         //TODO When deleting historical receiptDocument make sure to remove this id from receipt referencing Document
-        receipt.setReceiptOCRId(receiptDocument.getId());
+        receipt.setDocumentId(receiptDocument.getId());
         receipt.setRecheckComment(receiptDocument.getRecheckComment());
         receipt.setNotes(receiptDocument.getNotes());
 
         //This condition is mostly true for receipt when re-checked
-        if (StringUtils.isNotEmpty(receiptDocument.getReceiptId())) {
-            receipt.setId(receiptDocument.getReceiptId());
+        if (StringUtils.isNotEmpty(receiptDocument.getReferenceDocumentId())) {
+            receipt.setId(receiptDocument.getReferenceDocumentId());
         }
 
         return receipt;
@@ -144,7 +144,7 @@ public final class ReceiptDocumentForm {
                 item.setTaxed(itemOCR.getTaxed());
                 item.setSequence(itemOCR.getSequence());
                 item.setReceipt(receipt);
-                item.setUserProfileId(receipt.getUserProfileId());
+                item.setReceiptUserId(receipt.getReceiptUserId());
                 item.setExpenseTag(itemOCR.getExpenseTag());
                 item.setCreated(itemOCR.getCreated());
                 item.setUpdated();
@@ -159,7 +159,7 @@ public final class ReceiptDocumentForm {
 
     public MileageEntity getMileageEntity() {
         MileageEntity mileageEntity = new MileageEntity();
-        mileageEntity.setUserProfileId(receiptDocument.getUserProfileId());
+        mileageEntity.setReceiptUserId(receiptDocument.getReceiptUserId());
         mileageEntity.setStart(mileage.getStart());
         mileageEntity.setEnd(mileage.getEnd());
         mileageEntity.setStartDate(DateUtil.nowDate());

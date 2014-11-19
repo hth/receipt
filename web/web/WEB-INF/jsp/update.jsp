@@ -26,11 +26,11 @@
 		/* add background color to holder in tr tag */
         window.onload = function () {
             <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-                fetchReceiptImage('${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.userProfileId}');
+                fetchReceiptImage('${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.receiptUserId}');
             </c:forEach>
         };
 
-        function fetchReceiptImage(location, holder, id, angle, blobId, userProfileId) {
+        function fetchReceiptImage(location, holder, id, angle, blobId, receiptUserId) {
             document.getElementById(holder).innerHTML = "";
             var R = Raphael(holder, 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
@@ -48,7 +48,7 @@
             butt1[2].click(function () {
                 angle -= 90;
                 img.stop().animate({transform: "r" + angle}, 1000, "<>");
-                orientation(id, -90, blobId, userProfileId);
+                orientation(id, -90, blobId, receiptUserId);
             }).mouseover(function () {
                 butt1[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
@@ -57,7 +57,7 @@
             butt2[2].click(function () {
                 angle += 90;
                 img.animate({transform: "r" + angle}, 1000, "<>");
-                orientation(id, 90, blobId, userProfileId);
+                orientation(id, 90, blobId, receiptUserId);
             }).mouseover(function () {
                 butt2[1].animate({fill: "#fc0"}, 300);
             }).mouseout(function () {
@@ -68,14 +68,14 @@
             img.rotate(angle);
         }
 
-        function orientation(id, angle, blobId, userProfileId) {
+        function orientation(id, angle, blobId, receiptUserId) {
             $.ajax({
                 url: '${pageContext. request. contextPath}/ws/r/change_fs_image_orientation.htm',
                 data: {
                     fileSystemId: id,
                     orientation: angle,
                     blobId: blobId,
-                    userProfileId: userProfileId
+                    receiptUserId: receiptUserId
                 },
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
@@ -173,7 +173,7 @@
                         data: {
                             date:  $("#date").val(),
                             total: $("#total").val(),
-                            userProfileId: '${receiptDocumentForm.receiptDocument.userProfileId}'
+                            receiptUserId: '${receiptDocumentForm.receiptDocument.receiptUserId}'
                         },
                         contentType: "*/*",
                         dataTypes: "application/json",
@@ -306,9 +306,9 @@
 
     <c:if test="${!isAdmin}">
     <c:choose>
-        <c:when test="${empty receiptDocumentForm.receiptDocument.receiptId}">
+        <c:when test="${empty receiptDocumentForm.receiptDocument.referenceDocumentId}">
         <form:form method="post" action="../delete.htm" modelAttribute="receiptDocumentForm">
-            <form:hidden path="receiptDocument.receiptId"/>
+            <form:hidden path="receiptDocument.referenceDocumentId"/>
             <form:hidden path="receiptDocument.id"/>
             <input type="submit" value="Delete" name="delete" id="deleteId"/>
         </form:form>
@@ -371,10 +371,10 @@
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
                             <form:errors path="receiptDocument" cssClass="error" />
                             <form:hidden path="receiptDocument.id"/>
-                            <form:hidden path="receiptDocument.userProfileId"/>
+                            <form:hidden path="receiptDocument.receiptUserId"/>
                             <form:hidden path="receiptDocument.version"/>
                             <form:hidden path="receiptDocument.documentStatus"/>
-                            <form:hidden path="receiptDocument.receiptId"/>
+                            <form:hidden path="receiptDocument.referenceDocumentId"/>
                             <form:hidden path="receiptDocument.documentOfType" value="RECEIPT"/>
 
                             <table border="0" style="width: 550px" class="etable">
@@ -492,10 +492,10 @@
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
                             <form:errors path="receiptDocument" cssClass="error" />
                             <form:hidden path="receiptDocument.id"/>
-                            <form:hidden path="receiptDocument.userProfileId"/>
+                            <form:hidden path="receiptDocument.receiptUserId"/>
                             <form:hidden path="receiptDocument.version"/>
                             <form:hidden path="receiptDocument.documentStatus"/>
-                            <form:hidden path="receiptDocument.receiptId"/>
+                            <form:hidden path="receiptDocument.referenceDocumentId"/>
                             <form:hidden path="receiptDocument.documentOfType" value="MILEAGE"/>
 
                             <table border="0" style="width: 550px" class="etable">

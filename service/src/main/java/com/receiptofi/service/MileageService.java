@@ -40,17 +40,17 @@ public final class MileageService {
         mileageManager.save(mileageEntity);
     }
 
-    public List<MileageEntity> getMileageForThisMonth(String profileId, DateTime monthYear) {
+    public List<MileageEntity> getMileageForThisMonth(String receiptUserId, DateTime monthYear) {
         DateTime startTime = monthYear.dayOfMonth().withMinimumValue().withTimeAtStartOfDay();
         return mileageManager.getMileageForThisMonth(
-                profileId,
+                receiptUserId,
                 startTime,
                 startTime.plusMonths(1).withTimeAtStartOfDay().minusMillis(1)
         );
     }
 
-    public int monthlyTotal(String userProfileId, DateTime monthYear) {
-        return mileageTotal(getMileageForThisMonth(userProfileId, monthYear));
+    public int monthlyTotal(String receiptUserId, DateTime monthYear) {
+        return mileageTotal(getMileageForThisMonth(receiptUserId, monthYear));
     }
 
     public int mileageTotal(List<MileageEntity> mileageEntities) {
@@ -63,9 +63,9 @@ public final class MileageService {
         return total;
     }
 
-    public MileageEntity merge(String id1, String id2, String userProfileId) {
-        MileageEntity m1 = mileageManager.findOne(id1, userProfileId);
-        MileageEntity m2 = mileageManager.findOne(id2, userProfileId);
+    public MileageEntity merge(String id1, String id2, String receiptUserId) {
+        MileageEntity m1 = mileageManager.findOne(id1, receiptUserId);
+        MileageEntity m2 = mileageManager.findOne(id2, receiptUserId);
 
         try {
             if (m1 != null && m2 != null && !m1.isComplete() && !m2.isComplete()) {
@@ -94,14 +94,15 @@ public final class MileageService {
             LOG.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, re.getLocalizedMessage(), re);
             throw new RuntimeException("Merge failed to save " + re.getLocalizedMessage());
         } catch (Exception exception) {
-            LOG.error("Merge failed to save id1:id2 {}:{}, reason={}", id1, id2, exception.getLocalizedMessage(), exception);
+            LOG.error("Merge failed to save id1:id2 {}:{}, reason={}",
+                    id1, id2, exception.getLocalizedMessage(), exception);
             throw new RuntimeException("Merge failed to save");
         }
         throw new RuntimeException("Merge failed as one or both could not be merged");
     }
 
-    public List<MileageEntity> split(String id, String userProfileId) {
-        MileageEntity m1 = mileageManager.findOne(id, userProfileId);
+    public List<MileageEntity> split(String id, String receiptUserId) {
+        MileageEntity m1 = mileageManager.findOne(id, receiptUserId);
         try {
             if (m1 != null && m1.isComplete()) {
                 MileageEntity m2 = m1.splitMileage();
@@ -120,16 +121,20 @@ public final class MileageService {
         throw new RuntimeException("Could not process split");
     }
 
-    public MileageEntity getMileage(String mileageId, String userProfileId) {
-        return mileageManager.findOne(mileageId, userProfileId);
+    public MileageEntity getMileage(String mileageId, String receiptUserId) {
+        return mileageManager.findOne(mileageId, receiptUserId);
     }
 
-    public boolean updateStartDate(String mileageId, String date, String userProfileId) {
-        return mileageManager.updateStartDate(mileageId, DateTime.parse(date, DateTimeFormat.forPattern("MM/dd/yyyy")), userProfileId);
+    public boolean updateStartDate(String mileageId, String date, String receiptUserId) {
+        return mileageManager.updateStartDate(
+                mileageId,
+                DateTime.parse(date, DateTimeFormat.forPattern("MM/dd/yyyy")), receiptUserId);
     }
 
-    public boolean updateEndDate(String mileageId, String date, String userProfileId) {
-        return mileageManager.updateEndDate(mileageId, DateTime.parse(date, DateTimeFormat.forPattern("MM/dd/yyyy")), userProfileId);
+    public boolean updateEndDate(String mileageId, String date, String receiptUserId) {
+        return mileageManager.updateEndDate(
+                mileageId,
+                DateTime.parse(date, DateTimeFormat.forPattern("MM/dd/yyyy")), receiptUserId);
     }
 
     /**

@@ -16,19 +16,19 @@ import javax.validation.constraints.NotNull;
 public final class NotificationEntity extends BaseEntity {
 
     @NotNull
-    @Field ("MESSAGE")
+    @Field ("MS")
     private String message;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field ("RID")
+    private String receiptUserId;
 
     @NotNull
-    @Field ("NOTIFIED")
+    @Field ("ND")
     private boolean notified = false;
 
     @NotNull
-    @Field ("NOTIFICATION_ENUM")
+    @Field ("NNE")
     private NotificationTypeEnum notificationType;
 
     /**
@@ -58,12 +58,12 @@ public final class NotificationEntity extends BaseEntity {
         this.message = message;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public boolean isNotified() {

@@ -32,15 +32,16 @@ import javax.validation.constraints.Size;
  */
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
 @Document (collection = "ITEM")
-@CompoundIndexes ({@CompoundIndex (name = "user_item_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}")})
+//TODO(hth) @DBRef RECEIPT index does not look correct to me
+@CompoundIndexes ({@CompoundIndex (name = "user_item_idx", def = "{'RECEIPT': -1, 'RID': 1}")})
 public final class ItemEntity extends BaseEntity {
 
     @Size (min = 1, max = 128)
-    @Field ("NAME")
+    @Field ("IN")
     private String name;
 
     @NumberFormat (style = Style.CURRENCY)
-    @Field ("PRICE")
+    @Field ("PRC")
     private Double price;
 
     /**
@@ -50,27 +51,27 @@ public final class ItemEntity extends BaseEntity {
     @Field ("TAX")
     private Double tax;
 
-    @Field ("QUANTITY")
+    @Field ("QN")
     private Double quantity = 1.00;
 
     @NotNull
-    @Field ("TAX_ENUM")
+    @Field ("TT")
     private TaxEnum taxed = TaxEnum.NOT_TAXED;
 
     @NotNull
-    @Field ("SEQUENCE")
+    @Field ("SEQ")
     private int sequence;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field ("RID")
+    private String receiptUserId;
 
     @DBRef
     @Field ("RECEIPT")
     private ReceiptEntity receipt;
 
     @DateTimeFormat (iso = ISO.DATE_TIME)
-    @Field ("R_D")
+    @Field ("RTX")
     private Date receiptDate;
 
     @DBRef
@@ -78,19 +79,26 @@ public final class ItemEntity extends BaseEntity {
     private BizNameEntity bizName;
 
     @DBRef
-    @Field ("ET_R")
+    @Field ("EXPENSE_TAG")
     private ExpenseTagEntity expenseTag;
 
     public ItemEntity() {
     }
 
-    private ItemEntity(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
+    private ItemEntity(
+            String name,
+            Double price,
+            TaxEnum taxed,
+            int sequence,
+            ReceiptEntity receipt,
+            String receiptUserId
+    ) {
         super();
         this.name = name;
         this.price = price;
         this.taxed = taxed;
         this.receipt = receipt;
-        this.userProfileId = userProfileId;
+        this.receiptUserId = receiptUserId;
         this.sequence = sequence;
         this.receiptDate = receipt.getReceiptDate();
     }
@@ -111,7 +119,14 @@ public final class ItemEntity extends BaseEntity {
      * @return
      */
     @Deprecated
-    public static ItemEntity newInstance(String name, Double price, TaxEnum taxed, int sequence, ReceiptEntity receipt, String userProfileId) {
+    public static ItemEntity newInstance(
+            String name,
+            Double price,
+            TaxEnum taxed,
+            int sequence,
+            ReceiptEntity receipt,
+            String userProfileId
+    ) {
         return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
     }
 
@@ -211,12 +226,12 @@ public final class ItemEntity extends BaseEntity {
         this.receiptDate = receiptDate;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public BizNameEntity getBizName() {

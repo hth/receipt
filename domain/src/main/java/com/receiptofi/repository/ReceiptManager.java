@@ -24,108 +24,105 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
     /**
      * @param receiptId
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    ReceiptEntity findReceipt(String receiptId, String userProfileId);
+    ReceiptEntity findReceipt(String receiptId, String receiptUserId);
 
     /**
      * Get receipt for specific user.
      *
      * @param receiptId
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    ReceiptEntity findOne(String receiptId, String userProfileId);
+    ReceiptEntity findOne(String receiptId, String receiptUserId);
 
     /**
      * Find all receipts with BizName for the user
      *
      * @param bizNameEntity
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId);
+    List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String receiptUserId);
 
     /**
      * Gets all the user receipts. Refrain from using open ended query.
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<ReceiptEntity> getAllReceipts(String userProfileId);
+    List<ReceiptEntity> getAllReceipts(String receiptUserId);
 
     /**
-     * Get receipts only the selected year
+     * Get receipts only the selected year.
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @param startOfTheYear
      * @return
      */
-    List<ReceiptEntity> getAllReceiptsForTheYear(String userProfileId, DateTime startOfTheYear);
+    List<ReceiptEntity> getAllReceiptsForTheYear(String receiptUserId, DateTime startOfTheYear);
 
     /**
-     * Gets user receipts for current month
+     * Gets user receipts for current month.
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<ReceiptEntity> getAllReceiptsForThisMonth(String userProfileId, DateTime monthYear);
+    List<ReceiptEntity> getAllReceiptsForThisMonth(String receiptUserId, DateTime monthYear);
 
     /**
      * Gets all updated receipts since specified time
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @param since
      * @return
      */
     @Mobile
-    List<ReceiptEntity> getAllUpdatedReceiptSince(String userProfileId, Date since);
+    List<ReceiptEntity> getAllUpdatedReceiptSince(String receiptUserId, Date since);
 
     /**
-     * Get receipts associated with year, month, day
+     * Get receipts associated with year, month, day.
      *
      * @param year
      * @param month
      * @param day
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String userProfileId);
+    List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String receiptUserId);
 
     /**
-     * Receipt grouped by day
+     * Receipt grouped by day.
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String userProfileId);
+    Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String receiptUserId);
 
     /**
-     * Receipt grouped by month for last 13 months
+     * Receipt grouped by month for last 13 months.
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId);
+    Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String receiptUserId);
 
     /**
-     * Group receipts by location and sum up the total expense on that particular business location
+     * Group receipts by location and sum up the total expense on that particular business location.
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String userProfileId);
+    Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String receiptUserId);
 
-    @Deprecated
-    List<String> findTitles(String title);
-
-    ReceiptEntity findWithReceiptOCR(String receiptOCRId);
+    ReceiptEntity findWithReceiptOCR(String documentId);
 
     void deleteSoft(ReceiptEntity object);
 
     /**
-     * Count includes all active and inactive receipts
+     * Count includes all active and inactive receipts.
      *
      * @param bizStoreEntity
      * @return
@@ -133,7 +130,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     long countAllReceiptForAStore(BizStoreEntity bizStoreEntity);
 
     /**
-     * Count includes all active and inactive receipts
+     * Count includes all active and inactive receipts.
      *
      * @param bizNameEntity
      * @return
@@ -141,7 +138,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     long countAllReceiptForABizName(BizNameEntity bizNameEntity);
 
     /**
-     * Check if not deleted receipt exists
+     * Check if not deleted receipt exists.
      *
      * @param checksum
      * @return
@@ -158,7 +155,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     ReceiptEntity findNotDeletedChecksumDuplicate(String checksum, String id);
 
     /**
-     * Find if receipt with similar checksum exists
+     * Find if receipt with similar checksum exists.
      *
      * @param checksum
      * @return

@@ -29,8 +29,8 @@ import javax.validation.constraints.NotNull;
  */
 @Document (collection = "MILEAGE")
 @CompoundIndexes ({
-        @CompoundIndex (name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'USER_PROFILE_ID': -1}", unique = true),
-        @CompoundIndex (name = "mileage_s_idx", def = "{'S': -1, 'USER_PROFILE_ID': -1}", unique = true)
+        @CompoundIndex (name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'RID': -1}", unique = true),
+        @CompoundIndex (name = "mileage_s_idx", def = "{'S': -1, 'RID': -1}", unique = true)
 })
 public final class MileageEntity extends BaseEntity {
 
@@ -50,11 +50,11 @@ public final class MileageEntity extends BaseEntity {
     private Date endDate;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field ("RID")
+    private String receiptUserId;
 
     @NotNull
-    @Field ("DOC_ID")
+    @Field ("DID")
     private String documentId;
 
     @DBRef
@@ -71,12 +71,12 @@ public final class MileageEntity extends BaseEntity {
     public MileageEntity() {
     }
 
-    public MileageEntity(FileSystemEntity fileSystemEntity, String userProfileId) {
+    public MileageEntity(FileSystemEntity fileSystemEntity, String receiptUserId) {
         if (fileSystemEntities == null) {
             fileSystemEntities = new LinkedList<>();
         }
         fileSystemEntities.add(fileSystemEntity);
-        this.userProfileId = userProfileId;
+        this.receiptUserId = receiptUserId;
         this.startDate = getCreated();
     }
 
@@ -109,7 +109,7 @@ public final class MileageEntity extends BaseEntity {
         for (FileSystemEntity fse : getFileSystemEntities()) {
             fileSystemEntity = fse;
         }
-        MileageEntity m2 = new MileageEntity(fileSystemEntity, getUserProfileId());
+        MileageEntity m2 = new MileageEntity(fileSystemEntity, receiptUserId);
         m2.setStart(getEnd());
         m2.setStartDate(getEndDate());
 
@@ -153,12 +153,12 @@ public final class MileageEntity extends BaseEntity {
         this.endDate = endDate;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public String getDocumentId() {

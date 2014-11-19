@@ -3,6 +3,8 @@
  */
 package com.receiptofi.repository;
 
+import java.util.List;
+
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.ExpenseTagEntity;
@@ -10,8 +12,6 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 
 import org.joda.time.DateTime;
-
-import java.util.List;
 
 /**
  * @author hitender
@@ -26,16 +26,16 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     List<ItemEntity> getAllItemsOfReceipt(String receiptId);
 
     /**
-     * Finds users item as the session supplies userProfileId
+     * Finds users item as the session supplies receiptUserId.
      *
      * @param itemId
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    ItemEntity findItem(String itemId, String userProfileId);
+    ItemEntity findItem(String itemId, String receiptUserId);
 
     /**
-     * Gets items with specified name until the specified date
+     * Gets items with specified name until the specified date.
      *
      * @param name         - Name of the item
      * @param untilThisDay - Show result from this day onwards
@@ -44,34 +44,34 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     List<ItemEntity> findAllByNameLimitByDays(String name, DateTime untilThisDay);
 
     /**
-     * Gets items with specified name until the specified date
+     * Gets items with specified name until the specified date.
      *
      * @param name          - Name of the item
-     * @param userProfileId
+     * @param receiptUserId
      * @param untilThisDay  - Show result from this day onwards
      * @return
      */
-    List<ItemEntity> findAllByNameLimitByDays(String name, String userProfileId, DateTime untilThisDay);
+    List<ItemEntity> findAllByNameLimitByDays(String name, String receiptUserId, DateTime untilThisDay);
 
 
     /**
-     * Should be used only for listing historical data of the items for a particular user
+     * Should be used only for listing historical data of the items for a particular user.
      *
      * @param itemEntity
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId);
+    List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId);
 
     /**
-     * Delete Entity
+     * Delete Entity.
      *
      * @param receipt
      */
     void deleteWhereReceipt(ReceiptEntity receipt);
 
     /**
-     * Marks an entity deleted but does not delete it
+     * Marks an entity deleted but does not delete it.
      *
      * @param receipt
      */
@@ -87,7 +87,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     List<ItemEntity> findItems(String name, String bizName);
 
     /**
-     * Get the Item from DB and then update with changed ExpenseType before persisting Item
+     * Get the Item from DB and then update with changed ExpenseType before persisting Item.
      *
      * @param item
      */
@@ -99,9 +99,9 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      * @param expenseTypeId
      * @return
      */
-    long countItemsUsingExpenseType(String expenseTypeId, String userProfileId);
+    long countItemsUsingExpenseType(String expenseTypeId, String receiptUserId);
 
     List<ItemEntity> getItemEntitiesForSpecificExpenseTypeForTheYear(ExpenseTagEntity expenseType);
 
-    List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String userProfileId);
+    List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String receiptUserId);
 }

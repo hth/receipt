@@ -99,7 +99,7 @@ public final class DocumentUpdateService {
 
             bizService.saveNewBusinessAndOrStore(documentForm);
             documentForm.setDocumentStatus(TURK_PROCESSED);
-            documentForm.setReceiptId(receipt.getId());
+            documentForm.setReferenceDocumentId(receipt.getId());
             documentForm.inActive();
             documentManager.save(documentForm);
 
@@ -344,13 +344,13 @@ public final class DocumentUpdateService {
      * Message Receipt Entity OCR including deletion of with Document
      * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check
      *
-     * @param receiptOCR
+     * @param document
      */
-    public void deletePendingReceiptOCR(DocumentEntity receiptOCR) {
-        DocumentEntity documentEntity = loadActiveDocumentById(receiptOCR.getId());
-        if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReceiptId())) {
+    public void deletePendingDocument(DocumentEntity document) {
+        DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
+        if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
             LOG.warn("User trying to delete processed Document={}, Receipt={}",
-                    receiptOCR.getId(), receiptOCR.getReceiptId());
+                    document.getId(), document.getReferenceDocumentId());
         } else {
             deleteReceiptOCR(documentEntity);
         }
@@ -361,13 +361,13 @@ public final class DocumentUpdateService {
      * Message Receipt Entity OCR including deletion of with Document
      * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check
      *
-     * @param receiptOCR
+     * @param document
      */
-    public void deleteRejectedReceiptOCR(DocumentEntity receiptOCR) {
-        DocumentEntity documentEntity = loadRejectedDocumentById(receiptOCR.getId());
-        if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReceiptId())) {
+    public void deleteRejectedDocument(DocumentEntity document) {
+        DocumentEntity documentEntity = loadRejectedDocumentById(document.getId());
+        if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
             LOG.warn("User trying to delete processed Document={}, Receipt={}",
-                    receiptOCR.getId(), receiptOCR.getReceiptId());
+                    document.getId(), document.getReferenceDocumentId());
         } else {
             deleteReceiptOCR(documentEntity);
         }
@@ -442,7 +442,7 @@ public final class DocumentUpdateService {
             //update the version number as the value could have changed by rotating receipt image through ajax
             documentForm.setVersion(documentEntity.getVersion());
             documentForm.setDocumentStatus(TURK_PROCESSED);
-            documentForm.setReceiptId(mileageEntity.getId());
+            documentForm.setReferenceDocumentId(mileageEntity.getId());
             documentForm.inActive();
             documentManager.save(documentForm);
 

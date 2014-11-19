@@ -28,7 +28,7 @@ public final class CommentEntity extends BaseEntity {
     @Field ("T")
     private String text;
 
-    @Field ("CT_E")
+    @Field ("CT")
     private CommentTypeEnum commentType;
 
     public CommentEntity() {

@@ -13,7 +13,7 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
     static int LIMIT_FIVE = 5;
     static int ALL = -1;
 
-    List<NotificationEntity> getNotifications(String userProfileId, int start, int limit);
+    List<NotificationEntity> getNotifications(String receiptUserId, int start, int limit);
 
-    long notificationCount(String userProfileId);
+    long notificationCount(String receiptUserId);
 }

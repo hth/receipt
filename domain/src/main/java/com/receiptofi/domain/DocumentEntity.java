@@ -23,11 +23,11 @@ import javax.validation.constraints.NotNull;
  * @since Jan 6, 2013 1:04:43 PM
  */
 @Document (collection = "DOCUMENT")
-@CompoundIndexes ({@CompoundIndex (name = "document_idx", def = "{'FS': 1, 'USER_PROFILE_ID': 1}")})
+@CompoundIndexes ({@CompoundIndex (name = "document_idx", def = "{'FS': 1, 'RID': 1}")})
 public final class DocumentEntity extends BaseEntity {
 
     @NotNull
-    @Field ("DS_E")
+    @Field ("DS")
     private DocumentStatusEnum documentStatus;
 
     @DBRef
@@ -35,15 +35,15 @@ public final class DocumentEntity extends BaseEntity {
     private Collection<FileSystemEntity> fileSystemEntities;
 
     @NotNull
-    @Field ("RECEIPT_DATE")
+    @Field ("RTXD")
     private String receiptDate;
 
     @Transient
-    @Field ("SUB_TOTAL")
+    @Field ("STOT")
     private String subTotal;
 
     @NotNull
-    @Field ("TOTAL")
+    @Field ("TOT")
     private String total;
 
     @NotNull
@@ -51,8 +51,8 @@ public final class DocumentEntity extends BaseEntity {
     private String tax = "0.00";
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field ("RID")
+    private String receiptUserId;
 
     @DBRef
     @Field ("BIZ_NAME")
@@ -62,19 +62,19 @@ public final class DocumentEntity extends BaseEntity {
     @Field ("BIZ_STORE")
     private BizStoreEntity bizStore;
 
-    @Field ("RECEIPT_ID")
-    private String receiptId;
+    @Field ("RDID")
+    private String referenceDocumentId;
 
     @DBRef
-    @Field ("COMMENT_RECHECK")
+    @Field ("CR")
     private CommentEntity recheckComment;
 
     @DBRef
-    @Field ("COMMENT_NOTES")
+    @Field ("CN")
     private CommentEntity notes;
 
     @NotNull
-    @Field ("DOCUMENT_TYPE")
+    @Field ("DT")
     private DocumentOfTypeEnum documentOfType;
 
     /** To keep bean happy */
@@ -140,12 +140,12 @@ public final class DocumentEntity extends BaseEntity {
         this.tax = tax;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String userProfileId) {
+        this.receiptUserId = userProfileId;
     }
 
     public BizNameEntity getBizName() {
@@ -164,12 +164,12 @@ public final class DocumentEntity extends BaseEntity {
         this.bizStore = bizStore;
     }
 
-    public String getReceiptId() {
-        return receiptId;
+    public String getReferenceDocumentId() {
+        return referenceDocumentId;
     }
 
-    public void setReceiptId(String receiptId) {
-        this.receiptId = receiptId;
+    public void setReferenceDocumentId(String referenceDocumentId) {
+        this.referenceDocumentId = referenceDocumentId;
     }
 
     public CommentEntity getRecheckComment() {
@@ -206,10 +206,10 @@ public final class DocumentEntity extends BaseEntity {
                 ", subTotal='" + subTotal + '\'' +
                 ", total='" + total + '\'' +
                 ", tax='" + tax + '\'' +
-                ", userProfileId='" + userProfileId + '\'' +
+                ", receiptUserId='" + receiptUserId + '\'' +
                 ", bizName=" + bizName +
                 ", bizStore=" + bizStore +
-                ", receiptId='" + receiptId + '\'' +
+                ", referenceDocumentId='" + referenceDocumentId + '\'' +
                 ", recheckComment=" + recheckComment +
                 ", notes=" + notes +
                 ", documentOfType=" + documentOfType +

@@ -85,7 +85,7 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity reInviteActiveInvite(String emailId, UserAccountEntity invitedBy) {
-        Criteria criteria = where("EM").is(emailId).and("IN_BY.$id").is(new ObjectId(invitedBy.getId()));
+        Criteria criteria = where("EM").is(emailId).and("INV.$id").is(new ObjectId(invitedBy.getId()));
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
     }
