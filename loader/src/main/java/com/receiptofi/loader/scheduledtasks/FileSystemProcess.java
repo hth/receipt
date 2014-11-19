@@ -1,5 +1,9 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CreateTempFile;
 import com.receiptofi.utils.DateUtil;
@@ -14,10 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 
 /**
  * Can be used for deleting various kinds of files.

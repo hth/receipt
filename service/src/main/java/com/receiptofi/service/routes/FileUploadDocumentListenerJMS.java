@@ -3,6 +3,8 @@
  */
 package com.receiptofi.service.routes;
 
+import java.util.Map;
+
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -13,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author hitender

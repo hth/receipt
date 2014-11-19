@@ -1,5 +1,7 @@
 package com.receiptofi.service;
 
+import java.util.List;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.MileageEntity;
@@ -8,15 +10,12 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.repository.NotificationManager;
-import com.receiptofi.repository.NotificationManagerImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * User: hitender

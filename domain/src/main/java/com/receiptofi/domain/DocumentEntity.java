@@ -3,6 +3,11 @@
  */
 package com.receiptofi.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.validation.constraints.NotNull;
+
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
@@ -12,11 +17,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author hitender

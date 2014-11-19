@@ -3,6 +3,8 @@
  */
 package com.receiptofi.domain.shared;
 
+import java.io.File;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
@@ -11,8 +13,6 @@ import com.receiptofi.domain.types.FileTypeEnum;
 import org.apache.commons.io.FilenameUtils;
 
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 /**
  * This class acts as a form and entity. Its shared across multiple layers. Used in persisting Image file.

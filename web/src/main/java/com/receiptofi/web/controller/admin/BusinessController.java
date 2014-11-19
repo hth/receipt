@@ -1,5 +1,8 @@
 package com.receiptofi.web.controller.admin;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -30,9 +33,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * User: hitender

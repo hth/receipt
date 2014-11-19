@@ -1,6 +1,9 @@
 package com.receiptofi.loader.scheduledtasks;
 
-import static org.junit.Assert.*;
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atMost;
@@ -8,10 +11,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-
 import com.receiptofi.service.ReceiptService;
-
-import java.io.File;
 
 import org.junit.Before;
 import org.junit.Rule;

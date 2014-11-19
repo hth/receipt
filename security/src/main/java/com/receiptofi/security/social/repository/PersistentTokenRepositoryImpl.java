@@ -1,5 +1,7 @@
 package com.receiptofi.security.social.repository;
 
+import java.util.Date;
+
 import com.receiptofi.domain.social.RememberMeTokenEntity;
 import com.receiptofi.repository.social.RememberMeTokenManager;
 
@@ -7,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
 
 /**
  * User: hitender

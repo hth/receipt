@@ -1,9 +1,9 @@
 package com.receiptofi.web.form;
 
-import com.receiptofi.domain.NotificationEntity;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.receiptofi.domain.NotificationEntity;
 
 /**
  * User: hitender

@@ -1,16 +1,16 @@
 package com.receiptofi.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: hitender

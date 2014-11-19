@@ -1,5 +1,7 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import java.util.List;
+
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.repository.DocumentManager;
 
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * User: hitender

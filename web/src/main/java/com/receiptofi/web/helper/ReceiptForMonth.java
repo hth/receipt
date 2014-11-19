@@ -1,12 +1,12 @@
 package com.receiptofi.web.helper;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Used as JSON and also as Object representation for Landing Page to show receipt data for that month.

@@ -1,5 +1,10 @@
 package com.receiptofi.service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static java.math.BigDecimal.ZERO;
 
 import com.receiptofi.domain.ExpenseTagEntity;
@@ -11,11 +16,6 @@ import com.receiptofi.utils.Maths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * User: hitender

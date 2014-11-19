@@ -1,14 +1,14 @@
 package com.receiptofi.web.listener;
 
+import javax.annotation.PostConstruct;
+import javax.jms.JMSException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.jms.JMSException;
 
 /**
  * Checks if all vital setup are running before starting server.
