@@ -84,7 +84,7 @@ public final class NotificationService {
                 addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((ReceiptEntity) supportedEntity).getReceiptUserId(), true);
                 break;
             case MILEAGE:
-                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((MileageEntity) supportedEntity).getUserProfileId(), true);
+                addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((MileageEntity) supportedEntity).getReceiptUserId(), true);
                 break;
             case DOCUMENT:
                 addNotification(message, notificationTypeEnum, supportedEntity.getId(), ((DocumentEntity) supportedEntity).getReceiptUserId(), true);

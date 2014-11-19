@@ -159,7 +159,7 @@ public final class ReceiptDocumentForm {
 
     public MileageEntity getMileageEntity() {
         MileageEntity mileageEntity = new MileageEntity();
-        mileageEntity.setUserProfileId(receiptDocument.getReceiptUserId());
+        mileageEntity.setReceiptUserId(receiptDocument.getReceiptUserId());
         mileageEntity.setStart(mileage.getStart());
         mileageEntity.setEnd(mileage.getEnd());
         mileageEntity.setStartDate(DateUtil.nowDate());

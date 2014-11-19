@@ -51,7 +51,7 @@ public final class MileageEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String userProfileId;
+    private String receiptUserId;
 
     @NotNull
     @Field ("DID")
@@ -71,12 +71,12 @@ public final class MileageEntity extends BaseEntity {
     public MileageEntity() {
     }
 
-    public MileageEntity(FileSystemEntity fileSystemEntity, String userProfileId) {
+    public MileageEntity(FileSystemEntity fileSystemEntity, String receiptUserId) {
         if (fileSystemEntities == null) {
             fileSystemEntities = new LinkedList<>();
         }
         fileSystemEntities.add(fileSystemEntity);
-        this.userProfileId = userProfileId;
+        this.receiptUserId = receiptUserId;
         this.startDate = getCreated();
     }
 
@@ -109,7 +109,7 @@ public final class MileageEntity extends BaseEntity {
         for (FileSystemEntity fse : getFileSystemEntities()) {
             fileSystemEntity = fse;
         }
-        MileageEntity m2 = new MileageEntity(fileSystemEntity, getUserProfileId());
+        MileageEntity m2 = new MileageEntity(fileSystemEntity, receiptUserId);
         m2.setStart(getEnd());
         m2.setStartDate(getEndDate());
 
@@ -153,12 +153,12 @@ public final class MileageEntity extends BaseEntity {
         this.endDate = endDate;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public String getDocumentId() {
