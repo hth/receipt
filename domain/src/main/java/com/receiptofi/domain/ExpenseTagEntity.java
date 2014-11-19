@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * ExpenseTagEntity as reference field : ET_R.
+ * ExpenseTagEntity as reference field : EXPENSE_TAG.
  * User: hitender
  * Date: 5/13/13
  * Time: 7:47 PM
@@ -29,7 +29,7 @@ public final class ExpenseTagEntity extends BaseEntity {
 
     @NotNull
     @Size (max = 4)
-    @Field ("YEAR")
+    @Field ("Y")
     private int forYear;
 
     @NotNull

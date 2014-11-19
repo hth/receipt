@@ -1,6 +1,6 @@
 mongodump --db rm
 
-db.USER_PROFILE.update( { LAST_NAME : "Admin"}, {$set : { USER_LEVEL_ENUM : "ADMIN"}});
+db.USER_PROFILE.update( { LAST_NAME : "Admin"}, {$set : { ULE : "ADMIN"}});
 
 db.MESSAGE_RECEIPT_OCR.update( { recordLocked: false, documentStatus: "OCR_PROCESSED"}, {$set: {emailId: "test@test.com", profileId: "", recordLocked: true }})
 

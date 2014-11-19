@@ -64,9 +64,9 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public List<NotificationEntity> getNotifications(String userProfileId, int start, int limit) {
+    public List<NotificationEntity> getNotifications(String receiptUserId, int start, int limit) {
         Query query = query(
-                where("USER_PROFILE_ID").is(userProfileId).and("NOTIFIED").is(true))
+                where("RID").is(receiptUserId).and("ND").is(true))
                 .addCriteria(isNotDeleted())
                 .skip(start)
                 .with(new Sort(Sort.Direction.DESC, "C"));
@@ -78,10 +78,10 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public long notificationCount(String userProfileId) {
+    public long notificationCount(String receiptUserId) {
         return mongoTemplate.count(
-                new Query(where("USER_PROFILE_ID").is(userProfileId)
-                        .and("NOTIFIED").is(true))
+                new Query(where("RID").is(receiptUserId)
+                        .and("ND").is(true))
                         .addCriteria(isNotDeleted()),
                 NotificationEntity.class
         );

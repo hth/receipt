@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public final class FileSystemEntity extends BaseEntity {
 
     @NotNull
-    @Field ("BLOB_ID")
+    @Field ("BID")
     private String blobId;
 
     @NotNull
@@ -29,11 +29,11 @@ public final class FileSystemEntity extends BaseEntity {
     private int width;
 
     @NotNull
-    @Field ("ORIENTATION")
+    @Field ("ORN")
     private int imageOrientation = 0;
 
     @NotNull
-    @Field ("SEQUENCE")
+    @Field ("SEQ")
     private int sequence;
 
     /** To keep bean happy */

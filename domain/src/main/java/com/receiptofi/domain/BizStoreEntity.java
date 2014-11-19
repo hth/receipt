@@ -31,11 +31,11 @@ public final class BizStoreEntity extends BaseEntity {
     private String phoneNumberBlank;
 
     @NotNull
-    @Field ("ADDRESS")
+    @Field ("AD")
     private String address;
 
     @NotNull
-    @Field ("PHONE")
+    @Field ("PH")
     private String phone;
 
     @NumberFormat (style = NumberFormat.Style.NUMBER)

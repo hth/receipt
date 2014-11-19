@@ -21,37 +21,37 @@ import javax.validation.constraints.Size;
  * @since Jan 6, 2013 1:17:12 PM
  */
 @Document (collection = "ITEM_OCR")
-@CompoundIndexes ({@CompoundIndex (name = "user_item_ocr_idx", def = "{'RECEIPT': -1, 'USER_PROFILE_ID': 1}")})
+@CompoundIndexes ({@CompoundIndex (name = "user_item_ocr_idx", def = "{'RECEIPT': -1, 'RID': 1}")})
 public final class ItemEntityOCR extends BaseEntity {
 
     @Size (min = 1, max = 128)
-    @Field ("NAME")
+    @Field ("IN")
     private String name;
 
     @NumberFormat (style = Style.CURRENCY)
-    @Field ("PRICE")
+    @Field ("PRC")
     private String price;
 
-    @Field ("QUANTITY")
+    @Field ("QN")
     private Double quantity = 1.00;
 
     @NotNull
-    @Field ("TAX_ENUM")
+    @Field ("TT")
     private TaxEnum taxed = TaxEnum.NOT_TAXED;
 
     @NotNull
-    @Field ("SEQUENCE")
+    @Field ("SEQ")
     private int sequence;
 
     @DBRef
-    @Field ("RECEIPT")
-    private DocumentEntity receipt;
+    @Field ("DOCUMENT")
+    private DocumentEntity document;
 
-    @Field ("R_D")
+    @Field ("RTX")
     private String receiptDate;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
+    @Field ("RID")
     private String userProfileId;
 
     @DBRef
@@ -59,7 +59,7 @@ public final class ItemEntityOCR extends BaseEntity {
     private BizNameEntity bizName;
 
     @DBRef
-    @Field ("ET_R")
+    @Field ("EXPENSE_TAG")
     private ExpenseTagEntity expenseTag;
 
     /** To keep spring happy in recreating the bean from form during submit action */
@@ -113,13 +113,13 @@ public final class ItemEntityOCR extends BaseEntity {
         this.sequence = sequence;
     }
 
-    public DocumentEntity getReceipt() {
-        return this.receipt;
+    public DocumentEntity getDocument() {
+        return this.document;
     }
 
-    public void setReceipt(DocumentEntity receipt) {
-        this.receipt = receipt;
-        this.receiptDate = receipt.getReceiptDate();
+    public void setDocument(DocumentEntity document) {
+        this.document = document;
+        this.receiptDate = document.getReceiptDate();
     }
 
     public String getReceiptDate() {

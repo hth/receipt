@@ -140,7 +140,7 @@ public final class UserProfileEntity extends BaseEntity {
     private List<EducationEntry> education;
 
     @NotNull
-    @Field ("USER_LEVEL_ENUM")
+    @Field ("ULE")
     private UserLevelEnum level = UserLevelEnum.USER;
 
     /** To make bean happy */

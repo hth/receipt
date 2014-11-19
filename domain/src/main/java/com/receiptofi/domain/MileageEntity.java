@@ -29,8 +29,8 @@ import javax.validation.constraints.NotNull;
  */
 @Document (collection = "MILEAGE")
 @CompoundIndexes ({
-        @CompoundIndex (name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'USER_PROFILE_ID': -1}", unique = true),
-        @CompoundIndex (name = "mileage_s_idx", def = "{'S': -1, 'USER_PROFILE_ID': -1}", unique = true)
+        @CompoundIndex (name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'RID': -1}", unique = true),
+        @CompoundIndex (name = "mileage_s_idx", def = "{'S': -1, 'RID': -1}", unique = true)
 })
 public final class MileageEntity extends BaseEntity {
 
@@ -50,11 +50,11 @@ public final class MileageEntity extends BaseEntity {
     private Date endDate;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
+    @Field ("RID")
     private String userProfileId;
 
     @NotNull
-    @Field ("DOC_ID")
+    @Field ("DID")
     private String documentId;
 
     @DBRef

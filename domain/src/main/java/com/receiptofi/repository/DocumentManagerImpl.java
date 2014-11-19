@@ -74,9 +74,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public DocumentEntity findOne(String id, String userProfileId) {
+    public DocumentEntity findOne(String id, String receiptUserId) {
         return mongoTemplate.findOne(
-                query(where("id").is(id).and("USER_PROFILE_ID").is(userProfileId)),
+                query(where("id").is(id).and("RID").is(receiptUserId)),
                 DocumentEntity.class,
                 TABLE
         );
@@ -94,7 +94,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public DocumentEntity findRejectedOne(String id) {
         return mongoTemplate.findOne(
-                query(where("id").is(id).and("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)),
+                query(where("id").is(id).and("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)),
                 DocumentEntity.class,
                 TABLE
         );
@@ -106,9 +106,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public long numberOfPendingReceipts(String userProfileId) {
+    public long numberOfPendingReceipts(String receiptUserId) {
         return mongoTemplate.count(
-                query(where("USER_PROFILE_ID").is(userProfileId))
+                query(where("RID").is(receiptUserId))
                         .addCriteria(isActive())
                         .addCriteria(isNotDeleted()),
                 TABLE
@@ -116,9 +116,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public long numberOfRejectedReceipts(String userProfileId) {
+    public long numberOfRejectedReceipts(String receiptUserId) {
         return mongoTemplate.count(
-                query(where("USER_PROFILE_ID").is(userProfileId).and("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT))
+                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT))
                         .addCriteria(isNotActive())
                         .addCriteria(isDeleted()),
                 TABLE
@@ -126,9 +126,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public List<DocumentEntity> getAllPending(String userProfileId) {
+    public List<DocumentEntity> getAllPending(String receiptUserId) {
         return mongoTemplate.find(
-                query(where("USER_PROFILE_ID").is(userProfileId))
+                query(where("RID").is(receiptUserId))
                         .addCriteria(isActive())
                         .addCriteria(isNotDeleted())
                         .with(new Sort(Direction.ASC, "C")),
@@ -138,9 +138,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public List<DocumentEntity> getAllRejected(String userProfileId) {
+    public List<DocumentEntity> getAllRejected(String receiptUserId) {
         return mongoTemplate.find(
-                query(where("USER_PROFILE_ID").is(userProfileId).and("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT))
+                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT))
                         .addCriteria(isNotActive())
                         .addCriteria(isDeleted())
                         .with(new Sort(Direction.ASC, "C")),
@@ -153,7 +153,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     public List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay) {
         return mongoTemplate.find(
                 query(
-                        where("DS_E").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)
+                        where("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)
                                 .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay)
                         ))
                         .addCriteria(isNotActive())

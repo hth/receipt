@@ -19,32 +19,32 @@ public interface MessageManager extends RepositoryManager<MessageDocumentEntity>
 
     List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit);
 
-    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status);
+    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status);
 
-    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String userProfileId, DocumentStatusEnum status, int limit);
+    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status, int limit);
 
     List<MessageDocumentEntity> findAllPending();
 
-    List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status);
+    List<MessageDocumentEntity> findPending(String emailId, String receiptUserId, DocumentStatusEnum status);
 
-    WriteResult updateObject(String receiptOCRId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
+    WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.
      * Note: User has to complete all the messages in their queue before logging out of their shift.
      * TODO: May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
      *
-     * @param receiptOCRId
+     * @param documentId
      * @param value
      * @return
      */
-    WriteResult undoUpdateObject(String receiptOCRId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
+    WriteResult undoUpdateObject(String documentId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * Delete all the messages that are associated with DocumentEntity.
      * Process will include current and previous re-check request messages for the receipt
      *
-     * @param receiptOCRId
+     * @param documentId
      */
-    void deleteAllForReceiptOCR(String receiptOCRId);
+    void deleteAllForReceiptOCR(String documentId);
 }

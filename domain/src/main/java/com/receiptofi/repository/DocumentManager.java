@@ -13,11 +13,11 @@ import java.util.List;
  */
 public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
-    long numberOfPendingReceipts(String userProfileId);
+    long numberOfPendingReceipts(String receiptUserId);
 
-    long numberOfRejectedReceipts(String userProfileId);
+    long numberOfRejectedReceipts(String receiptUserId);
 
-    DocumentEntity findOne(String documentId, String userProfileId);
+    DocumentEntity findOne(String documentId, String receiptUserId);
 
     /**
      * Mostly used by technician and above level
@@ -38,18 +38,18 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     /**
      * Get all the pending receipts
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<DocumentEntity> getAllPending(String userProfileId);
+    List<DocumentEntity> getAllPending(String receiptUserId);
 
     /**
      * Get all the rejected receipts
      *
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    List<DocumentEntity> getAllRejected(String userProfileId);
+    List<DocumentEntity> getAllRejected(String receiptUserId);
 
     List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay);
 }

@@ -36,7 +36,7 @@ public final class InviteEntity extends BaseEntity {
     private UserProfileEntity invited;
 
     @DBRef
-    @Field ("IN_BY")
+    @Field ("INV")
     private UserAccountEntity invitedBy;
 
     public static InviteEntity newInstance(String email, String authenticationKey, UserProfileEntity invited, UserAccountEntity invitedBy) {

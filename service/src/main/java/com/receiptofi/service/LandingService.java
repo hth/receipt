@@ -304,7 +304,7 @@ public final class LandingService {
             fileSystemService.save(fileSystem);
             documentEntity.addReceiptBlobId(fileSystem);
 
-            documentEntity.setUserProfileId(uploadReceiptImage.getRid());
+            documentEntity.setReceiptUserId(uploadReceiptImage.getRid());
             //Cannot pre-select it for now
             //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
@@ -317,8 +317,8 @@ public final class LandingService {
             documentManager.save(documentEntity);
             itemOCRManager.saveObjects(items);
 
-            LOG.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getUserProfileId());
-            UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(documentEntity.getUserProfileId());
+            LOG.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getReceiptUserId());
+            UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(documentEntity.getReceiptUserId());
             senderJMS.send(documentEntity, userProfile);
         } catch (Exception exce) {
             LOG.error("Exception occurred during saving receipt={}", exce.getLocalizedMessage(), exce);

@@ -22,14 +22,14 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String userProfileId;
+    private String receiptUserId;
 
     @NotNull
     @Field ("DID")
     private String deviceId;
 
-    private RegisteredDeviceEntity(String userProfileId, String deviceId) {
-        this.userProfileId = userProfileId;
+    private RegisteredDeviceEntity(String receiptUserId, String deviceId) {
+        this.receiptUserId = receiptUserId;
         this.deviceId = deviceId;
     }
 
@@ -37,12 +37,12 @@ public class RegisteredDeviceEntity extends BaseEntity {
         return new RegisteredDeviceEntity(userProfileId, deviceId);
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public String getDeviceId() {

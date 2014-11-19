@@ -59,21 +59,21 @@ public class ReceiptService {
      * @param receiptId
      * @return
      */
-    public ReceiptEntity findReceipt(String receiptId, String userProfileId) {
-        return receiptManager.findReceipt(receiptId, userProfileId);
+    public ReceiptEntity findReceipt(String receiptId, String receiptUserId) {
+        return receiptManager.findReceipt(receiptId, receiptUserId);
     }
 
     /**
      * @param dateTime
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
-    public List<ReceiptEntity> findReceipt(DateTime dateTime, String userProfileId) {
+    public List<ReceiptEntity> findReceipt(DateTime dateTime, String receiptUserId) {
         int year = dateTime.getYear();
         int month = dateTime.getMonthOfYear();
         int day = dateTime.getDayOfMonth();
 
-        return receiptManager.findThisDayReceipts(year, month, day, userProfileId);
+        return receiptManager.findThisDayReceipts(year, month, day, receiptUserId);
     }
 
     /**
@@ -81,8 +81,8 @@ public class ReceiptService {
      *
      * @param receiptId - Receipt id to delete
      */
-    public boolean deleteReceipt(String receiptId, String userProfileId) throws Exception {
-        ReceiptEntity receipt = receiptManager.findOne(receiptId, userProfileId);
+    public boolean deleteReceipt(String receiptId, String receiptUserId) throws Exception {
+        ReceiptEntity receipt = receiptManager.findOne(receiptId, receiptUserId);
         if (receipt == null) {
             return false;
         }
@@ -98,12 +98,12 @@ public class ReceiptService {
                 commentManager.deleteHard(receipt.getNotes());
             }
 
-            if (!StringUtils.isEmpty(receipt.getReceiptOCRId())) {
-                DocumentEntity documentEntity = documentManager.findOne(receipt.getReceiptOCRId(), userProfileId);
+            if (!StringUtils.isEmpty(receipt.getDocumentId())) {
+                DocumentEntity documentEntity = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
                 if (documentEntity != null) {
                     itemOCRManager.deleteWhereReceipt(documentEntity);
                     documentManager.deleteHard(documentEntity);
-                    receipt.setReceiptOCRId(null);
+                    receipt.setDocumentId(null);
                 }
             }
 
@@ -119,13 +119,13 @@ public class ReceiptService {
      * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items. Then delete all the items.
      *
      * @param receiptId
-     * @param userProfileId
+     * @param receiptUserId
      * @throws Exception
      */
-    public void reopen(String receiptId, String userProfileId) throws Exception {
+    public void reopen(String receiptId, String receiptUserId) throws Exception {
         try {
-            ReceiptEntity receipt = receiptManager.findOne(receiptId, userProfileId);
-            if (receipt.getReceiptOCRId() == null) {
+            ReceiptEntity receipt = receiptManager.findOne(receiptId, receiptUserId);
+            if (receipt.getDocumentId() == null) {
                 LOG.error("No receiptOCR id found in Receipt={}, aborting the reopen process", receipt.getId());
                 throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
             } else {
@@ -133,7 +133,7 @@ public class ReceiptService {
                     receipt.inActive();
                     List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
 
-                    DocumentEntity receiptOCR = documentManager.findOne(receipt.getReceiptOCRId(), userProfileId);
+                    DocumentEntity receiptOCR = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
                     receiptOCR.active();
                     receiptOCR.setDocumentStatus(DocumentStatusEnum.TURK_REQUEST);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());
@@ -150,7 +150,7 @@ public class ReceiptService {
                     itemManager.deleteWhereReceipt(receipt);
 
                     LOG.info("DocumentEntity @Id after save: " + receiptOCR.getId());
-                    UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(receiptOCR.getUserProfileId());
+                    UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(receiptOCR.getReceiptUserId());
                     senderJMS.send(receiptOCR, userProfile);
                 } else {
                     LOG.error("Attempt to invoke re-check on Receipt={}, Browser Back Action performed", receipt.getId());
@@ -174,10 +174,10 @@ public class ReceiptService {
      * Used when data is read from Receipt and Item Entity during re-check process
      *
      * @param items
-     * @param receiptOCR
+     * @param document
      * @return
      */
-    public List<ItemEntityOCR> getItemEntityFromItemEntityOCR(List<ItemEntity> items, DocumentEntity receiptOCR) {
+    public List<ItemEntityOCR> getItemEntityFromItemEntityOCR(List<ItemEntity> items, DocumentEntity document) {
         List<ItemEntityOCR> listOfItems = new ArrayList<>();
 
         for (ItemEntity item : items) {
@@ -187,14 +187,14 @@ public class ReceiptService {
                 itemOCR.setPrice(item.getPrice().toString());
                 itemOCR.setTaxed(item.getTaxed());
                 itemOCR.setSequence(item.getSequence());
-                itemOCR.setReceipt(receiptOCR);
-                itemOCR.setUserProfileId(receiptOCR.getUserProfileId());
+                itemOCR.setDocument(document);
+                itemOCR.setUserProfileId(document.getReceiptUserId());
                 itemOCR.setExpenseTag(item.getExpenseTag());
                 itemOCR.setCreated(item.getCreated());
                 itemOCR.setQuantity(item.getQuantity());
                 itemOCR.setUpdated();
 
-                itemOCR.setBizName(receiptOCR.getBizName());
+                itemOCR.setBizName(document.getBizName());
                 listOfItems.add(itemOCR);
             }
         }

@@ -32,14 +32,14 @@ import javax.validation.constraints.NotNull;
  */
 @Document (collection = "RECEIPT")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "receipt_idx", def = "{'FS': -1, 'USER_PROFILE_ID': -1}"),
-        @CompoundIndex (name = "receipt_unique_idx", def = "{'CHECK_SUM': -1}", unique = true),
-        @CompoundIndex (name = "receipt_expense_Report", def = "{'EXP_FILENAME': -1}")
+        @CompoundIndex (name = "receipt_idx", def = "{'FS': -1, 'RID': -1}"),
+        @CompoundIndex (name = "receipt_unique_idx", def = "{'CS': -1}", unique = true),
+        @CompoundIndex (name = "receipt_expense_Report", def = "{'EXF': -1}")
 })
 public final class ReceiptEntity extends BaseEntity {
 
     @NotNull
-    @Field ("DS_E")
+    @Field ("DS")
     private DocumentStatusEnum receiptStatus;
 
     @DBRef
@@ -48,24 +48,24 @@ public final class ReceiptEntity extends BaseEntity {
 
     @NotNull
     @DateTimeFormat (iso = ISO.DATE_TIME)
-    @Field ("RECEIPT_DATE")
+    @Field ("RTXD")
     private Date receiptDate;
 
     @NotNull
-    @Field ("YEAR")
+    @Field ("Y")
     private int year;
 
     @NotNull
-    @Field ("MONTH")
+    @Field ("M")
     private int month;
 
     @NotNull
-    @Field ("DAY")
+    @Field ("T")
     private int day;
 
     @NotNull
     @NumberFormat (style = Style.CURRENCY)
-    @Field ("TOTAL")
+    @Field ("TOT")
     private Double total;
 
     @NumberFormat (style = Style.CURRENCY)
@@ -74,12 +74,12 @@ public final class ReceiptEntity extends BaseEntity {
 
     @NotNull
     @NumberFormat (style = Style.PERCENT)
-    @Field ("PERCENT_TAX")
+    @Field ("PTX")
     private String percentTax;
 
     @NotNull
-    @Field ("USER_PROFILE_ID")
-    private String userProfileId;
+    @Field ("RID")
+    private String receiptUserId;
 
     @DBRef
     @Field ("BIZ_NAME")
@@ -90,28 +90,28 @@ public final class ReceiptEntity extends BaseEntity {
     private BizStoreEntity bizStore;
 
     @NotNull
-    @Field ("RECEIPT_OCR_ID")
-    private String receiptOCRId;
+    @Field ("DID")
+    private String documentId;
 
     @DBRef
-    @Field ("COMMENT_RECHECK")
+    @Field ("CR")
     private CommentEntity recheckComment;
 
     @DBRef
-    @Field ("COMMENT_NOTES")
+    @Field ("CN")
     private CommentEntity notes;
 
     /**
-     * Note: During recheck of a receipt EXP_FILENAME is dropped as this is
+     * Note: During recheck of a receipt EXF is dropped as this is
      * not persisted between the two event
      */
-    @Field ("EXP_FILENAME")
+    @Field ("EXF")
     private String expenseReportInFS;
 
     /**
      * Used to flush or avoid duplicate receipt entry
      */
-    @Field ("CHECK_SUM")
+    @Field ("CS")
     private String checksum;
 
     /** To keep bean happy */
@@ -119,14 +119,14 @@ public final class ReceiptEntity extends BaseEntity {
     }
 
     @Deprecated
-    private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity fileSystemEntities, String userProfileId) {
+    private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity fileSystemEntities, String receiptUserId) {
         super();
         this.receiptDate = receiptDate;
         this.total = total;
         this.tax = tax;
         this.receiptStatus = receiptStatus;
         this.fileSystemEntities.add(fileSystemEntities);
-        this.userProfileId = userProfileId;
+        this.receiptUserId = receiptUserId;
     }
 
     /**
@@ -245,12 +245,12 @@ public final class ReceiptEntity extends BaseEntity {
         return StringUtils.substring(this.percentTax, 0, 5);
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String userProfileId) {
+        this.receiptUserId = userProfileId;
     }
 
     public BizNameEntity getBizName() {
@@ -269,12 +269,12 @@ public final class ReceiptEntity extends BaseEntity {
         this.bizStore = bizStore;
     }
 
-    public String getReceiptOCRId() {
-        return receiptOCRId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setReceiptOCRId(String receiptOCRId) {
-        this.receiptOCRId = receiptOCRId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public CommentEntity getRecheckComment() {
@@ -304,7 +304,7 @@ public final class ReceiptEntity extends BaseEntity {
      * 2) Receipt not deleted
      */
     public void computeChecksum() {
-        this.checksum = HashText.calculateChecksum(userProfileId, receiptDate, total, isDeleted());
+        this.checksum = HashText.calculateChecksum(receiptUserId, receiptDate, total, isDeleted());
     }
 
     public String getExpenseReportInFS() {
@@ -327,10 +327,10 @@ public final class ReceiptEntity extends BaseEntity {
                 ", total=" + total +
                 ", tax=" + tax +
                 ", percentTax='" + percentTax + '\'' +
-                ", userProfileId='" + userProfileId + '\'' +
+                ", receiptUserId='" + receiptUserId + '\'' +
                 ", bizName=" + bizName +
                 ", bizStore=" + bizStore +
-                ", receiptOCRId='" + receiptOCRId + '\'' +
+                ", documentId='" + documentId + '\'' +
                 ", recheckComment=" + recheckComment +
                 ", notes=" + notes +
                 ", expenseReportInFS='" + expenseReportInFS + '\'' +

@@ -42,7 +42,7 @@ public final class ReceiptLandingView {
         receiptLandingView.setDate(receiptEntity.getReceiptDate());
         receiptLandingView.setTax(receiptEntity.getTax());
         receiptLandingView.setTotal(receiptEntity.getTotal());
-        receiptLandingView.setUserProfileId(receiptEntity.getUserProfileId());
+        receiptLandingView.setUserProfileId(receiptEntity.getReceiptUserId());
         receiptLandingView.setExpenseReportInFS(receiptEntity.getExpenseReportInFS());
 
         /** Remove all alpha numeric characters as it creates issues with 'id' */

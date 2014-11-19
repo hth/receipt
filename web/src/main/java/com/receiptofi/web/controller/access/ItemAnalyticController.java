@@ -81,7 +81,7 @@ public final class ItemAnalyticController {
             itemAnalyticForm.setYourHistoricalItems(yourItems);
 
             /** Loads expense types */
-            List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(item.getUserProfileId());
+            List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(item.getReceiptUserId());
             itemAnalyticForm.setExpenseTags(expenseTypes);
         }
 

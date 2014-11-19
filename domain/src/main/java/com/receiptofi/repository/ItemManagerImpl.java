@@ -105,7 +105,7 @@ public final class ItemManagerImpl implements ItemManager {
     @Deprecated
     @Override
     public ItemEntity findOne(String id) {
-        Sort sort = new Sort(Direction.ASC, "SEQUENCE");
+        Sort sort = new Sort(Direction.ASC, "SEQ");
         return mongoTemplate.findOne(query(where("id").is(id)).with(sort), ItemEntity.class, TABLE);
     }
 
@@ -113,19 +113,21 @@ public final class ItemManagerImpl implements ItemManager {
      * Use this method instead of findOne
      *
      * @param itemId
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
     @Override
-    public ItemEntity findItem(String itemId, String userProfileId) {
-        Query query = query(where("id").is(itemId).and("USER_PROFILE_ID").is(userProfileId));
+    public ItemEntity findItem(String itemId, String receiptUserId) {
+        Query query = query(where("id").is(itemId).and("RID").is(receiptUserId));
         return mongoTemplate.findOne(query, ItemEntity.class, TABLE);
     }
 
     @Override
     public List<ItemEntity> getAllItemsOfReceipt(String receiptId) {
-        Sort sort = new Sort(Direction.ASC, "SEQUENCE");
-        return mongoTemplate.find(query(where("RECEIPT.$id").is(new ObjectId(receiptId))).with(sort), ItemEntity.class, TABLE);
+        Sort sort = new Sort(Direction.ASC, "SEQ");
+        return mongoTemplate.find(
+                query(where("RECEIPT.$id").is(new ObjectId(receiptId))).with(sort),
+                ItemEntity.class, TABLE);
     }
 
     /**
@@ -152,15 +154,16 @@ public final class ItemManagerImpl implements ItemManager {
      * @return
      */
     @Override
-    public List<ItemEntity> findAllByNameLimitByDays(String name, String userProfileId, DateTime untilThisDay) {
-        // Can choose Item create date but if needs accuracy then find receipts for these items and filter receipts by date provided.
+    public List<ItemEntity> findAllByNameLimitByDays(String name, String receiptUserId, DateTime untilThisDay) {
+        // Can choose Item create date but if needs accuracy then find receipts for these items and filter
+        // receipts by date provided.
         // Not sure how much beneficial it would be other than more data crunching.
-        Criteria criteriaA = where("NAME").is(name);
+        Criteria criteriaA = where("IN").is(name);
         Query query = query(criteriaA);
 
         Criteria criteriaB;
-        if (userProfileId != null) {
-            criteriaB = where("USER_PROFILE_ID").is(userProfileId);
+        if (receiptUserId != null) {
+            criteriaB = where("RID").is(receiptUserId);
             query = query(criteriaA.andOperator(criteriaB.andOperator(isNotDeleted())));
         }
 
@@ -172,21 +175,22 @@ public final class ItemManagerImpl implements ItemManager {
      * receipt date to items
      *
      * @param itemEntity
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      */
     @Override
-    public List<ItemEntity> findAllByName(ItemEntity itemEntity, String userProfileId) {
-        if (itemEntity.getReceipt().getUserProfileId().equals(userProfileId)) {
-            Criteria criteria = where("NAME").is(itemEntity.getName())
-                    .and("USER_PROFILE_ID").is(userProfileId)
+    public List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId) {
+        if (itemEntity.getReceipt().getReceiptUserId().equals(receiptUserId)) {
+            Criteria criteria = where("IN").is(itemEntity.getName())
+                    .and("RID").is(receiptUserId)
                     .andOperator(
                             isNotDeleted()
                     );
 
             return mongoTemplate.find(query(criteria), ItemEntity.class, TABLE);
         } else {
-            LOG.error("One of the query is trying to get items for different User Profile Id: " + userProfileId + ", Item Id: " + itemEntity.getId());
+            LOG.error("One of the query is trying to get items for different rid={} item={}",
+                    receiptUserId, itemEntity.getId());
             return new LinkedList<>();
         }
     }
@@ -199,7 +203,7 @@ public final class ItemManagerImpl implements ItemManager {
     @Override
     public WriteResult updateObject(ItemEntity object) {
         Query query = query(where("id").is(object.getId()));
-        Update update = Update.update("NAME", object.getName());
+        Update update = Update.update("IN", object.getName());
         return mongoTemplate.updateFirst(query, entityUpdate(update), TABLE);
     }
 
@@ -219,7 +223,7 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public List<ItemEntity> findItems(String name, String bizName) {
-        Criteria criteriaI = where("NAME").regex(new StringTokenizer("^" + name).nextToken(), "i");
+        Criteria criteriaI = where("IN").regex(new StringTokenizer("^" + name).nextToken(), "i");
         Query query;
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
@@ -232,7 +236,7 @@ public final class ItemManagerImpl implements ItemManager {
         }
 
         //This makes just one of the field populated
-        query.fields().include("NAME");
+        query.fields().include("IN");
         return mongoTemplate.find(query, ItemEntity.class, TABLE);
     }
 
@@ -254,9 +258,9 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public long countItemsUsingExpenseType(String expenseTypeId, String userProfileId) {
-        Criteria criteria = where("ET_R.$id").is(new ObjectId(expenseTypeId))
-                .and("USER_PROFILE_ID").is(userProfileId);
+    public long countItemsUsingExpenseType(String expenseTypeId, String receiptUserId) {
+        Criteria criteria = where("EXPENSE_TAG.$id").is(new ObjectId(expenseTypeId))
+                .and("RID").is(receiptUserId);
 
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.count(query, ItemEntity.class);
@@ -271,19 +275,21 @@ public final class ItemManagerImpl implements ItemManager {
      */
     @Override
     public List<ItemEntity> getItemEntitiesForSpecificExpenseTypeForTheYear(ExpenseTagEntity expenseType) {
-        Criteria criteria = where("ET_R.$id").is(new ObjectId(expenseType.getId()))
-                .and("R_D").gte(DateUtil.startOfYear());
+        Criteria criteria = where("EXPENSE_TAG.$id").is(new ObjectId(expenseType.getId()))
+                .and("RTX").gte(DateUtil.startOfYear());
 
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
         return mongoTemplate.find(query, ItemEntity.class);
     }
 
     @Override
-    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String userProfileId) {
-        Criteria criteria = where("ET_R").is(StringUtils.trimToNull(null))
-                .and("USER_PROFILE_ID").is(userProfileId)
-                .and("R_D").gte(DateUtil.startOfYear());
+    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String receiptUserId) {
+        Criteria criteria = where("EXPENSE_TAG").is(StringUtils.trimToNull(null))
+                .and("RID").is(receiptUserId)
+                .and("RTX").gte(DateUtil.startOfYear());
 
-        return mongoTemplate.find(query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()), ItemEntity.class);
+        return mongoTemplate.find(
+                query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()),
+                ItemEntity.class);
     }
 }

@@ -55,8 +55,8 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public MileageEntity findOne(String id, String userProfileId) {
-        return mongoTemplate.findOne(query(where("id").is(id)).addCriteria(where("USER_PROFILE_ID").is(userProfileId)), MileageEntity.class, TABLE);
+    public MileageEntity findOne(String id, String receiptUserId) {
+        return mongoTemplate.findOne(query(where("id").is(id)).addCriteria(where("RID").is(receiptUserId)), MileageEntity.class, TABLE);
     }
 
     @Override
@@ -70,8 +70,8 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public List<MileageEntity> getMileageForThisMonth(String userProfileId, DateTime startMonth, DateTime endMonth) {
-        Criteria criteria = where("USER_PROFILE_ID").is(userProfileId).and("C").gte(startMonth.toDate()).lt(endMonth.toDate());
+    public List<MileageEntity> getMileageForThisMonth(String receiptUserId, DateTime startMonth, DateTime endMonth) {
+        Criteria criteria = where("RID").is(receiptUserId).and("C").gte(startMonth.toDate()).lt(endMonth.toDate());
 
         Sort sort = new Sort(Sort.Direction.DESC, "S");
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
@@ -79,18 +79,18 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public boolean updateStartDate(String mileageId, DateTime startDate, String userProfileId) {
-        return updateDateInRecord(mileageId, "SD", startDate, userProfileId).getLastError().ok();
+    public boolean updateStartDate(String mileageId, DateTime startDate, String receiptUserId) {
+        return updateDateInRecord(mileageId, "SD", startDate, receiptUserId).getLastError().ok();
     }
 
     @Override
-    public boolean updateEndDate(String mileageId, DateTime endDate, String userProfileId) {
-        return updateDateInRecord(mileageId, "ED", endDate, userProfileId).getLastError().ok();
+    public boolean updateEndDate(String mileageId, DateTime endDate, String receiptUserId) {
+        return updateDateInRecord(mileageId, "ED", endDate, receiptUserId).getLastError().ok();
     }
 
-    private WriteResult updateDateInRecord(String mileageId, String fieldName, DateTime dateTime, String userProfileId) {
+    private WriteResult updateDateInRecord(String mileageId, String fieldName, DateTime dateTime, String receiptUserId) {
         return mongoTemplate.updateFirst(
-                query(where("id").is(mileageId).and("USER_PROFILE_ID").is(userProfileId)),
+                query(where("id").is(mileageId).and("RID").is(receiptUserId)),
                 update(fieldName, dateTime.toDate()),
                 MileageEntity.class
         );
