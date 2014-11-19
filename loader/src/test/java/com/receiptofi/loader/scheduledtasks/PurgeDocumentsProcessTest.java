@@ -1,18 +1,14 @@
 package com.receiptofi.loader.scheduledtasks;
 
-import static org.junit.Assert.*;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.atMost;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.repository.DocumentManager;
-
-import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,11 @@
 package com.receiptofi.service;
 
-import static com.receiptofi.domain.types.DocumentStatusEnum.*;
+import java.util.List;
+
+import static com.receiptofi.domain.types.DocumentStatusEnum.OCR_PROCESSED;
+import static com.receiptofi.domain.types.DocumentStatusEnum.TURK_PROCESSED;
+import static com.receiptofi.domain.types.DocumentStatusEnum.TURK_RECEIPT_REJECT;
+import static com.receiptofi.domain.types.DocumentStatusEnum.TURK_REQUEST;
 
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -31,8 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * User: hitender

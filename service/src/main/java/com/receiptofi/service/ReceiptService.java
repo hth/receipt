@@ -1,5 +1,8 @@
 package com.receiptofi.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CommentEntity;
@@ -28,9 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: hitender

@@ -1,8 +1,8 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.NotificationEntity;
-
 import java.util.List;
+
+import com.receiptofi.domain.NotificationEntity;
 
 /**
  * User: hitender

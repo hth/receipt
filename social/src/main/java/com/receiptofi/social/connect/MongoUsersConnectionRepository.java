@@ -1,5 +1,9 @@
 package com.receiptofi.social.connect;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.annotation.Social;
 
@@ -11,10 +15,6 @@ import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 //sadly there is no default implementation for Mongo :(
 @Social

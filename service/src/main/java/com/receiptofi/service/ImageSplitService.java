@@ -1,15 +1,5 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.shared.UploadDocumentImage;
-import com.receiptofi.utils.CreateTempFile;
-
-import org.apache.commons.io.FilenameUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,6 +9,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+
+import com.receiptofi.domain.shared.UploadDocumentImage;
+import com.receiptofi.utils.CreateTempFile;
+
+import org.apache.commons.io.FilenameUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.stereotype.Service;
 
 /**
  * User: hitender

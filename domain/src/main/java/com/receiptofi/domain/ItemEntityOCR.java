@@ -3,6 +3,9 @@
  */
 package com.receiptofi.domain;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.receiptofi.domain.types.TaxEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -12,9 +15,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * @author hitender

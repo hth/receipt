@@ -1,11 +1,11 @@
 package com.receiptofi.domain.value;
 
-import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.BizStoreEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.BizStoreEntity;
 
 /**
  * TODO this class can be further extended to individually list out the expense in that store on a particular date.

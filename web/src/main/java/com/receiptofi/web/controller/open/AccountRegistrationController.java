@@ -3,6 +3,10 @@
  */
 package com.receiptofi.web.controller.open;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -33,10 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author hitender

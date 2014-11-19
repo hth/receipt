@@ -1,14 +1,14 @@
 package com.receiptofi.web.util;
 
+import java.util.Arrays;
+import java.util.Date;
+
 import com.receiptofi.utils.DateUtil;
 
 import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Helps in profiling the duration it takes to complete a task.

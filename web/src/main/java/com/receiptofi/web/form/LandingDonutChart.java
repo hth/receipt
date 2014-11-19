@@ -1,8 +1,8 @@
 package com.receiptofi.web.form;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigDecimal;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Contains data associated to be shown on donut pie chart
