@@ -52,7 +52,7 @@ public final class ItemEntityOCR extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String userProfileId;
+    private String receiptUserId;
 
     @DBRef
     @Field ("BIZ_NAME")
@@ -130,12 +130,12 @@ public final class ItemEntityOCR extends BaseEntity {
         this.receiptDate = receiptDate;
     }
 
-    public String getUserProfileId() {
-        return userProfileId;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
-    public void setUserProfileId(String userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public BizNameEntity getBizName() {

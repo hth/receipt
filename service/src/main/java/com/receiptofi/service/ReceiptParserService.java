@@ -76,7 +76,7 @@ public final class ReceiptParserService {
         itemOCR.setTaxed(TaxEnum.NOT_TAXED);
         itemOCR.setSequence(sequence);
         itemOCR.setDocument(documentEntity);
-        itemOCR.setUserProfileId(documentEntity.getReceiptUserId());
+        itemOCR.setReceiptUserId(documentEntity.getReceiptUserId());
         itemOCR.setBizName(documentEntity.getBizName());
         return itemOCR;
     }

@@ -188,7 +188,7 @@ public class ReceiptService {
                 itemOCR.setTaxed(item.getTaxed());
                 itemOCR.setSequence(item.getSequence());
                 itemOCR.setDocument(document);
-                itemOCR.setUserProfileId(document.getReceiptUserId());
+                itemOCR.setReceiptUserId(document.getReceiptUserId());
                 itemOCR.setExpenseTag(item.getExpenseTag());
                 itemOCR.setCreated(item.getCreated());
                 itemOCR.setQuantity(item.getQuantity());
