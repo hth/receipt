@@ -33,7 +33,7 @@ public abstract class BaseController {
     @Autowired private LoginService loginService;
 
     public String getAuth(String profileId) {
-        LOG.debug("Find user with profileId: " + profileId);
+        LOG.debug("Find user with profileId={}", profileId);
         return getAuth(userProfileManager.findByReceiptUserId(profileId));
     }
 
@@ -64,7 +64,7 @@ public abstract class BaseController {
     }
 
     /**
-     * Validates if the Profile Id and Auth Key is not empty and valid as Object ID
+     * Validates if the Profile Id and Auth Key is not empty and valid as Object ID.
      *
      * @param profileId
      * @param authKey
@@ -75,7 +75,7 @@ public abstract class BaseController {
     }
 
     /**
-     * Header for failure
+     * Header for failure.
      *
      * @return
      */

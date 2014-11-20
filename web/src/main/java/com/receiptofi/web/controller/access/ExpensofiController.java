@@ -92,7 +92,9 @@ public final class ExpensofiController {
                 InputStream is = null;
                 try {
                     is = gridFSDBFile.getInputStream();
-                    AnchorFileInExcel anchorFileInExcel = new AnchorFileInExcel(IOUtils.toByteArray(is), gridFSDBFile.getContentType());
+                    AnchorFileInExcel anchorFileInExcel = new AnchorFileInExcel(
+                            IOUtils.toByteArray(is),
+                            gridFSDBFile.getContentType());
                     anchorFileInExcels.add(anchorFileInExcel);
                 } catch (IOException exce) {
                     LOG.error("Failed to load receipt image: " + exce.getLocalizedMessage());
@@ -107,7 +109,11 @@ public final class ExpensofiController {
                 model.addAttribute("file-name", filename);
                 expensofiExcelView.generateExcel(model.asMap(), new HSSFWorkbook());
                 updateReceiptWithExcelFilename(receiptEntity, filename);
-                notificationService.addNotification(receiptEntity.getBizName().getBusinessName() + " expense report created", NotificationTypeEnum.EXPENSE_REPORT, receiptEntity);
+                notificationService.addNotification(
+                        receiptEntity.getBizName().getBusinessName() +
+                                " expense report created",
+                        NotificationTypeEnum.EXPENSE_REPORT,
+                        receiptEntity);
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
                 return new ExcelFileName(filename).asJson();
@@ -130,7 +136,9 @@ public final class ExpensofiController {
     private List<ItemEntity> getItemEntities(String receiptUserId, JsonArray jsonItems) {
         List<ItemEntity> items = new ArrayList<>();
         for (Object jsonItem : jsonItems) {
-            ItemEntity ie = itemAnalyticService.findItemById(jsonItem.toString().substring(1, jsonItem.toString().length() - 1), receiptUserId);
+            ItemEntity ie = itemAnalyticService.findItemById(
+                    jsonItem.toString().substring(1, jsonItem.toString().length() - 1),
+                    receiptUserId);
             items.add(ie);
         }
         return items;

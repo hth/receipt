@@ -33,7 +33,7 @@ public final class CompleteProfileController {
     private int maxSkipProfileUpdate;
 
     /**
-     * Loads initial form
+     * Loads initial form.
      *
      * @return
      */

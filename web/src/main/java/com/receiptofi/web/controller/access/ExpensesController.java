@@ -47,7 +47,13 @@ public final class ExpensesController {
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping (value = "{tag}", method = RequestMethod.GET)
-    public ModelAndView forExpenseType(@PathVariable String tag, @ModelAttribute ("expenseForm") ExpenseForm expenseForm) {
+    public ModelAndView forExpenseType(
+            @PathVariable
+            String tag,
+
+            @ModelAttribute ("expenseForm")
+            ExpenseForm expenseForm
+    ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

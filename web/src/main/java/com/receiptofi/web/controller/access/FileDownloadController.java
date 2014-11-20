@@ -71,7 +71,13 @@ public final class FileDownloadController {
      * @param response
      */
     @RequestMapping (method = RequestMethod.GET, value = "/receiptimage/{imageId}")
-    public void getDocumentImage(@PathVariable String imageId, HttpServletRequest request, HttpServletResponse response) {
+    public void getDocumentImage(
+            @PathVariable
+            String imageId,
+
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -98,7 +104,8 @@ public final class FileDownloadController {
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         } catch (IOException e) {
-            LOG.error("Image retrieval error occurred for imageId={} rid={} reason={}", imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+            LOG.error("Image retrieval error occurred for imageId={} rid={} reason={}",
+                    imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
         }
     }
@@ -117,13 +124,18 @@ public final class FileDownloadController {
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         } catch (IOException e) {
-            LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}", receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+            LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}",
+                    receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
         }
     }
 
     private void setHeaderForExcel(ReceiptEntity receiptEntity, HttpServletResponse response) {
-        response.addHeader("Content-Disposition", "inline; filename=" + receiptEntity.getBizName().getBusinessName() + "-" + Formatter.toSmallDate(receiptEntity.getReceiptDate()));
+        response.addHeader("Content-Disposition",
+                "inline; filename=" +
+                        receiptEntity.getBizName().getBusinessName() +
+                        "-" +
+                        Formatter.toSmallDate(receiptEntity.getReceiptDate()));
         response.setContentType("application/vnd.ms-excel");
     }
 
