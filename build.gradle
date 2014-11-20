@@ -121,6 +121,14 @@ subprojects {
         }
     }
 
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination "${buildDir}/reports/jacocoHtml"
+        }
+    }
+
     repositories {
         mavenCentral()
         maven { url "http://repo.spring.io/libs-milestone" }
