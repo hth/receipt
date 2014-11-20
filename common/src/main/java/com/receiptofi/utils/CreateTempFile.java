@@ -1,11 +1,11 @@
 package com.receiptofi.utils;
 
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;

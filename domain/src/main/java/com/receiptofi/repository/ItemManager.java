@@ -3,8 +3,6 @@
  */
 package com.receiptofi.repository;
 
-import java.util.List;
-
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.ExpenseTagEntity;
@@ -12,6 +10,8 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 
 import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * @author hitender
