@@ -1155,6 +1155,7 @@
         </XML>
       </value>
     </option>
+    <option name="PREFERRED_PROJECT_CODE_STYLE" value="receiptofi_code_style" />
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="hitender">
