@@ -601,4 +601,4 @@ publishing {
 
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
-defaultTasks 'clean', 'build', 'jar', 'war', 'testReport'
+defaultTasks 'clean', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport'
