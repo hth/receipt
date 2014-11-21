@@ -45,7 +45,7 @@
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31556926" />
 
     <!-- for setting up scheduling of task -->
-    <task:executor id="taskExecutor" pool-size="100" />
+    <task:executor id="taskExecutor" pool-size="10" />
     <task:scheduler id="scheduler" pool-size="5" />
     <task:annotation-driven executor="taskExecutor" scheduler="scheduler"/>
     <!-- for setting up scheduling of task ends -->
