@@ -251,7 +251,7 @@
                         x: -20
                     },
                     xAxis: {
-                        categories: ['Jan', 'Feb']
+                        categories: []
                     },
                     yAxis: {
                         title: {
@@ -264,7 +264,7 @@
                         }]
                     },
                     tooltip: {
-                        valueSuffix: '°C'
+                        valueSuffix: ''
                     },
                     legend: {
                         layout: 'vertical',
@@ -275,6 +275,7 @@
                     series: []
                 };
 
+                var d = [];
                 $.getJSON('${pageContext. request. contextPath}/display/loadStats.json', function(json) {
                     $.map(json, function(value, key) {
                         $.map(value, function(count, day) {
@@ -285,12 +286,15 @@
                                 };
                                 series.name = day;
                                 series.data.push(count);
-                                options.series.push(series);
+                                d.push(series)
                             } else {
-                                options.xAxis.categories.push(count);
+                                options.xAxis.categories = count;
                             }
                         });
                     });
+
+                    options.series = d;
+                    console.log(options.series);
 
                     // Create the chart
                     chart = new Highcharts.Chart(options);
