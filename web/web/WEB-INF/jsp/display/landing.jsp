@@ -275,7 +275,7 @@
                     series: []
                 };
 
-                var d = [];
+                var seriesData = [];
                 $.getJSON('${pageContext. request. contextPath}/display/loadStats.json', function(json) {
                     $.map(json, function(value, key) {
                         $.map(value, function(count, day) {
@@ -286,15 +286,14 @@
                                 };
                                 series.name = day;
                                 series.data.push(count);
-                                d.push(series)
+                                seriesData.push(series)
                             } else {
                                 options.xAxis.categories = count;
                             }
                         });
                     });
 
-                    options.series = d;
-                    console.log(options.series);
+                    options.series = seriesData;
 
                     // Create the chart
                     chart = new Highcharts.Chart(options);
