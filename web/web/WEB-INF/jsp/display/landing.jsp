@@ -285,7 +285,7 @@
                                     data: []
                                 };
                                 series.name = day;
-                                series.data.push(count);
+                                series.data = count;
                                 seriesData.push(series)
                             } else {
                                 options.xAxis.categories = count;
@@ -305,7 +305,7 @@
 <body>
     Hello
     Pending: ${pending}
-    Processed: ${processedToday}
+    Processed Today: ${processedToday}
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 </body>
