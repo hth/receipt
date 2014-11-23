@@ -344,30 +344,30 @@
 <div class="main clearfix">
     <table width="100%">
         <tr>
-            <td width="30%">
-                <table align="center" style="text-align: center">
+            <td width="30%" style="text-align: center">
+                <table align="left">
                     <tr>
-                        <td width="30%" style="color: yellowgreen; font-size: 70px;">
+                        <td width="30%" style="color: yellowgreen; font-size: 100px; font-family: Arial, Helvetica, sans-serif;">
                             ${processedToday}
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-size: 16px; letter-spacing: 2px;">
+                        <td style="font-size: 18px; letter-spacing: 2px; font-family: Arial, Helvetica, sans-serif; font-weight: bold">
                             Processed Today
                         </td>
                     </tr>
                 </table>
-
             </td>
+
             <td width="30%" style="text-align: center">
                 <table align="left">
                     <tr>
-                        <td width="30%" style="color: darkred; font-size: 175px; font-family: Arial, Helvetica, sans-serif">
+                        <td width="30%" style="color: darkred; font-size: 175px; font-family: Arial, Helvetica, sans-serif;">
                             ${pending}
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-size: 18px; letter-spacing: 2px;">
+                        <td style="font-size: 18px; letter-spacing: 2px; font-family: Arial, Helvetica, sans-serif; font-weight: bold">
                             Pending
                         </td>
                     </tr>
@@ -378,7 +378,7 @@
             </td>
         </tr>
     </table>
-
+    </br>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 <div class="footer-tooth clearfix">
