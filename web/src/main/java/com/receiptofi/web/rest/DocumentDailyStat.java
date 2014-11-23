@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Converts daily stats data to JSON.
  * User: hitender
  * Date: 11/21/14 11:15 AM
  */
@@ -39,7 +40,7 @@ public class DocumentDailyStat {
     private static final SimpleDateFormat SDF = new SimpleDateFormat("MM/dd/yy");
 
     @JsonProperty ("documentStats")
-    private Map<String, List> data = new LinkedHashMap<>();
+    private Map<String, List> documentStats = new LinkedHashMap<>();
 
     public DocumentDailyStat(List<DocumentDailyStatEntity> dailyStatsEntities) {
         Assert.notNull(dailyStatsEntities);
@@ -53,10 +54,16 @@ public class DocumentDailyStat {
             for (DocumentStatusEnum key : documentDailyStatEntity.getDocumentProcessed().keySet()) {
                 if (stats.containsKey(key)) {
                     Map<String, Integer> data = stats.get(key);
-                    data.put(SDF.format(documentDailyStatEntity.getDate()), documentDailyStatEntity.getDocumentProcessed().get(key));
+                    data.put(
+                            SDF.format(documentDailyStatEntity.getDate()),
+                            documentDailyStatEntity.getDocumentProcessed().get(key)
+                    );
                 } else {
                     Map<String, Integer> data = new LinkedHashMap<>();
-                    data.put(SDF.format(documentDailyStatEntity.getDate()), documentDailyStatEntity.getDocumentProcessed().get(key));
+                    data.put(
+                            SDF.format(documentDailyStatEntity.getDate()),
+                            documentDailyStatEntity.getDocumentProcessed().get(key)
+                    );
                     stats.put(key, data);
                 }
             }
@@ -71,11 +78,11 @@ public class DocumentDailyStat {
             List s = new LinkedList<>(stat.values());
             /** Reverse list in important for charting */
             Collections.reverse(s);
-            data.put(key.getDescription(), s);
+            documentStats.put(key.getDescription(), s);
         }
         List l = new LinkedList<>(dates);
         /** Reverse list in important for charting */
         Collections.reverse(l);
-        data.put("dates", l);
+        documentStats.put("dates", l);
     }
 }
