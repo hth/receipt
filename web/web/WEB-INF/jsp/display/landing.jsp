@@ -357,10 +357,10 @@
 <div class="main clearfix">
     <table width="100%" style="padding: 0px 10px 15px 10px;">
         <tr>
-            <td width="30%" style="text-align: center">
+            <td width="20%" style="text-align: center;">
                 <table align="left">
                     <tr>
-                        <td width="30%" style="color: yellowgreen; font-size: 100px; font-family: Arial, Helvetica, sans-serif;">
+                        <td width="20%" style="color: yellowgreen; font-size: 100px; font-family: Arial, Helvetica, sans-serif;">
                             <div id="processedToday">${processedToday}</div>
                         </td>
                     </tr>
@@ -372,10 +372,10 @@
                 </table>
             </td>
 
-            <td width="30%" style="text-align: center">
+            <td width="60%" style="text-align: center;">
                 <table align="left">
                     <tr>
-                        <td width="30%" style="color: darkred; font-size: 175px; font-family: Arial, Helvetica, sans-serif;">
+                        <td width="60%" style="color: darkred; font-size: 275px; font-family: Arial, Helvetica, sans-serif;">
                             <div id="pending">${pending}</div>
                         </td>
                     </tr>
@@ -386,10 +386,10 @@
                     </tr>
                 </table>
             </td>
-            <td width="30%" style="text-align: center">
+            <td width="20%" style="text-align: center;">
                 <table align="left">
                     <tr>
-                        <td width="30%" style="color: darkred; font-size: 175px; font-family: Arial, Helvetica, sans-serif;">
+                        <td width="20%" style="color: darkred; font-size: 175px; font-family: Arial, Helvetica, sans-serif;">
                             &nbsp;
                         </td>
                     </tr>
