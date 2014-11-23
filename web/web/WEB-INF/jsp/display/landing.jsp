@@ -6,7 +6,6 @@
     <meta name="description" content=""/>
     <title>Receiptofi, Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="http://www.highcharts.com/media/com_demo/highslide.css"/>
 
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -15,14 +14,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui-1.10.2.custom.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="http://code.highcharts.com/modules/data.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-    <!-- Additional files for the Highslide popup effect -->
-    <script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide-full.min.js"></script>
-    <script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide.config.js" charset="utf-8"></script>
 
     <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
     <script>
@@ -380,6 +373,7 @@
     </table>
     </br>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </br>
 </div>
 <div class="footer-tooth clearfix">
     <div class="footer-tooth-left"></div>
