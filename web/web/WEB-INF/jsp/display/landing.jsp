@@ -13,9 +13,9 @@
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.0.4/highcharts.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.0.4/modules/exporting.js"></script>
 
     <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
     <script>
@@ -43,7 +43,7 @@
             }).success(function () {
                 setTimeout(function () {
                     documentProcessingPace();
-                }, 10000);
+                }, 300000);
             }).responseText;
             console.log(feedback);
 
