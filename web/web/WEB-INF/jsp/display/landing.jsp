@@ -387,7 +387,18 @@
                 </table>
             </td>
             <td width="30%" style="text-align: center">
-                &nbsp;
+                <table align="left">
+                    <tr>
+                        <td width="30%" style="color: darkred; font-size: 175px; font-family: Arial, Helvetica, sans-serif;">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 10px; letter-spacing: 1px; font-family: Arial, Helvetica, sans-serif; font-weight: bold">
+                            * Count updated every 5 minutes
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
