@@ -22,6 +22,38 @@
     <script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide.config.js" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="http://www.highcharts.com/media/com_demo/highslide.css" />
 
+    <style type="text/css">
+        .Table
+        {
+            display: table;
+        }
+        .Title
+        {
+            display: table-caption;
+            text-align: center;
+            font-weight: bold;
+            font-size: larger;
+        }
+        .Heading
+        {
+            display: table-row;
+            font-weight: bold;
+            text-align: center;
+        }
+        .Row
+        {
+            display: table-row;
+        }
+        .Cell
+        {
+            display: table-cell;
+            border: none;
+            border-width: thin;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    </style>
+
     <script>
         // Load the fonts
         Highcharts.createElement('link', {
@@ -303,9 +335,22 @@
     </script>
 </head>
 <body>
-    Hello
-    Pending: ${pending}
-    Processed Today: ${processedToday}
+
+    <div class="Table">
+        <div class="Row">
+            <div class="Cell">
+                <p style="font-size: 16px; vertical-align: middle; letter-spacing: 2px;">Processed Today:</p>
+                <p style="font-size: 36px; vertical-align: top;">${processedToday}</p>
+            </div>
+            <div class="Cell">
+                <p>
+                    <div style="font-size: 250px; font-stretch: expanded; color: darkred;">${pending}</div>
+                    <div style="font-size: 16px; vertical-align: top; letter-spacing: 2px;">Pending</div>
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 </body>
