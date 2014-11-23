@@ -169,7 +169,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         GroupBy groupBy = GroupBy.key("BIZ_STORE", "BIZ_NAME")
                 .initialDocument("{ total: 0 }")
                 .reduceFunction("function(obj, result) { " +
-                        "  result.total += obj.TOTAL; " +
+                        "  result.total += obj.TOT; " +
                         "  result.bizStore = obj.BIZ_STORE; " +
                         "  result.bizName = obj.BIZ_NAME; " +
                         "}");

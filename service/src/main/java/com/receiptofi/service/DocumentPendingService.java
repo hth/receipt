@@ -13,8 +13,13 @@ import java.util.List;
  * Date: 4/27/13
  * Time: 4:37 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
-public final class DocumentPendingService {
+public class DocumentPendingService {
 
     @Autowired private DocumentManager documentManager;
 
@@ -36,5 +41,13 @@ public final class DocumentPendingService {
      */
     public List<DocumentEntity> getAllRejected(String userProfileId) {
         return documentManager.getAllRejected(userProfileId);
+    }
+
+    public long getTotalPending() {
+        return documentManager.getTotalPending();
+    }
+
+    public long getTotalProcessedToday() {
+        return documentManager.getTotalProcessedToday();
     }
 }
