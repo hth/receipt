@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * Daily document processed stats.
  * User: hitender
  * Date: 11/20/14 12:47 PM
  */

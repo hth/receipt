@@ -2,7 +2,6 @@ package com.receiptofi.domain.value;
 
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
