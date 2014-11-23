@@ -371,7 +371,7 @@
             </td>
         </tr>
     </table>
-    </br>
+    <br/>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; padding: 0px 10px 15px 10px;"></div>
 </div>
 <div class="footer-tooth clearfix">
