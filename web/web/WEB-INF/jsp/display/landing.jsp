@@ -335,7 +335,7 @@
     </div>
 </header>
 <div class="main clearfix">
-    <table width="100%">
+    <table width="100%" style="padding: 0px 10px 15px 10px;">
         <tr>
             <td width="30%" style="text-align: center">
                 <table align="left">
@@ -372,8 +372,7 @@
         </tr>
     </table>
     </br>
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    </br>
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; padding: 0px 10px 15px 10px;"></div>
 </div>
 <div class="footer-tooth clearfix">
     <div class="footer-tooth-left"></div>
