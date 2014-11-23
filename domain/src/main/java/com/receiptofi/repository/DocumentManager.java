@@ -4,7 +4,10 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.value.DocumentGrouped;
 
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,7 +23,7 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     DocumentEntity findOne(String documentId, String receiptUserId);
 
     /**
-     * Mostly used by technician and above level
+     * Mostly used by technician and above level.
      *
      * @param documentId
      * @return
@@ -28,7 +31,7 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     DocumentEntity findActiveOne(String documentId);
 
     /**
-     * Mostly used by user to delete rejected documents
+     * Mostly used by user to delete rejected documents.
      *
      * @param documentId
      * @return
@@ -36,7 +39,7 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     DocumentEntity findRejectedOne(String documentId);
 
     /**
-     * Get all the pending receipts
+     * Get all the pending receipts.
      *
      * @param receiptUserId
      * @return
@@ -44,7 +47,26 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     List<DocumentEntity> getAllPending(String receiptUserId);
 
     /**
-     * Get all the rejected receipts
+     * Document all pending.
+     * @return
+     */
+    long getTotalPending();
+
+    /**
+     * Documents processed today.
+     * @return
+     */
+    long getTotalProcessedToday();
+
+    /**
+     * Historical data on document processed from the days submitted.
+     * @param since
+     * @return
+     */
+    Iterator<DocumentGrouped> getHistoricalStat(Date since);
+
+    /**
+     * Get all the rejected receipts.
      *
      * @param receiptUserId
      * @return

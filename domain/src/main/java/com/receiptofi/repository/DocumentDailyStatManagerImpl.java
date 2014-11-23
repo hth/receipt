@@ -1,0 +1,81 @@
+package com.receiptofi.repository;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.DocumentDailyStatEntity;
+import com.receiptofi.utils.DateUtil;
+
+import org.joda.time.DateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * User: hitender
+ * Date: 11/20/14 3:03 PM
+ */
+@Repository
+public class DocumentDailyStatManagerImpl implements DocumentDailyStatManager {
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            DocumentDailyStatEntity.class,
+            Document.class,
+            "collection");
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Override
+    public List<DocumentDailyStatEntity> getAllObjects() {
+        throw new UnsupportedOperationException("This method is not supported");
+    }
+
+    @Override
+    public void save(DocumentDailyStatEntity object) {
+        mongoTemplate.save(object);
+    }
+
+    @Override
+    public DocumentDailyStatEntity findOne(String id) {
+        throw new UnsupportedOperationException("This method is not supported");
+    }
+
+    @Override
+    public void deleteHard(DocumentDailyStatEntity object) {
+        throw new UnsupportedOperationException("This method is not supported");
+    }
+
+    @Override
+    public long collectionSize() {
+        return 0;
+    }
+
+    @Override
+    public List<DocumentDailyStatEntity> getStatsForDays(int days) {
+        return mongoTemplate.find(
+                query(
+                        where("DT").gte(DateUtil.midnight(DateTime.now().minusDays(days)))
+                ).with(new Sort(Sort.Direction.DESC, "DT")),
+                DocumentDailyStatEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public DocumentDailyStatEntity getLastEntry() {
+        Query query = new Query();
+        query.with(new Sort(Sort.Direction.DESC, "DT")).limit(1);
+        return mongoTemplate.findOne(query, DocumentDailyStatEntity.class);
+    }
+}

@@ -82,15 +82,19 @@ public final class DateUtil {
     }
 
     public static Date nowDate() {
-        return now().toDateMidnight().toDate();
-    }
-
-    public static String nowDateString() {
-        return now().toDateMidnight().toDate().toString();
+        return midnight(now()).toDate();
     }
 
     public static DateTime startOfYear() {
         return now().withMonthOfYear(1).withDayOfMonth(1).withTimeAtStartOfDay();
+    }
+
+    public static DateTime midnight(DateTime dateTime) {
+        return dateTime.withTimeAtStartOfDay();
+    }
+
+    public static Date midnight(Date date) {
+        return midnight(new DateTime(date)).toDate();
     }
 
     /**

@@ -13,8 +13,11 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.value.DocumentGrouped;
+import com.receiptofi.utils.DateUtil;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +29,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapreduce.GroupBy;
+import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -155,12 +163,54 @@ public final class DocumentManagerImpl implements DocumentManager {
                 query(
                         where("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)
                                 .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay)
-                        ))
+                        )
+                )
                         .addCriteria(isNotActive())
                         .addCriteria(isDeleted()),
                 DocumentEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public long getTotalPending() {
+        return mongoTemplate.count(
+                query(
+                        where("DS").is(DocumentStatusEnum.OCR_PROCESSED)
+                ).addCriteria(isNotDeleted()),
+                DocumentEntity.class
+        );
+    }
+
+    @Override
+    public long getTotalProcessedToday() {
+        return mongoTemplate.count(
+                query(
+                        where("DS").ne(DocumentStatusEnum.OCR_PROCESSED)
+                                .and("U").gte(DateUtil.midnight(new Date()))
+                ).addCriteria(isNotDeleted()),
+                DocumentEntity.class
+        );
+    }
+
+    @Override
+    public Iterator<DocumentGrouped> getHistoricalStat(Date since) {
+        GroupBy groupBy = GroupBy.key("C", "DS")
+                .initialDocument("{ total: 0 }")
+                .reduceFunction("function(obj, result) { " +
+                        "  result.day = obj.C;" +
+                        "  result.documentStatusEnum = obj.DS;" +
+                        "}");
+
+        Criteria criteria = where("C").gte(DateUtil.midnight(DateUtil.now().minusDays(
+                Days.daysBetween(new DateTime(since), DateUtil.midnight(DateTime.now())).getDays())))
+                .lt(DateUtil.midnight(DateUtil.now()))
+                .andOperator(
+                        isNotDeleted()
+                );
+
+        GroupByResults<DocumentGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, DocumentGrouped.class);
+        return results.iterator();
     }
 
     @Override
