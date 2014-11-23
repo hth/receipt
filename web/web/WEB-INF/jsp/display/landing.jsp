@@ -36,7 +36,7 @@
         window.onload = init();
 
         function documentProcessingPace() {
-            var feedback = $.ajax({
+            var json = $.ajax({
                 type: "GET",
                 url: '${pageContext. request. contextPath}/display/documentProcessingPace.json',
                 async: false
@@ -45,10 +45,11 @@
                     documentProcessingPace();
                 }, 300000);
             }).responseText;
-            console.log(feedback);
+            console.log(json);
 
-            $('#pending').html(feedback.processedToday);
-            $('#processedToday').html(feedback.pending);
+            var obj = JSON.parse(json);
+            $('#pending').html(obj.pending);
+            $('#processedToday').html(obj.processedToday);
         }
 
         $(function () {
