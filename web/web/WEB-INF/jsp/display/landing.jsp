@@ -34,6 +34,26 @@
             });
         }
         window.onload = init();
+
+        function documentProcessingPace() {
+            var feedback = $.ajax({
+                type: "GET",
+                url: '${pageContext. request. contextPath}/display/documentProcessingPace.json',
+                async: false
+            }).success(function () {
+                setTimeout(function () {
+                    documentProcessingPace();
+                }, 10000);
+            }).responseText;
+            console.log(feedback);
+
+            $('#pending').html(feedback.processedToday);
+            $('#processedToday').html(feedback.pending);
+        }
+
+        $(function(){
+            documentProcessingPace();
+        });
     </script>
 
     <script>
@@ -341,7 +361,7 @@
                 <table align="left">
                     <tr>
                         <td width="30%" style="color: yellowgreen; font-size: 100px; font-family: Arial, Helvetica, sans-serif;">
-                            ${processedToday}
+                            <div id="processedToday">${processedToday}</div>
                         </td>
                     </tr>
                     <tr>
@@ -356,7 +376,7 @@
                 <table align="left">
                     <tr>
                         <td width="30%" style="color: darkred; font-size: 175px; font-family: Arial, Helvetica, sans-serif;">
-                            ${pending}
+                            <div id="pending">${pending}</div>
                         </td>
                     </tr>
                     <tr>
