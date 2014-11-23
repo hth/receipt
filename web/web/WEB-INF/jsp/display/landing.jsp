@@ -51,7 +51,7 @@
             $('#processedToday').html(feedback.pending);
         }
 
-        $(function(){
+        $(function () {
             documentProcessingPace();
         });
     </script>
