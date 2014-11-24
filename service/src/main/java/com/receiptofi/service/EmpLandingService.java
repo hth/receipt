@@ -2,7 +2,7 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.repository.MessageManager;
+import com.receiptofi.repository.MessageDocumentManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,25 +17,25 @@ import java.util.List;
 @Service
 public final class EmpLandingService {
 
-    @Autowired private MessageManager messageManager;
+    @Autowired private MessageDocumentManager messageDocumentManager;
 
     public List<MessageDocumentEntity> pendingReceipts(String emailId, String profileId, DocumentStatusEnum status) {
-        return messageManager.findPending(emailId, profileId, status);
+        return messageDocumentManager.findPending(emailId, profileId, status);
     }
 
     public List<MessageDocumentEntity> queuedReceipts(String emailId, String profileId) {
-        return messageManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.OCR_PROCESSED);
+        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.OCR_PROCESSED);
     }
 
     public List<MessageDocumentEntity> recheck(String emailId, String profileId) {
-        return messageManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.TURK_REQUEST);
+        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.TURK_REQUEST);
     }
 
     public List<MessageDocumentEntity> findAll() {
-        return messageManager.getAllObjects();
+        return messageDocumentManager.getAllObjects();
     }
 
     public void delete(MessageDocumentEntity messageDocumentEntity) {
-        messageManager.deleteHard(messageDocumentEntity);
+        messageDocumentManager.deleteHard(messageDocumentEntity);
     }
 }

@@ -34,7 +34,7 @@ public final class FetcherService {
     @Autowired private FileSystemService fileSystemService;
 
     /**
-     * This method is called from AJAX to get the matching list of users in the system
+     * This method is called from AJAX to get the matching list of users in the system.
      *
      * @param bizName
      * @return
@@ -94,7 +94,7 @@ public final class FetcherService {
 
     /**
      * This method is called from AJAX to get the matching list of items in the system.
-     * Populates with just the 'name' of the item
+     * Populates with just the 'name' of the item.
      *
      * @param itemName
      * @param bizName

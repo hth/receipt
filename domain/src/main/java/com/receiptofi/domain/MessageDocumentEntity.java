@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "MESSAGE_DOCUMENT")
 public final class MessageDocumentEntity extends BaseEntity {
 
-    @Email
     @Field ("EM")
     String emailId;
 

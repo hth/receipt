@@ -30,6 +30,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,8 +39,8 @@ import java.util.List;
  * Time: 7:28 PM
  */
 @Repository
-public final class MessageManagerImpl implements MessageManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MessageManagerImpl.class);
+public final class MessageDocumentManagerImpl implements MessageDocumentManager {
+    private static final Logger LOG = LoggerFactory.getLogger(MessageDocumentManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             MessageDocumentEntity.class,
             Document.class,
@@ -136,8 +137,8 @@ public final class MessageManagerImpl implements MessageManager {
     @Override
     public void save(MessageDocumentEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if (object.getId() != null) {
-            object.setUpdated(); //TODO why force the update date. Should it not be handled by the system just like versioning.
+        if (null != object.getId()) {
+            object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
     }
@@ -159,7 +160,7 @@ public final class MessageManagerImpl implements MessageManager {
     public WriteResult undoUpdateObject(String documentId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         Query query = query(where("LOK").is(true).and("DS").is(statusFind).and("A").is(false).and("DID").is(documentId));
-        Update update = update("recordLocked", false)
+        Update update = update("LOK", false)
                 .set("A", true)
                 .set("DS", statusSet);
         return mongoTemplate.updateFirst(query, entityUpdate(update), MessageDocumentEntity.class);
@@ -172,12 +173,28 @@ public final class MessageManagerImpl implements MessageManager {
 
     @Override
     public void deleteAllForReceiptOCR(String documentId) {
-        Query query = query(where("DID").is(documentId));
-        mongoTemplate.remove(query, MessageDocumentEntity.class);
+        mongoTemplate.remove(query(where("DID").is(documentId)), MessageDocumentEntity.class);
     }
 
     @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
+    }
+
+    @Override
+    public void resetDocumentsToInitialState(String receiptUserId) {
+        Query query = query(
+                where("RID").is(receiptUserId)
+                        .and("DS").is(DocumentStatusEnum.OCR_PROCESSED)
+                        .and("LOK").is(true)
+                        .and("A").is(true)
+        );
+
+        Update update = update("LOK", false)
+                .unset("EM")
+                .unset("RID")
+                .set("U", new Date());
+
+        mongoTemplate.updateMulti(query, update, MessageDocumentEntity.class);
     }
 }

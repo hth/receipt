@@ -82,4 +82,13 @@ public final class ReceiptUser extends User {
     public ProviderEnum getPid() {
         return pid;
     }
+
+    @Override
+    public String toString() {
+        return "ReceiptUser{" +
+                "rid='" + rid + '\'' +
+                ", pid=" + pid +
+                ", userLevel=" + userLevel +
+                '}';
+    }
 }

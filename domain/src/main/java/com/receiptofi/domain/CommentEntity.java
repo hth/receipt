@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document (collection = "COMMENT")
 public final class CommentEntity extends BaseEntity {
 
-    //XXX TODO @Value annotation is not working, find why
+    //TODO(hth) @Value annotation is not working, find why
     @Value ("${textLength:250}")
     private int textLength = 250;
 

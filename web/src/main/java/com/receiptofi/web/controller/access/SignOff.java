@@ -1,10 +1,13 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.service.MessageDocumentService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
@@ -33,6 +36,8 @@ import javax.servlet.http.HttpServletResponse;
 public final class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SignOff.class);
 
+    @Autowired MessageDocumentService messageDocumentService;
+
     @Override
     public void onLogoutSuccess(
             HttpServletRequest request,
@@ -42,7 +47,13 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
 
         String receiptUserId = "Not Available";
         if (authentication.getPrincipal() != null) {
-            receiptUserId = ((ReceiptUser) authentication.getPrincipal()).getRid();
+            ReceiptUser receiptUser = ((ReceiptUser) authentication.getPrincipal());
+            receiptUserId = receiptUser.getRid();
+
+            if (receiptUser.getUserLevel() == UserLevelEnum.TECHNICIAN) {
+                LOG.info("Reset document pending documents rid={}", receiptUser.getRid());
+                messageDocumentService.resetDocumentsToInitialState(receiptUserId);
+            }
         }
 
         LOG.info("Logout user={} from={}", receiptUserId, request.getServletPath());

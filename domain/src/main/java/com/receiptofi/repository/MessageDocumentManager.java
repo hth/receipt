@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 4/6/13
  * Time: 7:28 PM
  */
-public interface MessageManager extends RepositoryManager<MessageDocumentEntity> {
+public interface MessageDocumentManager extends RepositoryManager<MessageDocumentEntity> {
 
     List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status);
 
@@ -42,9 +42,15 @@ public interface MessageManager extends RepositoryManager<MessageDocumentEntity>
 
     /**
      * Delete all the messages that are associated with DocumentEntity.
-     * Process will include current and previous re-check request messages for the receipt
+     * Process will include current and previous re-check request messages for the receipt.
      *
      * @param documentId
      */
     void deleteAllForReceiptOCR(String documentId);
+
+    /**
+     * Resets document to state before assigning to technician.
+     * @param receiptUserId
+     */
+    void resetDocumentsToInitialState(String receiptUserId);
 }
