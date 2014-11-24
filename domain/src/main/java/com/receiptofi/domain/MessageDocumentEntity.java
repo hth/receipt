@@ -3,8 +3,6 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
-import org.hibernate.validator.constraints.Email;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 

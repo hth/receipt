@@ -47,7 +47,7 @@ public final class SignOff extends SimpleUrlLogoutSuccessHandler implements Logo
 
         String receiptUserId = "Not Available";
         if (authentication.getPrincipal() != null) {
-            ReceiptUser receiptUser = ((ReceiptUser) authentication.getPrincipal());
+            ReceiptUser receiptUser = (ReceiptUser) authentication.getPrincipal();
             receiptUserId = receiptUser.getRid();
 
             if (receiptUser.getUserLevel() == UserLevelEnum.TECHNICIAN) {

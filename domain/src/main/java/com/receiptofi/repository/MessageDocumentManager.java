@@ -32,7 +32,7 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
     /**
      * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.
      * Note: User has to complete all the messages in their queue before logging out of their shift.
-     * TODO: May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
+     * TODO(hth) May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
      *
      * @param documentId
      * @param value
