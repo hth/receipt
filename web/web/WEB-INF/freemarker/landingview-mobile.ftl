@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/static/jquery/css/receipt.css' />
-	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
+	<link rel='stylesheet' type='text/css' 			href='${protocol}://${host}:${port}/${appname}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css' />
 
 	<script type="text/javascript">
 		function toggle2(showHideDiv, switchTextDiv) {

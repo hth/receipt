@@ -3,13 +3,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><fmt:message key="account.email.validated" /></title>
+    <title><fmt:message key="account.email.validated"/></title>
 
     <meta HTTP-EQUIV="Pragma" content="no-cache">
     <meta HTTP-EQUIV="Expires" content="-1">
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
 
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
 

@@ -9,7 +9,7 @@
 	<link rel="shortcut icon" type="image/x-icon"   href="${protocol}://${host}/static/images/circle-leaf-sized_small.png" />
 
 	<link rel='stylesheet' type='text/css' 		    href='${protocol}://${host}/static/jquery/css/receipt.css' />
-	<link rel='stylesheet' type='text/css' 		    href='${protocol}://${host}/static/jquery/css/smoothness/jquery-ui-1.10.2.custom.min.css' />
+	<link rel='stylesheet' type='text/css' 		    href='${protocol}://${host}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css' />
 
 	<style type="text/css">
 		#headerDiv, #contentDiv {
