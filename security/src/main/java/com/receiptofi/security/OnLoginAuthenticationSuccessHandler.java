@@ -63,7 +63,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
          */
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-        if (savedRequest == null) {
+        if (null == savedRequest) {
             clearAuthenticationAttributes(request);
             return;
         }

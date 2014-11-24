@@ -168,7 +168,7 @@ public class MailService {
      */
     public MailTypeEnum mailRecoverLink(String emailId) {
         UserAccountEntity userAccount = accountService.findByUserId(emailId);
-        if (userAccount == null) {
+        if (null == userAccount) {
             LOG.warn("could not recover user={}", emailId);
             return MailTypeEnum.FAILURE;
         }
@@ -265,11 +265,11 @@ public class MailService {
      */
     public boolean reSendInvitation(String emailId, String invitedByRid) {
         UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
-        if (invitedBy != null) {
+        if (null != invitedBy) {
             try {
                 InviteEntity inviteEntity = inviteService.reInviteActiveInvite(emailId, invitedBy);
                 boolean isNewInvite = false;
-                if (inviteEntity == null) {
+                if (null == inviteEntity) {
                     //Means invite exist by another user. Better to create a new invite for the requesting user
                     inviteEntity = reCreateAnotherInvite(emailId, invitedBy);
                     isNewInvite = true;

@@ -114,7 +114,7 @@ public final class InviteController {
         } else {
             InviteEntity invite =
                     inviteService.findInviteAuthenticationForKey(form.getForgotAuthenticateForm().getAuthenticationKey());
-            if (invite == null) {
+            if (null == invite) {
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), " failure");
                 redirectAttrs.addFlashAttribute(SUCCESS, "false");
             } else {

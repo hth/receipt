@@ -64,7 +64,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         HSSFSheet sheet = workbook.createSheet();
 
         List<ItemEntity> items = (ArrayList) model.get("items");
-        if (items == null) {
+        if (null == items) {
             HSSFRow row = sheet.createRow(0);
             addToCell(row, 0, "Error creating spreadsheet", NO_STYLE);
             return;
@@ -114,7 +114,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             if (item.getExpenseTag() != null) {
                 cc = item.getExpenseTag().getTagName();
             }
-            addToCell(row, 5, cc == null ? "N/A" : cc, NO_STYLE);
+            addToCell(row, 5, null == cc ? "N/A" : cc, NO_STYLE);
         }
 
         // Totals
@@ -200,7 +200,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     private HSSFCell addToCell(HSSFRow row, int index, Object value, HSSFCellStyle style) {
         HSSFCell cell = row.createCell((short) index);
 
-        if (style == null) {
+        if (null == style) {
             style = cell.getCellStyle();
         }
 
@@ -223,7 +223,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             cell.setCellValue((Double) value);
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
-            if (value == null) {
+            if (null == value) {
                 value = StringUtils.EMPTY;   // Ignore
             }
             LOG.debug("OTHER: {} ({})", value, value.getClass());

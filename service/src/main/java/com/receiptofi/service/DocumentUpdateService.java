@@ -186,7 +186,7 @@ public final class DocumentUpdateService {
             bizService.saveNewBusinessAndOrStore(receipt);
             if (StringUtils.isNotEmpty(receipt.getId())) {
                 fetchedReceipt = receiptManager.findOne(receipt.getId());
-                if (fetchedReceipt == null) {
+                if (null == fetchedReceipt) {
                     // By creating new receipt with old id, we move the pending receipt from the list back to users account
                     LOG.warn("Something had gone wrong with original Receipt={}, so creating another with old receipt id", receipt.getId());
                 } else {
@@ -365,7 +365,7 @@ public final class DocumentUpdateService {
      */
     public void deletePendingDocument(DocumentEntity document) {
         DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
-        if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
+        if (null == documentEntity || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
             LOG.warn("User trying to delete processed Document={}, Receipt={}",
                     document.getId(), document.getReferenceDocumentId());
         } else {
@@ -382,7 +382,7 @@ public final class DocumentUpdateService {
      */
     public void deleteRejectedDocument(DocumentEntity document) {
         DocumentEntity documentEntity = loadRejectedDocumentById(document.getId());
-        if (documentEntity == null || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
+        if (null == documentEntity || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
             LOG.warn("User trying to delete processed Document={}, Receipt={}",
                     document.getId(), document.getReferenceDocumentId());
         } else {

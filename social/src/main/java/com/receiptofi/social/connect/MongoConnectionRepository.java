@@ -68,7 +68,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
     }
 
     public MultiValueMap<String, Connection<?>> findConnectionsToUsers(MultiValueMap<String, String> providerUserIds) {
-        if (providerUserIds == null || providerUserIds.isEmpty()) {
+        if (null == providerUserIds || providerUserIds.isEmpty()) {
             throw new IllegalArgumentException("Unable to execute find: no providerUsers provided");
         }
 
@@ -79,7 +79,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
             String providerId = connection.getKey().getProviderId();
             List<String> userIds = providerUserIds.get(providerId);
             List<Connection<?>> connections = connectionsForUsers.get(providerId);
-            if (connections == null) {
+            if (null == connections) {
                 //TODO re-check this code
                 connections = new ArrayList<>(userIds.size());
                 for (String userId : userIds) {
@@ -116,7 +116,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
         ProviderEnum providerId = ProviderEnum.valueOf(getProviderId(apiType));
         @SuppressWarnings ("unchecked")
         Connection<A> connection = (Connection<A>) findPrimaryConnection(providerId);
-        if (connection == null) {
+        if (null == connection) {
             throw new NotConnectedException(providerId.toString());
         }
         return connection;

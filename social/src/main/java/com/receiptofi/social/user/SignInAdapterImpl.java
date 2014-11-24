@@ -91,7 +91,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
             return completeProfileController;
         }
 
-        if (saved == null) {
+        if (null == saved) {
             return null;
         }
 
@@ -101,7 +101,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
     }
 
     private void removeAuthenticationAttributes(HttpSession session) {
-        if (session == null) {
+        if (null == session) {
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);

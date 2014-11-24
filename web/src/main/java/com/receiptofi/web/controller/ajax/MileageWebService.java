@@ -139,7 +139,7 @@ public final class MileageWebService {
                         map.get("id"),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
-                if (mileageEntity == null) {
+                if (null == mileageEntity) {
                     return createJSONUsingMileageDateUpdateResponse(
                             false,
                             "Failed to update trip start date as record below no longer exists. Please hit browser refresh."
@@ -182,7 +182,7 @@ public final class MileageWebService {
                         map.get("id"),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
-                if (mileageEntity == null) {
+                if (null == mileageEntity) {
                     return createJSONUsingMileageDateUpdateResponse(
                             false,
                             "Failed to update trip end date as record below no longer exists. Please hit browser refresh."

@@ -102,7 +102,7 @@ public final class DocumentEntity extends BaseEntity {
     }
 
     public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
-        if (this.fileSystemEntities == null) {
+        if (null == this.fileSystemEntities) {
             this.fileSystemEntities = new ArrayList<>();
         }
         this.fileSystemEntities.add(receiptBlobId);

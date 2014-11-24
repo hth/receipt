@@ -46,17 +46,23 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
             Document.class,
             "collection");
 
-    private static final Sort SORT_BY_USER_LEVEL_AND_CREATED = new Sort(
-            new ArrayList<Order>() {{
-                add(new Order(DESC, "ULE"));
-                add(new Order(ASC, "C"));
-            }}
-    );
+    private static Sort SORT_BY_USER_LEVEL_AND_CREATED;
 
     @Value ("${messageQueryLimit:10}")
     private int messageQueryLimit;
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public MessageDocumentManagerImpl(MongoTemplate mongoTemplate) {
+        if(null == SORT_BY_USER_LEVEL_AND_CREATED) {
+            List<Order> order = new ArrayList<>();
+            order.add(new Order(DESC, "ULE"));
+            order.add(new Order(ASC, "C"));
+            SORT_BY_USER_LEVEL_AND_CREATED = new Sort(order);
+        }
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public List<MessageDocumentEntity> getAllObjects() {
@@ -106,13 +112,14 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
             try {
                 save(object);
             } catch (Exception e) {
+                LOG.error("Update failed reason={}", e.getLocalizedMessage(), e);
                 object.setRecordLocked(false);
                 object.setReceiptUserId(StringUtils.EMPTY);
                 object.setEmailId(StringUtils.EMPTY);
                 try {
                     save(object);
                 } catch (Exception e1) {
-                    LOG.error("Update failed: " + object.toString());
+                    LOG.error("Update failed {}, reason={}", object.toString(), e1.getLocalizedMessage(), e1);
                 }
             }
         }

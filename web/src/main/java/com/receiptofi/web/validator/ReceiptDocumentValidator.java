@@ -73,7 +73,7 @@ public final class ReceiptDocumentValidator implements Validator {
 
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
-        if (receiptDocumentForm.getItems() == null) {
+        if (null == receiptDocumentForm.getItems()) {
             LOG.error(
                     "Exception during update of receipt={}, as no items were found",
                     receiptDocumentForm.getReceiptDocument().getId()
@@ -188,7 +188,7 @@ public final class ReceiptDocumentValidator implements Validator {
             }
 
             try {
-                if (submittedSubTotal == null || total == null) {
+                if (null == submittedSubTotal || null == total) {
                     errors.rejectValue(
                             "receiptDocument.total",
                             "field.currency.cannot.compute",

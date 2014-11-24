@@ -68,7 +68,7 @@ public final class ReceiptController extends BaseController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
-        if (receiptEntity == null) {
+        if (null == receiptEntity) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(receiptEntity.getId());

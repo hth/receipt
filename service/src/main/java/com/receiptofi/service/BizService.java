@@ -99,7 +99,7 @@ public final class BizService {
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 
         BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
-        if (bizName == null) {
+        if (null == bizName) {
             try {
                 bizNameManager.save(bizNameEntity);
 
@@ -121,7 +121,7 @@ public final class BizService {
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
-            if (bizStore == null) {
+            if (null == bizStore) {
                 try {
                     bizStoreEntity.setBizName(bizName);
                     externalService.decodeAddress(bizStoreEntity);
@@ -153,7 +153,7 @@ public final class BizService {
         BizStoreEntity bizStoreEntity = document.getBizStore();
 
         BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
-        if (bizName == null) {
+        if (null == bizName) {
             try {
                 bizNameManager.save(bizNameEntity);
 
@@ -175,7 +175,7 @@ public final class BizService {
             }
         } else {
             BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
-            if (bizStore == null) {
+            if (null == bizStore) {
                 try {
                     bizStoreEntity.setBizName(bizName);
                     externalService.decodeAddress(bizStoreEntity);

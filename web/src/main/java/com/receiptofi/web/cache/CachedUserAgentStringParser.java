@@ -56,7 +56,7 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
     @Override
     public ReadableUserAgent parse(final String userAgentString) {
         ReadableUserAgent result = cache.getIfPresent(userAgentString);
-        if (result == null) {
+        if (null == result) {
             LOG.info("Cache : No : UserAgentString: {}", userAgentString);
             result = parser.parse(userAgentString);
             cache.put(userAgentString, result);

@@ -37,7 +37,7 @@ public final class LoginService {
     public void saveUpdateBrowserInfo(String cookieId, String ip, String userAgent) {
         try {
             BrowserEntity browserEntity = browserManager.findOne(cookieId);
-            if (browserEntity == null) {
+            if (null == browserEntity) {
                 browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent);
                 browserManager.save(browserEntity);
             } else {
