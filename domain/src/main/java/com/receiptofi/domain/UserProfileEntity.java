@@ -25,6 +25,11 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 4/13/14 2:19 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "USER_PROFILE")
 @CompoundIndexes ({
         @CompoundIndex (name = "user_profile_provider_uid_em_idx", def = "{'RID': -1, 'UID': -1, 'PID': 1, 'EM' : 1}", unique = true)

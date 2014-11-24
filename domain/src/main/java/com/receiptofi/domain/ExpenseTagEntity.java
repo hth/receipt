@@ -16,6 +16,11 @@ import javax.validation.constraints.Size;
  * Date: 5/13/13
  * Time: 7:47 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "EXPENSE_TAG")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "expense_tag_idx", def = "{'RID': 1, 'TAG': 1}", unique = true),

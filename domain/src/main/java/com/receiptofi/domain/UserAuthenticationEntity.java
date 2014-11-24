@@ -21,6 +21,11 @@ import javax.validation.constraints.NotNull;
  * @author hitender
  * @since Dec 15, 2012 8:11:45 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "USER_AUTHENTICATION")
 @CompoundIndexes ({
         @CompoundIndex (name = "user_authentication_idx", def = "{'PA': 1, 'AU': 1}", unique = true)

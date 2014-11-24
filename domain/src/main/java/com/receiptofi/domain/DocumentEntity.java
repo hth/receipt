@@ -22,6 +22,11 @@ import javax.validation.constraints.NotNull;
  * @author hitender
  * @since Jan 6, 2013 1:04:43 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "DOCUMENT")
 @CompoundIndexes ({@CompoundIndex (name = "document_idx", def = "{'FS': 1, 'RID': 1}")})
 public final class DocumentEntity extends BaseEntity {

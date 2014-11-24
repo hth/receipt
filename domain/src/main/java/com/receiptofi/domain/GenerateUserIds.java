@@ -8,6 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * User: hitender
  * Date: 4/13/14 5:11 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "GENERATE_USER_IDS")
 public final class GenerateUserIds {
     private static final long STARTING_USER_ID = 10_000_000_001L;

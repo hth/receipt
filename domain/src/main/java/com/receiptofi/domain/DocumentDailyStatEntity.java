@@ -18,6 +18,11 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 11/20/14 12:58 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "DOCUMENT_DAILY_STAT")
 @CompoundIndexes ({@CompoundIndex (name = "document_daily_stat_idx", def = "{'DT': 1}", unique = true)})
 public class DocumentDailyStatEntity extends BaseEntity {

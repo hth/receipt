@@ -30,6 +30,11 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 12/13/13 12:38 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "MILEAGE")
 @CompoundIndexes ({
         @CompoundIndex (name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'RID': -1}", unique = true),

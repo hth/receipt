@@ -20,6 +20,11 @@ import javax.validation.constraints.Size;
  * @author hitender
  * @since Jan 6, 2013 1:17:12 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "ITEM_OCR")
 @CompoundIndexes ({@CompoundIndex (name = "user_item_ocr_idx", def = "{'RECEIPT': -1, 'RID': 1}")})
 public final class ItemEntityOCR extends BaseEntity {

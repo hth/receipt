@@ -15,6 +15,11 @@ import javax.validation.constraints.NotNull;
  * Date: 6/9/13
  * Time: 2:06 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "INVITE")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "invite_email_idx", def = "{'EM': 0}", unique = false),

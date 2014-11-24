@@ -11,6 +11,11 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 5/17/14 4:49 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "EMAIL_VALIDATE")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "email_valid_idx", def = "{'AUTH': 1}", unique = true),

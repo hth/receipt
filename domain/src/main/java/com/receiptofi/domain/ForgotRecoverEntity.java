@@ -12,6 +12,11 @@ import javax.validation.constraints.NotNull;
  * Date: 6/4/13
  * Time: 12:02 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "FORGOT_RECOVER")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "forgot_recover_idx", def = "{'RID': 0, 'AUTH' : 0}", unique = true)

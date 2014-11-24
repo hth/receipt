@@ -12,6 +12,11 @@ import javax.validation.constraints.NotNull;
  * Date: 5/26/13
  * Time: 4:01 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "BROWSER")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "browser_idx", def = "{'U': 1}", unique = true),

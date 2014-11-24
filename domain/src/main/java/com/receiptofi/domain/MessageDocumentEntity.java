@@ -13,6 +13,11 @@ import javax.validation.constraints.NotNull;
  * Date: 4/6/13
  * Time: 6:48 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "MESSAGE_DOCUMENT")
 public final class MessageDocumentEntity extends BaseEntity {
 
