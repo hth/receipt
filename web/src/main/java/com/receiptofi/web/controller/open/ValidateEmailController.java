@@ -72,7 +72,7 @@ public final class ValidateEmailController {
             HttpServletResponse httpServletResponse
     ) throws IOException {
         EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key);
-        if (emailValidate == null) {
+        if (null == emailValidate) {
             LOG.info("authentication failed for invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;

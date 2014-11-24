@@ -227,7 +227,7 @@ public final class ItemManagerImpl implements ItemManager {
         Query query;
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        if (bizNameEntity == null) {
+        if (null == bizNameEntity) {
             //query = Query.query(criteriaI);
             return new ArrayList<>();
         } else {
@@ -248,7 +248,7 @@ public final class ItemManagerImpl implements ItemManager {
     @Override
     public void updateItemWithExpenseType(ItemEntity item) throws Exception {
         ItemEntity foundItem = findOne(item.getId());
-        if (foundItem == null) {
+        if (null == foundItem) {
             LOG.error("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
             throw new Exception("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
         } else {

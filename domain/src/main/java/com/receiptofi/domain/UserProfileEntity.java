@@ -440,7 +440,7 @@ public final class UserProfileEntity extends BaseEntity {
     }
 
     public void addWork(WorkEntry work) {
-        if (this.work == null) {
+        if (null == this.work) {
             this.work = Lists.newArrayList();
         }
         this.work.add(work);

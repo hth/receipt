@@ -367,7 +367,7 @@ public final class ReceiptUpdateController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DocumentEntity document = documentUpdateService.loadActiveDocumentById(documentId);
-        if (document == null || document.isDeleted()) {
+        if (null == document || document.isDeleted()) {
             if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR")) {
                 LOG.warn("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
                 receiptDocumentForm.setErrorMessage("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
@@ -377,7 +377,7 @@ public final class ReceiptUpdateController {
             }
         } else if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR") || document.getReceiptUserId().equalsIgnoreCase(receiptUser.getRid())) {
             //Important: The condition below makes sure when validation fails it does not over write the item list
-            if (receiptDocumentForm.getReceiptDocument() == null && receiptDocumentForm.getItems() == null) {
+            if (null == receiptDocumentForm.getReceiptDocument() && null == receiptDocumentForm.getItems()) {
                 receiptDocumentForm.setReceiptDocument(document);
 
                 List<ItemEntityOCR> items = documentUpdateService.loadItemsOfReceipt(document);

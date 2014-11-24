@@ -55,7 +55,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Autowired
     public MessageDocumentManagerImpl(MongoTemplate mongoTemplate) {
-        if(SORT_BY_USER_LEVEL_AND_CREATED == null) {
+        if(null == SORT_BY_USER_LEVEL_AND_CREATED) {
             List<Order> order = new ArrayList<>();
             order.add(new Order(DESC, "ULE"));
             order.add(new Order(ASC, "C"));

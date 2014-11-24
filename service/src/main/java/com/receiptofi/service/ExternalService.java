@@ -52,11 +52,11 @@ public final class ExternalService {
 
             populateBizStore(output, bizStoreEntity);
         } catch (MalformedURLException e) {
-            String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " + bizStoreEntity.getAddress();
+            String result = (null == url) ? bizStoreEntity.getAddress() : url.toString() + ", " + bizStoreEntity.getAddress();
             LOG.error("URL: " + result + ", " + e.getLocalizedMessage());
             throw new MalformedURLException("URL: " + result + ", " + e.getLocalizedMessage());
         } catch (IOException e) {
-            String result = (url == null) ? bizStoreEntity.getAddress() : url.toString() + ", " + bizStoreEntity.getAddress();
+            String result = (null == url) ? bizStoreEntity.getAddress() : url.toString() + ", " + bizStoreEntity.getAddress();
             throw new IOException("URL: " + result + ", " + e.getLocalizedMessage());
         }
     }

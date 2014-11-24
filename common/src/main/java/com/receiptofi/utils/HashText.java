@@ -67,7 +67,7 @@ public final class HashText {
 
     private static String hashCode(String text, MessageDigest md) {
         DateTime time = DateUtil.now();
-        if (md == null) {
+        if (null == md) {
             LOG.info("Un-Initialized MessageDigest");
             return null;
         } else {

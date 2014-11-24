@@ -43,7 +43,7 @@ public final class AppendAdditionalFields {
      * @return
      */
     public static Update entityUpdate(Update update) {
-        if (update == null) {
+        if (null == update) {
             LOG.error("Update cannot be null");
         } else {
             return update.set("U", DateUtil.nowTime()).inc("V", 1);

@@ -116,7 +116,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         }
         if (StringUtils.isNotEmpty(bizPhone)) {
             Criteria criteria = where("PH").regex("^" + bizPhone, "i");
-            if (query == null) {
+            if (null == query) {
                 query = query(criteria);
             } else {
                 query.addCriteria(criteria);
@@ -125,7 +125,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
         if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
             Criteria criteriaA = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-            if (query == null) {
+            if (null == query) {
                 query = query(criteriaA);
             } else {
                 query.addCriteria(criteriaA);

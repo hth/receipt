@@ -57,7 +57,7 @@ public final class GenerateUserIdManagerImpl implements GenerateUserIdManager {
                 GenerateUserIds.class.getName(),
                 GenerateUserIds.class,
                 TABLE);
-        if (generateUserIds == null) {
+        if (null == generateUserIds) {
             generateUserIds = GenerateUserIds.newInstance();
             save(generateUserIds);
         }

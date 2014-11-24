@@ -84,7 +84,7 @@ public final class FileDownloadController {
         try {
             GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
 
-            if (gridFSDBFile == null) {
+            if (null == gridFSDBFile) {
                 LOG.warn("GridFSDBFile failed to find image={}", imageId);
                 File file = FileUtils.getFile(request.getServletContext().getRealPath(File.separator) + imageNotFound);
                 BufferedImage bi = ImageIO.read(file);

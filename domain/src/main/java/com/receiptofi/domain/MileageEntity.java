@@ -72,7 +72,7 @@ public final class MileageEntity extends BaseEntity {
     }
 
     public MileageEntity(FileSystemEntity fileSystemEntity, String receiptUserId) {
-        if (fileSystemEntities == null) {
+        if (null == fileSystemEntities) {
             fileSystemEntities = new LinkedList<>();
         }
         fileSystemEntities.add(fileSystemEntity);
@@ -178,7 +178,7 @@ public final class MileageEntity extends BaseEntity {
     }
 
     public void addFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
-        if (this.fileSystemEntities == null) {
+        if (null == this.fileSystemEntities) {
             this.fileSystemEntities = new ArrayList<>();
         }
         this.fileSystemEntities.addAll(fileSystemEntities);
@@ -209,7 +209,7 @@ public final class MileageEntity extends BaseEntity {
 
     @Transient
     public String tripDays() {
-        if (startDate == null) {
+        if (null == startDate) {
             return StringUtils.EMPTY;
         }
 

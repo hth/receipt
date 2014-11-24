@@ -445,7 +445,7 @@ public class LandingController extends BaseController {
      */
     private LandingView landingView(String profileId, String authKey, DateTime time) {
         UserProfileEntity userProfile = authenticate(profileId, authKey);
-        if (userProfile == null) {
+        if (null == userProfile) {
             Header header = getHeaderForProfileOrAuthFailure();
             LandingView landingView = LandingView.newInstance(StringUtils.EMPTY, StringUtils.EMPTY, header);
 
@@ -548,7 +548,7 @@ public class LandingController extends BaseController {
              * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
              * limit the number of invite.
              */
-            if (userProfileEntity == null || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
+            if (null == userProfileEntity || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
                 boolean status = invokeCorrectInvitation(invitedUserEmail, receiptUser, userProfileEntity);
                 if (status) {
                     notificationService.addNotification(
@@ -585,7 +585,7 @@ public class LandingController extends BaseController {
 
     protected boolean invokeCorrectInvitation(String invitedUserEmail, ReceiptUser receiptUser, UserProfileEntity userProfileEntity) {
         boolean status;
-        if (userProfileEntity == null) {
+        if (null == userProfileEntity) {
             status = mailService.sendInvitation(invitedUserEmail, receiptUser.getRid());
         } else {
             status = mailService.reSendInvitation(invitedUserEmail, receiptUser.getRid());

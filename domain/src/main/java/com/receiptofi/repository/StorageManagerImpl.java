@@ -125,9 +125,6 @@ public final class StorageManagerImpl implements StorageManager {
                         closeStreamOnPersist);
             }
 
-            if (receiptBlob == null) {
-                return null;
-            }
             Assert.notNull(receiptBlob);
         } catch (IOException | IllegalArgumentException ioe) {
             LOG.error("Image persist error:{}", ioe.getLocalizedMessage(), ioe);

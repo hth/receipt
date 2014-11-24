@@ -85,7 +85,7 @@ public abstract class RealMongoForTests {
     }
 
     protected MongoTemplate getMongoTemplate() {
-        if (mongoTemplate == null) {
+        if (null == mongoTemplate) {
             mongoTemplate = new MongoTemplate(mongo, DATABASE_NAME);
         }
         return mongoTemplate;

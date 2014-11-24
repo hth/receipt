@@ -45,7 +45,7 @@ public class DocumentStatProcessed {
         if ("ON".equalsIgnoreCase(generateDocumentStat)) {
             LOG.info("feature is {}", generateDocumentStat);
             DocumentDailyStatEntity lastEntry = dailyStatService.getLastEntry();
-            if (lastEntry == null) {
+            if (null == lastEntry) {
                 LOG.warn("initializing DocumentDailyStatEntity");
                 initialized();
                 lastEntry = dailyStatService.getLastEntry();

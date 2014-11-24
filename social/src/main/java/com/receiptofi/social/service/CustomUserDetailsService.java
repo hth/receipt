@@ -74,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         //Always check user login with lower letter email case
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
-        if (userProfile == null) {
+        if (null == userProfile) {
             LOG.warn("not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
@@ -115,7 +115,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOG.info("login through Provider user={}", uid);
 
         UserProfileEntity userProfile = userProfilePreferenceService.findByUserId(uid);
-        if (userProfile == null) {
+        if (null == userProfile) {
             LOG.warn("not found user={}", uid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
@@ -125,7 +125,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             //XXX Remove Todo some static password to be remove
             return new ReceiptUser(
                     StringUtils.isBlank(userAccountEntity.getUserId()) ? userProfile.getUserId() : userAccountEntity.getUserId(),
-                    userAuthenticate == null ?
+                    null == userAuthenticate ?
                             "$2a$12$Ce0mzNSijSvhAjGqfMKvx.SCQUqLHRQnTeOsKH9sphjC0XF3TA4Ge" :
                             userAuthenticate.getPassword(),
                     getAuthorities(userAccountEntity.getRoles()),
@@ -153,7 +153,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userAccount = accountService.findByProviderUserId(facebookProfileId);
                     userConnectionRepository = socialConfig.usersConnectionRepository();
                     connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
-                    if (userAccount == null) {
+                    if (null == userAccount) {
                         userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
                     }
 
@@ -168,7 +168,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userAccount = accountService.findByProviderUserId(googleProfileId);
                     userConnectionRepository = socialConfig.usersConnectionRepository();
                     connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
-                    if (userAccount == null) {
+                    if (null == userAccount) {
                         userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
                     }
 

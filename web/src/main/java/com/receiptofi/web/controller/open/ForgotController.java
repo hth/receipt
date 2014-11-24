@@ -224,7 +224,7 @@ public final class ForgotController {
                     forgotAuthenticateForm.getAuthenticationKey()
             );
             ModelAndView modelAndView = new ModelAndView(authenticateConfirm);
-            if (forgotRecoverEntity == null) {
+            if (null == forgotRecoverEntity) {
                 PerformanceProfiling.log(
                         this.getClass(),
                         time,

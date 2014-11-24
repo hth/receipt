@@ -28,7 +28,7 @@ public class ConnectionConverter {
     }
 
     public Connection<?> convert(UserAccountEntity userAccount) {
-        if (userAccount == null) {
+        if (null == userAccount) {
             return null;
         }
 
@@ -78,10 +78,10 @@ public class ConnectionConverter {
     }
 
     private String decrypt(String encryptedText) {
-        return encryptedText == null ? encryptedText : textEncryptor.decrypt(encryptedText);
+        return null == encryptedText ? encryptedText : textEncryptor.decrypt(encryptedText);
     }
 
     private String encrypt(String text) {
-        return text == null ? text : textEncryptor.encrypt(text);
+        return null == text ? text : textEncryptor.encrypt(text);
     }
 }

@@ -149,7 +149,7 @@ public final class MileageService {
         MileageEntity mileageEntity = mileageManager.findOne(mileageId, userProfileId);
         CommentEntity commentEntity = mileageEntity.getMileageNotes();
         boolean commentEntityBoolean = false;
-        if (commentEntity == null) {
+        if (null == commentEntity) {
             commentEntityBoolean = true;
             commentEntity = CommentEntity.newInstance(CommentTypeEnum.NOTES);
             commentEntity.setText(notes);

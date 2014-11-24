@@ -194,7 +194,7 @@ public final class LandingService {
                 for (ItemEntity itemEntity : itemEntities) {
                     BigDecimal sum = BigDecimal.ZERO;
                     sum = itemService.calculateTotalCost(sum, itemEntity);
-                    if (itemEntity.getExpenseTag() == null) {
+                    if (null == itemEntity.getExpenseTag()) {
                         if (itemMaps.containsKey("Un-Assigned")) {
                             BigDecimal out = itemMaps.get("Un-Assigned");
                             itemMaps.put("Un-Assigned", Maths.add(out, sum));

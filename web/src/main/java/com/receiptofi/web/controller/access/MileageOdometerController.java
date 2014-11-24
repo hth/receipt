@@ -71,7 +71,7 @@ public final class MileageOdometerController {
             mileageForm.setMileage(mileageEntity);
         } else {
             MileageEntity mileageEntity = mileageService.getMileage(mileageId, receiptUser.getRid());
-            if (mileageEntity == null) {
+            if (null == mileageEntity) {
                 //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
                 //Possible condition of bookmark or trying to gain access to some unknown receipt
                 LOG.warn("rid={}, tried submitting an invalid mileage id={}", receiptUser.getRid(), mileageId);

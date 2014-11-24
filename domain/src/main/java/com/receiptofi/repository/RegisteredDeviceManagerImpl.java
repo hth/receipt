@@ -63,7 +63,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public RegisteredDeviceEntity registerDevice(String rid, String did) {
         RegisteredDeviceEntity registeredDevice = RegisteredDeviceEntity.newInstance(rid, did);
-        if (find(rid, did) == null) {
+        if (null == find(rid, did)) {
             save(registeredDevice);
             LOG.info("registered device for rid={} did={}", rid, did);
         }
