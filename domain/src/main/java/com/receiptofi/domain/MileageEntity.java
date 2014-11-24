@@ -42,6 +42,7 @@ import javax.validation.constraints.NotNull;
 })
 public final class MileageEntity extends BaseEntity {
 
+    public static final int LIST_MAX_SIZE = 2;
     @NotNull
     @Field ("S")
     private int start;
@@ -113,7 +114,7 @@ public final class MileageEntity extends BaseEntity {
     }
 
     public MileageEntity splitMileage() {
-        Assert.isTrue(fileSystemEntities.size() == 2);
+        Assert.isTrue(fileSystemEntities.size() == LIST_MAX_SIZE);
         FileSystemEntity fileSystemSecondInList = Iterables.getLast(fileSystemEntities);
         MileageEntity mileageSecondInList = new MileageEntity(fileSystemSecondInList, receiptUserId);
         mileageSecondInList.setStart(getEnd());

@@ -86,7 +86,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
 
-            LOG.warn("user={} accountValidated={}", userAccountEntity.getReceiptUserId(), userAccountEntity.isAccountValidated());
+            LOG.warn("user={} accountValidated={}",
+                    userAccountEntity.getReceiptUserId(), userAccountEntity.isAccountValidated());
 
             return new ReceiptUser(
                     userProfile.getEmail(),
@@ -145,41 +146,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Social
     public String signInOrSignup(ProviderEnum provider, String accessToken) {
         UserAccountEntity userAccount = null;
-        UsersConnectionRepository userConnectionRepository;
-        ConnectionRepository connectionRepository;
-        List<Connection<?>> connections;
-
         try {
             switch (provider) {
                 case FACEBOOK:
-                    Facebook facebook = new FacebookTemplate(accessToken);
-                    String facebookProfileId = facebook.userOperations().getUserProfile().getId();
-
-                    userAccount = accountService.findByProviderUserId(facebookProfileId);
-                    userConnectionRepository = socialConfig.usersConnectionRepository();
-                    connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
-                    if (null == userAccount) {
-                        userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
-                    }
-
-                    connections = connectionRepository.findConnections(provider.name());
-                    Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
-                    socialConfig.mongoConnectionService().update(facebookProfileId, connections.get(0));
+                    userAccount = connectFacebook(provider, accessToken);
                     break;
                 case GOOGLE:
-                    Google google = new GoogleTemplate(accessToken);
-                    String googleProfileId = google.plusOperations().getGoogleProfile().getId();
-
-                    userAccount = accountService.findByProviderUserId(googleProfileId);
-                    userConnectionRepository = socialConfig.usersConnectionRepository();
-                    connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
-                    if (null == userAccount) {
-                        userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
-                    }
-
-                    connections = connectionRepository.findConnections(provider.name());
-                    Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
-                    socialConfig.mongoConnectionService().update(googleProfileId, connections.get(0));
+                    userAccount = connectGoogle(provider, accessToken);
                     break;
             }
             if (null != userAccount) {
@@ -193,6 +166,46 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.error("duplicate account error pid={} reason={}", provider, e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    private UserAccountEntity connectFacebook(ProviderEnum provider, String accessToken) {
+        UserAccountEntity userAccount;
+        UsersConnectionRepository userConnectionRepository;
+        ConnectionRepository connectionRepository;
+        List<Connection<?>> connections;Facebook facebook = new FacebookTemplate(accessToken);
+        String facebookProfileId = facebook.userOperations().getUserProfile().getId();
+
+        userAccount = accountService.findByProviderUserId(facebookProfileId);
+        userConnectionRepository = socialConfig.usersConnectionRepository();
+        connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
+        if (null == userAccount) {
+            userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
+        }
+
+        connections = connectionRepository.findConnections(provider.name());
+        Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
+        socialConfig.mongoConnectionService().update(facebookProfileId, connections.get(0));
+        return userAccount;
+    }
+
+    private UserAccountEntity connectGoogle(ProviderEnum provider, String accessToken) {
+        UserAccountEntity userAccount;
+        UsersConnectionRepository userConnectionRepository;
+        ConnectionRepository connectionRepository;
+        List<Connection<?>> connections;Google google = new GoogleTemplate(accessToken);
+        String googleProfileId = google.plusOperations().getGoogleProfile().getId();
+
+        userAccount = accountService.findByProviderUserId(googleProfileId);
+        userConnectionRepository = socialConfig.usersConnectionRepository();
+        connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
+        if (null == userAccount) {
+            userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
+        }
+
+        connections = connectionRepository.findConnections(provider.name());
+        Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
+        socialConfig.mongoConnectionService().update(googleProfileId, connections.get(0));
+        return userAccount;
     }
 
     /**
