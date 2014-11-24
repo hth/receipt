@@ -30,6 +30,11 @@ import java.util.List;
  * @author hitender
  * @since Jan 3, 2013 3:09:08 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 public final class StorageManagerImpl implements StorageManager {
     private static final Logger LOG = LoggerFactory.getLogger(StorageManagerImpl.class);
 

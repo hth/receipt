@@ -36,6 +36,11 @@ import java.util.List;
  * @author hitender
  * @since Jan 6, 2013 1:35:47 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class ItemOCRManagerImpl implements ItemOCRManager {
     private static final Logger LOG = LoggerFactory.getLogger(ItemOCRManagerImpl.class);

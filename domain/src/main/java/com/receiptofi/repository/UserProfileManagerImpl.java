@@ -32,6 +32,11 @@ import java.util.List;
  * @author hitender
  * @since Dec 23, 2012 3:45:47 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class UserProfileManagerImpl implements UserProfileManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfileManagerImpl.class);

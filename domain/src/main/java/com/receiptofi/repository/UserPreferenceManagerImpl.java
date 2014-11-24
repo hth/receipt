@@ -24,6 +24,11 @@ import java.util.List;
  * @author hitender
  * @since Dec 24, 2012 3:19:22 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

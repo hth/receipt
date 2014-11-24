@@ -34,6 +34,11 @@ import java.util.List;
  * Date: 5/13/13
  * Time: 11:59 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class ExpenseTagManagerImpl implements ExpenseTagManager {
     private static final Logger LOG = LoggerFactory.getLogger(ExpenseTagManagerImpl.class);

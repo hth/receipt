@@ -18,6 +18,11 @@ import java.util.List;
  * User: hitender
  * Date: 4/13/14 5:19 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class GenerateUserIdManagerImpl implements GenerateUserIdManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

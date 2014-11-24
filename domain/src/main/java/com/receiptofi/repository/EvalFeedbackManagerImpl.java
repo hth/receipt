@@ -18,6 +18,11 @@ import java.util.List;
  * Date: 7/20/13
  * Time: 5:37 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackManagerImpl.class);

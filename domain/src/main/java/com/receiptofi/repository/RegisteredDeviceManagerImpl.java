@@ -25,6 +25,11 @@ import java.util.List;
  * User: hitender
  * Date: 8/12/14 10:11 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     private static final Logger LOG = LoggerFactory.getLogger(RegisteredDeviceManagerImpl.class);

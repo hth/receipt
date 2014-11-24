@@ -18,6 +18,11 @@ import java.util.List;
  * Date: 5/26/13
  * Time: 4:08 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class BrowserManagerImpl implements BrowserManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

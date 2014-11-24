@@ -26,6 +26,11 @@ import java.util.List;
  * Date: 6/30/13
  * Time: 1:38 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class NotificationManagerImpl implements NotificationManager {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationManagerImpl.class);

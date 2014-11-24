@@ -18,6 +18,11 @@ import java.util.List;
  * @author hitender
  * @since Dec 26, 2012 9:21:35 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class ItemFeatureManagerImpl implements ItemFeatureManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

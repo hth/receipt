@@ -30,6 +30,11 @@ import java.util.List;
  * Date: 6/9/13
  * Time: 2:15 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class InviteManagerImpl implements InviteManager {
     private static final Logger LOG = LoggerFactory.getLogger(InviteManagerImpl.class);

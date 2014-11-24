@@ -50,6 +50,11 @@ import java.util.List;
  * @author hitender
  * @since Dec 26, 2012 9:17:04 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class ReceiptManagerImpl implements ReceiptManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
