@@ -22,7 +22,7 @@ import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
-import com.receiptofi.repository.MessageManager;
+import com.receiptofi.repository.MessageDocumentManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.StorageManager;
 
@@ -55,7 +55,7 @@ public final class DocumentUpdateService {
     @Autowired private ItemOCRManager itemOCRManager;
     @Autowired private ReceiptManager receiptManager;
     @Autowired private ItemManager itemManager;
-    @Autowired private MessageManager messageManager;
+    @Autowired private MessageDocumentManager messageDocumentManager;
     @Autowired private BizService bizService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private CommentManager commentManager;
@@ -154,7 +154,7 @@ public final class DocumentUpdateService {
                 documentManager.save(documentForm);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageManager.undoUpdateObject(documentForm.getId(), false, TURK_PROCESSED, OCR_PROCESSED);
+                messageDocumentManager.undoUpdateObject(documentForm.getId(), false, TURK_PROCESSED, OCR_PROCESSED);
                 //End of roll back
 
                 LOG.warn("Rollback complete for processing document");
@@ -282,7 +282,7 @@ public final class DocumentUpdateService {
                 documentManager.save(receiptDocument);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageManager.undoUpdateObject(receiptDocument.getId(), false, TURK_PROCESSED, TURK_REQUEST);
+                messageDocumentManager.undoUpdateObject(receiptDocument.getId(), false, TURK_PROCESSED, TURK_REQUEST);
                 //End of roll back
 
                 LOG.warn("Rollback complete for re-processing document");
@@ -293,10 +293,10 @@ public final class DocumentUpdateService {
 
     private void updateMessageManager(DocumentEntity receiptOCR, DocumentStatusEnum from, DocumentStatusEnum to) {
         try {
-            messageManager.updateObject(receiptOCR.getId(), from, to);
+            messageDocumentManager.updateObject(receiptOCR.getId(), from, to);
         } catch (Exception exce) {
             LOG.error(exce.getLocalizedMessage());
-            messageManager.undoUpdateObject(receiptOCR.getId(), false, to, from);
+            messageDocumentManager.undoUpdateObject(receiptOCR.getId(), false, to, from);
             throw exce;
         }
     }
@@ -320,10 +320,10 @@ public final class DocumentUpdateService {
             documentManager.save(document);
 
             try {
-                messageManager.updateObject(document.getId(), OCR_PROCESSED, TURK_RECEIPT_REJECT);
+                messageDocumentManager.updateObject(document.getId(), OCR_PROCESSED, TURK_RECEIPT_REJECT);
             } catch (Exception exce) {
                 LOG.error(exce.getLocalizedMessage());
-                messageManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
+                messageDocumentManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
                 throw exce;
             }
             itemOCRManager.deleteWhereReceipt(document);
@@ -349,7 +349,7 @@ public final class DocumentUpdateService {
             documentManager.save(document);
             //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-            messageManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
+            messageDocumentManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
             //End of roll back
 
             LOG.warn("Rollback complete for rejecting document");
@@ -393,7 +393,7 @@ public final class DocumentUpdateService {
     private void deleteReceiptOCR(DocumentEntity documentEntity) {
         documentManager.deleteHard(documentEntity);
         itemOCRManager.deleteWhereReceipt(documentEntity);
-        messageManager.deleteAllForReceiptOCR(documentEntity.getId());
+        messageDocumentManager.deleteAllForReceiptOCR(documentEntity.getId());
         storageManager.deleteHard(documentEntity.getFileSystemEntities());
         fileSystemService.deleteHard(documentEntity.getFileSystemEntities());
     }

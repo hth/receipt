@@ -6,7 +6,7 @@ package com.receiptofi.service.routes;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.repository.MessageManager;
+import com.receiptofi.repository.MessageDocumentManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import java.util.Map;
 public final class FileUploadDocumentListenerJMS {
     private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);
 
-    @Autowired private MessageManager messageManager;
+    @Autowired private MessageDocumentManager messageDocumentManager;
 
     public void receive(Map<String, Object> message) throws Exception {
         String id = (String) message.get("id");
@@ -49,7 +49,7 @@ public final class FileUploadDocumentListenerJMS {
 
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(level);
         MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, documentStatusEnum);
-        messageManager.save(object);
+        messageDocumentManager.save(object);
 
         LOG.info("Message received id={}, user level={}, and persisted with id={}", id, level, object.getId());
     }
