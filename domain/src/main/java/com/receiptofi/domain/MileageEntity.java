@@ -1,5 +1,7 @@
 package com.receiptofi.domain;
 
+import com.google.common.collect.Iterables;
+
 import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -105,10 +108,8 @@ public final class MileageEntity extends BaseEntity {
     }
 
     public MileageEntity splitMileage() {
-        FileSystemEntity fileSystemEntity = null;
-        for (FileSystemEntity fse : getFileSystemEntities()) {
-            fileSystemEntity = fse;
-        }
+        Assert.isTrue(fileSystemEntities.size() == 2);
+        FileSystemEntity fileSystemEntity = Iterables.getLast(fileSystemEntities);
         MileageEntity m2 = new MileageEntity(fileSystemEntity, receiptUserId);
         m2.setStart(getEnd());
         m2.setStartDate(getEndDate());
