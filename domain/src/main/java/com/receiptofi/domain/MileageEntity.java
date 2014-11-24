@@ -96,7 +96,7 @@ public final class MileageEntity extends BaseEntity {
         if (!mileageEntity.isComplete()) {
             this.end = mileageEntity.getStart();
             this.endDate = mileageEntity.getStartDate();
-            if (mileageNotes != null) {
+            if (null != mileageNotes) {
                 mileageNotes.setText(mergeComments(mileageEntity).toString());
             }
             fileSystemEntities.add(mileageEntity.getFileSystemEntities().iterator().next());
@@ -105,7 +105,7 @@ public final class MileageEntity extends BaseEntity {
 
     private StringBuilder mergeComments(MileageEntity mileageEntity) {
         StringBuilder mergedText = new StringBuilder();
-        mergedText.append(mileageNotes == null ? StringUtils.EMPTY : mileageNotes.getText());
+        mergedText.append(null == mileageNotes ? StringUtils.EMPTY : mileageNotes.getText());
         if (mergedText.toString().length() > 0) {
             mergedText.append("\n\n");
         }
@@ -114,7 +114,7 @@ public final class MileageEntity extends BaseEntity {
     }
 
     public MileageEntity splitMileage() {
-        Assert.isTrue(fileSystemEntities.size() == LIST_MAX_SIZE);
+        Assert.isTrue(LIST_MAX_SIZE == fileSystemEntities.size());
         FileSystemEntity fileSystemSecondInList = Iterables.getLast(fileSystemEntities);
         MileageEntity mileageSecondInList = new MileageEntity(fileSystemSecondInList, receiptUserId);
         mileageSecondInList.setStart(getEnd());
