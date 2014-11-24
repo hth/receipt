@@ -172,7 +172,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserAccountEntity userAccount;
         UsersConnectionRepository userConnectionRepository;
         ConnectionRepository connectionRepository;
-        List<Connection<?>> connections;Facebook facebook = new FacebookTemplate(accessToken);
+        List<Connection<?>> connections;
+        Facebook facebook = new FacebookTemplate(accessToken);
         String facebookProfileId = facebook.userOperations().getUserProfile().getId();
 
         userAccount = accountService.findByProviderUserId(facebookProfileId);
@@ -192,7 +193,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserAccountEntity userAccount;
         UsersConnectionRepository userConnectionRepository;
         ConnectionRepository connectionRepository;
-        List<Connection<?>> connections;Google google = new GoogleTemplate(accessToken);
+        List<Connection<?>> connections;
+        Google google = new GoogleTemplate(accessToken);
         String googleProfileId = google.plusOperations().getGoogleProfile().getId();
 
         userAccount = accountService.findByProviderUserId(googleProfileId);
