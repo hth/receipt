@@ -16,7 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-//sadly there is no default implementation for Mongo :(
+/**
+ * sadly there is no default implementation for Mongo :(.
+ */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Social
 public class MongoUsersConnectionRepository implements UsersConnectionRepository {
 

@@ -17,6 +17,11 @@ import java.util.List;
  * User: hitender
  * Date: 9/10/14 1:06 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Component
 public class PurgeDocumentsProcess {
     private static final Logger LOG = LoggerFactory.getLogger(PurgeDocumentsProcess.class);

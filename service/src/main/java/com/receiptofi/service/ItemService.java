@@ -22,6 +22,11 @@ import java.util.Map;
  * Date: 5/19/13
  * Time: 5:07 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class ItemService {
 

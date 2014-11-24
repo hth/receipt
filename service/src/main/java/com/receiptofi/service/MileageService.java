@@ -26,6 +26,11 @@ import java.util.List;
  * User: hitender
  * Date: 12/25/13 4:16 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class MileageService {
     private static final Logger LOG = LoggerFactory.getLogger(MileageService.class);

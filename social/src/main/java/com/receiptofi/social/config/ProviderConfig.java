@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Configuration;
  * User: hitender
  * Date: 7/9/14 12:27 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Configuration
 @Social
 public class ProviderConfig {

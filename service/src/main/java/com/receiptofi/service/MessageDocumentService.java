@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
  * User: hitender
  * Date: 11/24/14 3:04 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public class MessageDocumentService {
 

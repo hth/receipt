@@ -12,6 +12,11 @@ import java.util.Collection;
  * User: hitender
  * Date: 12/23/13 9:19 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class FileSystemService {
 

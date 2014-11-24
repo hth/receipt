@@ -58,6 +58,11 @@ import java.util.Map;
  * Date: 4/28/13
  * Time: 2:04 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class LandingService {
     private static final Logger LOG = LoggerFactory.getLogger(LandingService.class);

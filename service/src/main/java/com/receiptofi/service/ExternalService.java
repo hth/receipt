@@ -24,6 +24,11 @@ import java.util.Iterator;
  * Date: 5/9/13
  * Time: 7:51 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class ExternalService {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalService.class);

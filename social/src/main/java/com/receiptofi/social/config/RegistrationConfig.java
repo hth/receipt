@@ -22,6 +22,11 @@ import org.springframework.ui.ModelMap;
  * User: hitender
  * Date: 6/22/14 7:30 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Component
 @Scope (BeanDefinition.SCOPE_SINGLETON)
 public class RegistrationConfig {

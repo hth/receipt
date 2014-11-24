@@ -13,6 +13,11 @@ import java.util.List;
  * Date: 5/23/13
  * Time: 11:49 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class ExpensesService {
 

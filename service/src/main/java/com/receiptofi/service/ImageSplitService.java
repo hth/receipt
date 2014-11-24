@@ -24,6 +24,11 @@ import javax.imageio.ImageIO;
  * User: hitender
  * Date: 10/18/13 10:58 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class ImageSplitService {
     private static final Logger LOG = LoggerFactory.getLogger(ImageSplitService.class);

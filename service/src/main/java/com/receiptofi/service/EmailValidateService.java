@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
  * User: hitender
  * Date: 5/17/14 6:28 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public class EmailValidateService {
 

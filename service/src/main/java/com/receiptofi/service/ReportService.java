@@ -27,6 +27,11 @@ import javax.xml.parsers.ParserConfigurationException;
  * User: hitender
  * Date: 9/4/13 1:19 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public class ReportService {
     private static final Logger LOG = LoggerFactory.getLogger(ReportService.class);
