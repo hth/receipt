@@ -38,6 +38,11 @@ import java.util.List;
  * Date: 4/6/13
  * Time: 7:28 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class MessageDocumentManagerImpl implements MessageDocumentManager {
     private static final Logger LOG = LoggerFactory.getLogger(MessageDocumentManagerImpl.class);
