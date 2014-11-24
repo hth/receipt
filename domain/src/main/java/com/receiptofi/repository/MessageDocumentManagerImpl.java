@@ -51,8 +51,6 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
             Document.class,
             "collection");
 
-    private static Sort sortByUserLevelAndCreated;
-
     @Value ("${messageQueryLimit:10}")
     private int messageQueryLimit;
 
@@ -60,12 +58,6 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Autowired
     public MessageDocumentManagerImpl(MongoTemplate mongoTemplate) {
-        if(null == sortByUserLevelAndCreated) {
-            List<Order> order = new ArrayList<>();
-            order.add(new Order(DESC, "ULE"));
-            order.add(new Order(ASC, "C"));
-            sortByUserLevelAndCreated = new Sort(order);
-        }
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -82,7 +74,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
         Query query = query(where("LOK").is(false).and("DS").is(status));
-        query.with(sortByUserLevelAndCreated).limit(limit);
+        addOrder(query.limit(limit));
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
@@ -135,15 +127,22 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     @Override
     public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
         Query query = query(where("LOK").is(true).and("DS").is(status).and("EM").is(emailId).and("RID").is(userProfileId));
-        query.with(sortByUserLevelAndCreated);
+        addOrder(query);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
 
     @Override
     public List<MessageDocumentEntity> findAllPending() {
         Query query = query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.OCR_PROCESSED));
-        query.with(sortByUserLevelAndCreated);
+        addOrder(query);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
+    }
+
+    private void addOrder(Query query) {
+        List<Order> order = new ArrayList<>();
+        order.add(new Order(DESC, "ULE"));
+        order.add(new Order(ASC, "C"));
+        query.with(new Sort(order));
     }
 
     @Override
