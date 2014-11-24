@@ -12,8 +12,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
 
     <!-- load dojo and provide config via data attribute -->
-    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
-            data-dojo-config="isDebug: false, parseOnLoad: true">
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojo/dojo.js" data-dojo-config="isDebug: false, parseOnLoad: true">
     </script>
     <script>
         var loadingOverlay = (function(){
@@ -56,7 +55,7 @@
 	<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css' media='print' />
 	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css' />
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css' />
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/_angular/animate-custom.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/angular/animate-custom.css' />
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css' />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
