@@ -22,6 +22,11 @@ import java.util.List;
  * User: hitender
  * Date: 4/23/14 6:43 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public class UserAccountManagerImpl implements UserAccountManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserAccountManagerImpl.class);

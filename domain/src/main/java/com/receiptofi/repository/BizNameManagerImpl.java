@@ -24,6 +24,11 @@ import java.util.Set;
  * Date: 4/22/13
  * Time: 11:09 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class BizNameManagerImpl implements BizNameManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

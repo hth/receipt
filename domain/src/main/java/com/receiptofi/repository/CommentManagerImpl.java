@@ -18,6 +18,11 @@ import java.util.List;
  * Date: 6/11/13
  * Time: 7:13 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class CommentManagerImpl implements CommentManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

@@ -27,6 +27,11 @@ import java.util.List;
  * User: hitender
  * Date: 12/25/13 4:16 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public class MileageManagerImpl implements MileageManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

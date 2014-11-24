@@ -25,6 +25,11 @@ import java.util.List;
  * User: hitender
  * Date: 11/20/14 3:03 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public class DocumentDailyStatManagerImpl implements DocumentDailyStatManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);

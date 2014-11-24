@@ -24,6 +24,11 @@ import java.util.List;
  * Date: 6/4/13
  * Time: 12:10 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(

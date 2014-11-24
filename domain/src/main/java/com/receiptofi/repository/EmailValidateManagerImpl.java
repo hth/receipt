@@ -26,6 +26,11 @@ import java.util.List;
  * User: hitender
  * Date: 5/17/14 6:29 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class EmailValidateManagerImpl implements EmailValidateManager {
     private static final Logger LOG = LoggerFactory.getLogger(EmailValidateManagerImpl.class);

@@ -48,6 +48,11 @@ import java.util.StringTokenizer;
  * @author hitender
  * @since Dec 26, 2012 9:16:44 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class ItemManagerImpl implements ItemManager {
     private static final Logger LOG = LoggerFactory.getLogger(ItemManagerImpl.class);

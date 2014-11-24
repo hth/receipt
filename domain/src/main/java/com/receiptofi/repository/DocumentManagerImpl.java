@@ -42,6 +42,11 @@ import java.util.List;
  * @author hitender
  * @since Jan 6, 2013 1:29:44 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class DocumentManagerImpl implements DocumentManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);

@@ -25,6 +25,11 @@ import java.util.List;
  * @author hitender
  * @since Dec 16, 2012 1:20:53 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);

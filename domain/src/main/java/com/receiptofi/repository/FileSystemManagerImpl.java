@@ -25,6 +25,11 @@ import java.util.List;
  * User: hitender
  * Date: 12/23/13 9:21 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public final class FileSystemManagerImpl implements FileSystemManager {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemManagerImpl.class);
