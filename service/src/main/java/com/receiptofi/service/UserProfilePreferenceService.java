@@ -19,6 +19,11 @@ import java.util.List;
  * Date: 4/25/13
  * Time: 9:37 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class UserProfilePreferenceService {
 

@@ -24,6 +24,11 @@ import java.util.Map;
  * User: hitender
  * Date: 11/20/14 12:47 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Component
 public class DocumentStatProcessed {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentStatProcessed.class);

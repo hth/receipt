@@ -14,6 +14,11 @@ import java.util.Date;
  * User: hitender
  * Date: 3/30/14 4:23 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Repository
 public class PersistentTokenRepositoryImpl implements PersistentTokenRepository {
 

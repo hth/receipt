@@ -22,6 +22,11 @@ import org.springframework.stereotype.Service;
  * Date: 6/9/13
  * Time: 2:06 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class InviteService {
     private static final Logger LOG = LoggerFactory.getLogger(InviteService.class);

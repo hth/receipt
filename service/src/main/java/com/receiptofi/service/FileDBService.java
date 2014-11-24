@@ -20,6 +20,11 @@ import java.util.Collection;
  * Date: 4/27/13
  * Time: 12:59 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class FileDBService {
     private static final Logger LOG = LoggerFactory.getLogger(FileDBService.class);

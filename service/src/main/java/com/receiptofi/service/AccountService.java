@@ -30,6 +30,11 @@ import java.util.LinkedHashSet;
  * Date: 4/24/13
  * Time: 9:53 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public class AccountService {
     private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);

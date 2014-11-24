@@ -19,6 +19,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  * Date: 7/20/13
  * Time: 5:32 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class EvalFeedbackService {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackService.class);

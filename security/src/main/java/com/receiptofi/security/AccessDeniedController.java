@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * User: hitender
  * Date: 3/30/14 1:28 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Controller
 @RequestMapping (value = "/access")
 public class AccessDeniedController {

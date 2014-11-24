@@ -32,6 +32,11 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
  * User: hitender
  * Date: 5/10/14 12:35 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Configuration
 @Social
 public class SocialConfig {

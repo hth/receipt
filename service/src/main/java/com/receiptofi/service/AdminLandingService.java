@@ -17,6 +17,11 @@ import java.util.List;
  * Date: 4/28/13
  * Time: 8:34 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class AdminLandingService {
     private static final Logger LOG = LoggerFactory.getLogger(AdminLandingService.class);

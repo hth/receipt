@@ -26,6 +26,11 @@ import java.io.IOException;
  * User: hitender
  * Date: 12/7/13 2:18 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Component
 public class FileSystemProcess {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);

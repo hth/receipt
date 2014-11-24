@@ -25,6 +25,11 @@ import java.util.regex.Pattern;
  * @author hitender
  * @since Jan 6, 2013 9:49:59 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public final class ReceiptParserService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptParserService.class);

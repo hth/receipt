@@ -50,6 +50,11 @@ import javax.mail.internet.MimeMessage;
  * Date: 6/9/13
  * Time: 10:20 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Service
 public class MailService {
     private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
