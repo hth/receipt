@@ -56,8 +56,10 @@ public final class FetcherService {
         Set<String> address = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        if (bizNameEntity != null) {
-            List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizAddress, bizNameEntity, BizStoreManager.ADDRESS);
+        if (null != bizNameEntity) {
+            List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
+                    bizAddress, bizNameEntity, BizStoreEntity.ADDRESS_FIELD_NAME);
+
             for (BizStoreEntity bizStoreEntity : list) {
                 address.add(bizStoreEntity.getAddress());
             }
@@ -77,8 +79,9 @@ public final class FetcherService {
         Set<String> phone = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
-        if (bizNameEntity != null) {
-            List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(bizPhone, bizAddress, bizNameEntity, BizStoreManager.PHONE);
+        if (null != bizNameEntity) {
+            List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
+                    bizPhone, bizAddress, bizNameEntity, BizStoreEntity.PHONE_FIELD_NAME);
 
             for (BizStoreEntity bizStoreEntity : list) {
                 phone.add(Formatter.phone(bizStoreEntity.getPhone()));
