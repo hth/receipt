@@ -96,7 +96,7 @@ public final class ReceiptController extends BaseController {
         try {
             task = receiptService.deleteReceipt(receiptForm.getReceipt().getId(), receiptUser.getRid());
             if (!task) {
-                //TODO in case of failure to delete send message to USER
+                //TODO(hth) in case of failure to delete send message to USER
             }
         } catch (Exception exce) {
             LOG.error("Error occurred during receipt delete: Receipt={}, reason={}", receiptForm.getReceipt().getId(), exce.getLocalizedMessage());

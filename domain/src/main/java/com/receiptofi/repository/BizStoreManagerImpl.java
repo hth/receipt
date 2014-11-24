@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -130,6 +131,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 query.addCriteria(criteriaA);
             }
         }
+        Assert.notNull(query);
         return mongoTemplate.find(query.limit(PaginationEnum.TEN.getLimit()), BizStoreEntity.class, TABLE);
     }
 
@@ -141,14 +143,11 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     ) {
         Query query;
         if (StringUtils.isBlank(bizAddress)) {
-            Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-
-            query = query(criteriaB);
+            query = query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())));
         } else {
-            Criteria criteriaA = where("AD").regex("^" + bizAddress, "i");
-            Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-
-            query = query(criteriaB).addCriteria(criteriaA);
+            query = query(where("AD").regex("^" + bizAddress, "i")
+                    .and("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))
+            );
         }
         query.fields().include(fieldName);
         return mongoTemplate.find(query, BizStoreEntity.class, TABLE);

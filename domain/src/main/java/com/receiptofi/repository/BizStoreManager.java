@@ -12,11 +12,6 @@ import java.util.List;
  */
 public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
-    //TODO use annotation instead
-    /** Field name */
-    String ADDRESS = "ADDRESS";
-    String PHONE = "PHONE";
-
     BizStoreEntity noStore();
 
     BizStoreEntity findOne(BizStoreEntity bizStoreEntity);

@@ -146,8 +146,9 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     boolean notDeletedChecksumDuplicate(String checksum, String id);
 
     /**
-     * Return existing active receipt. This method will be helpful when we plan to notify technician about the duplicate
-     * receipt. Example when similar receipt exists in re-check condition.
+     * Return existing active receipt. This method will be helpful when we plan
+     * to notify technician about the duplicate receipt.
+     * Example when similar receipt exists in re-check condition.
      *
      * @param checksum
      * @return

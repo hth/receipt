@@ -22,9 +22,13 @@ import javax.validation.constraints.NotNull;
  */
 @Document (collection = "BIZ_STORE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "biz_store_idx", def = "{'ADDRESS': 1, 'PHONE': 1}", unique = true),
+        @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),
 })
 public final class BizStoreEntity extends BaseEntity {
+
+    /** Field name */
+    public static final String ADDRESS_FIELD_NAME = "AD";
+    public static final String PHONE_FIELD_NAME = "PH";
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     @Value ("${phoneNumberBlank:000_000_0000}")

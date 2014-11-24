@@ -26,7 +26,6 @@ public final class MessageDocumentEntity extends BaseEntity {
     @Field ("RID")
     String receiptUserId;
 
-    //TODO change to document id
     @NotNull
     @Field ("DID")
     private String documentId;

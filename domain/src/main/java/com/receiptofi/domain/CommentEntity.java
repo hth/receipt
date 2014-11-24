@@ -16,9 +16,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Time: 3:22 AM
  */
 @Document (collection = "COMMENT")
-@CompoundIndexes (value = {
-        @CompoundIndex (name = "comment_idx", def = "{'ID': 1}"),
-})
 public final class CommentEntity extends BaseEntity {
 
     //XXX TODO @Value annotation is not working, find why

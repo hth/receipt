@@ -84,7 +84,13 @@ public final class ReceiptWebService {
             headers = "Accept=application/json",
             produces = "application/json")
     @ResponseBody
-    public Set<String> searchBiz(@RequestParam ("term") String bizAddress, @RequestParam ("nameParam") String businessName) {
+    public Set<String> searchBiz(
+            @RequestParam ("term")
+            String bizAddress,
+
+            @RequestParam ("nameParam")
+            String businessName
+    ) {
         try {
             return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessAddress) {
@@ -106,7 +112,16 @@ public final class ReceiptWebService {
             headers = "Accept=application/json",
             produces = "application/json")
     @ResponseBody
-    public Set<String> searchPhone(@RequestParam ("term") String bizPhone, @RequestParam ("nameParam") String businessName, @RequestParam ("addressParam") String bizAddress) {
+    public Set<String> searchPhone(
+            @RequestParam ("term")
+            String bizPhone,
+
+            @RequestParam ("nameParam")
+            String businessName,
+
+            @RequestParam ("addressParam")
+            String bizAddress
+    ) {
         try {
             return fetcherService.findDistinctBizPhone(
                     StringUtils.stripToEmpty(bizPhone),
@@ -131,7 +146,13 @@ public final class ReceiptWebService {
             headers = "Accept=application/json",
             produces = "application/json")
     @ResponseBody
-    public Set<String> searchItem(@RequestParam ("term") String itemName, @RequestParam ("nameParam") String businessName) {
+    public Set<String> searchItem(
+            @RequestParam ("term")
+            String itemName,
+
+            @RequestParam ("nameParam")
+            String businessName
+    ) {
         try {
             return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchingItems) {
@@ -169,7 +190,7 @@ public final class ReceiptWebService {
      *
      * @param date
      * @param total
-     * @param userProfileId
+     * @param receiptUserId
      * @return
      * @throws IOException
      */
@@ -182,16 +203,21 @@ public final class ReceiptWebService {
     //@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate Account")  // 409 //TODO something to think about
     @ResponseBody
     public boolean checkForDuplicate(
-            @RequestParam ("date") String date,
-            @RequestParam ("total") String total,
-            @RequestParam ("userProfileId") String userProfileId
+            @RequestParam ("date")
+            String date,
+
+            @RequestParam ("total")
+            String total,
+
+            @RequestParam ("receiptUserId")
+            String receiptUserId
     ) throws IOException, ParseException, NumberFormatException {
         try {
             Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
             Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
 
             String checkSum = HashText.calculateChecksumForNotDeleted(
-                    StringUtils.stripToEmpty(userProfileId),
+                    StringUtils.stripToEmpty(receiptUserId),
                     receiptDate,
                     receiptTotal
             );
@@ -223,10 +249,18 @@ public final class ReceiptWebService {
             produces = "application/json")
     @ResponseBody
     public boolean changeFSImageOrientation(
-            @RequestParam ("fileSystemId") String fileSystemId,
-            @RequestParam ("orientation") String imageOrientation,
-            @RequestParam ("blobId") String blobId,
-            @RequestParam ("userProfileId") String userProfileId,
+            @RequestParam ("fileSystemId")
+            String fileSystemId,
+
+            @RequestParam ("orientation")
+            String imageOrientation,
+
+            @RequestParam ("blobId")
+            String blobId,
+
+            @RequestParam ("userProfileId")
+            String userProfileId,
+
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
