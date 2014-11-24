@@ -13,6 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Date: 6/11/13
  * Time: 3:22 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "COMMENT")
 public final class CommentEntity extends BaseEntity {
 

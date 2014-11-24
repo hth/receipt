@@ -12,6 +12,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @author hitender
  * @since Dec 23, 2012 1:48:36 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "USER_PREFERENCE")
 public final class UserPreferenceEntity extends BaseEntity {
 

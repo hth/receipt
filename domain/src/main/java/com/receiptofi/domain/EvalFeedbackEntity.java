@@ -12,6 +12,11 @@ import javax.validation.constraints.NotNull;
  * Date: 7/19/13
  * Time: 8:32 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "EVAL_FEEDBACK")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "eval_feedback_idx", def = "{'RID': 1, 'C': 1}", unique = true),

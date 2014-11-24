@@ -15,6 +15,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @author hitender
  * @since Dec 26, 2012 1:47:36 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "ITEM_FEATURE")
 public final class ItemFeatureEntity extends BaseEntity {
 

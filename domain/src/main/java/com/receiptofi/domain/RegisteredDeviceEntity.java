@@ -13,6 +13,11 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 8/12/14 9:32 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Mobile
 @Document (collection = "REGISTERED_DEVICE")
 @CompoundIndexes (value = {

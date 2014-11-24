@@ -13,6 +13,11 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 12/13/13 12:47 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "FILE_SYSTEM")
 public final class FileSystemEntity extends BaseEntity {
 

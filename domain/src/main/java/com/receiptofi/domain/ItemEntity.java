@@ -30,6 +30,11 @@ import javax.validation.constraints.Size;
  * @author hitender
  * @since Dec 25, 2012 11:43:10 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
 @Document (collection = "ITEM")
 //TODO(hth) @DBRef RECEIPT index does not look correct to me

@@ -20,6 +20,11 @@ import javax.validation.constraints.NotNull;
  * Date: 4/22/13
  * Time: 10:16 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "BIZ_STORE")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),

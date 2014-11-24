@@ -30,6 +30,11 @@ import javax.validation.constraints.NotNull;
  * @author hitender
  * @since Dec 26, 2012 12:09:01 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "RECEIPT")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "receipt_idx", def = "{'FS': -1, 'RID': -1}"),

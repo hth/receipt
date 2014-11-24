@@ -12,6 +12,11 @@ import javax.validation.constraints.NotNull;
  * Date: 6/30/13
  * Time: 1:29 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Document (collection = "NOTIFICATION")
 public final class NotificationEntity extends BaseEntity {
 
