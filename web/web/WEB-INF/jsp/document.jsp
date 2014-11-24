@@ -15,7 +15,7 @@
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
     <link rel='stylesheet' type='text/css' href="${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css" />
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/raphael/raphael-min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/dynamic_list_helper2.js"></script>
