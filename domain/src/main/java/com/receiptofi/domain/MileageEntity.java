@@ -114,17 +114,17 @@ public final class MileageEntity extends BaseEntity {
 
     public MileageEntity splitMileage() {
         Assert.isTrue(fileSystemEntities.size() == 2);
-        FileSystemEntity fileSystemEntity = Iterables.getLast(fileSystemEntities);
-        MileageEntity m2 = new MileageEntity(fileSystemEntity, receiptUserId);
-        m2.setStart(getEnd());
-        m2.setStartDate(getEndDate());
+        FileSystemEntity fileSystemSecondInList = Iterables.getLast(fileSystemEntities);
+        MileageEntity mileageSecondInList = new MileageEntity(fileSystemSecondInList, receiptUserId);
+        mileageSecondInList.setStart(getEnd());
+        mileageSecondInList.setStartDate(getEndDate());
 
         setEnd(0);
         setEndDate(null);
         List<FileSystemEntity> fileSystems = new LinkedList<>();
         fileSystems.add(getFileSystemEntities().iterator().next());
         setFileSystemEntities(fileSystems);
-        return m2;
+        return mileageSecondInList;
     }
 
     public int getStart() {
