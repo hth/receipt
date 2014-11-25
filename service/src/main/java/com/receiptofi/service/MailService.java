@@ -62,11 +62,11 @@ public class MailService {
     private AccountService accountService;
     private InviteService inviteService;
     private JavaMailSenderImpl mailSender;
+    private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+    private EmailValidateService emailValidateService;
     private LoginService loginService;
     private UserAuthenticationManager userAuthenticationManager;
     private UserAccountManager userAccountManager;
-    private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
-    private EmailValidateService emailValidateService;
     private UserProfilePreferenceService userProfilePreferenceService;
 
     @Value ("${do.not.reply.email}")
@@ -100,26 +100,25 @@ public class MailService {
     public MailService(AccountService accountService,
                        InviteService inviteService,
                        JavaMailSenderImpl mailSender,
-                       LoginService loginService,
-                       UserProfileManager userProfileManager,
-                       UserAuthenticationManager userAuthenticationManager,
-                       UserPreferenceManager userPreferenceManager,
-                       UserAccountManager userAccountManager,
-                       EmailValidateService emailValidateService,
-                       UserProfilePreferenceService userProfilePreferenceService,
 
                        @SuppressWarnings ("SpringJavaAutowiringInspection")
-                       FreeMarkerConfigurationFactoryBean freemarkerConfiguration
+                       FreeMarkerConfigurationFactoryBean freemarkerConfiguration,
+
+                       EmailValidateService emailValidateService,
+                       LoginService loginService,
+                       UserAuthenticationManager userAuthenticationManager,
+                       UserAccountManager userAccountManager,
+                       UserProfilePreferenceService userProfilePreferenceService
     ) {
         this.accountService = accountService;
         this.inviteService = inviteService;
         this.mailSender = mailSender;
+        this.freemarkerConfiguration = freemarkerConfiguration;
+        this.emailValidateService = emailValidateService;
         this.loginService = loginService;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userAccountManager = userAccountManager;
-        this.emailValidateService = emailValidateService;
         this.userProfilePreferenceService = userProfilePreferenceService;
-        this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
     /**
