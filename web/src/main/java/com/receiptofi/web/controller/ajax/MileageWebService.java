@@ -178,10 +178,8 @@ public final class MileageWebService {
         if (mileageInfo.length() > 0) {
             Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
-                MileageEntity mileageEntity = mileageService.getMileage(
-                        map.get("id"),
-                        ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
-                );
+                String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
+                MileageEntity mileageEntity = mileageService.getMileage(map.get("id"), rid);
                 if (null == mileageEntity) {
                     return createJSONUsingMileageDateUpdateResponse(
                             false,
@@ -189,11 +187,7 @@ public final class MileageWebService {
                     );
                 } else {
                     if (mileageEntity.isComplete()) {
-                        boolean status = mileageService.updateEndDate(
-                                map.get("id"),
-                                StringUtils.remove(map.get("med"), "\""),
-                                ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
-                        );
+                        boolean status = mileageService.updateEndDate(map.get("id"), StringUtils.remove(map.get("med"), "\""), rid);
                         if (status) {
                             return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
                         } else {
