@@ -162,7 +162,7 @@ public final class ReceiptWebService {
     }
 
     /**
-     * Gets all the pending receipt after a receipt is successfully uploaded
+     * Gets all the pending receipt after a receipt is successfully uploaded.
      *
      * @return
      * @throws IOException
@@ -186,7 +186,7 @@ public final class ReceiptWebService {
     }
 
     /**
-     * Check if a duplicate receipt exists for the user
+     * Check if a duplicate receipt exists for the user.
      *
      * @param date
      * @param total
@@ -230,12 +230,12 @@ public final class ReceiptWebService {
     }
 
     /**
-     * Update the orientation of the image
+     * Update the orientation of the image.
      *
      * @param fileSystemId
      * @param imageOrientation
      * @param blobId
-     * @param userProfileId
+     * @param receiptUserId
      * @param request
      * @param response
      * @return

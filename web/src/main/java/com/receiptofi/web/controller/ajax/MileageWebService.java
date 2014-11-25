@@ -49,12 +49,15 @@ public final class MileageWebService {
     @Autowired private MileageService mileageService;
 
     /**
-     * Helps load user mileage through ajax calls
+     * Helps load user mileage through ajax calls.
      *
      * @return
      * @throws IOException
      */
-    @RequestMapping (value = "/f.json", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping (
+            value = "/f.json",
+            method = RequestMethod.POST,
+            produces = "application/json")
     @ResponseBody
     public String fetch() throws IOException {
         DateTime time = DateUtil.now();
@@ -71,7 +74,10 @@ public final class MileageWebService {
         return mileages.asJson();
     }
 
-    @RequestMapping (value = "/m.json", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping (
+            value = "/m.json",
+            method = RequestMethod.POST,
+            produces = "application/json")
     @ResponseBody
     public String merge(@RequestBody String ids, HttpServletResponse httpServletResponse) throws IOException {
         if (ids.length() > 0) {
@@ -101,7 +107,10 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping (value = "/s.json", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping (
+            value = "/s.json",
+            method = RequestMethod.POST,
+            produces = "application/json")
     @ResponseBody
     public String split(@RequestBody String id, HttpServletResponse httpServletResponse) throws IOException {
         if (id.length() > 0) {
@@ -129,7 +138,10 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping (value = "/msd", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/msd",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public String updateMileageStartDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
         if (mileageInfo.length() > 0) {
@@ -167,7 +179,10 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping (value = "/med", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/med",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public String updateMileageEndDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
 
