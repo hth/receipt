@@ -37,7 +37,7 @@ public class DocumentDailyStatEntity extends BaseEntity {
     private DocumentDailyStatEntity() {
         documentProcessed.put(DocumentStatusEnum.PENDING, 0);
         documentProcessed.put(DocumentStatusEnum.PROCESSED, 0);
-        documentProcessed.put(DocumentStatusEnum.REPROCESS_REQUEST, 0);
+        documentProcessed.put(DocumentStatusEnum.REPROCESS, 0);
         documentProcessed.put(DocumentStatusEnum.REJECT, 0);
         documentProcessed.put(DocumentStatusEnum.DUPLICATE, 0);
     }

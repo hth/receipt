@@ -40,7 +40,7 @@ public final class FileUploadDocumentListenerJMS {
                 documentStatusEnum = DocumentStatusEnum.PROCESSED;
                 break;
             case 2:
-                documentStatusEnum = DocumentStatusEnum.REPROCESS_REQUEST;
+                documentStatusEnum = DocumentStatusEnum.REPROCESS;
                 break;
             default:
                 LOG.error("Reached unreachable condition, status={}", status);

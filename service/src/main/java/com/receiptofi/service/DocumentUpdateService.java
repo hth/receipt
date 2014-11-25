@@ -3,7 +3,7 @@ package com.receiptofi.service;
 import static com.receiptofi.domain.types.DocumentStatusEnum.PENDING;
 import static com.receiptofi.domain.types.DocumentStatusEnum.PROCESSED;
 import static com.receiptofi.domain.types.DocumentStatusEnum.REJECT;
-import static com.receiptofi.domain.types.DocumentStatusEnum.REPROCESS_REQUEST;
+import static com.receiptofi.domain.types.DocumentStatusEnum.REPROCESS;
 
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -239,7 +239,7 @@ public final class DocumentUpdateService {
             receiptManager.save(receipt);
             documentManager.save(receiptDocument);
 
-            updateMessageManager(receiptDocument, REPROCESS_REQUEST, PROCESSED);
+            updateMessageManager(receiptDocument, REPROCESS, PROCESSED);
 
             notificationService.addNotification(
                     receipt.getTotalString() +
@@ -282,7 +282,7 @@ public final class DocumentUpdateService {
                 documentManager.save(receiptDocument);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageDocumentManager.undoUpdateObject(receiptDocument.getId(), false, PROCESSED, REPROCESS_REQUEST);
+                messageDocumentManager.undoUpdateObject(receiptDocument.getId(), false, PROCESSED, REPROCESS);
                 //End of roll back
 
                 LOG.warn("Rollback complete for re-processing document");

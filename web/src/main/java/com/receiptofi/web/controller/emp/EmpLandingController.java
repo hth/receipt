@@ -67,7 +67,7 @@ public final class EmpLandingController {
         List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(
                 receiptUser.getUsername(),
                 receiptUser.getRid(),
-                DocumentStatusEnum.REPROCESS_REQUEST);
+                DocumentStatusEnum.REPROCESS);
         modelAndView.addObject("recheckPending", recheckPending);
 
         List<MessageDocumentEntity> recheck = empLandingService.recheck(
