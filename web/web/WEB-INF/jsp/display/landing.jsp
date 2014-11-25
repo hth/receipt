@@ -366,7 +366,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-size: 18px; letter-spacing: 2px; font-family: Arial, Helvetica, sans-serif; font-weight: bold">
+                        <td style="font-size: 18px; letter-spacing: 2px; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
                             Processed Today
                         </td>
                     </tr>
@@ -381,7 +381,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-size: 18px; letter-spacing: 2px; font-family: Arial, Helvetica, sans-serif; font-weight: bold">
+                        <td style="font-size: 18px; letter-spacing: 2px; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
                             Pending
                         </td>
                     </tr>
@@ -395,7 +395,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-size: 10px; letter-spacing: 1px; font-family: Arial, Helvetica, sans-serif; font-weight: bold">
+                        <td style="font-size: 10px; letter-spacing: 1px; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
                             * Count updated every 5 minutes
                         </td>
                     </tr>
