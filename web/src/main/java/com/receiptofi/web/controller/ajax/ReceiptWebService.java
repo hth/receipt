@@ -258,8 +258,8 @@ public final class ReceiptWebService {
             @RequestParam ("blobId")
             String blobId,
 
-            @RequestParam ("userProfileId")
-            String userProfileId,
+            @RequestParam ("receiptUserId")
+            String receiptUserId,
 
             HttpServletRequest request,
             HttpServletResponse response
@@ -269,7 +269,7 @@ public final class ReceiptWebService {
         if (request.isUserInRole("ROLE_ADMIN") ||
                 request.isUserInRole("ROLE_TECHNICIAN") ||
                 request.isUserInRole("ROLE_SUPERVISOR") ||
-                userProfileId.equalsIgnoreCase(receiptUser.getRid())) {
+                receiptUserId.equalsIgnoreCase(receiptUser.getRid())) {
             try {
                 fetcherService.changeFSImageOrientation(
                         StringUtils.stripToEmpty(fileSystemId),
