@@ -34,22 +34,19 @@ public class DocumentDailyStatEntity extends BaseEntity {
     @Field ("DPS")
     private Map<DocumentStatusEnum, Integer> documentProcessed = new LinkedHashMap<>();
 
-    @SuppressWarnings("unused")
     private DocumentDailyStatEntity() {
-    }
-
-    public DocumentDailyStatEntity(Date date) {
-        Assert.notNull(date);
-        this.date = date;
-        init();
-    }
-
-    private void init() {
         documentProcessed.put(DocumentStatusEnum.OCR_PROCESSED, 0);
         documentProcessed.put(DocumentStatusEnum.TURK_PROCESSED, 0);
         documentProcessed.put(DocumentStatusEnum.TURK_REQUEST, 0);
         documentProcessed.put(DocumentStatusEnum.TURK_RECEIPT_REJECT, 0);
         documentProcessed.put(DocumentStatusEnum.TURK_RECEIPT_DUPLICATE, 0);
+    }
+
+    public DocumentDailyStatEntity(Date date) {
+        this();
+
+        Assert.notNull(date);
+        this.date = date;
     }
 
     public Date getDate() {

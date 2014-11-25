@@ -90,7 +90,7 @@ public final class UserProfilePreferenceService {
     }
 
     public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String receiptUserId) {
-        if (changeStatTo.equalsIgnoreCase("true")) {
+        if ("true".equalsIgnoreCase(changeStatTo)) {
             expenseTagManager.changeVisibility(expenseTypeId, false, receiptUserId);
         } else {
             expenseTagManager.changeVisibility(expenseTypeId, true, receiptUserId);
