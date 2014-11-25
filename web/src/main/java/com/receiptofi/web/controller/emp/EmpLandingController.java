@@ -56,7 +56,7 @@ public final class EmpLandingController {
         List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(
                 receiptUser.getUsername(),
                 receiptUser.getRid(),
-                DocumentStatusEnum.OCR_PROCESSED);
+                DocumentStatusEnum.PENDING);
         modelAndView.addObject("pending", pending);
 
         List<MessageDocumentEntity> queue = empLandingService.queuedReceipts(
@@ -67,7 +67,7 @@ public final class EmpLandingController {
         List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(
                 receiptUser.getUsername(),
                 receiptUser.getRid(),
-                DocumentStatusEnum.TURK_REQUEST);
+                DocumentStatusEnum.REPROCESS_REQUEST);
         modelAndView.addObject("recheckPending", recheckPending);
 
         List<MessageDocumentEntity> recheck = empLandingService.recheck(

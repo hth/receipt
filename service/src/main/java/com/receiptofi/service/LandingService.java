@@ -303,7 +303,7 @@ public final class LandingService {
             uploadReceiptImage.setBlobId(documentBlobId);
 
             documentEntity = DocumentEntity.newInstance();
-            documentEntity.setDocumentStatus(DocumentStatusEnum.OCR_PROCESSED);
+            documentEntity.setDocumentStatus(DocumentStatusEnum.PENDING);
 
             fileSystem = new FileSystemEntity(documentBlobId, bufferedImage, 0, 0);
             fileSystemService.save(fileSystem);

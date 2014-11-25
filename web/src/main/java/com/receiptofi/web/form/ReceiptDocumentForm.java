@@ -101,7 +101,7 @@ public final class ReceiptDocumentForm {
         receipt.setReceiptDate(DateUtil.getDateFromString(receiptDocument.getReceiptDate()));
         receipt.setTotal(Formatter.getCurrencyFormatted(receiptDocument.getTotal()).doubleValue());
         receipt.setTax(Formatter.getCurrencyFormatted(receiptDocument.getTax()).doubleValue());
-        receipt.setReceiptStatus(DocumentStatusEnum.TURK_PROCESSED);
+        receipt.setReceiptStatus(DocumentStatusEnum.PROCESSED);
         receipt.setReceiptUserId(receiptDocument.getReceiptUserId());
         receipt.setCreated(receiptDocument.getCreated());
         receipt.setUpdated();

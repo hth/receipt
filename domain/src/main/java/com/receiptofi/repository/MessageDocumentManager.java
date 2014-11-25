@@ -30,7 +30,7 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
     WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
-     * On failure the status is reverted back to OCR_PROCESSED. For now the record is kept locked for the same user.
+     * On failure the status is reverted back to PENDING. For now the record is kept locked for the same user.
      * Note: User has to complete all the messages in their queue before logging out of their shift.
      * TODO(hth) May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
      *

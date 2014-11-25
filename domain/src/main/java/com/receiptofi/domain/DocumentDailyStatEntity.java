@@ -35,11 +35,11 @@ public class DocumentDailyStatEntity extends BaseEntity {
     private Map<DocumentStatusEnum, Integer> documentProcessed = new LinkedHashMap<>();
 
     private DocumentDailyStatEntity() {
-        documentProcessed.put(DocumentStatusEnum.OCR_PROCESSED, 0);
-        documentProcessed.put(DocumentStatusEnum.TURK_PROCESSED, 0);
-        documentProcessed.put(DocumentStatusEnum.TURK_REQUEST, 0);
-        documentProcessed.put(DocumentStatusEnum.TURK_RECEIPT_REJECT, 0);
-        documentProcessed.put(DocumentStatusEnum.TURK_RECEIPT_DUPLICATE, 0);
+        documentProcessed.put(DocumentStatusEnum.PENDING, 0);
+        documentProcessed.put(DocumentStatusEnum.PROCESSED, 0);
+        documentProcessed.put(DocumentStatusEnum.REPROCESS_REQUEST, 0);
+        documentProcessed.put(DocumentStatusEnum.REJECT, 0);
+        documentProcessed.put(DocumentStatusEnum.DUPLICATE, 0);
     }
 
     public DocumentDailyStatEntity(Date date) {

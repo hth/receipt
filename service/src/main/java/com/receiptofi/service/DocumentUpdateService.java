@@ -1,9 +1,9 @@
 package com.receiptofi.service;
 
-import static com.receiptofi.domain.types.DocumentStatusEnum.OCR_PROCESSED;
-import static com.receiptofi.domain.types.DocumentStatusEnum.TURK_PROCESSED;
-import static com.receiptofi.domain.types.DocumentStatusEnum.TURK_RECEIPT_REJECT;
-import static com.receiptofi.domain.types.DocumentStatusEnum.TURK_REQUEST;
+import static com.receiptofi.domain.types.DocumentStatusEnum.PENDING;
+import static com.receiptofi.domain.types.DocumentStatusEnum.PROCESSED;
+import static com.receiptofi.domain.types.DocumentStatusEnum.REJECT;
+import static com.receiptofi.domain.types.DocumentStatusEnum.REPROCESS_REQUEST;
 
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -106,12 +106,12 @@ public final class DocumentUpdateService {
             itemManager.saveObjects(items);
 
             bizService.saveNewBusinessAndOrStore(documentForm);
-            documentForm.setDocumentStatus(TURK_PROCESSED);
+            documentForm.setDocumentStatus(PROCESSED);
             documentForm.setReferenceDocumentId(receipt.getId());
             documentForm.inActive();
             documentManager.save(documentForm);
 
-            updateMessageManager(documentForm, OCR_PROCESSED, TURK_PROCESSED);
+            updateMessageManager(documentForm, PENDING, PROCESSED);
 
             notificationService.addNotification(
                     receipt.getTotalString()
@@ -150,11 +150,11 @@ public final class DocumentUpdateService {
                     LOG.warn("Initial item size={}, Final item size={}", sizeItemInitial, sizeItemFinal);
                 }
 
-                documentForm.setDocumentStatus(OCR_PROCESSED);
+                documentForm.setDocumentStatus(PENDING);
                 documentManager.save(documentForm);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageDocumentManager.undoUpdateObject(documentForm.getId(), false, TURK_PROCESSED, OCR_PROCESSED);
+                messageDocumentManager.undoUpdateObject(documentForm.getId(), false, PROCESSED, PENDING);
                 //End of roll back
 
                 LOG.warn("Rollback complete for processing document");
@@ -199,7 +199,7 @@ public final class DocumentUpdateService {
             itemManager.saveObjects(items);
 
             bizService.saveNewBusinessAndOrStore(receiptDocument);
-            receiptDocument.setDocumentStatus(TURK_PROCESSED);
+            receiptDocument.setDocumentStatus(PROCESSED);
             receiptDocument.inActive();
 
             //Only recheck comments are updated by technician. Receipt notes are never modified
@@ -239,7 +239,7 @@ public final class DocumentUpdateService {
             receiptManager.save(receipt);
             documentManager.save(receiptDocument);
 
-            updateMessageManager(receiptDocument, TURK_REQUEST, TURK_PROCESSED);
+            updateMessageManager(receiptDocument, REPROCESS_REQUEST, PROCESSED);
 
             notificationService.addNotification(
                     receipt.getTotalString() +
@@ -278,11 +278,11 @@ public final class DocumentUpdateService {
                     LOG.warn("Initial item size={}, Final item size={}", sizeItemInitial, sizeItemFinal);
                 }
 
-                receiptDocument.setDocumentStatus(OCR_PROCESSED);
+                receiptDocument.setDocumentStatus(PENDING);
                 documentManager.save(receiptDocument);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-                messageDocumentManager.undoUpdateObject(receiptDocument.getId(), false, TURK_PROCESSED, TURK_REQUEST);
+                messageDocumentManager.undoUpdateObject(receiptDocument.getId(), false, PROCESSED, REPROCESS_REQUEST);
                 //End of roll back
 
                 LOG.warn("Rollback complete for re-processing document");
@@ -311,7 +311,7 @@ public final class DocumentUpdateService {
     public void turkDocumentReject(String documentId, DocumentOfTypeEnum documentOfType) {
         DocumentEntity document = loadActiveDocumentById(documentId);
         try {
-            document.setDocumentStatus(TURK_RECEIPT_REJECT);
+            document.setDocumentStatus(REJECT);
             document.setDocumentOfType(documentOfType);
             document.setBizName(null);
             document.setBizStore(null);
@@ -338,12 +338,12 @@ public final class DocumentUpdateService {
             LOG.error("Revert all the transaction for ReceiptOCR={}. Rejection of a receipt failed, reason={}",
                     document.getId(), exce.getLocalizedMessage(), exce);
 
-            document.setDocumentStatus(OCR_PROCESSED);
+            document.setDocumentStatus(PENDING);
             document.active();
             documentManager.save(document);
             //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
-            messageDocumentManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
+            messageDocumentManager.undoUpdateObject(document.getId(), false, REJECT, PENDING);
             //End of roll back
 
             LOG.warn("Rollback complete for rejecting document");
@@ -352,10 +352,10 @@ public final class DocumentUpdateService {
 
     private void updateMessageWithDocumentChanges(DocumentEntity document) {
         try {
-            messageDocumentManager.updateObject(document.getId(), OCR_PROCESSED, TURK_RECEIPT_REJECT);
+            messageDocumentManager.updateObject(document.getId(), PENDING, REJECT);
         } catch (Exception exce) {
             LOG.error(exce.getLocalizedMessage(), exce);
-            messageDocumentManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
+            messageDocumentManager.undoUpdateObject(document.getId(), false, REJECT, PENDING);
             throw exce;
         }
     }
@@ -463,12 +463,12 @@ public final class DocumentUpdateService {
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             documentForm.setVersion(documentEntity.getVersion());
-            documentForm.setDocumentStatus(TURK_PROCESSED);
+            documentForm.setDocumentStatus(PROCESSED);
             documentForm.setReferenceDocumentId(mileageEntity.getId());
             documentForm.inActive();
             documentManager.save(documentForm);
 
-            updateMessageManager(documentForm, OCR_PROCESSED, TURK_PROCESSED);
+            updateMessageManager(documentForm, PENDING, PROCESSED);
 
             notificationService.addNotification(
                     String.valueOf(mileageEntity.getStart()) +

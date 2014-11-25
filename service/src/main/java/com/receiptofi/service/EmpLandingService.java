@@ -29,11 +29,11 @@ public final class EmpLandingService {
     }
 
     public List<MessageDocumentEntity> queuedReceipts(String emailId, String profileId) {
-        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.OCR_PROCESSED);
+        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.PENDING);
     }
 
     public List<MessageDocumentEntity> recheck(String emailId, String profileId) {
-        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.TURK_REQUEST);
+        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.REPROCESS_REQUEST);
     }
 
     public List<MessageDocumentEntity> findAll() {

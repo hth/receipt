@@ -99,7 +99,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
 //        BasicDBObject basicDBObject = new BasicDBObject()
 //                .append("recordLocked", false)
-//                .append("DS", "OCR_PROCESSED");
+//                .append("DS", "PENDING");
 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for (MessageDocumentEntity object : list) {
@@ -133,7 +133,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Override
     public List<MessageDocumentEntity> findAllPending() {
-        Query query = query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.OCR_PROCESSED));
+        Query query = query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.PENDING));
         addOrder(query);
         return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
     }
@@ -196,7 +196,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     public void resetDocumentsToInitialState(String receiptUserId) {
         Query query = query(
                 where("RID").is(receiptUserId)
-                        .and("DS").is(DocumentStatusEnum.OCR_PROCESSED)
+                        .and("DS").is(DocumentStatusEnum.PENDING)
                         .and("LOK").is(true)
                         .and("A").is(true)
         );
