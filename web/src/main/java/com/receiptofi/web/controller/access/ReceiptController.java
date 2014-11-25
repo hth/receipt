@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -52,8 +53,14 @@ import java.util.List;
 public final class ReceiptController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptController.class);
 
-    private static String NEXT_PAGE = "/receipt";
-    private static String NEXT_PAGE_BY_BIZ = "/receiptByBiz";
+    @Value ("${ReceiptController.redirectAccessLandingController:redirect:/access/landing.htm}")
+    private String redirectAccessLandingController;
+
+    @Value ("${ReceiptController.nextPage:/receipt}")
+    private String nextPage;
+
+    @Value ("${ReceiptController.nextPageByBiz:/receiptByBiz}")
+    private String nextPageByBiz;
 
     @Autowired private ReceiptService receiptService;
     @Autowired private ItemService itemService;
@@ -81,14 +88,14 @@ public final class ReceiptController extends BaseController {
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return new ModelAndView(NEXT_PAGE);
+        return new ModelAndView(nextPage);
     }
 
     @SuppressWarnings ("PMD.EmptyIfStmt")
     @RequestMapping (method = RequestMethod.POST, params = "delete")
     public String delete(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();
-        LOG.info("Delete receipt " + receiptForm.getReceipt().getId());
+        LOG.info("Delete receipt rid={}", receiptForm.getReceipt().getId());
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -103,13 +110,13 @@ public final class ReceiptController extends BaseController {
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), task);
-        return "redirect:/access/landing.htm";
+        return redirectAccessLandingController;
     }
 
     @RequestMapping (method = RequestMethod.POST, params = "re-check")
     public ModelAndView recheck(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();
-        LOG.info("Initiating re-check on receipt " + receiptForm.getReceipt().getId());
+        LOG.info("Initiating re-check on receipt rid={}", receiptForm.getReceipt().getId());
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -124,13 +131,13 @@ public final class ReceiptController extends BaseController {
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return new ModelAndView("redirect:/access/landing.htm");
+        return new ModelAndView(redirectAccessLandingController);
     }
 
     @RequestMapping (method = RequestMethod.POST, params = "update-expense-type")
     public String expenseUpdate(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
         DateTime time = DateUtil.now();
-        LOG.info("Initiating Expense Type update on receipt " + receiptForm.getReceipt().getId());
+        LOG.info("Initiating Expense Type update on receipt rid={}", receiptForm.getReceipt().getId());
 
         for (ItemEntity item : receiptForm.getItems()) {
             ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseTag().getId());
@@ -144,7 +151,7 @@ public final class ReceiptController extends BaseController {
         }
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return "redirect:/access/landing.htm";
+        return redirectAccessLandingController;
     }
 
     /**
@@ -159,7 +166,7 @@ public final class ReceiptController extends BaseController {
     @ResponseBody
     public Header deleteRest(@PathVariable String receiptId, @PathVariable String profileId, @PathVariable String authKey) {
         DateTime time = DateUtil.now();
-        LOG.info("Delete receipt " + receiptId);
+        LOG.info("Delete receipt rid={}", receiptId);
 
         UserProfileEntity userProfile = authenticate(profileId, authKey);
         Header header = Header.newInstance(authKey);
@@ -197,12 +204,12 @@ public final class ReceiptController extends BaseController {
     @RequestMapping (value = "/biz/{id}", method = RequestMethod.GET)
     public ModelAndView receiptByBizName(@PathVariable String id) throws IOException {
         DateTime time = DateUtil.now();
-        LOG.info("Loading Receipts by Biz Name id: " + id);
+        LOG.info("Loading Receipts by Biz Name id={}", id);
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<ReceiptLandingView> receiptLandingViews = new ArrayList<>();
 
-        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_BY_BIZ);
+        ModelAndView modelAndView = new ModelAndView(nextPageByBiz);
 
         List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(id);
         for (BizNameEntity bizNameEntity : bizNames) {
