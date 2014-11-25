@@ -94,7 +94,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     void updateItemWithExpenseType(ItemEntity item) throws Exception;
 
     /**
-     * Count how many Items are using a particular Expense Type
+     * Count how many Items are using a particular Expense Type.
      *
      * @param expenseTypeId
      * @return
