@@ -49,12 +49,15 @@ public final class MileageWebService {
     @Autowired private MileageService mileageService;
 
     /**
-     * Helps load user mileage through ajax calls
+     * Helps load user mileage through ajax calls.
      *
      * @return
      * @throws IOException
      */
-    @RequestMapping (value = "/f.json", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping (
+            value = "/f.json",
+            method = RequestMethod.POST,
+            produces = "application/json")
     @ResponseBody
     public String fetch() throws IOException {
         DateTime time = DateUtil.now();
@@ -71,7 +74,10 @@ public final class MileageWebService {
         return mileages.asJson();
     }
 
-    @RequestMapping (value = "/m.json", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping (
+            value = "/m.json",
+            method = RequestMethod.POST,
+            produces = "application/json")
     @ResponseBody
     public String merge(@RequestBody String ids, HttpServletResponse httpServletResponse) throws IOException {
         if (ids.length() > 0) {
@@ -101,7 +107,10 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping (value = "/s.json", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping (
+            value = "/s.json",
+            method = RequestMethod.POST,
+            produces = "application/json")
     @ResponseBody
     public String split(@RequestBody String id, HttpServletResponse httpServletResponse) throws IOException {
         if (id.length() > 0) {
@@ -129,7 +138,10 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping (value = "/msd", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/msd",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public String updateMileageStartDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
         if (mileageInfo.length() > 0) {
@@ -167,7 +179,10 @@ public final class MileageWebService {
         }
     }
 
-    @RequestMapping (value = "/med", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/med",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public String updateMileageEndDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
 
@@ -178,10 +193,8 @@ public final class MileageWebService {
         if (mileageInfo.length() > 0) {
             Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
-                MileageEntity mileageEntity = mileageService.getMileage(
-                        map.get("id"),
-                        ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
-                );
+                String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
+                MileageEntity mileageEntity = mileageService.getMileage(map.get("id"), rid);
                 if (null == mileageEntity) {
                     return createJSONUsingMileageDateUpdateResponse(
                             false,
@@ -189,11 +202,7 @@ public final class MileageWebService {
                     );
                 } else {
                     if (mileageEntity.isComplete()) {
-                        boolean status = mileageService.updateEndDate(
-                                map.get("id"),
-                                StringUtils.remove(map.get("med"), "\""),
-                                ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
-                        );
+                        boolean status = mileageService.updateEndDate(map.get("id"), StringUtils.remove(map.get("med"), "\""), rid);
                         if (status) {
                             return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
                         } else {

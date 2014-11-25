@@ -39,7 +39,10 @@ public final class NotesAndCommentsWebService {
     @Autowired private ReceiptService receiptService;
     @Autowired private MileageService mileageService;
 
-    @RequestMapping (value = "/rn", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/rn",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public boolean saveReceiptNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -48,7 +51,10 @@ public final class NotesAndCommentsWebService {
         return receiptService.updateReceiptNotes(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
     }
 
-    @RequestMapping (value = "/mn", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/mn",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public boolean saveMileageNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -57,7 +63,10 @@ public final class NotesAndCommentsWebService {
         return mileageService.updateMileageNotes(TextInputScrubber.scrub(map.get("notes")), map.get("mileageId"), receiptUser.getRid());
     }
 
-    @RequestMapping (value = "/rc", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/rc",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public boolean saveReceiptRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -66,7 +75,10 @@ public final class NotesAndCommentsWebService {
         return receiptService.updateReceiptComment(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
     }
 
-    @RequestMapping (value = "/dc", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping (
+            value = "/dc",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json")
     @ResponseBody
     public boolean saveDocumentRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
