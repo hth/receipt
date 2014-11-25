@@ -110,7 +110,8 @@ public final class MileageOdometerController {
                 return new ModelAndView("redirect:/access/modv/" + mileageForm.getMileage().getId() + ".htm");
             }
         } catch (Exception exce) {
-            LOG.error("Error occurred during receipt delete: Receipt Id: " + mileageForm.getMileage().getId() + ", error message: " + exce.getLocalizedMessage());
+            LOG.error("Error occurred during receipt delete: Receipt rid={}, error reason={}",
+                    mileageForm.getMileage().getId(), exce.getLocalizedMessage(), exce);
             result.rejectValue("errorMessage", StringUtils.EMPTY, "Delete request failed to execute");
             redirectAttrs.addFlashAttribute("result", result);
 
