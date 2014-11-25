@@ -80,17 +80,20 @@ public final class UserAccountEntity extends BaseEntity {
     private String lastName;
 
     @Field ("RE")
-    private Set<RoleEnum> roles = new LinkedHashSet<RoleEnum>() {{
-        add(RoleEnum.ROLE_USER);
-    }};
+    private Set<RoleEnum> roles;
 
     @DBRef
     @Field ("USER_AUTHENTICATION")
     private UserAuthenticationEntity userAuthentication;
 
-    //TODO on email change this should be reset to false and validation process has to be redone
+    //TODO(hth) on email change this should be reset to false and validation process has to be redone
     @Field ("AV")
     private boolean isAccountValidated;
+
+    private UserAccountEntity() {
+        roles = new LinkedHashSet<>();
+        roles.add(RoleEnum.ROLE_USER);
+    }
 
     private UserAccountEntity(
             String receiptUserId,
@@ -99,6 +102,7 @@ public final class UserAccountEntity extends BaseEntity {
             String lastName,
             UserAuthenticationEntity userAuthentication
     ) {
+        this();
         this.receiptUserId = receiptUserId;
         this.userId = userId;
         this.firstName = firstName;
