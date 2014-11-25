@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -41,7 +42,9 @@ import java.util.List;
 @RequestMapping (value = "/access/expenses")
 public final class ExpensesController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensesController.class);
-    private static final String nextPage = "/expenses";
+
+    @Value ("${ExpensesController.nextPage:/expenses}")
+    private String nextPage;
 
     @Autowired private ItemService itemService;
     @Autowired private ExpensesService expensesService;
@@ -57,17 +60,19 @@ public final class ExpensesController {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        LOG.debug("rid={} expenseType={}", receiptUser.getRid(), tag);
+
         List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(receiptUser.getRid());
         List<ItemEntity> items = new ArrayList<>();
 
-        if (!tag.equalsIgnoreCase("Un-Assigned")) {
+        if (!"Un-Assigned".equalsIgnoreCase(tag)) {
             for (ExpenseTagEntity expenseTagEntity : expenseTypes) {
                 if (expenseTagEntity.getTagName().equalsIgnoreCase(tag)) {
                     items = itemService.itemsForExpenseType(expenseTagEntity);
                     break;
                 }
             }
-        } else if (tag.equalsIgnoreCase("Un-Assigned")) {
+        } else if ("Un-Assigned".equalsIgnoreCase(tag)) {
             items = itemService.itemsForUnAssignedExpenseType(receiptUser.getRid());
         }
 
