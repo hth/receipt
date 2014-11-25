@@ -107,7 +107,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public DocumentEntity findRejectedOne(String id) {
         return mongoTemplate.findOne(
-                query(where("id").is(id).and("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)),
+                query(where("id").is(id).and("DS").is(DocumentStatusEnum.REJECT)),
                 DocumentEntity.class,
                 TABLE
         );
@@ -131,7 +131,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long numberOfRejectedReceipts(String receiptUserId) {
         return mongoTemplate.count(
-                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT))
+                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.REJECT))
                         .addCriteria(isNotActive())
                         .addCriteria(isDeleted()),
                 TABLE
@@ -153,7 +153,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public List<DocumentEntity> getAllRejected(String receiptUserId) {
         return mongoTemplate.find(
-                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT))
+                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.REJECT))
                         .addCriteria(isNotActive())
                         .addCriteria(isDeleted())
                         .with(new Sort(Direction.ASC, "C")),
@@ -166,7 +166,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     public List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay) {
         return mongoTemplate.find(
                 query(
-                        where("DS").is(DocumentStatusEnum.TURK_RECEIPT_REJECT)
+                        where("DS").is(DocumentStatusEnum.REJECT)
                                 .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay)
                         )
                 )
@@ -181,7 +181,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     public long getTotalPending() {
         return mongoTemplate.count(
                 query(
-                        where("DS").is(DocumentStatusEnum.OCR_PROCESSED)
+                        where("DS").is(DocumentStatusEnum.PENDING)
                 ).addCriteria(isNotDeleted()),
                 DocumentEntity.class
         );
@@ -191,7 +191,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     public long getTotalProcessedToday() {
         return mongoTemplate.count(
                 query(
-                        where("DS").ne(DocumentStatusEnum.OCR_PROCESSED)
+                        where("DS").ne(DocumentStatusEnum.PENDING)
                                 .and("U").gte(DateUtil.midnight(new Date()))
                 ).addCriteria(isNotDeleted()),
                 DocumentEntity.class

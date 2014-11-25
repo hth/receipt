@@ -70,9 +70,14 @@ public final class BusinessController {
 
     @RequestMapping (value = "/business/edit", method = RequestMethod.GET)
     public ModelAndView editStore(
-            @RequestParam ("nameId") String nameId,
-            @RequestParam ("storeId") String storeId,
-            @ModelAttribute ("bizForm") BizForm bizForm
+            @RequestParam ("nameId")
+            String nameId,
+
+            @RequestParam ("storeId")
+            String storeId,
+
+            @ModelAttribute ("bizForm")
+            BizForm bizForm
     ) {
         ModelAndView modelAndView = new ModelAndView(EDIT_PAGE);
         BizNameEntity bizNameEntity = bizService.findName(nameId);
@@ -109,8 +114,12 @@ public final class BusinessController {
      * @return
      */
     @RequestMapping (value = "/business", method = RequestMethod.POST, params = "edit")
-    public String editBiz(@ModelAttribute ("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
+    public String editBiz(
+            @ModelAttribute ("bizForm")
+            BizForm bizForm,
 
+            RedirectAttributes redirectAttrs
+    ) {
         DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
@@ -123,7 +132,7 @@ public final class BusinessController {
                 externalService.decodeAddress(bizStoreEntity);
                 bizService.saveStore(bizStoreEntity);
             } catch (Exception e) {
-                LOG.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
+                LOG.error("Failed to edit address/phone: {} {} reason={}", bizForm.getAddress(), bizForm.getPhone(), e.getLocalizedMessage(), e);
                 bizForm.setBizError("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
 
                 PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);

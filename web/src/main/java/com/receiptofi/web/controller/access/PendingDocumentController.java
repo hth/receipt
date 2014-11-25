@@ -142,10 +142,10 @@ public final class PendingDocumentController {
         //The check here is not required but its better to check before calling service method
         if (StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReferenceDocumentId())) {
             switch (receiptDocumentForm.getReceiptDocument().getDocumentStatus()) {
-                case TURK_RECEIPT_REJECT:
+                case REJECT:
                     documentUpdateService.deleteRejectedDocument(receiptDocumentForm.getReceiptDocument());
                     break;
-                case TURK_RECEIPT_DUPLICATE:
+                case DUPLICATE:
                     documentUpdateService.deleteRejectedDocument(receiptDocumentForm.getReceiptDocument());
                     break;
                 default:

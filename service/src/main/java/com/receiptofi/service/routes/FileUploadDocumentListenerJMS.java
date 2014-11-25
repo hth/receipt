@@ -30,17 +30,17 @@ public final class FileUploadDocumentListenerJMS {
         String id = (String) message.get("id");
         String level = (String) message.get("level");
         int status = (Integer) message.get("status");
-        DocumentStatusEnum documentStatusEnum = DocumentStatusEnum.OCR_PROCESSED;
+        DocumentStatusEnum documentStatusEnum = DocumentStatusEnum.PENDING;
 
         switch (status) {
             case 0:
-                documentStatusEnum = DocumentStatusEnum.OCR_PROCESSED;
+                documentStatusEnum = DocumentStatusEnum.PENDING;
                 break;
             case 1:
-                documentStatusEnum = DocumentStatusEnum.TURK_PROCESSED;
+                documentStatusEnum = DocumentStatusEnum.PROCESSED;
                 break;
             case 2:
-                documentStatusEnum = DocumentStatusEnum.TURK_REQUEST;
+                documentStatusEnum = DocumentStatusEnum.REPROCESS_REQUEST;
                 break;
             default:
                 LOG.error("Reached unreachable condition, status={}", status);

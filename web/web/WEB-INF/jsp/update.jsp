@@ -294,7 +294,7 @@
     <c:choose>
     <c:when test="${!empty receiptDocumentForm.receiptDocument}">
 
-    <spring:eval var="documentStat" expression="receiptDocumentForm.receiptDocument.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).TURK_RECEIPT_REJECT" />
+    <spring:eval var="documentStat" expression="receiptDocumentForm.receiptDocument.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).REJECT" />
     <c:choose>
         <c:when test="${!documentStat}">
             <h2 class="demoHeaders">Document pending</h2>
