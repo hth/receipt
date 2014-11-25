@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -192,40 +193,29 @@ public class AccountService {
 
     public UserAccountEntity changeAccountRolesToMatchUserLevel(String receiptUserId, UserLevelEnum userLevel) {
         UserAccountEntity userAccountEntity = findByReceiptUserId(receiptUserId);
+        Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
             case TECHNICIAN:
-                userAccountEntity.setRoles(
-                        new LinkedHashSet<RoleEnum>() {{
-                            add(RoleEnum.ROLE_USER);
-                            add(RoleEnum.ROLE_TECHNICIAN);
-                        }}
-                );
+                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_TECHNICIAN);
+                userAccountEntity.setRoles(roles);
                 break;
             case SUPERVISOR:
-                userAccountEntity.setRoles(
-                        new LinkedHashSet<RoleEnum>() {{
-                            add(RoleEnum.ROLE_USER);
-                            add(RoleEnum.ROLE_TECHNICIAN);
-                            add(RoleEnum.ROLE_SUPERVISOR);
-                        }}
-                );
+                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_TECHNICIAN);
+                roles.add(RoleEnum.ROLE_SUPERVISOR);
+                userAccountEntity.setRoles(roles);
                 break;
             case ADMIN:
-                userAccountEntity.setRoles(
-                        new LinkedHashSet<RoleEnum>() {{
-                            add(RoleEnum.ROLE_USER);
-                            add(RoleEnum.ROLE_TECHNICIAN);
-                            add(RoleEnum.ROLE_SUPERVISOR);
-                            add(RoleEnum.ROLE_ADMIN);
-                        }}
-                );
+                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_TECHNICIAN);
+                roles.add(RoleEnum.ROLE_SUPERVISOR);
+                roles.add(RoleEnum.ROLE_ADMIN);
+                userAccountEntity.setRoles(roles);
                 break;
             case ANALYSIS_READ:
-                userAccountEntity.setRoles(
-                        new LinkedHashSet<RoleEnum>() {{
-                            add(RoleEnum.ROLE_ANALYSIS_READ);
-                        }}
-                );
+                roles.add(RoleEnum.ROLE_ANALYSIS_READ);
+                userAccountEntity.setRoles(roles);
                 break;
             case USER:
             case USER_COMMUNITY:
@@ -233,11 +223,8 @@ public class AccountService {
             case EMPLOYER:
             case EMPLOYER_COMMUNITY:
             case EMPLOYER_PAID:
-                userAccountEntity.setRoles(
-                        new LinkedHashSet<RoleEnum>() {{
-                            add(RoleEnum.ROLE_USER);
-                        }}
-                );
+                roles.add(RoleEnum.ROLE_USER);
+                userAccountEntity.setRoles(roles);
                 break;
             default:
                 LOG.error("Reached unreachable condition, UserLevel={}", userLevel.name());

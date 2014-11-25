@@ -85,7 +85,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
             List<String> userIds = providerUserIds.get(providerId);
             List<Connection<?>> connections = connectionsForUsers.get(providerId);
             if (null == connections) {
-                //TODO re-check this code
+                //TODO(hth) re-check this code
                 connections = new ArrayList<>(userIds.size());
                 for (String userId : userIds) {
                     connections.add(null);
