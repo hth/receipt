@@ -319,13 +319,7 @@ public final class DocumentUpdateService {
             document.markAsDeleted();
             documentManager.save(document);
 
-            try {
-                messageDocumentManager.updateObject(document.getId(), OCR_PROCESSED, TURK_RECEIPT_REJECT);
-            } catch (Exception exce) {
-                LOG.error(exce.getLocalizedMessage());
-                messageDocumentManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
-                throw exce;
-            }
+            updateMessageWithDocumentChanges(document);
             itemOCRManager.deleteWhereReceipt(document);
 
             fileSystemService.deleteSoft(document.getFileSystemEntities());
@@ -353,6 +347,16 @@ public final class DocumentUpdateService {
             //End of roll back
 
             LOG.warn("Rollback complete for rejecting document");
+        }
+    }
+
+    private void updateMessageWithDocumentChanges(DocumentEntity document) {
+        try {
+            messageDocumentManager.updateObject(document.getId(), OCR_PROCESSED, TURK_RECEIPT_REJECT);
+        } catch (Exception exce) {
+            LOG.error(exce.getLocalizedMessage(), exce);
+            messageDocumentManager.undoUpdateObject(document.getId(), false, TURK_RECEIPT_REJECT, OCR_PROCESSED);
+            throw exce;
         }
     }
 
@@ -420,7 +424,7 @@ public final class DocumentUpdateService {
      * @param item
      */
     private void populateWithExpenseType(ItemEntity item) {
-        if (item.getExpenseTag() != null && item.getExpenseTag().getId() != null) {
+        if (null != item.getExpenseTag() && null != item.getExpenseTag().getId()) {
             ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseTag().getId());
             item.setExpenseTag(expenseType);
         }

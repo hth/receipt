@@ -115,7 +115,7 @@ public final class BizService {
                 receiptEntity.setBizName(bizNameEntity);
                 receiptEntity.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException | IOException e) {
-                LOG.error(e.getLocalizedMessage());
+                LOG.error(e.getLocalizedMessage(), e);
 
                 if (StringUtils.isNotEmpty(bizNameEntity.getId())) {
                     bizNameManager.deleteHard(bizNameEntity);
@@ -135,7 +135,7 @@ public final class BizService {
                     receiptEntity.setBizName(bizName);
                     receiptEntity.setBizStore(bizStoreEntity);
                 } catch (DuplicateKeyException | IOException e) {
-                    LOG.error(e.getLocalizedMessage());
+                    LOG.error(e.getLocalizedMessage(), e);
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     throw new Exception("Address and Phone already registered with another Business Name: " +
                             biz.getBizName().getBusinessName());
@@ -189,7 +189,7 @@ public final class BizService {
                     document.setBizName(bizName);
                     document.setBizStore(bizStoreEntity);
                 } catch (DuplicateKeyException e) {
-                    LOG.error(e.getLocalizedMessage());
+                    LOG.error(e.getLocalizedMessage(), e);
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     throw new Exception("Address and Phone already registered with another Business Name: " +
                             biz.getBizName().getBusinessName());
