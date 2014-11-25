@@ -12,7 +12,7 @@ public enum DocumentStatusEnum {
     /** Note: Do not change the order. New ENUM should be appended at the bottom */
     PENDING("Pending"),
     PROCESSED("Processed"),
-    REPROCESS_REQUEST("Reprocess Request"),
+    REPROCESS("Reprocess"),
 
     /** Reject condition when its hard to process a receipts because of the image quality or invalid image */
     REJECT("Reject"),

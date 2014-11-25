@@ -386,7 +386,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         Query query = checksumQuery(checksum)
                 .addCriteria(isNotDeleted()
                                 .orOperator(
-                                        where("DS").is(DocumentStatusEnum.REPROCESS_REQUEST.name()),
+                                        where("DS").is(DocumentStatusEnum.REPROCESS.name()),
                                         where("DS").is(DocumentStatusEnum.PROCESSED.name()),
                                         where("A").is(true),
                                         where("A").is(false)

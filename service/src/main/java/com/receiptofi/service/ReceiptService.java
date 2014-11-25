@@ -140,12 +140,12 @@ public class ReceiptService {
 
                     DocumentEntity receiptOCR = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
                     receiptOCR.active();
-                    receiptOCR.setDocumentStatus(DocumentStatusEnum.REPROCESS_REQUEST);
+                    receiptOCR.setDocumentStatus(DocumentStatusEnum.REPROCESS);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());
                     receiptOCR.setNotes(receipt.getNotes());
 
                     /** All activity at the end is better because you never know what could go wrong during populating other data */
-                    receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS_REQUEST);
+                    receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS);
                     receiptManager.save(receipt);
                     documentManager.save(receiptOCR);
                     itemOCRManager.deleteWhereReceipt(receiptOCR);

@@ -33,7 +33,7 @@ public final class EmpLandingService {
     }
 
     public List<MessageDocumentEntity> recheck(String emailId, String profileId) {
-        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.REPROCESS_REQUEST);
+        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.REPROCESS);
     }
 
     public List<MessageDocumentEntity> findAll() {
