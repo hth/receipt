@@ -48,7 +48,7 @@ public final class MileageOdometerController {
 
     @RequestMapping (value = "/{mileageId}", method = RequestMethod.GET)
     public ModelAndView loadForm(
-            @PathVariable
+            @PathVariable ("mileageId")
             String mileageId,
 
             @ModelAttribute ("mileageForm")
@@ -57,7 +57,7 @@ public final class MileageOdometerController {
             Model model
     ) {
         DateTime time = DateUtil.now();
-        LOG.info("Loading MileageEntity with id: " + mileageId);
+        LOG.info("Loading mileage id={}", mileageId);
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -95,7 +95,7 @@ public final class MileageOdometerController {
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
-        LOG.info("Delete mileage " + mileageForm.getMileage().getId());
+        LOG.info("Delete mileage id={}", mileageForm.getMileage().getId());
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -110,7 +110,8 @@ public final class MileageOdometerController {
                 return new ModelAndView("redirect:/access/modv/" + mileageForm.getMileage().getId() + ".htm");
             }
         } catch (Exception exce) {
-            LOG.error("Error occurred during receipt delete: Receipt Id: " + mileageForm.getMileage().getId() + ", error message: " + exce.getLocalizedMessage());
+            LOG.error("Error occurred during receipt delete: Receipt rid={}, error reason={}",
+                    mileageForm.getMileage().getId(), exce.getLocalizedMessage(), exce);
             result.rejectValue("errorMessage", StringUtils.EMPTY, "Delete request failed to execute");
             redirectAttrs.addFlashAttribute("result", result);
 
@@ -137,7 +138,7 @@ public final class MileageOdometerController {
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
-        LOG.debug("Split mileage " + mileageForm.getMileage().getId());
+        LOG.debug("Split mileage id={}", mileageForm.getMileage().getId());
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             mileageService.split(mileageForm.getMileage().getId(), receiptUser.getRid());

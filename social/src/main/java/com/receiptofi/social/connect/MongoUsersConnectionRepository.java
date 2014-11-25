@@ -72,9 +72,8 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
         if (null == result || result.isEmpty()) {
             connectionService.create(connection.getKey().getProviderUserId(), connection);
-            result = new ArrayList<String>() {{
-                add(connection.getKey().getProviderUserId());
-            }};
+            result = new ArrayList<>();
+            result.add(connection.getKey().getProviderUserId());
         }
 
         return result;
