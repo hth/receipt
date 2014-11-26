@@ -20,6 +20,11 @@ import java.util.Map;
  * @author hitender
  * @since Mar 30, 2013 11:46:45 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Component
 public final class FileUploadDocumentListenerJMS {
     private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);

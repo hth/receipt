@@ -24,6 +24,11 @@ import javax.jms.Session;
  * @author hitender
  * @since Mar 30, 2013 2:42:21 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal"
+})
 @Component
 public final class FileUploadDocumentSenderJMS {
     private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentSenderJMS.class);
