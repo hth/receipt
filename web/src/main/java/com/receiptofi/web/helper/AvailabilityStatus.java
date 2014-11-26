@@ -8,6 +8,12 @@ package com.receiptofi.web.helper;
  * Date: 4/11/13
  * Time: 2:28 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class AvailabilityStatus {
     private static final AvailabilityStatus AVAILABLE_INSTANCE = new AvailabilityStatus(true, new String[0]);
     private boolean available;

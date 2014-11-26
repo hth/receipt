@@ -13,6 +13,12 @@ import java.util.List;
  * Date: 7/6/13
  * Time: 3:18 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class LandingForm {
 
     private ReceiptForMonth receiptForMonth;

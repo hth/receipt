@@ -15,6 +15,12 @@ import java.util.Date;
  * User: hitender
  * Date: 8/17/14 11:37 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class NotificationDetailForm {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationDetailForm.class);
 

@@ -11,6 +11,12 @@ import java.util.List;
  * Date: 5/27/13
  * Time: 12:59 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ItemAnalyticForm {
 
     private ItemEntity item;

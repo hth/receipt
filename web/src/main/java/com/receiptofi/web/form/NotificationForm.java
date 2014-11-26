@@ -10,6 +10,12 @@ import java.util.List;
  * Date: 7/1/13
  * Time: 9:57 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class NotificationForm {
     private List<NotificationDetailForm> notifications = new ArrayList<>();
     private String count;

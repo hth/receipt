@@ -14,6 +14,12 @@ import java.util.Set;
  * Date: 4/22/13
  * Time: 11:52 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class BizForm {
     private String businessName;
     private String address;

@@ -13,6 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Date: 4/14/13
  * Time: 6:53 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @XmlRootElement (namespace = "http://receiptofi.com/schema/receipt/v1", name = "header")
 @XmlAccessorType (XmlAccessType.FIELD)
 @XmlAccessorOrder (XmlAccessOrder.ALPHABETICAL)

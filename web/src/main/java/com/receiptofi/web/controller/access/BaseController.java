@@ -24,7 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 public abstract class BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);

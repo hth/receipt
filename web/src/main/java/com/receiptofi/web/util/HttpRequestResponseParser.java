@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
  * User: hitender
  * Date: 9/25/14 12:26 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class HttpRequestResponseParser {
 
     private HttpRequestResponseParser() {

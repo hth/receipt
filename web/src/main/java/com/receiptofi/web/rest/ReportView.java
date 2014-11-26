@@ -17,6 +17,12 @@ import javax.xml.bind.annotation.XmlType;
  * User: hitender
  * Date: 9/6/13 9:27 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @XmlRootElement (name = "reportView")
 @XmlAccessorType (XmlAccessType.FIELD)
 @XmlAccessorOrder (XmlAccessOrder.ALPHABETICAL)

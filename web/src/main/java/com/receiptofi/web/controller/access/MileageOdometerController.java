@@ -34,7 +34,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Controller
 @RequestMapping (value = "/access/modv")

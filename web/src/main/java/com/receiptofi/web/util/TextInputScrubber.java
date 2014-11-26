@@ -13,6 +13,12 @@ import java.net.URLDecoder;
  * User: hitender
  * Date: 11/24/13 11:28 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class TextInputScrubber {
     private static final Logger LOG = LoggerFactory.getLogger(TextInputScrubber.class);
 

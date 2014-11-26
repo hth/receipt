@@ -12,6 +12,12 @@ import org.apache.commons.lang3.StringUtils;
  * @author hitender
  * @since Mar 26, 2013 3:52:26 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class UserSearchForm {
 
     private String id;

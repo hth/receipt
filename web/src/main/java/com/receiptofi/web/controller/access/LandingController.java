@@ -88,7 +88,8 @@ import javax.xml.bind.Marshaller;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Controller
 @RequestMapping (value = "/access")
@@ -317,7 +318,7 @@ public class LandingController extends BaseController {
                 }
             }
         } else {
-            //TODO test with IE
+            //TODO(hth) test with IE
             //http://skillshared.blogspot.com/2012/08/java-class-for-valums-ajax-file.html
             LOG.warn("Look like IE file upload");
             String filename = httpServletRequest.getHeader("X-File-Name");
@@ -327,10 +328,11 @@ public class LandingController extends BaseController {
     }
 
     /**
-     * For uploading Receipts
-     *
+     * For uploading Receipts.
+     * @param documentId
      * @param httpServletRequest
      * @return
+     * @throws IOException
      */
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (

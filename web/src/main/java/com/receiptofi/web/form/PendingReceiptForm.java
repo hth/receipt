@@ -11,6 +11,12 @@ import java.util.List;
  * Date: 6/15/13
  * Time: 11:15 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class PendingReceiptForm {
 
     List<ReceiptOCRHelper> pending = new ArrayList<>();

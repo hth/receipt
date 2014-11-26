@@ -7,6 +7,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  * Date: 7/19/13
  * Time: 8:27 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class EvalFeedbackForm {
 
     private String comment;

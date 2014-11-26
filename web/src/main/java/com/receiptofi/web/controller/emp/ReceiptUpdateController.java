@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Class manages first processing of a receipt. That includes loading of a receipts by technician.
  * Updating of a receipt by technician. Same is true for recheck of receipt by technician.
- * This same class is used for showing the pending receipt to user
+ * This same class is used for showing the pending receipt to user.
  *
  * @author hitender
  * @since Jan 7, 2013 2:13:22 AM
@@ -50,7 +50,8 @@ import javax.servlet.http.HttpServletRequest;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Controller
 @RequestMapping (value = "/emp")

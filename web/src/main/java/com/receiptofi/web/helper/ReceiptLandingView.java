@@ -14,6 +14,12 @@ import java.util.Date;
  * Date: 7/6/13
  * Time: 12:54 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ReceiptLandingView {
 
     private String id;

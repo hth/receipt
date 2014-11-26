@@ -32,7 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Controller
 @RequestMapping (value = "/open/validate")

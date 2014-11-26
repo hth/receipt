@@ -17,6 +17,12 @@ import javax.servlet.ServletContextListener;
  * User: hitender
  * Date: 9/21/13 8:15 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class ReceiptofiServletContextListener implements ServletContextListener {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptofiServletContextListener.class);
 

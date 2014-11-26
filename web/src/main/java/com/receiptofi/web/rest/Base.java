@@ -17,6 +17,12 @@ import javax.xml.bind.annotation.XmlType;
  * http://docs.oracle.com/javaee/5/tutorial/doc/bnbcv.html
  * http://docs.oracle.com/cd/E13222_01/wls/docs103/webserv/data_types.html
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @XmlRootElement (namespace = "http://receiptofi.com/schema/receipt/v1", name = "receipt_root")
 @XmlAccessorType (XmlAccessType.FIELD)
 @XmlType (propOrder = {"header"})

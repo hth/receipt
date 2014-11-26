@@ -34,7 +34,8 @@ import javax.servlet.http.HttpServletRequest;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Controller
 @RequestMapping (value = "/login")
@@ -55,7 +56,7 @@ public final class LoginController {
         parser = CachedUserAgentStringParser.getInstance();
     }
 
-    // TODO add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
+    // TODO(hth) add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
     /**
      * @return UserAuthenticationEntity
@@ -78,7 +79,7 @@ public final class LoginController {
     }
 
     /**
-     * Loads initial form
+     * Loads initial form.
      *
      * @return
      */
@@ -103,7 +104,7 @@ public final class LoginController {
     }
 
     /**
-     * Returns clients IP address
+     * Returns clients IP address.
      *
      * @param request
      * @return

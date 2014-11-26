@@ -15,6 +15,12 @@ import javax.jms.JMSException;
  * User: hitender
  * Date: 9/6/14 1:52 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public class ReceiptofiInitializationCheckBean {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptofiInitializationCheckBean.class);

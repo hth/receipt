@@ -4,6 +4,12 @@ package com.receiptofi.web.helper;
  * User: hitender
  * Date: 12/24/13 10:01 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class AnchorFileInExcel {
 
     private byte[] bytes;

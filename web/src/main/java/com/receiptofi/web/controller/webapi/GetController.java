@@ -21,6 +21,12 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 7/2/14 11:54 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Controller
 @RequestMapping (value = "/webapi/mobile/get")
 public class GetController {

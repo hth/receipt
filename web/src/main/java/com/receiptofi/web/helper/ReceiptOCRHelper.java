@@ -7,6 +7,12 @@ import com.receiptofi.domain.DocumentEntity;
  * Date: 7/2/13
  * Time: 1:55 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ReceiptOCRHelper {
     private String fileName;
     private long fileSize;

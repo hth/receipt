@@ -5,11 +5,17 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
 
 /**
- * Contains data associated to be shown on donut pie chart
+ * Contains data associated to be shown on donut pie chart.
  * User: hitender
  * Date: 5/25/13
  * Time: 11:17 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class LandingDonutChart {
     public static final int OFF_SET = 0;
     public static final int MAX_WIDTH = 8;

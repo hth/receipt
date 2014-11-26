@@ -13,6 +13,12 @@ import java.io.Writer;
  * User: hitender
  * Date: 1/19/14 2:05 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class MileageDateUpdateResponse {
 
     @JsonProperty ("s")
