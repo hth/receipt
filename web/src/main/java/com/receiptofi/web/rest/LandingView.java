@@ -19,6 +19,12 @@ import javax.xml.bind.annotation.XmlType;
  * Time: 10:35 PM
  * http://glassfish.java.net/nonav/javaee5/api/javax/xml/bind/annotation/XmlElements.html
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 //@XmlRootElement(namespace="http://receiptofi.com/schema/receipt/v1", name="landingView")
 @XmlRootElement (name = "landingView")
 @XmlAccessorType (XmlAccessType.FIELD)

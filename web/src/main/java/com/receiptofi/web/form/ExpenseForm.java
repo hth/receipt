@@ -6,11 +6,17 @@ import com.receiptofi.domain.ItemEntity;
 import java.util.List;
 
 /**
- * Used in displaying items with specific expense type
+ * Used in displaying items with specific expense type.
  * User: hitender
  * Date: 5/24/13
  * Time: 1:20 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ExpenseForm {
 
     String name;

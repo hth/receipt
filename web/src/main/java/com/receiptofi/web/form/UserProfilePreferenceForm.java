@@ -16,6 +16,12 @@ import java.util.Map;
  * Date: 8/11/13
  * Time: 7:31 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class UserProfilePreferenceForm {
 
     private UserProfileEntity userProfile;

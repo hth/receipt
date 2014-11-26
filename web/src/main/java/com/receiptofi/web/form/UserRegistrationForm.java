@@ -9,6 +9,12 @@ import org.apache.commons.lang3.StringUtils;
  * @author hitender
  * @since Dec 25, 2012 12:01:53 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class UserRegistrationForm {
 
     private String firstName;

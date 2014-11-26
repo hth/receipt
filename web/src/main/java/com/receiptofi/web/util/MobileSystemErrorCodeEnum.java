@@ -5,6 +5,12 @@ package com.receiptofi.web.util;
  * User: hitender
  * Date: 7/10/14 11:28 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum MobileSystemErrorCodeEnum {
 
     USER_INPUT("100", "100"),

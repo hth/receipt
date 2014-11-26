@@ -5,6 +5,12 @@ package com.receiptofi.web.form;
  * Date: 6/4/13
  * Time: 1:48 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ForgotAuthenticateForm {
 
     private String password;

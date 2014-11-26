@@ -5,6 +5,12 @@ package com.receiptofi.web.form;
  * Date: 6/9/13
  * Time: 5:04 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class InviteAuthenticateForm {
 
     private String emailId;

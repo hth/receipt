@@ -16,6 +16,12 @@ import java.util.Date;
  * Date: 4/7/13
  * Time: 11:39 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class PerformanceProfiling {
     private static final Logger LOG = LoggerFactory.getLogger(PerformanceProfiling.class);
     private static final int QUARTER_SECOND = 250;

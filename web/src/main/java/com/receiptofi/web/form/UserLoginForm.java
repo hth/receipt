@@ -9,6 +9,12 @@ import org.apache.commons.lang3.StringUtils;
  * @author hitender
  * @since Jan 4, 2013 4:41:01 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class UserLoginForm {
 
     private String emailId;

@@ -6,6 +6,12 @@ import com.receiptofi.domain.MileageEntity;
  * User: hitender
  * Date: 1/13/14 8:35 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class MileageForm {
 
     private MileageEntity mileage;

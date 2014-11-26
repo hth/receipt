@@ -7,6 +7,12 @@ import org.apache.commons.lang3.StringUtils;
  * Date: 5/31/13
  * Time: 1:19 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ForgotRecoverForm {
 
     private String emailId;

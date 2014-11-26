@@ -26,10 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This is a Form Backing Object (FBO) for showing the receipt and its items.
  * @author hitender
  * @since Jan 7, 2013 9:30:32 AM
- * This is a Form Backing Object (FBO) for showing the receipt and its items
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ReceiptDocumentForm {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentForm.class);
 

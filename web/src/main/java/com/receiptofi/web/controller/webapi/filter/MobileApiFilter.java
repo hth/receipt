@@ -23,6 +23,12 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 6/30/14 1:26 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @WebFilter (urlPatterns = {"/webapi/mobile/*"})
 public class MobileApiFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(MobileApiFilter.class);

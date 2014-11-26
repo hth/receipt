@@ -26,6 +26,12 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 11/7/14 11:43 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Controller
 @RequestMapping (value = "/webapi/mobile/mail")
 public class MobileMailController {

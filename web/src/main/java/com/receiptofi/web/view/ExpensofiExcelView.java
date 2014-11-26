@@ -44,6 +44,12 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 11/30/13 2:45 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public final class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiExcelView.class);

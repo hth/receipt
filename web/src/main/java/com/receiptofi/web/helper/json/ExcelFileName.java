@@ -11,6 +11,12 @@ import java.io.Writer;
  * User: hitender
  * Date: 12/7/13 6:10 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class ExcelFileName {
 
     private String filename;
