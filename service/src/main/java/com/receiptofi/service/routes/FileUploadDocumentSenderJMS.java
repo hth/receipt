@@ -40,7 +40,7 @@ public final class FileUploadDocumentSenderJMS {
                         MapMessage mapMessage = session.createMapMessage();
                         mapMessage.setString("id", documentEntity.getId());
                         mapMessage.setString("level", userProfile.getLevel().name());
-                        mapMessage.setInt("status", documentEntity.getDocumentStatus().ordinal());
+                        mapMessage.setString("status", documentEntity.getDocumentStatus().name());
                         mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
                         return mapMessage;
                     }
