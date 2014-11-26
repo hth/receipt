@@ -99,7 +99,7 @@ public final class LandingService {
     }
 
     /**
-     * Do not use this open end query
+     * Do not use this open end query.
      *
      * @param profileId
      * @return
@@ -138,7 +138,7 @@ public final class LandingService {
     }
 
     /**
-     * Add appropriate empty months if month count is less than three
+     * Add appropriate empty months if month count is less than three.
      *
      * @param receiptGroupedList
      * @return
@@ -180,7 +180,7 @@ public final class LandingService {
     }
 
     /**
-     * For donut pie chart
+     * For donut pie chart.
      *
      * @param receipts
      * @return
@@ -239,7 +239,7 @@ public final class LandingService {
     }
 
     /**
-     * Computes all the expenses user has
+     * Computes all the expenses user has.
      *
      * @param userProfileId
      */
@@ -248,7 +248,7 @@ public final class LandingService {
     }
 
     /**
-     * Computes YTD expenses
+     * Computes YTD expenses.
      *
      * @param userProfileId
      */
@@ -273,7 +273,7 @@ public final class LandingService {
     }
 
     /**
-     * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS
+     * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS.
      *
      * @param uploadReceiptImage
      * @throws Exception
@@ -367,7 +367,7 @@ public final class LandingService {
     }
 
     /**
-     * Scales uploaded document image
+     * Scales uploaded document image.
      *
      * @param uploadReceiptImage
      * @return
@@ -386,18 +386,18 @@ public final class LandingService {
     }
 
     /**
-     * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS
-     *
+     * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS.
+     * @param documentId
      * @param userProfileId
      * @param uploadReceiptImage
-     * @throws Exception
      */
     public void appendMileage(String documentId, String userProfileId, UploadDocumentImage uploadReceiptImage) {
         throw new UnsupportedOperationException("");
     }
 
     /**
-     * Can be deleted as DBRef for Biz is not annotated @NotNull. To be considered if DBRef has to be annotated with @NotNull
+     * Can be deleted as DBRef for Biz is not annotated @NotNull.
+     * To be considered if DBRef has to be annotated with @NotNull.
      *
      * @param documentEntity
      */
