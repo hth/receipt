@@ -57,12 +57,18 @@ public final class ItemAnalyticController {
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping (value = "{id}", method = RequestMethod.GET)
-    public ModelAndView loadForm(@PathVariable String id, @ModelAttribute ("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm) {
+    public ModelAndView loadForm(
+            @PathVariable
+            String id,
+
+            @ModelAttribute ("itemAnalyticForm")
+            ItemAnalyticForm itemAnalyticForm
+    ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ItemEntity item = itemAnalyticService.findItemById(id, receiptUser.getRid());
-        if (item != null) {
+        if (null != item) {
             itemAnalyticForm.setItem(item);
             itemAnalyticForm.setDays(searchLimitForDays);
 
@@ -73,7 +79,7 @@ public final class ItemAnalyticController {
                                 " days ago no average could be calculated.");
             }
 
-            //TODO make sure a duplicate is reported when user uploads a new receipt and the old deleted receipt still existing with same information
+            //TODO(hth) make sure a duplicate is reported when user uploads a new receipt and the old deleted receipt still existing with same information
             //so comparing is essential and its better to remove the duplicate
 
             /** Gets site average */
@@ -84,7 +90,11 @@ public final class ItemAnalyticController {
             itemAnalyticForm.setSiteAveragePrice(siteAveragePrice);
 
             /** Your average */
-            List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), receiptUser.getRid(), untilThisDay);
+            List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(
+                    item.getName(),
+                    receiptUser.getRid(),
+                    untilThisDay);
+
             itemAnalyticForm.setYourAverageItems(yourAverageItems);
 
             BigDecimal yourAveragePrice = itemAnalyticService.calculateAveragePrice(yourAverageItems);
