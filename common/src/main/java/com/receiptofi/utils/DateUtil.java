@@ -14,6 +14,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.util.Assert;
+
 import java.util.Date;
 
 /**
@@ -47,6 +49,7 @@ public final class DateUtil {
      * @return
      */
     public static Date getDateFromString(String dateAsStr) {
+        Assert.notNull(dateAsStr, "Should contain date formatted string");
         String date = StringUtils.trim(dateAsStr.replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
         for (DateType dateType : DateType.values()) {
             if (date.matches(dateType.getRegex())) {

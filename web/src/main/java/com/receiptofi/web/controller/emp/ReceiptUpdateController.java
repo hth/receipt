@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -364,6 +365,7 @@ public final class ReceiptUpdateController {
     }
 
     private void loadBasedOnAppropriateUserLevel(String documentId, ReceiptDocumentForm receiptDocumentForm, HttpServletRequest request) {
+        Assert.notNull(receiptDocumentForm, "ReceiptDocumentForm should not be null");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DocumentEntity document = documentUpdateService.loadActiveDocumentById(documentId);
