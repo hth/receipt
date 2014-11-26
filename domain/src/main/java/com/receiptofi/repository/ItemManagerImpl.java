@@ -40,7 +40,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -186,7 +185,7 @@ public final class ItemManagerImpl implements ItemManager {
      */
     @Override
     public List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId, int limit) {
-        List<ItemEntity> items = new ArrayList<>();
+        List<ItemEntity> items;
         if (itemEntity.getReceipt().getReceiptUserId().equals(receiptUserId)) {
             items = mongoTemplate.find(
                     query(where("IN").is(itemEntity.getName())
@@ -200,7 +199,7 @@ public final class ItemManagerImpl implements ItemManager {
         } else {
             LOG.error("One of the query is trying to get items for different rid={} item={}",
                     receiptUserId, itemEntity.getId());
-
+            items = new ArrayList<>();
         }
         return items;
     }
