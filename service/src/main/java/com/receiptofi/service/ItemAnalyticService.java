@@ -110,7 +110,7 @@ public final class ItemAnalyticService {
     }
 
     /**
-     * Get all matching items and then sort descending based on receipt date and limit up to 15 (0,14)
+     * Get all matching items and then sort descending based on receipt date and limit up to 10 (0,10)
      * Note: Providing a user profile id is redundant but its critical to make sure only the user of
      * that session is requesting its own list of items. Otherwise there could be privacy issues.
      *
@@ -118,16 +118,9 @@ public final class ItemAnalyticService {
      * @param userProfileId
      * @return
      */
-    public List<ItemEntity> findAllByName(ItemEntity item, String userProfileId) {
-        List<ItemEntity> items = itemManager.findAllByName(item, userProfileId);
-
-        Ordering<ItemEntity> descendingOrder = descendingOrderForItems();
-
-        if (items.size() > 15) {
-            return descendingOrder.sortedCopy(items).subList(0, 15);
-        } else {
-            return descendingOrder.sortedCopy(items);
-        }
+    public List<ItemEntity> findAllByName(ItemEntity item, String userProfileId, int itemLimit) {
+        List<ItemEntity> items = itemManager.findAllByName(item, userProfileId, itemLimit);
+        return descendingOrderForItems().sortedCopy(items);
     }
 
     @SuppressWarnings ("unused")

@@ -177,22 +177,25 @@ public final class ItemManagerImpl implements ItemManager {
 
     /**
      * This method in future could be very memory extensive when there would be tons of similar items. To fix it, add
-     * receipt date to items
-     *
+     * receipt date to items.
+     * Note: Added limit to reduce number of items fetched.
      * @param itemEntity
      * @param receiptUserId
+     * @param limit - Number of items per query
      * @return
      */
     @Override
-    public List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId) {
+    public List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId, int limit) {
         if (itemEntity.getReceipt().getReceiptUserId().equals(receiptUserId)) {
-            Criteria criteria = where("IN").is(itemEntity.getName())
-                    .and("RID").is(receiptUserId)
-                    .andOperator(
-                            isNotDeleted()
-                    );
-
-            return mongoTemplate.find(query(criteria), ItemEntity.class, TABLE);
+            return mongoTemplate.find(
+                    query(where("IN").is(itemEntity.getName())
+                            .and("RID").is(receiptUserId)
+                            .andOperator(
+                                    isNotDeleted()
+                            )
+                    ).limit(limit),
+                    ItemEntity.class,
+                    TABLE);
         } else {
             LOG.error("One of the query is trying to get items for different rid={} item={}",
                     receiptUserId, itemEntity.getId());

@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,29 +43,43 @@ import java.util.List;
 @RequestMapping (value = "/access/itemanalytic")
 public final class ItemAnalyticController {
     private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticController.class);
-    private static final String nextPage = "/itemanalytic";
 
-    private static final int NINETY_DAYS = 90;
+    @Value ("${ItemAnalyticController.nextPage:/itemanalytic}")
+    private String nextPage;
+
+    @Value ("${ItemAnalyticController.searchLimitForDays:90}")
+    private int searchLimitForDays;
+
+    @Value ("${ItemAnalyticController.itemLimit:10}")
+    private int itemLimit;
 
     @Autowired private ItemAnalyticService itemAnalyticService;
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping (value = "{id}", method = RequestMethod.GET)
-    public ModelAndView loadForm(@PathVariable String id, @ModelAttribute ("itemAnalyticForm") ItemAnalyticForm itemAnalyticForm) {
+    public ModelAndView loadForm(
+            @PathVariable
+            String id,
+
+            @ModelAttribute ("itemAnalyticForm")
+            ItemAnalyticForm itemAnalyticForm
+    ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ItemEntity item = itemAnalyticService.findItemById(id, receiptUser.getRid());
-        if (item != null) {
+        if (null != item) {
             itemAnalyticForm.setItem(item);
-            itemAnalyticForm.setDays(NINETY_DAYS);
+            itemAnalyticForm.setDays(searchLimitForDays);
 
-            DateTime untilThisDay = DateTime.now().minusDays(NINETY_DAYS);
+            DateTime untilThisDay = DateTime.now().minusDays(searchLimitForDays);
             if (item.getReceipt().getReceiptDate().before(untilThisDay.toDate())) {
-                itemAnalyticForm.setMessage("Since the item " + item.getName() + " was purchased more than " + NINETY_DAYS + " days ago no average could be calculated.");
+                itemAnalyticForm.setMessage("Item " +  item.getName() +
+                                " was purchased more than " + searchLimitForDays +
+                                " days ago no average could be calculated.");
             }
 
-            //TODO make sure a duplicate is reported when user uploads a new receipt and the old deleted receipt still existing with same information
+            //TODO(hth) make sure a duplicate is reported when user uploads a new receipt and the old deleted receipt still existing with same information
             //so comparing is essential and its better to remove the duplicate
 
             /** Gets site average */
@@ -75,14 +90,18 @@ public final class ItemAnalyticController {
             itemAnalyticForm.setSiteAveragePrice(siteAveragePrice);
 
             /** Your average */
-            List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), receiptUser.getRid(), untilThisDay);
+            List<ItemEntity> yourAverageItems = itemAnalyticService.findAllByNameLimitByDays(
+                    item.getName(),
+                    receiptUser.getRid(),
+                    untilThisDay);
+
             itemAnalyticForm.setYourAverageItems(yourAverageItems);
 
             BigDecimal yourAveragePrice = itemAnalyticService.calculateAveragePrice(yourAverageItems);
             itemAnalyticForm.setYourAveragePrice(yourAveragePrice);
 
             /** Users historical items */
-            List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, receiptUser.getRid());
+            List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, receiptUser.getRid(), itemLimit);
             itemAnalyticForm.setYourHistoricalItems(yourItems);
 
             /** Loads expense types */
@@ -96,5 +115,4 @@ public final class ItemAnalyticController {
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
-
 }
