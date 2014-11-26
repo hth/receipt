@@ -114,7 +114,7 @@ public final class StorageManagerImpl implements StorageManager {
     }
 
     private String persist(UploadDocumentImage uploadDocumentImage) {
-        boolean closeStreamOnPersist = true;
+        final boolean closeStreamOnPersist = true;
         GridFSInputFile receiptBlob;
         try {
             if (uploadDocumentImage.containsFile()) {
