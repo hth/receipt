@@ -61,7 +61,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      * @param receiptUserId
      * @return
      */
-    List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId);
+    List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId, int limit);
 
     /**
      * Delete Entity.
