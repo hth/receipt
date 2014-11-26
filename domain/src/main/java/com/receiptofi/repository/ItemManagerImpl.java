@@ -186,8 +186,9 @@ public final class ItemManagerImpl implements ItemManager {
      */
     @Override
     public List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId, int limit) {
+        List<ItemEntity> items = new ArrayList<>();
         if (itemEntity.getReceipt().getReceiptUserId().equals(receiptUserId)) {
-            return mongoTemplate.find(
+            items = mongoTemplate.find(
                     query(where("IN").is(itemEntity.getName())
                             .and("RID").is(receiptUserId)
                             .andOperator(
@@ -199,8 +200,9 @@ public final class ItemManagerImpl implements ItemManager {
         } else {
             LOG.error("One of the query is trying to get items for different rid={} item={}",
                     receiptUserId, itemEntity.getId());
-            return new LinkedList<>();
+
         }
+        return items;
     }
 
     @Override

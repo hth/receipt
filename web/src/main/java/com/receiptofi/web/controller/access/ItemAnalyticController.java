@@ -37,7 +37,8 @@ import java.util.List;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Controller
 @RequestMapping (value = "/access/itemanalytic")
@@ -56,10 +57,10 @@ public final class ItemAnalyticController {
     @Autowired private ItemAnalyticService itemAnalyticService;
     @Autowired private ExpensesService expensesService;
 
-    @RequestMapping (value = "{id}", method = RequestMethod.GET)
+    @RequestMapping (value = "{itemId}", method = RequestMethod.GET)
     public ModelAndView loadForm(
-            @PathVariable
-            String id,
+            @PathVariable("itemId")
+            String itemId,
 
             @ModelAttribute ("itemAnalyticForm")
             ItemAnalyticForm itemAnalyticForm
@@ -67,7 +68,7 @@ public final class ItemAnalyticController {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ItemEntity item = itemAnalyticService.findItemById(id, receiptUser.getRid());
+        ItemEntity item = itemAnalyticService.findItemById(itemId, receiptUser.getRid());
         if (null != item) {
             itemAnalyticForm.setItem(item);
             itemAnalyticForm.setDays(searchLimitForDays);
@@ -79,11 +80,10 @@ public final class ItemAnalyticController {
                                 " days ago no average could be calculated.");
             }
 
-            //TODO(hth) make sure a duplicate is reported when user uploads a new receipt and the old deleted receipt still existing with same information
-            //so comparing is essential and its better to remove the duplicate
-
             /** Gets site average */
-            List<ItemEntity> siteAverageItems = itemAnalyticService.findAllByNameLimitByDays(item.getName(), untilThisDay);
+            List<ItemEntity> siteAverageItems = itemAnalyticService.findAllByNameLimitByDays(
+                    item.getName(),
+                    untilThisDay);
             itemAnalyticForm.setSiteAverageItems(siteAverageItems);
 
             BigDecimal siteAveragePrice = itemAnalyticService.calculateAveragePrice(siteAverageItems);
@@ -94,7 +94,6 @@ public final class ItemAnalyticController {
                     item.getName(),
                     receiptUser.getRid(),
                     untilThisDay);
-
             itemAnalyticForm.setYourAverageItems(yourAverageItems);
 
             BigDecimal yourAveragePrice = itemAnalyticService.calculateAveragePrice(yourAverageItems);
