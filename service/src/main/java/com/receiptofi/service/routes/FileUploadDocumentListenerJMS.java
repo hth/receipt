@@ -28,26 +28,13 @@ public final class FileUploadDocumentListenerJMS {
 
     public void receive(Map<String, Object> message) throws Exception {
         String id = (String) message.get("id");
+
         String level = (String) message.get("level");
-        int status = (Integer) message.get("status");
-        DocumentStatusEnum documentStatusEnum = DocumentStatusEnum.PENDING;
-
-        switch (status) {
-            case 0:
-                documentStatusEnum = DocumentStatusEnum.PENDING;
-                break;
-            case 1:
-                documentStatusEnum = DocumentStatusEnum.PROCESSED;
-                break;
-            case 2:
-                documentStatusEnum = DocumentStatusEnum.REPROCESS;
-                break;
-            default:
-                LOG.error("Reached unreachable condition, status={}", status);
-                throw new RuntimeException("Reached unreachable condition " + status);
-        }
-
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(level);
+
+        String status = (String) message.get("status");
+        DocumentStatusEnum documentStatusEnum = DocumentStatusEnum.valueOf(status);
+
         MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, documentStatusEnum);
         messageDocumentManager.save(object);
 
