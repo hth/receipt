@@ -105,12 +105,15 @@ public final class ItemManagerImpl implements ItemManager {
      *
      * @param id
      * @return
+     * @deprecated
      */
     @Deprecated
     @Override
     public ItemEntity findOne(String id) {
-        Sort sort = new Sort(Direction.ASC, "SEQ");
-        return mongoTemplate.findOne(query(where("id").is(id)).with(sort), ItemEntity.class, TABLE);
+        return mongoTemplate.findOne(
+                query(where("id").is(id)).with(new Sort(Direction.ASC, "SEQ")),
+                ItemEntity.class,
+                TABLE);
     }
 
     /**
