@@ -64,7 +64,7 @@ public final class MileageWebService {
         DateTime time = DateUtil.now();
 
         Mileages mileages = new Mileages();
-        mileages.setMileages(
+        mileages.setMiles(
                 mileageService.getMileageForThisMonth(
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid(),
                         time
@@ -121,7 +121,7 @@ public final class MileageWebService {
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
                 Mileages mileages = new Mileages();
-                mileages.setMileages(mileageEntities);
+                mileages.setMiles(mileageEntities);
                 mileages.setMonthlyMileage(
                         mileageService.monthlyTotal(
                                 ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid(),

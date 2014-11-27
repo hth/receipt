@@ -197,7 +197,7 @@ public class LandingController extends BaseController {
         landingForm.setMileageMonthlyTotal(mileageService.mileageTotal(mileageEntityList));
 
         Mileages mileages = new Mileages();
-        mileages.setMileages(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
+        mileages.setMiles(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
         landingForm.setMileages(mileages.asJson());
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
