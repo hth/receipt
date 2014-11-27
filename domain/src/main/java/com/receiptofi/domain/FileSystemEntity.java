@@ -44,9 +44,11 @@ public final class FileSystemEntity extends BaseEntity {
 
     /** To keep bean happy */
     public FileSystemEntity() {
+        super();
     }
 
     public FileSystemEntity(String blobId, BufferedImage bufferedImage, int imageOrientation, int sequence) {
+        super();
         this.blobId = blobId;
         this.height = bufferedImage.getHeight();
         this.width = bufferedImage.getWidth();

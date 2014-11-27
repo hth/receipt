@@ -70,6 +70,7 @@ public final class ItemEntityOCR extends BaseEntity {
 
     /** To keep spring happy in recreating the bean from form during submit action */
     public ItemEntityOCR() {
+        super();
     }
 
     /**

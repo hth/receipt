@@ -36,6 +36,7 @@ public final class EmailValidateEntity extends BaseEntity {
     private String authenticationKey;
 
     private EmailValidateEntity(String receiptUserId, String email, String authenticationKey) {
+        super();
         this.receiptUserId = receiptUserId;
         this.email = email;
         this.authenticationKey = authenticationKey;

@@ -47,9 +47,11 @@ public final class MessageDocumentEntity extends BaseEntity {
 
     @SuppressWarnings ("unused")
     private MessageDocumentEntity() {
+        super();
     }
 
     private MessageDocumentEntity(String documentId, UserLevelEnum level, DocumentStatusEnum documentStatus) {
+        super();
         this.documentId = documentId;
         this.level = level;
         this.documentStatus = documentStatus;

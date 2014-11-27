@@ -46,9 +46,11 @@ public final class LandingView extends Base {
     protected List<ReceiptEntity> receipts;
 
     public LandingView() {
+        super();
     }
 
     private LandingView(String userId, String emailId, Header header) {
+        super();
         super.setHeader(header);
         this.userId = userId;
         this.emailId = emailId;

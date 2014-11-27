@@ -46,9 +46,11 @@ public final class NotificationEntity extends BaseEntity {
 
     @SuppressWarnings ("unused")
     private NotificationEntity() {
+        super();
     }
 
     private NotificationEntity(NotificationTypeEnum notificationType) {
+        super();
         this.notificationType = notificationType;
     }
 

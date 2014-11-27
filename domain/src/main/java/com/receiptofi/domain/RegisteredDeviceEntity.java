@@ -35,6 +35,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
     private String deviceId;
 
     private RegisteredDeviceEntity(String receiptUserId, String deviceId) {
+        super();
         this.receiptUserId = receiptUserId;
         this.deviceId = deviceId;
     }

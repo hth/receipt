@@ -45,15 +45,26 @@ public final class InviteEntity extends BaseEntity {
     @Field ("INV")
     private UserAccountEntity invitedBy;
 
-    public static InviteEntity newInstance(String email, String authenticationKey, UserProfileEntity invited, UserAccountEntity invitedBy) {
-        InviteEntity inviteEntity = new InviteEntity();
+    private InviteEntity(
+            String email,
+            String authenticationKey,
+            UserProfileEntity invited,
+            UserAccountEntity invitedBy
+    ) {
+        super();
+        this.email = email;
+        this.authenticationKey = authenticationKey;
+        this.invited = invited;
+        this.invitedBy = invitedBy;
+    }
 
-        inviteEntity.setEmail(email);
-        inviteEntity.setAuthenticationKey(authenticationKey);
-        inviteEntity.setInvited(invited);
-        inviteEntity.setInvitedBy(invitedBy);
-
-        return inviteEntity;
+    public static InviteEntity newInstance(
+            String email,
+            String authenticationKey,
+            UserProfileEntity invited,
+            UserAccountEntity invitedBy
+    ) {
+        return new InviteEntity(email, authenticationKey, invited, invitedBy);
     }
 
     public String getEmail() {

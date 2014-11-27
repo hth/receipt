@@ -38,7 +38,7 @@ public final class Maths {
 
     //double[] values = { 1.0, 3.5, 123.4567, 10.0 };
     //output 1 3.5 123.457 10
-    private volatile DecimalFormat df = new DecimalFormat("0.###");
+    private static final DecimalFormat DF = new DecimalFormat("0.###");
 
     public static int add(int a, int b) {
         return a + b;

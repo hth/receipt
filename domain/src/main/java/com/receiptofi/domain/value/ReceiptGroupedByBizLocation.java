@@ -26,10 +26,12 @@ public final class ReceiptGroupedByBizLocation implements Serializable {
 
     @SuppressWarnings ("unused")
     private ReceiptGroupedByBizLocation() {
+        super();
     }
 
     @SuppressWarnings ("unused")
     private ReceiptGroupedByBizLocation(BigDecimal total) {
+        super();
         this.total = total;
     }
 

@@ -109,19 +109,20 @@ public final class ReceiptEntity extends BaseEntity {
 
     /**
      * Note: During recheck of a receipt EXF is dropped as this is
-     * not persisted between the two event
+     * not persisted between the two event.
      */
     @Field ("EXF")
     private String expenseReportInFS;
 
     /**
-     * Used to flush or avoid duplicate receipt entry
+     * Used to flush or avoid duplicate receipt entry.
      */
     @Field ("CS")
     private String checksum;
 
-    /** To keep bean happy */
+    /** To keep bean happy. */
     public ReceiptEntity() {
+        super();
     }
 
     @Deprecated
@@ -136,7 +137,7 @@ public final class ReceiptEntity extends BaseEntity {
     }
 
     /**
-     * Use this method to create the Entity for OCR Entity
+     * Use this method to create the Entity for OCR Entity.
      *
      * @param receiptDate
      * @param total
@@ -204,7 +205,7 @@ public final class ReceiptEntity extends BaseEntity {
     }
 
     /**
-     * Used to show the value in notification
+     * Used to show the value in notification.
      *
      * @return
      */
@@ -224,7 +225,7 @@ public final class ReceiptEntity extends BaseEntity {
     }
 
     /**
-     * Percentage of tax paid for all the items that were taxed
+     * Percentage of tax paid for all the items that were taxed.
      *
      * @return
      */
@@ -233,7 +234,7 @@ public final class ReceiptEntity extends BaseEntity {
     }
 
     /**
-     * Percentage of tax paid for all the items that were taxed. Scaled till 6th value
+     * Percentage of tax paid for all the items that were taxed. Scaled till 6th value.
      *
      * @param percentTax - 0.666667
      */
@@ -242,7 +243,7 @@ public final class ReceiptEntity extends BaseEntity {
     }
 
     /**
-     * Used for displaying on receipt page till 4th decimal. 0.666
+     * Used for displaying on receipt page till 4th decimal. 0.666.
      *
      * @return
      */
@@ -305,7 +306,7 @@ public final class ReceiptEntity extends BaseEntity {
 
     /**
      * Create for making sure no duplicate receipt could be entered. At a time, there can only be two status of receipt
-     * co-exists
+     * co-exists.
      * 1) Receipt deleted
      * 2) Receipt not deleted
      */

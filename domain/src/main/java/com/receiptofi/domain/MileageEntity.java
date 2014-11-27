@@ -79,9 +79,11 @@ public final class MileageEntity extends BaseEntity {
      * To keep bean happy
      */
     public MileageEntity() {
+        super();
     }
 
     public MileageEntity(FileSystemEntity fileSystemEntity, String receiptUserId) {
+        super();
         if (null == fileSystemEntities) {
             fileSystemEntities = new LinkedList<>();
         }

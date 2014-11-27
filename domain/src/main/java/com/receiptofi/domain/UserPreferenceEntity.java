@@ -31,11 +31,12 @@ public final class UserPreferenceEntity extends BaseEntity {
      */
     @SuppressWarnings ("unused")
     private UserPreferenceEntity() {
-
+        super();
     }
 
     // @PersistenceConstructor
     private UserPreferenceEntity(UserProfileEntity userProfile) {
+        super();
         this.userProfile = userProfile;
     }
 

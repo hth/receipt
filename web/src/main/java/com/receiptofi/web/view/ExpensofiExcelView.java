@@ -64,7 +64,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     private String heading;
 
     /**
-     * Description,Date,Quantity,Tax,Price,Expense Type
+     * Description,Date,Quantity,Tax,Price,Expense Type.
      */
     @Value ("${ExpensofiExcelView.columnSize:4,3,2,2,3,3}")
     private String columnSize;
@@ -98,7 +98,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         int nAccounts = items.size();
 
         // Content
-        for (short i = 0; i < nAccounts; i++) {
+        for (int i = 0; i < nAccounts; i++) {
             ItemEntity item = items.get(i);
             HSSFRow row = sheet.createRow(i + 1);
             addToCell(row, 0, item.getName(), NO_STYLE);

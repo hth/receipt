@@ -37,6 +37,7 @@ public final class BrowserEntity extends BaseEntity {
     private String userAgent;
 
     private BrowserEntity(String cookieId, String ipAddress, String userAgent) {
+        super();
         this.cookieId = cookieId;
         this.ipAddress = ipAddress;
         this.userAgent = userAgent;

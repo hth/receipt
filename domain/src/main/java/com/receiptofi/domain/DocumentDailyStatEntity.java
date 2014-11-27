@@ -36,6 +36,7 @@ public class DocumentDailyStatEntity extends BaseEntity {
     private Map<DocumentStatusEnum, Integer> documentProcessed = new LinkedHashMap<>();
 
     private DocumentDailyStatEntity() {
+        super();
         documentProcessed.put(DocumentStatusEnum.PENDING, 0);
         documentProcessed.put(DocumentStatusEnum.PROCESSED, 0);
         documentProcessed.put(DocumentStatusEnum.REPROCESS, 0);

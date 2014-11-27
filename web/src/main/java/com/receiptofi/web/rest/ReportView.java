@@ -40,9 +40,11 @@ public final class ReportView extends Base {
     protected List<ReceiptEntity> receipts;
 
     public ReportView() {
+        super();
     }
 
     private ReportView(String userId, String emailId, Header header) {
+        super();
         super.setHeader(header);
         this.userId = userId;
         this.emailId = emailId;

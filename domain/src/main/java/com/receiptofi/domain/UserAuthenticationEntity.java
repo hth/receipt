@@ -47,12 +47,14 @@ public final class UserAuthenticationEntity extends BaseEntity {
      */
     @SuppressWarnings ("unused")
     private UserAuthenticationEntity() {
+        super();
     }
 
     /**
      * @param password
      */
     private UserAuthenticationEntity(String password, String authenticationKey) {
+        super();
         this.password = password;
         this.authenticationKey = authenticationKey;
     }
