@@ -57,6 +57,18 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
 
+    @Value ("${ExpensofiExcelView.heading:Description,Date,Quantity,Tax,Price,Expense Type}")
+    private String heading;
+
+    /**
+     * Description,Date,Quantity,Tax,Price,Expense Type
+     */
+    @Value ("${ExpensofiExcelView.columnSize:4,3,2,2,3,3}")
+    private String columnSize;
+
+    // Columns - width is measured in 256ths of an el
+    private static final int unit = 1300; // = 1cm
+
     public static final HSSFCellStyle NO_STYLE = null;
 
     public void generateExcel(Map<String, Object> model, HSSFWorkbook workbook) throws IOException {
@@ -75,41 +87,22 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             addToCell(row, 0, "Error creating spreadsheet", NO_STYLE);
             return;
         }
-
-        // Columns - width is measured in 256ths of an el
-        short unit = (short) 1300; // = 1cm
-        sheet.setColumnWidth((short) 0, (short) (unit * 3.9));
-        sheet.setColumnWidth((short) 1, (short) (unit * 2.8));
-        sheet.setColumnWidth((short) 2, (short) (unit * 3.7));
-        sheet.setColumnWidth((short) 3, (short) (unit * 3.6));
-        sheet.setColumnWidth((short) 4, (short) (unit * 2.4));
-        sheet.setColumnWidth((short) 5, (short) (unit * 4.0));
-
-        // Heading style and font
-        HSSFCellStyle heading = setHeadingStyle(workbook);
-        setHeadingFont(workbook, heading);
+        setColumnWidth(sheet);
+        setHeadings(workbook, sheet);
 
         // Other styles
         HSSFCellStyle dateStyle = workbook.createCellStyle();
         dateStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy"));
+
         HSSFCellStyle moneyStyle = workbook.createCellStyle();
         moneyStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0.00"));
-
-        // Headings
-        HSSFRow row = sheet.createRow(0);
-        addToCell(row, 0, "Description", heading);
-        addToCell(row, 1, "Date", heading);
-        addToCell(row, 2, "Quantity", heading);
-        addToCell(row, 3, "Tax", heading);
-        addToCell(row, 4, "Price", heading);
-        addToCell(row, 5, "Expense Type", heading);
 
         int nAccounts = items.size();
 
         // Content
         for (short i = 0; i < nAccounts; i++) {
             ItemEntity item = items.get(i);
-            row = sheet.createRow(i + 1);
+            HSSFRow row = sheet.createRow(i + 1);
             addToCell(row, 0, item.getName(), NO_STYLE);
             addToCell(row, 1, item.getReceipt().getReceiptDate(), dateStyle);
             addToCell(row, 2, item.getQuantity(), NO_STYLE);
@@ -124,7 +117,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         }
 
         // Totals
-        row = sheet.createRow(nAccounts + 2);
+        HSSFRow row = sheet.createRow(nAccounts + 2);
         addToCell(row, 2, "SUM", NO_STYLE);
         addToCell(row, 3, "=sum(D2:D" + (nAccounts + 1) + ')', moneyStyle);
         addToCell(row, 4, "=sum(E2:E" + (nAccounts + 1) + ')', moneyStyle);
@@ -139,6 +132,43 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             byte[] imageBytes = anchorFileInExcel.getBytes();
             String imageContentType = anchorFileInExcel.getContentType();
             anchorReceiptImage(imageBytes, imageContentType, workbook, sheet, row);
+        }
+    }
+
+    /**
+     * Populate excel headings.
+     * @param workbook
+     * @param sheet
+     */
+    private void setHeadings(HSSFWorkbook workbook, HSSFSheet sheet) {
+        // Heading style and font
+        HSSFCellStyle heading = setHeadingStyle(workbook);
+        setHeadingFont(workbook, heading);
+
+        // Headings
+        setHeadingTitles(heading, sheet.createRow(0));
+    }
+
+    /**
+     * Sets excel header name.
+     * @param cellHeader
+     * @param row
+     */
+    private void setHeadingTitles(HSSFCellStyle cellHeader, HSSFRow row) {
+        String[] header = heading.split(",");
+        for (int i = 0; i < header.length; i++) {
+            addToCell(row, i, header[i], cellHeader);
+        }
+    }
+
+    /**
+     * Size set for of each column.
+     * @param sheet
+     */
+    private void setColumnWidth(HSSFSheet sheet) {
+        String[] sizes = columnSize.split(",");
+        for (int i = 0; i < sizes.length; i++) {
+            sheet.setColumnWidth(i, unit * Integer.valueOf(sizes[i]));
         }
     }
 
