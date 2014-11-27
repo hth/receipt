@@ -32,10 +32,6 @@ public final class CommentEntity extends BaseEntity {
     @Field ("CT")
     private CommentTypeEnum commentType;
 
-    public CommentEntity() {
-        super();
-    }
-
     public static CommentEntity newInstance(CommentTypeEnum commentType) {
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setCommentType(commentType);

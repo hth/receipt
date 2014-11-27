@@ -31,11 +31,6 @@ public final class BizNameEntity extends BaseEntity {
     @Field ("N")
     private String businessName;
 
-    /* To make bean happy */
-    public BizNameEntity() {
-        super();
-    }
-
     public static BizNameEntity newInstance() {
         return new BizNameEntity();
     }

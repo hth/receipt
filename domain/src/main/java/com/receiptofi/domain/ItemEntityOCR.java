@@ -68,11 +68,6 @@ public final class ItemEntityOCR extends BaseEntity {
     @Field ("EXPENSE_TAG")
     private ExpenseTagEntity expenseTag;
 
-    /** To keep spring happy in recreating the bean from form during submit action */
-    public ItemEntityOCR() {
-        super();
-    }
-
     /**
      * This method is used when the Entity is created for the first time or during receipt re-check.
      */
