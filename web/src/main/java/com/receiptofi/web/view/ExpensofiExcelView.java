@@ -141,11 +141,11 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      */
     private void setHeadings(HSSFWorkbook workbook, HSSFSheet sheet) {
         // Heading style and font
-        HSSFCellStyle heading = setHeadingStyle(workbook);
-        setHeadingFont(workbook, heading);
+        HSSFCellStyle cellHeader = setHeadingStyle(workbook);
+        setHeadingFont(workbook, cellHeader);
 
         // Headings
-        setHeadingTitles(heading, sheet.createRow(0));
+        setHeadingTitles(cellHeader, sheet.createRow(0));
     }
 
     /**
