@@ -53,6 +53,9 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public final class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiExcelView.class);
+    // Columns - width is measured in 256ths of an el and 1330 equals 1 cm
+    private static final int UNIT = 1300;
+    private static final HSSFCellStyle NO_STYLE = null;
 
     @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
@@ -65,10 +68,6 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      */
     @Value ("${ExpensofiExcelView.columnSize:4,3,2,2,3,3}")
     private String columnSize;
-
-    // Columns - width is measured in 256ths of an el
-    private static final int UNIT = 1300; // = 1cm
-    private static final HSSFCellStyle NO_STYLE = null;
 
     public void generateExcel(Map<String, Object> model, HSSFWorkbook workbook) throws IOException {
         buildExcelDocument(model, workbook, null, null);
@@ -136,6 +135,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
     /**
      * Populate excel headings.
+     *
      * @param workbook
      * @param sheet
      */
@@ -150,6 +150,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
     /**
      * Sets excel header name.
+     *
      * @param cellHeader
      * @param row
      */
@@ -162,6 +163,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
     /**
      * Size set for of each column.
+     *
      * @param sheet
      */
     private void setColumnWidth(HSSFSheet sheet) {
@@ -179,7 +181,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             workbook.write(out);
         } catch (IOException e) {
             LOG.error(
-                    "Possible permission error while persisting file to file system={}{}{}, reason=",
+                    "Possible permission error while persisting file to file system={}{}{}, reason={}",
                     expensofiReportLocation,
                     File.separator,
                     filename,
@@ -194,9 +196,24 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         }
     }
 
-    //add picture data to this workbook.
-    private void anchorReceiptImage(byte[] imageBytes, String imageContentType, HSSFWorkbook workbook, HSSFSheet sheet, HSSFRow row) {
-        int pictureIdx = workbook.addPicture(imageBytes, "image/jpeg".equalsIgnoreCase(imageContentType) ? Workbook.PICTURE_TYPE_JPEG : Workbook.PICTURE_TYPE_PNG);
+    /**
+     * Add picture data to this workbook.
+     * @param imageBytes
+     * @param imageContentType
+     * @param workbook
+     * @param sheet
+     * @param row
+     */
+    private void anchorReceiptImage(
+            byte[] imageBytes,
+            String imageContentType,
+            HSSFWorkbook workbook,
+            HSSFSheet sheet,
+            HSSFRow row
+    ) {
+        int pictureIdx = workbook.addPicture(
+                imageBytes,
+                "image/jpeg".equalsIgnoreCase(imageContentType) ? Workbook.PICTURE_TYPE_JPEG : Workbook.PICTURE_TYPE_PNG);
 
         CreationHelper helper = workbook.getCreationHelper();
 
@@ -216,13 +233,13 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     }
 
     private HSSFCellStyle setHeadingStyle(HSSFWorkbook workbook) {
-        HSSFCellStyle heading = workbook.createCellStyle();
-        heading.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        heading.setBottomBorderColor(HSSFColor.BLACK.index);
-        heading.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        heading.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
-        heading.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        return heading;
+        HSSFCellStyle cellHeader = workbook.createCellStyle();
+        cellHeader.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        cellHeader.setBottomBorderColor(HSSFColor.BLACK.index);
+        cellHeader.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellHeader.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
+        cellHeader.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        return cellHeader;
     }
 
     private void setHeadingFont(HSSFWorkbook workbook, HSSFCellStyle heading) {
@@ -233,7 +250,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     }
 
     private HSSFCell addToCell(HSSFRow row, int index, Object value, HSSFCellStyle style) {
-        HSSFCell cell = row.createCell((short) index);
+        HSSFCell cell = row.createCell(index);
 
         if (null == style) {
             style = cell.getCellStyle();
@@ -259,10 +276,12 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
             if (null == value) {
-                value = StringUtils.EMPTY;   // Ignore
+                LOG.debug("OTHER: {} ({})", StringUtils.EMPTY, StringUtils.EMPTY.getClass());
+                cell.setCellValue(new HSSFRichTextString(StringUtils.EMPTY));
+            } else {
+                LOG.debug("OTHER: {} ({})", value, value.getClass());
+                cell.setCellValue(new HSSFRichTextString(value.toString()));
             }
-            LOG.debug("OTHER: {} ({})", value, value.getClass());
-            cell.setCellValue(new HSSFRichTextString(value.toString()));
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         }
 
