@@ -27,13 +27,13 @@ import java.text.ParsePosition;
 public final class Maths {
     private static final Logger LOG = LoggerFactory.getLogger(Maths.class);
 
-    /** Scale for Display is always two */
+    /** Scale for Display is always two. */
     public static final int SCALE_TWO = 2;
     /** Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places. */
     public static final int SCALE_FOUR = 4;
 
     public static final int SCALE_SIX = 6;
-    /** Accepted range in lowest denomination in cents here or any other currency */
+    /** Accepted range in lowest denomination in cents here or any other currency. */
     public static final double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
 
     //double[] values = { 1.0, 3.5, 123.4567, 10.0 };
@@ -105,7 +105,7 @@ public final class Maths {
             return division;
         } catch (ArithmeticException exception) {
             // This should never occur. If this occur the problem is likely to be in code than receipt data.
-            LOG.error("Tried Divide: " + divide + ", by: " + by + ". Message: " + exception.getLocalizedMessage());
+            LOG.error("Tried Divide: {}, by: {}. Reason={}", divide, by, exception.getLocalizedMessage(), exception);
             return BigDecimal.ZERO;
         }
     }
@@ -132,7 +132,7 @@ public final class Maths {
     }
 
     /**
-     * Plain multiplication of two numbers
+     * Plain multiplication of two numbers.
      *
      * @param value
      * @param withThis
@@ -194,7 +194,7 @@ public final class Maths {
     }
 
     /**
-     * Adjust scale to two decimal place and round half up
+     * Adjust scale to two decimal place and round half up.
      *
      * @param thisNumber
      * @return
@@ -204,7 +204,7 @@ public final class Maths {
     }
 
     /**
-     * This method is normally used for calculating something within acceptable range specified and accepted by system
+     * This method is normally used for calculating something within acceptable range specified and accepted by system.
      *
      * @param from
      * @param value
