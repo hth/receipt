@@ -22,6 +22,12 @@ import java.util.Date;
  * @author hitender
  * @since Dec 27, 2012 2:53:16 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class DateUtil {
     public static final int MINUTE_IN_SECONDS = 60;
 

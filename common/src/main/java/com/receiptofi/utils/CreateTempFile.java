@@ -14,7 +14,12 @@ import java.io.IOException;
  * User: hitender
  * Date: 9/21/13 10:16 PM
  */
-
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class CreateTempFile {
     public static final String TEMP_FILE_START_WITH = "Receiptofi";
     public static final String DOT = ".";

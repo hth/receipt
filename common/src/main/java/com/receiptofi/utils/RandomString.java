@@ -10,6 +10,12 @@ import java.util.Random;
  * http://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string-in-java
  * You can tweak the "symbols" if you want to use more characters.
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class RandomString {
 
     private static final char[] symbols = new char[36];

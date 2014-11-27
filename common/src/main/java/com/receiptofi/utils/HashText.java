@@ -23,6 +23,12 @@ import java.util.Date;
  * @author hitender
  * @since Dec 22, 2012 11:52:04 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class HashText {
     private static final Logger LOG = LoggerFactory.getLogger(HashText.class);
 

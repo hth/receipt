@@ -47,6 +47,12 @@ enum FormatterSingleton {
  * @author hitender
  * @since Jan 9, 2013 11:13:30 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class Formatter {
     /** For double */
     public static final DecimalFormat DF = new DecimalFormat("#.##");

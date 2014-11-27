@@ -9,6 +9,12 @@ import java.util.regex.Pattern;
  * Date: 4/15/13
  * Time: 2:36 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class ValidateObjectID {
 
     private static Pattern p = Pattern.compile("^[0-9a-fA-F]{24}$");

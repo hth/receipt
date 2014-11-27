@@ -18,6 +18,12 @@ import java.text.ParsePosition;
  * Time: 9:42 AM
  * {@see http://java-performance.info/bigdecimal-vs-double-in-financial-calculations/}
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class Maths {
     private static final Logger LOG = LoggerFactory.getLogger(Maths.class);
 
