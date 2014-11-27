@@ -181,7 +181,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             workbook.write(out);
         } catch (IOException e) {
             LOG.error(
-                    "Possible permission error while persisting file to file system={}{}{}, reason=",
+                    "Possible permission error while persisting file to file system={}{}{}, reason={}",
                     expensofiReportLocation,
                     File.separator,
                     filename,
@@ -196,9 +196,24 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         }
     }
 
-    //add picture data to this workbook.
-    private void anchorReceiptImage(byte[] imageBytes, String imageContentType, HSSFWorkbook workbook, HSSFSheet sheet, HSSFRow row) {
-        int pictureIdx = workbook.addPicture(imageBytes, "image/jpeg".equalsIgnoreCase(imageContentType) ? Workbook.PICTURE_TYPE_JPEG : Workbook.PICTURE_TYPE_PNG);
+    /**
+     * Add picture data to this workbook.
+     * @param imageBytes
+     * @param imageContentType
+     * @param workbook
+     * @param sheet
+     * @param row
+     */
+    private void anchorReceiptImage(
+            byte[] imageBytes,
+            String imageContentType,
+            HSSFWorkbook workbook,
+            HSSFSheet sheet,
+            HSSFRow row
+    ) {
+        int pictureIdx = workbook.addPicture(
+                imageBytes,
+                "image/jpeg".equalsIgnoreCase(imageContentType) ? Workbook.PICTURE_TYPE_JPEG : Workbook.PICTURE_TYPE_PNG);
 
         CreationHelper helper = workbook.getCreationHelper();
 
@@ -235,7 +250,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     }
 
     private HSSFCell addToCell(HSSFRow row, int index, Object value, HSSFCellStyle style) {
-        HSSFCell cell = row.createCell((short) index);
+        HSSFCell cell = row.createCell(index);
 
         if (null == style) {
             style = cell.getCellStyle();
@@ -261,10 +276,12 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
             if (null == value) {
-                value = StringUtils.EMPTY;   // Ignore
+                LOG.debug("OTHER: {} ({})", StringUtils.EMPTY, StringUtils.EMPTY.getClass());
+                cell.setCellValue(new HSSFRichTextString(StringUtils.EMPTY));
+            } else {
+                LOG.debug("OTHER: {} ({})", value, value.getClass());
+                cell.setCellValue(new HSSFRichTextString(value.toString()));
             }
-            LOG.debug("OTHER: {} ({})", value, value.getClass());
-            cell.setCellValue(new HSSFRichTextString(value.toString()));
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         }
 
