@@ -60,11 +60,6 @@ public final class BizStoreEntity extends BaseEntity {
     @Field ("BIZ_NAME")
     private BizNameEntity bizName;
 
-    /* To make bean happy */
-    public BizStoreEntity() {
-        super();
-    }
-
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
     }

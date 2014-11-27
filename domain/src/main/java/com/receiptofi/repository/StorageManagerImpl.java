@@ -120,9 +120,9 @@ public final class StorageManagerImpl implements StorageManager {
         GridFSInputFile receiptBlob;
         try {
             if (uploadDocumentImage.containsFile()) {
-                InputStream is = new FileInputStream(uploadDocumentImage.getFile());
+                InputStream inputStream = new FileInputStream(uploadDocumentImage.getFile());
                 receiptBlob = gridFs.createFile(
-                        is,
+                        inputStream,
                         uploadDocumentImage.getFileName(),
                         CLOSE_STREAM_ON_PERSIST);
             } else {

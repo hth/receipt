@@ -42,11 +42,6 @@ public final class ExpenseTagEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
-    /** To make bean happy */
-    public ExpenseTagEntity() {
-        super();
-    }
-
     public static ExpenseTagEntity newInstance(String expName, String receiptUserId) {
         ExpenseTagEntity expenseTagEntity = new ExpenseTagEntity();
         expenseTagEntity.setTagName(expName);

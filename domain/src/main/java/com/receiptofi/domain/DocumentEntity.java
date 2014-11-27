@@ -83,11 +83,6 @@ public final class DocumentEntity extends BaseEntity {
     @Field ("DT")
     private DocumentOfTypeEnum documentOfType;
 
-    /** To keep bean happy */
-    public DocumentEntity() {
-        super();
-    }
-
     public static DocumentEntity newInstance() {
         return new DocumentEntity();
     }
