@@ -40,6 +40,9 @@ public final class Maths {
     //output 1 3.5 123.457 10
     private static final DecimalFormat DF = new DecimalFormat("0.###");
 
+    private Maths() {
+    }
+
     public static int add(int a, int b) {
         return a + b;
     }
