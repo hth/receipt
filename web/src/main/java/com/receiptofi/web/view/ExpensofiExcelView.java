@@ -53,6 +53,9 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public final class ExpensofiExcelView extends AbstractExcelView {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiExcelView.class);
+    // Columns - width is measured in 256ths of an el and 1330 equals 1 cm
+    private static final int UNIT = 1300;
+    private static final HSSFCellStyle NO_STYLE = null;
 
     @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
@@ -65,10 +68,6 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      */
     @Value ("${ExpensofiExcelView.columnSize:4,3,2,2,3,3}")
     private String columnSize;
-
-    // Columns - width is measured in 256ths of an el
-    private static final int UNIT = 1300; // = 1cm
-    private static final HSSFCellStyle NO_STYLE = null;
 
     public void generateExcel(Map<String, Object> model, HSSFWorkbook workbook) throws IOException {
         buildExcelDocument(model, workbook, null, null);
@@ -136,6 +135,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
     /**
      * Populate excel headings.
+     *
      * @param workbook
      * @param sheet
      */
@@ -150,6 +150,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
     /**
      * Sets excel header name.
+     *
      * @param cellHeader
      * @param row
      */
@@ -162,6 +163,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
     /**
      * Size set for of each column.
+     *
      * @param sheet
      */
     private void setColumnWidth(HSSFSheet sheet) {
@@ -216,13 +218,13 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     }
 
     private HSSFCellStyle setHeadingStyle(HSSFWorkbook workbook) {
-        HSSFCellStyle heading = workbook.createCellStyle();
-        heading.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        heading.setBottomBorderColor(HSSFColor.BLACK.index);
-        heading.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        heading.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
-        heading.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        return heading;
+        HSSFCellStyle cellHeader = workbook.createCellStyle();
+        cellHeader.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        cellHeader.setBottomBorderColor(HSSFColor.BLACK.index);
+        cellHeader.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellHeader.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
+        cellHeader.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        return cellHeader;
     }
 
     private void setHeadingFont(HSSFWorkbook workbook, HSSFCellStyle heading) {
