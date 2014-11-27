@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -135,7 +136,7 @@ public final class ReceiptDocumentForm {
      * @throws ParseException
      */
     public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException, NumberFormatException {
-        List<ItemEntity> listOfItems = new ArrayList<>();
+        List<ItemEntity> listOfItems = new LinkedList<>();
 
         for (ItemEntityOCR itemOCR : items) {
             if (itemOCR.getName().length() != 0) {

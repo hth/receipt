@@ -83,7 +83,7 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public void saveObjects(List<ItemEntity> objects) throws Exception {
+    public void saveObjects(List<ItemEntity> objects) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             //TODO reflection error saving the list
@@ -95,8 +95,8 @@ public final class ItemManagerImpl implements ItemManager {
                 sequence++;
             }
         } catch (DataIntegrityViolationException e) {
-            LOG.error("Duplicate record entry for ItemEntity: " + e.getLocalizedMessage());
-            throw new Exception(e.getMessage());
+            LOG.error("Duplicate record entry for ItemEntity reason={}", e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -105,12 +105,15 @@ public final class ItemManagerImpl implements ItemManager {
      *
      * @param id
      * @return
+     * @deprecated
      */
     @Deprecated
     @Override
     public ItemEntity findOne(String id) {
-        Sort sort = new Sort(Direction.ASC, "SEQ");
-        return mongoTemplate.findOne(query(where("id").is(id)).with(sort), ItemEntity.class, TABLE);
+        return mongoTemplate.findOne(
+                query(where("id").is(id)).with(new Sort(Direction.ASC, "SEQ")),
+                ItemEntity.class,
+                TABLE);
     }
 
     /**
@@ -162,13 +165,10 @@ public final class ItemManagerImpl implements ItemManager {
         // Can choose Item create date but if needs accuracy then find receipts for these items and filter
         // receipts by date provided.
         // Not sure how much beneficial it would be other than more data crunching.
-        Criteria criteriaA = where("IN").is(name);
-        Query query = query(criteriaA);
+        Query query = query(where("IN").is(name));
 
-        Criteria criteriaB;
-        if (receiptUserId != null) {
-            criteriaB = where("RID").is(receiptUserId);
-            query = query(criteriaA.andOperator(criteriaB.andOperator(isNotDeleted())));
+        if (null != receiptUserId) {
+            query.addCriteria(where("RID").is(receiptUserId).andOperator(isNotDeleted()));
         }
 
         return mongoTemplate.find(query, ItemEntity.class, TABLE);
@@ -211,9 +211,10 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public WriteResult updateObject(ItemEntity object) {
-        Query query = query(where("id").is(object.getId()));
-        Update update = Update.update("IN", object.getName());
-        return mongoTemplate.updateFirst(query, entityUpdate(update), TABLE);
+        return mongoTemplate.updateFirst(
+                query(where("id").is(object.getId())),
+                entityUpdate(Update.update("IN", object.getName())),
+                TABLE);
     }
 
     @Override

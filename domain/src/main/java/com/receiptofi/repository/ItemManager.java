@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface ItemManager extends RepositoryManager<ItemEntity> {
 
-    void saveObjects(List<ItemEntity> objects) throws Exception;
+    void saveObjects(List<ItemEntity> objects);
 
     WriteResult updateObject(ItemEntity object);
 
