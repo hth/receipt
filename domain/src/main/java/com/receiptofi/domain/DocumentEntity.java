@@ -85,6 +85,7 @@ public final class DocumentEntity extends BaseEntity {
 
     /** To keep bean happy */
     public DocumentEntity() {
+        super();
     }
 
     public static DocumentEntity newInstance() {

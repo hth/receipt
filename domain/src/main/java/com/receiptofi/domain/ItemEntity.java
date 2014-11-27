@@ -89,6 +89,7 @@ public final class ItemEntity extends BaseEntity {
     private ExpenseTagEntity expenseTag;
 
     public ItemEntity() {
+        super();
     }
 
     private ItemEntity(

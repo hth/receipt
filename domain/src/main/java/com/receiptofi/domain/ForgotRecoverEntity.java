@@ -33,6 +33,7 @@ public final class ForgotRecoverEntity extends BaseEntity {
     private final String authenticationKey;
 
     private ForgotRecoverEntity(String receiptUserId, String authenticationKey) {
+        super();
         this.receiptUserId = receiptUserId;
         this.authenticationKey = authenticationKey;
     }

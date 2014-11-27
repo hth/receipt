@@ -37,9 +37,11 @@ public final class Header extends Base {
     protected String message;
 
     public Header() {
+        super();
     }
 
     private Header(String authId) {
+        super();
         this.authId = authId;
     }
 

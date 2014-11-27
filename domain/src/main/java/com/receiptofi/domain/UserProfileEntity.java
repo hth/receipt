@@ -149,8 +149,9 @@ public final class UserProfileEntity extends BaseEntity {
     @Field ("ULE")
     private UserLevelEnum level = UserLevelEnum.USER;
 
-    /** To make bean happy */
+    /** To make bean happy. */
     public UserProfileEntity() {
+        super();
     }
 
     private UserProfileEntity(String email, String firstName, String lastName, String receiptUserId, String birthday) {

@@ -39,6 +39,8 @@ import java.util.List;
 public final class StorageManagerImpl implements StorageManager {
     private static final Logger LOG = LoggerFactory.getLogger(StorageManagerImpl.class);
 
+    private static final boolean CLOSE_STREAM_ON_PERSIST = true;
+
     private final GridFS gridFs;
 
     public StorageManagerImpl(DB gridfsDb) {
@@ -115,7 +117,6 @@ public final class StorageManagerImpl implements StorageManager {
     }
 
     private String persist(UploadDocumentImage uploadDocumentImage) {
-        final boolean closeStreamOnPersist = true;
         GridFSInputFile receiptBlob;
         try {
             if (uploadDocumentImage.containsFile()) {
@@ -123,12 +124,12 @@ public final class StorageManagerImpl implements StorageManager {
                 receiptBlob = gridFs.createFile(
                         is,
                         uploadDocumentImage.getFileName(),
-                        closeStreamOnPersist);
+                        CLOSE_STREAM_ON_PERSIST);
             } else {
                 receiptBlob = gridFs.createFile(
                         uploadDocumentImage.getFileData().getInputStream(),
                         uploadDocumentImage.getFileName(),
-                        closeStreamOnPersist);
+                        CLOSE_STREAM_ON_PERSIST);
             }
 
             Assert.notNull(receiptBlob);

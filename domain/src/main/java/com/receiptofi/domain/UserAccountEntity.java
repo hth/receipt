@@ -92,6 +92,7 @@ public final class UserAccountEntity extends BaseEntity {
     private boolean isAccountValidated;
 
     private UserAccountEntity() {
+        super();
         roles = new LinkedHashSet<>();
         roles.add(RoleEnum.ROLE_USER);
     }

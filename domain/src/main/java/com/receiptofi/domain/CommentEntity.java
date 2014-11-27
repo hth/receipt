@@ -33,6 +33,7 @@ public final class CommentEntity extends BaseEntity {
     private CommentTypeEnum commentType;
 
     public CommentEntity() {
+        super();
     }
 
     public static CommentEntity newInstance(CommentTypeEnum commentType) {

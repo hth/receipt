@@ -37,9 +37,11 @@ public final class ReceiptGrouped implements Serializable {
      */
     @SuppressWarnings ("unused")
     private ReceiptGrouped() {
+        super();
     }
 
     private ReceiptGrouped(BigDecimal total, int year, int month, int day) {
+        super();
         this.total = total;
         this.year = year;
         this.month = month;

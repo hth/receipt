@@ -62,6 +62,7 @@ public final class BizStoreEntity extends BaseEntity {
 
     /* To make bean happy */
     public BizStoreEntity() {
+        super();
     }
 
     public static BizStoreEntity newInstance() {

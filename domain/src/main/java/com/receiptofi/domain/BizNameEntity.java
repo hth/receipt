@@ -33,6 +33,7 @@ public final class BizNameEntity extends BaseEntity {
 
     /* To make bean happy */
     public BizNameEntity() {
+        super();
     }
 
     public static BizNameEntity newInstance() {

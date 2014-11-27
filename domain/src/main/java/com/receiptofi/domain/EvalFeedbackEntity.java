@@ -40,9 +40,11 @@ public final class EvalFeedbackEntity extends BaseEntity {
 
     @SuppressWarnings("unused")
     private EvalFeedbackEntity() {
+        super();
     }
 
     private EvalFeedbackEntity(String feedback, int rating, String receiptUserId) {
+        super();
         this.feedback = feedback;
         this.rating = rating;
         this.receiptUserId = receiptUserId;
