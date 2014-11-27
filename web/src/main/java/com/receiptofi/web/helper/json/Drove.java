@@ -1,6 +1,9 @@
 package com.receiptofi.web.helper.json;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,6 +19,13 @@ import java.util.Date;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
+@JsonAutoDetect (
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder (alphabetic = true)
+@JsonIgnoreProperties (ignoreUnknown = true)
 public class Drove {
     @JsonProperty ("i")
     private String id;
@@ -41,6 +51,9 @@ public class Drove {
     @JsonProperty ("c")
     private boolean complete;
 
+    @JsonProperty ("na")
+    private String notesAbbreviated;
+
     @SuppressWarnings ("unused")
     public Drove() {
     }
@@ -63,6 +76,7 @@ public class Drove {
         this.notes = notes;
         this.total = total;
         this.complete = complete;
+        this.notesAbbreviated = StringUtils.abbreviate(notes, 22);
     }
 
     public static Drove newInstance(
@@ -96,11 +110,6 @@ public class Drove {
 
     public Date getEndDate() {
         return endDate;
-    }
-
-    @JsonProperty ("na")
-    public String getNotesAbbreviated() {
-        return StringUtils.abbreviate(notes, 22);
     }
 
     public String getNotes() {

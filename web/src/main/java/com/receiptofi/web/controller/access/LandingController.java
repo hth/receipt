@@ -31,7 +31,7 @@ import com.receiptofi.web.form.LandingForm;
 import com.receiptofi.web.form.NotificationForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
-import com.receiptofi.web.helper.json.Mileages;
+import com.receiptofi.web.helper.json.Driven;
 import com.receiptofi.web.rest.Base;
 import com.receiptofi.web.rest.Header;
 import com.receiptofi.web.rest.LandingView;
@@ -196,9 +196,9 @@ public class LandingController extends BaseController {
         landingForm.setMileageEntities(mileageEntityList);
         landingForm.setMileageMonthlyTotal(mileageService.mileageTotal(mileageEntityList));
 
-        Mileages mileages = new Mileages();
-        mileages.setMiles(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
-        landingForm.setMileages(mileages.asJson());
+        Driven driven = new Driven();
+        driven.setMiles(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
+        landingForm.setMileages(driven.asJson());
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;

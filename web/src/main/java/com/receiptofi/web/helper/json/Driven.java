@@ -1,6 +1,9 @@
 package com.receiptofi.web.helper.json;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.receiptofi.domain.MileageEntity;
@@ -26,9 +29,15 @@ import java.util.List;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-//TODO(hth) rename this class to Driven or something
-public final class Mileages {
-    private static final Logger LOG = LoggerFactory.getLogger(Mileages.class);
+@JsonAutoDetect (
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder (alphabetic = true)
+@JsonIgnoreProperties (ignoreUnknown = true)
+public class Driven {
+    private static final Logger LOG = LoggerFactory.getLogger(Driven.class);
 
     @JsonProperty ("ms")
     private List<Drove> miles = new LinkedList<>();
@@ -51,10 +60,6 @@ public final class Mileages {
                         null == mileageEntity.getMileageNotes() ? StringUtils.EMPTY : mileageEntity.getMileageNotes().getText(),
                         mileageEntity.getTotal(), mileageEntity.isComplete())
         );
-    }
-
-    public int getMonthlyMileage() {
-        return monthlyMileage;
     }
 
     public void setMonthlyMileage(int monthlyMileage) {

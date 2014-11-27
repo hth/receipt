@@ -8,7 +8,7 @@ import com.receiptofi.service.MileageService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.web.helper.json.MileageDateUpdateResponse;
-import com.receiptofi.web.helper.json.Mileages;
+import com.receiptofi.web.helper.json.Driven;
 import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.apache.commons.lang3.StringUtils;
@@ -63,8 +63,8 @@ public final class MileageWebService {
     public String fetch() throws IOException {
         DateTime time = DateUtil.now();
 
-        Mileages mileages = new Mileages();
-        mileages.setMiles(
+        Driven driven = new Driven();
+        driven.setMiles(
                 mileageService.getMileageForThisMonth(
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid(),
                         time
@@ -72,7 +72,7 @@ public final class MileageWebService {
         );
 
         PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-        return mileages.asJson();
+        return driven.asJson();
     }
 
     @RequestMapping (
@@ -89,15 +89,15 @@ public final class MileageWebService {
                         map.get("id2"),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
-                Mileages mileages = new Mileages();
-                mileages.setMileages(mileageEntity);
-                mileages.setMonthlyMileage(
+                Driven driven = new Driven();
+                driven.setMileages(mileageEntity);
+                driven.setMonthlyMileage(
                         mileageService.monthlyTotal(
                                 ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid(),
                                 DateUtil.now()
                         )
                 );
-                return mileages.asJson();
+                return driven.asJson();
             } catch (Exception exception) {
                 return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
@@ -120,15 +120,15 @@ public final class MileageWebService {
                         ParseJsonStringToMap.jsonStringToMap(id).get("id"),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
-                Mileages mileages = new Mileages();
-                mileages.setMiles(mileageEntities);
-                mileages.setMonthlyMileage(
+                Driven driven = new Driven();
+                driven.setMiles(mileageEntities);
+                driven.setMonthlyMileage(
                         mileageService.monthlyTotal(
                                 ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid(),
                                 DateUtil.now()
                         )
                 );
-                return mileages.asJson();
+                return driven.asJson();
             } catch (Exception exception) {
                 return createJSONUsingMileageDateUpdateResponse(false, exception.getLocalizedMessage());
             }
