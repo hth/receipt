@@ -91,36 +91,4 @@ public class Drove {
     ) {
         return new Drove(id, start, end, startDate, endDate, notes, total, complete);
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public int getStart() {
-        return start;
-    }
-
-    public int getEnd() {
-        return end;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public boolean isComplete() {
-        return complete;
-    }
 }
