@@ -3,6 +3,9 @@ package com.receiptofi.social.connect;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.annotation.Social;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.social.connect.Connection;
@@ -28,6 +31,7 @@ import java.util.Set;
 })
 @Social
 public class MongoConnectionRepository implements ConnectionRepository {
+    private static final Logger LOG = LoggerFactory.getLogger(MongoConnectionRepository.class);
 
     private final String userId;
     private final ConnectionService connectionService;
@@ -56,7 +60,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
 
         for (Connection<?> connection : resultList) {
             String providerId = connection.getKey().getProviderId();
-            if (connections.get(providerId).size() == 0) {
+            if (connections.get(providerId).isEmpty()) {
                 connections.put(providerId, new LinkedList<Connection<?>>());
             }
             connections.add(providerId, connection);
@@ -88,7 +92,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
             if (null == connections) {
                 //TODO(hth) re-check this code
                 connections = new ArrayList<>(userIds.size());
-                for (String userId : userIds) {
+                for (String eachUserId : userIds) {
                     connections.add(null);
                 }
                 connectionsForUsers.put(providerId, connections);
@@ -108,6 +112,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
                     connectionKey.getProviderUserId()
             );
         } catch (EmptyResultDataAccessException e) {
+            LOG.error("connection failure reason={}", e.getLocalizedMessage(), e);
             throw new NoSuchConnectionException(connectionKey);
         }
     }

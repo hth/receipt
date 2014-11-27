@@ -26,7 +26,7 @@ public final class PerformanceProfiling {
     private static final Logger LOG = LoggerFactory.getLogger(PerformanceProfiling.class);
     private static final int QUARTER_SECOND = 250;
     private static final int HALF_SECOND = 500;
-    private static boolean TIME_UNIT_MS = true;
+    private static final boolean TIME_UNIT_MS = true;
 
     private PerformanceProfiling() {
     }
@@ -42,7 +42,7 @@ public final class PerformanceProfiling {
     public static <T> Date log(Class<T> type, String... message) {
         Date time = DateUtil.nowTime();
         if (LOG.isDebugEnabled()) {
-            LOG.debug(type.getName() + "  " + Arrays.asList(message).toString() + " " + time);
+            LOG.debug("{} {} {}", type.getName(), Arrays.asList(message).toString(), time);
         }
         return time;
     }
@@ -58,7 +58,7 @@ public final class PerformanceProfiling {
     public static <T> void log(Class<T> type, DateTime time, String... message) {
         if (System.currentTimeMillis() - time.getMillis() > QUARTER_SECOND) {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("{}  {}, {}, duration={} milliseconds",
+                LOG.warn("{} {}, {}, duration={} milliseconds",
                         type.getName(),
                         Arrays.asList(message).toString(),
                         time,
@@ -67,14 +67,14 @@ public final class PerformanceProfiling {
             }
         } else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("{}  {}, {}, duration={} milliseconds",
+                LOG.debug("{} {}, {}, duration={} milliseconds",
                         type.getName(),
                         Arrays.asList(message).toString(),
                         time,
                         computeDuration(time)
                 );
             } else if (LOG.isInfoEnabled()) {
-                LOG.info("{}  {}, {}, duration={} seconds",
+                LOG.info("{} {}, {}, duration={} seconds",
                         type.getName(),
                         Arrays.asList(message).toString(),
                         time,
