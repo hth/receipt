@@ -220,7 +220,7 @@ public final class DocumentUpdateService {
                  * to be updated with new time. Else do not update the time of recheck comment
                  */
                 String fetchedRecheckComment = StringUtils.EMPTY;
-                if (fetchedReceipt != null && fetchedReceipt.getRecheckComment() != null) {
+                if (null != fetchedReceipt && null != fetchedReceipt.getRecheckComment()) {
                     fetchedRecheckComment = fetchedReceipt.getRecheckComment().getText();
                 }
                 if (!comment.getText().equalsIgnoreCase(fetchedRecheckComment)) {

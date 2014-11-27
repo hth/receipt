@@ -331,19 +331,19 @@ public final class LandingService {
             LOG.warn("Undo all the saves");
 
             int sizeFSInitial = fileDBService.getFSDBSize();
-            if (documentBlobId != null) {
+            if (null != documentBlobId) {
                 fileDBService.deleteHard(documentBlobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
             LOG.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
 
-            if (fileSystem != null) {
+            if (null != fileSystem) {
                 fileSystemService.deleteHard(fileSystem);
             }
 
             long sizeReceiptInitial = documentManager.collectionSize();
             long sizeItemInitial = itemOCRManager.collectionSize();
-            if (documentEntity != null) {
+            if (null != documentEntity) {
                 itemOCRManager.deleteWhereReceipt(documentEntity);
                 documentManager.deleteHard(documentEntity);
             }
