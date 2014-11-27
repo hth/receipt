@@ -12,6 +12,12 @@ import java.util.Collection;
  * User: hitender
  * Date: 4/27/14 2:48 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ReceiptUser extends User {
 
     private String rid;

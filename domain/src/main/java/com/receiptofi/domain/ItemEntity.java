@@ -33,7 +33,8 @@ import javax.validation.constraints.Size;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
 @Document (collection = "ITEM")

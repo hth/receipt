@@ -30,7 +30,8 @@ import javax.xml.parsers.ParserConfigurationException;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal" ,
+        "PMD.LongVariable"
 })
 @Service
 public class ReportService {

@@ -11,7 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "GENERATE_USER_IDS")
 public final class GenerateUserIds {

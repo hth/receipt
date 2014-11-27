@@ -21,6 +21,12 @@ import java.util.List;
  * User: hitender
  * Date: 3/30/14 7:38 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Repository
 public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     private static final Logger LOG = LoggerFactory.getLogger(RememberMeTokenManagerImpl.class);

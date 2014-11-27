@@ -19,7 +19,8 @@ import javax.validation.constraints.Size;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "EXPENSE_TAG")
 @CompoundIndexes (value = {

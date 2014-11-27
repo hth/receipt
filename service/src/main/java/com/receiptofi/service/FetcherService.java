@@ -24,6 +24,12 @@ import java.util.Set;
  * Date: 4/28/13
  * Time: 7:57 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Service
 public final class FetcherService {
     private static final Logger LOG = LoggerFactory.getLogger(FetcherService.class);

@@ -23,7 +23,8 @@ import javax.validation.constraints.Size;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "ITEM_OCR")
 @CompoundIndexes ({@CompoundIndex (name = "user_item_ocr_idx", def = "{'RECEIPT': -1, 'RID': 1}")})

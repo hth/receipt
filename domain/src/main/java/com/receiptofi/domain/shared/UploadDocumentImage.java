@@ -20,11 +20,17 @@ import java.io.File;
  * Note: When file is populated then code should give precedent to it otherwise MultipartFile fileData is default.
  *
  * @author hitender
- * @see http://www.ioncannon.net/programming/975/spring-3-file-upload-example/
+ * @link http://www.ioncannon.net/programming/975/spring-3-file-upload-example/
  * For GridFsTemplate
- * @see http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
+ * @link http://www.rainydayinn.com/dev/distributed-storage-with-mongo-gridfs-with-spring-data-mongodb/
  * @since Jan 3, 2013 12:56:16 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class UploadDocumentImage {
     public static final String UNDER_SCORE = "_";
     public static final String SCALED = UNDER_SCORE + "Scaled";

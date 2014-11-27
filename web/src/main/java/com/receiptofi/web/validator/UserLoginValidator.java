@@ -17,6 +17,12 @@ import org.springframework.validation.Validator;
  * @author hitender
  * @since Dec 16, 2012 6:52:46 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public final class UserLoginValidator implements Validator {
     @SuppressWarnings ("unused")

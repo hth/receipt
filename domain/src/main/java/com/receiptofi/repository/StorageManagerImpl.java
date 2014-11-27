@@ -33,7 +33,8 @@ import java.util.List;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 public final class StorageManagerImpl implements StorageManager {
     private static final Logger LOG = LoggerFactory.getLogger(StorageManagerImpl.class);

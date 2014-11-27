@@ -14,6 +14,12 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 3/30/14 3:27 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Document (collection = "REMEMBER_ME_TOKEN")
 @CompoundIndexes ({
         @CompoundIndex (name = "remember_username_idx", def = "{'UN': 1}"),

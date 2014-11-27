@@ -15,6 +15,12 @@ import org.springframework.validation.Validator;
  * Date: 5/10/13
  * Time: 12:35 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public final class BizValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(BizValidator.class);

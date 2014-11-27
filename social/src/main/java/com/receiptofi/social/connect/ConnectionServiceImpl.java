@@ -49,6 +49,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Social
 public class ConnectionServiceImpl implements ConnectionService {
     private static final Logger LOG = LoggerFactory.getLogger(ConnectionServiceImpl.class);

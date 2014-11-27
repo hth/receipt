@@ -8,6 +8,12 @@ import java.util.Date;
  * User: hitender
  * Date: 11/20/14 1:20 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class DocumentGrouped {
     private Date day;
     private DocumentStatusEnum documentStatusEnum;

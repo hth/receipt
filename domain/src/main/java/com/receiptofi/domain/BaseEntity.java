@@ -25,6 +25,12 @@ import java.util.Date;
  * @author hitender
  * @since Dec 23, 2012 2:02:10 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public abstract class BaseEntity implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(BaseEntity.class);
 

@@ -17,7 +17,8 @@ import java.util.Date;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Repository
 public class PersistentTokenRepositoryImpl implements PersistentTokenRepository {

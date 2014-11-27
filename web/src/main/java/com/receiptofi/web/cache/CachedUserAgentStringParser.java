@@ -17,8 +17,14 @@ import java.util.concurrent.TimeUnit;
  * Date: 5/26/13
  * Time: 2:46 PM
  *
- * @see http://uadetector.sourceforge.net/usage.html#usage_in_a_servlet
+ * @link http://uadetector.sourceforge.net/usage.html#usage_in_a_servlet
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class CachedUserAgentStringParser implements UserAgentStringParser {
     private static final Logger LOG = LoggerFactory.getLogger(CachedUserAgentStringParser.class);
 

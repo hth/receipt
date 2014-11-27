@@ -12,6 +12,12 @@ import java.util.Map;
  * User: hitender
  * Date: 1/21/14 7:17 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ParseJsonStringToMap {
 
     private ParseJsonStringToMap() {

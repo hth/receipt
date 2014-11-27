@@ -15,6 +15,12 @@ import org.springframework.validation.Validator;
  * Date: 6/4/13
  * Time: 3:11 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public final class ForgotAuthenticateValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotAuthenticateValidator.class);

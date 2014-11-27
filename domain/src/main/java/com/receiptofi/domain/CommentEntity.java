@@ -16,7 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "COMMENT")
 public final class CommentEntity extends BaseEntity {
