@@ -67,9 +67,8 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     private String columnSize;
 
     // Columns - width is measured in 256ths of an el
-    private static final int unit = 1300; // = 1cm
-
-    public static final HSSFCellStyle NO_STYLE = null;
+    private static final int UNIT = 1300; // = 1cm
+    private static final HSSFCellStyle NO_STYLE = null;
 
     public void generateExcel(Map<String, Object> model, HSSFWorkbook workbook) throws IOException {
         buildExcelDocument(model, workbook, null, null);
@@ -142,11 +141,11 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      */
     private void setHeadings(HSSFWorkbook workbook, HSSFSheet sheet) {
         // Heading style and font
-        HSSFCellStyle heading = setHeadingStyle(workbook);
-        setHeadingFont(workbook, heading);
+        HSSFCellStyle cellHeader = setHeadingStyle(workbook);
+        setHeadingFont(workbook, cellHeader);
 
         // Headings
-        setHeadingTitles(heading, sheet.createRow(0));
+        setHeadingTitles(cellHeader, sheet.createRow(0));
     }
 
     /**
@@ -168,7 +167,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     private void setColumnWidth(HSSFSheet sheet) {
         String[] sizes = columnSize.split(",");
         for (int i = 0; i < sizes.length; i++) {
-            sheet.setColumnWidth(i, unit * Integer.valueOf(sizes[i]));
+            sheet.setColumnWidth(i, UNIT * Integer.valueOf(sizes[i]));
         }
     }
 
