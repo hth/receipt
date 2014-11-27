@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Mobile
 @Document (collection = "REGISTERED_DEVICE")

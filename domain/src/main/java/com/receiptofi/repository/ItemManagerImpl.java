@@ -50,7 +50,8 @@ import java.util.StringTokenizer;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Repository
 public final class ItemManagerImpl implements ItemManager {

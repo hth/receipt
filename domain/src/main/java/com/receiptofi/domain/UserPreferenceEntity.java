@@ -15,7 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "USER_PREFERENCE")
 public final class UserPreferenceEntity extends BaseEntity {

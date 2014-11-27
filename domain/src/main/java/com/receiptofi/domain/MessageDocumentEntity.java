@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "MESSAGE_DOCUMENT")
 public final class MessageDocumentEntity extends BaseEntity {

@@ -25,7 +25,8 @@ import org.springframework.ui.ModelMap;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Component
 @Scope (BeanDefinition.SCOPE_SINGLETON)

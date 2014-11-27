@@ -12,6 +12,12 @@ import java.text.NumberFormat;
  * User: hitender
  * Date: 8/27/13 8:04 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ReceiptGroupedByBizLocation implements Serializable {
 
     private BigDecimal total;

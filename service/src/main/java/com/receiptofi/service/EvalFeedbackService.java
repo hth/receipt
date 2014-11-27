@@ -22,7 +22,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Service
 public final class EvalFeedbackService {

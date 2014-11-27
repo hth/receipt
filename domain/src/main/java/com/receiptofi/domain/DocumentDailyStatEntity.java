@@ -21,7 +21,8 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "DOCUMENT_DAILY_STAT")
 @CompoundIndexes ({@CompoundIndex (name = "document_daily_stat_idx", def = "{'DT': 1}", unique = true)})

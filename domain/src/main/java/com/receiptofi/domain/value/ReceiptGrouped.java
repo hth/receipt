@@ -18,6 +18,12 @@ import java.util.Date;
  * @author hitender
  * @since Jan 12, 2013 6:25:15 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public final class ReceiptGrouped implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptGrouped.class);
 

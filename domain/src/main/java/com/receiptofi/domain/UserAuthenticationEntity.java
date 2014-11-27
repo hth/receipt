@@ -24,7 +24,8 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @Document (collection = "USER_AUTHENTICATION")
 @CompoundIndexes ({

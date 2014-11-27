@@ -23,6 +23,12 @@ import java.text.ParseException;
  * @author hitender
  * @since Jan 10, 2013 10:00:24 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public final class ReceiptDocumentValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentValidator.class);

@@ -9,10 +9,17 @@ import org.springframework.cache.annotation.Cacheable;
  * User: hitender
  * Date: 6/1/13
  * Time: 5:54 PM
- * http://blog.joshuawhite.com/java/caching-with-spring-data-redis/
+ * link http://blog.joshuawhite.com/java/caching-with-spring-data-redis/
  *
  * @deprecated could not use with Redis cacheable
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
+@Deprecated
 public class RedisCachedUserAgentStringParser {
     private static final Logger LOG = LoggerFactory.getLogger(RedisCachedUserAgentStringParser.class);
 

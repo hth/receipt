@@ -14,6 +14,12 @@ import org.springframework.validation.Validator;
  * User: hitender
  * Date: 1/25/14 10:59 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public final class MileageDocumentValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(MileageDocumentValidator.class);

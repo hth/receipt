@@ -15,6 +15,12 @@ import org.springframework.validation.Validator;
  * Date: 6/9/13
  * Time: 5:39 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public final class InviteAuthenticateValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(InviteAuthenticateValidator.class);

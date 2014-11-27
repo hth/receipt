@@ -27,7 +27,8 @@ import java.util.Set;
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal"
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
 })
 @JsonAutoDetect (
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
