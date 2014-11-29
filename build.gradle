@@ -51,7 +51,6 @@ subprojects {
     apply plugin: 'jdepend'     //for dependency analysis, Jenkins plugin does not use this feature
     apply plugin: 'pmd'
     apply plugin: 'jacoco'      //for code coverage
-    apply plugin: 'sonar'
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -136,23 +135,6 @@ subprojects {
         maven { url "http://repo1.maven.org/maven2/" }
     }
 
-    // sonar settings -   - check new sonar plugin for milestone 5 release
-    sonar {
-        server {
-            url = "server.amazonaws.com:9000"
-        }
-        database {
-            url="jdbc:mysql://server.amazonaws.com:3306/sonar?useUnicode=true&characterEncoding=utf8"
-            driverClassName="com.mysql.jdbc.Driver"
-            username="usr"
-            password="pwd"
-        }
-        project {
-            coberturaReportPath=file("$buildDir/reports/cobertura/coverage.xml")
-            language = "java"
-        }
-    }
-
     dependencies {
         compile files('../lib/spring-social-core-1.1.0.RELEASE.jar')
         compile files('../lib/spring-social-facebook-1.1.1.RELEASE.jar')
@@ -217,8 +199,6 @@ subprojects {
         compile 'com.fasterxml.jackson.core:jackson-databind:2.4.2'
         compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
         compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-
-        compile 'com.amazonaws:aws-java-sdk-s3:1.9.8'
 
         compile 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r232'
         compile 'javax.validation:validation-api:1.1.0.Final'
