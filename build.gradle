@@ -200,6 +200,8 @@ subprojects {
         compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
         compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
 
+        compile 'com.amazonaws:aws-java-sdk-s3:1.9.8'
+
         compile 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r232'
         compile 'javax.validation:validation-api:1.1.0.Final'
         compile 'org.hibernate:hibernate-validator:5.1.1.Final'
