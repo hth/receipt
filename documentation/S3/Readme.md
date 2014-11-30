@@ -1,7 +1,8 @@
 S3 Setup
 ========
 
-Log in your account. Create New Users with access key. Then [add policy](https://awspolicygen.s3.amazonaws.com/policygen.html) for the bucket.
+Log in your account. Create New Users with access key. Then [add policy] (https://awspolicygen.s3.amazonaws.com/policygen.html)
+for the bucket.
 
 Policy Example
 
