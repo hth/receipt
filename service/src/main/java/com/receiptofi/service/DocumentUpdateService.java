@@ -49,7 +49,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class DocumentUpdateService {
+public class DocumentUpdateService {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentUpdateService.class);
 
     @Autowired private DocumentManager documentManager;

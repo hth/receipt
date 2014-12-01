@@ -30,7 +30,7 @@ import javax.imageio.ImageIO;
         "PMD.LongVariable"
 })
 @Service
-public final class ImageSplitService {
+public class ImageSplitService {
     private static final Logger LOG = LoggerFactory.getLogger(ImageSplitService.class);
     public static final String PNG_FORMAT = "png";
 
