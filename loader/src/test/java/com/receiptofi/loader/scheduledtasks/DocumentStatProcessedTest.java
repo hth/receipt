@@ -1,18 +1,13 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMost;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.Maps;
-
 import com.receiptofi.domain.DocumentDailyStatEntity;
-import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.service.DocumentDailyStatService;
 
 import org.joda.time.DateTime;
@@ -28,6 +23,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @RunWith (MockitoJUnitRunner.class)
 public class DocumentStatProcessedTest {
 
