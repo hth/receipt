@@ -118,6 +118,7 @@ public class UploadFilesToS3 {
                     LOG.debug("received Md5={}", putObjectResult.getContentMd5());
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
+                fileDBService.deleteHard(document.getFileSystemEntities());
                 count ++;
             } catch (AmazonServiceException e) {
                 LOG.error("Amazon S3 rejected request with an error response for some reason " +
