@@ -21,6 +21,12 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class FileSystemProcessTest {
 
     private FileSystemProcess fileSystemProcess;

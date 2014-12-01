@@ -37,6 +37,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @RunWith (MockitoJUnitRunner.class)
 public class UploadFilesToS3Test {
 

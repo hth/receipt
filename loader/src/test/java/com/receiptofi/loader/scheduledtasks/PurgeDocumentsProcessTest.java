@@ -19,6 +19,12 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class PurgeDocumentsProcessTest {
 
     private PurgeDocumentsProcess purgeDocumentsProcess;
