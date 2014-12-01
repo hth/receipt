@@ -83,6 +83,9 @@ public final class DocumentEntity extends BaseEntity {
     @Field ("DT")
     private DocumentOfTypeEnum documentOfType;
 
+    @Field ("IU")
+    private boolean imageUploadedToCloud;
+
     public static DocumentEntity newInstance() {
         return new DocumentEntity();
     }
@@ -199,10 +202,19 @@ public final class DocumentEntity extends BaseEntity {
         this.documentOfType = documentOfType;
     }
 
+    public boolean isImageUploadedToCloud() {
+        return imageUploadedToCloud;
+    }
+
+    public void setImageUploadedToCloud(boolean imageUploadedToCloud) {
+        this.imageUploadedToCloud = imageUploadedToCloud;
+    }
+
     @Override
     public String toString() {
         return "DocumentEntity{" +
-                "documentStatus=" + documentStatus +
+                "id=" + id +
+                ", documentStatus=" + documentStatus +
                 ", fileSystemEntities=" + fileSystemEntities +
                 ", receiptDate='" + receiptDate + '\'' +
                 ", subTotal='" + subTotal + '\'' +

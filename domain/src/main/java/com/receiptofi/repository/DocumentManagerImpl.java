@@ -9,6 +9,7 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
@@ -32,6 +33,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapreduce.GroupBy;
 import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -179,6 +181,18 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
+    public List<DocumentEntity> getAllProcessedDocuments() {
+        return mongoTemplate.find(
+                query(where("IU").is(false).and("DS").is(DocumentStatusEnum.PROCESSED))
+                        .addCriteria(isNotActive())
+                        .addCriteria(isNotDeleted())
+                        .with(new Sort(Direction.ASC, "U")),
+                DocumentEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
     public long getTotalPending() {
         return mongoTemplate.count(
                 query(
@@ -217,6 +231,15 @@ public final class DocumentManagerImpl implements DocumentManager {
 
         GroupByResults<DocumentGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, DocumentGrouped.class);
         return results.iterator();
+    }
+
+    @Override
+    public void cloudUploadSuccessful(String documentId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(documentId)),
+                update("IU", true),
+                DocumentEntity.class
+        );
     }
 
     @Override

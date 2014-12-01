@@ -119,18 +119,10 @@ public final class StorageManagerImpl implements StorageManager {
     private String persist(UploadDocumentImage uploadDocumentImage) {
         GridFSInputFile receiptBlob;
         try {
-            if (uploadDocumentImage.containsFile()) {
-                InputStream inputStream = new FileInputStream(uploadDocumentImage.getFile());
-                receiptBlob = gridFs.createFile(
-                        inputStream,
-                        uploadDocumentImage.getFileName(),
-                        CLOSE_STREAM_ON_PERSIST);
-            } else {
-                receiptBlob = gridFs.createFile(
-                        uploadDocumentImage.getFileData().getInputStream(),
-                        uploadDocumentImage.getFileName(),
-                        CLOSE_STREAM_ON_PERSIST);
-            }
+            receiptBlob = gridFs.createFile(
+                    uploadDocumentImage.getFileData().getInputStream(),
+                    uploadDocumentImage.getFileName(),
+                    CLOSE_STREAM_ON_PERSIST);
 
             Assert.notNull(receiptBlob);
         } catch (IOException | IllegalArgumentException ioe) {

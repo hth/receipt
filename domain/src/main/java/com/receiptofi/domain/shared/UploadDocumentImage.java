@@ -33,13 +33,9 @@ import java.io.File;
 })
 public final class UploadDocumentImage {
     public static final String UNDER_SCORE = "_";
-    public static final String SCALED = UNDER_SCORE + "Scaled";
 
     //Default is MultipartFile
     private MultipartFile fileData;
-
-    //Has precedent if not null (if populated)
-    private File file;
     private String rid;
     private FileTypeEnum fileType;
     private String blobId;
@@ -59,48 +55,12 @@ public final class UploadDocumentImage {
         this.fileData = fileData;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    /**
-     * File condition takes precedent over MultipartFile.
-     * Note: When file is populated then code should give precedent to it otherwise MultipartFile fileData is default.
-     *
-     * @boolean returns true if file object is populated
-     */
-    public boolean containsFile() {
-        return file != null;
-    }
-
     public String getOriginalFileName() {
-        if (containsFile()) {
-            return FilenameUtils.getBaseName(fileData.getOriginalFilename()) +
-                    SCALED +
-                    "." +
-                    FilenameUtils.getExtension(fileData.getOriginalFilename());
-        } else {
-            return fileData.getOriginalFilename();
-        }
+        return fileData.getOriginalFilename();
     }
 
     public String getFileName() {
-        if (containsFile()) {
-            return getRid() +
-                    UNDER_SCORE +
-                    FilenameUtils.getBaseName(fileData.getOriginalFilename()) +
-                    SCALED +
-                    "." +
-                    FilenameUtils.getExtension(fileData.getOriginalFilename());
-        } else {
-            return getRid() +
-                    UNDER_SCORE +
-                    fileData.getOriginalFilename();
-        }
+        return getRid() + UNDER_SCORE + fileData.getOriginalFilename();
     }
 
     public String getRid() {
@@ -138,8 +98,7 @@ public final class UploadDocumentImage {
 
     @Override
     public String toString() {
-        return "file=" + file +
-                ", rid='" + rid +
+        return "rid='" + rid +
                 ", fileType=" + fileType +
                 ", blobId='" + blobId;
     }
