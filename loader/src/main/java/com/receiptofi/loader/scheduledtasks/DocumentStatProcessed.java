@@ -35,13 +35,24 @@ public class DocumentStatProcessed {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentStatProcessed.class);
     private static final int A_DAY = 1;
 
-    @Value ("${statStartDate:2013-01-01T00:00:00Z}")
     private String statStartDate;
-
-    @Value ("${generateDocumentStat:ON}")
     private String generateDocumentStat;
+    private DocumentDailyStatService dailyStatService;
 
-    @Autowired private DocumentDailyStatService dailyStatService;
+    @Autowired
+    public DocumentStatProcessed(
+            @Value ("${statStartDate:2013-01-01T00:00:00Z}")
+            String statStartDate,
+
+            @Value ("${generateDocumentStat:ON}")
+            String generateDocumentStat,
+
+            DocumentDailyStatService dailyStatService
+    ) {
+        this.statStartDate = statStartDate;
+        this.generateDocumentStat = generateDocumentStat;
+        this.dailyStatService = dailyStatService;
+    }
 
     /**
      * Note: For every two second use *\/2 * * * * ? where as cron string blow run every day at 12:00 AM.
@@ -59,7 +70,9 @@ public class DocumentStatProcessed {
 
             Assert.notNull(lastEntry);
 
-            if (Days.daysBetween(new DateTime(lastEntry.getDate()), DateUtil.midnight(DateTime.now())).getDays() > A_DAY) {
+            int days = Days.daysBetween(new DateTime(lastEntry.getDate()), DateUtil.midnight(DateTime.now())).getDays();
+            LOG.info("last stat computed for document processed on date={} was {} days ago", lastEntry.getDate(), days);
+            if (days > A_DAY) {
                 Date computeSince = new DateTime(lastEntry.getDate()).plusDays(1).toDate();
                 Map<Date, DocumentDailyStatEntity> dailyStat = dailyStatService.computeDailyStats(computeSince);
                 for (Date day : dailyStat.keySet()) {
