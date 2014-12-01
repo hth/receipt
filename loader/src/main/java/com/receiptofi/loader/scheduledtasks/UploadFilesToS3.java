@@ -189,6 +189,7 @@ public class UploadFilesToS3 {
     }
 
     /**
+     * Helps in rotating image.
      * link https://stackoverflow.com/questions/5905868/am-i-making-this-too-complicated-image-rotation
      * link https://stackoverflow.com/questions/20275424/rotating-image-with-affinetransform
      * @param image
