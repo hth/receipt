@@ -1,11 +1,10 @@
 package com.receiptofi.loader.scheduledtasks;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -103,8 +102,8 @@ public class UploadFilesToS3Test {
         uploadFilesToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, never()).cloudUploadSuccessful(documentEntity.getId());
-        verify(fileDBService, never()).deleteHard(documentEntity.getFileSystemEntities());
+        verify(documentUpdateService, never()).cloudUploadSuccessful(anyString());
+        verify(fileDBService, never()).deleteHard(anyCollectionOf(FileSystemEntity.class));
     }
 
     @Test
@@ -119,8 +118,22 @@ public class UploadFilesToS3Test {
         uploadFilesToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, never()).cloudUploadSuccessful(documentEntity.getId());
-        verify(fileDBService, never()).deleteHard(documentEntity.getFileSystemEntities());
+        verify(documentUpdateService, never()).cloudUploadSuccessful(anyString());
+        verify(fileDBService, never()).deleteHard(anyCollectionOf(FileSystemEntity.class));
+    }
+
+    @Test
+    public void testException() {
+        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(amazonS3Service.getS3client()).thenReturn(s3Client);
+
+        doThrow(Exception.class).when(documentUpdateService).cloudUploadSuccessful(anyString());
+
+        uploadFilesToS3.upload();
+        assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
+        verify(s3Client, atMost(2)).putObject(any(PutObjectRequest.class));
+        verify(documentUpdateService, atMost(1)).cloudUploadSuccessful(anyString());
+        verify(fileDBService, never()).deleteHard(anyCollectionOf(FileSystemEntity.class));
     }
 
     @Test
