@@ -1,8 +1,8 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.FileUtil;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.AgeFileFilter;

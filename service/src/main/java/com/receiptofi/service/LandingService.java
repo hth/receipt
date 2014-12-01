@@ -24,8 +24,8 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
-import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Maths;
 
 import org.apache.commons.io.FilenameUtils;
@@ -38,7 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
