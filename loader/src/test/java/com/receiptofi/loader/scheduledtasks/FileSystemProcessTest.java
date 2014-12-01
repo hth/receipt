@@ -2,6 +2,7 @@ package com.receiptofi.loader.scheduledtasks;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atMost;
@@ -65,6 +66,6 @@ public class FileSystemProcessTest {
     @Test
     public void removeTempFiles() throws Exception {
         fileSystemProcess.removeTempFiles();
-        assertEquals(1, fileSystemProcess.getCountOfDeletedXmlFiles());
+        assertTrue("deleted files successfully", fileSystemProcess.getCountOfDeletedXmlFiles() > 0);
     }
 }
