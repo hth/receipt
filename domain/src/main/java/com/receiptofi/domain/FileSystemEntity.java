@@ -10,7 +10,7 @@ import java.beans.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
- * Store metadata of the document image
+ * Store metadata of the document image.
  * User: hitender
  * Date: 12/13/13 12:47 AM
  */
@@ -55,7 +55,7 @@ public final class FileSystemEntity extends BaseEntity {
     @Field ("OFN")
     private String originalFilename;
 
-    /** To keep bean happy */
+    /** To keep bean happy. */
     public FileSystemEntity() {
         super();
     }
