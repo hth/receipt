@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "DOCUMENT")
 @CompoundIndexes ({@CompoundIndex (name = "document_idx", def = "{'FS': 1, 'RID': 1}")})
-public final class DocumentEntity extends BaseEntity {
+public class DocumentEntity extends BaseEntity {
 
     @NotNull
     @Field ("DS")

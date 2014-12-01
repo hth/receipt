@@ -27,7 +27,7 @@ import java.util.Collection;
         "PMD.LongVariable"
 })
 @Service
-public final class FileDBService {
+public class FileDBService {
     private static final Logger LOG = LoggerFactory.getLogger(FileDBService.class);
 
     @Autowired private StorageManager storageManager;

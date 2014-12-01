@@ -4,6 +4,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ImageSplitService;
@@ -16,19 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.Protocol;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -36,7 +29,6 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
@@ -50,46 +42,35 @@ public class UploadFilesToS3 {
     private static final Logger LOG = LoggerFactory.getLogger(UploadFilesToS3.class);
 
     private final String bucketName;
-    private final AmazonS3 s3client;
 
     private DocumentUpdateService documentUpdateService;
     private FileDBService fileDBService;
     private ImageSplitService imageSplitService;
+    private AmazonS3Service amazonS3Service;
 
     @Autowired
     public UploadFilesToS3(
-            @Value ("${aws.s3.accessKey}")
-            String accessKey,
-
-            @Value ("${aws.s3.secretKey}")
-            String secretKey,
-
             @Value ("${aws.s3.bucketName}")
             String bucketName,
 
             DocumentUpdateService documentUpdateService,
             FileDBService fileDBService,
-            ImageSplitService imageSplitService
+            ImageSplitService imageSplitService,
+            AmazonS3Service amazonS3Service
     ) {
-        final ClientConfiguration clientConfiguration = new ClientConfiguration();
-        clientConfiguration.setProtocol(Protocol.HTTPS);
-
-        final AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        s3client = new AmazonS3Client(credentials, clientConfiguration);
-
-        Assert.isTrue(s3client.doesBucketExist(bucketName), "bucketName " + bucketName + " exists");
         this.bucketName = bucketName;
 
         this.documentUpdateService = documentUpdateService;
         this.fileDBService = fileDBService;
         this.imageSplitService = imageSplitService;
+        this.amazonS3Service = amazonS3Service;
     }
 
     /**
      * Note: For every two second use *\/2 * * * * ? where as cron string blow run every 5 minutes.
      */
     @Scheduled (cron = "0/300 * * * * ?")
-    public void upload() throws IOException {
+    public void upload() {
         List<DocumentEntity> documents = documentUpdateService.getAllProcessedDocuments();
         if(!documents.isEmpty()) {
             LOG.info("Documents to upload to cloud, count={}", documents.size());
@@ -114,8 +95,7 @@ public class UploadFilesToS3 {
                     PutObjectRequest putObject = new PutObjectRequest(bucketName, getKey(fileSystem), file);
                     putObject.setMetadata(getObjectMetadata(document, fileSystem));
 
-                    PutObjectResult putObjectResult = s3client.putObject(putObject);
-                    LOG.debug("received Md5={}", putObjectResult.getContentMd5());
+                    amazonS3Service.getS3client().putObject(putObject);
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
                 fileDBService.deleteHard(document.getFileSystemEntities());
@@ -152,7 +132,7 @@ public class UploadFilesToS3 {
                 failure ++;
 
                 for(FileSystemEntity fileSystem : document.getFileSystemEntities()) {
-                    s3client.deleteObject(bucketName, getKey(fileSystem));
+                    amazonS3Service.getS3client().deleteObject(bucketName, getKey(fileSystem));
                     LOG.warn("on failure removed files from cloud filename={}", getKey(fileSystem));
                 }
             } finally {

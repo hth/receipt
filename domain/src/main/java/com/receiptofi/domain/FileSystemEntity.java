@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "FILE_SYSTEM")
-public final class FileSystemEntity extends BaseEntity {
+public class FileSystemEntity extends BaseEntity {
 
     @NotNull
     @Field ("BID")
