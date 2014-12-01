@@ -10,8 +10,8 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.web.util.PerformanceProfiling;
 
