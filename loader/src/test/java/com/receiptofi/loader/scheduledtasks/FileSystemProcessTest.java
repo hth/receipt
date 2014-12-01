@@ -5,9 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.receiptofi.service.ReceiptService;
@@ -29,10 +29,9 @@ import java.io.File;
 })
 public class FileSystemProcessTest {
 
-    private FileSystemProcess fileSystemProcess;
-
-    @Mock private ReceiptService receiptService;
     @Rule public TemporaryFolder folder = new TemporaryFolder();
+    @Mock private ReceiptService receiptService;
+    private FileSystemProcess fileSystemProcess;
     private File createdFile;
 
     @Before
@@ -45,7 +44,7 @@ public class FileSystemProcessTest {
     @Test
     public void whenRemoveExpiredExcelFilesIsTurnedOn() {
         fileSystemProcess.removeExpiredExcelFiles();
-        verify(receiptService, atMost(1)).removeExpensofiFilenameReference(any(String.class));
+        verify(receiptService, times(1)).removeExpensofiFilenameReference(any(String.class));
     }
 
     @Test
@@ -59,7 +58,7 @@ public class FileSystemProcessTest {
     public void whenRemoveExpiredExcelException() {
         doThrow(Exception.class).when(receiptService).removeExpensofiFilenameReference(anyString());
         fileSystemProcess.removeExpiredExcelFiles();
-        verify(receiptService, atMost(1)).removeExpensofiFilenameReference(any(String.class));
+        verify(receiptService, times(1)).removeExpensofiFilenameReference(any(String.class));
         assertEquals(0, fileSystemProcess.getCountOfDeletedExcelFiles());
     }
 
