@@ -206,10 +206,6 @@ public final class DocumentEntity extends BaseEntity {
         return imageUploadedToCloud;
     }
 
-    public void setImageUploadedToCloud(boolean imageUploadedToCloud) {
-        this.imageUploadedToCloud = imageUploadedToCloud;
-    }
-
     @Override
     public String toString() {
         return "DocumentEntity{" +
