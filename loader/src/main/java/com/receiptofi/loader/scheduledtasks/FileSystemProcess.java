@@ -1,7 +1,7 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.io.FileUtils;
@@ -66,7 +66,9 @@ public class FileSystemProcess {
         this.receiptService = receiptService;
     }
 
-    //for every two second use */2 * * * * ? where as cron string blow run every day at 12:00 AM
+    /**
+     * Note: For every two second use *\/2 * * * * ? where as cron string blow run every day at 12:00 AM.
+     */
     @Scheduled (cron = "0 0 0 * * ?")
     public void removeExpiredExcelFiles() {
         if ("ON".equalsIgnoreCase(removeExpiredExcelFiles)) {
@@ -111,14 +113,14 @@ public class FileSystemProcess {
      */
     @Scheduled (cron = "0 0 9 * * ?")
     public void removeTempFiles() throws IOException {
-        File file = CreateTempFile.file("delete", ".xml");
+        File file = FileUtil.createTempFile("delete", ".xml");
         File directory = file.getParentFile();
 
         if (directory.exists()) {
             FilenameFilter textFilter = new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    return name.startsWith(CreateTempFile.TEMP_FILE_START_WITH);
+                    return name.startsWith(FileUtil.TEMP_FILE_START_WITH);
                 }
             };
 

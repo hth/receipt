@@ -74,4 +74,8 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     List<DocumentEntity> getAllRejected(String receiptUserId);
 
     List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay);
+
+    List<DocumentEntity> getAllProcessedDocuments();
+
+    void cloudUploadSuccessful(String documentId);
 }

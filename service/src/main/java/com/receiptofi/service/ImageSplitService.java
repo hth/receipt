@@ -1,7 +1,6 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.shared.UploadDocumentImage;
-import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.utils.FileUtil;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -33,53 +32,10 @@ import javax.imageio.ImageIO;
 @Service
 public final class ImageSplitService {
     private static final Logger LOG = LoggerFactory.getLogger(ImageSplitService.class);
-
-    //TODO remove main
-    public static void main(String[] args) throws IOException {
-        ImageSplitService splitService = new ImageSplitService();
-
-        File file = new File("/Users/hitender/Downloads/" + "20130429_171952.jpg"); // I have bear.jpg in my working directory
-        File image = splitService.decreaseResolution(file);
-        splitService.splitImage(image);
-    }
-
-    public void splitImage(File file) throws IOException {
-        BufferedImage image = bufferedImage(file);
-        LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
-        splitImage(image);
-    }
-
-    private void splitImage(BufferedImage image) throws IOException {
-        int rows = 4; //You should decide the values for rows and cols variables
-        int cols = 4;
-        int chunks = rows * cols;
-
-        int chunkWidth = image.getWidth() / cols; // determines the chunk width and height
-        int chunkHeight = image.getHeight() / rows;
-        int count = 0;
-        BufferedImage imgs[] = new BufferedImage[chunks]; //Image array to hold image chunks
-        for (int x = 0; x < rows; x++) {
-            for (int y = 0; y < cols; y++) {
-                //Initialize the image array with image chunks
-                imgs[count] = new BufferedImage(chunkWidth, chunkHeight, image.getType());
-
-                // draws the image chunk
-                Graphics2D gr = imgs[count++].createGraphics();
-                gr.drawImage(image, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);
-                gr.dispose();
-            }
-        }
-        LOG.debug("Splitting done");
-
-        //writing mini images into image files
-        for (int i = 0; i < imgs.length; i++) {
-            ImageIO.write(imgs[i], "png", CreateTempFile.file("image_" + i + "-", "png"));
-        }
-        LOG.debug("Mini images created");
-    }
+    public static final String PNG_FORMAT = "png";
 
     /**
-     * Decrease the resolution of the receipt image with PNG file format for better resolution
+     * Decrease the resolution of the receipt image with PNG file format for better resolution.
      *
      * @param file
      * @return
@@ -92,29 +48,29 @@ public final class ImageSplitService {
         double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
-        File scaled = CreateTempFile.file(FilenameUtils.getBaseName(file.getName()) + UploadDocumentImage.SCALED, FilenameUtils.getExtension(file.getName()));
-        ImageIO.write(bufferedImage, "png", scaled);
-        return scaled;
+        File scaledFile = FileUtil.createTempFile(FilenameUtils.getBaseName(file.getName()) + "_Scaled", FilenameUtils.getExtension(file.getName()));
+        ImageIO.write(bufferedImage, PNG_FORMAT, scaledFile);
+        return scaledFile;
     }
 
     /**
-     * Decrease the resolution of the receipt image with PNG file format for better resolution
+     * Decrease the resolution of the receipt image with PNG file format for better resolution.
      *
      * @return
      * @throws IOException
      */
-    public void decreaseResolution(InputStream is, OutputStream os) throws IOException {
-        BufferedImage image = bufferedImage(is);
+    public void decreaseResolution(InputStream inputStream, OutputStream outputStream) throws IOException {
+        BufferedImage image = bufferedImage(inputStream);
 
         LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
         double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
-        ImageIO.write(bufferedImage, "png", os);
+        ImageIO.write(bufferedImage, PNG_FORMAT, outputStream);
     }
 
     /**
-     * Can be used for calculating height and width of an image
+     * Can be used for calculating height and width of an image.
      *
      * @param file
      * @return

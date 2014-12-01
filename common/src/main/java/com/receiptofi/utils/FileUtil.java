@@ -1,11 +1,16 @@
 package com.receiptofi.utils;
 
+import com.receiptofi.type.FileExtensionTypeEnum;
+
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,14 +25,14 @@ import java.io.IOException;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class CreateTempFile {
+public class FileUtil {
     public static final String TEMP_FILE_START_WITH = "Receiptofi";
     public static final String DOT = ".";
     public static final String DASH = "-";
 
-    private static final Logger LOG = LoggerFactory.getLogger(CreateTempFile.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 
-    public static File file(String name, String ext) throws IOException {
+    public static File createTempFile(String name, String ext) throws IOException {
         try {
             if (name.startsWith(TEMP_FILE_START_WITH)) {
                 return File.createTempFile(name + DASH, ext.startsWith(DOT) ? ext : DOT + ext);
@@ -53,11 +58,11 @@ public class CreateTempFile {
      * @param fileExtension
      * @return
      */
-    private String createRandomFilename(final FileExtensionTypeEnum fileExtension) {
+    private String createRandomFilename(FileExtensionTypeEnum fileExtension) {
         return addFileExtension(createRandomFilename(), fileExtension);
     }
 
-    private String addFileExtension(final String filename, FileExtensionTypeEnum fileExtension) {
+    private String addFileExtension(String filename, FileExtensionTypeEnum fileExtension) {
         String filenameWithExtension = filename;
         if (fileExtension != null) {
             switch (fileExtension) {
@@ -77,7 +82,18 @@ public class CreateTempFile {
         return filenameWithExtension;
     }
 
-    private enum FileExtensionTypeEnum {
-        XLS, TXT, JPEG, JPG, PNG, PDF
+    /**
+     * From filename with extension, returns extension.
+     * @param filename
+     * @return
+     */
+    public static String getFileExtension(String filename) {
+        Assert.isTrue(filename.contains("."));
+
+        String extension = FilenameUtils.getExtension(filename);
+        if (extension.endsWith("jpeg")) {
+            return "jpg";
+        }
+        return extension;
     }
 }

@@ -16,7 +16,7 @@ import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
@@ -106,7 +106,7 @@ public final class ExpensofiController {
             model.addAttribute("to_be_anchored_files", anchorFileInExcels);
 
             try {
-                String filename = CreateTempFile.createRandomFilename();
+                String filename = FileUtil.createRandomFilename();
                 model.addAttribute("file-name", filename);
                 expensofiExcelView.generateExcel(model.asMap(), new HSSFWorkbook());
                 updateReceiptWithExcelFilename(receiptEntity, filename);

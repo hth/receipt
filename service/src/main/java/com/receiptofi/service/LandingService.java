@@ -24,7 +24,7 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
-import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
 
@@ -81,9 +81,6 @@ public final class LandingService {
     @Autowired private FileSystemService fileSystemService;
     @Autowired private ImageSplitService imageSplitService;
     @Autowired private ReceiptParserService receiptParserService;
-
-    @Value ("${SCALE_UPLOAD_IMAGE_ON:false}")
-    private boolean scaledUploadImage;
 
     static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
         public int compare(ReceiptGrouped left, ReceiptGrouped right) {
@@ -276,10 +273,10 @@ public final class LandingService {
     /**
      * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS.
      *
-     * @param uploadReceiptImage
+     * @param documentImage
      * @throws Exception
      */
-    public void uploadDocument(UploadDocumentImage uploadReceiptImage) {
+    public void uploadDocument(UploadDocumentImage documentImage) {
         String documentBlobId = null;
         DocumentEntity documentEntity = null;
         FileSystemEntity fileSystem = null;
@@ -290,27 +287,25 @@ public final class LandingService {
             //String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
             //TODO remove Temp Code
             //String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));
-            LOG.info("Upload document rid={} fileType={}", uploadReceiptImage.getRid(), uploadReceiptImage.getFileType());
+            LOG.info("Upload document rid={} fileType={}", documentImage.getRid(), documentImage.getFileType());
 
-            BufferedImage bufferedImage;
-            if (scaledUploadImage) {
-                File scaled = scaleImage(uploadReceiptImage);
-                uploadReceiptImage.setFile(scaled);
-                bufferedImage = imageSplitService.bufferedImage(scaled);
-            } else {
-                bufferedImage = imageSplitService.bufferedImage(uploadReceiptImage.getFileData().getInputStream());
-            }
-            documentBlobId = fileDBService.saveFile(uploadReceiptImage);
-            uploadReceiptImage.setBlobId(documentBlobId);
+            BufferedImage bufferedImage = imageSplitService.bufferedImage(documentImage.getFileData().getInputStream());
+            documentBlobId = fileDBService.saveFile(documentImage);
+            documentImage.setBlobId(documentBlobId);
 
             documentEntity = DocumentEntity.newInstance();
             documentEntity.setDocumentStatus(DocumentStatusEnum.PENDING);
 
-            fileSystem = new FileSystemEntity(documentBlobId, bufferedImage, 0, 0);
+            fileSystem = new FileSystemEntity(
+                    documentBlobId,
+                    bufferedImage,
+                    0,
+                    0,
+                    documentImage.getFileData());
             fileSystemService.save(fileSystem);
-            documentEntity.addReceiptBlobId(fileSystem);
 
-            documentEntity.setReceiptUserId(uploadReceiptImage.getRid());
+            documentEntity.addReceiptBlobId(fileSystem);
+            documentEntity.setReceiptUserId(documentImage.getRid());
             //Cannot pre-select it for now
             //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
@@ -376,7 +371,7 @@ public final class LandingService {
      */
     private File scaleImage(UploadDocumentImage uploadReceiptImage) throws IOException {
         MultipartFile commonsMultipartFile = uploadReceiptImage.getFileData();
-        File original = CreateTempFile.file(
+        File original = FileUtil.createTempFile(
                 "image_" +
                         FilenameUtils.getBaseName(commonsMultipartFile.getOriginalFilename()),
                 FilenameUtils.getExtension(commonsMultipartFile.getOriginalFilename())

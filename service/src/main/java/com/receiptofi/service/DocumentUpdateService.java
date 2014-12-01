@@ -81,6 +81,14 @@ public final class DocumentUpdateService {
         return itemOCRManager.getWhereReceipt(receiptEntity);
     }
 
+    public List<DocumentEntity> getAllProcessedDocuments() {
+        return documentManager.getAllProcessedDocuments();
+    }
+
+    public void cloudUploadSuccessful(String documentId) {
+        documentManager.cloudUploadSuccessful(documentId);
+    }
+
     /**
      * This method is used when technician saves the processed receipt for the first time.
      *
@@ -172,7 +180,11 @@ public final class DocumentUpdateService {
      * @param receiptDocument
      * @throws Exception
      */
-    public void turkProcessReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity receiptDocument) {
+    public void turkProcessReceiptReCheck(
+            ReceiptEntity receipt,
+            List<ItemEntity> items,
+            DocumentEntity receiptDocument
+    ) {
         ReceiptEntity fetchedReceipt = null;
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(receiptDocument.getId());
@@ -189,7 +201,8 @@ public final class DocumentUpdateService {
                 fetchedReceipt = receiptManager.findOne(receipt.getId());
                 if (null == fetchedReceipt) {
                     // By creating new receipt with old id, we move the pending receipt from the list back to users account
-                    LOG.warn("Something had gone wrong with original Receipt={}, so creating another with old receipt id", receipt.getId());
+                    LOG.warn("Something had gone wrong with original Receipt={}, " +
+                            "so creating another with old receipt id", receipt.getId());
                 } else {
                     receipt.setVersion(fetchedReceipt.getVersion());
                     receipt.setCreated(fetchedReceipt.getCreated());
@@ -217,7 +230,7 @@ public final class DocumentUpdateService {
 
                 /**
                  * If the comment is not equal then it means Technician has modified the comment and this needs
-                 * to be updated with new time. Else do not update the time of recheck comment
+                 * to be updated with new time. Else do not update the time of recheck comment.
                  */
                 String fetchedRecheckComment = StringUtils.EMPTY;
                 if (null != fetchedReceipt && null != fetchedReceipt.getRecheckComment()) {
@@ -231,7 +244,10 @@ public final class DocumentUpdateService {
                 receipt.setRecheckComment(comment);
             }
 
-            //Since Technician cannot change notes at least we gotta make sure we are not adding one when the Id for notes are missing
+            /**
+             * Since Technician cannot change notes at least we gotta make sure we are not adding one when the Id for
+             * notes are missing.
+             */
             if (StringUtils.isEmpty(receiptDocument.getNotes().getId())) {
                 receiptDocument.setNotes(null);
                 receipt.setNotes(null);

@@ -10,6 +10,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.web.util.PerformanceProfiling;
@@ -92,9 +93,10 @@ public final class FileDownloadController {
                 setContentType(file.getName(), response);
                 response.setHeader("Content-Length", String.valueOf(file.length()));
                 response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
-                OutputStream out = response.getOutputStream();
-                ImageIO.write(bi, getFormatForImageIO(file.getName()), out);
-                out.close();
+                OutputStream outputStream = response.getOutputStream();
+                /** imageNotFound is of type gif */
+                ImageIO.write(bi, FileUtil.getFileExtension(file.getName()), outputStream);
+                outputStream.close();
             } else {
                 LOG.debug("Length={} MetaData={}", gridFSDBFile.getLength(), gridFSDBFile.getMetaData());
                 setContentType(gridFSDBFile.getFilename(), response);
@@ -149,13 +151,5 @@ public final class FileDownloadController {
         } else {
             response.setContentType("image/png");
         }
-    }
-
-    private String getFormatForImageIO(String filename) {
-        String extension = FilenameUtils.getExtension(filename);
-        if (extension.endsWith("jpeg")) {
-            return "jpg";
-        }
-        return extension;
     }
 }

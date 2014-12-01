@@ -23,7 +23,7 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReportService;
-import com.receiptofi.utils.CreateTempFile;
+import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.LandingDonutChart;
@@ -508,7 +508,7 @@ public class LandingController extends BaseController {
             // output pretty printed
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 
-            File file = CreateTempFile.file("XML-Report", ".xml");
+            File file = FileUtil.createTempFile("XML-Report", ".xml");
             jaxbMarshaller.marshal(reportView, file);
 
             //Commenting console output

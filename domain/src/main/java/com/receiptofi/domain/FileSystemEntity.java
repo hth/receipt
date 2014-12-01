@@ -2,6 +2,7 @@ package com.receiptofi.domain;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.beans.Transient;
@@ -42,18 +43,39 @@ public final class FileSystemEntity extends BaseEntity {
     @Field ("SEQ")
     private int sequence;
 
+    @NotNull
+    @Field ("CT")
+    private String contentType;
+
+    @NotNull
+    @Field ("LN")
+    private long fileLength;
+
+    @NotNull
+    @Field ("OFN")
+    private String originalFilename;
+
     /** To keep bean happy */
     public FileSystemEntity() {
         super();
     }
 
-    public FileSystemEntity(String blobId, BufferedImage bufferedImage, int imageOrientation, int sequence) {
+    public FileSystemEntity(
+            String blobId,
+            BufferedImage bufferedImage,
+            int imageOrientation,
+            int sequence,
+            MultipartFile multipartFile
+    ) {
         super();
         this.blobId = blobId;
         this.height = bufferedImage.getHeight();
         this.width = bufferedImage.getWidth();
         this.imageOrientation = imageOrientation;
         this.sequence = sequence;
+        this.contentType = multipartFile.getContentType();
+        this.fileLength = multipartFile.getSize();
+        this.originalFilename = multipartFile.getOriginalFilename();
     }
 
     public String getBlobId() {
@@ -94,6 +116,18 @@ public final class FileSystemEntity extends BaseEntity {
 
     public void setSequence(int sequence) {
         this.sequence = sequence;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public long getFileLength() {
+        return fileLength;
+    }
+
+    public String getOriginalFilename() {
+        return originalFilename;
     }
 
     @Transient
