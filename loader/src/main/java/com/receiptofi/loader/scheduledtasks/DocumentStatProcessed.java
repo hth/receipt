@@ -88,6 +88,7 @@ public class DocumentStatProcessed {
      * When no record exists, initialize data with specified start date.
      */
     private void initialized() {
+        LOG.warn("since no record exists, initializing database");
         dailyStatService.save(new DocumentDailyStatEntity(DateUtil.midnight(new DateTime(statStartDate)).toDate()));
     }
 }

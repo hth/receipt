@@ -3,9 +3,9 @@ package com.receiptofi.loader.scheduledtasks;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +40,7 @@ public class PurgeDocumentsProcessTest {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, 1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         purgeDocumentsProcess.purgeRejectedDocument();
-        verify(documentManager, atMost(1)).deleteHard(any(DocumentEntity.class));
+        verify(documentManager, times(1)).deleteHard(any(DocumentEntity.class));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class PurgeDocumentsProcessTest {
         purgeDocumentsProcess = new PurgeDocumentsProcess(1, -1, "ON", documentManager);
         when(documentManager.getAllRejected(1)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         purgeDocumentsProcess.purgeRejectedDocument();
-        verify(documentManager, atMost(2)).deleteHard(any(DocumentEntity.class));
+        verify(documentManager, times(2)).deleteHard(any(DocumentEntity.class));
     }
 
     @Test

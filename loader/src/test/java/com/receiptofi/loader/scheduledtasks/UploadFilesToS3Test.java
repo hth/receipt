@@ -138,7 +138,7 @@ public class UploadFilesToS3Test {
         uploadFilesToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, atMost(2)).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, atMost(1)).cloudUploadSuccessful(anyString());
+        verify(documentUpdateService, times(1)).cloudUploadSuccessful(anyString());
         verify(fileDBService, never()).deleteHard(anyCollectionOf(FileSystemEntity.class));
     }
 
@@ -153,7 +153,7 @@ public class UploadFilesToS3Test {
         uploadFilesToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, times(2)).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, atMost(1)).cloudUploadSuccessful(documentEntity.getId());
-        verify(fileDBService, atMost(1)).deleteHard(documentEntity.getFileSystemEntities());
+        verify(documentUpdateService, times(1)).cloudUploadSuccessful(documentEntity.getId());
+        verify(fileDBService, times(1)).deleteHard(documentEntity.getFileSystemEntities());
     }
 }
