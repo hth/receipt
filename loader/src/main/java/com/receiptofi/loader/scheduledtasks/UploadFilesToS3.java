@@ -49,7 +49,7 @@ import java.util.List;
 public class UploadFilesToS3 {
     private static final Logger LOG = LoggerFactory.getLogger(UploadFilesToS3.class);
 
-    private final String bucket;
+    private final String bucketName;
     private final AmazonS3 s3client;
 
     private DocumentUpdateService documentUpdateService;
@@ -64,8 +64,8 @@ public class UploadFilesToS3 {
             @Value ("${aws.s3.secretKey}")
             String secretKey,
 
-            @Value ("${aws.s3.bucket}")
-            String bucket,
+            @Value ("${aws.s3.bucketName}")
+            String bucketName,
 
             DocumentUpdateService documentUpdateService,
             FileDBService fileDBService,
@@ -77,8 +77,8 @@ public class UploadFilesToS3 {
         final AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         s3client = new AmazonS3Client(credentials, clientConfiguration);
 
-        Assert.isTrue(s3client.doesBucketExist(bucket), "bucket " + bucket + " exists");
-        this.bucket = bucket;
+        Assert.isTrue(s3client.doesBucketExist(bucketName), "bucketName " + bucketName + " exists");
+        this.bucketName = bucketName;
 
         this.documentUpdateService = documentUpdateService;
         this.fileDBService = fileDBService;
@@ -111,7 +111,7 @@ public class UploadFilesToS3 {
                     //Set orientation of the image too
                     //imageSplitService.bufferedImage(file);
 
-                    PutObjectRequest putObject = new PutObjectRequest(bucket, getKey(fileSystem), file);
+                    PutObjectRequest putObject = new PutObjectRequest(bucketName, getKey(fileSystem), file);
                     putObject.setMetadata(getObjectMetadata(document, fileSystem));
 
                     PutObjectResult putObjectResult = s3client.putObject(putObject);
@@ -151,7 +151,7 @@ public class UploadFilesToS3 {
                 failure ++;
 
                 for(FileSystemEntity fileSystem : document.getFileSystemEntities()) {
-                    s3client.deleteObject(bucket, getKey(fileSystem));
+                    s3client.deleteObject(bucketName, getKey(fileSystem));
                     LOG.warn("on failure removed files from cloud filename={}", getKey(fileSystem));
                 }
             } finally {
