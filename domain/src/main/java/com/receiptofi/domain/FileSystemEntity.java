@@ -1,11 +1,17 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.FileUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.beans.Transient;
+import java.io.IOException;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,6 +28,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "FILE_SYSTEM")
 public class FileSystemEntity extends BaseEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(FileSystemEntity.class);
 
     @NotNull
     @Field ("BID")
@@ -76,6 +83,15 @@ public class FileSystemEntity extends BaseEntity {
         this.contentType = multipartFile.getContentType();
         this.fileLength = multipartFile.getSize();
         this.originalFilename = multipartFile.getOriginalFilename();
+
+        if (!contentType.startsWith("image")) {
+            try {
+                this.contentType = FileUtil.detectMimeType(multipartFile.getInputStream());
+                LOG.info("content-type found {} and replaced with {}", multipartFile.getContentType(), contentType);
+            } catch (IOException e) {
+                LOG.error("failed to get content-type reason={}", e.getLocalizedMessage(), e);
+            }
+        }
     }
 
     public String getBlobId() {

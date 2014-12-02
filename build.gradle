@@ -178,6 +178,9 @@ subprojects {
         compile 'org.apache.commons:commons-collections4:4.0'
         compile 'org.apache.commons:commons-lang3:3.3.2'
 
+        compile 'org.apache.tika:tika-parsers:1.6'
+        compile 'org.apache.tika:tika-core:1.6'
+
         compile 'aopalliance:aopalliance:1.0'
         compile 'org.aspectj:aspectjrt:1.7.4'
         compile 'com.fasterxml:classmate:1.0.0'
