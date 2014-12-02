@@ -6,6 +6,11 @@ import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.tika.detect.DefaultDetector;
+import org.apache.tika.detect.Detector;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MimeTypes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +19,7 @@ import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * User: hitender
@@ -31,6 +37,8 @@ public class FileUtil {
     public static final String DASH = "-";
 
     private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
+
+    private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
 
     public static File createTempFile(String name, String ext) throws IOException {
         try {
@@ -95,5 +103,61 @@ public class FileUtil {
             return "jpg";
         }
         return extension;
+    }
+
+    /**
+     * Finds content type of a file.
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static String detectMimeType(final File file) throws IOException {
+        TikaInputStream tikaIS = null;
+        try {
+            tikaIS = TikaInputStream.get(file);
+
+            /**
+             * You might not want to provide the file's name. If you provide an Excel
+             * document with a .xls extension, it will get it correct right away; but
+             * if you provide an Excel document with .doc extension, it will guess it
+             * to be a Word document.
+             */
+            final Metadata metadata = new Metadata();
+            // metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
+
+            return DETECTOR.detect(tikaIS, metadata).toString();
+        } finally {
+            if (tikaIS != null) {
+                tikaIS.close();
+            }
+        }
+    }
+
+    /**
+     * Finds content type of a file.
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static String detectMimeType(final InputStream file) throws IOException {
+        TikaInputStream tikaIS = null;
+        try {
+            tikaIS = TikaInputStream.get(file);
+
+            /**
+             * You might not want to provide the file's name. If you provide an Excel
+             * document with a .xls extension, it will get it correct right away; but
+             * if you provide an Excel document with .doc extension, it will guess it
+             * to be a Word document.
+             */
+            final Metadata metadata = new Metadata();
+            // metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
+
+            return DETECTOR.detect(tikaIS, metadata).toString();
+        } finally {
+            if (tikaIS != null) {
+                tikaIS.close();
+            }
+        }
     }
 }
