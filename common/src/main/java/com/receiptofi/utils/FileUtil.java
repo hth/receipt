@@ -100,7 +100,7 @@ public class FileUtil {
 
         String extension = FilenameUtils.getExtension(filename);
         if (extension.endsWith("jpeg")) {
-            return "jpg";
+            extension = "jpg";
         }
         return extension;
     }
