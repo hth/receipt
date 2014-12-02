@@ -7,6 +7,7 @@ import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
+import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
 import com.receiptofi.utils.FileUtil;
 
@@ -47,6 +48,7 @@ public class FilesUploadToS3 {
     private FileDBService fileDBService;
     private ImageSplitService imageSplitService;
     private AmazonS3Service amazonS3Service;
+    private FileSystemService fileSystemService;
 
     @Autowired
     public FilesUploadToS3(
@@ -56,7 +58,8 @@ public class FilesUploadToS3 {
             DocumentUpdateService documentUpdateService,
             FileDBService fileDBService,
             ImageSplitService imageSplitService,
-            AmazonS3Service amazonS3Service
+            AmazonS3Service amazonS3Service,
+            FileSystemService fileSystemService
     ) {
         this.bucketName = bucketName;
 
@@ -64,6 +67,7 @@ public class FilesUploadToS3 {
         this.fileDBService = fileDBService;
         this.imageSplitService = imageSplitService;
         this.amazonS3Service = amazonS3Service;
+        this.fileSystemService = fileSystemService;
     }
 
     /**
@@ -92,9 +96,17 @@ public class FilesUploadToS3 {
                     //Set orientation of the image too
                     //imageSplitService.bufferedImage(file);
 
-                    PutObjectRequest putObject = new PutObjectRequest(bucketName, getKey(fileSystem), file);
-                    putObject.setMetadata(getObjectMetadata(document, fileSystem));
+                    LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
+                            fileSystem.getId(),
+                            fileSystem.getOriginalFilename(),
+                            fileSystem.getBlobId(),
+                            FileUtil.fileSizeInMB(fileSystem.getFileLength()),
+                            FileUtil.fileSizeInMB(file.length()));
 
+                    fileSystem.setScaledFileLength(file.length());
+                    fileSystemService.save(fileSystem);
+
+                    PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, file);
                     amazonS3Service.getS3client().putObject(putObject);
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
@@ -142,18 +154,32 @@ public class FilesUploadToS3 {
     }
 
     /**
+     * Populates PutObjectRequest.
+     * @param document
+     * @param fileSystem
+     * @param file
+     * @return
+     */
+    private PutObjectRequest getPutObjectRequest(DocumentEntity document, FileSystemEntity fileSystem, File file) {
+        PutObjectRequest putObject = new PutObjectRequest(bucketName, getKey(fileSystem), file);
+        putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
+        return putObject;
+    }
+
+    /**
      * Adds metadata like Receipt User Id, Receipt Id and Receipt Date to file.
+     * @param fileLength
      * @param document
      * @param fileSystem
      * @return
      */
-    private ObjectMetadata getObjectMetadata(DocumentEntity document, FileSystemEntity fileSystem) {
+    private ObjectMetadata getObjectMetadata(long fileLength, DocumentEntity document, FileSystemEntity fileSystem) {
         ObjectMetadata metaData = new ObjectMetadata();
         metaData.setContentType(fileSystem.getContentType());
         metaData.addUserMetadata("X-RID", document.getReceiptUserId());
         metaData.addUserMetadata("X-DID", document.getReferenceDocumentId());
         metaData.addUserMetadata("X-RTXD", document.getReceiptDate());
-        metaData.addUserMetadata("X-CL", String.valueOf(fileSystem.getFileLength()));
+        metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
 
         return metaData;
     }

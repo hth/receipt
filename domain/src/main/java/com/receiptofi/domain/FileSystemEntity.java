@@ -59,6 +59,10 @@ public class FileSystemEntity extends BaseEntity {
     private long fileLength;
 
     @NotNull
+    @Field ("SLN")
+    private long scaledFileLength;
+
+    @NotNull
     @Field ("OFN")
     private String originalFilename;
 
@@ -140,6 +144,14 @@ public class FileSystemEntity extends BaseEntity {
 
     public long getFileLength() {
         return fileLength;
+    }
+
+    public long getScaledFileLength() {
+        return scaledFileLength;
+    }
+
+    public void setScaledFileLength(long scaledFileLength) {
+        this.scaledFileLength = scaledFileLength;
     }
 
     public String getOriginalFilename() {
