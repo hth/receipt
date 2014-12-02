@@ -19,7 +19,7 @@ import java.util.Collection;
         "PMD.LongVariable"
 })
 @Service
-public final class FileSystemService {
+public class FileSystemService {
 
     @Autowired private FileSystemManager fileSystemManager;
 

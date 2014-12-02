@@ -39,6 +39,7 @@ public class FileUtil {
     private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 
     private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
+    private static final int FILE_SIZE_IN_MB = 1024 * 1024;
 
     public static File createTempFile(String name, String ext) throws IOException {
         try {
@@ -159,5 +160,9 @@ public class FileUtil {
                 tikaIS.close();
             }
         }
+    }
+
+    public static double fileSizeInMB(long length) {
+        return length / FILE_SIZE_IN_MB;
     }
 }

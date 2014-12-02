@@ -20,6 +20,7 @@ import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
+import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
 
 import com.amazonaws.AmazonClientException;
@@ -56,6 +57,7 @@ public class FilesUploadToS3Test {
     @Mock private GridFSDBFile gridFSDBFile;
     @Mock private InputStream inputStream;
     @Mock private AmazonS3Service amazonS3Service;
+    @Mock private FileSystemService fileSystemService;
 
     private FilesUploadToS3 filesUploadToS3;
 
@@ -67,7 +69,8 @@ public class FilesUploadToS3Test {
                 documentUpdateService,
                 fileDBService,
                 imageSplitService,
-                amazonS3Service
+                amazonS3Service,
+                fileSystemService
         );
         when(gridFSDBFile.getInputStream()).thenReturn(inputStream);
         when(fileDBService.getFile(anyString())).thenReturn(gridFSDBFile);
