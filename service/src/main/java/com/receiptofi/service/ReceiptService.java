@@ -60,7 +60,7 @@ public class ReceiptService {
     @Autowired private FileSystemService fileSystemService;
 
     /**
-     * Find receipt for a receipt id for a specific user profile id
+     * Find receipt for a receipt id for a specific user profile id.
      *
      * @param receiptId
      * @return
@@ -83,7 +83,7 @@ public class ReceiptService {
     }
 
     /**
-     * Delete a Receipt and its associated data
+     * Delete a Receipt and its associated data.
      *
      * @param receiptId - Receipt id to delete
      */
@@ -122,7 +122,8 @@ public class ReceiptService {
     }
 
     /**
-     * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items. Then delete all the items.
+     * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items.
+     * Then delete all the items.
      *
      * @param receiptId
      * @param receiptUserId
@@ -177,7 +178,7 @@ public class ReceiptService {
 
 
     /**
-     * Used when data is read from Receipt and Item Entity during re-check process
+     * Used when data is read from Receipt and Item Entity during re-check process.
      *
      * @param items
      * @param document
@@ -209,7 +210,7 @@ public class ReceiptService {
     }
 
     /**
-     * Updates the ItemEntity with changed ExpenseType
+     * Updates the ItemEntity with changed ExpenseType.
      *
      * @param item
      */
@@ -218,7 +219,7 @@ public class ReceiptService {
     }
 
     /**
-     * Saves notes to receipt
+     * Saves notes to receipt.
      *
      * @param notes
      * @param receiptId
@@ -251,7 +252,7 @@ public class ReceiptService {
     }
 
     /**
-     * Saves recheck comment to receipt
+     * Saves recheck comment to receipt.
      *
      * @param comment
      * @param receiptId
@@ -284,7 +285,7 @@ public class ReceiptService {
     }
 
     /**
-     * Saves recheck comment to Document
+     * Saves recheck comment to Document.
      *
      * @param comment
      * @param documentId
@@ -325,7 +326,7 @@ public class ReceiptService {
     }
 
     /**
-     * Counts all the valid and invalid receipt that has referred the store
+     * Counts all the valid and invalid receipt that has referred the store.
      *
      * @param bizStoreEntity
      * @return
@@ -335,7 +336,7 @@ public class ReceiptService {
     }
 
     /**
-     * Counts all the valid and invalid receipt that has referred the biz name
+     * Counts all the valid and invalid receipt that has referred the biz name.
      *
      * @param bizNameEntity
      * @return
@@ -345,7 +346,7 @@ public class ReceiptService {
     }
 
     /**
-     * Used for updating expense report info in the receipt
+     * Used for updating expense report info in the receipt.
      *
      * @param receiptEntity
      * @return

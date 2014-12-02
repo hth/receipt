@@ -44,7 +44,7 @@ import java.util.Arrays;
         "PMD.LongVariable"
 })
 @RunWith (MockitoJUnitRunner.class)
-public class UploadFilesToS3Test {
+public class FilesUploadToS3Test {
 
     @Mock private AmazonS3 s3Client;
     @Mock private DocumentUpdateService documentUpdateService;
@@ -57,12 +57,12 @@ public class UploadFilesToS3Test {
     @Mock private InputStream inputStream;
     @Mock private AmazonS3Service amazonS3Service;
 
-    private UploadFilesToS3 uploadFilesToS3;
+    private FilesUploadToS3 filesUploadToS3;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        uploadFilesToS3 = new UploadFilesToS3(
+        filesUploadToS3 = new FilesUploadToS3(
                 "chk.test",
                 documentUpdateService,
                 fileDBService,
@@ -91,7 +91,7 @@ public class UploadFilesToS3Test {
     @Test
     public void testEmptyDocumentList() {
         when(documentUpdateService.getAllProcessedDocuments()).thenReturn(new ArrayList<DocumentEntity>());
-        uploadFilesToS3.upload();
+        filesUploadToS3.upload();
         assertEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(documentUpdateService, never()).cloudUploadSuccessful(any(String.class));
     }
@@ -105,7 +105,7 @@ public class UploadFilesToS3Test {
         doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
-        uploadFilesToS3.upload();
+        filesUploadToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
         verify(documentUpdateService, never()).cloudUploadSuccessful(anyString());
@@ -121,7 +121,7 @@ public class UploadFilesToS3Test {
         doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
-        uploadFilesToS3.upload();
+        filesUploadToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
         verify(documentUpdateService, never()).cloudUploadSuccessful(anyString());
@@ -135,7 +135,7 @@ public class UploadFilesToS3Test {
 
         doThrow(Exception.class).when(documentUpdateService).cloudUploadSuccessful(anyString());
 
-        uploadFilesToS3.upload();
+        filesUploadToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, atMost(2)).putObject(any(PutObjectRequest.class));
         verify(documentUpdateService, times(1)).cloudUploadSuccessful(anyString());
@@ -150,7 +150,7 @@ public class UploadFilesToS3Test {
         doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
-        uploadFilesToS3.upload();
+        filesUploadToS3.upload();
         assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(s3Client, times(2)).putObject(any(PutObjectRequest.class));
         verify(documentUpdateService, times(1)).cloudUploadSuccessful(documentEntity.getId());

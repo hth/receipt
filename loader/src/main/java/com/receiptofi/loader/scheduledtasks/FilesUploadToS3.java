@@ -38,8 +38,8 @@ import java.util.List;
  * Date: 11/28/14 11:35 AM
  */
 @Component
-public class UploadFilesToS3 {
-    private static final Logger LOG = LoggerFactory.getLogger(UploadFilesToS3.class);
+public class FilesUploadToS3 {
+    private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3.class);
 
     private final String bucketName;
 
@@ -49,7 +49,7 @@ public class UploadFilesToS3 {
     private AmazonS3Service amazonS3Service;
 
     @Autowired
-    public UploadFilesToS3(
+    public FilesUploadToS3(
             @Value ("${aws.s3.bucketName}")
             String bucketName,
 

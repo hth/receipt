@@ -39,6 +39,12 @@ import org.junit.experimental.categories.Category;
  * User: hitender
  * Date: 2/25/14 1:02 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Category (IntegrationTests.class)
 public class AccountServiceIntegrationTest extends RealMongoForTests {
     private String userProfileCollectionName = "USER_PROFILE";
