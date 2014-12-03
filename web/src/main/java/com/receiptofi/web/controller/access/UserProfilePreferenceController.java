@@ -77,17 +77,14 @@ public final class UserProfilePreferenceController {
 
             Model model
     ) throws IOException {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
         ModelAndView modelAndView = populateModel(nextPage, null, userProfilePreferenceForm);
 
-        //Gymnastic to show BindingResult errors if any
+        /** Gymnastic to show BindingResult errors if any. */
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", model.asMap().get("result"));
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
@@ -110,10 +107,9 @@ public final class UserProfilePreferenceController {
             ExpenseTypeForm expenseTypeForm,
 
             BindingResult result,
-            RedirectAttributes redirectAttrs) {
-
-        DateTime time = DateUtil.now();
-        //There is UI logic based on this. Set the right to be active when responding.
+            RedirectAttributes redirectAttrs
+    ) {
+        /** There is UI logic based on this. Set the right to be active when responding. */
         redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -121,11 +117,9 @@ public final class UserProfilePreferenceController {
 
         expenseTypeValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
+            LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
-
-            //Re-direct to prevent resubmit
+            /** Re-direct to prevent resubmit. */
             return "redirect:/access" + nextPage + "/i" + ".htm";
         }
 
@@ -136,10 +130,7 @@ public final class UserProfilePreferenceController {
             LOG.error(e.getLocalizedMessage());
             result.rejectValue("expName", StringUtils.EMPTY, e.getLocalizedMessage());
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-
-        //Re-direct to prevent resubmit
+        /** Re-direct to prevent resubmit. */
         return "redirect:/access" + nextPage + "/i" + ".htm";
     }
 
@@ -153,12 +144,18 @@ public final class UserProfilePreferenceController {
      */
     @RequestMapping (value = "/expenseTagVisible", method = RequestMethod.GET)
     public ModelAndView changeExpenseTypeVisibleStatus(
-            @RequestParam (value = "id") String expenseTagId,
-            @RequestParam (value = "status") String changeStatTo,
-            @ModelAttribute ("expenseTypeForm") ExpenseTypeForm expenseTypeForm,
-            @ModelAttribute ("userProfilePreferenceForm") UserProfilePreferenceForm userProfilePreferenceForm
+            @RequestParam (value = "id")
+            String expenseTagId,
+
+            @RequestParam (value = "status")
+            String changeStatTo,
+
+            @ModelAttribute ("expenseTypeForm")
+            ExpenseTypeForm expenseTypeForm,
+
+            @ModelAttribute ("userProfilePreferenceForm")
+            UserProfilePreferenceForm userProfilePreferenceForm
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //Secondary check. In case some one tries to be smart by passing parameters in URL :)
@@ -171,8 +168,6 @@ public final class UserProfilePreferenceController {
 
         //There is UI logic based on this. Set the right to be active when responding.
         modelAndView.addObject("showTab", "#tabs-2");
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
@@ -196,11 +191,9 @@ public final class UserProfilePreferenceController {
             @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm
     ) throws IOException {
-        DateTime time = DateUtil.now();
         populateUserProfilePreferenceForm(rid, userProfilePreferenceForm);
         ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
         modelAndView.addObject("id", rid);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
 
     }
@@ -227,8 +220,6 @@ public final class UserProfilePreferenceController {
             @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm
     ) throws IOException {
-        DateTime time = DateUtil.now();
-
         UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(
                 userProfilePreferenceForm.getUserProfile().getReceiptUserId()
         );
@@ -254,8 +245,6 @@ public final class UserProfilePreferenceController {
             LOG.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
             userProfilePreferenceForm.setErrorMessage("Failed updating user profile " + exce.getLocalizedMessage());
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
     }
 
@@ -264,9 +253,11 @@ public final class UserProfilePreferenceController {
      * @param userProfilePreference
      * @return
      */
-    private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, UserProfilePreferenceForm userProfilePreference) {
-        DateTime time = DateUtil.now();
-
+    private ModelAndView populateModel(
+            String nextPage,
+            ExpenseTypeForm expenseTypeForm,
+            UserProfilePreferenceForm userProfilePreference
+    ) {
         UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreference.getUserProfile());
         userProfilePreference.setUserAuthentication(
                 accountService.findByReceiptUserId(
@@ -298,8 +289,6 @@ public final class UserProfilePreferenceController {
 
         userProfilePreference.setExpenseTagCount(expenseTypeCount);
         userProfilePreference.setVisibleExpenseTags(count);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 }
