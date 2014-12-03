@@ -28,7 +28,6 @@ import java.util.Map;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@RunWith (MockitoJUnitRunner.class)
 public class DocumentStatProcessedTest {
 
     @Mock private DocumentDailyStatService documentDailyStatService;
