@@ -65,20 +65,20 @@ public class DocumentUpdateService {
     @Autowired private FileSystemService fileSystemService;
     @Autowired private MileageService mileageService;
 
-    public DocumentEntity loadActiveDocumentById(String id) {
-        return documentManager.findActiveOne(id);
+    public DocumentEntity loadActiveDocumentById(String documentId) {
+        return documentManager.findActiveOne(documentId);
     }
 
-    public DocumentEntity loadRejectedDocumentById(String id) {
-        return documentManager.findRejectedOne(id);
+    public DocumentEntity loadRejectedDocumentById(String documentId) {
+        return documentManager.findRejectedOne(documentId);
     }
 
     public DocumentEntity findOne(String documentId, String userProfileId) {
         return documentManager.findOne(documentId, userProfileId);
     }
 
-    public List<ItemEntityOCR> loadItemsOfReceipt(DocumentEntity receiptEntity) {
-        return itemOCRManager.getWhereReceipt(receiptEntity);
+    public List<ItemEntityOCR> loadItemsOfReceipt(DocumentEntity receipt) {
+        return itemOCRManager.getWhereReceipt(receipt);
     }
 
     public List<DocumentEntity> getAllProcessedDocuments() {
@@ -97,7 +97,7 @@ public class DocumentUpdateService {
      * @param document
      * @throws Exception
      */
-    public void turkProcessReceipt(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
+    public void turkProcessReceipt(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
@@ -180,7 +180,7 @@ public class DocumentUpdateService {
      * @param document
      * @throws Exception
      */
-    public void turkProcessReceiptReCheck(ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
+    public void turkProcessReceiptReCheck(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
         ReceiptEntity fetchedReceipt = null;
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
@@ -321,7 +321,7 @@ public class DocumentUpdateService {
      * @param documentOfType
      * @throws Exception
      */
-    public void turkDocumentReject(String documentId, DocumentOfTypeEnum documentOfType) {
+    public void turkDocumentReject(String technicianId, String documentId, DocumentOfTypeEnum documentOfType) {
         DocumentEntity document = loadActiveDocumentById(documentId);
         try {
             document.setDocumentStatus(REJECT);
@@ -376,7 +376,7 @@ public class DocumentUpdateService {
     /**
      * Delete all the associated data with Document like Item OCR, and Message Receipt Entity OCR including
      * deletion of with Document.
-     * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check.
+     * But cannot delete Document when the receipt has been processed once and now it pending for re-check.
      *
      * @param document
      */
@@ -393,7 +393,7 @@ public class DocumentUpdateService {
     /**
      * Delete all the associated data with Document like Item OCR, and Message Receipt Entity OCR including
      * deletion of with Document.
-     * But cannot delete ReceiptOCR when the receipt has been processed once and now it pending for re-check.
+     * But cannot delete Document when the receipt has been processed once and now it pending for re-check.
      *
      * @param document
      */
@@ -464,7 +464,7 @@ public class DocumentUpdateService {
         return receiptManager.hasRecordWithSimilarChecksum(checksum);
     }
 
-    public void turkMileage(MileageEntity mileageEntity, DocumentEntity document) {
+    public void turkMileage(String technicianId, MileageEntity mileageEntity, DocumentEntity document) {
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
