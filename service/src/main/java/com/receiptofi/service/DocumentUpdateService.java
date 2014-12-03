@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -97,7 +98,7 @@ public class DocumentUpdateService {
      * @param document
      * @throws Exception
      */
-    public void turkProcessReceipt(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
+    public void processDocumentForReceipt(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
@@ -118,6 +119,7 @@ public class DocumentUpdateService {
             document.setDocumentStatus(PROCESSED);
             document.setReferenceDocumentId(receipt.getId());
             document.inActive();
+            document.addProcessedBy(new Date(), technicianId);
             documentManager.save(document);
 
             updateMessageManager(document, PENDING, PROCESSED);
@@ -180,7 +182,7 @@ public class DocumentUpdateService {
      * @param document
      * @throws Exception
      */
-    public void turkProcessReceiptReCheck(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
+    public void processDocumentReceiptReCheck(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
         ReceiptEntity fetchedReceipt = null;
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
@@ -211,6 +213,7 @@ public class DocumentUpdateService {
             bizService.saveNewBusinessAndOrStore(document);
             document.setDocumentStatus(PROCESSED);
             document.inActive();
+            document.addProcessedBy(new Date(), technicianId);
 
             //Only recheck comments are updated by technician. Receipt notes are never modified
             if (StringUtils.isEmpty(document.getRecheckComment().getText())) {
@@ -321,7 +324,7 @@ public class DocumentUpdateService {
      * @param documentOfType
      * @throws Exception
      */
-    public void turkDocumentReject(String technicianId, String documentId, DocumentOfTypeEnum documentOfType) {
+    public void processDocumentForReject(String technicianId, String documentId, DocumentOfTypeEnum documentOfType) {
         DocumentEntity document = loadActiveDocumentById(documentId);
         try {
             document.setDocumentStatus(REJECT);
@@ -329,6 +332,7 @@ public class DocumentUpdateService {
             document.setBizName(null);
             document.setBizStore(null);
             document.inActive();
+            document.addProcessedBy(new Date(), technicianId);
             document.markAsDeleted();
             documentManager.save(document);
 
@@ -464,7 +468,13 @@ public class DocumentUpdateService {
         return receiptManager.hasRecordWithSimilarChecksum(checksum);
     }
 
-    public void turkMileage(String technicianId, MileageEntity mileageEntity, DocumentEntity document) {
+    /**
+     * Processes Mileage document.
+     * @param technicianId
+     * @param mileageEntity
+     * @param document
+     */
+    public void processDocumentForMileage(String technicianId, MileageEntity mileageEntity, DocumentEntity document) {
         try {
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
@@ -479,6 +489,7 @@ public class DocumentUpdateService {
             document.setDocumentStatus(PROCESSED);
             document.setReferenceDocumentId(mileageEntity.getId());
             document.inActive();
+            document.addProcessedBy(new Date(), technicianId);
             documentManager.save(document);
 
             updateMessageManager(document, PENDING, PROCESSED);
