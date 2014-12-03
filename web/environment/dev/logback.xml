@@ -34,7 +34,7 @@
         </filter>
 
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %C{46}.%M Message=%msg%n%ex{full}</pattern>
+            <pattern>%d{HH:mm:ss} %-4relative [%thread] %-5level %C{46}.%M Message=%msg%n%ex{full}</pattern>
         </encoder>
     </appender>
 
