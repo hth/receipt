@@ -6,7 +6,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CloudFileEntity;
-import com.receiptofi.domain.ReceiptEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
