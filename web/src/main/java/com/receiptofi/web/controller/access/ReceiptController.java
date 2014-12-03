@@ -13,13 +13,9 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.ReceiptForm;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.rest.Header;
-import com.receiptofi.web.util.PerformanceProfiling;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,10 +65,14 @@ public final class ReceiptController extends BaseController {
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
-    public ModelAndView loadForm(@PathVariable String receiptId, @ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
-        DateTime time = DateUtil.now();
-        LOG.info("Loading Receipt Item with id={}", receiptId);
+    public ModelAndView loadForm(
+            @PathVariable
+            String receiptId,
 
+            @ModelAttribute ("receiptForm")
+            ReceiptForm receiptForm
+    ) {
+        LOG.info("Loading Receipt Item with id={}", receiptId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
@@ -87,36 +87,28 @@ public final class ReceiptController extends BaseController {
             receiptForm.setExpenseTags(expenseTypes);
             LOG.info("receiptForm={}", receiptForm);
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return new ModelAndView(nextPage);
     }
 
     @SuppressWarnings ("PMD.EmptyIfStmt")
     @RequestMapping (method = RequestMethod.POST, params = "delete")
     public String delete(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
-        DateTime time = DateUtil.now();
         LOG.info("Delete receipt rid={}", receiptForm.getReceipt().getId());
-
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        boolean task = false;
         try {
-            task = receiptService.deleteReceipt(receiptForm.getReceipt().getId(), receiptUser.getRid());
-            if (!task) {
-                //TODO(hth) in case of failure to delete send message to USER
-            }
-        } catch (Exception exce) {
-            LOG.error("Error occurred during receipt delete: Receipt={}, reason={}", receiptForm.getReceipt().getId(), exce.getLocalizedMessage());
+            receiptService.deleteReceipt(receiptForm.getReceipt().getId(), receiptUser.getRid());
+            //TODO(hth) in case of failure to delete send message to USER
+        } catch (Exception e) {
+            LOG.error("Error occurred during receipt delete: Receipt={}, reason={}",
+                    receiptForm.getReceipt().getId(),
+                    e.getLocalizedMessage(),
+                    e);
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), task);
         return redirectAccessLandingController;
     }
 
     @RequestMapping (method = RequestMethod.POST, params = "re-check")
     public ModelAndView recheck(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
-        DateTime time = DateUtil.now();
         LOG.info("Initiating re-check on receipt rid={}", receiptForm.getReceipt().getId());
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -124,20 +116,16 @@ public final class ReceiptController extends BaseController {
         try {
             receiptService.reopen(receiptForm.getReceipt().getId(), receiptUser.getRid());
         } catch (Exception exce) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-            LOG.error(exce.getLocalizedMessage() + ", Receipt: " + receiptForm.getReceipt().getId());
+            LOG.error("Receipt={} reason={}", receiptForm.getReceipt().getId(), exce.getLocalizedMessage(), exce);
 
             receiptForm.setErrorMessage(exce.getLocalizedMessage());
             return loadForm(receiptForm.getReceipt().getId(), receiptForm);
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return new ModelAndView(redirectAccessLandingController);
     }
 
     @RequestMapping (method = RequestMethod.POST, params = "update-expense-type")
     public String expenseUpdate(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
-        DateTime time = DateUtil.now();
         LOG.info("Initiating Expense Type update on receipt rid={}", receiptForm.getReceipt().getId());
 
         for (ItemEntity item : receiptForm.getItems()) {
@@ -146,12 +134,14 @@ public final class ReceiptController extends BaseController {
             try {
                 receiptService.updateItemWithExpenseType(item);
             } catch (Exception e) {
-                LOG.error("Error updating ExpenseType={}, for ItemEntity={}, reason={}", item.getExpenseTag().getId(), item.getId(), e.getLocalizedMessage(), e);
+                LOG.error("Error updating ExpenseType={}, for ItemEntity={}, reason={}",
+                        item.getExpenseTag().getId(),
+                        item.getId(),
+                        e.getLocalizedMessage(),
+                        e);
                 //TODO(hth) send error message back saying update unsuccessful.
             }
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return redirectAccessLandingController;
     }
 
@@ -165,8 +155,16 @@ public final class ReceiptController extends BaseController {
      */
     @RequestMapping (value = "/d/{receiptId}/user/{profileId}/auth/{authKey}.xml", method = RequestMethod.GET)
     @ResponseBody
-    public Header deleteRest(@PathVariable String receiptId, @PathVariable String profileId, @PathVariable String authKey) {
-        DateTime time = DateUtil.now();
+    public Header deleteRest(
+            @PathVariable
+            String receiptId,
+
+            @PathVariable
+            String profileId,
+
+            @PathVariable
+            String authKey
+    ) {
         LOG.info("Delete receipt rid={}", receiptId);
 
         UserProfileEntity userProfile = authenticate(profileId, authKey);
@@ -177,23 +175,19 @@ public final class ReceiptController extends BaseController {
                 if (task) {
                     header.setStatus(Header.RESULT.SUCCESS);
                     header.setMessage("Deleted receipt successfully");
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
                     return header;
                 } else {
                     header.setStatus(Header.RESULT.FAILURE);
                     header.setMessage("Delete receipt un-successful");
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                     return header;
                 }
             } catch (Exception exce) {
                 header.setStatus(Header.RESULT.FAILURE);
                 header.setMessage("Delete receipt un-successful");
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 return header;
             }
         } else {
             header = getHeaderForProfileOrAuthFailure();
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return header;
         }
     }
@@ -204,7 +198,6 @@ public final class ReceiptController extends BaseController {
      */
     @RequestMapping (value = "/biz/{id}", method = RequestMethod.GET)
     public ModelAndView receiptByBizName(@PathVariable String id) throws IOException {
-        DateTime time = DateUtil.now();
         LOG.info("Loading Receipts by Biz Name id={}", id);
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -221,8 +214,6 @@ public final class ReceiptController extends BaseController {
         }
 
         modelAndView.addObject("receiptLandingViews", receiptLandingViews);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 }
