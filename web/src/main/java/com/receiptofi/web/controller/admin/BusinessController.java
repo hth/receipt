@@ -6,15 +6,11 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.BizForm;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.BizSearchValidator;
 import com.receiptofi.web.validator.BizValidator;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,9 +96,7 @@ public final class BusinessController {
      */
     @RequestMapping (value = "/business", method = RequestMethod.POST, params = "reset")
     public String reset(RedirectAttributes redirectAttrs) {
-        DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", BizForm.newInstance());
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         //Re-direct to prevent resubmit
         return "redirect:" + NEXT_PAGE + ".htm";
     }
@@ -121,7 +115,6 @@ public final class BusinessController {
 
             RedirectAttributes redirectAttrs
     ) {
-        DateTime time = DateUtil.now();
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStoreEntity;
@@ -135,8 +128,6 @@ public final class BusinessController {
             } catch (Exception e) {
                 LOG.error("Failed to edit address/phone: {} {} reason={}", bizForm.getAddress(), bizForm.getPhone(), e.getLocalizedMessage(), e);
                 bizForm.setBizError("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
-
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 //Re-direct to prevent resubmit
                 return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
             }
@@ -152,8 +143,6 @@ public final class BusinessController {
             } catch (Exception e) {
                 LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
-
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
                 //Re-direct to prevent resubmit
                 return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
             }
@@ -161,8 +150,6 @@ public final class BusinessController {
 
         Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
         bizForm.setLast10BizStore(bizStoreEntities);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         //Re-direct to prevent resubmit
         return "redirect:" + NEXT_PAGE + ".htm";
     }
@@ -177,8 +164,6 @@ public final class BusinessController {
      */
     @RequestMapping (value = "/business", method = RequestMethod.POST, params = "delete_store")
     public String deleteBizStore(@ModelAttribute ("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
-
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
@@ -209,8 +194,6 @@ public final class BusinessController {
 
         Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
         bizForm.setLast10BizStore(bizStoreEntities);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         //Re-direct to prevent resubmit
         return "redirect:" + NEXT_PAGE + ".htm";
     }
@@ -221,17 +204,19 @@ public final class BusinessController {
      * @return
      */
     @RequestMapping (value = "/business", method = RequestMethod.POST, params = "add")
-    public String addBiz(@ModelAttribute ("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
+    public String addBiz(
+            @ModelAttribute ("bizForm")
+            BizForm bizForm,
 
-        DateTime time = DateUtil.now();
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         bizValidator.validate(bizForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-            //Re-direct to prevent resubmit
+            /** Re-direct to prevent resubmit. */
             return "redirect:" + NEXT_PAGE + ".htm";
         } else {
             BizStoreEntity bizStoreEntity = BizStoreEntity.newInstance();
@@ -240,11 +225,19 @@ public final class BusinessController {
             try {
                 externalService.decodeAddress(bizStoreEntity);
             } catch (Exception e) {
-                LOG.error("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
-                bizForm.setBizError("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
+                LOG.error("Failed to edit address/phone={} {} reason={}",
+                        bizForm.getAddress(),
+                        bizForm.getPhone(),
+                        e.getLocalizedMessage(),
+                        e);
 
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-                //Re-direct to prevent resubmit
+                bizForm.setBizError("Failed to edit address/phone: " +
+                        bizForm.getAddress() +
+                        ", " +
+                        bizForm.getPhone() +
+                        ", :" +
+                        e.getLocalizedMessage());
+                /** Re-direct to prevent resubmit. */
                 return "redirect:" + NEXT_PAGE + ".htm";
             }
 
@@ -258,11 +251,9 @@ public final class BusinessController {
                 bizService.saveNewBusinessAndOrStore(receiptEntity);
                 bizForm.setBizSuccess("Business '" + receiptEntity.getBizName().getBusinessName() + "' added successfully");
             } catch (Exception e) {
-                LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
+                LOG.error("Failed to edit name={} reason={}", bizForm.getBusinessName(), e.getLocalizedMessage(), e);
                 bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
-
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
-                //Re-direct to prevent resubmit
+                /** Re-direct to prevent resubmit . */
                 return "redirect:" + NEXT_PAGE + ".htm";
             }
 
@@ -270,48 +261,46 @@ public final class BusinessController {
                 redirectAttrs.addFlashAttribute("bizStore", receiptEntity.getBizStore());
                 bizForm.setLast10BizStore(bizService.getAllStoresForBusinessName(receiptEntity));
             } else {
-                bizForm.setBizError("Address uniquely identified with another Biz Name: " + receiptEntity.getBizStore().getBizName().getBusinessName());
+                bizForm.setBizError("Address uniquely identified with another Biz Name: " +
+                        receiptEntity.getBizStore().getBizName().getBusinessName());
             }
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-            //Re-direct to prevent resubmit
+            /** Re-direct to prevent resubmit. */
             return "redirect:" + NEXT_PAGE + ".htm";
         }
     }
 
     /**
-     * Search for Biz with either Name, Address, Phone or all or none
+     * Search for Biz with either Name, Address, Phone or all or none.
      *
      * @param bizForm
      * @param result
      * @return
      */
     @RequestMapping (value = "/business", method = RequestMethod.POST, params = "search")
-    public String searchBiz(@ModelAttribute ("bizForm") BizForm bizForm, BindingResult result, RedirectAttributes redirectAttrs) {
+    public String searchBiz(
+            @ModelAttribute ("bizForm")
+            BizForm bizForm,
 
-        DateTime time = DateUtil.now();
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         bizSearchValidator.validate(bizForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             //Re-direct to prevent resubmit
             return "redirect:" + NEXT_PAGE + ".htm";
         } else {
-
             Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
             bizForm.setLast10BizStore(bizStoreEntities);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             //Re-direct to prevent resubmit
             return "redirect:" + NEXT_PAGE + ".htm";
         }
     }
 
     /**
-     * Search for matching biz criteria
+     * Search for matching biz criteria.
      *
      * @param bizForm
      * @return

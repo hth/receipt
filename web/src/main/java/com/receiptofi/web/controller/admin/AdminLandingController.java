@@ -5,11 +5,7 @@ package com.receiptofi.web.controller.admin;
 
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AdminLandingService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.UserSearchForm;
-import com.receiptofi.web.util.PerformanceProfiling;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,8 +66,12 @@ public final class AdminLandingController {
      * @return
      */
     @RequestMapping (value = "/landing", method = RequestMethod.POST)
-    public String loadUser(@ModelAttribute ("userLoginForm") UserSearchForm userSearchForm, RedirectAttributes redirectAttrs) {
-        DateTime time = DateUtil.now();
+    public String loadUser(
+            @ModelAttribute ("userLoginForm")
+            UserSearchForm userSearchForm,
+
+            RedirectAttributes redirectAttrs
+    ) {
         List<UserProfileEntity> userProfileEntities = adminLandingService.findAllUsers(userSearchForm.getUserName());
 
         List<UserSearchForm> userSearchForms = new ArrayList<>();
@@ -82,10 +82,7 @@ public final class AdminLandingController {
 
         redirectAttrs.addFlashAttribute("users", userSearchForms);
         redirectAttrs.addFlashAttribute("userSearchForm", userSearchForm);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
-
-        //Re-direct to prevent resubmit
+        /** Re-direct to prevent resubmit. */
         return "redirect:" + nextPage + ".htm";
     }
 }
