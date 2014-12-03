@@ -12,8 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 4/13/14 5:19 PM
@@ -69,10 +67,5 @@ public final class GenerateUserIdManagerImpl implements GenerateUserIdManager {
     @Override
     public void deleteHard(GenerateUserIds object) {
         throw new UnsupportedOperationException("This operation is not supported");
-    }
-
-    @Override
-    public long collectionSize() {
-        throw new UnsupportedOperationException("Method not implemented");
     }
 }

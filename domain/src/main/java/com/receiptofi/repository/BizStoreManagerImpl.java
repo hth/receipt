@@ -186,9 +186,4 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 BizStoreEntity.class,
                 TABLE);
     }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
-    }
 }

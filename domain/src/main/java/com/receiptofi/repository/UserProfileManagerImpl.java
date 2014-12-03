@@ -155,9 +155,4 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 TABLE
         );
     }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
-    }
 }

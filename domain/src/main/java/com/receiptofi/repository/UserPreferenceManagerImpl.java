@@ -18,8 +18,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author hitender
  * @since Dec 24, 2012 3:19:22 PM
@@ -68,10 +66,5 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     @Override
     public void deleteHard(UserPreferenceEntity object) {
         mongoTemplate.remove(object, TABLE);
-    }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
     }
 }

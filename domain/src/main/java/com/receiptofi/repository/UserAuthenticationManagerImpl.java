@@ -19,8 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author hitender
  * @since Dec 16, 2012 1:20:53 PM
@@ -68,10 +66,5 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     @Override
     public void deleteHard(UserAuthenticationEntity object) {
         mongoTemplate.remove(object, TABLE);
-    }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
     }
 }

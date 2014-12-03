@@ -4,7 +4,6 @@
 package com.receiptofi.repository;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author hitender
@@ -29,9 +28,4 @@ public interface RepositoryManager<T> extends Serializable {
      * Delete a record for a particular object.
      */
     void deleteHard(T object);
-
-    /**
-     * Collection size
-     */
-    long collectionSize();
 }

@@ -105,9 +105,4 @@ public final class ExpenseTagManagerImpl implements ExpenseTagManager {
         WriteResult writeResult = mongoTemplate.updateFirst(query, entityUpdate(update), ExpenseTagEntity.class);
         LOG.info("changeVisibility WriteResult: ", writeResult);
     }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
-    }
 }

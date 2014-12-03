@@ -66,11 +66,6 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public long collectionSize() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public List<MileageEntity> getMileageForThisMonth(String receiptUserId, DateTime startMonth, DateTime endMonth) {
         Criteria criteria = where("RID").is(receiptUserId).and("C").gte(startMonth.toDate()).lt(endMonth.toDate());
 

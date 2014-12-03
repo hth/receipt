@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * User: hitender
@@ -96,10 +95,5 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public void deleteHard(RegisteredDeviceEntity object) {
         mongoTemplate.remove(object);
-    }
-
-    @Override
-    public long collectionSize() {
-        throw new UnsupportedOperationException("Method not implemented");
     }
 }

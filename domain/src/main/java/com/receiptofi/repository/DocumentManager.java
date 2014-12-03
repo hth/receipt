@@ -78,4 +78,9 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     List<DocumentEntity> getAllProcessedDocuments();
 
     void cloudUploadSuccessful(String documentId);
+
+    /**
+     * Collection size.
+     */
+    long collectionSize();
 }

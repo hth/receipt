@@ -104,4 +104,9 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     List<ItemEntity> getItemEntitiesForSpecificExpenseTypeForTheYear(ExpenseTagEntity expenseType);
 
     List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String receiptUserId);
+
+    /**
+     * Collection size.
+     */
+    long collectionSize();
 }

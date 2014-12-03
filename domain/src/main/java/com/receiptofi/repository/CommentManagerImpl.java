@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 6/11/13
@@ -52,10 +50,5 @@ public final class CommentManagerImpl implements CommentManager {
     @Override
     public void deleteHard(CommentEntity object) {
         mongoTemplate.remove(object);
-    }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
     }
 }
