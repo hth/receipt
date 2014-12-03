@@ -2,12 +2,9 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.EvalFeedbackService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.EvalFeedbackForm;
 import com.receiptofi.web.util.TextInputScrubber;
 import com.receiptofi.web.validator.EvalFeedbackValidator;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,12 +51,10 @@ public final class EvalFeedbackController {
 
     @RequestMapping (method = RequestMethod.GET, value = "/feedback")
     public ModelAndView loadForm(@ModelAttribute ("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         LOG.info("Feedback loadForm: " + receiptUser.getRid());
-        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
-        return modelAndView;
+        return new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "/feedback")
@@ -74,8 +69,7 @@ public final class EvalFeedbackController {
         evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
             LOG.error("error in result check");
-            ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
-            return modelAndView;
+            return new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
         }
 
         evalFeedbackService.addFeedback(

@@ -75,8 +75,7 @@ public final class MileageOdometerController {
             }
         }
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        return modelAndView;
+        return new ModelAndView(nextPage);
     }
 
     @RequestMapping (method = RequestMethod.POST, params = "delete")
