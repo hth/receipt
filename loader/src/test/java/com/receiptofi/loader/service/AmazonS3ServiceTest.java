@@ -1,8 +1,8 @@
 package com.receiptofi.loader.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +26,11 @@ public class AmazonS3ServiceTest {
 
     @Test
     public void testGetS3client() {
-        assertNotNull(amazonS3Service.getS3client());
+        assertNotNull("AmazonS3 is initialized", amazonS3Service.getS3client());
+    }
+
+    @Test
+    public void testIfBucketExists() {
         assertTrue("bucket exists", amazonS3Service.getS3client().doesBucketExist("chk.test"));
     }
 }
