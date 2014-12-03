@@ -384,7 +384,7 @@ public class LandingController extends BaseController {
     }
 
     /**
-     * Provides user information of home page through a REST URL
+     * Provides user information of home page through a REST URL.
      *
      * @param profileId
      * @param authKey
@@ -396,14 +396,19 @@ public class LandingController extends BaseController {
             produces = "application/xml"
     )
     @ResponseBody
-    public LandingView loadRest(@PathVariable String profileId, @PathVariable String authKey) {
-        DateTime time = DateUtil.now();
-        LOG.info("Web Service : " + profileId);
-        return landingView(profileId, authKey, time);
+    public LandingView loadRest(
+            @PathVariable
+            String profileId,
+
+            @PathVariable
+            String authKey
+    ) {
+        LOG.info("Web Service={}", profileId);
+        return landingView(profileId, authKey);
     }
 
     /**
-     * Provides user information of home page through a JSON URL
+     * Provides user information of home page through a JSON URL.
      *
      * @param profileId
      * @param authKey
@@ -415,10 +420,15 @@ public class LandingController extends BaseController {
             produces = "application/json"
     )
     @ResponseBody
-    public String loadJSON(@PathVariable String profileId, @PathVariable String authKey) {
-        DateTime time = DateUtil.now();
-        LOG.info("JSON : " + profileId);
-        Base landingView = landingView(profileId, authKey, time);
+    public String loadJSON(
+            @PathVariable
+            String profileId,
+
+            @PathVariable
+            String authKey
+    ) {
+        LOG.info("JSON={}", profileId);
+        Base landingView = landingView(profileId, authKey);
 
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
@@ -434,14 +444,13 @@ public class LandingController extends BaseController {
     }
 
     /**
-     * Populate Landing View object
+     * Populate Landing View object.
      *
      * @param profileId
      * @param authKey
-     * @param time
      * @return
      */
-    private LandingView landingView(String profileId, String authKey, DateTime time) {
+    private LandingView landingView(String profileId, String authKey) {
         UserProfileEntity userProfile = authenticate(profileId, authKey);
         if (null == userProfile) {
             Header header = getHeaderForProfileOrAuthFailure();

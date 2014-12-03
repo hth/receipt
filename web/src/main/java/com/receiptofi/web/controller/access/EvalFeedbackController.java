@@ -54,12 +54,10 @@ public final class EvalFeedbackController {
 
     @RequestMapping (method = RequestMethod.GET, value = "/feedback")
     public ModelAndView loadForm(@ModelAttribute ("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         LOG.info("Feedback loadForm: " + receiptUser.getRid());
-        ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
-        return modelAndView;
+        return new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "/feedback")
@@ -74,8 +72,7 @@ public final class EvalFeedbackController {
         evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
             LOG.error("error in result check");
-            ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
-            return modelAndView;
+            return new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
         }
 
         evalFeedbackService.addFeedback(
