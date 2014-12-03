@@ -82,8 +82,9 @@ public class FilesUploadToS3 {
     @Scheduled (cron = "0/300 * * * * ?")
     public void upload() {
         List<DocumentEntity> documents = documentUpdateService.getAllProcessedDocuments();
-        if(!documents.isEmpty()) {
-            LOG.info("Documents to upload to cloud, count={}", documents.size());
+        LOG.info("Documents to upload to cloud, count={}", documents.size());
+        if (!documents.isEmpty()) {
+            //LOG.info("Documents to upload to cloud, count={}", documents.size());
         }
 
         int count = 0, failure = 0;
