@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * User: hitender
@@ -78,10 +77,5 @@ public final class FileSystemManagerImpl implements FileSystemManager {
         for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
             deleteSoft(fileSystemEntity);
         }
-    }
-
-    @Override
-    public long collectionSize() {
-        throw new UnsupportedOperationException("Method not implemented");
     }
 }

@@ -58,11 +58,6 @@ public class DocumentDailyStatManagerImpl implements DocumentDailyStatManager {
     }
 
     @Override
-    public long collectionSize() {
-        return 0;
-    }
-
-    @Override
     public List<DocumentDailyStatEntity> getStatsForDays(int days) {
         return mongoTemplate.find(
                 query(

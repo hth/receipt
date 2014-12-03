@@ -15,8 +15,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 3/30/14 7:38 PM
@@ -61,10 +59,5 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     @Override
     public void deleteHard(RememberMeTokenEntity rememberMeTokenEntity) {
         mongoTemplate.remove(rememberMeTokenEntity);
-    }
-
-    @Override
-    public long collectionSize() {
-        throw new UnsupportedOperationException("Method not implemented");
     }
 }

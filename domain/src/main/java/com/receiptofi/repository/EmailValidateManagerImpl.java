@@ -20,8 +20,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 5/17/14 6:29 PM
@@ -55,11 +53,6 @@ public final class EmailValidateManagerImpl implements EmailValidateManager {
     @Override
     public void deleteHard(EmailValidateEntity object) {
         //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public long collectionSize() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

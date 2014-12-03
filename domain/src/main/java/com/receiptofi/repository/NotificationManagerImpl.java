@@ -61,11 +61,6 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
-    }
-
-    @Override
     public List<NotificationEntity> getNotifications(String receiptUserId, int start, int limit) {
         Query query = query(
                 where("RID").is(receiptUserId).and("ND").is(true))

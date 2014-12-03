@@ -23,8 +23,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 6/9/13
@@ -77,11 +75,6 @@ public final class InviteManagerImpl implements InviteManager {
     @Override
     public void deleteHard(InviteEntity object) {
         mongoTemplate.remove(object);
-    }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
     }
 
     @Override

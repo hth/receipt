@@ -169,4 +169,9 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param filename
      */
     void removeExpensofiFilenameReference(String filename);
+
+    /**
+     * Collection size.
+     */
+    long collectionSize();
 }

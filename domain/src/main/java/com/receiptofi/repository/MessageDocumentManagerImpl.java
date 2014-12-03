@@ -184,11 +184,6 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
-    }
-
-    @Override
     public void resetDocumentsToInitialState(String receiptUserId) {
         Query query = query(
                 where("RID").is(receiptUserId)

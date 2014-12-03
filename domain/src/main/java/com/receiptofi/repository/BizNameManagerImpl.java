@@ -82,9 +82,4 @@ public final class BizNameManagerImpl implements BizNameManager {
         }
         return set;
     }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
-    }
 }

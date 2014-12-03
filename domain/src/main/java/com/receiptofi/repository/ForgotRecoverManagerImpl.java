@@ -17,8 +17,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 6/4/13
@@ -73,10 +71,5 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     @Override
     public void deleteHard(ForgotRecoverEntity object) {
         mongoTemplate.remove(object);
-    }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
     }
 }

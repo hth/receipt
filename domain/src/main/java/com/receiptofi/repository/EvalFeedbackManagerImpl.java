@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 7/20/13
@@ -51,10 +49,5 @@ public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
     @Override
     public void deleteHard(EvalFeedbackEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
     }
 }

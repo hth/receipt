@@ -16,8 +16,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 4/23/14 6:43 AM
@@ -65,11 +63,6 @@ public class UserAccountManagerImpl implements UserAccountManager {
     @Override
     public void deleteHard(UserAccountEntity object) {
         mongoTemplate.remove(object, TABLE);
-    }
-
-    @Override
-    public long collectionSize() {
-        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override

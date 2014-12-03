@@ -23,4 +23,9 @@ public interface ItemOCRManager extends RepositoryManager<ItemEntityOCR> {
     List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt);
 
     void deleteWhereReceipt(DocumentEntity receipt);
+
+    /**
+     * Collection size.
+     */
+    long collectionSize();
 }

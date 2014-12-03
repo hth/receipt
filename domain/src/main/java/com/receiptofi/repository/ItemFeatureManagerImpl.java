@@ -12,8 +12,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author hitender
  * @since Dec 26, 2012 9:21:35 PM
@@ -50,10 +48,5 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
     @Override
     public void deleteHard(ItemFeatureEntity object) {
         mongoTemplate.remove(object, TABLE);
-    }
-
-    @Override
-    public long collectionSize() {
-        return mongoTemplate.getCollection(TABLE).count();
     }
 }

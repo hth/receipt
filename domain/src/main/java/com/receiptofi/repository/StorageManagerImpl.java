@@ -4,8 +4,6 @@
 package com.receiptofi.repository;
 
 import com.mongodb.DB;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
@@ -22,7 +20,6 @@ import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author hitender
@@ -140,10 +137,5 @@ public final class StorageManagerImpl implements StorageManager {
     @Override
     public GridFSDBFile getByFilename(String filename) {
         return gridFs.findOne(filename);
-    }
-
-    @Override
-    public long collectionSize() {
-        return getSize();
     }
 }
