@@ -4,10 +4,6 @@ import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.service.EmpLandingService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +40,6 @@ public final class EmpLandingController {
     @PreAuthorize ("hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
     public ModelAndView empLanding() {
-        DateTime time = DateUtil.now();
         LOG.info("employee landed");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -75,8 +70,6 @@ public final class EmpLandingController {
                 receiptUser.getUsername(),
                 receiptUser.getRid());
         modelAndView.addObject("recheck", recheck);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 }
