@@ -4,7 +4,6 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.EvalFeedbackService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.EvalFeedbackForm;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.util.TextInputScrubber;
 import com.receiptofi.web.validator.EvalFeedbackValidator;
 
@@ -43,11 +42,11 @@ import javax.servlet.http.HttpServletRequest;
 public final class EvalFeedbackController {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackController.class);
 
-    /* Refers to feedback.jsp and next one to feedbackConfirm.jsp */
+    /* Refers to feedback.jsp and next one to feedbackConfirm.jsp. */
     private static final String NEXT_PAGE_IS_CALLED_FEEDBACK = "/eval/feedback";
     private static final String NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM = "/eval/feedbackConfirm";
 
-    /* For confirming which page to show */
+    /* For confirming which page to show. */
     private static final String SUCCESS_EVAL = "success_eval_feedback";
 
     @Autowired EvalFeedbackService evalFeedbackService;
@@ -60,29 +59,33 @@ public final class EvalFeedbackController {
 
         LOG.info("Feedback loadForm: " + receiptUser.getRid());
         ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "/feedback")
-    public ModelAndView postForm(@ModelAttribute ("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm,
-                                 HttpServletRequest httpServletRequest, BindingResult result) {
+    public ModelAndView postForm(
+            @ModelAttribute ("evalFeedbackForm")
+            EvalFeedbackForm evalFeedbackForm,
 
-        DateTime time = DateUtil.now();
+            HttpServletRequest httpServletRequest,
+            BindingResult result
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
+            LOG.error("error in result check");
             ModelAndView modelAndView = new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result check");
             return modelAndView;
         }
 
-        evalFeedbackService.addFeedback(TextInputScrubber.scrub(evalFeedbackForm.getComment()), evalFeedbackForm.getRating(), evalFeedbackForm.getFileData(), receiptUser.getRid());
+        evalFeedbackService.addFeedback(
+                TextInputScrubber.scrub(evalFeedbackForm.getComment()),
+                evalFeedbackForm.getRating(),
+                evalFeedbackForm.getFileData(),
+                receiptUser.getRid());
         LOG.info("Feedback saved successfully");
 
         httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, true);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return new ModelAndView("redirect:/access" + NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM + ".htm");
     }
 

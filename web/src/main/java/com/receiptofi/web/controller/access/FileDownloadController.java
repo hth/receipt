@@ -10,16 +10,12 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Formatter;
-import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +76,6 @@ public final class FileDownloadController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
@@ -104,18 +99,14 @@ public final class FileDownloadController {
                 response.setHeader("Content-Disposition", "inline; filename=" + imageId + "." + FilenameUtils.getExtension(gridFSDBFile.getFilename()));
                 gridFSDBFile.writeTo(response.getOutputStream());
             }
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         } catch (IOException e) {
             LOG.error("Image retrieval error occurred for imageId={} rid={} reason={}",
                     imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
         }
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "/expensofi/{receiptId}")
     public void getReport(@PathVariable String receiptId, HttpServletResponse response) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
@@ -124,12 +115,9 @@ public final class FileDownloadController {
 
             InputStream inputStream = new FileInputStream(fileSystemProcess.getExcelFile(receiptEntity.getExpenseReportInFS()));
             IOUtils.copy(inputStream, response.getOutputStream());
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
         } catch (IOException e) {
             LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}",
                     receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error fetching receipt");
         }
     }
 

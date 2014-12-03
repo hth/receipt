@@ -1,10 +1,6 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +36,7 @@ public final class CompleteProfileController {
      */
     @RequestMapping (method = RequestMethod.GET)
     public String completeProfile() {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return "completeprofile";
     }
 

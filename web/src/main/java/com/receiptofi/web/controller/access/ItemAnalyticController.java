@@ -8,9 +8,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemAnalyticService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.ItemAnalyticForm;
-import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.joda.time.DateTime;
 
@@ -65,7 +63,6 @@ public final class ItemAnalyticController {
             @ModelAttribute ("itemAnalyticForm")
             ItemAnalyticForm itemAnalyticForm
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ItemEntity item = itemAnalyticService.findItemById(itemId, receiptUser.getRid());
@@ -110,8 +107,6 @@ public final class ItemAnalyticController {
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("itemAnalyticForm", itemAnalyticForm);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 }
