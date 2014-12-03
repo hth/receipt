@@ -3,8 +3,6 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ReceiptService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.joda.time.DateTime;
 
@@ -42,8 +40,6 @@ public final class ThisDayController {
 
     @RequestMapping (method = RequestMethod.GET)
     public ModelAndView getThisDay(@RequestParam ("date") String date) {
-        DateTime time = DateUtil.now();
-
         Long longDate = Long.parseLong(date);
         DateTime dateTime = new DateTime(longDate);
         List<ReceiptEntity> receipts = receiptService.findReceipt(
@@ -53,8 +49,6 @@ public final class ThisDayController {
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("receipts", receipts);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 }
