@@ -44,7 +44,6 @@ import java.util.Arrays;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@RunWith (MockitoJUnitRunner.class)
 public class FilesUploadToS3Test {
 
     @Mock private AmazonS3 s3Client;
