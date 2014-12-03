@@ -38,6 +38,12 @@ import java.util.List;
  * User: hitender
  * Date: 11/28/14 11:35 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Component
 public class FilesUploadToS3 {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3.class);
