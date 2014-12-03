@@ -43,7 +43,7 @@ public final class DateUtil {
     }
 
     /**
-     * Support various kinds of date format
+     * Support various kinds of date format and also trims spaces around date string.
      * 12/15/2012 02:13PM
      * 12/24/12 19:03
      * 12/25/12 16:54:57
@@ -55,16 +55,17 @@ public final class DateUtil {
      * @return
      */
     public static Date getDateFromString(String dateAsStr) {
-        Assert.notNull(dateAsStr, "Should contain date formatted string");
-        String date = StringUtils.trim(dateAsStr.replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
-        for (DateType dateType : DateType.values()) {
-            if (date.matches(dateType.getRegex())) {
-                return DateTime.parse(date, dateType.getFormatter()).toDate();
+        if(StringUtils.isNotBlank(dateAsStr)) {
+            String date = StringUtils.trim(dateAsStr.trim().replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
+            for (DateType dateType : DateType.values()) {
+                if (date.matches(dateType.getRegex())) {
+                    return DateTime.parse(date, dateType.getFormatter()).toDate();
+                }
             }
         }
 
-        LOG.error("Unsupported date condition reached: Not supported date string : " + date);
-        throw new IllegalArgumentException("Unsupported date condition reached: Not supported date string : " + date);
+        LOG.error("Unsupported date condition reached: Not supported date string : " + dateAsStr);
+        throw new IllegalArgumentException("Unsupported date condition reached: Not supported date string : " + dateAsStr);
     }
 
     /**
