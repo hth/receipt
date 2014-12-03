@@ -49,11 +49,6 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     }
 
     @Override
-    public List<RememberMeTokenEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(RememberMeTokenEntity rememberMeTokenEntity) {
         mongoTemplate.save(rememberMeTokenEntity);
     }

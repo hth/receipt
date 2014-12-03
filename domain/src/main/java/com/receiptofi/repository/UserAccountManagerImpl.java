@@ -44,11 +44,6 @@ public class UserAccountManagerImpl implements UserAccountManager {
     }
 
     @Override
-    public List<UserAccountEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(UserAccountEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {

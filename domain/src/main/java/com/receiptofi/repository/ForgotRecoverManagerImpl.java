@@ -45,11 +45,6 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     }
 
     @Override
-    public List<ForgotRecoverEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(ForgotRecoverEntity object) {
         if (object.getId() != null) {
             object.setUpdated();

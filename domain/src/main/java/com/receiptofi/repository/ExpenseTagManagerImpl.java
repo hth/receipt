@@ -51,11 +51,6 @@ public final class ExpenseTagManagerImpl implements ExpenseTagManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<ExpenseTagEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(ExpenseTagEntity object) {
         try {
             if (object.getId() != null) {

@@ -65,11 +65,6 @@ public final class ItemManagerImpl implements ItemManager {
     @Autowired private BizNameManager bizNameManager;
 
     @Override
-    public List<ItemEntity> getAllObjects() {
-        return mongoTemplate.findAll(ItemEntity.class, TABLE);
-    }
-
-    @Override
     public void save(ItemEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {

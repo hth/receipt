@@ -45,11 +45,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<BizStoreEntity> getAllObjects() {
-        return mongoTemplate.findAll(BizStoreEntity.class, TABLE);
-    }
-
-    @Override
     public void save(BizStoreEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if (object.getId() != null) {

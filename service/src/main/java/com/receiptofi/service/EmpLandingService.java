@@ -37,10 +37,6 @@ public final class EmpLandingService {
         return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.REPROCESS);
     }
 
-    public List<MessageDocumentEntity> findAll() {
-        return messageDocumentManager.getAllObjects();
-    }
-
     public void delete(MessageDocumentEntity messageDocumentEntity) {
         messageDocumentManager.deleteHard(messageDocumentEntity);
     }

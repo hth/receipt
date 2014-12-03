@@ -50,11 +50,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public List<RegisteredDeviceEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(RegisteredDeviceEntity object) {
         mongoTemplate.save(object);
     }

@@ -61,11 +61,6 @@ public final class DocumentManagerImpl implements DocumentManager {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<DocumentEntity> getAllObjects() {
-        return mongoTemplate.findAll(DocumentEntity.class, TABLE);
-    }
-
-    @Override
     public void save(DocumentEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {

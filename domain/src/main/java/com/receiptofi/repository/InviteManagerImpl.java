@@ -62,11 +62,6 @@ public final class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public List<InviteEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(InviteEntity object) {
         if (object.getId() != null) {
             object.setUpdated();

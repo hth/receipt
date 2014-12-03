@@ -73,11 +73,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     @Autowired private StorageManager storageManager;
 
     @Override
-    public List<ReceiptEntity> getAllObjects() {
-        return mongoTemplate.findAll(ReceiptEntity.class, TABLE);
-    }
-
-    @Override
     public List<ReceiptEntity> getAllReceipts(String receiptUserId) {
         Criteria criteria = where("RID").is(receiptUserId)
                 .andOperator(
