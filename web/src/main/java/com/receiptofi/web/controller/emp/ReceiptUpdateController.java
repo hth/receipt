@@ -10,13 +10,9 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentUpdateService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.ReceiptDocumentForm;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.MileageDocumentValidator;
 import com.receiptofi.web.validator.ReceiptDocumentValidator;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,24 +91,25 @@ public final class ReceiptUpdateController {
         return new ModelAndView(NEXT_PAGE_UPDATE);
     }
 
-    private void updateReceipt(String documentId, ReceiptDocumentForm receiptDocumentForm, Model model, HttpServletRequest httpServletRequest) {
-        DateTime time = DateUtil.now();
-
-        //Gymnastic to show BindingResult errors if any or any special receipt document containing error message
+    private void updateReceipt(
+            String documentId,
+            ReceiptDocumentForm receiptDocumentForm,
+            Model model,
+            HttpServletRequest httpServletRequest
+    ) {
+         /** Gymnastic to show BindingResult errors if any or any special receipt document containing error message. */
         if (model.asMap().containsKey("result")) {
-            //result contains validation errors
+             /** result contains validation errors. */
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(documentId, receiptDocumentForm, httpServletRequest);
         } else if (model.asMap().containsKey("receiptDocumentForm")) {
-            //errorMessage here contains any other logical error found
+            /** errorMessage here contains any other logical error found. */
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(documentId, receiptDocumentForm, httpServletRequest);
         } else {
             loadBasedOnAppropriateUserLevel(documentId, receiptDocumentForm, httpServletRequest);
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
     }
 
     /**
@@ -157,7 +154,6 @@ public final class ReceiptUpdateController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Turk processing a receipt={} biz={}",
                 receiptDocumentForm.getReceiptDocument().getId(),
@@ -165,21 +161,17 @@ public final class ReceiptUpdateController {
 
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
+            LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
 
         try {
             if (documentUpdateService.hasReceiptWithSimilarChecksum(receiptDocumentForm.getReceiptEntity().getChecksum())) {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
-
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
                 redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
                 return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
             }
 
@@ -190,15 +182,11 @@ public final class ReceiptUpdateController {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
             documentUpdateService.processDocumentForReceipt(receiptUser.getRid(), receipt, items, document);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch (Exception exce) {
-            LOG.error("Error in Submit Process, reason={}", exce.getLocalizedMessage(), exce);
-
+            LOG.error("Error in Submit Process saving receipt, reason={}", exce.getLocalizedMessage(), exce);
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
     }
@@ -221,7 +209,6 @@ public final class ReceiptUpdateController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         switch (receiptDocumentForm.getReceiptDocument().getDocumentOfType()) {
             case MILEAGE:
@@ -234,10 +221,9 @@ public final class ReceiptUpdateController {
 
         mileageDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
+            LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
 
@@ -245,16 +231,11 @@ public final class ReceiptUpdateController {
             MileageEntity mileage = receiptDocumentForm.getMileageEntity();
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
             documentUpdateService.processDocumentForMileage(receiptUser.getRid(), mileage, document);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch (Exception exce) {
-            LOG.error("Error in Submit Process, reason={}", exce.getLocalizedMessage(), exce);
-
+            LOG.error("Error in Submit Process saving receipt, reason={}", exce.getLocalizedMessage(), exce);
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
     }
@@ -313,13 +294,10 @@ public final class ReceiptUpdateController {
             ReceiptDocumentForm receiptDocumentForm,
             RedirectAttributes redirectAttrs
     ) {
-        DateTime time = DateUtil.now();
         LOG.info("Beginning of Rejecting document={}", receiptDocumentForm.getReceiptDocument().getId());
         try {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
             documentUpdateService.processDocumentForReject(technicianId, document.getId(), document.getDocumentOfType());
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch (Exception e) {
             LOG.error("Error happened during rejecting document={} reason={}", receiptDocumentForm.getReceiptDocument().getId(), e.getLocalizedMessage(), e);
@@ -327,8 +305,6 @@ public final class ReceiptUpdateController {
             String message = "Receipt could not be processed for Reject. Contact administrator with Document # ";
             receiptDocumentForm.setErrorMessage(message + receiptDocumentForm.getReceiptDocument().getId());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt reject");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
     }
@@ -350,15 +326,13 @@ public final class ReceiptUpdateController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
+            LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
 
@@ -370,8 +344,6 @@ public final class ReceiptUpdateController {
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
                 redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in result");
                 return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
             }
 
@@ -382,15 +354,12 @@ public final class ReceiptUpdateController {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
             documentUpdateService.processDocumentReceiptReCheck(receiptUser.getRid(), receipt, items, document);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch (Exception exce) {
-            LOG.error("Error in Recheck process: " + exce.getLocalizedMessage());
+            LOG.error("Error in Recheck save reason={}", exce.getLocalizedMessage(), exce);
 
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt recheck save");
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
         }
     }

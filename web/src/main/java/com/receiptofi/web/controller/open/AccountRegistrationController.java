@@ -9,16 +9,12 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.MailService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.helper.AvailabilityStatus;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.UserRegistrationValidator;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,19 +97,16 @@ public class AccountRegistrationController {
             RedirectAttributes redirectAttrs,
             BindingResult result
     ) {
-        DateTime time = DateUtil.now();
         userRegistrationValidator.validate(userRegistrationForm, result);
         if (result.hasErrors()) {
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
-                    "validation error");
+            LOG.error("validation error");
             return registrationPage;
         }
 
         UserProfileEntity userProfile = accountService.doesUserExists(userRegistrationForm.getEmailId());
         if (userProfile != null) {
+            LOG.warn("account exists");
             userRegistrationValidator.accountExists(userRegistrationForm, result);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
-                    "account exists");
             return registrationPage;
         }
 
@@ -126,9 +119,7 @@ public class AccountRegistrationController {
                     userRegistrationForm.getPassword(),
                     userRegistrationForm.getBirthday());
         } catch (RuntimeException exce) {
-            LOG.error(exce.getLocalizedMessage());
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
-                    "failure in registering user");
+            LOG.error("failure in registering user", exce.getLocalizedMessage() ,exce);
             return registrationPage;
         }
 
@@ -143,9 +134,7 @@ public class AccountRegistrationController {
                 userAccount.getUserId(),
                 userAccount.getName(),
                 accountValidate.getAuthenticationKey());
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
-                "success");
+        LOG.info("success");
         return registrationSuccess;
     }
 
@@ -205,15 +194,12 @@ public class AccountRegistrationController {
     )
     @ResponseBody
     public String getAvailability(@RequestBody String body) throws IOException {
-        DateTime time = DateUtil.now();
         String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("email"));
         AvailabilityStatus availabilityStatus;
 
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);
-        if (userProfileEntity != null && userProfileEntity.getEmail().equals(email)) {
+        if (null != userProfileEntity && userProfileEntity.getEmail().equals(email)) {
             LOG.info("Email={} provided during registration exists", email);
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
-                    "success");
             availabilityStatus = AvailabilityStatus.notAvailable(email);
             return String.format("{ \"valid\" : \"%s\", \"message\" : \"<b>%s</b> is already registered. %s\" }",
                     availabilityStatus.isAvailable(),
@@ -221,8 +207,6 @@ public class AccountRegistrationController {
                     StringUtils.join(availabilityStatus.getSuggestions()));
         }
         LOG.info("Email available={} for registration", email);
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(),
-                "success");
         availabilityStatus = AvailabilityStatus.available();
         return String.format("{ \"valid\" : \"%s\" }", availabilityStatus.isAvailable());
     }

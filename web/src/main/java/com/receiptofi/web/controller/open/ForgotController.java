@@ -10,20 +10,16 @@ import com.receiptofi.service.AccountService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.web.form.ForgotAuthenticateForm;
 import com.receiptofi.web.form.ForgotRecoverForm;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.util.HttpRequestResponseParser;
-import com.receiptofi.web.util.PerformanceProfiling;
 import com.receiptofi.web.validator.ForgotAuthenticateValidator;
 import com.receiptofi.web.validator.ForgotRecoverValidator;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,16 +102,9 @@ public final class ForgotController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) throws IOException {
-
-        DateTime time = DateUtil.now();
         forgotRecoverValidator.validate(forgotRecoverForm, result);
         if (result.hasErrors()) {
-            PerformanceProfiling.log(
-                    this.getClass(),
-                    time,
-                    Thread.currentThread().getStackTrace()[1].getMethodName(),
-                    "validation error"
-            );
+            LOG.error("validation error");
             return passwordPage;
         }
 
@@ -210,33 +199,20 @@ public final class ForgotController {
 
             BindingResult result
     ) {
-        DateTime time = DateUtil.now();
         forgotAuthenticateValidator.validate(forgotAuthenticateForm, result);
         if (result.hasErrors()) {
-            PerformanceProfiling.log(
-                    this.getClass(),
-                    time,
-                    Thread.currentThread().getStackTrace()[1].getMethodName(),
-                    " failure"
-            );
+            LOG.error("validation error");
             return new ModelAndView(authenticatePage);
         } else {
-            ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(
-                    forgotAuthenticateForm.getAuthenticationKey()
-            );
+            ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(
+                    forgotAuthenticateForm.getAuthenticationKey());
+
             ModelAndView modelAndView = new ModelAndView(authenticateConfirm);
-            if (null == forgotRecoverEntity) {
-                PerformanceProfiling.log(
-                        this.getClass(),
-                        time,
-                        Thread.currentThread().getStackTrace()[1].getMethodName(),
-                        " failure"
-                );
+            if (null == forgotRecover) {
                 modelAndView.addObject(SUCCESS, false);
             } else {
                 UserProfileEntity userProfileEntity = userProfilePreferenceService.findByReceiptUserId(
-                        forgotRecoverEntity.getReceiptUserId()
-                );
+                        forgotRecover.getReceiptUserId());
                 Assert.notNull(userProfileEntity);
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
@@ -254,23 +230,11 @@ public final class ForgotController {
                 userAuthenticationEntity.setUpdated();
                 try {
                     accountService.updateAuthentication(userAuthenticationEntity);
-                    accountService.invalidateAllEntries(forgotRecoverEntity.getReceiptUserId());
+                    accountService.invalidateAllEntries(forgotRecover.getReceiptUserId());
                     modelAndView.addObject(SUCCESS, true);
-                    PerformanceProfiling.log(
-                            this.getClass(),
-                            time,
-                            Thread.currentThread().getStackTrace()[1].getMethodName(),
-                            " success"
-                    );
                 } catch (Exception e) {
                     LOG.error("Error during updating of the old authentication key message={}",
                             e.getLocalizedMessage(), e);
-                    PerformanceProfiling.log(
-                            this.getClass(),
-                            time,
-                            Thread.currentThread().getStackTrace()[1].getMethodName(),
-                            " failure"
-                    );
                     modelAndView.addObject(SUCCESS, false);
                 }
             }
