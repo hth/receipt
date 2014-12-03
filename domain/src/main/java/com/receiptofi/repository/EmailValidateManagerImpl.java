@@ -43,11 +43,6 @@ public final class EmailValidateManagerImpl implements EmailValidateManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<EmailValidateEntity> getAllObjects() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public void save(EmailValidateEntity object) {
         mongoTemplate.save(object);
     }

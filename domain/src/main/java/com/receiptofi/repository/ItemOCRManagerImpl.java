@@ -53,11 +53,6 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<ItemEntityOCR> getAllObjects() {
-        return mongoTemplate.findAll(ItemEntityOCR.class, TABLE);
-    }
-
-    @Override
     public void save(ItemEntityOCR object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {

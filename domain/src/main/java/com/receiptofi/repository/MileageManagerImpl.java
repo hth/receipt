@@ -43,11 +43,6 @@ public class MileageManagerImpl implements MileageManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<MileageEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(MileageEntity object) {
         if (object.getId() != null) {
             object.setUpdated();

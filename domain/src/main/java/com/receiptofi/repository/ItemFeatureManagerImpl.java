@@ -34,11 +34,6 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<ItemFeatureEntity> getAllObjects() {
-        return mongoTemplate.findAll(ItemFeatureEntity.class, TABLE);
-    }
-
-    @Override
     public void save(ItemFeatureEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if (object.getId() != null) {

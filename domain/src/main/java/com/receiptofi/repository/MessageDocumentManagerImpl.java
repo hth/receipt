@@ -63,11 +63,6 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public List<MessageDocumentEntity> getAllObjects() {
-        return mongoTemplate.findAll(MessageDocumentEntity.class, TABLE);
-    }
-
-    @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status) {
         return findWithLimit(status, messageQueryLimit);
     }

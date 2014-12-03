@@ -43,11 +43,6 @@ public final class NotificationManagerImpl implements NotificationManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<NotificationEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(NotificationEntity object) {
         if (object.getId() != null) {
             object.setUpdated();

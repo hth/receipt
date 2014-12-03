@@ -53,16 +53,6 @@ public final class StorageManagerImpl implements StorageManager {
     }
 
     @Override
-    public List<UploadDocumentImage> getAllObjects() {
-        DBCursor dbCursor = gridFs.getFileList();
-        while (dbCursor.hasNext()) {
-            DBObject dbObject = dbCursor.next();
-            gridFs.find(dbObject.toString());
-        }
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public int getSize() {
         return gridFs.getFileList().size();
     }

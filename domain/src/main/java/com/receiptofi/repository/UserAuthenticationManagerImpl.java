@@ -47,11 +47,6 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     }
 
     @Override
-    public List<UserAuthenticationEntity> getAllObjects() {
-        return mongoTemplate.findAll(UserAuthenticationEntity.class, TABLE);
-    }
-
-    @Override
     public void save(UserAuthenticationEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {

@@ -43,11 +43,6 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<FileSystemEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(FileSystemEntity object) {
         if (object.getId() != null) {
             object.setUpdated();

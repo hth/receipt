@@ -45,11 +45,6 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
-    public List<UserPreferenceEntity> getAllObjects() {
-        return mongoTemplate.findAll(UserPreferenceEntity.class, TABLE);
-    }
-
-    @Override
     public void save(UserPreferenceEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if (object.getId() != null) {

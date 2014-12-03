@@ -36,11 +36,6 @@ public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<EvalFeedbackEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(EvalFeedbackEntity object) {
         if (object.getId() != null) {
             object.setUpdated();

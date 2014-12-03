@@ -54,11 +54,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public List<UserProfileEntity> getAllObjects() {
-        return mongoTemplate.findAll(UserProfileEntity.class, TABLE);
-    }
-
-    @Override
     public void save(UserProfileEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {

@@ -39,11 +39,6 @@ public final class GenerateUserIdManagerImpl implements GenerateUserIdManager {
     }
 
     @Override
-    public List<GenerateUserIds> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(GenerateUserIds object) {
         mongoTemplate.save(object, TABLE);
     }

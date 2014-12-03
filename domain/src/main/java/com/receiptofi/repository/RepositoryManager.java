@@ -14,11 +14,6 @@ import java.util.List;
 public interface RepositoryManager<T> extends Serializable {
 
     /**
-     * Get all records.
-     */
-    List<T> getAllObjects();
-
-    /**
      * Saves a record.
      *
      * @throws Exception

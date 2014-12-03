@@ -43,11 +43,6 @@ public class DocumentDailyStatManagerImpl implements DocumentDailyStatManager {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<DocumentDailyStatEntity> getAllObjects() {
-        throw new UnsupportedOperationException("This method is not supported");
-    }
-
-    @Override
     public void save(DocumentDailyStatEntity object) {
         mongoTemplate.save(object);
     }

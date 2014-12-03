@@ -41,11 +41,6 @@ public final class BizNameManagerImpl implements BizNameManager {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<BizNameEntity> getAllObjects() {
-        return mongoTemplate.findAll(BizNameEntity.class, TABLE);
-    }
-
-    @Override
     public void save(BizNameEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if (object.getId() != null) {

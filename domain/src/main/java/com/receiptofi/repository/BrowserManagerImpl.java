@@ -34,11 +34,6 @@ public final class BrowserManagerImpl implements BrowserManager {
     @Autowired private MongoTemplate mongoTemplate;
 
     @Override
-    public List<BrowserEntity> getAllObjects() {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void save(BrowserEntity object) {
         if (object.getId() != null) {
             object.setUpdated();
