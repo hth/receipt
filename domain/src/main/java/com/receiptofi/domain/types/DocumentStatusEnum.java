@@ -7,6 +7,12 @@ package com.receiptofi.domain.types;
  * @author hitender
  * @since Jan 5, 2013 7:37:02 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum DocumentStatusEnum {
 
     PENDING("Pending"),

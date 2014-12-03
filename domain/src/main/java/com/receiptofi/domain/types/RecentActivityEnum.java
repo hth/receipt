@@ -5,6 +5,12 @@ package com.receiptofi.domain.types;
  * User: hitender
  * Date: 8/9/14 2:41 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum RecentActivityEnum {
     RECEIPT,
     MILEAGE,
