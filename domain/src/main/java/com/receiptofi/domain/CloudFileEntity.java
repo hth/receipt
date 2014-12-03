@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "CLOUD_FILES")
+@Document (collection = "CLOUD_FILE")
 public class CloudFileEntity extends BaseEntity {
 
     @NotNull
