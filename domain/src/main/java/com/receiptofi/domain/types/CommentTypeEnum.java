@@ -5,6 +5,12 @@ package com.receiptofi.domain.types;
  * Date: 7/23/13
  * Time: 6:14 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum CommentTypeEnum {
     NOTES("NOTES", "Notes"),
     RECHECK("RECHECK", "Recheck");

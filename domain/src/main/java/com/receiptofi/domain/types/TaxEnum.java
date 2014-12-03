@@ -7,6 +7,12 @@ package com.receiptofi.domain.types;
  * @author hitender
  * @since Dec 27, 2012 1:22:39 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum TaxEnum {
 
     TAXED("TAXED", "Taxed"),

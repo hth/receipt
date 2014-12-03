@@ -7,6 +7,12 @@ package com.receiptofi.domain.types;
  * @author hitender
  * @since Dec 23, 2012 11:06:13 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum AccountTypeEnum {
 
     PERSONAL("PERSONAL", "Personal"),

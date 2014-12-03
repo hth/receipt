@@ -7,6 +7,12 @@ package com.receiptofi.domain.types;
  * @author hitender
  * @since Mar 25, 2013 1:11:21 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum UserLevelEnum {
     USER("User", 10),
     USER_COMMUNITY("User Community", 20),

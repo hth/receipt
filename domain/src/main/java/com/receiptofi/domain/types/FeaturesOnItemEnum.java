@@ -7,6 +7,12 @@ package com.receiptofi.domain.types;
  * @author hitender
  * @since Dec 26, 2012 1:58:20 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum FeaturesOnItemEnum {
 
     RETURN_120_DAY("RETURN_120_DAY", "120 Days Return Notification"),

@@ -5,6 +5,12 @@ package com.receiptofi.domain.types;
  * User: hitender
  * Date: 4/12/14 11:05 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum RoleEnum {
     /** A regular user */
     ROLE_USER,

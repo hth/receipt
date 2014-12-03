@@ -5,6 +5,12 @@ package com.receiptofi.domain.types;
  * Date: 7/3/13
  * Time: 8:20 PM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public enum NotificationTypeEnum {
 
     MESSAGE("MESSAGE", "Message"),
