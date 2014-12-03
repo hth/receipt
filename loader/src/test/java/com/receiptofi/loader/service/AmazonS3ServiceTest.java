@@ -27,6 +27,10 @@ public class AmazonS3ServiceTest {
     @Test
     public void testGetS3client() {
         assertNotNull("AmazonS3 is initialized", amazonS3Service.getS3client());
+    }
+
+    @Test
+    public void testIfBucketExists() {
         assertTrue("bucket exists", amazonS3Service.getS3client().doesBucketExist("chk.test"));
     }
 }
