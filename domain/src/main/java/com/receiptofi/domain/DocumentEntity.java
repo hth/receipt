@@ -15,6 +15,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -83,8 +86,12 @@ public class DocumentEntity extends BaseEntity {
     @Field ("DT")
     private DocumentOfTypeEnum documentOfType;
 
+    @SuppressWarnings ("unused")
     @Field ("IU")
     private boolean imageUploadedToCloud;
+
+    @Field ("PB")
+    private Map<Date, String> processedBy = new LinkedHashMap<>();
 
     public static DocumentEntity newInstance() {
         return new DocumentEntity();
@@ -202,8 +209,17 @@ public class DocumentEntity extends BaseEntity {
         this.documentOfType = documentOfType;
     }
 
+    @SuppressWarnings ("unused")
     public boolean isImageUploadedToCloud() {
         return imageUploadedToCloud;
+    }
+
+    public Map<Date, String> getProcessedBy() {
+        return processedBy;
+    }
+
+    public void addProcessedBy(Date updated, String rid) {
+        this.processedBy.put(updated, rid);
     }
 
     @Override

@@ -78,8 +78,10 @@ public final class ReceiptUpdateController {
      * @param receiptDocumentForm
      * @return
      */
-    @RequestMapping (value = "/update/{documentId}", method = RequestMethod.GET)
-    public ModelAndView update(
+    @RequestMapping (
+            value = "/update/{documentId}",
+            method = RequestMethod.GET)
+    public ModelAndView getNewDocument(
             @PathVariable
             String documentId,
 
@@ -114,14 +116,16 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * For Technician: Loads recheck receipt
+     * For Technician: Loads recheck receipts.
      *
      * @param documentId
      * @param receiptDocumentForm
      * @return
      */
-    @RequestMapping (value = "/recheck/{documentId}", method = RequestMethod.GET)
-    public ModelAndView recheck(
+    @RequestMapping (
+            value = "/recheck/{documentId}",
+            method = RequestMethod.GET)
+    public ModelAndView getDocumentForRecheck(
             @PathVariable
             String documentId,
 
@@ -136,14 +140,17 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Process receipt after submitted by technician
+     * Process receipt after submitted by technician.
      *
      * @param receiptDocumentForm
      * @param result
      * @return
      */
-    @RequestMapping (value = "/submit", method = RequestMethod.POST, params = "receipt-submit")
-    public ModelAndView submit(
+    @RequestMapping (
+            value = "/submit",
+            method = RequestMethod.POST,
+            params = "receipt-submit")
+    public ModelAndView submitReceipt(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
@@ -151,7 +158,11 @@ public final class ReceiptUpdateController {
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
-        LOG.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Turk processing a receipt={} biz={}",
+                receiptDocumentForm.getReceiptDocument().getId(),
+                receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
+
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
@@ -178,7 +189,7 @@ public final class ReceiptUpdateController {
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
-            documentUpdateService.turkProcessReceipt(receipt, items, document);
+            documentUpdateService.processDocumentForReceipt(receiptUser.getRid(), receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch (Exception exce) {
@@ -193,13 +204,16 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Process receipt after submitted by technician
+     * Process receipt after submitted by technician.
      *
      * @param receiptDocumentForm
      * @param result
      * @return
      */
-    @RequestMapping (value = "/submitMileage", method = RequestMethod.POST, params = "mileage-submit")
+    @RequestMapping (
+            value = "/submitMileage",
+            method = RequestMethod.POST,
+            params = "mileage-submit")
     public ModelAndView submitMileage(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
@@ -208,6 +222,7 @@ public final class ReceiptUpdateController {
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         switch (receiptDocumentForm.getReceiptDocument().getDocumentOfType()) {
             case MILEAGE:
                 LOG.info("Mileage : ");
@@ -229,7 +244,7 @@ public final class ReceiptUpdateController {
         try {
             MileageEntity mileage = receiptDocumentForm.getMileageEntity();
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
-            documentUpdateService.turkMileage(mileage, document);
+            documentUpdateService.processDocumentForMileage(receiptUser.getRid(), mileage, document);
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
@@ -245,52 +260,64 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Reject receipt since it can't be processed or its not a receipt
+     * Reject receipt since it can't be processed or its not a receipt.
      *
      * @param receiptDocumentForm
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping (value = "/submit", method = RequestMethod.POST, params = "receipt-reject")
-    public ModelAndView rejectReceipt(
+    @RequestMapping (
+            value = "/submit",
+            method = RequestMethod.POST,
+            params = "receipt-reject")
+    public ModelAndView submitRejectedReceipt(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             RedirectAttributes redirectAttrs
     ) {
-        return rejectDocument(receiptDocumentForm, redirectAttrs);
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
     }
 
     /**
-     * Reject receipt since it can't be processed or its not a receipt
+     * Reject receipt since it can't be processed or its not a receipt.
      *
      * @param receiptDocumentForm
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping (value = "/submitMileage", method = RequestMethod.POST, params = "mileage-reject")
-    public ModelAndView rejectMileage(
+    @RequestMapping (
+            value = "/submitMileage",
+            method = RequestMethod.POST,
+            params = "mileage-reject")
+    public ModelAndView submitRejectedMileage(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
             RedirectAttributes redirectAttrs
     ) {
-        return rejectDocument(receiptDocumentForm, redirectAttrs);
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
     }
 
     /**
-     * Rejects any document
+     * Rejects any document.
      *
      * @param receiptDocumentForm
      * @param redirectAttrs
      * @return
      */
-    private ModelAndView rejectDocument(ReceiptDocumentForm receiptDocumentForm, RedirectAttributes redirectAttrs) {
+    private ModelAndView submitRejectionOfDocument(
+            String technicianId,
+            ReceiptDocumentForm receiptDocumentForm,
+            RedirectAttributes redirectAttrs
+    ) {
         DateTime time = DateUtil.now();
         LOG.info("Beginning of Rejecting document={}", receiptDocumentForm.getReceiptDocument().getId());
         try {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
-            documentUpdateService.turkDocumentReject(document.getId(), document.getDocumentOfType());
+            documentUpdateService.processDocumentForReject(technicianId, document.getId(), document.getDocumentOfType());
 
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
@@ -307,14 +334,16 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Process receipt for after recheck by technician
+     * Process receipt for after recheck by technician.
      *
      * @param receiptDocumentForm
      * @param result
      * @return
      */
-    @RequestMapping (value = "/recheck", method = RequestMethod.POST)
-    public ModelAndView recheck(
+    @RequestMapping (
+            value = "/recheck",
+            method = RequestMethod.POST)
+    public ModelAndView submitReceiptRecheck(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
@@ -322,6 +351,7 @@ public final class ReceiptUpdateController {
             RedirectAttributes redirectAttrs
     ) {
         DateTime time = DateUtil.now();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
@@ -351,7 +381,7 @@ public final class ReceiptUpdateController {
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
-            documentUpdateService.turkProcessReceiptReCheck(receipt, items, document);
+            documentUpdateService.processDocumentReceiptReCheck(receiptUser.getRid(), receipt, items, document);
             PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
             return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
         } catch (Exception exce) {
