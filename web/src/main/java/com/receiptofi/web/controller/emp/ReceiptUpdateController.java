@@ -114,7 +114,7 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * For Technician: Loads recheck receipt
+     * For Technician: Loads recheck receipt.
      *
      * @param documentId
      * @param receiptDocumentForm
@@ -136,7 +136,7 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Process receipt after submitted by technician
+     * Process receipt after submitted by technician.
      *
      * @param receiptDocumentForm
      * @param result
@@ -193,7 +193,7 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Process receipt after submitted by technician
+     * Process receipt after submitted by technician.
      *
      * @param receiptDocumentForm
      * @param result
@@ -245,7 +245,7 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Reject receipt since it can't be processed or its not a receipt
+     * Reject receipt since it can't be processed or its not a receipt.
      *
      * @param receiptDocumentForm
      * @param redirectAttrs
@@ -262,7 +262,7 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Reject receipt since it can't be processed or its not a receipt
+     * Reject receipt since it can't be processed or its not a receipt.
      *
      * @param receiptDocumentForm
      * @param redirectAttrs
@@ -279,7 +279,7 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Rejects any document
+     * Rejects any document.
      *
      * @param receiptDocumentForm
      * @param redirectAttrs
@@ -307,7 +307,7 @@ public final class ReceiptUpdateController {
     }
 
     /**
-     * Process receipt for after recheck by technician
+     * Process receipt for after recheck by technician.
      *
      * @param receiptDocumentForm
      * @param result
