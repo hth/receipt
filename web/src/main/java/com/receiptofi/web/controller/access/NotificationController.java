@@ -4,12 +4,8 @@ import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.service.NotificationService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.NotificationDetailForm;
 import com.receiptofi.web.form.NotificationForm;
-import com.receiptofi.web.util.PerformanceProfiling;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +54,6 @@ public final class NotificationController {
             method = RequestMethod.GET
     )
     public ModelAndView loadForm() {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("LandingController loadForm: " + receiptUser.getRid());
 
@@ -69,7 +64,6 @@ public final class NotificationController {
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("notificationForm", NotificationForm.newInstance(notifications.size(), notifications));
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 

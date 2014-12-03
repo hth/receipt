@@ -1,14 +1,10 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.service.LoginService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
-import com.receiptofi.web.util.PerformanceProfiling;
 
 import net.sf.uadetector.ReadableUserAgent;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +81,6 @@ public final class LoginController {
      */
     @RequestMapping (method = RequestMethod.GET)
     public String loadForm(Locale locale, HttpServletRequest request) {
-        DateTime time = DateUtil.now();
         LOG.info("Locale Type={}", locale);
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
@@ -98,8 +93,6 @@ public final class LoginController {
             LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, agent);
             loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString());
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return loginPage;
     }
 

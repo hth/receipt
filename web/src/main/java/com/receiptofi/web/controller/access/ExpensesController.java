@@ -5,11 +5,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.ExpenseForm;
-import com.receiptofi.web.util.PerformanceProfiling;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,11 +54,8 @@ public final class ExpensesController {
             @ModelAttribute ("expenseForm")
             ExpenseForm expenseForm
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         LOG.debug("rid={} expenseType={}", receiptUser.getRid(), tag);
-
         List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(receiptUser.getRid());
         List<ItemEntity> items = new ArrayList<>();
 
@@ -83,8 +76,6 @@ public final class ExpensesController {
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("expenseForm", expenseForm);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 }

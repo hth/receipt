@@ -11,14 +11,10 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentPendingService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.PendingReceiptForm;
 import com.receiptofi.web.form.ReceiptDocumentForm;
-import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,8 +58,6 @@ public final class PendingDocumentController {
 
     @RequestMapping (method = RequestMethod.GET)
     public ModelAndView loadForm(@ModelAttribute ("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
-
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         int pendingMissingReceipt = 0;
@@ -105,8 +99,6 @@ public final class PendingDocumentController {
 
         ModelAndView modelAndView = new ModelAndView(listPendingDocuments);
         modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
@@ -118,7 +110,6 @@ public final class PendingDocumentController {
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm
     ) {
-        DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DocumentEntity documentEntity = documentUpdateService.findOne(documentId, receiptUser.getRid());
@@ -126,8 +117,6 @@ public final class PendingDocumentController {
 
         ModelAndView modelAndView = new ModelAndView(showDocument);
         modelAndView.addObject("receiptDocumentForm", receiptDocumentForm);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 

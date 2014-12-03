@@ -3,13 +3,9 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.MileageForm;
-import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +53,7 @@ public final class MileageOdometerController {
 
             Model model
     ) {
-        DateTime time = DateUtil.now();
         LOG.info("Loading mileage id={}", mileageId);
-
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //Gymnastic to show BindingResult errors if any
@@ -82,8 +76,6 @@ public final class MileageOdometerController {
         }
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
@@ -95,23 +87,21 @@ public final class MileageOdometerController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
-        DateTime time = DateUtil.now();
         LOG.info("Delete mileage id={}", mileageForm.getMileage().getId());
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
             if (!mileageService.deleteHardMileage(mileageForm.getMileage().getId(), receiptUser.getRid())) {
+                LOG.error("error in deleting mileage");
                 redirectAttrs.addFlashAttribute("result", result);
 
                 mileageForm.setErrorMessage("Delete request failed to execute");
                 redirectAttrs.addFlashAttribute("mileageForm", mileageForm);
-
-                PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in deleting mileage");
                 return new ModelAndView("redirect:/access/modv/" + mileageForm.getMileage().getId() + ".htm");
             }
         } catch (Exception exce) {
-            LOG.error("Error occurred during receipt delete: Receipt rid={}, error reason={}",
+            LOG.error("Error occurred during mileage delete: Receipt rid={}, error reason={}",
                     mileageForm.getMileage().getId(), exce.getLocalizedMessage(), exce);
             result.rejectValue("errorMessage", StringUtils.EMPTY, "Delete request failed to execute");
             redirectAttrs.addFlashAttribute("result", result);
@@ -119,14 +109,11 @@ public final class MileageOdometerController {
             //set the error message to display to user
             mileageForm.setErrorMessage("Delete request failed to execute");
             redirectAttrs.addFlashAttribute("mileageForm", mileageForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in deleting mileage");
             return new ModelAndView("redirect:/access/modv/" + mileageForm.getMileage().getId() + ".htm");
         }
 
         ModelAndView modelAndView = new ModelAndView("redirect:/access/landing.htm");
         modelAndView.addObject("showTab", "1");
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "deleted mileage successfully");
         return modelAndView;
     }
 
@@ -138,7 +125,6 @@ public final class MileageOdometerController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
-        DateTime time = DateUtil.now();
         LOG.debug("Split mileage id={}", mileageForm.getMileage().getId());
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
@@ -151,12 +137,8 @@ public final class MileageOdometerController {
             //set the error message to display to user
             mileageForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("mileageForm", mileageForm);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
             return new ModelAndView("redirect:/access/modv/" + mileageForm.getMileage().getId() + ".htm");
         }
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
         ModelAndView modelAndView = new ModelAndView("redirect:/access/landing.htm");
         modelAndView.addObject("showTab", "1");
         return modelAndView;

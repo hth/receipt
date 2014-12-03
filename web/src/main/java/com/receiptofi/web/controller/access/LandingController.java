@@ -36,7 +36,6 @@ import com.receiptofi.web.rest.Base;
 import com.receiptofi.web.rest.Header;
 import com.receiptofi.web.rest.LandingView;
 import com.receiptofi.web.rest.ReportView;
-import com.receiptofi.web.util.PerformanceProfiling;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
@@ -199,8 +198,6 @@ public class LandingController extends BaseController {
         Driven driven = new Driven();
         driven.setMiles(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
         landingForm.setMileages(driven.asJson());
-
-        PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName());
         return modelAndView;
     }
 
@@ -291,7 +288,6 @@ public class LandingController extends BaseController {
             value = "/landing/upload")
     @ResponseBody
     public String upload(HttpServletRequest httpServletRequest) throws IOException {
-        DateTime time = DateUtil.now();
         LOG.info("uploading document");
 
         String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
@@ -310,11 +306,9 @@ public class LandingController extends BaseController {
                 try {
                     landingService.uploadDocument(uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {
                     outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
                     LOG.error("document upload failed reason={} rid={}", exce.getLocalizedMessage(), rid, exce);
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error to save document");
                 }
             }
         } else {
@@ -340,8 +334,12 @@ public class LandingController extends BaseController {
             value = "/landing/uploadmileage"
     )
     @ResponseBody
-    public String uploadMileage(@PathVariable String documentId, HttpServletRequest httpServletRequest) throws IOException {
-        DateTime time = DateUtil.now();
+    public String uploadMileage(
+            @PathVariable
+            String documentId,
+
+            HttpServletRequest httpServletRequest
+    ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         LOG.info("Upload a mileage");
@@ -360,11 +358,9 @@ public class LandingController extends BaseController {
                 try {
                     landingService.appendMileage(documentId, receiptUser.getRid(), uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "success");
                 } catch (Exception exce) {
                     outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
                     LOG.error("Receipt upload reason={}, for rid={}", exce.getLocalizedMessage(), receiptUser.getRid(), exce);
-                    PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), "error in receipt save");
                 }
             }
         } else {
@@ -450,8 +446,6 @@ public class LandingController extends BaseController {
         if (null == userProfile) {
             Header header = getHeaderForProfileOrAuthFailure();
             LandingView landingView = LandingView.newInstance(StringUtils.EMPTY, StringUtils.EMPTY, header);
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), false);
             return landingView;
         } else {
             long pendingCount = landingService.pendingReceipt(profileId);
@@ -463,8 +457,6 @@ public class LandingController extends BaseController {
             landingView.setStatus(Header.RESULT.SUCCESS);
 
             LOG.info("Rest/JSON Service returned={}, rid={} ", profileId, userProfile.getReceiptUserId());
-
-            PerformanceProfiling.log(this.getClass(), time, Thread.currentThread().getStackTrace()[1].getMethodName(), true);
             return landingView;
         }
     }
