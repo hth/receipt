@@ -110,9 +110,7 @@ public class FilesUploadToS3 {
                             FileUtil.fileSizeInMB(fileSystem.getFileLength()),
                             FileUtil.fileSizeInMB(file.length()));
 
-                    fileSystem.setScaledFileLength(file.length());
-                    fileSystemService.save(fileSystem);
-
+                    fileSystemService.updateScaledFileLength(fileSystem.getId(), file.length());
                     PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, file);
                     amazonS3Service.getS3client().putObject(putObject);
                 }
