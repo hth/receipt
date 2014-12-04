@@ -119,7 +119,7 @@ public class AccountRegistrationController {
                     userRegistrationForm.getPassword(),
                     userRegistrationForm.getBirthday());
         } catch (RuntimeException exce) {
-            LOG.error("failure in registering user", exce.getLocalizedMessage() ,exce);
+            LOG.error("failure in registering user", exce.getLocalizedMessage(), exce);
             return registrationPage;
         }
 

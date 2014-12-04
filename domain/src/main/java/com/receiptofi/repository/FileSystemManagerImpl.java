@@ -59,6 +59,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
         mongoTemplate.remove(object, TABLE);
     }
 
+    @Override
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
         for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
             deleteHard(fileSystemEntity);
@@ -73,9 +74,19 @@ public final class FileSystemManagerImpl implements FileSystemManager {
         );
     }
 
+    @Override
     public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {
         for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
             deleteSoft(fileSystemEntity);
         }
+    }
+
+    @Override
+    public void updateScaledFileLength(String id, long scaledFileLength) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(new ObjectId(id)).and("SLN").exists(false)),
+                update("SLN", scaledFileLength),
+                FileSystemEntity.class
+        );
     }
 }
