@@ -116,7 +116,7 @@ public class FilesUploadToS3 {
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
                 fileDBService.deleteHard(document.getFileSystemEntities());
-                count ++;
+                count++;
             } catch (AmazonServiceException e) {
                 LOG.error("Amazon S3 rejected request with an error response for some reason " +
                                 "document:{} " +
@@ -133,22 +133,22 @@ public class FilesUploadToS3 {
                         e.getRequestId(),
                         e);
 
-                failure ++;
+                failure++;
             } catch (AmazonClientException e) {
                 LOG.error("Client encountered an internal error while trying to communicate with S3 " +
-                        "document:{} " +
-                        "reason={}",
+                                "document:{} " +
+                                "reason={}",
                         document,
                         e.getLocalizedMessage(),
                         e);
 
-                failure ++;
+                failure++;
             } catch (Exception e) {
                 LOG.error("image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
 
-                failure ++;
+                failure++;
 
-                for(FileSystemEntity fileSystem : document.getFileSystemEntities()) {
+                for (FileSystemEntity fileSystem : document.getFileSystemEntities()) {
                     amazonS3Service.getS3client().deleteObject(bucketName, getKey(fileSystem));
                     LOG.warn("on failure removed files from cloud filename={}", getKey(fileSystem));
                 }
