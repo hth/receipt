@@ -93,7 +93,9 @@ public class FilesUploadToS3Test {
         if (prop.keySet().isEmpty()) {
             File[] profileDir = findFiles(FilesUploadToS3Test.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
             File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
-            prop.load(new FileReader(propertiesFiles[0]));
+            for (File file : propertiesFiles) {
+                prop.load(new FileReader(file));
+            }
         }
 
         MockitoAnnotations.initMocks(this);
