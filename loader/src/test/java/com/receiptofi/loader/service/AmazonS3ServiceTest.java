@@ -8,6 +8,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.util.Assert;
 
 import org.junit.Before;
@@ -30,6 +31,7 @@ import java.util.Properties;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
+@Profile({"dev", "test"})
 public class AmazonS3ServiceTest {
     private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
 
