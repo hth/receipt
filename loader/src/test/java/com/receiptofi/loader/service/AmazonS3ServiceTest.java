@@ -3,6 +3,8 @@ package com.receiptofi.loader.service;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import net.logstash.logback.encoder.org.apache.commons.lang.ArrayUtils;
+
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import org.slf4j.Logger;
@@ -67,7 +69,7 @@ public class AmazonS3ServiceTest {
     public void setUp() throws IOException {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         String[] activeProfiles = ctx.getEnvironment().getActiveProfiles();
-        LOG.info("activeProfiles={}", activeProfiles);
+        LOG.info("activeProfiles={}", ArrayUtils.toString(activeProfiles));
 
         /**
          * Loading properties file for junit.
