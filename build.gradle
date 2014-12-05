@@ -243,12 +243,12 @@ subprojects {
 
         // listen to events in the test execution lifecycle
         beforeTest { descriptor ->
-            logger.lifecycle("Running test: " + descriptor)
+            logger.lifecycle("Running test: $descriptor")
         }
 
         // listen to standard out and standard error of the test JVM(s)
         onOutput { descriptor, event ->
-            logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+            logger.lifecycle("Test: $descriptor produced standard out/err: $event.message")
         }
 
         testLogging {
@@ -388,7 +388,7 @@ task copyJars(type: Copy) {
 }
 
 task unzip(type: Copy, dependsOn: [':web:war']) {
-    def zipFile = file('web/build/libs/' + baseName + '-web-' + version + '.war')
+    def zipFile = file("web/build/libs/$baseName" + '-web-' + version + '.war')
 
     from zipTree(zipFile)
     into unzipDir
@@ -502,7 +502,7 @@ task testReport(type: TestReport) {
     reportOn subprojects*.test
 
     doLast {
-        println "Test reports for all test complete"
+        println "Test reports for all test complete $env"
     }
 }
 
