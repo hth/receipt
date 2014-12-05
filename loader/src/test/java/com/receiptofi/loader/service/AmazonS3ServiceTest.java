@@ -8,6 +8,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.util.Assert;
@@ -34,7 +35,7 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-@Profile ({"dev", "test"})
+@Profile ({"dev", "test", "prod"})
 public class AmazonS3ServiceTest {
     public static final String BUILD = "build" +
             File.separator +
@@ -64,6 +65,10 @@ public class AmazonS3ServiceTest {
 
     @Before
     public void setUp() throws IOException {
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        String[] activeProfiles = ctx.getEnvironment().getActiveProfiles();
+        LOG.info("activeProfiles={}", activeProfiles);
+
         /**
          * Loading properties file for junit.
          */
