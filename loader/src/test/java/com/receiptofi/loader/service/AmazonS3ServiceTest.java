@@ -58,7 +58,9 @@ public class AmazonS3ServiceTest {
             Arrays.asList(
                     "dev.properties",
                     "test.properties",
-                    "prod.properties"
+                    "prod.properties",
+                    /** Prod passwords are in saved in pass.properties */
+                    "pass.properties"
             )
     );
 
