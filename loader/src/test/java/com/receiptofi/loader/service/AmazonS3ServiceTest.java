@@ -106,7 +106,7 @@ public class AmazonS3ServiceTest {
     public static File[] findFiles(String location, FileFilter fileFilter) {
         File directory = new File(location);
         File[] files = directory.listFiles(fileFilter);
-        Assert.isTrue(files.length == 1);
+        Assert.isTrue(files.length > 0);
         return files;
     }
 }
