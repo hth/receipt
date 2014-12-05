@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -50,8 +49,15 @@ public class AmazonS3ServiceTest {
             "conf";
 
     private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
-    public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test"));
-    public static final FileFilter propertiesF = new WildcardFileFilter(Arrays.asList("dev.properties", "test.properties"));
+
+    public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test", "prod"));
+    public static final FileFilter propertiesF = new WildcardFileFilter(
+            Arrays.asList(
+                    "dev.properties",
+                    "test.properties",
+                    "prod.properties"
+            )
+    );
 
     private Properties prop = new Properties();
     private AmazonS3Service amazonS3Service;
