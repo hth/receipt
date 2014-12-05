@@ -5,6 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.util.Assert;
 
 import org.junit.Before;
@@ -28,6 +31,8 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 public class AmazonS3ServiceTest {
+    private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
+
     public static final String BUILD = "receipt" +
             File.separator +
             "build" +
@@ -48,6 +53,9 @@ public class AmazonS3ServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        /**
+         * Loading properties file for junit.
+         */
         if (prop.keySet().isEmpty()) {
             ClassLoader classLoader = AmazonS3ServiceTest.class.getClassLoader();
             File[] profileDir = findFiles(classLoader.getResource("").getPath().split("receipt")[0] + BUILD, profileF);
@@ -55,6 +63,7 @@ public class AmazonS3ServiceTest {
             prop.load(new FileReader(propertiesFiles[0]));
         }
 
+        LOG.info("bucketName={}", prop.getProperty("aws.s3.bucketName"));
         amazonS3Service = new AmazonS3Service(
                 prop.getProperty("aws.s3.accessKey"),
                 prop.getProperty("aws.s3.secretKey"),
