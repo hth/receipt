@@ -8,6 +8,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.springframework.util.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import java.util.Properties;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
+@Ignore
 public class AmazonS3ServiceTest {
     public static final String BUILD = "receipt" +
             File.separator +
