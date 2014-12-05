@@ -8,6 +8,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.util.Assert;
 
@@ -31,11 +32,13 @@ import java.util.Properties;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
+@Configuration
 @Profile ({"dev", "test"})
 public class AmazonS3ServiceTest {
     public static final String BUILD = "build" +
             File.separator +
-            "explodedWar/";
+            "explodedWar" +
+            File.separator;
 
     public static final String CONF = File.separator +
             "WEB-INF" +
