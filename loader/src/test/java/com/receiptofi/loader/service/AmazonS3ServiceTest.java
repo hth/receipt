@@ -17,7 +17,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -48,14 +50,14 @@ public class AmazonS3ServiceTest {
             "conf";
 
     private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
-    private final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test"));
-    private final FileFilter propertiesF = new WildcardFileFilter(Arrays.asList("dev.properties", "test.properties"));
+    public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test"));
+    public static final FileFilter propertiesF = new WildcardFileFilter(Arrays.asList("dev.properties", "test.properties"));
 
     private Properties prop = new Properties();
     private AmazonS3Service amazonS3Service;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws IOException {
         /**
          * Loading properties file for junit.
          */
@@ -85,7 +87,7 @@ public class AmazonS3ServiceTest {
         assertTrue("exists", amazonS3Service.getS3client().doesBucketExist(prop.getProperty("aws.s3.bucketName")));
     }
 
-    private File[] findFiles(String location, FileFilter fileFilter) {
+    public static File[] findFiles(String location, FileFilter fileFilter) {
         File directory = new File(location);
         File[] files = directory.listFiles(fileFilter);
         Assert.isTrue(files.length == 1);
