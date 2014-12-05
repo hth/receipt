@@ -79,7 +79,9 @@ public class AmazonS3ServiceTest {
         if (prop.keySet().isEmpty()) {
             File[] profileDir = findFiles(AmazonS3ServiceTest.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
             File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
-            prop.load(new FileReader(propertiesFiles[0]));
+            for (File file : propertiesFiles) {
+                prop.load(new FileReader(file));
+            }
         }
 
         LOG.info("bucketName={}", prop.getProperty("aws.s3.bucketName"));
