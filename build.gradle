@@ -394,15 +394,9 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task prepWar(dependsOn: [unzip, copyJars]) << {
+task setUpProperties(dependsOn: [':clean']) << {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
-
-    copy {
-        from 'web/web'
-        into warDir
-        exclude '**/*.classes'
-    }
 
     copy {
         from file("web/environment/$env/$env" + ".properties")
@@ -448,6 +442,14 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
     copy {
         from "web/environment/$env/mongo-config.xml"
         into warWebInfDir
+    }
+}
+
+task prepWar(dependsOn: [setUpProperties, unzip, copyJars]) << {
+    copy {
+        from 'web/web'
+        into warDir
+        exclude '**/*.classes'
     }
 
     copy {
@@ -510,7 +512,7 @@ publishing {
     publications {
         common(MavenPublication) {
             artifactId 'common'
-            artifact 'common/build/libs/' + baseName + '-common-' + version + '.jar'
+            artifact "common/build/libs/$baseName" + '-common-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -532,7 +534,7 @@ publishing {
 
         domain(MavenPublication) {
             artifactId 'domain'
-            artifact 'domain/build/libs/' + baseName + '-domain-' + version + '.jar'
+            artifact "domain/build/libs/$baseName" + '-domain-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -554,7 +556,7 @@ publishing {
 
         service(MavenPublication) {
             artifactId 'service'
-            artifact 'service/build/libs/' + baseName + '-service-' + version + '.jar'
+            artifact "service/build/libs/$baseName" + '-service-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -576,7 +578,7 @@ publishing {
 
         social(MavenPublication) {
             artifactId 'social'
-            artifact 'social/build/libs/' + baseName + '-social-' + version + '.jar'
+            artifact "social/build/libs/$baseName" + '-social-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -606,4 +608,4 @@ publishing {
 
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
-defaultTasks 'clean', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport'
+defaultTasks 'clean', 'setUpProperties', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport'
