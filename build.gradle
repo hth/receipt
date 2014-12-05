@@ -20,6 +20,11 @@ ext {
     warConfDir = file("$warDir$conf")
     warWebInfClassesImagesDir = file("$warDir$images")
 
+    activeProfilewarDir = file("$buildDir/activeProfile/$env")
+    activeProfilewarWebInfDir = file("$activeProfilewarDir$webInf")
+    activeProfilewarClassesDir = file("$activeProfilewarDir$classes")
+    activeProfilewarConfDir = file("$activeProfilewarDir$conf")
+
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
 
@@ -397,12 +402,12 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
 }
 
 task setUpProfileForJunit(dependsOn: [':clean']) << {
-    warClassesDir.mkdirs()
-    warConfDir.mkdirs()
+    activeProfilewarClassesDir.mkdirs()
+    activeProfilewarConfDir.mkdirs()
 
     copy {
         from file("web/environment/$env/$env" + ".properties")
-        into warConfDir
+        into activeProfilewarConfDir
     }
 
     copy {
@@ -427,23 +432,23 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
             }
         }
 
-        into warConfDir
+        into activeProfilewarConfDir
     }
 
     copy {
         from "web/environment/$env/logback.xml"
         from 'web/resources/conf/messages.properties'
-        into warClassesDir
+        into activeProfilewarClassesDir
     }
 
     copy {
         from "web/environment/$env/receipt-servlet.xml"
-        into warWebInfDir
+        into activeProfilewarWebInfDir
     }
 
     copy {
         from "web/environment/$env/mongo-config.xml"
-        into warWebInfDir
+        into activeProfilewarWebInfDir
     }
 }
 
