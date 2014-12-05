@@ -33,9 +33,7 @@ import java.util.Properties;
 public class AmazonS3ServiceTest {
     private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
 
-    public static final String BUILD = "receipt" +
-            File.separator +
-            "build" +
+    public static final String BUILD = "build" +
             File.separator +
             "explodedWar/";
 
@@ -58,7 +56,7 @@ public class AmazonS3ServiceTest {
          */
         if (prop.keySet().isEmpty()) {
             ClassLoader classLoader = AmazonS3ServiceTest.class.getClassLoader();
-            File[] profileDir = findFiles(classLoader.getResource("").getPath().split("receipt")[0] + BUILD, profileF);
+            File[] profileDir = findFiles(classLoader.getResource("").getPath().split("loader")[0] + BUILD, profileF);
             File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
             prop.load(new FileReader(propertiesFiles[0]));
         }
