@@ -48,7 +48,7 @@ public class AmazonS3ServiceTest {
 
     private final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test"));
     private final FileFilter propertiesF = new WildcardFileFilter(Arrays.asList("dev.properties", "test.properties"));
-    private final Properties prop = new Properties();
+    private Properties prop = new Properties();
     private AmazonS3Service amazonS3Service;
 
     @Before
@@ -64,6 +64,7 @@ public class AmazonS3ServiceTest {
         }
 
         LOG.info("bucketName={}", prop.getProperty("aws.s3.bucketName"));
+        assertTrue("properties populated", !prop.keySet().isEmpty());
         amazonS3Service = new AmazonS3Service(
                 prop.getProperty("aws.s3.accessKey"),
                 prop.getProperty("aws.s3.secretKey"),
