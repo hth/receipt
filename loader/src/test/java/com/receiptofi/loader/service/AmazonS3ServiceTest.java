@@ -48,6 +48,9 @@ public class AmazonS3ServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        /**
+         * Loading properties file for junit.
+         */
         if (prop.keySet().isEmpty()) {
             ClassLoader classLoader = AmazonS3ServiceTest.class.getClassLoader();
             File[] profileDir = findFiles(classLoader.getResource("").getPath().split("receipt")[0] + BUILD, profileF);
