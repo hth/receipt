@@ -40,7 +40,7 @@ import java.util.Properties;
 public class AmazonS3ServiceTest {
     public static final String BUILD = "build" +
             File.separator +
-            "explodedWar" +
+            "activeProfile" +
             File.separator;
 
     public static final String CONF = File.separator +
