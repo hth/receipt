@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.util.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -106,7 +105,7 @@ public class AmazonS3ServiceTest {
     public static File[] findFiles(String location, FileFilter fileFilter) {
         File directory = new File(location);
         File[] files = directory.listFiles(fileFilter);
-        Assert.isTrue(files.length > 0);
+        assertTrue("number of files ", files.length > 0);
         return files;
     }
 }

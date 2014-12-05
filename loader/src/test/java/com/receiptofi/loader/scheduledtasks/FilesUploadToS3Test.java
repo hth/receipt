@@ -1,8 +1,13 @@
 package com.receiptofi.loader.scheduledtasks;
 
-import static com.receiptofi.loader.service.AmazonS3ServiceTest.*;
+import static com.receiptofi.loader.service.AmazonS3ServiceTest.BUILD;
+import static com.receiptofi.loader.service.AmazonS3ServiceTest.CONF;
+import static com.receiptofi.loader.service.AmazonS3ServiceTest.findFiles;
+import static com.receiptofi.loader.service.AmazonS3ServiceTest.profileF;
+import static com.receiptofi.loader.service.AmazonS3ServiceTest.propertiesF;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Matchers.anyString;
@@ -19,7 +24,6 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AmazonS3Service;
-import com.receiptofi.loader.service.AmazonS3ServiceTest;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
@@ -44,7 +48,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,6 +101,7 @@ public class FilesUploadToS3Test {
             }
         }
 
+        assertNotNull(prop.getProperty("aws.s3.bucketName"));
         MockitoAnnotations.initMocks(this);
         filesUploadToS3 = new FilesUploadToS3(
                 prop.getProperty("aws.s3.bucketName"),
