@@ -54,10 +54,7 @@ public class DocumentStatProcessed {
         this.dailyStatService = dailyStatService;
     }
 
-    /**
-     * Note: For every two second use *\/2 * * * * ? where as cron string blow run every day at 12:00 AM.
-     */
-    @Scheduled (cron = "0 0 0 * * ?")
+    @Scheduled (cron = "${loader.DocumentStatProcessed.computeDocumentDailyStat}")
     public void computeDocumentDailyStat() {
         if ("ON".equalsIgnoreCase(generateDocumentStat)) {
             LOG.info("feature is {}", generateDocumentStat);

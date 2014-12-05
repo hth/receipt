@@ -56,7 +56,7 @@ public class PurgeDocumentsProcess {
         this.documentManager = documentManager;
     }
 
-    @Scheduled (cron = "0 0 0 * * ?")
+    @Scheduled (cron = "${loader.PurgeDocumentsProcess.purgeRejectedDocument}")
     public void purgeRejectedDocument() {
         LOG.info("begins");
         if ("ON".equalsIgnoreCase(purgeRejectedDocument)) {

@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -65,7 +65,7 @@ import java.util.Properties;
 /**
  * Make sure upload test does not run on PROD.
  */
-@Profile ({"dev", "test"})
+@ActiveProfiles ({"dev", "test"})
 public class FilesUploadToS3Test {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3Test.class);
 
