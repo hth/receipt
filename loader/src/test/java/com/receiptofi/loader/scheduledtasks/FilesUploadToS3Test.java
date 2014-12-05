@@ -55,8 +55,6 @@ import java.util.Properties;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Configuration
-@Profile ({"dev", "test", "prod"})
 public class FilesUploadToS3Test {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3Test.class);
 
