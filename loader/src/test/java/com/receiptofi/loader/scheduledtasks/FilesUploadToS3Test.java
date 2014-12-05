@@ -57,7 +57,10 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-@Profile ({"dev", "test", "prod"})
+/**
+ * Make sure upload test does not run on PROD.
+ */
+@Profile ({"dev", "test"})
 public class FilesUploadToS3Test {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3Test.class);
 
