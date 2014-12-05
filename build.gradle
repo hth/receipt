@@ -234,6 +234,8 @@ subprojects {
     }
 
     test {
+        systemProperty "spring.profiles.active", "$env"
+
         // set heap size for the test JVM(s)
         minHeapSize = "128m"
         maxHeapSize = "512m"
