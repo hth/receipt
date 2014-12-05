@@ -66,10 +66,7 @@ public class FileSystemProcess {
         this.receiptService = receiptService;
     }
 
-    /**
-     * Note: For every two second use *\/2 * * * * ? where as cron string blow run every day at 12:00 AM.
-     */
-    @Scheduled (cron = "0 0 0 * * ?")
+    @Scheduled (cron = "${loader.FileSystemProcess.removeExpiredExcelFiles}")
     public void removeExpiredExcelFiles() {
         if ("ON".equalsIgnoreCase(removeExpiredExcelFiles)) {
             LOG.info("feature is {}", removeExpiredExcelFiles);
@@ -111,7 +108,7 @@ public class FileSystemProcess {
      *
      * @throws IOException
      */
-    @Scheduled (cron = "0 0 9 * * ?")
+    @Scheduled (cron = "${loader.FileSystemProcess.removeTempFiles}")
     public void removeTempFiles() throws IOException {
         File file = FileUtil.createTempFile("delete", ".xml");
         File directory = file.getParentFile();
