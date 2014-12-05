@@ -62,8 +62,7 @@ public class AmazonS3ServiceTest {
          * Loading properties file for junit.
          */
         if (prop.keySet().isEmpty()) {
-            ClassLoader classLoader = AmazonS3ServiceTest.class.getClassLoader();
-            File[] profileDir = findFiles(classLoader.getResource("").getPath().split("loader")[0] + BUILD, profileF);
+            File[] profileDir = findFiles(AmazonS3ServiceTest.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
             File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
             prop.load(new FileReader(propertiesFiles[0]));
         }
