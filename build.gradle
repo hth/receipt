@@ -396,7 +396,7 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task setUpProperties(dependsOn: [':clean']) << {
+task setUpProfileForJunit(dependsOn: [':clean']) << {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
 
@@ -447,11 +447,60 @@ task setUpProperties(dependsOn: [':clean']) << {
     }
 }
 
-task prepWar(dependsOn: [setUpProperties, unzip, copyJars]) << {
+task prepWar(dependsOn: [unzip, copyJars]) << {
+    warClassesDir.mkdirs()
+    warConfDir.mkdirs()
+
     copy {
         from 'web/web'
         into warDir
         exclude '**/*.classes'
+    }
+
+    copy {
+        from file("web/environment/$env/$env" + ".properties")
+        into warConfDir
+    }
+
+    copy {
+        from 'web/resources/conf/application-messages.properties'
+        from 'web/resources/conf/config.properties'
+        from 'web/resources/conf/redis.properties'
+
+        if (env == 'test' || env == 'prod') {
+            if (passFile.exists()) {
+                from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
+            } else {
+                throw new Exception("Required pass file does not exists: $passFile.canonicalPath")
+            }
+        }
+
+        if (env == 'dev') {
+            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
+            if (passFileLocal.exists()) {
+                from 'web/resources/conf/pass.properties'
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+            }
+        }
+
+        into warConfDir
+    }
+
+    copy {
+        from "web/environment/$env/logback.xml"
+        from 'web/resources/conf/messages.properties'
+        into warClassesDir
+    }
+
+    copy {
+        from "web/environment/$env/receipt-servlet.xml"
+        into warWebInfDir
+    }
+
+    copy {
+        from "web/environment/$env/mongo-config.xml"
+        into warWebInfDir
     }
 
     copy {
@@ -610,4 +659,4 @@ publishing {
 
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
-defaultTasks 'clean', 'setUpProperties', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport'
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport'
