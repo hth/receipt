@@ -25,6 +25,8 @@ import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
 
+import net.logstash.logback.encoder.org.apache.commons.lang.ArrayUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,22 +85,16 @@ public class FilesUploadToS3Test {
     public void setUp() throws IOException {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         String[] activeProfiles = ctx.getEnvironment().getActiveProfiles();
-        LOG.info("activeProfiles={}", activeProfiles);
+        LOG.info("activeProfiles={}", ArrayUtils.toString(activeProfiles));
 
         /**
          * Loading properties file for junit.
          */
         if (prop.keySet().isEmpty()) {
-            try {
-                File[] profileDir = findFiles(FilesUploadToS3Test.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
-                File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
-                prop.load(new FileReader(propertiesFiles[0]));
-            } catch(IOException e) {
-                LOG.error("setup reason={}", e.getLocalizedMessage(), e);
-                throw e;
-            }
+            File[] profileDir = findFiles(FilesUploadToS3Test.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
+            File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
+            prop.load(new FileReader(propertiesFiles[0]));
         }
-
 
         MockitoAnnotations.initMocks(this);
         filesUploadToS3 = new FilesUploadToS3(
