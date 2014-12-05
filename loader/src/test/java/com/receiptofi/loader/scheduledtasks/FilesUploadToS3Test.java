@@ -1,5 +1,6 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import static com.receiptofi.loader.service.AmazonS3ServiceTest.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Matchers.any;
@@ -18,10 +19,14 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AmazonS3Service;
+import com.receiptofi.loader.service.AmazonS3ServiceTest;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -32,9 +37,14 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Properties;
 
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -42,6 +52,8 @@ import java.util.Arrays;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
+@Configuration
+@Profile ({"dev", "test", "prod"})
 public class FilesUploadToS3Test {
 
     @Mock private AmazonS3 s3Client;
@@ -57,12 +69,24 @@ public class FilesUploadToS3Test {
     @Mock private FileSystemService fileSystemService;
 
     private FilesUploadToS3 filesUploadToS3;
+    private Properties prop = new Properties();
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
+        /**
+         * Loading properties file for junit.
+         */
+        if (prop.keySet().isEmpty()) {
+            ClassLoader classLoader = AmazonS3ServiceTest.class.getClassLoader();
+            File[] profileDir = findFiles(classLoader.getResource("").getPath().split("loader")[0] + BUILD, profileF);
+            File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
+            prop.load(new FileReader(propertiesFiles[0]));
+        }
+
+
         MockitoAnnotations.initMocks(this);
         filesUploadToS3 = new FilesUploadToS3(
-                "chk.test",
+                prop.getProperty("aws.s3.bucketName"),
                 documentUpdateService,
                 fileDBService,
                 imageSplitService,
