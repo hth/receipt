@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-@Profile ({"dev", "test", "prod"})
+@ActiveProfiles ({"dev", "test", "prod"})
 public class AmazonS3ServiceTest {
     public static final String BUILD = "build" +
             File.separator +
