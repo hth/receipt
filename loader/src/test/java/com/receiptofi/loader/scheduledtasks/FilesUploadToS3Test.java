@@ -25,6 +25,9 @@ import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -55,6 +58,7 @@ import java.util.Properties;
 @Configuration
 @Profile ({"dev", "test", "prod"})
 public class FilesUploadToS3Test {
+    private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3Test.class);
 
     @Mock private AmazonS3 s3Client;
     @Mock private DocumentUpdateService documentUpdateService;
@@ -78,9 +82,14 @@ public class FilesUploadToS3Test {
          */
         if (prop.keySet().isEmpty()) {
             ClassLoader classLoader = AmazonS3ServiceTest.class.getClassLoader();
-            File[] profileDir = findFiles(classLoader.getResource("").getPath().split("loader")[0] + BUILD, profileF);
-            File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
-            prop.load(new FileReader(propertiesFiles[0]));
+            try {
+                File[] profileDir = findFiles(classLoader.getResource("").getPath().split("loader")[0] + BUILD, profileF);
+                File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
+                prop.load(new FileReader(propertiesFiles[0]));
+            } catch(IOException e) {
+                LOG.error("setup reason={}", e.getLocalizedMessage(), e);
+                throw e;
+            }
         }
 
 
