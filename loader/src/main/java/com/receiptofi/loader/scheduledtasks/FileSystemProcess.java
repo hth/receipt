@@ -21,8 +21,8 @@ import java.io.IOException;
 
 /**
  * Can be used for deleting various kinds of files.
- *  Deletes excel report files.
- *  Deletes xml file generate for supporting excel files.
+ * Deletes excel report files.
+ * Deletes xml file generate for supporting excel files.
  * User: hitender
  * Date: 12/7/13 2:18 PM
  */
