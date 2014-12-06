@@ -100,7 +100,7 @@ public class AmazonS3ServiceTest {
 
     @Test
     public void testIfBucketExists() {
-        assertFalse("exists", amazonS3Service.getS3client().doesBucketExist(prop.getProperty("aws.s3.bucketName")));
+        assertTrue("exists", amazonS3Service.getS3client().doesBucketExist(prop.getProperty("aws.s3.bucketName")));
     }
 
     public static File[] findFiles(String location, FileFilter fileFilter) {

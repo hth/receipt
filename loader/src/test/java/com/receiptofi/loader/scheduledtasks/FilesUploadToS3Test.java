@@ -114,12 +114,12 @@ public class FilesUploadToS3Test {
         when(gridFSDBFile.getInputStream()).thenReturn(inputStream);
         when(fileDBService.getFile(anyString())).thenReturn(gridFSDBFile);
 
-        when(fileSystemEntity1.getOriginalFilename()).thenReturn("fileA.jpg");
+        when(fileSystemEntity1.getOriginalFilename()).thenReturn("test-fileA.jpg");
         when(fileSystemEntity1.getBlobId()).thenReturn("1234567890A");
         when(fileSystemEntity1.getContentType()).thenReturn("image/jpeg");
         when(fileSystemEntity1.getFileLength()).thenReturn(123L);
 
-        when(fileSystemEntity2.getOriginalFilename()).thenReturn("fileB.png");
+        when(fileSystemEntity2.getOriginalFilename()).thenReturn("test-fileB.png");
         when(fileSystemEntity2.getBlobId()).thenReturn("1234567890B");
         when(fileSystemEntity2.getContentType()).thenReturn("image/png");
         when(fileSystemEntity2.getFileLength()).thenReturn(123L);
