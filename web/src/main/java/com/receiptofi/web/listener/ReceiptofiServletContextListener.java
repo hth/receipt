@@ -74,17 +74,12 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
                         e.getLocalizedMessage(),
                         e
                 );
-                stopServer();
+                throw new RuntimeException(e.getMessage(), e);
             }
         } else {
             LOG.error("File system directory does not exists, location={}", config.get("expensofiReportLocation"));
-            stopServer();
+            throw new RuntimeException("File system directory does not exists, location=" + config.get("expensofiReportLocation"));
         }
         return true;
-    }
-
-    private void stopServer() {
-        LOG.error("Stopping server now. Fix above failures.");
-        System.exit(0);
     }
 }
