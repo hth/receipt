@@ -50,42 +50,39 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     }
 
     private boolean hasAccessToFileSystem() {
-        Assert.notNull(config.get("expensofiReportLocation"));
-        File directory = new File((String) config.get("expensofiReportLocation"));
+        String expensofiReportLocation = (String) config.get("expensofiReportLocation");
+        Assert.notNull(expensofiReportLocation);
+
+        File directory = new File(expensofiReportLocation);
         if (directory.exists() && directory.isDirectory()) {
-            File file = new File(config.get("expensofiReportLocation") +
+            File file = new File(expensofiReportLocation +
                     File.separator +
                     "receiptofi-expensofi.temp.delete.me");
             try {
                 if (!file.createNewFile()) {
-                    throw new AccessDeniedException("Cannot create, to location=" +
-                            config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot create, to location=" + expensofiReportLocation);
                 }
                 if (!file.canWrite()) {
-                    throw new AccessDeniedException("Cannot write, to location=" +
-                            config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot write, to location=" + expensofiReportLocation);
                 }
                 if (!file.canRead()) {
-                    throw new AccessDeniedException("Cannot read, to location=" +
-                            config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot read, to location=" + expensofiReportLocation);
                 }
                 if (!file.delete()) {
-                    throw new AccessDeniedException("Cannot delete, from location=" +
-                            config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot delete, from location=" + expensofiReportLocation);
                 }
             } catch (IOException e) {
                 LOG.error(
                         "Possible permission deny to location={}, reason={}",
-                        config.get("expensofiReportLocation"),
+                        expensofiReportLocation,
                         e.getLocalizedMessage(),
                         e
                 );
                 throw new RuntimeException(e.getMessage(), e);
             }
         } else {
-            String error = "File system directory does not exists, location=" + config.get("expensofiReportLocation");
-            LOG.error(error);
-            throw new RuntimeException(error);
+            LOG.error("File system directory does not exists, location={}", expensofiReportLocation);
+            throw new RuntimeException("File system directory does not exists, location=" + expensofiReportLocation);
         }
         return true;
     }
