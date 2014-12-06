@@ -1,5 +1,6 @@
 package com.receiptofi.loader.service;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -99,7 +100,7 @@ public class AmazonS3ServiceTest {
 
     @Test
     public void testIfBucketExists() {
-        assertTrue("exists", amazonS3Service.getS3client().doesBucketExist(prop.getProperty("aws.s3.bucketName")));
+        assertFalse("exists", amazonS3Service.getS3client().doesBucketExist(prop.getProperty("aws.s3.bucketName")));
     }
 
     public static File[] findFiles(String location, FileFilter fileFilter) {
