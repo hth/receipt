@@ -55,9 +55,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
 
         File directory = new File(expensofiReportLocation);
         if (directory.exists() && directory.isDirectory()) {
-            File file = new File(expensofiReportLocation +
-                    File.separator +
-                    "receiptofi-expensofi.temp.delete.me");
+            File file = new File(expensofiReportLocation + File.separator + "receiptofi-expensofi.temp.delete.me");
             try {
                 if (!file.createNewFile()) {
                     throw new AccessDeniedException("Cannot create, to location=" + expensofiReportLocation);
