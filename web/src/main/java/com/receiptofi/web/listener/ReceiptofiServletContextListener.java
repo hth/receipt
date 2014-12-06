@@ -53,19 +53,25 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         Assert.notNull(config.get("expensofiReportLocation"));
         File directory = new File((String) config.get("expensofiReportLocation"));
         if (directory.exists() && directory.isDirectory()) {
-            File file = new File(config.get("expensofiReportLocation") + File.separator + "receiptofi-expensofi.temp.delete.me");
+            File file = new File(config.get("expensofiReportLocation") +
+                    File.separator +
+                    "receiptofi-expensofi.temp.delete.me");
             try {
                 if (!file.createNewFile()) {
-                    throw new AccessDeniedException("Cannot create, to location=" + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot create, to location=" +
+                            config.get("expensofiReportLocation"));
                 }
                 if (!file.canWrite()) {
-                    throw new AccessDeniedException("Cannot write, to location=" + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot write, to location=" +
+                            config.get("expensofiReportLocation"));
                 }
                 if (!file.canRead()) {
-                    throw new AccessDeniedException("Cannot read, to location=" + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot read, to location=" +
+                            config.get("expensofiReportLocation"));
                 }
                 if (!file.delete()) {
-                    throw new AccessDeniedException("Cannot delete, from location=" + config.get("expensofiReportLocation"));
+                    throw new AccessDeniedException("Cannot delete, from location=" +
+                            config.get("expensofiReportLocation"));
                 }
             } catch (IOException e) {
                 LOG.error(
@@ -77,8 +83,9 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
                 throw new RuntimeException(e.getMessage(), e);
             }
         } else {
-            LOG.error("File system directory does not exists, location={}", config.get("expensofiReportLocation"));
-            throw new RuntimeException("File system directory does not exists, location=" + config.get("expensofiReportLocation"));
+            String error = "File system directory does not exists, location=" + config.get("expensofiReportLocation");
+            LOG.error(error);
+            throw new RuntimeException(error);
         }
         return true;
     }
