@@ -34,12 +34,7 @@ public class ReceiptofiInitializationCheckBean {
             LOG.info("ActiveMQ messaging is available");
         } catch (JMSException e) {
             LOG.error("ActiveMQ messaging is unavailable reason={}", e.getLocalizedMessage(), e);
-            stopServer();
+            throw new RuntimeException(e.getMessage(), e);
         }
-    }
-
-    private void stopServer() {
-        LOG.error("Stopping server now. Fix above failures.");
-        System.exit(0);
     }
 }
