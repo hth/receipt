@@ -77,6 +77,31 @@ public class FilesUploadToS3 {
     }
 
     /**
+     * Helps in rotating image.
+     * link https://stackoverflow.com/questions/5905868/am-i-making-this-too-complicated-image-rotation
+     * link https://stackoverflow.com/questions/20275424/rotating-image-with-affinetransform
+     *
+     * @param image
+     * @param transform
+     * @return
+     * @throws Exception
+     */
+    //TODO(hth) complete image rotation before uploading to cloud
+    public static BufferedImage transformImage(BufferedImage image, AffineTransform transform) throws Exception {
+        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BICUBIC);
+
+        BufferedImage destinationImage = op.createCompatibleDestImage(
+                image,
+                image.getType() == BufferedImage.TYPE_BYTE_GRAY ? image.getColorModel() : null);
+
+        Graphics2D g = destinationImage.createGraphics();
+        g.setBackground(Color.WHITE);
+        g.clearRect(0, 0, destinationImage.getWidth(), destinationImage.getHeight());
+        destinationImage = op.filter(image, destinationImage);
+        return destinationImage;
+    }
+
+    /**
      * Note: For every two second use *\/2 * * * * ? where as cron string blow run every 5 minutes.
      */
     @Scheduled (cron = "0/300 * * * * ?")
@@ -160,6 +185,7 @@ public class FilesUploadToS3 {
 
     /**
      * Populates PutObjectRequest.
+     *
      * @param document
      * @param fileSystem
      * @param file
@@ -173,6 +199,7 @@ public class FilesUploadToS3 {
 
     /**
      * Adds metadata like Receipt User Id, Receipt Id and Receipt Date to file.
+     *
      * @param fileLength
      * @param document
      * @param fileSystem
@@ -191,6 +218,7 @@ public class FilesUploadToS3 {
 
     /**
      * Name of the file on cloud.
+     *
      * @param fileSystemEntity
      * @return
      */
@@ -198,29 +226,5 @@ public class FilesUploadToS3 {
         return fileSystemEntity.getBlobId() +
                 FileUtil.DOT +
                 FileUtil.getFileExtension(fileSystemEntity.getOriginalFilename());
-    }
-
-    /**
-     * Helps in rotating image.
-     * link https://stackoverflow.com/questions/5905868/am-i-making-this-too-complicated-image-rotation
-     * link https://stackoverflow.com/questions/20275424/rotating-image-with-affinetransform
-     * @param image
-     * @param transform
-     * @return
-     * @throws Exception
-     */
-    //TODO(hth) complete image rotation before uploading to cloud
-    public static BufferedImage transformImage(BufferedImage image, AffineTransform transform) throws Exception {
-        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BICUBIC);
-
-        BufferedImage destinationImage = op.createCompatibleDestImage(
-                image,
-                image.getType() == BufferedImage.TYPE_BYTE_GRAY? image.getColorModel() : null);
-
-        Graphics2D g = destinationImage.createGraphics();
-        g.setBackground(Color.WHITE);
-        g.clearRect(0, 0, destinationImage.getWidth(), destinationImage.getHeight());
-        destinationImage = op.filter(image, destinationImage);
-        return destinationImage;
     }
 }
