@@ -241,7 +241,28 @@
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/receipt-servlet.xml" />
+          <element id="directory" name="jsp">
+            <element id="dir-copy" path="$PROJECT_DIR$/web/web/WEB-INF/jsp" />
+          </element>
+          <element id="directory" name="security">
+            <element id="file-copy" path="$PROJECT_DIR$/web/web/WEB-INF/security/secure.xml" />
+          </element>
+          <element id="file-copy" path="$PROJECT_DIR$/web/web/WEB-INF/web.xml" />
+          <element id="directory" name="freemarker">
+            <element id="dir-copy" path="$PROJECT_DIR$/web/web/WEB-INF/freemarker" />
+          </element>
         </element>
+        <element id="directory" name="static">
+          <element id="dir-copy" path="$PROJECT_DIR$/web/web/static" />
+        </element>
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/400.html" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/403.html" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/404.html" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/405.html" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/414.html" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/500.html" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/favicon.ico" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/web/robots.txt" />
       </root>
     </artifact>
     <artifact type="war" name="Gradle : com.receiptofi:social : social-0.9.0.war">
