@@ -19,6 +19,7 @@ import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.config.SocialConfig;
 import com.receiptofi.social.connect.ConnectionService;
 import com.receiptofi.utils.RandomString;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -155,9 +156,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userAccount = connectFacebook(provider, accessToken);
                     break;
                 case GOOGLE:
-                    Map<String, String> map = googleAccessTokenService.getTokenForAuthorizationCode(accessToken);
+                    Map<String, ScrubbedInput> map = googleAccessTokenService.getTokenForAuthorizationCode(accessToken);
                     if (!map.isEmpty()) {
-                        userAccount = connectGoogle(provider, map.get("access_token"));
+                        userAccount = connectGoogle(provider, map.get("access_token").getText());
                     }
                     break;
             }

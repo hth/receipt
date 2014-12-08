@@ -1,5 +1,7 @@
 package com.receiptofi.utils;
 
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
+
 /**
  * User: hitender
  * Date: 12/8/14 6:02 AM
@@ -12,7 +14,7 @@ public class ScrubbedInput {
     }
 
     public ScrubbedInput(String text) {
-        this.text = TextInputScrubber.sanitize(TextInputScrubber.decode(text));
+        this.text = StringUtils.trim(TextInputScrubber.sanitize(TextInputScrubber.decode(text)));
     }
 
     public String getText() {
