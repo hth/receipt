@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/ws/r")
-public final class ReceiptWebService {
+public class ReceiptWebService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptWebService.class);
 
     @Autowired private FetcherService fetcherService;

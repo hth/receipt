@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Generate CSRF token.
- *
  * User: hitender
  * Date: 7/2/14 11:54 PM
  */
@@ -27,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping (value = "/webapi/mobile/get")
 public class GetController {
     private static final Logger LOG = LoggerFactory.getLogger(GetController.class);

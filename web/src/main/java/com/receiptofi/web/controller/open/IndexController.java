@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
         "PMD.LongVariable"
 })
 @Controller
-public final class IndexController {
+public class IndexController {
     private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired

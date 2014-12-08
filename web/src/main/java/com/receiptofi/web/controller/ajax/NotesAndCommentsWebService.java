@@ -34,7 +34,7 @@ import java.util.Map;
 })
 @Controller
 @RequestMapping (value = "/ws/nc")
-public final class NotesAndCommentsWebService {
+public class NotesAndCommentsWebService {
     private static final Logger LOG = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
     @Autowired private ReceiptService receiptService;

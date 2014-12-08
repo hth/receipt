@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/open/validate")
-public final class ValidateEmailController {
+public class ValidateEmailController {
     private static final Logger LOG = LoggerFactory.getLogger(ValidateEmailController.class);
 
     private EmailValidateService emailValidateService;
