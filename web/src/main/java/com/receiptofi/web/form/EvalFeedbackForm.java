@@ -1,6 +1,6 @@
 package com.receiptofi.web.form;
 
-import com.receiptofi.domain.shared.ScrubbedInput;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 

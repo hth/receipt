@@ -1,6 +1,4 @@
-package com.receiptofi.domain.shared;
-
-import com.receiptofi.utils.TextInputScrubber;
+package com.receiptofi.utils;
 
 /**
  * User: hitender
