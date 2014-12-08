@@ -81,7 +81,11 @@ public class MobileAuthenticationController {
             try {
                 return customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid")), map.get("at"));
             } catch (HttpClientErrorException e) {
-                LOG.error("error pid={} reason={}", map.get("pid"), e.getLocalizedMessage(), e);
+                LOG.error("error pid={} reason={} responseHeader={}",
+                        map.get("pid"),
+                        e.getLocalizedMessage(),
+                        e.getResponseHeaders().toSingleValueMap(),
+                        e);
                 String appendToReason = StringUtils.isBlank(map.get("pid")) ? StringUtils.EMPTY : " " + map.get("pid");
 
                 JsonObject error = new JsonObject();
