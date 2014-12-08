@@ -217,7 +217,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * Save UserAccountEntity when user signs up from mobile using Facebook provider
+     * Save UserAccountEntity when user signs up from mobile using Facebook provider.
      *
      * @param accessToken
      * @param provider
@@ -253,7 +253,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * Save UserAccountEntity when user signs up from mobile using Google provider
+     * Save UserAccountEntity when user signs up from mobile using Google provider.
      *
      * @param accessToken
      * @param provider
@@ -272,6 +272,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 person.getFamilyName(),
                 userAuthentication
         );
+        //TODO(hth) save offline access key created by google
         userAccount.setProviderId(provider);
         userAccount.setProviderUserId(person.getId());
         userAccount.setDisplayName(person.getDisplayName());
