@@ -46,6 +46,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -68,6 +69,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private ConnectionService connectionService;
     @Autowired private GenerateUserIdManager generateUserIdManager;
     @Autowired private RegistrationConfig registrationConfig;
+    @Autowired private GoogleAccessTokenService googleAccessTokenService;
 
     /**
      * @param email - lower case string
@@ -104,7 +106,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     /**
      * If registration is turned on then check if the account is validated
-     * And, if registration is turned off then check is userAccount is active
+     * And, if registration is turned off then check is userAccount is active.
      *
      * @param userAccount
      * @return
@@ -153,7 +155,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userAccount = connectFacebook(provider, accessToken);
                     break;
                 case GOOGLE:
-                    userAccount = connectGoogle(provider, accessToken);
+                    Map<String, String> map = googleAccessTokenService.getTokenForAuthorizationCode(accessToken);
+                    if (!map.isEmpty()) {
+                        userAccount = connectGoogle(provider, map.get("access_token"));
+                    }
                     break;
             }
             if (null != userAccount) {
