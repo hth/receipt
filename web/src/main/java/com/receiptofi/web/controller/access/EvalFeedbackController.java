@@ -3,7 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.EvalFeedbackService;
 import com.receiptofi.web.form.EvalFeedbackForm;
-import com.receiptofi.web.util.TextInputScrubber;
+import com.receiptofi.utils.TextInputScrubber;
 import com.receiptofi.web.validator.EvalFeedbackValidator;
 
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public final class EvalFeedbackController {
         }
 
         evalFeedbackService.addFeedback(
-                TextInputScrubber.scrub(evalFeedbackForm.getComment()),
+                evalFeedbackForm.getComment().getText(),
                 evalFeedbackForm.getRating(),
                 evalFeedbackForm.getFileData(),
                 receiptUser.getRid());

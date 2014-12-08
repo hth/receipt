@@ -4,7 +4,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.ParseJsonStringToMap;
-import com.receiptofi.web.util.TextInputScrubber;
+import com.receiptofi.utils.TextInputScrubber;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,10 @@ public class NotesAndCommentsWebService {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt notes updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-        return receiptService.updateReceiptNotes(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
+        return receiptService.updateReceiptNotes(
+                TextInputScrubber.sanitize(TextInputScrubber.decode((map.get("notes")))),
+                map.get("receiptId"),
+                receiptUser.getRid());
     }
 
     @RequestMapping (
@@ -61,7 +64,10 @@ public class NotesAndCommentsWebService {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Note updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-        return mileageService.updateMileageNotes(TextInputScrubber.scrub(map.get("notes")), map.get("mileageId"), receiptUser.getRid());
+        return mileageService.updateMileageNotes(
+                TextInputScrubber.sanitize(TextInputScrubber.decode(map.get("notes"))),
+                map.get("mileageId"),
+                receiptUser.getRid());
     }
 
     @RequestMapping (
@@ -73,7 +79,10 @@ public class NotesAndCommentsWebService {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt recheck comment updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-        return receiptService.updateReceiptComment(TextInputScrubber.scrub(map.get("notes")), map.get("receiptId"), receiptUser.getRid());
+        return receiptService.updateReceiptComment(
+                TextInputScrubber.sanitize(TextInputScrubber.decode(map.get("notes"))),
+                map.get("receiptId"),
+                receiptUser.getRid());
     }
 
     @RequestMapping (
@@ -85,6 +94,8 @@ public class NotesAndCommentsWebService {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Document recheck comment updated by userProfileId={}", receiptUser.getRid());
         Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
-        return receiptService.updateDocumentComment(TextInputScrubber.scrub(map.get("notes")), map.get("documentId"));
+        return receiptService.updateDocumentComment(
+                TextInputScrubber.sanitize(TextInputScrubber.decode(map.get("notes"))),
+                map.get("documentId"));
     }
 }

@@ -1,5 +1,7 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.shared.ScrubbedInput;
+
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
@@ -15,7 +17,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 })
 public final class EvalFeedbackForm {
 
-    private String comment;
+    private ScrubbedInput comment;
 
     /* Rating can be set to zero in case user would not like to set any value for feedback */
     private int rating = 0;
@@ -23,12 +25,12 @@ public final class EvalFeedbackForm {
     private CommonsMultipartFile fileData;
 
     @SuppressWarnings ("unused")
-    public String getComment() {
+    public ScrubbedInput getComment() {
         return comment;
     }
 
     @SuppressWarnings ("unused")
-    public void setComment(String comment) {
+    public void setComment(ScrubbedInput comment) {
         this.comment = comment;
     }
 
