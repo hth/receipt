@@ -2,6 +2,7 @@ package com.receiptofi.web.controller.webapi;
 
 import com.receiptofi.service.MailService;
 import com.receiptofi.utils.ParseJsonStringToMap;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,14 +60,14 @@ public class MobileMailController {
         LOG.info("webApiAccessToken={}", webApiAccessToken);
 
         if (webApiAccessToken.equals(apiAccessToken)) {
-            Map<String, String> map = new HashMap<>();
+            Map<String, ScrubbedInput> map = new HashMap<>();
             try {
                 map = ParseJsonStringToMap.jsonStringToMap(mailJson);
             } catch (IOException e) {
                 LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
             }
             Assert.notNull(map);
-            if (mailService.accountValidationMail(map.get("userId"), map.get("name"), map.get("auth"))) {
+            if (mailService.accountValidationMail(map.get("userId").getText(), map.get("name").getText(), map.get("auth").getText())) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");

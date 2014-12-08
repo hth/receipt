@@ -36,7 +36,7 @@ public final class EvalFeedbackValidator implements Validator {
         LOG.debug("Executing validation");
 
         EvalFeedbackForm evalFeedbackForm = (EvalFeedbackForm) obj;
-        if (evalFeedbackForm.getComment().length() < 15) {
+        if (evalFeedbackForm.getComment().getText().length() < 15) {
             errors.rejectValue("comment",
                     "field.length",
                     new Object[]{Integer.valueOf("15")},

@@ -7,6 +7,7 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.utils.ParseJsonStringToMap;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.util.MobileSystemErrorCodeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +70,7 @@ public class MobileAuthenticationController {
         LOG.info("webApiAccessToken={}", webApiAccessToken);
 
         if (webApiAccessToken.equals(apiAccessToken)) {
-            Map<String, String> map = new HashMap<>();
+            Map<String, ScrubbedInput> map = new HashMap<>();
             try {
                 map = ParseJsonStringToMap.jsonStringToMap(authenticationJson);
             } catch (IOException e) {
@@ -78,14 +79,14 @@ public class MobileAuthenticationController {
             }
             Assert.notNull(map);
             try {
-                return customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid")), map.get("at"));
+                return customUserDetailsService.signInOrSignup(ProviderEnum.valueOf(map.get("pid").getText()), map.get("at").getText());
             } catch (HttpClientErrorException e) {
                 LOG.error("error pid={} reason={} responseHeader={}",
-                        map.get("pid"),
+                        map.get("pid").getText(),
                         e.getLocalizedMessage(),
                         e.getResponseHeaders().toSingleValueMap(),
                         e);
-                String appendToReason = StringUtils.isBlank(map.get("pid")) ? StringUtils.EMPTY : " " + map.get("pid");
+                String appendToReason = StringUtils.isBlank(map.get("pid").getText()) ? StringUtils.EMPTY : " " + map.get("pid");
 
                 JsonObject error = new JsonObject();
                 error.addProperty("httpStatusCode", e.getStatusCode().value());

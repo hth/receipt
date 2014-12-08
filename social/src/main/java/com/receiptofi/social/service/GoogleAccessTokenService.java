@@ -2,6 +2,7 @@ package com.receiptofi.social.service;
 
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.utils.ParseJsonStringToMap;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -65,7 +66,7 @@ public class GoogleAccessTokenService {
         this.googleClientSecret = googleClientSecret;
     }
 
-    public Map<String, String> getTokenForAuthorizationCode(String authorizationCode) {
+    public Map<String, ScrubbedInput> getTokenForAuthorizationCode(String authorizationCode) {
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(googleAuthenticationTokenRetrieval);
 
@@ -81,7 +82,7 @@ public class GoogleAccessTokenService {
             LOG.error("url parameter encoding reason={}", e.getLocalizedMessage(), e);
         }
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, ScrubbedInput> map = new HashMap<>();
         try {
             HttpResponse response = client.execute(post);
             if (200 == response.getStatusLine().getStatusCode()) {

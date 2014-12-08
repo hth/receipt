@@ -23,8 +23,8 @@ public final class ParseJsonStringToMap {
     private ParseJsonStringToMap() {
     }
 
-    public static Map<String, String> jsonStringToMap(String ids) throws IOException {
-        return new ObjectMapper().readValue(ids, new TypeReference<HashMap<String, String>>() {
+    public static Map<String, ScrubbedInput> jsonStringToMap(String ids) throws IOException {
+        return new ObjectMapper().readValue(ids, new TypeReference<HashMap<String, ScrubbedInput>>() {
             //Blank
         });
     }
