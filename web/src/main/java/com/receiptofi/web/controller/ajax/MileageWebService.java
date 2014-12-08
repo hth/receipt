@@ -7,6 +7,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.helper.json.Driven;
 import com.receiptofi.web.helper.json.MileageDateUpdateResponse;
 
@@ -80,10 +81,10 @@ public class MileageWebService {
     public String merge(@RequestBody String ids, HttpServletResponse httpServletResponse) throws IOException {
         if (ids.length() > 0) {
             try {
-                Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(ids);
+                Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(ids);
                 MileageEntity mileageEntity = mileageService.merge(
-                        map.get("id1"),
-                        map.get("id2"),
+                        map.get("id1").getText(),
+                        map.get("id2").getText(),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
                 Driven driven = new Driven();
@@ -114,7 +115,7 @@ public class MileageWebService {
         if (id.length() > 0) {
             try {
                 List<MileageEntity> mileageEntities = mileageService.split(
-                        ParseJsonStringToMap.jsonStringToMap(id).get("id"),
+                        ParseJsonStringToMap.jsonStringToMap(id).get("id").getText(),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
                 Driven driven = new Driven();
@@ -143,10 +144,10 @@ public class MileageWebService {
     @ResponseBody
     public String updateMileageStartDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
         if (mileageInfo.length() > 0) {
-            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
+            Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
                 MileageEntity mileageEntity = mileageService.getMileage(
-                        map.get("id"),
+                        map.get("id").getText(),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
                 if (null == mileageEntity) {
@@ -156,8 +157,8 @@ public class MileageWebService {
                     );
                 } else {
                     boolean status = mileageService.updateStartDate(
-                            map.get("id"),
-                            StringUtils.remove(map.get("msd"), "\""),
+                            map.get("id").getText(),
+                            StringUtils.remove(map.get("msd").getText(), "\""),
                             ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                     );
                     if (status) {
@@ -189,10 +190,10 @@ public class MileageWebService {
 //        return new ResponseEntity<>(mileageDateUpdateResponse.asJson(), responseHeaders, HttpStatus.OK);
 
         if (mileageInfo.length() > 0) {
-            Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
+            Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
                 String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
-                MileageEntity mileageEntity = mileageService.getMileage(map.get("id"), rid);
+                MileageEntity mileageEntity = mileageService.getMileage(map.get("id").getText(), rid);
                 if (null == mileageEntity) {
                     return createJSONUsingMileageDateUpdateResponse(
                             false,
@@ -200,7 +201,7 @@ public class MileageWebService {
                     );
                 } else {
                     if (mileageEntity.isComplete()) {
-                        boolean status = mileageService.updateEndDate(map.get("id"), StringUtils.remove(map.get("med"), "\""), rid);
+                        boolean status = mileageService.updateEndDate(map.get("id").getText(), StringUtils.remove(map.get("med").getText(), "\""), rid);
                         if (status) {
                             return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
                         } else {

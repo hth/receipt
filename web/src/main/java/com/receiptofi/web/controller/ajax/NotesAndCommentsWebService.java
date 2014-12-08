@@ -4,7 +4,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.ParseJsonStringToMap;
-import com.receiptofi.utils.TextInputScrubber;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,10 +48,10 @@ public class NotesAndCommentsWebService {
     public boolean saveReceiptNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt notes updated by userProfileId={}", receiptUser.getRid());
-        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateReceiptNotes(
-                TextInputScrubber.sanitize(TextInputScrubber.decode((map.get("notes")))),
-                map.get("receiptId"),
+                map.get("notes").getText(),
+                map.get("receiptId").getText(),
                 receiptUser.getRid());
     }
 
@@ -63,10 +63,10 @@ public class NotesAndCommentsWebService {
     public boolean saveMileageNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Note updated by userProfileId={}", receiptUser.getRid());
-        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return mileageService.updateMileageNotes(
-                TextInputScrubber.sanitize(TextInputScrubber.decode(map.get("notes"))),
-                map.get("mileageId"),
+                map.get("notes").getText(),
+                map.get("mileageId").getText(),
                 receiptUser.getRid());
     }
 
@@ -78,10 +78,10 @@ public class NotesAndCommentsWebService {
     public boolean saveReceiptRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt recheck comment updated by userProfileId={}", receiptUser.getRid());
-        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateReceiptComment(
-                TextInputScrubber.sanitize(TextInputScrubber.decode(map.get("notes"))),
-                map.get("receiptId"),
+                map.get("notes").getText(),
+                map.get("receiptId").getText(),
                 receiptUser.getRid());
     }
 
@@ -93,9 +93,9 @@ public class NotesAndCommentsWebService {
     public boolean saveDocumentRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Document recheck comment updated by userProfileId={}", receiptUser.getRid());
-        Map<String, String> map = ParseJsonStringToMap.jsonStringToMap(body);
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateDocumentComment(
-                TextInputScrubber.sanitize(TextInputScrubber.decode(map.get("notes"))),
-                map.get("documentId"));
+                map.get("notes").getText(),
+                map.get("documentId").getText());
     }
 }

@@ -48,6 +48,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping (value = "/open/registration")
 public class AccountRegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
+    private final UserRegistrationValidator userRegistrationValidator;
+    private final AccountService accountService;
+    private final MailService mailService;
+    private final EmailValidateService emailValidateService;
 
     @Value ("${registrationPage:registration}")
     private String registrationPage;
@@ -60,11 +64,6 @@ public class AccountRegistrationController {
 
     @Value ("${recover:redirect:/open/forgot/recover.htm}")
     private String recover;
-
-    private final UserRegistrationValidator userRegistrationValidator;
-    private final AccountService accountService;
-    private final MailService mailService;
-    private final EmailValidateService emailValidateService;
 
     @Autowired
     public AccountRegistrationController(
@@ -194,7 +193,7 @@ public class AccountRegistrationController {
     )
     @ResponseBody
     public String getAvailability(@RequestBody String body) throws IOException {
-        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("email"));
+        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("email").getText());
         AvailabilityStatus availabilityStatus;
 
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);
