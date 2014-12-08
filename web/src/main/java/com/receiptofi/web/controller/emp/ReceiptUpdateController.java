@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletRequest;
 })
 @Controller
 @RequestMapping (value = "/emp")
-public final class ReceiptUpdateController {
+public class ReceiptUpdateController {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptUpdateController.class);
 
     private static final String NEXT_PAGE_UPDATE = "/update";

@@ -54,7 +54,7 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/open/forgot")
-public final class ForgotController {
+public class ForgotController {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotController.class);
 
     /** Used in RedirectAttributes */

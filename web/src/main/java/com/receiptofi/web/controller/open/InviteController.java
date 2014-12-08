@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/open/invite")
-public final class InviteController {
+public class InviteController {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotController.class);
 
     /** Used in JSP page /invite/authenticateConfirm */

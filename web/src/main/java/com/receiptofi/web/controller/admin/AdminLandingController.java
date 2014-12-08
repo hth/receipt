@@ -38,7 +38,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/admin")
-public final class AdminLandingController {
+public class AdminLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
     private static final String nextPage = "/admin/landing";
 

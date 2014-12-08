@@ -43,7 +43,7 @@ import java.util.Set;
 })
 @Controller
 @RequestMapping (value = "/admin")
-public final class BusinessController {
+public class BusinessController {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessController.class);
     private static final String NEXT_PAGE = "/admin/business";
     private static final String EDIT_PAGE = "/admin/businessEdit";
