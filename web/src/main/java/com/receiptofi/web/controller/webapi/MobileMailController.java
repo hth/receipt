@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping (value = "/webapi/mobile/mail")
 public class MobileMailController {
     private static final Logger LOG = LoggerFactory.getLogger(MobileMailController.class);
