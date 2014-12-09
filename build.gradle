@@ -111,10 +111,11 @@ subprojects {
     jar {
         manifest {
             attributes(
-                    "Implementation-Vendor": "Receiptofi Inc",
-                    "Implementation-Title": rootProject.name,
-                    "Implementation-Version": allprojects.version + " $env",
-                    "Copyright": "2012-2014, Receiptofi Inc"
+                    'Implementation-Vendor': 'Receiptofi Inc',
+                    'Implementation-Title': rootProject.name,
+                    'Implementation-Version': allprojects.version + " $env",
+                    'Build-Time': "${new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")}",
+                    'Copyright': '2012-2014, Receiptofi Inc'
             )
         }
     }
