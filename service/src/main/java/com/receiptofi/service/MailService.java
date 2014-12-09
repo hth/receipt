@@ -173,7 +173,7 @@ public class MailService {
         UserAccountEntity userAccount = accountService.findByUserId(emailId);
         if (null == userAccount) {
             LOG.warn("could not recover user={}", emailId);
-            return MailTypeEnum.FAILURE;
+            return MailTypeEnum.ACCOUNT_NOT_FOUND;
         }
 
         if (userAccount.isAccountValidated()) {
@@ -214,7 +214,7 @@ public class MailService {
                 return MailTypeEnum.FAILURE;
             }
         } else {
-            /** Since account is not validated, send account validation email */
+            /** Since account is not validated, send account validation email. */
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
                     userAccount.getReceiptUserId(),
                     userAccount.getUserId());
