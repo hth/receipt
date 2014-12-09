@@ -1,5 +1,6 @@
 package com.receiptofi.web.controller.webapi;
 
+import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.service.MailService;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.ScrubbedInput;
@@ -44,7 +45,7 @@ public class MobileMailController {
     @Autowired private MailService mailService;
 
     @RequestMapping (
-            value = "/accountValidation",
+            value = "/accountSignup",
             method = RequestMethod.POST
     )
     @ResponseBody
@@ -66,15 +67,63 @@ public class MobileMailController {
             } catch (IOException e) {
                 LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
             }
-            Assert.notNull(map);
-            if (mailService.accountValidationMail(map.get("userId").getText(), map.get("name").getText(), map.get("auth").getText())) {
+            Assert.notEmpty(map);
+            if (mailService.accountValidationMail(
+                    map.get("userId").getText(),
+                    map.get("name").getText(),
+                    map.get("auth").getText())) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
             }
-
+        } else {
+            LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
         }
-        LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
-        httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
+    }
+
+    @RequestMapping (
+            value = "/accountRecover",
+            method = RequestMethod.POST
+    )
+    @ResponseBody
+    public void accountRecover(
+            @RequestBody
+            String recoverJson,
+
+            @RequestHeader ("X-R-API-MOBILE")
+            String apiAccessToken,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        LOG.info("webApiAccessToken={}", webApiAccessToken);
+
+        if (webApiAccessToken.equals(apiAccessToken)) {
+            Map<String, ScrubbedInput> map = new HashMap<>();
+            try {
+                map = ParseJsonStringToMap.jsonStringToMap(recoverJson);
+            } catch (IOException e) {
+                LOG.error("could not parse mailJson={} reason={}", recoverJson, e.getLocalizedMessage(), e);
+            }
+            Assert.notEmpty(map);
+            MailTypeEnum mailType = mailService.mailRecoverLink(map.get("userId").getText());
+            switch(mailType) {
+                case SUCCESS:
+                case ACCOUNT_NOT_VALIDATED:
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                    break;
+                case FAILURE:
+                    httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error occurred");
+                    break;
+                case ACCOUNT_NOT_FOUND:
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                    break;
+                default:
+                    throw new RuntimeException("");
+            }
+        } else {
+            LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
+        }
     }
 }
