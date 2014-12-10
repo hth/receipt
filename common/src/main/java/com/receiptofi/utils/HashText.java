@@ -8,8 +8,6 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
-import org.joda.time.DateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +70,6 @@ public final class HashText {
     }
 
     private static String hashCode(String text, MessageDigest md) {
-        DateTime time = DateUtil.now();
         if (null == md) {
             LOG.info("Un-Initialized MessageDigest");
             return null;
