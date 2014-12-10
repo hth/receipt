@@ -230,7 +230,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 throw e;
             }
 
-            //XXX TODO think about moving this up in previous method call
+            //TODO(hth) think about moving this up in previous method call
             updateUserIdWithEmailWhenPresent(userAccount, userProfile);
         } catch (IllegalAccessException | InvocationTargetException e) {
             LOG.error(e.getLocalizedMessage(), e);
@@ -296,7 +296,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
         mongoTemplate.save(userProfile);
 
-        //XXX TODO think about moving this up in previous method call
+        //TODO(hth) think about moving this up in previous method call
         updateUserIdWithEmailWhenPresent(userAccount, userProfile);
     }
 
@@ -308,10 +308,16 @@ public class ConnectionServiceImpl implements ConnectionService {
      */
     private void updateUserIdWithEmailWhenPresent(UserAccountEntity userAccount, UserProfileEntity userProfile) {
         try {
-            if (StringUtils.isNotBlank(userProfile.getEmail())) {
-                LOG.debug("about to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
-                userAccount.setUserId(userProfile.getEmail());
-                mongoTemplate.save(userAccount);
+            if (StringUtils.isNotBlank(userProfile.getEmail()))
+                if (StringUtils.equalsIgnoreCase(userAccount.getUserId(), userProfile.getEmail())) {
+                    LOG.debug("found matching userId and mail address, skipping update");
+                } else {
+                    LOG.debug("about to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
+                    userAccount.setUserId(userProfile.getEmail());
+                    mongoTemplate.save(userAccount);
+                }
+            else {
+                LOG.debug("found empty email, skipping update");
             }
         } catch (DuplicateKeyException e) {
             LOG.error(

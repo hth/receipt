@@ -182,6 +182,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<Connection<?>> connections;
         Facebook facebook = new FacebookTemplate(accessToken);
         String facebookProfileId = facebook.userOperations().getUserProfile().getId();
+        LOG.debug("facebook profile mail={}", facebook.userOperations().getUserProfile().getEmail());
 
         userAccount = accountService.findByProviderUserId(facebookProfileId);
         userConnectionRepository = socialConfig.usersConnectionRepository();
@@ -189,6 +190,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (null == userAccount) {
             userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
         } else {
+            LOG.info("access token different between old and new",
+                    StringUtils.difference(userAccount.getAccessToken(), accessToken));
             userAccount.setAccessToken(accessToken);
             accountService.saveUserAccount(userAccount);
         }
@@ -206,6 +209,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<Connection<?>> connections;
         Google google = new GoogleTemplate(accessToken);
         String googleProfileId = google.plusOperations().getGoogleProfile().getId();
+        LOG.debug("google profile mail={}", google.plusOperations().getGoogleProfile().getAccountEmail());
 
         userAccount = accountService.findByProviderUserId(googleProfileId);
         userConnectionRepository = socialConfig.usersConnectionRepository();
@@ -213,6 +217,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (null == userAccount) {
             userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
         } else {
+            LOG.info("access token different between old and new",
+                    StringUtils.difference(userAccount.getAccessToken(), accessToken));
             userAccount.setAccessToken(accessToken);
             accountService.saveUserAccount(userAccount);
         }
