@@ -188,6 +188,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
         if (null == userAccount) {
             userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
+        } else {
+            userAccount.setAccessToken(accessToken);
+            accountService.saveUserAccount(userAccount);
         }
 
         connections = connectionRepository.findConnections(provider.name());
@@ -209,6 +212,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
         if (null == userAccount) {
             userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
+        } else {
+            userAccount.setAccessToken(accessToken);
+            accountService.saveUserAccount(userAccount);
         }
 
         connections = connectionRepository.findConnections(provider.name());
