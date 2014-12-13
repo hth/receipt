@@ -29,7 +29,8 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes ({
         @CompoundIndex (name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
         @CompoundIndex (name = "user_account_provider_user_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true),
-        @CompoundIndex (name = "user_account_rid_idx", def = "{'RID': 1}", unique = true)
+        @CompoundIndex (name = "user_account_rid_idx", def = "{'RID': 1}", unique = true),
+        @CompoundIndex (name = "user_account_ac_idx", def = "{'AC': 1}")
 })
 public final class UserAccountEntity extends BaseEntity {
 
@@ -64,6 +65,9 @@ public final class UserAccountEntity extends BaseEntity {
 
     @Field ("AT")
     private String accessToken;
+
+    @Field ("AC")
+    private String authorizationCode;
 
     @Field ("SE")
     private String secret;
@@ -184,6 +188,14 @@ public final class UserAccountEntity extends BaseEntity {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getAuthorizationCode() {
+        return authorizationCode;
+    }
+
+    public void setAuthorizationCode(String authorizationCode) {
+        this.authorizationCode = authorizationCode;
     }
 
     public String getSecret() {

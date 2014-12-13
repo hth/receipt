@@ -5,6 +5,7 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.ForgotRecoverManager;
@@ -241,5 +242,9 @@ public class AccountService {
         );
         userAuthenticationManager.save(userAuthentication);
         return userAuthentication;
+    }
+
+    public UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode) {
+        return userAccountManager.findByAuthorizationCode(provider, authorizationCode);
     }
 }
