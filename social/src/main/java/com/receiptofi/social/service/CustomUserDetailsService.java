@@ -147,6 +147,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+    /**
+     * @param provider
+     * @param accessToken for Facebook and authorization code for Google
+     * @return
+     */
     @Social
     public String signInOrSignup(ProviderEnum provider, String accessToken) {
         UserAccountEntity userAccount = null;
@@ -156,9 +161,24 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userAccount = connectFacebook(provider, accessToken);
                     break;
                 case GOOGLE:
-                    Map<String, ScrubbedInput> map = googleAccessTokenService.getTokenForAuthorizationCode(accessToken);
-                    if (!map.isEmpty()) {
-                        userAccount = connectGoogle(provider, map.get("access_token").getText());
+                    userAccount = accountService.findByAuthorizationCode(provider, accessToken);
+                    if (userAccount == null) {
+                        Map<String, ScrubbedInput> map = googleAccessTokenService.getTokenForAuthorizationCode(accessToken);
+                        if (!map.isEmpty()) {
+                            userAccount = connectGoogle(
+                                    provider,
+                                    accessToken,
+                                    map.get("access_token").getText(),
+                                    map.get("refresh_token").getText());
+                        }
+                    } else {
+                        //TODO(hth) do we need to go through this when token are same. Check if token is same when profile info has not changed.
+                        LOG.info("found same google authorization code, so skipping");
+//                        userAccount = connectGoogle(
+//                                provider,
+//                                accessToken,
+//                                userAccount.getAccessToken(),
+//                                userAccount.getRefreshToken());
                     }
                     break;
             }
@@ -185,8 +205,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOG.debug("facebook profile mail={}", facebook.userOperations().getUserProfile().getEmail());
 
         userAccount = accountService.findByProviderUserId(facebookProfileId);
-        userConnectionRepository = socialConfig.usersConnectionRepository();
-        connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
         if (null == userAccount) {
             userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
         } else {
@@ -196,13 +214,30 @@ public class CustomUserDetailsService implements UserDetailsService {
             accountService.saveUserAccount(userAccount);
         }
 
+        userConnectionRepository = socialConfig.usersConnectionRepository();
+        connectionRepository = userConnectionRepository.createConnectionRepository(facebookProfileId);
         connections = connectionRepository.findConnections(provider.name());
         Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
         socialConfig.mongoConnectionService().update(facebookProfileId, connections.get(0));
         return userAccount;
     }
 
-    private UserAccountEntity connectGoogle(ProviderEnum provider, String accessToken) {
+    /**
+     * @param provider
+     * @param authorizationCode
+     * @param accessToken
+     * @param refreshToken      Always store user refresh tokens. If your application needs a new refresh token it must
+     *                          sent a request with the approval_prompt query parameter set to force. This will cause
+     *                          the user to see a dialog to grant permission to your application again.
+     * @return
+     * @link https://developers.google.com/glass/develop/mirror/authorization
+     */
+    private UserAccountEntity connectGoogle(
+            ProviderEnum provider,
+            String authorizationCode,
+            String accessToken,
+            String refreshToken
+    ) {
         UserAccountEntity userAccount;
         UsersConnectionRepository userConnectionRepository;
         ConnectionRepository connectionRepository;
@@ -212,17 +247,24 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOG.debug("google profile mail={}", google.plusOperations().getGoogleProfile().getAccountEmail());
 
         userAccount = accountService.findByProviderUserId(googleProfileId);
-        userConnectionRepository = socialConfig.usersConnectionRepository();
-        connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
         if (null == userAccount) {
-            userAccount = saveNewGoogleUserAccountEntity(accessToken, provider, google.plusOperations().getGoogleProfile());
+            userAccount = saveNewGoogleUserAccountEntity(
+                    accessToken,
+                    refreshToken,
+                    authorizationCode,
+                    provider,
+                    google.plusOperations().getGoogleProfile());
         } else {
             LOG.info("access token different between old and new",
                     StringUtils.difference(userAccount.getAccessToken(), accessToken));
             userAccount.setAccessToken(accessToken);
+            userAccount.setAuthorizationCode(authorizationCode);
+            userAccount.setRefreshToken(refreshToken);
             accountService.saveUserAccount(userAccount);
         }
 
+        userConnectionRepository = socialConfig.usersConnectionRepository();
+        connectionRepository = userConnectionRepository.createConnectionRepository(googleProfileId);
         connections = connectionRepository.findConnections(provider.name());
         Assert.isTrue(isConnectionPopulated(connections, provider.name()), "connection repository size is zero");
         socialConfig.mongoConnectionService().update(googleProfileId, connections.get(0));
@@ -269,11 +311,19 @@ public class CustomUserDetailsService implements UserDetailsService {
      * Save UserAccountEntity when user signs up from mobile using Google provider.
      *
      * @param accessToken
+     * @param refreshToken
+     * @param authorizationCode
      * @param provider
      * @param person
      * @return
      */
-    private UserAccountEntity saveNewGoogleUserAccountEntity(String accessToken, ProviderEnum provider, Person person) {
+    private UserAccountEntity saveNewGoogleUserAccountEntity(
+            String accessToken,
+            String refreshToken,
+            String authorizationCode,
+            ProviderEnum provider,
+            Person person
+    ) {
         UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
                 RandomString.newInstance().nextString()
         );
@@ -292,6 +342,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         userAccount.setProfileUrl(person.getUrl());
         userAccount.setImageUrl(person.getImageUrl());
         userAccount.setAccessToken(accessToken);
+        userAccount.setRefreshToken(refreshToken);
+        userAccount.setAuthorizationCode(authorizationCode);
         accountService.saveUserAccount(userAccount);
 
         //save profile

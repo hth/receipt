@@ -18,7 +18,6 @@ public class ScrubbedInput {
 
     @SuppressWarnings ("unused")
     private ScrubbedInput() {
-
     }
 
     @SuppressWarnings ("unused")

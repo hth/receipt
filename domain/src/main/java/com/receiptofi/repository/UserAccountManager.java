@@ -1,6 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.ProviderEnum;
 
 /**
  * User: hitender
@@ -12,4 +13,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     UserAccountEntity findByUserId(String mail);
 
     UserAccountEntity findByProviderUserId(String providerUserId);
+
+    UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode);
 }

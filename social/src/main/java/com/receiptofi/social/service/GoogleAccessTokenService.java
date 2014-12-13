@@ -66,6 +66,11 @@ public class GoogleAccessTokenService {
         this.googleClientSecret = googleClientSecret;
     }
 
+    /**
+     * Takes in authorization code to get access token and refresh token.
+     * @param authorizationCode
+     * @return
+     */
     public Map<String, ScrubbedInput> getTokenForAuthorizationCode(String authorizationCode) {
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(googleAuthenticationTokenRetrieval);

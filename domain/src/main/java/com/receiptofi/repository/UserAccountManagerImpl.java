@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.ProviderEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,5 +79,13 @@ public class UserAccountManagerImpl implements UserAccountManager {
     @Override
     public UserAccountEntity findByProviderUserId(String providerUserId) {
         return mongoTemplate.findOne(query(where("PUID").is(providerUserId)), UserAccountEntity.class, TABLE);
+    }
+
+    @Override
+    public UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode) {
+        return mongoTemplate.findOne(
+                query(where("PID").is(provider).and("AC").is(authorizationCode)),
+                UserAccountEntity.class, TABLE
+        );
     }
 }
