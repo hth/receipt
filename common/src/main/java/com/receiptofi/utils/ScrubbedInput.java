@@ -3,18 +3,32 @@ package com.receiptofi.utils;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 /**
+ * Cleans incoming data.
  * User: hitender
  * Date: 12/8/14 6:02 AM
  */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 public class ScrubbedInput {
     protected String text;
 
-    public ScrubbedInput() {
+    @SuppressWarnings ("unused")
+    private ScrubbedInput() {
 
     }
 
+    @SuppressWarnings ("unused")
     public ScrubbedInput(String text) {
         this.text = StringUtils.trim(TextInputScrubber.sanitize(TextInputScrubber.decode(text)));
+    }
+
+    @SuppressWarnings ("unused")
+    public ScrubbedInput(Integer text) {
+        this.text = Integer.toString(text);
     }
 
     public String getText() {
