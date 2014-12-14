@@ -65,7 +65,7 @@ public class RegistrationConfig {
     }
 
     /**
-     * To check is app is currently accepting registration
+     * To check is app is currently accepting registration.
      *
      * @param userAccount
      */
@@ -80,19 +80,14 @@ public class RegistrationConfig {
     }
 
     /**
-     * Last line of defense when registration is turned off and user logs in through one of the provider
+     * Last line of defense when registration is turned off and user logs in through one of the provider.
      *
      * @param user
      * @return
      */
     public boolean checkRegistrationIsTurnedOn(UserDetails user) {
         LOG.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), indexController);
-
-        if (user.isEnabled() || registrationTurnedOn) {
-            return false;
-        }
-
-        return true;
+        return !(user.isEnabled() || registrationTurnedOn);
     }
 
     public String getIndexController() {

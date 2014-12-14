@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "remember_username_idx", def = "{'UN': 1}"),
         @CompoundIndex (name = "remember_series_idx", def = "{'S': 1}")
 })
-public final class RememberMeTokenEntity extends BaseEntity {
+public class RememberMeTokenEntity extends BaseEntity {
 
     @NotNull
     @Field ("UN")
@@ -41,9 +41,11 @@ public final class RememberMeTokenEntity extends BaseEntity {
 
     @SuppressWarnings ("unused")
     private RememberMeTokenEntity() {
+        super();
     }
 
     public RememberMeTokenEntity(PersistentRememberMeToken persistentToken) {
+        super();
         this.series = persistentToken.getSeries();
         this.username = persistentToken.getUsername();
         this.tokenValue = persistentToken.getTokenValue();

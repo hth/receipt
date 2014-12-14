@@ -18,7 +18,7 @@ import java.text.NumberFormat;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class ReceiptGroupedByBizLocation implements Serializable {
+public class ReceiptGroupedByBizLocation implements Serializable {
 
     private BigDecimal total;
     private BizNameEntity bizName;

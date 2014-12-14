@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "MESSAGE_DOCUMENT")
-public final class MessageDocumentEntity extends BaseEntity {
+public class MessageDocumentEntity extends BaseEntity {
 
     @Field ("EM")
     String emailId;
@@ -57,8 +57,8 @@ public final class MessageDocumentEntity extends BaseEntity {
         this.documentStatus = documentStatus;
     }
 
-    public static MessageDocumentEntity newInstance(String idReceiptOCR, UserLevelEnum level, DocumentStatusEnum receiptStatus) {
-        return new MessageDocumentEntity(idReceiptOCR, level, receiptStatus);
+    public static MessageDocumentEntity newInstance(String documentId, UserLevelEnum level, DocumentStatusEnum receiptStatus) {
+        return new MessageDocumentEntity(documentId, level, receiptStatus);
     }
 
     public String getDocumentId() {
