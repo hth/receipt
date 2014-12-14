@@ -148,8 +148,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
+     * Mobile app sends provider Id and accessToken to sign up or login.
      * @param provider
-     * @param accessToken for Facebook and authorization code for Google
+     * @param accessToken Facebook sends accessToken and Google sends authorization code
      * @return
      */
     @Social
