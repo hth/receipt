@@ -33,7 +33,7 @@ public final class FileUploadDocumentListenerJMS {
     @Autowired private MessageDocumentManager messageDocumentManager;
 
     public void receive(Map<String, Object> message) throws Exception {
-        String id = (String) message.get("id");
+        String documentId = (String) message.get("id");
 
         String level = (String) message.get("level");
         UserLevelEnum levelEnum = UserLevelEnum.valueOf(level);
@@ -41,9 +41,10 @@ public final class FileUploadDocumentListenerJMS {
         String status = (String) message.get("status");
         DocumentStatusEnum documentStatusEnum = DocumentStatusEnum.valueOf(status);
 
-        MessageDocumentEntity object = MessageDocumentEntity.newInstance(id, levelEnum, documentStatusEnum);
+        MessageDocumentEntity object = MessageDocumentEntity.newInstance(documentId, levelEnum, documentStatusEnum);
         messageDocumentManager.save(object);
 
-        LOG.info("Message received id={}, user level={}, and persisted with id={}", id, level, object.getId());
+        LOG.info("Message received documentId={}, user level={}, and persisted with id={}",
+                documentId, level, object.getId());
     }
 }
