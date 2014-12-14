@@ -148,8 +148,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
+     * Mobile app sends provider Id and accessToken to sign up or login.
      * @param provider
-     * @param accessToken for Facebook and authorization code for Google
+     * @param accessToken Facebook sends accessToken and Google sends authorization code
      * @return
      */
     @Social
@@ -206,7 +207,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         userAccount = accountService.findByProviderUserId(facebookProfileId);
         if (null == userAccount) {
-            userAccount = saveNewFacebookUserAccountEntity(accessToken, provider, facebook.userOperations().getUserProfile());
+            userAccount = saveNewFacebookUserAccountEntity(
+                    accessToken,
+                    provider,
+                    facebook.userOperations().getUserProfile());
         } else {
             LOG.info("access token different between old and new",
                     StringUtils.difference(userAccount.getAccessToken(), accessToken));
