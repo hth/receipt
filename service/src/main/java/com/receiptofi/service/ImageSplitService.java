@@ -48,7 +48,10 @@ public class ImageSplitService {
         double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
-        File scaledFile = FileUtil.createTempFile(FilenameUtils.getBaseName(file.getName()) + "_Scaled", FilenameUtils.getExtension(file.getName()));
+        File scaledFile = FileUtil.createTempFile(
+                FilenameUtils.getBaseName(file.getName()) + "_Scaled",
+                FilenameUtils.getExtension(file.getName()));
+
         ImageIO.write(bufferedImage, PNG_FORMAT, scaledFile);
         return scaledFile;
     }
