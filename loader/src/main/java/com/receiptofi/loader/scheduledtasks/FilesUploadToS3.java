@@ -102,14 +102,13 @@ public class FilesUploadToS3 {
     }
 
     /**
-     * Note: For every two second use *\/2 * * * * ? where as cron string blow run every 5 minutes.
+     * Note: Cron string blow run every 5 minutes.
      */
-    @Scheduled (cron = "0/300 * * * * ?")
+    @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.upload}")
     public void upload() {
         List<DocumentEntity> documents = documentUpdateService.getAllProcessedDocuments();
-        LOG.info("Documents to upload to cloud, count={}", documents.size());
         if (!documents.isEmpty()) {
-            //LOG.info("Documents to upload to cloud, count={}", documents.size());
+            LOG.info("Documents to upload to cloud, count={}", documents.size());
         }
 
         int count = 0, failure = 0;
