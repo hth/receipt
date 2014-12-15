@@ -261,6 +261,7 @@
           <element id="directory" name="freemarker">
             <element id="dir-copy" path="$PROJECT_DIR$/web/web/WEB-INF/freemarker" />
           </element>
+          <element id="file-copy" path="$PROJECT_DIR$/web/web/WEB-INF/root-context.xml" />
         </element>
       </root>
     </artifact>
