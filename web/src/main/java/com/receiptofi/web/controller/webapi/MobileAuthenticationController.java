@@ -57,7 +57,6 @@ public class MobileAuthenticationController {
             value = "/auth-create",
             method = RequestMethod.POST
     )
-    @ResponseBody
     public String authenticateOrCreate(
             @RequestBody
             String authenticationJson,

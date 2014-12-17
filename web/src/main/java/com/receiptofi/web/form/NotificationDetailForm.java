@@ -24,7 +24,7 @@ import java.util.Date;
 public class NotificationDetailForm {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationDetailForm.class);
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd");
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM. dd");
     private static final int OFF_SET = 0;
     private static final int MAX_WIDTH = 53;
     private static final String CLASS = "class='notification'";
@@ -51,11 +51,11 @@ public class NotificationDetailForm {
     }
 
     public String getCreatedStr() {
-        return sdf.format(created);
+        return SDF.format(created);
     }
 
     /**
-     * Displayed on Landing page
+     * Displayed on Landing page.
      *
      * @return
      */
@@ -82,7 +82,7 @@ public class NotificationDetailForm {
     }
 
     /**
-     * Displayed on Notification page
+     * Displayed on Notification page.
      *
      * @return
      */
@@ -103,7 +103,6 @@ public class NotificationDetailForm {
                 return "";
         }
     }
-
 
     private String getReceiptUpdateURL(String message) {
         return "<a " + CLASS + " href=\"" + href + "\">" + message + "</a>";

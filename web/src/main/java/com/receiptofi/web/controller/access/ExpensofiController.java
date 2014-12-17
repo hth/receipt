@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +58,7 @@ import java.util.List;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping (value = "/access/expensofi")
 public final class ExpensofiController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
@@ -70,7 +71,6 @@ public final class ExpensofiController {
     @Autowired private ExpensofiExcelView expensofiExcelView;
 
     @RequestMapping (value = "/items", method = RequestMethod.POST)
-    @ResponseBody
     public String expensofi(@RequestBody String itemIds, Model model) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

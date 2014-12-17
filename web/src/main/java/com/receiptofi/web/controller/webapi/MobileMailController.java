@@ -48,7 +48,6 @@ public class MobileMailController {
             value = "/accountSignup",
             method = RequestMethod.POST
     )
-    @ResponseBody
     public void accountValidationMail(
             @RequestBody
             String mailJson,
@@ -86,7 +85,6 @@ public class MobileMailController {
             value = "/accountRecover",
             method = RequestMethod.POST
     )
-    @ResponseBody
     public void accountRecover(
             @RequestBody
             String recoverJson,
