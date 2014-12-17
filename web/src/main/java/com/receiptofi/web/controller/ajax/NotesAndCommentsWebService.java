@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Map;
@@ -32,7 +33,7 @@ import java.util.Map;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping (value = "/ws/nc")
 public class NotesAndCommentsWebService {
     private static final Logger LOG = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
@@ -44,7 +45,6 @@ public class NotesAndCommentsWebService {
             value = "/rn",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    @ResponseBody
     public boolean saveReceiptNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt notes updated by userProfileId={}", receiptUser.getRid());
@@ -59,7 +59,6 @@ public class NotesAndCommentsWebService {
             value = "/mn",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    @ResponseBody
     public boolean saveMileageNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Note updated by userProfileId={}", receiptUser.getRid());
@@ -74,7 +73,6 @@ public class NotesAndCommentsWebService {
             value = "/rc",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    @ResponseBody
     public boolean saveReceiptRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt recheck comment updated by userProfileId={}", receiptUser.getRid());
@@ -89,7 +87,6 @@ public class NotesAndCommentsWebService {
             value = "/dc",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    @ResponseBody
     public boolean saveDocumentRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Document recheck comment updated by userProfileId={}", receiptUser.getRid());

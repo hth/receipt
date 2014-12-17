@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping (value = "/ws/m")
 public class MileageWebService {
     private static final Logger LOG = LoggerFactory.getLogger(MileageWebService.class);
@@ -59,7 +60,6 @@ public class MileageWebService {
             value = "/f.json",
             method = RequestMethod.POST,
             produces = "application/json")
-    @ResponseBody
     public String fetch() throws IOException {
         DateTime time = DateUtil.now();
 
@@ -77,7 +77,6 @@ public class MileageWebService {
             value = "/m.json",
             method = RequestMethod.POST,
             produces = "application/json")
-    @ResponseBody
     public String merge(@RequestBody String ids, HttpServletResponse httpServletResponse) throws IOException {
         if (ids.length() > 0) {
             try {
@@ -110,7 +109,6 @@ public class MileageWebService {
             value = "/s.json",
             method = RequestMethod.POST,
             produces = "application/json")
-    @ResponseBody
     public String split(@RequestBody String id, HttpServletResponse httpServletResponse) throws IOException {
         if (id.length() > 0) {
             try {
@@ -141,7 +139,6 @@ public class MileageWebService {
             value = "/msd",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    @ResponseBody
     public String updateMileageStartDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
         if (mileageInfo.length() > 0) {
             Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
@@ -182,7 +179,6 @@ public class MileageWebService {
             value = "/med",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    @ResponseBody
     public String updateMileageEndDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
 
 //        HttpHeaders responseHeaders = new HttpHeaders();

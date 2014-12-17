@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -44,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping (value = "/ws/r")
 public class ReceiptWebService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptWebService.class);
@@ -63,7 +64,6 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @ResponseBody
     public Set<String> searchBusinessWithBusinessName(@RequestParam ("term") String businessName) {
         try {
             return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
@@ -84,7 +84,6 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @ResponseBody
     public Set<String> searchBiz(
             @RequestParam ("term")
             String bizAddress,
@@ -112,7 +111,6 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @ResponseBody
     public Set<String> searchPhone(
             @RequestParam ("term")
             String bizPhone,
@@ -146,7 +144,6 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @ResponseBody
     public Set<String> searchItem(
             @RequestParam ("term")
             String itemName,
@@ -174,7 +171,6 @@ public class ReceiptWebService {
             method = RequestMethod.POST,
             headers = "Accept=application/json",
             produces = "application/json")
-    @ResponseBody
     public long pendingReceipts() {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -202,7 +198,6 @@ public class ReceiptWebService {
             headers = "Accept=application/json",
             produces = "application/json")
     //@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate Account")  // 409 //TODO something to think about
-    @ResponseBody
     public boolean checkForDuplicate(
             @RequestParam ("date")
             String date,
@@ -248,7 +243,6 @@ public class ReceiptWebService {
             method = RequestMethod.POST,
             headers = "Accept=application/json",
             produces = "application/json")
-    @ResponseBody
     public boolean changeFSImageOrientation(
             @RequestParam ("fileSystemId")
             String fileSystemId,
