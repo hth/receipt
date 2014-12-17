@@ -3,7 +3,6 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.EvalFeedbackService;
 import com.receiptofi.web.form.EvalFeedbackForm;
-import com.receiptofi.utils.TextInputScrubber;
 import com.receiptofi.web.validator.EvalFeedbackValidator;
 
 import org.slf4j.Logger;
