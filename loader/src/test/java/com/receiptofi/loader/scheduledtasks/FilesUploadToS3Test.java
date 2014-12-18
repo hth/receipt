@@ -47,6 +47,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -80,6 +81,8 @@ public class FilesUploadToS3Test {
     @Mock private InputStream inputStream;
     @Mock private AmazonS3Service amazonS3Service;
     @Mock private FileSystemService fileSystemService;
+
+    @Mock private BufferedImage bufferedImage;
 
     private FilesUploadToS3 filesUploadToS3;
     private Properties prop = new Properties();
@@ -139,9 +142,10 @@ public class FilesUploadToS3Test {
     }
 
     @Test
-    public void testAmazonServiceException() {
+    public void testAmazonServiceException() throws IOException {
         when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
+        when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
         doThrow(AmazonServiceException.class).when(amazonS3Service).getS3client();
 
         doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
@@ -155,9 +159,10 @@ public class FilesUploadToS3Test {
     }
 
     @Test
-    public void testAmazonClientException() {
+    public void testAmazonClientException() throws IOException {
         when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
+        when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
         doThrow(AmazonClientException.class).when(amazonS3Service).getS3client();
 
         doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
@@ -171,9 +176,10 @@ public class FilesUploadToS3Test {
     }
 
     @Test
-    public void testException() {
+    public void testException() throws IOException {
         when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
+        when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
 
         doThrow(Exception.class).when(documentUpdateService).cloudUploadSuccessful(anyString());
 
@@ -185,9 +191,10 @@ public class FilesUploadToS3Test {
     }
 
     @Test
-    public void testUpload() {
+    public void testUpload() throws IOException {
         when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
+        when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
 
         doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
