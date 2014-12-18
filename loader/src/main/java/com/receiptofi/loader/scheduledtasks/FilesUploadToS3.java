@@ -1,7 +1,5 @@
 package com.receiptofi.loader.scheduledtasks;
 
-import com.mongodb.gridfs.GridFSDBFile;
-
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AmazonS3Service;
@@ -10,6 +8,8 @@ import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
 import com.receiptofi.utils.FileUtil;
+
+import org.apache.commons.io.FilenameUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -116,13 +116,12 @@ public class FilesUploadToS3 {
             try {
                 Collection<FileSystemEntity> fileSystemEntities = document.getFileSystemEntities();
                 for (FileSystemEntity fileSystem : fileSystemEntities) {
-                    File file = FileUtil.createTempFile(
-                            fileSystem.getOriginalFilename(),
+                    File scaledImage = FileUtil.createTempFile(
+                            FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
                             FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
 
-                    OutputStream os = new FileOutputStream(file);
-                    GridFSDBFile gridFSDBFile = fileDBService.getFile(fileSystem.getBlobId());
-                    imageSplitService.decreaseResolution(gridFSDBFile.getInputStream(), os);
+                    imageSplitService.decreaseResolution(fileDBService.getFile(fileSystem.getBlobId()).getInputStream(),
+                            new FileOutputStream(scaledImage));
 
                     //Set orientation of the image too
                     //imageSplitService.bufferedImage(file);
@@ -132,10 +131,16 @@ public class FilesUploadToS3 {
                             fileSystem.getOriginalFilename(),
                             fileSystem.getBlobId(),
                             FileUtil.fileSizeInMB(fileSystem.getFileLength()),
-                            FileUtil.fileSizeInMB(file.length()));
+                            FileUtil.fileSizeInMB(scaledImage.length()));
 
-                    fileSystemService.updateScaledFileLength(fileSystem.getId(), file.length());
-                    PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, file);
+                    File fileForS3;
+                    if (fileSystem.getImageOrientation() != 0) {
+                        fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+                    } else {
+                        fileForS3 = scaledImage;
+                    }
+                    updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
+                    PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
                     amazonS3Service.getS3client().putObject(putObject);
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
@@ -180,6 +185,83 @@ public class FilesUploadToS3 {
                 LOG.info("Documents upload success={} failure={} total={}", count, failure, documents.size());
             }
         }
+    }
+
+    /**
+     * Updates FileSystemEntity with scaled image info.
+     *
+     * @param fileSystem
+     * @param fileForS3
+     * @throws IOException
+     */
+    private void updateFileSystemWithScaledImageForS3(FileSystemEntity fileSystem, File fileForS3) throws Exception {
+        BufferedImage bufferedImage = imageSplitService.bufferedImage(fileForS3);
+
+        fileSystem.setImageOrientation(0);
+        fileSystem.setScaledFileLength(fileForS3.length());
+        fileSystem.setScaledHeight(bufferedImage.getHeight());
+        fileSystem.setScaledWidth(bufferedImage.getWidth());
+        fileSystemService.save(fileSystem);
+    }
+
+    /**
+     * Rotates file by provided orientation.
+     *
+     * @param imageOrientation angle of rotation
+     * @param file original file
+     * @return rotated new file
+     * @throws IOException
+     */
+    private File rotate(int imageOrientation, File file) throws IOException {
+        BufferedImage src = imageSplitService.bufferedImage(file);
+        AffineTransform t = new AffineTransform();
+        t.setToRotation(Math.toRadians(imageOrientation), src.getWidth() / 2, src.getHeight() / 2);
+
+        // source image rectangle
+        Point[] points = {
+                new Point(0, 0),
+                new Point(src.getWidth(), 0),
+                new Point(src.getWidth(), src.getHeight()),
+                new Point(0, src.getHeight())
+        };
+
+        // transform to destination rectangle
+        t.transform(points, 0, points, 0, 4);
+
+        // get destination rectangle bounding box
+        Point min = new Point(points[0]);
+        Point max = new Point(points[0]);
+        for (int i = 1, n = points.length; i < n; i++) {
+            Point p = points[i];
+            double pX = p.getX(), pY = p.getY();
+
+            // update min/max x
+            if (pX < min.getX()) min.setLocation(pX, min.getY());
+            if (pX > max.getX()) max.setLocation(pX, max.getY());
+
+            // update min/max y
+            if (pY < min.getY()) min.setLocation(min.getX(), pY);
+            if (pY > max.getY()) max.setLocation(max.getX(), pY);
+        }
+
+        // determine new width, height
+        int w = (int) (max.getX() - min.getX());
+        int h = (int) (max.getY() - min.getY());
+
+        // determine required translation
+        double tx = min.getX();
+        double ty = min.getY();
+
+        // append required translation
+        AffineTransform translation = new AffineTransform();
+        translation.translate(-tx, -ty);
+
+        t.preConcatenate(translation);
+
+        AffineTransformOp op = new AffineTransformOp(t, null);
+        BufferedImage dst = new BufferedImage(w, h, src.getType());
+        op.filter(src, dst);
+        return imageSplitService.writeToFile(file.getName(), dst);
     }
 
     /**

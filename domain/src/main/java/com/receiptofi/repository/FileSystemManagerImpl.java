@@ -80,13 +80,4 @@ public final class FileSystemManagerImpl implements FileSystemManager {
             deleteSoft(fileSystemEntity);
         }
     }
-
-    @Override
-    public void updateScaledFileLength(String id, long scaledFileLength) {
-        mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(id)).and("SLN").exists(false)),
-                update("SLN", scaledFileLength),
-                FileSystemEntity.class
-        );
-    }
 }
