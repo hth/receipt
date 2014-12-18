@@ -316,8 +316,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     userAccount.setUserId(userProfile.getEmail());
                     mongoTemplate.save(userAccount);
                 }
-            }
-            else {
+            } else {
                 LOG.debug("found empty email, skipping update");
             }
         } catch (DuplicateKeyException e) {
