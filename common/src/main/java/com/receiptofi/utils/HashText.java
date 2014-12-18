@@ -33,13 +33,13 @@ public final class HashText {
     // Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value.
     private static final int WORKLOAD = 15;
 
-    private static MessageDigest MD_1;
-    private static MessageDigest MD_5;
+    private static MessageDigest md1;
+    private static MessageDigest md5;
 
     static {
         try {
-            MD_1 = MessageDigest.getInstance("SHA-1");
-            MD_5 = MessageDigest.getInstance("SHA-512");
+            md1 = MessageDigest.getInstance("SHA-1");
+            md5 = MessageDigest.getInstance("SHA-512");
         } catch (NoSuchAlgorithmException exce) {
             LOG.error("No hashing algorithm found={}", exce);
         }
@@ -50,11 +50,11 @@ public final class HashText {
     }
 
     public static String hashCodeSHA1(String text) {
-        return hashCode(text, MD_1);
+        return hashCode(text, md1);
     }
 
     public static String hashCodeSHA512(String text) {
-        return hashCode(text, MD_5);
+        return hashCode(text, md5);
     }
 
     public static String computeBCrypt(String text) {

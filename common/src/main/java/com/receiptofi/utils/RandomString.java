@@ -18,7 +18,9 @@ import java.util.Random;
 })
 public final class RandomString {
 
+    private static final int CHARACTER_SIZE = 32;
     private static final char[] symbols = new char[36];
+
     static {
         for (int idx = 0; idx < 10; ++idx) {
             symbols[idx] = (char) ('0' + idx);
@@ -28,9 +30,7 @@ public final class RandomString {
             symbols[idx] = (char) ('a' + idx - 10);
         }
     }
-    private static final int CHARACTER_SIZE = 32;
     private final Random random = new Random();
-
     private final char[] buf;
 
     private RandomString(int length) {
