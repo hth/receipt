@@ -77,31 +77,6 @@ public class FilesUploadToS3 {
     }
 
     /**
-     * Helps in rotating image.
-     * link https://stackoverflow.com/questions/5905868/am-i-making-this-too-complicated-image-rotation
-     * link https://stackoverflow.com/questions/20275424/rotating-image-with-affinetransform
-     *
-     * @param image
-     * @param transform
-     * @return
-     * @throws Exception
-     */
-    //TODO(hth) complete image rotation before uploading to cloud
-    public static BufferedImage transformImage(BufferedImage image, AffineTransform transform) throws Exception {
-        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BICUBIC);
-
-        BufferedImage destinationImage = op.createCompatibleDestImage(
-                image,
-                image.getType() == BufferedImage.TYPE_BYTE_GRAY ? image.getColorModel() : null);
-
-        Graphics2D g = destinationImage.createGraphics();
-        g.setBackground(Color.WHITE);
-        g.clearRect(0, 0, destinationImage.getWidth(), destinationImage.getHeight());
-        destinationImage = op.filter(image, destinationImage);
-        return destinationImage;
-    }
-
-    /**
      * Note: Cron string blow run every 5 minutes.
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.upload}")
@@ -123,9 +98,6 @@ public class FilesUploadToS3 {
                     imageSplitService.decreaseResolution(fileDBService.getFile(fileSystem.getBlobId()).getInputStream(),
                             new FileOutputStream(scaledImage));
 
-                    //Set orientation of the image too
-                    //imageSplitService.bufferedImage(file);
-
                     LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
                             fileSystem.getId(),
                             fileSystem.getOriginalFilename(),
@@ -134,10 +106,10 @@ public class FilesUploadToS3 {
                             FileUtil.fileSizeInMB(scaledImage.length()));
 
                     File fileForS3;
-                    if (fileSystem.getImageOrientation() != 0) {
-                        fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
-                    } else {
+                    if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
                         fileForS3 = scaledImage;
+                    } else {
+                        fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
                     }
                     updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
                     PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
@@ -205,7 +177,7 @@ public class FilesUploadToS3 {
     }
 
     /**
-     * Rotates file by provided orientation.
+     * Rotates file by specified orientation.
      *
      * @param imageOrientation angle of rotation
      * @param file original file
