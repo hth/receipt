@@ -30,6 +30,9 @@ import javax.validation.constraints.NotNull;
 public class FileSystemEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemEntity.class);
 
+    /** Means image it aligned vertically. */
+    public static int DEFAULT_ORIENTATION_ANGLE = 0;
+
     @NotNull
     @Field ("BID")
     private String blobId;
@@ -52,7 +55,7 @@ public class FileSystemEntity extends BaseEntity {
 
     @NotNull
     @Field ("ORN")
-    private int imageOrientation = 0;
+    private int imageOrientation = DEFAULT_ORIENTATION_ANGLE;
 
     @NotNull
     @Field ("SEQ")
