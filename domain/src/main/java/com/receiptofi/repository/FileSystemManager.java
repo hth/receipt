@@ -13,6 +13,4 @@ public interface FileSystemManager extends RepositoryManager<FileSystemEntity> {
     void deleteSoft(Collection<FileSystemEntity> fileSystemEntities);
 
     void deleteHard(Collection<FileSystemEntity> fileSystemEntities);
-
-    void updateScaledFileLength(String id, long scaledFileLength);
 }

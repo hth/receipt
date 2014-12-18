@@ -87,6 +87,12 @@ public class ImageSplitService {
         return ImageIO.read(is);
     }
 
+    public File writeToFile(String filename, BufferedImage bufferedImage) throws IOException {
+        File toFile = FileUtil.createTempFile(FilenameUtils.getBaseName(filename), FileUtil.getFileExtension(filename));
+        ImageIO.write(bufferedImage, PNG_FORMAT, toFile);
+        return toFile;
+    }
+
     /**
      * This function resize the image file and returns the BufferedImage object that can be saved to file system.
      *

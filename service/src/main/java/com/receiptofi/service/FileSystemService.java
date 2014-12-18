@@ -27,10 +27,6 @@ public class FileSystemService {
         fileSystemManager.save(fileSystemEntity);
     }
 
-    public void updateScaledFileLength(String id, long scaledFileLength) {
-        fileSystemManager.updateScaledFileLength(id, scaledFileLength);
-    }
-
     public FileSystemEntity findById(String id) {
         return fileSystemManager.findOne(id);
     }

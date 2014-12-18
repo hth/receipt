@@ -39,8 +39,16 @@ public class FileSystemEntity extends BaseEntity {
     private int height;
 
     @NotNull
+    @Field ("SH")
+    private int scaledHeight;
+
+    @NotNull
     @Field ("W")
     private int width;
+
+    @NotNull
+    @Field ("SW")
+    private int scaledWidth;
 
     @NotNull
     @Field ("ORN")
@@ -114,12 +122,28 @@ public class FileSystemEntity extends BaseEntity {
         this.height = height;
     }
 
+    public int getScaledHeight() {
+        return scaledHeight;
+    }
+
+    public void setScaledHeight(int scaledHeight) {
+        this.scaledHeight = scaledHeight;
+    }
+
     public int getWidth() {
         return width;
     }
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    public int getScaledWidth() {
+        return scaledWidth;
+    }
+
+    public void setScaledWidth(int scaledWidth) {
+        this.scaledWidth = scaledWidth;
     }
 
     public int getImageOrientation() {
