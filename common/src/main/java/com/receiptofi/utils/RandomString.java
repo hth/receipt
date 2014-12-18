@@ -8,7 +8,7 @@ import java.util.Random;
  * Date: 4/15/13
  * Time: 2:02 AM
  * http://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string-in-java
- * You can tweak the "symbols" if you want to use more characters.
+ * You can tweak the "SYMBOLS" if you want to use more characters.
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -19,15 +19,15 @@ import java.util.Random;
 public final class RandomString {
 
     private static final int CHARACTER_SIZE = 32;
-    private static final char[] symbols = new char[36];
+    private static final char[] SYMBOLS = new char[36];
 
     static {
         for (int idx = 0; idx < 10; ++idx) {
-            symbols[idx] = (char) ('0' + idx);
+            SYMBOLS[idx] = (char) ('0' + idx);
         }
 
         for (int idx = 10; idx < 36; ++idx) {
-            symbols[idx] = (char) ('a' + idx - 10);
+            SYMBOLS[idx] = (char) ('a' + idx - 10);
         }
     }
     private final Random random = new Random();
@@ -50,7 +50,7 @@ public final class RandomString {
 
     public String nextString() {
         for (int idx = 0; idx < buf.length; ++idx) {
-            buf[idx] = symbols[random.nextInt(symbols.length)];
+            buf[idx] = SYMBOLS[random.nextInt(SYMBOLS.length)];
         }
         return new String(buf);
     }
