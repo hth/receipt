@@ -308,7 +308,7 @@ public class ConnectionServiceImpl implements ConnectionService {
      */
     private void updateUserIdWithEmailWhenPresent(UserAccountEntity userAccount, UserProfileEntity userProfile) {
         try {
-            if (StringUtils.isNotBlank(userProfile.getEmail()))
+            if (StringUtils.isNotBlank(userProfile.getEmail())) {
                 if (StringUtils.equalsIgnoreCase(userAccount.getUserId(), userProfile.getEmail())) {
                     LOG.debug("found matching userId and mail address, skipping update");
                 } else {
@@ -316,6 +316,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     userAccount.setUserId(userProfile.getEmail());
                     mongoTemplate.save(userAccount);
                 }
+            }
             else {
                 LOG.debug("found empty email, skipping update");
             }

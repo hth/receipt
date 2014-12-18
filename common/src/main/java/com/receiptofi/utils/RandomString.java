@@ -28,7 +28,7 @@ public final class RandomString {
             symbols[idx] = (char) ('a' + idx - 10);
         }
     }
-    private static int CHARACTERSIZE = 32;
+    private static final int CHARACTER_SIZE = 32;
     private final Random random = new Random();
 
     private final char[] buf;
@@ -41,7 +41,7 @@ public final class RandomString {
     }
 
     public static RandomString newInstance() {
-        return new RandomString(CHARACTERSIZE);
+        return new RandomString(CHARACTER_SIZE);
     }
 
     public static RandomString newInstance(int sizeOfString) {

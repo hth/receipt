@@ -31,7 +31,7 @@ public class FileSystemEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemEntity.class);
 
     /** Means image it aligned vertically. */
-    public static int DEFAULT_ORIENTATION_ANGLE = 0;
+    public static final int DEFAULT_ORIENTATION_ANGLE = 0;
 
     @NotNull
     @Field ("BID")

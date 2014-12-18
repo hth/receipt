@@ -208,12 +208,20 @@ public class FilesUploadToS3 {
             double pX = p.getX(), pY = p.getY();
 
             // update min/max x
-            if (pX < min.getX()) min.setLocation(pX, min.getY());
-            if (pX > max.getX()) max.setLocation(pX, max.getY());
+            if (pX < min.getX()) {
+                min.setLocation(pX, min.getY());
+            }
+            if (pX > max.getX()) {
+                max.setLocation(pX, max.getY());
+            }
 
             // update min/max y
-            if (pY < min.getY()) min.setLocation(min.getX(), pY);
-            if (pY > max.getY()) max.setLocation(max.getX(), pY);
+            if (pY < min.getY()) {
+                min.setLocation(min.getX(), pY);
+            }
+            if (pY > max.getY()) {
+                max.setLocation(max.getX(), pY);
+            }
         }
 
         // determine new width, height
