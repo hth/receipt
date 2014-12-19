@@ -5,12 +5,12 @@ import com.receiptofi.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
-import java.beans.Transient;
 import java.io.IOException;
 
 import javax.validation.constraints.NotNull;
@@ -190,5 +190,15 @@ public class FileSystemEntity extends BaseEntity {
         int tempHeight = this.height;
         this.height = this.width;
         this.width = tempHeight;
+    }
+
+    /**
+     * Name of the file on cloud.
+     *
+     * @return
+     */
+    @Transient
+    public String getKey() {
+        return blobId + FileUtil.DOT + FileUtil.getFileExtension(originalFilename);
     }
 }

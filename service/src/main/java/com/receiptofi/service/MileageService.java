@@ -1,5 +1,6 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.CloudFileEntity;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -8,7 +9,6 @@ import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.MileageManager;
-import com.receiptofi.repository.StorageManager;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -38,9 +38,9 @@ public final class MileageService {
 
     @Autowired private MileageManager mileageManager;
     @Autowired private CommentManager commentManager;
-    @Autowired private StorageManager storageManager;
     @Autowired private DocumentManager documentManager;
     @Autowired private FileSystemService fileSystemService;
+    @Autowired private CloudFileService cloudFileService;
 
     public void save(MileageEntity mileageEntity) throws Exception {
         mileageManager.save(mileageEntity);
@@ -144,7 +144,7 @@ public final class MileageService {
     }
 
     /**
-     * Saves notes to mileage
+     * Saves notes to mileage.
      *
      * @param notes
      * @param mileageId
@@ -177,7 +177,7 @@ public final class MileageService {
     }
 
     /**
-     * Delete mileage and its associated data
+     * Delete mileage and its associated data.
      *
      * @param mileageId - Mileage id to delete
      */
@@ -185,10 +185,11 @@ public final class MileageService {
         MileageEntity mileage = mileageManager.findOne(mileageId, userProfileId);
         if (mileage != null) {
             mileageManager.deleteHard(mileage);
-            fileSystemService.deleteHard(mileage.getFileSystemEntities());
-            for (FileSystemEntity fileSystemEntity : mileage.getFileSystemEntities()) {
-                storageManager.deleteHard(fileSystemEntity.getBlobId());
+            for (FileSystemEntity fileSystem : mileage.getFileSystemEntities()) {
+                CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey());
+                cloudFileService.save(cloudFile);
             }
+            fileSystemService.deleteHard(mileage.getFileSystemEntities());
             DocumentEntity documentEntity = documentManager.findOne(mileage.getDocumentId(), userProfileId);
             if (documentEntity != null) {
                 documentManager.deleteHard(documentEntity);

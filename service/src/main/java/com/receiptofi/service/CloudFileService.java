@@ -6,6 +6,8 @@ import com.receiptofi.repository.CloudFileManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 12/3/14 3:56 AM
@@ -26,11 +28,19 @@ public class CloudFileService {
         this.cloudFileManager = cloudFileManager;
     }
 
+    /**
+     * CloudFileEntity is marked as deleted.
+     * @param cloudFile
+     */
     public void save(CloudFileEntity cloudFile) {
         cloudFileManager.save(cloudFile);
     }
 
-    public void deleteSoft(CloudFileEntity cloudFile) {
-        cloudFileManager.deleteSoft(cloudFile);
+    public List<CloudFileEntity> getAllMarkedAsDeleted() {
+        return cloudFileManager.getAllMarkedAsDeleted();
+    }
+
+    public void deleteHard(CloudFileEntity cloudFileEntity) {
+        cloudFileManager.deleteHard(cloudFileEntity);
     }
 }

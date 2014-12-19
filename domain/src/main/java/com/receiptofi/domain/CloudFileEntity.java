@@ -1,11 +1,15 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.FileUtil;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
 
 /**
+ * File to be deleted from S3.
  * User: hitender
  * Date: 12/2/14 6:17 PM
  */
@@ -19,25 +23,33 @@ import javax.validation.constraints.NotNull;
 public class CloudFileEntity extends BaseEntity {
 
     @NotNull
-    @Field ("BID")
-    private String blobId;
+    @Field ("KEY")
+    private String key;
 
-    private CloudFileEntity(String blobId) {
-        this.blobId = blobId;
+    private CloudFileEntity(String key) {
+        super();
+        this.key = key;
+        this.markAsDeleted();
     }
 
-    public static CloudFileEntity newInstance(String blobId) {
-        return new CloudFileEntity(blobId);
+    /**
+     * New instance created is marked as deleted.
+     * @param key
+     * @return
+     */
+    public static CloudFileEntity newInstance(String key) {
+        Assert.isTrue(key.contains(FileUtil.DOT));
+        return new CloudFileEntity(key);
     }
 
-    public String getBlobId() {
-        return blobId;
+    public String getKey() {
+        return key;
     }
 
     @Override
     public String toString() {
-        return "CloudFilesEntity{" +
-                "blobId='" + blobId + '\'' +
+        return "CloudFileEntity{" +
+                "key='" + key + '\'' +
                 '}';
     }
 }

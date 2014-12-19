@@ -150,8 +150,8 @@ public class FilesUploadToS3 {
                 failure++;
 
                 for (FileSystemEntity fileSystem : document.getFileSystemEntities()) {
-                    amazonS3Service.getS3client().deleteObject(bucketName, getKey(fileSystem));
-                    LOG.warn("on failure removed files from cloud filename={}", getKey(fileSystem));
+                    amazonS3Service.getS3client().deleteObject(bucketName, fileSystem.getKey());
+                    LOG.warn("on failure removed files from cloud filename={}", fileSystem.getKey());
                 }
             } finally {
                 LOG.info("Documents upload success={} failure={} total={}", count, failure, documents.size());
@@ -253,7 +253,7 @@ public class FilesUploadToS3 {
      * @return
      */
     private PutObjectRequest getPutObjectRequest(DocumentEntity document, FileSystemEntity fileSystem, File file) {
-        PutObjectRequest putObject = new PutObjectRequest(bucketName, getKey(fileSystem), file);
+        PutObjectRequest putObject = new PutObjectRequest(bucketName, fileSystem.getKey(), file);
         putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
         return putObject;
     }
@@ -275,17 +275,5 @@ public class FilesUploadToS3 {
         metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
 
         return metaData;
-    }
-
-    /**
-     * Name of the file on cloud.
-     *
-     * @param fileSystemEntity
-     * @return
-     */
-    private String getKey(FileSystemEntity fileSystemEntity) {
-        return fileSystemEntity.getBlobId() +
-                FileUtil.DOT +
-                FileUtil.getFileExtension(fileSystemEntity.getOriginalFilename());
     }
 }

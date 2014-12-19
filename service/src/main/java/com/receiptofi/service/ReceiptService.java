@@ -2,8 +2,10 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.CloudFileEntity;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
@@ -15,7 +17,6 @@ import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.repository.StorageManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 
@@ -50,7 +51,6 @@ public class ReceiptService {
     @Autowired private ReceiptManager receiptManager;
     @Autowired private DocumentManager documentManager;
     @Autowired private DocumentUpdateService documentUpdateService;
-    @Autowired private StorageManager storageManager;
     @Autowired private ItemManager itemManager;
     @Autowired private ItemService itemService;
     @Autowired private ItemOCRManager itemOCRManager;
@@ -58,6 +58,7 @@ public class ReceiptService {
     @Autowired private FileUploadDocumentSenderJMS senderJMS;
     @Autowired private CommentManager commentManager;
     @Autowired private FileSystemService fileSystemService;
+    @Autowired private CloudFileService cloudFileService;
 
     /**
      * Find receipt for a receipt id for a specific user profile id.
@@ -95,7 +96,6 @@ public class ReceiptService {
         if (receipt.isActive()) {
             itemManager.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
-            storageManager.deleteSoft(receipt.getFileSystemEntities());
 
             if (receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
                 commentManager.deleteHard(receipt.getRecheckComment());
@@ -114,6 +114,10 @@ public class ReceiptService {
             }
 
             receiptManager.deleteSoft(receipt);
+            for (FileSystemEntity fileSystem : receipt.getFileSystemEntities()) {
+                CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey());
+                cloudFileService.save(cloudFile);
+            }
             return true;
         } else {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
