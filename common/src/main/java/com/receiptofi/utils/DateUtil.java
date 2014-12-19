@@ -56,8 +56,8 @@ public final class DateUtil {
             }
         }
 
-        LOG.error("Unsupported date condition reached: Not supported date string : " + dateAsStr);
-        throw new IllegalArgumentException("Unsupported date condition reached: Not supported date string : " + dateAsStr);
+        LOG.error("Unsupported date condition reached={}", dateAsStr);
+        throw new IllegalArgumentException("Unsupported date condition reached " + dateAsStr);
     }
 
     /**

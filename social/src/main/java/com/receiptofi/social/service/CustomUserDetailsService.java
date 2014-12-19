@@ -158,9 +158,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserAccountEntity userAccount;
         try {
             switch (provider) {
-                default:
-                    LOG.error("Reached unreachable condition", provider);
-                    throw new RuntimeException("Reached unreachable condition");
                 case FACEBOOK:
                     userAccount = connectFacebook(provider, accessToken);
                     break;
@@ -185,6 +182,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 //                                userAccount.getRefreshToken());
                     }
                     break;
+                default:
+                    LOG.error("Reached unreachable condition", provider);
+                    throw new UnsupportedOperationException("Reached unreachable condition");
             }
             if (null != userAccount) {
                 JsonObject result = new JsonObject();
