@@ -155,9 +155,12 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Social
     public String signInOrSignup(ProviderEnum provider, String accessToken) {
-        UserAccountEntity userAccount = null;
+        UserAccountEntity userAccount;
         try {
             switch (provider) {
+                default:
+                    LOG.error("Reached unreachable condition", provider);
+                    throw new RuntimeException("Reached unreachable condition");
                 case FACEBOOK:
                     userAccount = connectFacebook(provider, accessToken);
                     break;
