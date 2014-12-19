@@ -116,7 +116,8 @@ public class MobileMailController {
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                     break;
                 default:
-                    throw new RuntimeException("");
+                    LOG.error("Reached unsupported condition={}", mailType);
+                    throw new UnsupportedOperationException("Reached unsupported condition " + mailType);
             }
         } else {
             LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
