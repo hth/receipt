@@ -14,6 +14,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 12/2/14 6:37 PM
@@ -47,10 +49,8 @@ public class CloudFileManagerImpl implements CloudFileManager {
     }
 
     @Override
-    public void deleteSoft(CloudFileEntity object) {
-        Query query = query(where("id").is(object.getId()));
-        Update update = Update.update("D", true);
-        mongoTemplate.updateFirst(query, entityUpdate(update), CloudFileEntity.class);
+    public List<CloudFileEntity> getAllMarkedAsDeleted() {
+        return mongoTemplate.find(query(where("D").is(true)), CloudFileEntity.class);
     }
 
     @Override
