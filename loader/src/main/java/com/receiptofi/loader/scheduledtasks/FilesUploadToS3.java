@@ -47,6 +47,7 @@ import java.util.List;
 @Component
 public class FilesUploadToS3 {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3.class);
+    private static final int ROTATE_AT_CENTER = 2;
 
     private final String bucketName;
 
@@ -187,7 +188,10 @@ public class FilesUploadToS3 {
     private File rotate(int imageOrientation, File file) throws IOException {
         BufferedImage src = imageSplitService.bufferedImage(file);
         AffineTransform t = new AffineTransform();
-        t.setToRotation(Math.toRadians(imageOrientation), src.getWidth() / 2, src.getHeight() / 2);
+        t.setToRotation(
+                Math.toRadians(imageOrientation),
+                src.getWidth() / ROTATE_AT_CENTER,
+                src.getHeight() / ROTATE_AT_CENTER);
 
         // source image rectangle
         Point[] points = {
