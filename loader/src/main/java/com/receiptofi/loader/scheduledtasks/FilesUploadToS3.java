@@ -27,7 +27,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -185,7 +184,7 @@ public class FilesUploadToS3 {
      * Rotates file by specified orientation.
      *
      * @param imageOrientation angle of rotation
-     * @param file original file
+     * @param file             original file
      * @return rotated new file
      * @throws IOException
      */
