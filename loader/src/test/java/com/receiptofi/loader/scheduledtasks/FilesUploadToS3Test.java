@@ -23,6 +23,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
@@ -47,6 +48,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
@@ -56,6 +58,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
+/**
+ * ActiveProfiles makes sure upload test does not run on PROD.
+ */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -63,9 +68,6 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-/**
- * Make sure upload test does not run on PROD.
- */
 @ActiveProfiles ({"dev", "test"})
 public class FilesUploadToS3Test {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3Test.class);
@@ -81,7 +83,7 @@ public class FilesUploadToS3Test {
     @Mock private InputStream inputStream;
     @Mock private AmazonS3Service amazonS3Service;
     @Mock private FileSystemService fileSystemService;
-
+    @Mock private AffineTransformService affineTransformService;
     @Mock private BufferedImage bufferedImage;
 
     private FilesUploadToS3 filesUploadToS3;
@@ -112,7 +114,8 @@ public class FilesUploadToS3Test {
                 fileDBService,
                 imageSplitService,
                 amazonS3Service,
-                fileSystemService
+                fileSystemService,
+                affineTransformService
         );
         when(gridFSDBFile.getInputStream()).thenReturn(inputStream);
         when(fileDBService.getFile(anyString())).thenReturn(gridFSDBFile);
@@ -196,6 +199,32 @@ public class FilesUploadToS3Test {
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
 
+        doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
+        doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
+
+        filesUploadToS3.upload();
+        assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
+        verify(s3Client, times(2)).putObject(any(PutObjectRequest.class));
+        verify(documentUpdateService, times(1)).cloudUploadSuccessful(documentEntity.getId());
+        verify(fileDBService, times(1)).deleteHard(documentEntity.getFileSystemEntities());
+    }
+
+    @Test
+    public void testImageRotation() throws IOException {
+        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(amazonS3Service.getS3client()).thenReturn(s3Client);
+        when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
+        when(bufferedImage.getWidth()).thenReturn(100);
+        when(bufferedImage.getHeight()).thenReturn(300);
+        when(bufferedImage.getType()).thenReturn(6);
+        when(fileSystemEntity1.getImageOrientation()).thenReturn(-180);
+        when(fileSystemEntity2.getImageOrientation()).thenReturn(90);
+        when(imageSplitService.writeToFile(anyString(), any(BufferedImage.class))).thenReturn(new File(""));
+
+        doNothing().when(affineTransformService).affineTransform(
+                any(BufferedImage.class),
+                any(BufferedImage.class),
+                any(AffineTransform.class));
         doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
