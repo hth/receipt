@@ -138,7 +138,7 @@ public class AccountRegistrationController {
     }
 
     /**
-     * Starts the account recovery process
+     * Starts the account recovery process.
      *
      * @param email
      * @param httpServletResponse
@@ -161,7 +161,7 @@ public class AccountRegistrationController {
     }
 
     /**
-     * Starts the account recovery process
+     * Starts the account recovery process.
      *
      * @param userRegistrationForm
      * @param redirectAttrs

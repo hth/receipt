@@ -2,6 +2,7 @@ package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
@@ -56,6 +57,7 @@ public class FilesUploadToS3 {
     private ImageSplitService imageSplitService;
     private AmazonS3Service amazonS3Service;
     private FileSystemService fileSystemService;
+    private AffineTransformService affineTransformService;
 
     @Autowired
     public FilesUploadToS3(
@@ -66,7 +68,8 @@ public class FilesUploadToS3 {
             FileDBService fileDBService,
             ImageSplitService imageSplitService,
             AmazonS3Service amazonS3Service,
-            FileSystemService fileSystemService
+            FileSystemService fileSystemService,
+            AffineTransformService affineTransformService
     ) {
         this.bucketName = bucketName;
 
@@ -75,6 +78,7 @@ public class FilesUploadToS3 {
         this.imageSplitService = imageSplitService;
         this.amazonS3Service = amazonS3Service;
         this.fileSystemService = fileSystemService;
+        this.affineTransformService = affineTransformService;
     }
 
     /**
@@ -242,9 +246,8 @@ public class FilesUploadToS3 {
 
         t.preConcatenate(translation);
 
-        AffineTransformOp op = new AffineTransformOp(t, null);
         BufferedImage dst = new BufferedImage(w, h, src.getType());
-        op.filter(src, dst);
+        affineTransformService.affineTransform(src, dst, t);
         return imageSplitService.writeToFile(file.getName(), dst);
     }
 
