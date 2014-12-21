@@ -5,19 +5,14 @@ import static com.receiptofi.loader.service.AmazonS3ServiceTest.CONF;
 import static com.receiptofi.loader.service.AmazonS3ServiceTest.findFiles;
 import static com.receiptofi.loader.service.AmazonS3ServiceTest.profileF;
 import static com.receiptofi.loader.service.AmazonS3ServiceTest.propertiesF;
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.given;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.receiptofi.domain.CloudFileEntity;
-import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.CloudFileService;
 
@@ -43,7 +38,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 @SuppressWarnings ({
