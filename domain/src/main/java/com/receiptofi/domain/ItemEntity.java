@@ -40,7 +40,7 @@ import javax.validation.constraints.Size;
 @Document (collection = "ITEM")
 //TODO(hth) @DBRef RECEIPT index does not look correct to me
 @CompoundIndexes ({@CompoundIndex (name = "user_item_idx", def = "{'RECEIPT': -1, 'RID': 1}")})
-public final class ItemEntity extends BaseEntity {
+public class ItemEntity extends BaseEntity {
 
     @Size (min = 1, max = 128)
     @Field ("IN")

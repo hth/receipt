@@ -42,7 +42,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "receipt_unique_idx", def = "{'CS': -1}", unique = true),
         @CompoundIndex (name = "receipt_expense_Report", def = "{'EXF': -1}")
 })
-public final class ReceiptEntity extends BaseEntity {
+public class ReceiptEntity extends BaseEntity {
 
     @NotNull
     @Field ("DS")

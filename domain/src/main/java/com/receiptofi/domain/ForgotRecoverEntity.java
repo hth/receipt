@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "forgot_recover_idx", def = "{'RID': 0, 'AUTH' : 0}", unique = true)
 })
-public final class ForgotRecoverEntity extends BaseEntity {
+public class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")

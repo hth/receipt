@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),
 })
-public final class BizStoreEntity extends BaseEntity {
+public class BizStoreEntity extends BaseEntity {
 
     /** Field name */
     public static final String ADDRESS_FIELD_NAME = "AD";

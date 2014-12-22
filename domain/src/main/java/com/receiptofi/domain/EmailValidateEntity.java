@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "email_valid_idx", def = "{'AUTH': 1}", unique = true),
 })
-public final class EmailValidateEntity extends BaseEntity {
+public class EmailValidateEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")

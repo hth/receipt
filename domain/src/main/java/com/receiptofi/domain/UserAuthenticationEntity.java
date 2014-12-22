@@ -31,7 +31,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes ({
         @CompoundIndex (name = "user_authentication_idx", def = "{'PA': 1, 'AU': 1}", unique = true)
 })
-public final class UserAuthenticationEntity extends BaseEntity {
+public class UserAuthenticationEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationEntity.class);
 
     @NotNull

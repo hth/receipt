@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "browser_idx", def = "{'U': 1}", unique = true),
 })
-public final class BrowserEntity extends BaseEntity {
+public class BrowserEntity extends BaseEntity {
 
     @NotNull
     @Field ("CK")

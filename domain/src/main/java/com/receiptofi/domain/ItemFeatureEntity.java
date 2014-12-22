@@ -22,7 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         "PMD.LongVariable"
 })
 @Document (collection = "ITEM_FEATURE")
-public final class ItemFeatureEntity extends BaseEntity {
+public class ItemFeatureEntity extends BaseEntity {
 
     @DBRef
     @Field ("ITEM")

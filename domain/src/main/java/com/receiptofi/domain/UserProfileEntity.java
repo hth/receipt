@@ -35,7 +35,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes ({
         @CompoundIndex (name = "user_profile_provider_uid_em_idx", def = "{'RID': -1, 'UID': -1, 'PID': 1, 'EM' : 1}", unique = true)
 })
-public final class UserProfileEntity extends BaseEntity {
+public class UserProfileEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
