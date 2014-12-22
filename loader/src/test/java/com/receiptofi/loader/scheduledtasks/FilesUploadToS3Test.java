@@ -106,7 +106,7 @@ public class FilesUploadToS3Test {
             }
         }
 
-        assertNotNull(prop.getProperty("aws.s3.bucketName"));
+        assertNotNull("Bucket name has to exists", prop.getProperty("aws.s3.bucketName"));
         MockitoAnnotations.initMocks(this);
         filesUploadToS3 = new FilesUploadToS3(
                 prop.getProperty("aws.s3.bucketName"),
