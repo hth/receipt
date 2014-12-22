@@ -115,7 +115,7 @@ subprojects {
                     'Implementation-Title': rootProject.name,
                     'Implementation-Version': allprojects.version + " $env",
                     'Build-Time': "${new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")}",
-                    'Copyright': '2012-2014, Receiptofi Inc'
+                    'Copyright': '2012-2015, Receiptofi Inc'
             )
         }
     }
@@ -576,7 +576,7 @@ publishing {
                 root.appendNode('inceptionYear', '2013')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2012-2015. All rights reserved.')
                 license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
                 license.appendNode('distribution', 'Receiptofi private repository')
 
@@ -598,7 +598,7 @@ publishing {
                 root.appendNode('inceptionYear', '2013')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2012-2015. All rights reserved.')
                 license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
                 license.appendNode('distribution', 'Receiptofi private repository')
 
@@ -620,7 +620,7 @@ publishing {
                 root.appendNode('inceptionYear', '2013')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2012-2015. All rights reserved.')
                 license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
                 license.appendNode('distribution', 'Receiptofi private repository')
 
@@ -642,7 +642,7 @@ publishing {
                 root.appendNode('inceptionYear', '2013')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2014. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2012-2015. All rights reserved.')
                 license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
                 license.appendNode('distribution', 'Receiptofi private repository')
 
