@@ -64,7 +64,7 @@ import java.util.Map;
         "PMD.LongVariable"
 })
 @Service
-public final class LandingService {
+public class LandingService {
     private static final Logger LOG = LoggerFactory.getLogger(LandingService.class);
 
     @Autowired private ReceiptManager receiptManager;

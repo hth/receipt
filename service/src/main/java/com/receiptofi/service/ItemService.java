@@ -29,7 +29,7 @@ import java.util.Map;
         "PMD.LongVariable"
 })
 @Service
-public final class ItemService {
+public class ItemService {
 
     @Autowired private ItemManager itemManager;
     @Autowired private ExpenseTagManager expenseTagManager;

@@ -21,7 +21,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class EmpLandingService {
+public class EmpLandingService {
 
     @Autowired private MessageDocumentManager messageDocumentManager;
 

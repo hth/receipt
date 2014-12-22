@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
         "PMD.LongVariable"
 })
 @Service
-public final class LoginService {
+public class LoginService {
     private static final Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired private UserAuthenticationManager userAuthenticationManager;

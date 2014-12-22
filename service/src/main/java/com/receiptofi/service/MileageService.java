@@ -33,7 +33,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class MileageService {
+public class MileageService {
     private static final Logger LOG = LoggerFactory.getLogger(MileageService.class);
 
     @Autowired private MileageManager mileageManager;

@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
         "PMD.LongVariable"
 })
 @Service
-public final class InviteService {
+public class InviteService {
     private static final Logger LOG = LoggerFactory.getLogger(InviteService.class);
 
     private AccountService accountService;

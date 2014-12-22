@@ -31,7 +31,7 @@ import java.util.Iterator;
         "PMD.LongVariable"
 })
 @Service
-public final class ExternalService {
+public class ExternalService {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalService.class);
 
     private static final String ADDRESS_DECODE_URL = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";

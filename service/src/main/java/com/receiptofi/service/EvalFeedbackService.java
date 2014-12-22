@@ -26,7 +26,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
         "PMD.LongVariable"
 })
 @Service
-public final class EvalFeedbackService {
+public class EvalFeedbackService {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackService.class);
 
     @Autowired EvalFeedbackManager evalFeedbackManager;
