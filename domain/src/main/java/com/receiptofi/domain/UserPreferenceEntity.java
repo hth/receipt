@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         "PMD.LongVariable"
 })
 @Document (collection = "USER_PREFERENCE")
-public final class UserPreferenceEntity extends BaseEntity {
+public class UserPreferenceEntity extends BaseEntity {
 
     @DBRef
     @Indexed (unique = true)

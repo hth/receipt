@@ -41,7 +41,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "mileage_se_idx", def = "{'S': -1, 'E': -1, 'RID': -1}", unique = true),
         @CompoundIndex (name = "mileage_s_idx", def = "{'S': -1, 'RID': -1}", unique = true)
 })
-public final class MileageEntity extends BaseEntity {
+public class MileageEntity extends BaseEntity {
 
     public static final int LIST_MAX_SIZE = 2;
     @NotNull

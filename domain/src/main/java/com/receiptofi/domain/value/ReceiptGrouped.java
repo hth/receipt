@@ -24,7 +24,7 @@ import java.util.Date;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class ReceiptGrouped implements Serializable {
+public class ReceiptGrouped implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptGrouped.class);
 
     private BigDecimal total;

@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "NOTIFICATION")
-public final class NotificationEntity extends BaseEntity {
+public class NotificationEntity extends BaseEntity {
 
     @NotNull
     @Field ("MS")

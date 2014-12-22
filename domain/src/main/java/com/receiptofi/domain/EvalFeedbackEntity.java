@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "eval_feedback_idx", def = "{'RID': 1, 'C': 1}", unique = true),
 })
-public final class EvalFeedbackEntity extends BaseEntity {
+public class EvalFeedbackEntity extends BaseEntity {
 
     @Field ("FBK")
     private String feedback;

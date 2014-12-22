@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
 })
 @Document (collection = "ITEM_OCR")
 @CompoundIndexes ({@CompoundIndex (name = "user_item_ocr_idx", def = "{'RECEIPT': -1, 'RID': 1}")})
-public final class ItemEntityOCR extends BaseEntity {
+public class ItemEntityOCR extends BaseEntity {
 
     @Size (min = 1, max = 128)
     @Field ("IN")

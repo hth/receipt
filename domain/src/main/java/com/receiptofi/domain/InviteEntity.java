@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "invite_email_idx", def = "{'EM': 0}", unique = false),
         @CompoundIndex (name = "invite_key_idx", def = "{'AU' : 0}", unique = true)
 })
-public final class InviteEntity extends BaseEntity {
+public class InviteEntity extends BaseEntity {
 
     @NotNull
     @Field ("EM")

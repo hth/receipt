@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class UploadDocumentImage {
+public class UploadDocumentImage {
     public static final String UNDER_SCORE = "_";
 
     //Default is MultipartFile

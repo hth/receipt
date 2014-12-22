@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "user_account_rid_idx", def = "{'RID': 1}", unique = true),
         @CompoundIndex (name = "user_account_ac_idx", def = "{'AC': 1}")
 })
-public final class UserAccountEntity extends BaseEntity {
+public class UserAccountEntity extends BaseEntity {
 
     /** Unique Id throughout the system. This will never change. */
     @NotNull

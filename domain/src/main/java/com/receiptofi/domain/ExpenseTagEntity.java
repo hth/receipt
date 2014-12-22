@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "expense_tag_idx", def = "{'RID': 1, 'TAG': 1}", unique = true),
 })
-public final class ExpenseTagEntity extends BaseEntity {
+public class ExpenseTagEntity extends BaseEntity {
 
     @NotNull
     @Size (min = 0, max = 6)

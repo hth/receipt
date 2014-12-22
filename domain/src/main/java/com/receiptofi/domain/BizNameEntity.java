@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "biz_name_idx", def = "{'N': 1}", unique = true),
 })
-public final class BizNameEntity extends BaseEntity {
+public class BizNameEntity extends BaseEntity {
 
     @NotNull
     @Field ("N")

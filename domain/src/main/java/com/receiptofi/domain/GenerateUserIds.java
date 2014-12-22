@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         "PMD.LongVariable"
 })
 @Document (collection = "GENERATE_USER_IDS")
-public final class GenerateUserIds {
+public class GenerateUserIds {
     private static final long STARTING_USER_ID = 10_000_000_001L;
 
     @Id

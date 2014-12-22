@@ -20,16 +20,13 @@ import com.receiptofi.repository.UserProfileManager;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * User: hitender
  * Date: 2/19/14 11:21 PM
  */
-@RunWith (MockitoJUnitRunner.class)
 public class AccountServiceTest {
 
     @Mock private UserAuthenticationManager userAuthenticationManager;
