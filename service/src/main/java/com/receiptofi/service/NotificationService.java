@@ -29,7 +29,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class NotificationService {
+public class NotificationService {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationService.class);
 
     @Autowired private NotificationManager notificationManager;

@@ -20,7 +20,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class ExpensesService {
+public class ExpensesService {
 
     @Autowired private ExpenseTagManager expenseTagManager;
 

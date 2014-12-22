@@ -24,7 +24,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class AdminLandingService {
+public class AdminLandingService {
     private static final Logger LOG = LoggerFactory.getLogger(AdminLandingService.class);
 
     @Autowired private UserProfileManager userProfileManager;

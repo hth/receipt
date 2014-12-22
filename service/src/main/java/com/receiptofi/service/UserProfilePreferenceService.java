@@ -26,7 +26,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class UserProfilePreferenceService {
+public class UserProfilePreferenceService {
 
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private UserPreferenceManager userPreferenceManager;

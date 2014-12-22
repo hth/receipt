@@ -31,7 +31,7 @@ import java.util.Set;
         "PMD.LongVariable"
 })
 @Service
-public final class FetcherService {
+public class FetcherService {
     private static final Logger LOG = LoggerFactory.getLogger(FetcherService.class);
 
     @Autowired private ItemManager itemManager;

@@ -35,7 +35,7 @@ import java.util.Set;
         "PMD.LongVariable"
 })
 @Service
-public final class BizService {
+public class BizService {
     private static final Logger LOG = LoggerFactory.getLogger(BizService.class);
 
     @Autowired private BizNameManager bizNameManager;

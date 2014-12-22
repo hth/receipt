@@ -33,7 +33,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public final class ItemAnalyticService {
+public class ItemAnalyticService {
     private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticService.class);
 
     @Autowired private ItemManager itemManager;
