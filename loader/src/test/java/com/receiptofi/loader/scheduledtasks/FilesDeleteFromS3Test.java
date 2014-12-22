@@ -79,7 +79,7 @@ public class FilesDeleteFromS3Test {
             }
         }
 
-        assertNotNull(prop.getProperty("aws.s3.bucketName"));
+        assertNotNull("Bucket name has to exists", prop.getProperty("aws.s3.bucketName"));
         MockitoAnnotations.initMocks(this);
         filesDeleteFromS3 = new FilesDeleteFromS3(
                 prop.getProperty("aws.s3.bucketName"),
