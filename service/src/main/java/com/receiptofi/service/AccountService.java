@@ -176,12 +176,12 @@ public class AccountService {
     }
 
     /**
-     * Called during forgotten password or during an invite
+     * Called during forgotten password or during an invite.
      *
      * @param userAuthenticationEntity
      * @throws Exception
      */
-    public void updateAuthentication(UserAuthenticationEntity userAuthenticationEntity) throws Exception {
+    public void updateAuthentication(UserAuthenticationEntity userAuthenticationEntity) {
         userAuthenticationManager.save(userAuthenticationEntity);
     }
 
