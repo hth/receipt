@@ -128,7 +128,6 @@ public class InviteController {
                 userAuthenticationEntity.setId(userAccount.getUserAuthentication().getId());
                 userAuthenticationEntity.setVersion(userAccount.getUserAuthentication().getVersion());
                 userAuthenticationEntity.setCreated(userAccount.getUserAuthentication().getCreated());
-                userAuthenticationEntity.setUpdated();
                 try {
                     userProfileManager.save(userProfile);
                     accountService.updateAuthentication(userAuthenticationEntity);
