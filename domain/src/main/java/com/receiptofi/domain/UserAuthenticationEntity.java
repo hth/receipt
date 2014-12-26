@@ -43,7 +43,7 @@ public class UserAuthenticationEntity extends BaseEntity {
     private String authenticationKey;
 
     /**
-     * Required for Bean Instantiation
+     * Required for Bean Instantiation.
      */
     @SuppressWarnings ("unused")
     private UserAuthenticationEntity() {

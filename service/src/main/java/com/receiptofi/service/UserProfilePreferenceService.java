@@ -73,7 +73,7 @@ public class UserProfilePreferenceService {
     }
 
     /**
-     * Lists all the active expense types
+     * Lists all the active expense types.
      *
      * @param userProfileId
      * @return

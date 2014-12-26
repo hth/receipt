@@ -89,7 +89,7 @@ public class AccountRegistrationController {
     }
 
     @RequestMapping (method = RequestMethod.POST, params = {"signup"})
-    public String post(
+    public String signup(
             @ModelAttribute ("userRegistrationForm")
             UserRegistrationForm userRegistrationForm,
 

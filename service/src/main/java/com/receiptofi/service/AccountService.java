@@ -42,12 +42,12 @@ import java.util.Set;
 public class AccountService {
     private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 
-    private final UserAccountManager userAccountManager;
-    private final UserAuthenticationManager userAuthenticationManager;
-    private final UserProfileManager userProfileManager;
-    private final UserPreferenceManager userPreferenceManager;
-    private final ForgotRecoverManager forgotRecoverManager;
-    private final GenerateUserIdManager generateUserIdManager;
+    private UserAccountManager userAccountManager;
+    private UserAuthenticationManager userAuthenticationManager;
+    private UserProfileManager userProfileManager;
+    private UserPreferenceManager userPreferenceManager;
+    private ForgotRecoverManager forgotRecoverManager;
+    private GenerateUserIdManager generateUserIdManager;
 
     @Value ("${domain}")
     private String domain;
