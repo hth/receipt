@@ -81,12 +81,29 @@ public class ForgotController {
     @Value ("${authenticationConfirmPage:/forgot/authenticateConfirm}")
     private String authenticateConfirm;
 
-    @Autowired private AccountService accountService;
-    @Autowired private ForgotRecoverValidator forgotRecoverValidator;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
-    @Autowired private ForgotAuthenticateValidator forgotAuthenticateValidator;
-    @Autowired private MailService mailService;
-    @Autowired private LoginService loginService;
+    private AccountService accountService;
+    private ForgotRecoverValidator forgotRecoverValidator;
+    private UserProfilePreferenceService userProfilePreferenceService;
+    private ForgotAuthenticateValidator forgotAuthenticateValidator;
+    private MailService mailService;
+    private LoginService loginService;
+
+    @Autowired
+    public ForgotController(
+            AccountService accountService,
+            ForgotRecoverValidator forgotRecoverValidator,
+            UserProfilePreferenceService userProfilePreferenceService,
+            ForgotAuthenticateValidator forgotAuthenticateValidator,
+            MailService mailService,
+            LoginService loginService
+    ) {
+        this.accountService = accountService;
+        this.forgotRecoverValidator = forgotRecoverValidator;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.forgotAuthenticateValidator = forgotAuthenticateValidator;
+        this.mailService = mailService;
+        this.loginService = loginService;
+    }
 
     @RequestMapping (method = RequestMethod.GET, value = "password")
     public String onPasswordLinkClicked(@ModelAttribute ("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
@@ -122,7 +139,7 @@ public class ForgotController {
     /**
      * Method just for changing the URL, hence have to use re-direct.
      * This could be an expensive call because of redirect.
-     * Its redirected from RequestMethod.POST from
+     * Its redirected from RequestMethod.POST form.
      *
      * @param userRegistrationForm
      * @return
