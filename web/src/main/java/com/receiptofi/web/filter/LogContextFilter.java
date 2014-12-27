@@ -36,7 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 public class LogContextFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(LogContextFilter.class);
 
-    private static final Pattern EXTRACT_ENDPOINT_PATTERN = Pattern.compile("\\A((?:/[a-z][a-zA-Z]{2,}+|/v1)+).*\\z");
+    private static final Pattern EXTRACT_ENDPOINT_PATTERN =
+            Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
     private static final String REQUEST_ID_MDC_KEY = "X-REQUEST-ID";
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -52,8 +53,9 @@ public class LogContextFilter implements Filter {
                         + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
                         + " Accept=\"" + getHeader(headerMap, "accept") + "\""
                         + " ForwardedFor=\"" + getHeader(headerMap, "x-forwarded-for") + "\""
-                        + " Endpoint=\"" + extractEndpoint(url) + "\""
-                        + " URL=\"" + url + (null == query ? "" : "?" + query) + "\""
+                        + " Endpoint=\"" + extractDataFromURL(url, "$5") + "\""
+                        + " Query=\"" + (query == null ? "none" : query) + "\""
+                        + " URL=\"" + url + "\""
         );
         chain.doFilter(req, res);
     }
@@ -62,8 +64,8 @@ public class LogContextFilter implements Filter {
         return CollectionUtils.isEmpty(allHeadersMap) && !allHeadersMap.containsKey(header) ? StringUtils.EMPTY : allHeadersMap.get(header);
     }
 
-    private String extractEndpoint(String uri) {
-        return StringUtils.isEmpty(uri) ? uri : EXTRACT_ENDPOINT_PATTERN.matcher(uri).replaceFirst("$1");
+    private String extractDataFromURL(String uri, String group) {
+        return EXTRACT_ENDPOINT_PATTERN.matcher(uri).replaceFirst(group);
     }
 
     private Map<String, String> getHeadersInfo(HttpServletRequest request) {
