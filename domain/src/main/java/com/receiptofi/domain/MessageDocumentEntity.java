@@ -50,14 +50,22 @@ public class MessageDocumentEntity extends BaseEntity {
         super();
     }
 
-    private MessageDocumentEntity(String documentId, UserLevelEnum level, DocumentStatusEnum documentStatus) {
+    private MessageDocumentEntity(
+            String documentId,
+            UserLevelEnum level,
+            DocumentStatusEnum documentStatus
+    ) {
         super();
         this.documentId = documentId;
         this.level = level;
         this.documentStatus = documentStatus;
     }
 
-    public static MessageDocumentEntity newInstance(String documentId, UserLevelEnum level, DocumentStatusEnum receiptStatus) {
+    public static MessageDocumentEntity newInstance(
+            String documentId,
+            UserLevelEnum level,
+            DocumentStatusEnum receiptStatus
+    ) {
         return new MessageDocumentEntity(documentId, level, receiptStatus);
     }
 
