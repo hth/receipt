@@ -42,4 +42,8 @@ public class EmailValidateService {
     public EmailValidateEntity findByAuthenticationKey(String key) {
         return emailValidateManager.findByAuthenticationKey(key);
     }
+
+    public void invalidateAllEntries(String receiptUserId) {
+        emailValidateManager.invalidateAllEntries(receiptUserId);
+    }
 }

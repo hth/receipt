@@ -49,6 +49,7 @@ public class AccountService {
     private UserPreferenceManager userPreferenceManager;
     private ForgotRecoverManager forgotRecoverManager;
     private GenerateUserIdManager generateUserIdManager;
+    private EmailValidateService emailValidateService;
 
     @Value ("${domain}")
     private String domain;
@@ -60,7 +61,8 @@ public class AccountService {
             UserProfileManager userProfileManager,
             UserPreferenceManager userPreferenceManager,
             ForgotRecoverManager forgotRecoverManager,
-            GenerateUserIdManager generateUserIdManager
+            GenerateUserIdManager generateUserIdManager,
+            EmailValidateService emailValidateService
     ) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
@@ -68,6 +70,7 @@ public class AccountService {
         this.userPreferenceManager = userPreferenceManager;
         this.forgotRecoverManager = forgotRecoverManager;
         this.generateUserIdManager = generateUserIdManager;
+        this.emailValidateService = emailValidateService;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -252,6 +255,7 @@ public class AccountService {
 
     /**
      * Updates existing userId with new userId.
+     *
      * @param existingUserId
      * @param newUserId
      * @return
@@ -260,6 +264,9 @@ public class AccountService {
     @SuppressWarnings ("unused")
     public UserAccountEntity updateUID(String existingUserId, String newUserId) {
         UserAccountEntity userAccount = findByUserId(existingUserId);
+        if (!userAccount.isAccountValidated()) {
+            emailValidateService.invalidateAllEntries(userAccount.getReceiptUserId());
+        }
         userAccount.setUserId(newUserId);
         userAccount.setAccountValidated(false);
 
