@@ -22,7 +22,7 @@
 	<h2>
 		<fmt:message key="login.heading" />
 	</h2>
-    <c:if test="${!empty param.error and param.error eq '--'}">
+    <c:if test="${!empty param.loginFailure and param.loginFailure eq '--'}">
     <div class="error">
         Your login attempt was not successful, try again.<br />
         Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
