@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -72,6 +73,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private RegistrationConfig registrationConfig;
     @Autowired private GoogleAccessTokenService googleAccessTokenService;
 
+    @Value("${mail.validation.fail.period:30}")
+    private int mailValidationFailPeriod;
+
     /**
      * @param email - lower case string
      * @return
@@ -79,7 +83,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        LOG.info("login through site, user={}", email);
+        LOG.info("login attempted user={}", email);
 
         //Always check user login with lower letter email case
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
@@ -87,26 +91,25 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-            UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
+            UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+            UserAuthenticationEntity userAuthenticate = userAccount.getUserAuthentication();
 
-            LOG.warn("user={} accountValidated={}",
-                    userAccountEntity.getReceiptUserId(), userAccountEntity.isAccountValidated());
+            LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             return new ReceiptUser(
                     userProfile.getEmail(),
                     userAuthenticate.getPassword(),
-                    getAuthorities(userAccountEntity.getRoles()),
+                    getAuthorities(userAccount.getRoles()),
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
-                    isUserActiveAndRegistrationTurnedOn(userAccountEntity)
+                    isUserActiveAndRegistrationTurnedOn(userAccount)
             );
         }
     }
 
     /**
-     * If registration is turned on then check if the account is validated
+     * If registration is turned on then check if the account is validated and not beyond set number of days
      * And, if registration is turned off then check is userAccount is active.
      *
      * @param userAccount
@@ -114,7 +117,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
         if (registrationConfig.isRegistrationTurnedOn()) {
-            return userAccount.isActive() && userAccount.isAccountValidated();
+            return userAccount.isActive() && userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationFailPeriod);
         }
 
         return userAccount.isActive();

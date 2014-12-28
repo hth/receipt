@@ -5,12 +5,15 @@ import com.receiptofi.domain.types.RoleEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.joda.time.Duration;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -91,9 +94,11 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("USER_AUTHENTICATION")
     private UserAuthenticationEntity userAuthentication;
 
-    //TODO(hth) on email change this should be reset to false and validation process has to be redone
     @Field ("AV")
     private boolean isAccountValidated;
+
+    @Field ("AVD")
+    private Date accountValidatedBeginDate;
 
     private UserAccountEntity() {
         super();
@@ -264,6 +269,14 @@ public class UserAccountEntity extends BaseEntity {
 
     public void setAccountValidated(boolean accountValidated) {
         isAccountValidated = accountValidated;
+        if (!accountValidated) {
+            accountValidatedBeginDate = new Date();
+        }
+    }
+
+    public boolean isAccountNotValidatedBeyondSelectedDays(int mailValidationFailPeriod) {
+        return isAccountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
+                new Date().getTime()).getStandardDays() > mailValidationFailPeriod);
     }
 
     public String getName() {

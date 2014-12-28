@@ -122,6 +122,7 @@ public class AccountService {
                     lastName,
                     userAuthentication
             );
+            userAccount.setAccountValidated(false);
             userAccount.inActive(); //activated on email validation
             userAccountManager.save(userAccount);
 
