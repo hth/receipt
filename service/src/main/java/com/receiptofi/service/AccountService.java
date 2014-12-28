@@ -5,6 +5,7 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -246,5 +247,27 @@ public class AccountService {
 
     public UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode) {
         return userAccountManager.findByAuthorizationCode(provider, authorizationCode);
+    }
+
+    /**
+     * Updates existing userId with new userId.
+     * @param existingUserId
+     * @param newUserId
+     * @return
+     */
+    @Mobile
+    @SuppressWarnings ("unused")
+    public UserAccountEntity updateUID(String existingUserId, String newUserId) {
+        UserAccountEntity userAccount = findByUserId(existingUserId);
+        userAccount.setUserId(newUserId);
+        userAccount.setAccountValidated(false);
+
+        UserProfileEntity userProfile = doesUserExists(existingUserId);
+        userProfile.setEmail(newUserId);
+
+        userProfileManager.save(userProfile);
+        userAccountManager.save(userAccount);
+
+        return userAccount;
     }
 }
