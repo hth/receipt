@@ -98,7 +98,7 @@ public class UserAccountEntity extends BaseEntity {
     private boolean isAccountValidated;
 
     @Field ("AVD")
-    private Date accountValidatedChangedDate;
+    private Date accountValidatedBeginDate;
 
     private UserAccountEntity() {
         super();
@@ -270,13 +270,13 @@ public class UserAccountEntity extends BaseEntity {
     public void setAccountValidated(boolean accountValidated) {
         isAccountValidated = accountValidated;
         if (!accountValidated) {
-            accountValidatedChangedDate = new Date();
+            accountValidatedBeginDate = new Date();
         }
     }
 
-    public boolean isAccountNotValidatedBeyondSelectedDays(int mailValidationPeriod) {
-        return isAccountValidated || !(new Duration(accountValidatedChangedDate.getTime(),
-                new Date().getTime()).getStandardDays() > mailValidationPeriod);
+    public boolean isAccountNotValidatedBeyondSelectedDays(int mailValidationFailPeriod) {
+        return isAccountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
+                new Date().getTime()).getStandardDays() > mailValidationFailPeriod);
     }
 
     public String getName() {
