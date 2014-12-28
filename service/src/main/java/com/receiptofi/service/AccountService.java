@@ -126,7 +126,8 @@ public class AccountService {
                     userAuthentication
             );
             userAccount.setAccountValidated(false);
-            userAccount.inActive(); //activated on email validation
+            /** activated until mail.validation.fail.period and beyond that system will limit login and access. */
+            userAccount.active();
             userAccountManager.save(userAccount);
 
             userProfile = UserProfileEntity.newInstance(
@@ -269,6 +270,7 @@ public class AccountService {
         }
         userAccount.setUserId(newUserId);
         userAccount.setAccountValidated(false);
+        userAccount.active();
 
         UserProfileEntity userProfile = doesUserExists(existingUserId);
         userProfile.setEmail(newUserId);
