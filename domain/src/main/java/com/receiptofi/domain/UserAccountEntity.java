@@ -37,6 +37,8 @@ import javax.validation.constraints.NotNull;
 })
 public class UserAccountEntity extends BaseEntity {
 
+    private static final String BLANK_SPACE = " ";
+
     /** Unique Id throughout the system. This will never change. */
     @NotNull
     @Field ("RID")
@@ -280,8 +282,12 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public String getName() {
-        if (StringUtils.isNoneBlank(firstName, lastName)) {
-            return firstName + " " + lastName;
+        if (StringUtils.isNotBlank(firstName)) {
+            if (StringUtils.isNotBlank(lastName)) {
+                return StringUtils.trim(firstName + BLANK_SPACE + lastName);
+            } else {
+                return firstName;
+            }
         }
         if (StringUtils.isNotBlank(displayName)) {
             return displayName;
