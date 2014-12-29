@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 })
 @Controller
 @RequestMapping (value = "/login")
-public final class LoginController {
+public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     @Value ("${loginPage:login}")

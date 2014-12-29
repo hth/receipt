@@ -32,7 +32,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access/day")
-public final class ThisDayController {
+public class ThisDayController {
     private static final Logger LOG = LoggerFactory.getLogger(ThisDayController.class);
     private static final String nextPage = "/day";
 

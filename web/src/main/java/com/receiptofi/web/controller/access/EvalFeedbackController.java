@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 })
 @Controller
 @RequestMapping (value = "/access/eval")
-public final class EvalFeedbackController {
+public class EvalFeedbackController {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackController.class);
 
     /* Refers to feedback.jsp and next one to feedbackConfirm.jsp. */

@@ -35,7 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 })
 @Controller
 @RequestMapping (value = "/access/modv")
-public final class MileageOdometerController {
+public class MileageOdometerController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private MileageService mileageService;

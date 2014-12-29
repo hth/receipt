@@ -52,7 +52,7 @@ import java.util.Map;
 })
 @Controller
 @RequestMapping (value = "/access/userprofilepreference")
-public final class UserProfilePreferenceController {
+public class UserProfilePreferenceController {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
     private static final String nextPage = "/userprofilepreference";

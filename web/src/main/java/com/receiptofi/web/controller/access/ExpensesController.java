@@ -37,7 +37,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access/expenses")
-public final class ExpensesController {
+public class ExpensesController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensesController.class);
 
     @Value ("${ExpensesController.nextPage:/expenses}")

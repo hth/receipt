@@ -47,7 +47,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access/receipt")
-public final class ReceiptController extends BaseController {
+public class ReceiptController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptController.class);
 
     @Value ("${ReceiptController.redirectAccessLandingController:redirect:/access/landing.htm}")

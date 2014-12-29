@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 })
 @Controller
 @RequestMapping (value = "/access/completeprofile")
-public final class CompleteProfileController {
+public class CompleteProfileController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     @Value ("${maxSkipProfileUpdate:5}")
