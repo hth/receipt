@@ -75,14 +75,14 @@ public class ReceiptController extends BaseController {
         LOG.info("Loading Receipt Item with id={}", receiptId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
-        if (null == receiptEntity) {
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
+        if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
-            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receiptEntity.getId());
+            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
             List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(receiptUser.getRid());
 
-            receiptForm.setReceipt(receiptEntity);
+            receiptForm.setReceipt(receipt);
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTypes);
             LOG.info("receiptForm={}", receiptForm);
