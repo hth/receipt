@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/access/signoff")
-public final class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
+public class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SignOff.class);
 
     @Autowired MessageDocumentService messageDocumentService;

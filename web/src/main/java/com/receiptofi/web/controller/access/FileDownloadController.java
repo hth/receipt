@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/access/filedownload")
-public final class FileDownloadController {
+public class FileDownloadController {
     private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
     @Autowired private FileDBService fileDBService;

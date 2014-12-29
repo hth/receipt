@@ -58,7 +58,7 @@ import java.util.List;
 })
 @RestController
 @RequestMapping (value = "/access/expensofi")
-public final class ExpensofiController {
+public class ExpensofiController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
 
     @Autowired private ReceiptService receiptService;

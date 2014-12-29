@@ -40,7 +40,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access/itemanalytic")
-public final class ItemAnalyticController {
+public class ItemAnalyticController {
     private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticController.class);
 
     @Value ("${ItemAnalyticController.nextPage:/itemanalytic}")

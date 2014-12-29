@@ -43,7 +43,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access/pendingdocument")
-public final class PendingDocumentController {
+public class PendingDocumentController {
     private static final Logger LOG = LoggerFactory.getLogger(PendingDocumentController.class);
 
     @Value ("${PendingDocumentController.listPendingDocuments:/pendingdocument}")

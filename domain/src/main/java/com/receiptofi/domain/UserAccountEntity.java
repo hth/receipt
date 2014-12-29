@@ -45,8 +45,8 @@ public class UserAccountEntity extends BaseEntity {
     private String receiptUserId;
 
     /**
-     * This is set by third party and cannot be relied on
-     * It could be either matching provider's Id or email
+     * This is set by third party and cannot be relied on.
+     * It could be either matching provider's Id or email.
      */
     @NotNull
     @Field ("UID")
@@ -55,7 +55,7 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("PID")
     private ProviderEnum providerId;
 
-    /** Provider User Id matches id's from social provider */
+    /** Provider User Id matches id's from social provider. */
     @Field ("PUID")
     private String providerUserId;
 

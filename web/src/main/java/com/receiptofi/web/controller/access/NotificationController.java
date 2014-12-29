@@ -37,7 +37,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access")
-public final class NotificationController {
+public class NotificationController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired private NotificationService notificationService;
