@@ -104,7 +104,7 @@
                 <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
                 <prop key="mail.smtp.port">${sslMailPort}</prop>
                 <prop key="mail.smtp.socketFactory.port">${sslMailPort}</prop>
-                <prop key="mail.debug">true</prop>
+                <prop key="mail.debug">false</prop>
             </props>
         </property>
     </bean>

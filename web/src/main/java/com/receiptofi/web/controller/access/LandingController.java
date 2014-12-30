@@ -120,7 +120,7 @@ public class LandingController extends BaseController {
     /**
      * Refers to landing.jsp
      */
-    @Value ("${nextPage:/landing}")
+    @Value ("${nextPage:/landing3}")
     private String nextPage;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
