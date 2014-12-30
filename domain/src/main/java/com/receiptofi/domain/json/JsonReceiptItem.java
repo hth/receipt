@@ -51,6 +51,9 @@ public class JsonReceiptItem {
     @JsonProperty ("receiptId")
     private String receiptId;
 
+    @JsonProperty ("expenseTag")
+    private String expenseTag;
+
     private JsonReceiptItem(ItemEntity item) {
         this.id = item.getId();
         this.seq = String.valueOf(item.getSequence());
@@ -59,6 +62,7 @@ public class JsonReceiptItem {
         this.price = String.valueOf(item.getPrice());
         this.tax = String.valueOf(item.getTax());
         this.receiptId = item.getReceipt().getId();
+        this.expenseTag = item.getExpenseTag().getTagName();
     }
 
     public static JsonReceiptItem newInstance(ItemEntity item) {
