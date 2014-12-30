@@ -30,14 +30,18 @@ import com.receiptofi.domain.annotation.Mobile;
 @Mobile
 public class JsonExpenseTag {
 
+    @JsonProperty ("id")
+    private String id;
+
     @JsonProperty ("tag")
     private String tag;
 
-    private JsonExpenseTag(String tag) {
+    private JsonExpenseTag(String id, String tag) {
+        this.id = id;
         this.tag = tag;
     }
 
     public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTagEntity) {
-        return new JsonExpenseTag(expenseTagEntity.getTagName());
+        return new JsonExpenseTag(expenseTagEntity.getId(), expenseTagEntity.getTagName());
     }
 }
