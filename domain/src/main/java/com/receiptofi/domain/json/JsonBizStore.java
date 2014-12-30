@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 /**
  * User: hitender
@@ -26,7 +27,8 @@ import com.receiptofi.domain.BizStoreEntity;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class BizStore {
+@Mobile
+public class JsonBizStore {
 
     @JsonProperty ("address")
     private String address;
@@ -34,12 +36,12 @@ public class BizStore {
     @JsonProperty ("phone")
     private String phone;
 
-    private BizStore(BizStoreEntity bizStoreEntity) {
+    private JsonBizStore(BizStoreEntity bizStoreEntity) {
         this.address = bizStoreEntity.getAddress();
         this.phone = bizStoreEntity.getPhoneFormatted();
     }
 
-    public static BizStore newInstance(BizStoreEntity bizStoreEntity) {
-        return new BizStore(bizStoreEntity);
+    public static JsonBizStore newInstance(BizStoreEntity bizStoreEntity) {
+        return new JsonBizStore(bizStoreEntity);
     }
 }

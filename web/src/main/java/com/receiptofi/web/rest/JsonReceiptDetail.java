@@ -2,12 +2,16 @@ package com.receiptofi.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.receiptofi.domain.json.ExpenseTag;
-import com.receiptofi.domain.json.Receipt;
-import com.receiptofi.domain.json.ReceiptItem;
+import com.receiptofi.domain.json.JsonExpenseTag;
+import com.receiptofi.domain.json.JsonReceipt;
+import com.receiptofi.domain.json.JsonReceiptItem;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,7 +22,8 @@ import java.util.List;
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+        "PMD.LongVariable",
+        "unused"
 })
 @JsonAutoDetect (
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
@@ -27,23 +32,30 @@ import java.util.List;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-//@JsonInclude (JsonInclude.Include.NON_NULL)
+@JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonReceiptDetail {
 
-    private Receipt receipt;
-    private List<ReceiptItem> items;
-    private List<ExpenseTag> expenseTags;
+    @JsonProperty ("receipt")
+    private JsonReceipt jsonReceipt = new JsonReceipt();
 
-    private JsonReceiptDetail() {
+    @JsonProperty ("items")
+    private List<JsonReceiptItem> items = new LinkedList<>();
+
+    @JsonProperty ("expenseTags")
+    private List<JsonExpenseTag> jsonExpenseTags = new ArrayList<>();
+
+    public JsonReceiptDetail() {
     }
 
-    private JsonReceiptDetail(Receipt receipt, List<ReceiptItem> items, List<ExpenseTag> expenseTags) {
-        this.receipt = receipt;
+    public void setJsonReceipt(JsonReceipt jsonReceipt) {
+        this.jsonReceipt = jsonReceipt;
+    }
+
+    public void setItems(List<JsonReceiptItem> items) {
         this.items = items;
-        this.expenseTags = expenseTags;
     }
 
-    public static JsonReceiptDetail newInstance(Receipt receipt, List<ReceiptItem> items, List<ExpenseTag> expenseTags) {
-        return new JsonReceiptDetail(receipt, items, expenseTags);
+    public void setJsonExpenseTags(List<JsonExpenseTag> jsonExpenseTags) {
+        this.jsonExpenseTags = jsonExpenseTags;
     }
 }

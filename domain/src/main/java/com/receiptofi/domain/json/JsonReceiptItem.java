@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 /**
  * User: hitender
@@ -26,7 +27,8 @@ import com.receiptofi.domain.ItemEntity;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class ReceiptItem {
+@Mobile
+public class JsonReceiptItem {
 
     @JsonProperty ("id")
     private String id;
@@ -49,7 +51,7 @@ public class ReceiptItem {
     @JsonProperty ("receiptId")
     private String receiptId;
 
-    private ReceiptItem(ItemEntity item) {
+    private JsonReceiptItem(ItemEntity item) {
         this.id = item.getId();
         this.seq = String.valueOf(item.getSequence());
         this.name = item.getName();
@@ -59,7 +61,7 @@ public class ReceiptItem {
         this.receiptId = item.getReceipt().getId();
     }
 
-    public static ReceiptItem newInstance(ItemEntity item) {
-        return new ReceiptItem(item);
+    public static JsonReceiptItem newInstance(ItemEntity item) {
+        return new JsonReceiptItem(item);
     }
 }

@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.CommentEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 /**
  * User: hitender
- * Date: 8/24/14 11:27 PM
+ * Date: 8/25/14 12:13 AM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -26,28 +27,19 @@ import com.receiptofi.domain.FileSystemEntity;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class FileSystem {
+@Mobile
+public class JsonComment {
 
-    @JsonProperty ("blobId")
-    private String blobId;
+    @JsonProperty ("text")
+    private String text;
 
-    @JsonProperty ("orientation")
-    private int imageOrientation;
-
-    @JsonProperty ("sequence")
-    private int sequence;
-
-    private FileSystem(String blobId, int imageOrientation, int sequence) {
-        this.blobId = blobId;
-        this.imageOrientation = imageOrientation;
-        this.sequence = sequence;
+    private JsonComment(CommentEntity commentEntity) {
+        if (commentEntity != null) {
+            this.text = commentEntity.getText();
+        }
     }
 
-    public static FileSystem newInstance(FileSystemEntity fileSystemEntity) {
-        return new FileSystem(
-                fileSystemEntity.getBlobId(),
-                fileSystemEntity.getImageOrientation(),
-                fileSystemEntity.getSequence()
-        );
+    public static JsonComment newInstance(CommentEntity commentEntity) {
+        return new JsonComment(commentEntity);
     }
 }

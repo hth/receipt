@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -34,7 +35,8 @@ import java.util.LinkedList;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class Receipt {
+@Mobile
+public class JsonReceipt {
     private static final DateTimeFormatter FMT = ISODateTimeFormat.dateTime();
 
     @JsonProperty ("id")
@@ -44,16 +46,16 @@ public class Receipt {
     private Double total;
 
     @JsonProperty ("bizName")
-    private BizName bizName;
+    private JsonBizName jsonBizName;
 
     @JsonProperty ("bizStore")
-    private BizStore bizStore;
+    private JsonBizStore jsonBizStore;
 
     @JsonProperty ("notes")
-    private Comment notes;
+    private JsonComment jsonNotes;
 
     @JsonProperty ("files")
-    private Collection<FileSystem> fileSystems = new LinkedList<>();
+    private Collection<JsonFileSystem> jsonFileSystems = new LinkedList<>();
 
     @JsonProperty ("date")
     private String receiptDate;
@@ -67,18 +69,18 @@ public class Receipt {
     @JsonProperty ("expenseReport")
     private String expenseReportInFS;
 
-    public Receipt() {
+    public JsonReceipt() {
     }
 
-    public Receipt(ReceiptEntity receiptEntity) {
+    public JsonReceipt(ReceiptEntity receiptEntity) {
         this.id = receiptEntity.getId();
         this.total = receiptEntity.getTotal();
-        this.bizName = BizName.newInstance(receiptEntity.getBizName());
-        this.bizStore = BizStore.newInstance(receiptEntity.getBizStore());
-        this.notes = Comment.newInstance(receiptEntity.getNotes());
+        this.jsonBizName = JsonBizName.newInstance(receiptEntity.getBizName());
+        this.jsonBizStore = JsonBizStore.newInstance(receiptEntity.getBizStore());
+        this.jsonNotes = JsonComment.newInstance(receiptEntity.getNotes());
 
         for (FileSystemEntity fileSystemEntity : receiptEntity.getFileSystemEntities()) {
-            this.fileSystems.add(FileSystem.newInstance(fileSystemEntity));
+            this.jsonFileSystems.add(JsonFileSystem.newInstance(fileSystemEntity));
         }
 
         this.receiptDate = FMT.print(new DateTime(receiptEntity.getReceiptDate()));
@@ -95,20 +97,20 @@ public class Receipt {
         return total;
     }
 
-    public BizName getBizName() {
-        return bizName;
+    public JsonBizName getJsonBizName() {
+        return jsonBizName;
     }
 
-    public BizStore getBizStore() {
-        return bizStore;
+    public JsonBizStore getJsonBizStore() {
+        return jsonBizStore;
     }
 
-    public Comment getNotes() {
-        return notes;
+    public JsonComment getJsonNotes() {
+        return jsonNotes;
     }
 
-    public Collection<FileSystem> getFileSystems() {
-        return fileSystems;
+    public Collection<JsonFileSystem> getJsonFileSystems() {
+        return jsonFileSystems;
     }
 
     public String getReceiptDate() {

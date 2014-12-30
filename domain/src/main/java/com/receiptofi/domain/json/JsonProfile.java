@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 /**
  * User: hitender
@@ -26,7 +27,8 @@ import com.receiptofi.domain.UserProfileEntity;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class Profile {
+@Mobile
+public class JsonProfile {
 
     @JsonProperty ("rid")
     private String receiptUserId;
@@ -43,7 +45,7 @@ public class Profile {
     @JsonProperty ("mail")
     private String mail;
 
-    private Profile(String receiptUserId, String name, String firstName, String lastName, String mail) {
+    private JsonProfile(String receiptUserId, String name, String firstName, String lastName, String mail) {
         this.receiptUserId = receiptUserId;
         this.name = name;
         this.firstName = firstName;
@@ -51,8 +53,8 @@ public class Profile {
         this.mail = mail;
     }
 
-    public static Profile newInstance(UserProfileEntity userProfile) {
-        return new Profile(
+    public static JsonProfile newInstance(UserProfileEntity userProfile) {
+        return new JsonProfile(
                 userProfile.getReceiptUserId(),
                 userProfile.getName(),
                 userProfile.getFirstName(),

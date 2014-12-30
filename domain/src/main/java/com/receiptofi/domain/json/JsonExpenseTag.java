@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 /**
  * User: hitender
- * Date: 8/25/14 12:17 AM
+ * Date: 12/30/14 1:51 AM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -25,17 +26,18 @@ import com.receiptofi.domain.BizNameEntity;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-//@JsonInclude(JsonInclude.Include.NON_NULL)
-public class BizName {
+//@JsonInclude (JsonInclude.Include.NON_NULL)
+@Mobile
+public class JsonExpenseTag {
 
-    @JsonProperty ("name")
-    private String businessName;
+    @JsonProperty ("tag")
+    private String tag;
 
-    private BizName(BizNameEntity bizNameEntity) {
-        this.businessName = bizNameEntity.getBusinessName();
+    private JsonExpenseTag(String tag) {
+        this.tag = tag;
     }
 
-    public static BizName newInstance(BizNameEntity bizNameEntity) {
-        return new BizName(bizNameEntity);
+    public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTagEntity) {
+        return new JsonExpenseTag(expenseTagEntity.getTagName());
     }
 }

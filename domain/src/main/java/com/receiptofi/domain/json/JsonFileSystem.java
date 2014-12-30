@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 /**
  * User: hitender
- * Date: 12/30/14 1:51 AM
+ * Date: 8/24/14 11:27 PM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -26,16 +27,29 @@ import com.receiptofi.domain.ExpenseTagEntity;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class ExpenseTag {
+@Mobile
+public class JsonFileSystem {
 
-    @JsonProperty ("tag")
-    private String tag;
+    @JsonProperty ("blobId")
+    private String blobId;
 
-    private ExpenseTag(String tag) {
-        this.tag = tag;
+    @JsonProperty ("orientation")
+    private int imageOrientation;
+
+    @JsonProperty ("sequence")
+    private int sequence;
+
+    private JsonFileSystem(String blobId, int imageOrientation, int sequence) {
+        this.blobId = blobId;
+        this.imageOrientation = imageOrientation;
+        this.sequence = sequence;
     }
 
-    public static ExpenseTag newInstance(ExpenseTagEntity expenseTagEntity) {
-        return new ExpenseTag(expenseTagEntity.getTagName());
+    public static JsonFileSystem newInstance(FileSystemEntity fileSystemEntity) {
+        return new JsonFileSystem(
+                fileSystemEntity.getBlobId(),
+                fileSystemEntity.getImageOrientation(),
+                fileSystemEntity.getSequence()
+        );
     }
 }

@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.receiptofi.domain.CommentEntity;
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 /**
  * User: hitender
- * Date: 8/25/14 12:13 AM
+ * Date: 8/25/14 12:17 AM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -25,19 +26,18 @@ import com.receiptofi.domain.CommentEntity;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-//@JsonInclude (JsonInclude.Include.NON_NULL)
-public class Comment {
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+@Mobile
+public class JsonBizName {
 
-    @JsonProperty ("text")
-    private String text;
+    @JsonProperty ("name")
+    private String businessName;
 
-    private Comment(CommentEntity commentEntity) {
-        if (commentEntity != null) {
-            this.text = commentEntity.getText();
-        }
+    private JsonBizName(BizNameEntity bizNameEntity) {
+        this.businessName = bizNameEntity.getBusinessName();
     }
 
-    public static Comment newInstance(CommentEntity commentEntity) {
-        return new Comment(commentEntity);
+    public static JsonBizName newInstance(BizNameEntity bizNameEntity) {
+        return new JsonBizName(bizNameEntity);
     }
 }
