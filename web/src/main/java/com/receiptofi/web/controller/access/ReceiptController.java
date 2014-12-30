@@ -8,12 +8,16 @@ import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.json.JsonExpenseTag;
+import com.receiptofi.domain.json.JsonReceipt;
+import com.receiptofi.domain.json.JsonReceiptItem;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.web.form.ReceiptForm;
+import com.receiptofi.web.rest.JsonReceiptDetail;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.rest.Header;
 
@@ -33,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -88,6 +93,44 @@ public class ReceiptController extends BaseController {
             LOG.info("receiptForm={}", receiptForm);
         }
         return new ModelAndView(nextPage);
+    }
+
+    @RequestMapping (value = "/rest/{receiptId}", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonReceiptDetail loadReceipt(
+            @PathVariable
+            String receiptId
+    ) {
+        JsonReceiptDetail jsonReceiptDetail = new JsonReceiptDetail();
+        LOG.info("Loading Receipt Item with id={}", receiptId);
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
+        if (null == receiptEntity) {
+            LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
+        } else {
+            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receiptEntity.getId());
+            List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(receiptUser.getRid());
+
+            jsonReceiptDetail.setJsonReceipt(new JsonReceipt(receiptEntity));
+
+            List<JsonReceiptItem> jsonReceiptItems = new LinkedList<>();
+            for(ItemEntity itemEntity : items) {
+                JsonReceiptItem jsonReceiptItem = JsonReceiptItem.newInstance(itemEntity);
+                jsonReceiptItems.add(jsonReceiptItem);
+            }
+            jsonReceiptDetail.setItems(jsonReceiptItems);
+
+            List<JsonExpenseTag> jsonExpenseTags = new ArrayList<>();
+            for(ExpenseTagEntity expenseTagEntity : expenseTypes) {
+                jsonExpenseTags.add(JsonExpenseTag.newInstance(expenseTagEntity));
+            }
+            jsonReceiptDetail.setJsonExpenseTags(jsonExpenseTags);
+
+
+            LOG.info("populate receipt json for id={}", receiptId);
+        }
+        return jsonReceiptDetail;
     }
 
     @SuppressWarnings ("PMD.EmptyIfStmt")
