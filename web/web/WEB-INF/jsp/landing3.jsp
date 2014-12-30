@@ -1,0 +1,461 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+<!DOCTYPE html>
+<html lang="en" ng-app="scroll" ng-controller="Main">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+    <title><fmt:message key="title" /></title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+
+	<script src="${pageContext.request.contextPath}/static/js/jquery-1.js"></script>
+	<script src="${pageContext.request.contextPath}/static/js/jquery-ui.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
+	<script>
+		$(function () {
+			$("#tabs").tabs({
+				beforeLoad: function (event, ui) {
+					ui.jqXHR.error(function () {
+						ui.panel.html(
+								"Couldn't load this tab. We'll try to fix this as soon as possible. " +
+								"If this wouldn't be a demo.");
+					});
+				}
+			});
+		});
+	</script>
+	<script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
+	<script>
+		function init() {
+			window.addEventListener('scroll', function (e) {
+				var distanceY = window.pageYOffset || document.documentElement.scrollTop,
+						shrinkOn = 300,
+						header = document.querySelector("header");
+				if (distanceY > shrinkOn) {
+					classie.add(header, "smaller");
+				} else {
+					if (classie.has(header, "smaller")) {
+						classie.remove(header, "smaller");
+					}
+				}
+			});
+		}
+		window.onload = init();
+	</script>
+    <script>
+        function init() {
+            window.addEventListener('scroll', function(e){
+                var distanceY = window.pageYOffset || document.documentElement.scrollTop,
+                        shrinkOn = 300,
+                        header = document.querySelector("header");
+                if (distanceY > shrinkOn) {
+                    classie.add(header,"smaller");
+                } else {
+                    if (classie.has(header,"smaller")) {
+                        classie.remove(header,"smaller");
+                    }
+                }
+            });
+        }
+        window.onload = init();
+    </script>
+    <script>
+        function Main($scope, $http) {
+            $scope.items = [];
+
+            var page = 5;
+            $scope.loadMore = function() {
+                console.log("page:" + page + "," + "notificationCount:" + '${landingForm.notificationForm.count}');
+                if(page < '${landingForm.notificationForm.count}' - 1) {
+                    $scope.loading = true;
+                    $http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm')
+                            .success(function(data, status) {
+                                if(data.length <= 5) {
+                                    console.log('Request status ' + status + ":" + data.length + ":" + data);
+                                    for (var i = 0; i < 5 && page + i < '${landingForm.notificationForm.count}'; i++) {
+                                        var d = data[i].split(":");
+                                        console.log(d[0] + ":" + d[1] + ":" + d[2]);
+                                        $scope.items.push({href : d[0], message : d[1], created : d[2]});
+                                    }
+                                } else {
+                                    $scope.failed = true;
+                                }
+                                $scope.loading = false;
+                            }).error(function(data, status) {
+                                console.log('Request error, data:' + data + ",status:");
+                                $scope.loading = false;
+                                $scope.failed = true;
+                            });
+                    page += 5;
+                    console.log($scope.items);
+                }
+            };
+            $scope.loadMore();
+        }
+
+        angular.module('scroll', []).directive('whenScrolled', function() {
+            return function(scope, elm, attr) {
+                var raw = elm[0];
+
+                elm.bind('scroll', function() {
+                    if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+                        scope.$apply(attr.whenScrolled);
+                    }
+                });
+            };
+        });
+    </script>
+</head>
+<body>
+<header>
+	<div class="top-account-bar">
+		<ul>
+			<li><a class="top-account-bar-text" href="#">LOG OUT</a></li>
+			<li><a class="top-account-bar-text" href="#">PROFILE</a></li>
+            <li>
+                <a class="top-account-bar-text user-email" href="#">
+                    <sec:authentication property="principal.username" />
+                </a>
+            </li>
+		</ul>
+	</div>
+	<div class="nav-hold">
+		<h1>OLA_OLA</h1>
+	</div>
+</header>
+<div class="main clearfix">
+<div class="sidebar">
+	<div class="sidebar-top-summary">
+		<div class="sidebar-top-summary-upper clearfix">
+			<h1 class="big-view">85</h1>
+
+			<div class="sts-upper-right">
+				<span class="top-summary-textb">Some ending</span>
+				<span class="general-text">Last date: August 28th</span>
+			</div>
+		</div>
+		<div class="sidebar-top-summary-lower clearfix">
+			<h1 class="big-view-lower">12</h1>
+
+			<div class="sts-upper-right">
+				<span class="top-summary-textb">Normal aid</span>
+				<span class="general-text">Last sync: August 28th</span>
+			</div>
+		</div>
+	</div>
+	<div class="sidebar-git-datum">
+		<div class="gd-title">
+			<h1 class="widget-title-text">Git Datum</h1>
+		</div>
+		<div class="gd-button-holder">
+			<button class="gd-button">CSS BASED BUTTON</button>
+		</div>
+	</div>
+	<div class="sidebar-indication">
+		<div class="si-title">
+			<h1 class="widget-title-text">Notifications (${landingForm.notificationForm.count})</h1>
+		</div>
+		<div class="si-list-holder" when-scrolled="loadMore()">
+            <c:choose>
+            <c:when test="${!empty landingForm.notificationForm.notifications}">
+                <ul>
+                    <c:forEach var="notification" items="${landingForm.notificationForm.notifications}" varStatus="status">
+                        <li class="si-list">
+                            <img alt="indication icon" src="${pageContext.request.contextPath}/static/img/indication-icon.png">
+                            <span class="si-general-text">${notification.notificationMessageForDisplay}</span>
+                            <span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
+                        </li>
+                    </c:forEach>
+                    <li class="si-list" ng-repeat="i in items">
+                        <img alt="indication icon" src="${pageContext.request.contextPath}/static/img/indication-icon.png">
+                        <span class="si-general-text"><a class='notification' href="{{i.href}}">{{i.message}}</a></span>
+                        <span class="si-date-text">{{i.created}}</span>
+                    </li>
+                </ul>
+                <p class="si-list-footer si-list-footer-success" ng-show="loading">
+                        <%--<img src="${pageContext.request.contextPath}/static/img/notification-loading.gif"/>--%>
+                    <em>Loading ...</em>
+                </p>
+                <p class="si-list-footer si-list-footer-error" ng-show="failed">
+                    <em>Failed to retrieve data</em>
+                </p>
+            </c:when>
+            <c:otherwise>
+                <p class="si-general-text">There are no Notifications &nbsp;</p>
+            </c:otherwise>
+            </c:choose>
+		</div>
+		<div class="si-footer">
+            <c:if test="${!empty landingForm.notificationForm.notifications}">
+                <p class="view-more-text">
+                    <a class="view-more-text" ng-href="${pageContext.request.contextPath}/access/notification.htm">View All Notifications</a>
+                </p>
+            </c:if>
+		</div>
+	</div>
+	<div class="sidebar-date">
+		<div class="gd-title">
+			<h1 class="widget-title-text">Some Date</h1>
+		</div>
+		<form>
+			<input type="text" value="Enter text" size="20"/>
+		</form>
+		<div class="gd-button-holder">
+			<button class="gd-button">CSS BASED BUTTON</button>
+		</div>
+	</div>
+</div>
+<div class="rightside-content">
+	<div id="tabs" class="nav-list">
+		<ul class="nav-block">
+			<li><a href="#tab1">OVERVIEW</a></li>
+
+			<li><a href="#tab2">FIRST</a></li>
+			<li><a href="#tab3">SECOND</a></li>
+			<li><a href="#tab4">THIRD</a></li>
+			<li><a href="#tab5">FOURTH</a></li>
+		</ul>
+		<div id="tab1" class="ajx-content">
+			<div class="rightside-title">
+				<h1 class="rightside-title-text">
+                    <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
+                </h1>
+			</div>
+			<div class="rightside-list-holder">
+				<ul>
+                    <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
+                    <li class="rightside-list">
+                        <span class="rightside-li-date-text">
+                            <fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/>
+                        </span>
+                        <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
+                            <spring:eval expression="receipt.name"/>
+                        </a>
+                        <span class="rightside-li-right-text">
+                            <spring:eval expression='receipt.total'/>
+                        </span>
+                    </li>
+                    </c:forEach>
+				</ul>
+				<p class="view-more-text">View All</p>
+			</div>
+			<div class="pie-chart">
+				<img src="${pageContext.request.contextPath}/static/img/pie-chart.png" style="float: right;">
+			</div>
+			<div class="calendar">
+				<img src="${pageContext.request.contextPath}/static/img/cal.png"/>
+			</div>
+		</div>
+		<div id="tab2" class="first ajx-content">
+			<img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+
+			<p><strong>No data here submitted for August 2014</strong></p>
+		</div>
+
+		<div id="tab3" class="ajx-content">
+			<img width="95%" src="${pageContext.request.contextPath}/static/img/sec-bar.jpg"/>
+		</div>
+
+		<div id="tab4" class="report1 ajx-content">
+			<h1 class="h1">REPORTS</h1>
+			<hr>
+			<div class="contain3">
+				<!-- left content strats-->
+				<div class="left-li">
+					<ul>
+						<li>
+							<a class="ll-t" href="#">2014 AUGUST</a>
+						</li>
+						<li>
+							<a class="ll-t" href="#">JULY 2014 $243.83</a>
+						</li>
+						<li>
+							<a class="ll-t" href="#">JUNE 2014</a>
+						</li>
+						<li>
+							<a class="ll-t" href="#">APRIL 2014</a>
+						</li>
+						<li>
+							<a class="ll-t" href="#">MARCH 2014</a>
+						</li>
+						<li>
+							<a class="ll-t" href="#">FEBRUARY 2014</a>
+						</li>
+						<li>
+							<a class="ll-t" href="#">JANUARY 2014</a>
+						</li>
+						<li>
+							<a class="ll-t" href="#">2013</a>
+						</li>
+
+					</ul>
+				</div>
+				<!-- left content ends-->
+
+				<!-- right content starts-->
+
+				<div class="rightside-list-holder">
+					<div class="rightside-title">
+						<h1 class="rightside-title-text">JULY 2014 <span style="color: #007aff;">$243.83</span></h1>
+					</div>
+					<ul>
+						<li>
+							<span class="rightside-li-date-text">JULY 20, 2014</span>
+							<a class="rightside-li-middle-text  cd-popup-trigger" href="#">Some& Some</a>
+							<span class="rightside-li-right-text">$121.00</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">JULY 15, 2014</span>
+							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Express</a>
+							<span class="rightside-li-right-text">$22.90</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">JULY 10, 2014</span>
+							<a class="rightside-li-middle-text cd-popup-trigger" href="#">OLA</a>
+							<span class="rightside-li-right-text">$57.96</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">JULY 03, 2014</span>
+							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Dee</a>
+							<span class="rightside-li-right-text">$23.75</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">JULY 02, 2014</span>
+							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Some Data</a>
+							<span class="rightside-li-right-text">$14.02</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">JULY 01, 2014</span>
+							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Collection Collective</a>
+							<span class="rightside-li-right-text">$4.20</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- right content ends-->
+			</div>
+		</div>
+		<div id="tab5" class="ajx-content">
+		</div>
+	</div>
+</div>
+<div class="footer-tooth clearfix">
+	<div class="footer-tooth-middle"></div>
+	<div class="footer-tooth-right"></div>
+</div>
+<div class="cd-popup" role="alert">
+	<div class="cd-popup-container">
+
+		<div id="tabde" class="report ajx-content">
+			<div style="float:left;width:55%;margin-right: 3%;">
+				<h1 class="h1">AUGUST 26, 2014
+					<span style="color: #919191;font-size: 0.8em;font-weight: normal;">12:36PM</span>
+
+				</h1>
+				<hr style="width: 100%;">
+				<div class="mar10px">
+					<h1 class="font3em">Dds Art</h1>
+
+					<p class="padtop2per">Near 123</p>
+
+					<p>Some Where 345</p>
+				</div>
+				<div class="detailHead">
+					<h1 class="font2em" style="margin-left: 5px;">Map-93 <span class="colorblue right">$1.25</span></h1>
+				</div>
+				<div class="rightside-list-holder border">
+					<ul>
+						<li>
+							<span class="rightside-li-date-text">1. KJHG Med</span>
+							<select>
+								<option value="volvo">Home</option>
+								<option value="saab">Home</option>
+							</select>
+							<span class="rightside-li-right-text">$1.99</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">2. LKJ - Ether</span>
+							<select>
+								<option value="volvo">Home</option>
+								<option value="saab">Home</option>
+							</select>
+							<span class="rightside-li-right-text">$15.99</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">3. This thing</span>
+							<select>
+								<option value="volvo">Home</option>
+								<option value="saab">Home</option>
+							</select>
+							<span class="rightside-li-right-text">$22.99</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">4. Pink stuff</span>
+							<select>
+								<option value="volvo">Home</option>
+								<option value="saab">Home</option>
+							</select>
+							<span class="rightside-li-right-text">$14.49</span>
+						</li>
+						<li style="border-bottom: 1px dotted #919191;">
+							<span class="rightside-li-date-text">5. Somethings</span>
+							<select>
+								<option value="volvo">Home</option>
+								<option value="saab">Home</option>
+							</select>
+							<span class="rightside-li-right-text">$13.19</span>
+						</li>
+					</ul>
+
+
+					<!-- second list starts-->
+					<ul>
+						<li>
+							<span class="rightside-li-date-text">ABC</span>
+
+							<span class="rightside-li-right-text">$81.65</span>
+						</li>
+						<li>
+							<span class="rightside-li-date-text">BB</span>
+							<span class="rightside-li-right-text">$7.60</span>
+						</li>
+						<li style="border-bottom: 1px solid #919191;">
+							<span class="rightside-li-date-text">ZZZ</span>
+							<span class="rightside-li-right-text">$89.25</span>
+						</li>
+					</ul>
+
+
+					<!-- second list ends -->
+					<h1 class="h1 padtop2per" style="padding-bottom:2%;">My notes</h1>
+					<textarea style="width: 561px;height: 145px; padding:1%;" placeholder="Write notes here..."></textarea>
+					<input type="button" value="DELETE" style="background:#FC462A;"></input>
+					<input type="button" value="SAVE" style="background:#0079FF"></input>
+
+
+				</div>
+
+
+			</div>
+
+			<div style="width:38%;float: left;padding-top: 4%;">
+				<img style="width: 390px;height: 590px;padding-left: 8%;" src="${pageContext.request.contextPath}/static/img/details.JPG"/>
+			</div>
+		</div>
+		<a href="#0" class="cd-popup-close img-replace"></a>
+	</div>
+	<!-- cd-popup-container -->
+</div>
+</div>
+<!-- cd-popup -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css">
+<!-- Resource style -->
+<script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
+<!-- Modernizr -->
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<!-- Resource jQuery -->
+</body>
+</html>
