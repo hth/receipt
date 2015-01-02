@@ -34,6 +34,7 @@ public class FilesDeleteFromS3 {
     private static final Logger LOG = LoggerFactory.getLogger(FilesDeleteFromS3.class);
 
     private final String bucketName;
+    private final String folderName;
 
     private AmazonS3Service amazonS3Service;
     private CloudFileService cloudFileService;
@@ -43,10 +44,14 @@ public class FilesDeleteFromS3 {
             @Value ("${aws.s3.bucketName}")
             String bucketName,
 
+            @Value ("${aws.s3.bucketName}")
+            String folderName,
+
             CloudFileService cloudFileService,
             AmazonS3Service amazonS3Service
     ) {
         this.bucketName = bucketName;
+        this.folderName = folderName;
         this.cloudFileService = cloudFileService;
         this.amazonS3Service = amazonS3Service;
     }
@@ -62,7 +67,7 @@ public class FilesDeleteFromS3 {
             DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName);
             List<DeleteObjectsRequest.KeyVersion> keys = new ArrayList<>();
             for (CloudFileEntity cloudFile : cloudFileEntities) {
-                keys.add(new DeleteObjectsRequest.KeyVersion(cloudFile.getKey()));
+                keys.add(new DeleteObjectsRequest.KeyVersion(folderName + "/" + cloudFile.getKey()));
             }
             deleteObjectsRequest.setKeys(keys);
             try {

@@ -83,6 +83,7 @@ public class FilesDeleteFromS3Test {
         MockitoAnnotations.initMocks(this);
         filesDeleteFromS3 = new FilesDeleteFromS3(
                 prop.getProperty("aws.s3.bucketName"),
+                prop.getProperty("aws.s3.bucketName"),
                 cloudFileService,
                 amazonS3Service);
 

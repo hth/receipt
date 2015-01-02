@@ -110,6 +110,7 @@ public class FilesUploadToS3Test {
         MockitoAnnotations.initMocks(this);
         filesUploadToS3 = new FilesUploadToS3(
                 prop.getProperty("aws.s3.bucketName"),
+                prop.getProperty("aws.s3.bucketName"),
                 documentUpdateService,
                 fileDBService,
                 imageSplitService,
