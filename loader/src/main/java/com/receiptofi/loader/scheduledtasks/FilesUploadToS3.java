@@ -50,6 +50,7 @@ public class FilesUploadToS3 {
     private static final int ROTATE_AT_CENTER = 2;
 
     private final String bucketName;
+    private final String folderName;
 
     private DocumentUpdateService documentUpdateService;
     private FileDBService fileDBService;
@@ -63,6 +64,9 @@ public class FilesUploadToS3 {
             @Value ("${aws.s3.bucketName}")
             String bucketName,
 
+            @Value ("${aws.s3.bucketName}")
+            String folderName,
+
             DocumentUpdateService documentUpdateService,
             FileDBService fileDBService,
             ImageSplitService imageSplitService,
@@ -71,6 +75,7 @@ public class FilesUploadToS3 {
             AffineTransformService affineTransformService
     ) {
         this.bucketName = bucketName;
+        this.folderName = folderName;
 
         this.documentUpdateService = documentUpdateService;
         this.fileDBService = fileDBService;
@@ -154,7 +159,7 @@ public class FilesUploadToS3 {
                 failure++;
 
                 for (FileSystemEntity fileSystem : document.getFileSystemEntities()) {
-                    amazonS3Service.getS3client().deleteObject(bucketName, fileSystem.getKey());
+                    amazonS3Service.getS3client().deleteObject(bucketName, folderName + "/" + fileSystem.getKey());
                     LOG.warn("on failure removed files from cloud filename={}", fileSystem.getKey());
                 }
             } finally {
@@ -259,7 +264,7 @@ public class FilesUploadToS3 {
      * @return
      */
     private PutObjectRequest getPutObjectRequest(DocumentEntity document, FileSystemEntity fileSystem, File file) {
-        PutObjectRequest putObject = new PutObjectRequest(bucketName, fileSystem.getKey(), file);
+        PutObjectRequest putObject = new PutObjectRequest(bucketName, folderName + "/" + fileSystem.getKey(), file);
         putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
         return putObject;
     }
@@ -276,7 +281,7 @@ public class FilesUploadToS3 {
         ObjectMetadata metaData = new ObjectMetadata();
         metaData.setContentType(fileSystem.getContentType());
         metaData.addUserMetadata("X-RID", document.getReceiptUserId());
-        metaData.addUserMetadata("X-DID", document.getReferenceDocumentId());
+        metaData.addUserMetadata("X-RDID", document.getReferenceDocumentId());
         metaData.addUserMetadata("X-RTXD", document.getReceiptDate());
         metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
 
