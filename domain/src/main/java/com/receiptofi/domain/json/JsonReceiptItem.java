@@ -62,7 +62,9 @@ public class JsonReceiptItem {
         this.price = String.valueOf(item.getPrice());
         this.tax = String.valueOf(item.getTax());
         this.receiptId = item.getReceipt().getId();
-        this.jsonExpenseTag = JsonExpenseTag.newInstance(item.getExpenseTag());
+        if (null != item.getExpenseTag()) {
+            this.jsonExpenseTag = JsonExpenseTag.newInstance(item.getExpenseTag());
+        }
     }
 
     public static JsonReceiptItem newInstance(ItemEntity item) {
