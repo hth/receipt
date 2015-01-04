@@ -24,7 +24,7 @@ public class ExpensesService {
 
     @Autowired private ExpenseTagManager expenseTagManager;
 
-    public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
-        return expenseTagManager.activeExpenseTypes(userProfileId);
+    public List<ExpenseTagEntity> activeExpenseTypes(String receiptUserId) {
+        return expenseTagManager.activeExpenseTypes(receiptUserId);
     }
 }
