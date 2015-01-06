@@ -207,7 +207,19 @@ public class UserProfileEntity extends BaseEntity {
     }
 
     public String getName() {
-        return StringUtils.isBlank(name) ? firstName + " " + lastName : name;
+        if (StringUtils.isNotBlank(name)) {
+            return name;
+        }
+
+        if (StringUtils.isNotBlank(firstName)) {
+            if (StringUtils.isNotBlank(lastName)) {
+                return StringUtils.trim(firstName + UserAccountEntity.BLANK_SPACE + lastName);
+            } else {
+                return firstName;
+            }
+        }
+
+        return userId;
     }
 
     public void setName(String name) {
