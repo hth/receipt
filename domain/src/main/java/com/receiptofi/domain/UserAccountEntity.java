@@ -37,7 +37,7 @@ import javax.validation.constraints.NotNull;
 })
 public class UserAccountEntity extends BaseEntity {
 
-    private static final String BLANK_SPACE = " ";
+    public static final String BLANK_SPACE = " ";
 
     /** Unique Id throughout the system. This will never change. */
     @NotNull
