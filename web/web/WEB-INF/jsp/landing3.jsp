@@ -105,7 +105,12 @@
 			<h1 class="big-view">${documentStatsForm.pendingCount}</h1>
 
 			<div class="sts-upper-right">
-				<span class="top-summary-textb">Receipts pending</span>
+                <span class="top-summary-textb">
+                <c:choose>
+                    <c:when test="${documentStatsForm.pendingCount le 1}">Receipt pending</c:when>
+                    <c:otherwise>Receipts pending</c:otherwise>
+                </c:choose>
+                </span>
 				<span class="general-text">
                     Last sync:
                     <span class="timestamp">
@@ -118,7 +123,12 @@
 			<h1 class="big-view-lower">${documentStatsForm.rejectedCount}</h1>
 
 			<div class="sts-upper-right">
-				<span class="top-summary-textb">Receipts rejected</span>
+				<span class="top-summary-textb">
+                    <c:choose>
+                        <c:when test="${documentStatsForm.rejectedCount le 1}">Receipt rejected</span></c:when>
+                        <c:otherwise>Receipts rejected</c:otherwise>
+                    </c:choose>
+                </span>
 				<span class="general-text">
                     Last sync:
                     <span class="timestamp">
