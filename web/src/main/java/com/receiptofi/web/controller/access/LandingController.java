@@ -26,6 +26,7 @@ import com.receiptofi.service.ReportService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Maths;
+import com.receiptofi.web.form.DocumentStatsForm;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
 import com.receiptofi.web.form.NotificationForm;
@@ -133,7 +134,10 @@ public class LandingController extends BaseController {
             UploadDocumentImage uploadReceiptImage,
 
             @ModelAttribute ("landingForm")
-            LandingForm landingForm
+            LandingForm landingForm,
+
+            @ModelAttribute ("documentStatsForm")
+            DocumentStatsForm documentStatsForm
     ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -147,11 +151,8 @@ public class LandingController extends BaseController {
         modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
-        long pendingCount = landingService.pendingReceipt(receiptUser.getRid());
-        modelAndView.addObject("pendingCount", pendingCount);
-
-        long rejectedCount = landingService.rejectedReceipt(receiptUser.getRid());
-        modelAndView.addObject("rejectedCount", rejectedCount);
+        documentStatsForm.setPendingCount(landingService.pendingReceipt(receiptUser.getRid()));
+        documentStatsForm.setRejectedCount(landingService.rejectedReceipt(receiptUser.getRid()));
 
         /** Receipt grouped by date */
         LOG.info("Calculating calendar grouped expense");

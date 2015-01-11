@@ -10,11 +10,13 @@
     <title><fmt:message key="title" /></title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 
-	<script src="${pageContext.request.contextPath}/static/js/jquery-1.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/jquery-1.js"></script>
 	<script src="${pageContext.request.contextPath}/static/js/jquery-ui.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
-	<script>
+    <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+
+    <script>
 		$(function () {
 			$("#tabs").tabs({
 				beforeLoad: function (event, ui) {
@@ -123,35 +125,35 @@
 		</ul>
 	</div>
 	<div class="nav-hold">
-		<h1>OLA_OLA</h1>
+		<h1>Receiptofi</h1>
 	</div>
 </header>
 <div class="main clearfix">
 <div class="sidebar">
 	<div class="sidebar-top-summary">
 		<div class="sidebar-top-summary-upper clearfix">
-			<h1 class="big-view">85</h1>
+			<h1 class="big-view">${documentStatsForm.pendingCount}</h1>
 
 			<div class="sts-upper-right">
-				<span class="top-summary-textb">Some ending</span>
-				<span class="general-text">Last date: August 28th</span>
+				<span class="top-summary-textb">Receipts pending</span>
+				<span class="general-text">Last sync: <span class="timestamp"><fmt:formatDate value="${documentStatsForm.pendingCountSynced}" type="both"/></span></span>
 			</div>
 		</div>
 		<div class="sidebar-top-summary-lower clearfix">
-			<h1 class="big-view-lower">12</h1>
+			<h1 class="big-view-lower">${documentStatsForm.rejectedCount}</h1>
 
 			<div class="sts-upper-right">
-				<span class="top-summary-textb">Normal aid</span>
-				<span class="general-text">Last sync: August 28th</span>
+				<span class="top-summary-textb">Receipts rejected</span>
+				<span class="general-text">Last sync: <span class="timestamp"><fmt:formatDate value="${documentStatsForm.rejectedCountSynced}" type="both"/></span></span>
 			</div>
 		</div>
 	</div>
 	<div class="sidebar-git-datum">
 		<div class="gd-title">
-			<h1 class="widget-title-text">Git Datum</h1>
+			<h1 class="widget-title-text">Upload new receipt</h1>
 		</div>
 		<div class="gd-button-holder">
-			<button class="gd-button">CSS BASED BUTTON</button>
+			<button class="gd-button">UPLOAD RECEIPT</button>
 		</div>
 	</div>
 	<div class="sidebar-indication">

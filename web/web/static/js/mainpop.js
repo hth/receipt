@@ -37,4 +37,6 @@ jQuery(document).ready(function ($) {
 
     });
     //close ends
+
+    $('.timestamp').cuteTime({ refresh: 10000 });
 });
