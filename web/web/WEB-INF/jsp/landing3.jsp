@@ -220,9 +220,14 @@
 		</ul>
 		<div id="tab1" class="ajx-content">
 			<div class="rightside-title">
-				<h1 class="rightside-title-text">
+				<h1 class="rightside-title-text left">
                     <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
                 </h1>
+                <span class="right" style="width: 23%;">
+					<input type="button" style="margin: 0px;border-bottom-left-radius: 5px;border-top-left-radius: 5px;" value="List view" id="btnlist" class="overview_view" onclick="showhide()">
+					<span style="width:1px;background:white;float:left;">&nbsp;</span>
+					<input type="button" style="margin:0px;border-bottom-right-radius: 5px;border-top-right-radius: 5px;" value="Detail" class="overview_view" id="btndetail" onclick="showhide()">
+				</span>
 			</div>
 			<div class="rightside-list-holder">
 				<ul>
