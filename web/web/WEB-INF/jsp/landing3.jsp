@@ -125,7 +125,7 @@
 			<div class="sts-upper-right">
 				<span class="top-summary-textb">
                     <c:choose>
-                        <c:when test="${documentStatsForm.rejectedCount le 1}">Receipt rejected</span></c:when>
+                        <c:when test="${documentStatsForm.rejectedCount le 1}">Receipt rejected</c:when>
                         <c:otherwise>Receipts rejected</c:otherwise>
                     </c:choose>
                 </span>
