@@ -561,4 +561,18 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-family: "HelveticaNeueLTProCn", arial, sans-serif;
 }
 
+.overview_view {
+    border: 1px solid #0079FF;
+    background: #0079FF;
+    cursor: pointer;
+    font-size: 0.8rem;
+    float: left;
+}
+
+.btnborder {
+    border: 1px solid #949393;
+    background: white;
+    color: black;
+}
+
 /*text styles*/
