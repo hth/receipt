@@ -176,7 +176,7 @@
                     </li>
                 </ul>
                 <p class="si-list-footer si-list-footer-success" ng-show="loading">
-                        <%--<img src="${pageContext.request.contextPath}/static/img/notification-loading.gif"/>--%>
+                    <%--<img src="${pageContext.request.contextPath}/static/img/notification-loading.gif"/>--%>
                     <em>Loading ...</em>
                 </p>
                 <p class="si-list-footer si-list-footer-error" ng-show="failed">
@@ -224,9 +224,9 @@
                     <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
                 </h1>
                 <span class="right" style="width: 23%;">
-					<input type="button" style="margin: 0px;border-bottom-left-radius: 5px;border-top-left-radius: 5px;" value="List view" id="btnlist" class="overview_view" onclick="showhide()">
+					<input type="button" style="margin: 0px;border-bottom-left-radius: 5px;border-top-left-radius: 5px;" value="List" id="btnlist" class="overview_view" onclick="showhide()">
 					<span style="width:1px;background:white;float:left;">&nbsp;</span>
-					<input type="button" style="margin:0px;border-bottom-right-radius: 5px;border-top-right-radius: 5px;" value="Detail" class="overview_view" id="btndetail" onclick="showhide()">
+					<input type="button" style="margin:0px;border-bottom-right-radius: 5px;border-top-right-radius: 5px;" value="Calendar" class="overview_view" id="btndetail" onclick="showhide()">
 				</span>
 			</div>
 			<div class="rightside-list-holder">
@@ -437,7 +437,7 @@
 					<!-- second list ends -->
 					<h1 class="h1 padtop2per" style="padding-bottom:2%;">My notes</h1>
 					<textarea style="width: 561px;height: 145px; padding:1%;" placeholder="Write notes here..."></textarea>
-					<input type="button" value="DELETE" style="background:#FC462A;"></input>
+					<input type="button" value="DELETE" style="background:#FC462A"></input>
 					<input type="button" value="SAVE" style="background:#0079FF"></input>
 
 
