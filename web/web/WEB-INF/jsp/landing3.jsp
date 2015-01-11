@@ -16,37 +16,7 @@
     <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
-    <script>
-		$(function () {
-			$("#tabs").tabs({
-				beforeLoad: function (event, ui) {
-					ui.jqXHR.error(function () {
-						ui.panel.html(
-								"Couldn't load this tab. We'll try to fix this as soon as possible. " +
-								"If this wouldn't be a demo.");
-					});
-				}
-			});
-		});
-	</script>
 	<script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
-	<script>
-		function init() {
-			window.addEventListener('scroll', function (e) {
-				var distanceY = window.pageYOffset || document.documentElement.scrollTop,
-						shrinkOn = 300,
-						header = document.querySelector("header");
-				if (distanceY > shrinkOn) {
-					classie.add(header, "smaller");
-				} else {
-					if (classie.has(header, "smaller")) {
-						classie.remove(header, "smaller");
-					}
-				}
-			});
-		}
-		window.onload = init();
-	</script>
     <script>
         function init() {
             window.addEventListener('scroll', function(e){
@@ -136,7 +106,12 @@
 
 			<div class="sts-upper-right">
 				<span class="top-summary-textb">Receipts pending</span>
-				<span class="general-text">Last sync: <span class="timestamp"><fmt:formatDate value="${documentStatsForm.pendingCountSynced}" type="both"/></span></span>
+				<span class="general-text">
+                    Last sync:
+                    <span class="timestamp">
+                        <fmt:formatDate value="${documentStatsForm.pendingCountSynced}" type="both"/>
+                    </span>
+                </span>
 			</div>
 		</div>
 		<div class="sidebar-top-summary-lower clearfix">
@@ -144,7 +119,12 @@
 
 			<div class="sts-upper-right">
 				<span class="top-summary-textb">Receipts rejected</span>
-				<span class="general-text">Last sync: <span class="timestamp"><fmt:formatDate value="${documentStatsForm.rejectedCountSynced}" type="both"/></span></span>
+				<span class="general-text">
+                    Last sync:
+                    <span class="timestamp">
+                        <fmt:formatDate value="${documentStatsForm.rejectedCountSynced}" type="both"/>
+                    </span>
+                </span>
 			</div>
 		</div>
 	</div>
