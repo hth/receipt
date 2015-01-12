@@ -199,11 +199,17 @@
 			<h1 class="widget-title-text">Friend Invite</h1>
 		</div>
 		<form>
-			<input type="text" value="Enter emails" size="20"/>
+            <input type="text" value="Email address of friend here ..." size="20"
+                    onfocus="changeInviteText(this, 'focus')"
+                    onblur="changeInviteText(this, 'blur')"
+                    id="inviteEmailId"/>
 		</form>
 		<div class="gd-button-holder">
-			<button class="gd-button">SEND INVITE</button>
+			<button class="gd-button" onclick="submitInvitationForm()">SEND INVITE</button>
 		</div>
+        <div id="inviteText" class="si-general-text invite-general-text">
+            Invitation sent with your name and email address
+        </div>
 	</div>
 </div>
 <div class="rightside-content">

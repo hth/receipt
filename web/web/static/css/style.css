@@ -468,6 +468,11 @@ div .sidebar-date form input {
     font-family: "HelveticaNeueLTProCn", arial, sans-serif;
 }
 
+.invite-general-text {
+    width: 280px;
+    padding-left: 0;
+}
+
 a.notification:hover, a.notification:visited, a.notification {
     text-decoration: none;
     color: #000;
