@@ -9,16 +9,26 @@
 }
 .qq-upload-button {
     margin-top: 14px;
-    display: block;
     width: 279px;
-    padding: 7px 0;
-    text-align: center;
+    height: 49px;
     background: #007AFF;
     border-bottom: 1px solid #31578D;
     border-left: 1px solid #31578D;
     border-right: none;
     border-top: none;
-    color: #FFF;
+    color: #fff;
+    font-size: 0.875em;
+    font-weight: bold;
+    padding: 17px;
+    text-align: center;
+
+    /*display: block;*/
+    /*width: 240px;*/
+    /*padding: 7px 0;*/
+    /*text-align: center;*/
+    /*background: #032305;*/
+    /*border-bottom: 1px solid #DDD;*/
+    /*color: #FFF;*/
 }
 .qq-upload-button-hover {
     background: #007AFF;
