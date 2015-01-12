@@ -105,7 +105,11 @@
 <div class="sidebar">
 	<div class="sidebar-top-summary">
 		<div class="sidebar-top-summary-upper clearfix">
-			<h1 class="big-view" id="pendingCountInitial">${documentStatsForm.pendingCount}</h1>
+			<h1 class="big-view" id="pendingCountInitial">
+                <a href='${pageContext. request. contextPath}/access/pendingdocument.htm'>
+                    ${documentStatsForm.pendingCount}
+                </a>
+            </h1>
 			<h1 class="big-view" id="pendingCountId"></h1>
 
 			<div class="sts-upper-right">
@@ -117,7 +121,7 @@
                 </span>
 				<span class="general-text">
                     Last sync:
-                    <span class="timestamp">
+                    <span class="timestamp" id="pendingCountSyncedId">
                         <fmt:formatDate value="${documentStatsForm.pendingCountSynced}" type="both"/>
                     </span>
                 </span>

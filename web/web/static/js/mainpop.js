@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
     });
     //close ends
 
-    $('.timestamp').cuteTime({ refresh: 10000 });
+    $('.timestamp').cuteTime({refresh: 10000});
 
     $("#tabs").tabs({
         beforeLoad: function (event, ui) {
@@ -64,15 +64,15 @@ jQuery(document).ready(function ($) {
 
                     $.ajax({
                         type: 'POST',
-                        beforeSend: function(xhr) {
+                        beforeSend: function (xhr) {
                             xhr.setRequestHeader(
                                 $("meta[name='_csrf_header']").attr("content"),
                                 $("meta[name='_csrf']").attr("content")
                             );
                         },
-                        url:  ctx + '/ws/r/pending.htm',
-                        success: function(response) {
-                            if(response > 0) {
+                        url: ctx + '/ws/r/pending.htm',
+                        success: function (response) {
+                            if (response > 0) {
                                 var html =
                                     "<a href='" + ctx + "/access/pendingdocument.htm' style='text-decoration: none;'>" +
                                     "<span class='pendingCounter' id='pendingCountValue'>0</span>" +
@@ -80,6 +80,8 @@ jQuery(document).ready(function ($) {
                                 $('#pendingCountInitial').hide();
                                 $('#pendingCountId').html(html).show();
                                 $(runCounter(response));
+                                $('#pendingCountSyncedId').attr('data-timestamp', 'asd');
+                                $('#pendingCountSyncedId').text("just now");
                             }
                         }
                     });
