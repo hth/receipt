@@ -65,7 +65,10 @@ jQuery(document).ready(function ($) {
                     $.ajax({
                         type: 'POST',
                         beforeSend: function(xhr) {
-                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                            xhr.setRequestHeader(
+                                $("meta[name='_csrf_header']").attr("content"),
+                                $("meta[name='_csrf']").attr("content")
+                            );
                         },
                         url:  ctx + '/ws/r/pending.htm',
                         success: function(response) {
