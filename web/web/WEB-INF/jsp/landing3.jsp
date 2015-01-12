@@ -196,13 +196,13 @@
 	</div>
 	<div class="sidebar-date">
 		<div class="gd-title">
-			<h1 class="widget-title-text">Some Date</h1>
+			<h1 class="widget-title-text">Friend Invite</h1>
 		</div>
 		<form>
-			<input type="text" value="Enter text" size="20"/>
+			<input type="text" value="Enter emails" size="20"/>
 		</form>
 		<div class="gd-button-holder">
-			<button class="gd-button">CSS BASED BUTTON</button>
+			<button class="gd-button">SEND INVITE</button>
 		</div>
 	</div>
 </div>
