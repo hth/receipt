@@ -6,17 +6,20 @@
 	<meta name="description" content=""/>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <title><fmt:message key="title" /></title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css'/>
 
     <script src="${pageContext.request.contextPath}/static/js/jquery-1.js"></script>
-	<script src="${pageContext.request.contextPath}/static/js/jquery-ui.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/jquery-ui.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
 
-	<script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
     <script>
         function init() {
             window.addEventListener('scroll', function(e){
@@ -102,7 +105,8 @@
 <div class="sidebar">
 	<div class="sidebar-top-summary">
 		<div class="sidebar-top-summary-upper clearfix">
-			<h1 class="big-view">${documentStatsForm.pendingCount}</h1>
+			<h1 class="big-view" id="pendingCountInitial">${documentStatsForm.pendingCount}</h1>
+			<h1 class="big-view" id="pendingCountId"></h1>
 
 			<div class="sts-upper-right">
                 <span class="top-summary-textb">
@@ -142,9 +146,7 @@
 		<div class="gd-title">
 			<h1 class="widget-title-text">Upload new receipt</h1>
 		</div>
-		<div class="gd-button-holder">
-			<button class="gd-button">UPLOAD RECEIPT</button>
-		</div>
+        <div id="restricted-fine-uploader"></div>
 	</div>
 	<div class="sidebar-indication">
 		<div class="si-title">
