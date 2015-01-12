@@ -207,9 +207,7 @@
 		<div class="gd-button-holder">
 			<button class="gd-button" onclick="submitInvitationForm()">SEND INVITE</button>
 		</div>
-        <div id="inviteText" class="si-general-text invite-general-text">
-            Invitation sent with your name and email address
-        </div>
+        <div id="inviteText" class="si-general-text invite-general-text">Invitation sent with your name and email address</div>
 	</div>
 </div>
 <div class="rightside-content">
