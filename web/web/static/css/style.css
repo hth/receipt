@@ -589,6 +589,11 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border-top-left-radius: 5px;
 }
 
+.toggle_selected {
+    background: #FFF;
+    color: #0079FF;
+}
+
 .toggle_button_right {
     margin: 0px;
     border-bottom-right-radius: 5px;
