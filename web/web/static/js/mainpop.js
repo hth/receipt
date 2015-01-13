@@ -112,6 +112,7 @@ jQuery(document).ready(function ($) {
 
     // Load by hiding calendar by default
     $("#calendarId").hide();
+    $("#btnList").addClass("toggle_selected");
 });
 
 function runCounter(max) {
@@ -287,8 +288,12 @@ function toggleListCalendarView(button) {
     if(content === 'btnList') {
         $("#calendarId").hide();
         $("#receiptListId").show();
+        $("#btnList").addClass("toggle_selected");
+        $("#btnCalendar").removeClass("toggle_selected");
     } else {
         $("#receiptListId").hide();
         $("#calendarId").show();
+        $("#btnList").removeClass("toggle_selected");
+        $("#btnCalendar").addClass("toggle_selected");
     }
 }
