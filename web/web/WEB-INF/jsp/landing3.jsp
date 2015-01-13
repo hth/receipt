@@ -255,7 +255,7 @@
 				<p class="view-more-text">View All</p>
 			</div>
             <div class="pie-chart">
-                <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
+                <div id="expenseByBusiness" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
 			</div>
 			<div class="calendar">
                 <script type='text/javascript'>

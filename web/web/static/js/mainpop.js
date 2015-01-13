@@ -184,7 +184,7 @@ function loadMonthlyExpenses(date, clicked) {
 }
 
 function loadMonthlyExpenses(month, bizNames, expenseTags) {
-    $('#container').highcharts({
+    $('#expenseByBusiness').highcharts({
         chart: {
             type: 'pie'
         },
@@ -192,7 +192,7 @@ function loadMonthlyExpenses(month, bizNames, expenseTags) {
             enabled: false
         },
         title: {
-            text: 'Business By Expense, ' + month
+            text: 'Expense By Business: ' + month
         },
         yAxis: {
             title: {
