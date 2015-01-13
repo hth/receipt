@@ -255,7 +255,7 @@
 				<p class="view-more-text">View All</p>
 			</div>
             <div class="pie-chart">
-                <div id="expenseByBusiness" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
+                <div id="expenseByBusiness"></div>
 			</div>
 			<div class="calendar">
                 <script type='text/javascript'>
@@ -300,7 +300,7 @@
 
                     });
                 </script>
-                <div id='calendar'></div>
+                <div id='calendar' class="hidden"></div>
 			</div>
 		</div>
 		<div id="tab2" class="first ajx-content">
@@ -518,27 +518,26 @@
     $(function () {
         "use strict";
 
-        var colors = Highcharts.getOptions().colors,
-                categories = [${landingForm.bizNames}],
-                data = [
-                    <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
-                    {
-                        y: ${item.total},
-                        color: colors[${status.count-1}],
-                        url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                        id: '${item.bizNameForId}',
-                        drilldown: {
-                            name: '${item.bizName}',
-                            categories: [${item.expenseTags}],
-                            data: [${item.expenseValues}],
-                            color: colors[${status.count-1}],
-                            url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                            id: '${item.bizNameForId}'
-                        }
-                    },
-                    </c:forEach>
-                ];
-
+        var colors = Highcharts.getOptions().colors;
+        var categories = [${landingForm.bizNames}];
+        var data = [
+            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
+            {
+                y: ${item.total},
+                color: colors[${status.count-1}],
+                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                id: '${item.bizNameForId}',
+                drilldown: {
+                    name: '${item.bizName}',
+                    categories: [${item.expenseTags}],
+                    data: [${item.expenseValues}],
+                    color: colors[${status.count-1}],
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                    id: '${item.bizNameForId}'
+                }
+            },
+            </c:forEach>
+        ];
 
         // Build the data arrays
         var bizNames = [];

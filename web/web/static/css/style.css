@@ -586,4 +586,6 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     color: black;
 }
 
+.hidden { display: none; }
+
 /*text styles*/
