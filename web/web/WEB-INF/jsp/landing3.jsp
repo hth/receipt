@@ -11,6 +11,8 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css'/>
+    <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.min.css'/>
+    <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.print.css' media='print'/>
 
     <script src="${pageContext.request.contextPath}/static/js/jquery-1.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/jquery-ui.js"></script>
@@ -18,6 +20,8 @@
     <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.min.js"></script>
 
     <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
     <script>
@@ -253,7 +257,49 @@
 				<img src="${pageContext.request.contextPath}/static/img/pie-chart.png" style="float: right;">
 			</div>
 			<div class="calendar">
-				<img src="${pageContext.request.contextPath}/static/img/cal.png"/>
+                <script type='text/javascript'>
+                    $(document).ready(function() {
+                        "use strict";
+
+                        $('#calendar').fullCalendar({
+                            header : {
+                                left : 'prev,next today',
+                                center : '',
+                                right: 'month,agendaWeek,agendaDay'
+                            },
+                            defaultView: 'month',
+                            contentHeight: 550,
+                            aspectRatio: 1,
+                            editable : false,
+                            eventLimit: true,
+                            events : [
+                                <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
+                                <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
+                                {
+                                    title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
+                                    start : '${receiptGrouped.date}',
+                                    end   : '${receiptGrouped.date}',
+                                    url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}'
+                                },
+                                </c:forEach>
+                            ]
+                        });
+
+                        $('.fc-button-prev').click(function(){
+                            var start = $("#calendar").fullCalendar('getView').start;
+                            var eventTime = $.fullCalendar.formatDate(start, "MMM, yyyy");
+                            $(loadMonthlyExpenses(eventTime, 'prev'));
+                        });
+
+                        $('.fc-button-next').click(function(){
+                            var end = $("#calendar").fullCalendar('getView').end;
+                            var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
+                            $(loadMonthlyExpenses(eventTime, 'next'));
+                        });
+
+                    });
+                </script>
+                <div id='calendar'></div>
 			</div>
 		</div>
 		<div id="tab2" class="first ajx-content">
