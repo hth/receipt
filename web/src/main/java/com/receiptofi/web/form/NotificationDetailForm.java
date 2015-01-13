@@ -26,7 +26,7 @@ public class NotificationDetailForm {
 
     private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM. dd");
     private static final int OFF_SET = 0;
-    private static final int MAX_WIDTH = 53;
+    private static final int MAX_WIDTH = 53;  // or 70
     private static final String CLASS = "class='notification'";
 
     private String referenceId;
@@ -62,19 +62,19 @@ public class NotificationDetailForm {
     public String getNotificationMessageForDisplay() {
         switch (notificationType) {
             case MESSAGE:
-                return message;
+                return getAbbreviatedMessage();
             case DOCUMENT:
                 this.href = "./pendingdocument/" + referenceId + ".htm";
-                return getReceiptUpdateURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                return getReceiptUpdateURL(getAbbreviatedMessage());
             case RECEIPT:
                 this.href = "./receipt/" + referenceId + ".htm";
-                return getReceiptURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                return getReceiptURL(getAbbreviatedMessage());
             case EXPENSE_REPORT:
                 this.href = "./receipt/" + referenceId + ".htm";
-                return getReceiptURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                return getReceiptURL(getAbbreviatedMessage());
             case MILEAGE:
                 this.href = "./modv/" + referenceId + ".htm";
-                return getMileageURL(StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH));
+                return getMileageURL(getAbbreviatedMessage());
             default:
                 LOG.error("Reached invalid condition");
                 return "";

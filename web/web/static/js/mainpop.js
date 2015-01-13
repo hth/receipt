@@ -49,6 +49,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    //Fineuploader start
     var errorHandler = function (event, id, fileName, reason) {
         qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
     };
@@ -107,6 +108,7 @@ jQuery(document).ready(function ($) {
             $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
         }
     });
+    //Fineuploader ends
 });
 
 function runCounter(max) {
@@ -119,5 +121,40 @@ function runCounter(max) {
             $('#pendingCountValue').text(currCount + 1);
             setTimeout(incCounter, 1);
         }
+    }
+}
+
+function submitInvitationForm() {
+    "use strict";
+
+    var inviteEmailId = jQuery("#inviteEmailId").val();
+    var object = {emailId: inviteEmailId};
+
+    $.ajax({
+        type: "POST",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+        },
+        url: ctx + "/access/landing/invite.htm",
+        data: object,
+        success: function (response) {
+            $('#inviteText').html(response);
+            $('#inviteEmailId').val('Email address of friend here ...');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+    });
+}
+
+function changeInviteText(field, text) {
+    if(text === 'blur') {
+        if (field.value == '') {
+            field.value = 'Email address of friend here ...';
+        }
+    } else {
+        field.value='';
+        $('#inviteText').html('Invitation sent with your name and email address');
     }
 }

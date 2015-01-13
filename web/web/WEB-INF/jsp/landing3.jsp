@@ -162,13 +162,13 @@
                 <ul>
                     <c:forEach var="notification" items="${landingForm.notificationForm.notifications}" varStatus="status">
                         <li class="si-list">
-                            <img alt="indication icon" src="${pageContext.request.contextPath}/static/img/indication-icon.png">
+                            <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
                             <span class="si-general-text">${notification.notificationMessageForDisplay}</span>
                             <span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
                         </li>
                     </c:forEach>
                     <li class="si-list" ng-repeat="i in items">
-                        <img alt="indication icon" src="${pageContext.request.contextPath}/static/img/indication-icon.png">
+                        <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
                         <span class="si-general-text"><a class='notification' href="{{i.href}}">{{i.message}}</a></span>
                         <span class="si-date-text">{{i.created}}</span>
                     </li>
@@ -196,14 +196,18 @@
 	</div>
 	<div class="sidebar-date">
 		<div class="gd-title">
-			<h1 class="widget-title-text">Some Date</h1>
+			<h1 class="widget-title-text">Friend Invite</h1>
 		</div>
 		<form>
-			<input type="text" value="Enter text" size="20"/>
+            <input type="text" value="Email address of friend here ..." size="20"
+                    onfocus="changeInviteText(this, 'focus')"
+                    onblur="changeInviteText(this, 'blur')"
+                    id="inviteEmailId"/>
 		</form>
 		<div class="gd-button-holder">
-			<button class="gd-button">CSS BASED BUTTON</button>
+			<button class="gd-button" onclick="submitInvitationForm()">SEND INVITE</button>
 		</div>
+        <div id="inviteText" class="si-general-text invite-general-text">Invitation sent with your name and email address</div>
 	</div>
 </div>
 <div class="rightside-content">
