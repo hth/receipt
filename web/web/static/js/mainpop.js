@@ -111,7 +111,7 @@ jQuery(document).ready(function ($) {
     //Fineuploader ends
 
     // Load by hiding calendar by default
-    $("#calendar").hide();
+    $("#calendarId").hide();
 });
 
 function runCounter(max) {
@@ -285,10 +285,10 @@ function loadMonthlyExpenses(month, bizNames, expenseTags) {
 function toggleListCalendarView(button) {
     var content = 'btn' + button.value;
     if(content === 'btnList') {
-        $("#calendar").hide();
+        $("#calendarId").hide();
         $("#receiptListId").show();
     } else {
         $("#receiptListId").hide();
-        $("#calendar").show();
+        $("#calendarId").show();
     }
 }

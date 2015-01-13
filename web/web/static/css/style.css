@@ -324,11 +324,13 @@ div .sidebar-date form input {
 }
 
 .rightside-list-holder {
-    width: 560px;
-    height: auto;
+    width: 580px;
+    height: 550px;
     min-height: 270px;
     margin-left: 10px;
     margin-top: 14px;
+    margin-bottom: 50px;
+    overflow-y: auto;
 }
 
 .rightside-list-holder li {
@@ -365,7 +367,7 @@ div .sidebar-date form input {
 
 .calendar {
     width: 560px;
-    height: auto;
+    height: 550px;
     margin-left: 10px;
     margin-top: 14px;
     margin-bottom: 50px;
