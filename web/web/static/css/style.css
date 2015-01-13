@@ -145,7 +145,7 @@ header nav {
     text-align: center;
     color: #333333;
     font-size: 0.688em;
-    font-family: "HelveticaNeueLTProCn", helvetica, arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-decoration: none;
 }
 
@@ -153,7 +153,7 @@ header h1 {
     float: left;
     color: #000;
     font-size: 1.5em;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .main {
@@ -269,7 +269,7 @@ header h1 {
 .si-list-footer {
     font-weight: bold;
     font-size: 0.75em;
-    font-family: arial, helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin-top: 20px;
     text-align: center;
     display: block;
@@ -408,7 +408,7 @@ div .sidebar-date form input {
     color: #333333;
     font-weight: normal;
     font-size: 0.563em;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-decoration: none;
     float: right;
     margin-left: 20px;
@@ -416,7 +416,7 @@ div .sidebar-date form input {
 
 .user-email {
     font-size: 0.563em;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: #000;
     float: right;
@@ -425,7 +425,7 @@ div .sidebar-date form input {
 
 .big-view {
     font-size: 3.9em;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: normal;
     color: #55D769;
     float: left;
@@ -433,7 +433,7 @@ div .sidebar-date form input {
 
 .big-view-lower {
     font-size: 3.9em;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: normal;
     color: #FD462A;
     float: left;
@@ -443,7 +443,7 @@ div .sidebar-date form input {
     color: #000;
     font-weight: bold;
     font-size: 1em;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     display: block;
     padding-top: 5px;
     padding-left: 10px;
@@ -456,7 +456,7 @@ div .sidebar-date form input {
     padding-top: 10px;
     display: block;
     padding-left: 10px;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .si-general-text {
@@ -467,7 +467,7 @@ div .sidebar-date form input {
     display: inline-block;
     width: 179px;
     padding-left: 17px;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .invite-general-text {
@@ -493,7 +493,7 @@ a.notification:hover, a.notification:visited, a.notification {
     width: 64px;
     vertical-align: top;
     padding-left: 17px;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .view-more-text {
@@ -503,7 +503,7 @@ a.notification:hover, a.notification:visited, a.notification {
     padding-top: 5px;
     display: inline-block;
     float: right;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
@@ -518,7 +518,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-weight: bold;
     font-size: 1.125em;
     display: block;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .rightside-title-text {
@@ -526,7 +526,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-weight: bold;
     font-size: 1.5em;
     display: block;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .rightside-li-date-text {
@@ -538,7 +538,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     width: 118px;
     line-height: 50px;
     padding-left: 7px;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .rightside-list-holder li a {
@@ -552,7 +552,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     vertical-align: middle;
     width: 330px;
     padding-left: 30px;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .rightside-li-middle-text:hover {
@@ -569,7 +569,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     direction: rtl;
     display: inline-block;
     padding-left: 10px;
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .overview_view {

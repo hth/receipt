@@ -14,12 +14,13 @@
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.min.css'/>
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.print.css' media='print'/>
 
-    <script src="${pageContext.request.contextPath}/static/js/jquery-1.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/jquery-ui.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.0.4/highcharts.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.min.js"></script>
 
@@ -253,8 +254,8 @@
 				</ul>
 				<p class="view-more-text">View All</p>
 			</div>
-			<div class="pie-chart">
-				<img src="${pageContext.request.contextPath}/static/img/pie-chart.png" style="float: right;">
+            <div class="pie-chart">
+                <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
 			</div>
 			<div class="calendar">
                 <script type='text/javascript'>
@@ -510,5 +511,65 @@
 <!-- Modernizr -->
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 <!-- Resource jQuery -->
+
+<c:if test="${!empty landingForm.bizByExpenseTypes}">
+<!-- Biz by expense -->
+<script>
+    $(function () {
+        "use strict";
+
+        var colors = Highcharts.getOptions().colors,
+                categories = [${landingForm.bizNames}],
+                data = [
+                    <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
+                    {
+                        y: ${item.total},
+                        color: colors[${status.count-1}],
+                        url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                        id: '${item.bizNameForId}',
+                        drilldown: {
+                            name: '${item.bizName}',
+                            categories: [${item.expenseTags}],
+                            data: [${item.expenseValues}],
+                            color: colors[${status.count-1}],
+                            url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                            id: '${item.bizNameForId}'
+                        }
+                    },
+                    </c:forEach>
+                ];
+
+
+        // Build the data arrays
+        var bizNames = [];
+        var expenseTags = [];
+        for (var i = 0; i < data.length; i++) {
+
+            // add browser data
+            bizNames.push({
+                name: categories[i],
+                y: data[i].y,
+                color: data[i].color,
+                url: data[i].url,
+                id: data[i].id
+            });
+
+            // add version data
+            for (var j = 0; j < data[i].drilldown.data.length; j++) {
+                var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
+                expenseTags.push({
+                    name: data[i].drilldown.categories[j],
+                    y: data[i].drilldown.data[j],
+                    color: Highcharts.Color(data[i].color).brighten(brightness).get(),
+                    url: data[i].drilldown.url,
+                    id: data[i].drilldown.id
+                });
+            }
+        }
+
+        loadMonthlyExpenses('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
+    });
+</script>
+</c:if>
 </body>
 </html>

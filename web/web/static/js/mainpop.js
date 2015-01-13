@@ -182,3 +182,99 @@ function loadMonthlyExpenses(date, clicked) {
         }
     });
 }
+
+function loadMonthlyExpenses(month, bizNames, expenseTags) {
+    $('#container').highcharts({
+        chart: {
+            type: 'pie'
+        },
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: 'Business By Expense, ' + month
+        },
+        yAxis: {
+            title: {
+                text: 'Total expense'
+            }
+        },
+        plotOptions: {
+            pie: {
+                shadow: false,
+                center: ['50%', '50%'],
+                slicedOffset: 0
+            }
+        },
+        tooltip: {
+            valueSuffix: '$',
+            formatter: function () {
+                return this.point.name + ": " + '$' + Highcharts.numberFormat(this.y, 2);
+            }
+        },
+        series: [
+            {
+                name: 'Total',
+                data: bizNames,
+                size: '60%',
+                dataLabels: {
+                    enabled: false,
+                    formatter: function () {
+                        return this.y > 1 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                },
+                point: {
+                    events: {
+                        click: function (e) {
+                            console.log(this.options.url);
+                            location.href = this.options.url;
+                        },
+                        mouseOver: function (e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
+                        },
+                        mouseOut: function (e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
+                        }
+                    }
+                },
+                allowPointSelect: true,
+                cursor: 'pointer'
+            },
+            {
+                name: 'Total',
+                data: expenseTags,
+                size: '80%',
+                innerSize: '60%',
+                dataLabels: {
+                    enabled: false,
+                    formatter: function () {
+                        // display only if larger than 1
+                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + '$' + Highcharts.numberFormat(this.y, 2) : null;
+                    }
+                },
+                point: {
+                    events: {
+                        click: function (e) {
+                            console.log(this.options.url);
+                            location.href = this.options.url;
+                        },
+                        mouseOver: function (e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
+                        },
+                        mouseOut: function (e) {
+                            console.log('#' + this.options.id);
+                            $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
+                        }
+                    }
+                },
+                allowPointSelect: true,
+                cursor: 'pointer'
+            }
+        ]
+    });
+}
