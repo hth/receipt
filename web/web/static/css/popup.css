@@ -150,7 +150,7 @@ xpopup
 }
 
 .h1 {
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
     font-weight: bold;
     font-size: 1.4em;
 }
@@ -183,7 +183,7 @@ xpopup
 }
 
 .ll-t {
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
     font-size: 1em !important;
     line-height: 50px !important;
 }
@@ -235,7 +235,7 @@ xpopup
 }
 
 p, a, h1, h2, h3, span {
-    font-family: "HelveticaNeueLTProCn", arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .padtop2per {
