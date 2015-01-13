@@ -245,7 +245,9 @@ header h1 {
 }
 
 .si-list-holder {
-    width: 280px;
+    /*Increased from 280 to 300 to remove firefox horizontal scrollbar*/
+    /*width: 280px;*/
+    width: 300px;
     /*height: auto;*/
     min-height: 294px;
     margin-top: 14px;
@@ -471,6 +473,10 @@ div .sidebar-date form input {
 .invite-general-text {
     width: 280px;
     padding-left: 0;
+}
+
+.si-notification-icon {
+    vertical-align: top;
 }
 
 a.notification:hover, a.notification:visited, a.notification {
