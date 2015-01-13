@@ -578,6 +578,19 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     cursor: pointer;
     font-size: 0.8rem;
     float: left;
+    font-weight: bold;
+}
+
+.toggle_button_left {
+    margin: 0px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.toggle_button_right {
+    margin: 0px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .btnborder {
@@ -585,7 +598,5 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     background: white;
     color: black;
 }
-
-.hidden { display: none; }
 
 /*text styles*/

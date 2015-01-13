@@ -109,6 +109,9 @@ jQuery(document).ready(function ($) {
         }
     });
     //Fineuploader ends
+
+    // Load by hiding calendar by default
+    $("#calendar").hide();
 });
 
 function runCounter(max) {
@@ -277,4 +280,15 @@ function loadMonthlyExpenses(month, bizNames, expenseTags) {
             }
         ]
     });
+}
+
+function toggleListCalendarView(button) {
+    var content = 'btn' + button.value;
+    if(content === 'btnList') {
+        $("#calendar").hide();
+        $("#receiptListId").show();
+    } else {
+        $("#receiptListId").hide();
+        $("#calendar").show();
+    }
 }
