@@ -88,6 +88,47 @@
             };
         });
     </script>
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            "use strict";
+
+            $('#calendar').fullCalendar({
+                header : {
+                    left : 'prev,next today',
+                    center : '',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                defaultView: 'month',
+                contentHeight: 450,
+                aspectRatio: 1,
+                editable : false,
+                eventLimit: true,
+                events : [
+                    <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
+                    <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
+                    {
+                        title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
+                        start : '${receiptGrouped.date}',
+                        end   : '${receiptGrouped.date}',
+                        url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}'
+                    },
+                    </c:forEach>
+                ]
+            });
+
+            $('.fc-button-prev').click(function(){
+                var start = $("#calendar").fullCalendar('getView').start;
+                var eventTime = $.fullCalendar.formatDate(start, "MMM, yyyy");
+                $(loadMonthlyExpenses(eventTime, 'prev'));
+            });
+
+            $('.fc-button-next').click(function(){
+                var end = $("#calendar").fullCalendar('getView').end;
+                var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
+                $(loadMonthlyExpenses(eventTime, 'next'));
+            });
+        });
+    </script>
 </head>
 <body>
 <header>
@@ -230,13 +271,13 @@
 				<h1 class="rightside-title-text left">
                     <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
                 </h1>
-                <span class="right" style="width: 23%;">
-					<input type="button" style="margin: 0px;border-bottom-left-radius: 5px;border-top-left-radius: 5px;" value="List" id="btnlist" class="overview_view" onclick="showhide()">
+                <span class="right" style="width: 24%;">
+					<input type="button" value="List" id="btnList" class="overview_view toggle_button_left" onclick="toggleListCalendarView(this)">
 					<span style="width:1px;background:white;float:left;">&nbsp;</span>
-					<input type="button" style="margin:0px;border-bottom-right-radius: 5px;border-top-right-radius: 5px;" value="Calendar" class="overview_view" id="btndetail" onclick="showhide()">
+					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">
 				</span>
 			</div>
-			<div class="rightside-list-holder">
+			<div class="rightside-list-holder" id="receiptListId">
 				<ul>
                     <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
                     <li class="rightside-list">
@@ -254,53 +295,11 @@
 				</ul>
 				<p class="view-more-text">View All</p>
 			</div>
+            <div class="calendar">
+                <div id="calendar"></div>
+            </div>
             <div class="pie-chart">
-                <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
-			</div>
-			<div class="calendar">
-                <script type='text/javascript'>
-                    $(document).ready(function() {
-                        "use strict";
-
-                        $('#calendar').fullCalendar({
-                            header : {
-                                left : 'prev,next today',
-                                center : '',
-                                right: 'month,agendaWeek,agendaDay'
-                            },
-                            defaultView: 'month',
-                            contentHeight: 550,
-                            aspectRatio: 1,
-                            editable : false,
-                            eventLimit: true,
-                            events : [
-                                <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
-                                <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
-                                {
-                                    title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
-                                    start : '${receiptGrouped.date}',
-                                    end   : '${receiptGrouped.date}',
-                                    url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}'
-                                },
-                                </c:forEach>
-                            ]
-                        });
-
-                        $('.fc-button-prev').click(function(){
-                            var start = $("#calendar").fullCalendar('getView').start;
-                            var eventTime = $.fullCalendar.formatDate(start, "MMM, yyyy");
-                            $(loadMonthlyExpenses(eventTime, 'prev'));
-                        });
-
-                        $('.fc-button-next').click(function(){
-                            var end = $("#calendar").fullCalendar('getView').end;
-                            var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
-                            $(loadMonthlyExpenses(eventTime, 'next'));
-                        });
-
-                    });
-                </script>
-                <div id='calendar'></div>
+                <div id="expenseByBusiness"></div>
 			</div>
 		</div>
 		<div id="tab2" class="first ajx-content">
@@ -518,27 +517,26 @@
     $(function () {
         "use strict";
 
-        var colors = Highcharts.getOptions().colors,
-                categories = [${landingForm.bizNames}],
-                data = [
-                    <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
-                    {
-                        y: ${item.total},
-                        color: colors[${status.count-1}],
-                        url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                        id: '${item.bizNameForId}',
-                        drilldown: {
-                            name: '${item.bizName}',
-                            categories: [${item.expenseTags}],
-                            data: [${item.expenseValues}],
-                            color: colors[${status.count-1}],
-                            url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                            id: '${item.bizNameForId}'
-                        }
-                    },
-                    </c:forEach>
-                ];
-
+        var colors = Highcharts.getOptions().colors;
+        var categories = [${landingForm.bizNames}];
+        var data = [
+            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
+            {
+                y: ${item.total},
+                color: colors[${status.count-1}],
+                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                id: '${item.bizNameForId}',
+                drilldown: {
+                    name: '${item.bizName}',
+                    categories: [${item.expenseTags}],
+                    data: [${item.expenseValues}],
+                    color: colors[${status.count-1}],
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                    id: '${item.bizNameForId}'
+                }
+            },
+            </c:forEach>
+        ];
 
         // Build the data arrays
         var bizNames = [];

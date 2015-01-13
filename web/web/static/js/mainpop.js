@@ -109,6 +109,9 @@ jQuery(document).ready(function ($) {
         }
     });
     //Fineuploader ends
+
+    // Load by hiding calendar by default
+    $("#calendar").hide();
 });
 
 function runCounter(max) {
@@ -149,12 +152,12 @@ function submitInvitationForm() {
 }
 
 function changeInviteText(field, text) {
-    if(text === 'blur') {
+    if (text === 'blur') {
         if (field.value == '') {
             field.value = 'Email address of friend here ...';
         }
     } else {
-        field.value='';
+        field.value = '';
         $('#inviteText').html('Invitation sent with your name and email address');
     }
 }
@@ -167,7 +170,7 @@ function loadMonthlyExpenses(date, clicked) {
             monthView: date,
             buttonClick: clicked
         },
-        beforeSend: function(xhr) {
+        beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             $('#onLoadReceiptForMonthId').hide();
             $('#refreshReceiptForMonthId').html(
@@ -177,14 +180,14 @@ function loadMonthlyExpenses(date, clicked) {
         success: function (response) {
             $('#refreshReceiptForMonthId').html(response).show();
         },
-        complete: function() {
+        complete: function () {
             //do nothing as load removes spinner
         }
     });
 }
 
 function loadMonthlyExpenses(month, bizNames, expenseTags) {
-    $('#container').highcharts({
+    $('#expenseByBusiness').highcharts({
         chart: {
             type: 'pie'
         },
@@ -192,7 +195,7 @@ function loadMonthlyExpenses(month, bizNames, expenseTags) {
             enabled: false
         },
         title: {
-            text: 'Business By Expense, ' + month
+            text: 'Expense By Business: ' + month
         },
         yAxis: {
             title: {
@@ -277,4 +280,15 @@ function loadMonthlyExpenses(month, bizNames, expenseTags) {
             }
         ]
     });
+}
+
+function toggleListCalendarView(button) {
+    var content = 'btn' + button.value;
+    if(content === 'btnList') {
+        $("#calendar").hide();
+        $("#receiptListId").show();
+    } else {
+        $("#receiptListId").hide();
+        $("#calendar").show();
+    }
 }
