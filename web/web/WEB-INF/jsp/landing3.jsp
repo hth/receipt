@@ -99,7 +99,7 @@
                     right: 'month,agendaWeek,agendaDay'
                 },
                 defaultView: 'month',
-                contentHeight: 450,
+                contentHeight: 500, //Adds another 50 in surrounding area hence 500 height
                 aspectRatio: 1,
                 editable : false,
                 eventLimit: true,
@@ -272,7 +272,7 @@
                     <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
                 </h1>
                 <span class="right" style="width: 24%;">
-					<input type="button" value="List" id="btnList" class="overview_view toggle_button_left" onclick="toggleListCalendarView(this)">
+					<input type="button" value="List" class="overview_view toggle_button_left" id="btnList" onclick="toggleListCalendarView(this)">
 					<span style="width:1px;background:white;float:left;">&nbsp;</span>
 					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">
 				</span>
@@ -295,7 +295,7 @@
 				</ul>
 				<p class="view-more-text">View All</p>
 			</div>
-            <div class="calendar">
+            <div class="calendar" id="calendarId">
                 <div id="calendar"></div>
             </div>
             <div class="pie-chart">
