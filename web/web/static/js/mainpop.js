@@ -158,3 +158,27 @@ function changeInviteText(field, text) {
         $('#inviteText').html('Invitation sent with your name and email address');
     }
 }
+
+function loadMonthlyExpenses(date, clicked) {
+    $.ajax({
+        type: "POST",
+        url: ctx + '/access/landing/monthly_expenses.htm',
+        data: {
+            monthView: date,
+            buttonClick: clicked
+        },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+            $('#onLoadReceiptForMonthId').hide();
+            $('#refreshReceiptForMonthId').html(
+                "<div class='spinner large' id='spinner'></div>"
+            ).show();
+        },
+        success: function (response) {
+            $('#refreshReceiptForMonthId').html(response).show();
+        },
+        complete: function() {
+            //do nothing as load removes spinner
+        }
+    });
+}
