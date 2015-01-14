@@ -216,9 +216,14 @@ public class LandingController extends BaseController {
     )
     @ResponseBody
     public ModelAndView monthlyExpenses(
-            @RequestParam ("monthView") String monthView,
-            @RequestParam ("buttonClick") String previousOrNext,
-            @ModelAttribute ("landingForm") LandingForm landingForm
+            @RequestParam ("monthView")
+            String monthView,
+
+            @RequestParam ("buttonClick")
+            String previousOrNext,
+
+            @ModelAttribute ("landingForm")
+            LandingForm landingForm
     ) throws IOException {
         ModelAndView modelAndView = new ModelAndView("/z/landingTabs");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -239,7 +244,7 @@ public class LandingController extends BaseController {
     }
 
     /**
-     * Populate Receipt expense donut chart
+     * Populate Receipt expense donut chart.
      *
      * @param landingForm
      * @param receipts
@@ -278,7 +283,7 @@ public class LandingController extends BaseController {
     }
 
     /**
-     * For uploading Receipts
+     * For uploading Receipts.
      *
      * @param httpServletRequest
      * @return
