@@ -34,11 +34,20 @@ public class IndexController {
     /**
      * isEnabled() false exists when properties registration.turned.on is false and user is trying to gain access
      * or signup through one of the provider. This is last line of defense for user signing in through social provider.
+     * <p>
+     * During application start up a call is made to show index page. Hence this method and only this controller
+     * contains support for request type HEAD.
+     * <p>
+     * We have added support for HEAD request in filter to prevent failing on HEAD request. As of now there is no valid
+     * reason why filter contains this HEAD request as everything is secure after login and there are no bots or
+     * crawlers when a valid user has logged in.
+     * <p>
+     * @see <a href="http://axelfontaine.com/blog/http-head.html">http://axelfontaine.com/blog/http-head.html</a>
      *
      * @param map
      * @return
      */
-    @RequestMapping (value = "/open/index", method = RequestMethod.GET)
+    @RequestMapping (value = "/open/index", method = {RequestMethod.GET, RequestMethod.HEAD})
     public String index(ModelMap map) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LOG.info("Auth {}", authentication.getPrincipal().toString());
