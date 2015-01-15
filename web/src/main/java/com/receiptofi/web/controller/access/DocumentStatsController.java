@@ -129,9 +129,7 @@ public class DocumentStatsController {
         DocumentEntity documentEntity = documentUpdateService.findOne(documentId, receiptUser.getRid());
         receiptDocumentForm.setReceiptDocument(documentEntity);
 
-        ModelAndView modelAndView = new ModelAndView(showDocument);
-        modelAndView.addObject("receiptDocumentForm", receiptDocumentForm);
-        return modelAndView;
+        return new ModelAndView(showDocument);
     }
 
     /**

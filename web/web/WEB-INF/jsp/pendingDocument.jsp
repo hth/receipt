@@ -30,40 +30,40 @@
 </header>
 <div class="main clearfix">
 <c:choose>
-    <c:when test="${!empty pendingReceiptForm.pending}">
-        <div class="rightside-title">
-            <h1 class="rightside-title-text">
-                Pending Document<c:if test="${pendingReceiptForm.pending.size() gt 1}">s</c:if>
-            </h1>
-        </div>
-        <div class="rightside-list-holder full-list-holder">
-            <ul>
-                <c:forEach items="${pendingReceiptForm.pending}" var="receipt" varStatus="status">
-                <li>
-                <span class="rightside-li-right-text counter-li-text">
-                    ${status.count}
-                </span>
-                <span class="rightside-li-date-text full-li-date-text">
-                    <fmt:formatDate value="${receipt.documentEntity.created}" type="both"/>
-                </span>
-                <a href="${pageContext.request.contextPath}/access/document/${receipt.documentEntity.id}.htm" class="rightside-li-middle-text full-li-middle-text">
-                    ${receipt.fileName}
-                </a>
-                </li>
-                </c:forEach>
-            </ul>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <div class="rightside-title">
-            <h1 class="rightside-title-text">
-                No Pending Document
-            </h1>
-        </div>
-        <div class="rightside-list-holder full-list-holder">
-            Please upload document to see something here.
-        </div>
-    </c:otherwise>
+<c:when test="${!empty pendingReceiptForm.pending}">
+<div class="rightside-title">
+    <h1 class="rightside-title-text">
+        Pending Document<c:if test="${pendingReceiptForm.pending.size() gt 1}">s</c:if>
+    </h1>
+</div>
+<div class="rightside-list-holder full-list-holder">
+    <ul>
+        <c:forEach items="${pendingReceiptForm.pending}" var="receipt" varStatus="status">
+        <li>
+        <span class="rightside-li-right-text counter-li-text">
+            ${status.count}
+        </span>
+        <span class="rightside-li-date-text full-li-date-text">
+            <fmt:formatDate value="${receipt.documentEntity.created}" type="both"/>
+        </span>
+        <a href="${pageContext.request.contextPath}/access/document/${receipt.documentEntity.id}.htm" class="rightside-li-middle-text full-li-middle-text">
+            ${receipt.fileName}
+        </a>
+        </li>
+        </c:forEach>
+    </ul>
+</div>
+</c:when>
+<c:otherwise>
+<div class="rightside-title">
+    <h1 class="rightside-title-text">
+        No Pending Document
+    </h1>
+</div>
+<div class="rightside-list-holder full-list-holder">
+    Please upload document to see something here.
+</div>
+</c:otherwise>
 </c:choose>
 <div class="footer-tooth clearfix">
     <div class="footer-tooth-middle"></div>
