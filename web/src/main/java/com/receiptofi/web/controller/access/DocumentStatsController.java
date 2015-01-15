@@ -42,12 +42,15 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/access/pendingdocument")
-public class PendingDocumentController {
-    private static final Logger LOG = LoggerFactory.getLogger(PendingDocumentController.class);
+@RequestMapping (value = "/access/document")
+public class DocumentStatsController {
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentStatsController.class);
 
-    @Value ("${PendingDocumentController.listPendingDocuments:/pendingdocument2}")
+    @Value ("${PendingDocumentController.listPendingDocuments:/pendingDocument}")
     private String listPendingDocuments;
+
+    @Value ("${PendingDocumentController.listRejectedDocuments:/rejectedDocument}")
+    private String listRejectedDocuments;
 
     @Value ("${PendingDocumentController.showDocument:/document}")
     private String showDocument;
@@ -56,8 +59,11 @@ public class PendingDocumentController {
     @Autowired private DocumentUpdateService documentUpdateService;
     @Autowired private FileDBService fileDBService;
 
-    @RequestMapping (method = RequestMethod.GET)
-    public ModelAndView loadForm(@ModelAttribute ("pendingReceiptForm") PendingReceiptForm pendingReceiptForm) {
+    @RequestMapping (value = "/pending", method = RequestMethod.GET)
+    public ModelAndView getPendingDocuments(
+            @ModelAttribute ("pendingReceiptForm")
+            PendingReceiptForm pendingReceiptForm
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         int pendingMissingReceipt = 0;
@@ -78,6 +84,16 @@ public class PendingDocumentController {
             LOG.error("total pending documents missing receipts count={}", pendingMissingReceipt);
         }
 
+        return new ModelAndView(listPendingDocuments);
+    }
+
+    @RequestMapping (value = "/rejected", method = RequestMethod.GET)
+    public ModelAndView getRejectedDocuments(
+            @ModelAttribute ("pendingReceiptForm")
+            PendingReceiptForm pendingReceiptForm
+    ) {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         int rejectedMissingReceipt = 0;
         List<DocumentEntity> rejectedDocumentEntityList = documentPendingService.getAllRejected(receiptUser.getRid());
         for (DocumentEntity documentEntity : rejectedDocumentEntityList) {
@@ -97,9 +113,7 @@ public class PendingDocumentController {
             LOG.error("total rejected documents missing receipts count={}", rejectedMissingReceipt);
         }
 
-        ModelAndView modelAndView = new ModelAndView(listPendingDocuments);
-        modelAndView.addObject("pendingReceiptForm", pendingReceiptForm);
-        return modelAndView;
+        return new ModelAndView(listRejectedDocuments);
     }
 
     @RequestMapping (value = "/{documentId}", method = RequestMethod.GET)
@@ -121,33 +135,39 @@ public class PendingDocumentController {
     }
 
     /**
-     * Delete operation can only be performed by user and not technician
+     * Delete operation can only be performed by user and not technician.
      *
      * @param receiptDocumentForm
      * @return
      */
     @RequestMapping (value = "/delete", method = RequestMethod.POST)
-    public String delete(@ModelAttribute ("receiptDocumentForm") ReceiptDocumentForm receiptDocumentForm) {
+    public String delete(
+            @ModelAttribute ("receiptDocumentForm")
+            ReceiptDocumentForm receiptDocumentForm
+    ) {
+        String backTo = "redirect:/access/document/pending.htm";
         //Check cannot delete a pending receipt which has been processed once, i.e. has receipt id
         //The check here is not required but its better to check before calling service method
         if (StringUtils.isEmpty(receiptDocumentForm.getReceiptDocument().getReferenceDocumentId())) {
             switch (receiptDocumentForm.getReceiptDocument().getDocumentStatus()) {
                 case REJECT:
-                    documentUpdateService.deleteRejectedDocument(receiptDocumentForm.getReceiptDocument());
-                    break;
                 case DUPLICATE:
                     documentUpdateService.deleteRejectedDocument(receiptDocumentForm.getReceiptDocument());
+                    backTo = "redirect:/access/document/rejected.htm";
+                    break;
+                case PENDING:
+                    documentUpdateService.deletePendingDocument(receiptDocumentForm.getReceiptDocument());
+                    backTo = "redirect:/access/document/pending.htm";
                     break;
                 default:
-                    LOG.warn("default condition, delete document={}, documentStatus={} receiptId={}",
+                    LOG.error("default condition, delete document={}, documentStatus={} receiptId={}",
                             receiptDocumentForm.getReceiptDocument().getId(),
                             receiptDocumentForm.getReceiptDocument().getDocumentStatus(),
                             receiptDocumentForm.getReceiptDocument().getReferenceDocumentId()
                     );
-                    documentUpdateService.deletePendingDocument(receiptDocumentForm.getReceiptDocument());
-                    break;
+                    throw new UnsupportedOperationException("Reached unreachable condition");
             }
         }
-        return "redirect:/access/pendingdocument.htm";
+        return backTo;
     }
 }

@@ -191,7 +191,7 @@ header h1 {
     height: auto;
     width: 208px;
     float: right;
-    margin-top: 0px;
+    margin-top: 6px;
 }
 
 .sidebar-top-summary-lower {
@@ -390,6 +390,9 @@ div .sidebar-date form input {
     display: none;
     width: 218px !important;
 }
+.full-li-middle-text {
+    width: 600px !important;
+}
 /*Full page end*/
 
 /*Footer*/
@@ -452,12 +455,20 @@ div .sidebar-date form input {
     float: left;
 }
 
+a.big-view:hover, a.big-view:visited, a.big-view {
+    text-decoration: none;
+}
+
 .big-view-lower {
     font-size: 3.9em;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: normal;
     color: #FD462A;
     float: left;
+}
+
+a.big-view-lower:hover, a.big-view-lower:visited, a.big-view-lower {
+    text-decoration: none;
 }
 
 .top-summary-textb {
