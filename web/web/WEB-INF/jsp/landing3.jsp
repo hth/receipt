@@ -280,7 +280,7 @@
 			<div class="rightside-list-holder" id="receiptListId">
 				<ul>
                     <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
-                    <li class="rightside-list">
+                    <li>
                         <span class="rightside-li-date-text">
                             <fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/>
                         </span>

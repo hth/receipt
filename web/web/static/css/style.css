@@ -373,7 +373,26 @@ div .sidebar-date form input {
     margin-bottom: 50px;
 }
 
-/*-----Footer-----*/
+/*Full page*/
+.full-list-holder {
+    width: 960px;
+    height: 550px;
+}
+
+.full-list-holder li {
+    width: 940px;
+}
+.counter-li-text {
+    display: none;
+    width: 40px !important;
+}
+.full-li-date-text {
+    display: none;
+    width: 218px !important;
+}
+/*Full page end*/
+
+/*Footer*/
 .footer-tooth {
     width: 960px;
     height: 30px;

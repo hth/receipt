@@ -46,7 +46,7 @@ import java.util.List;
 public class PendingDocumentController {
     private static final Logger LOG = LoggerFactory.getLogger(PendingDocumentController.class);
 
-    @Value ("${PendingDocumentController.listPendingDocuments:/pendingdocument}")
+    @Value ("${PendingDocumentController.listPendingDocuments:/pendingdocument2}")
     private String listPendingDocuments;
 
     @Value ("${PendingDocumentController.showDocument:/document}")
