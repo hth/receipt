@@ -293,7 +293,6 @@
                     </li>
                     </c:forEach>
 				</ul>
-				<p class="view-more-text">View All</p>
 			</div>
             <div class="calendar" id="calendarId">
                 <div id="calendar"></div>
