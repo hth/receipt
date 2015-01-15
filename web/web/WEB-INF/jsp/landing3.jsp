@@ -151,12 +151,12 @@
 <div class="sidebar">
 	<div class="sidebar-top-summary">
 		<div class="sidebar-top-summary-upper clearfix">
-			<h1 class="big-view" id="pendingCountInitial">
-                <a href='${pageContext. request. contextPath}/access/pendingdocument.htm'>
+			<h1 id="pendingCountInitial">
+                <a href='${pageContext. request. contextPath}/access/document/pending.htm' class="big-view">
                     ${documentStatsForm.pendingCount}
                 </a>
             </h1>
-			<h1 class="big-view" id="pendingCountId"></h1>
+			<h1 id="pendingCountId"></h1>
 
 			<div class="sts-upper-right">
                 <span class="top-summary-textb">
@@ -174,7 +174,11 @@
 			</div>
 		</div>
 		<div class="sidebar-top-summary-lower clearfix">
-			<h1 class="big-view-lower">${documentStatsForm.rejectedCount}</h1>
+			<h1>
+                <a href='${pageContext. request. contextPath}/access/document/rejected.htm' class="big-view-lower">
+			        ${documentStatsForm.rejectedCount}
+                </a>
+            </h1>
 
 			<div class="sts-upper-right">
 				<span class="top-summary-textb">
@@ -280,7 +284,7 @@
 			<div class="rightside-list-holder" id="receiptListId">
 				<ul>
                     <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
-                    <li class="rightside-list">
+                    <li>
                         <span class="rightside-li-date-text">
                             <fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/>
                         </span>
@@ -293,7 +297,6 @@
                     </li>
                     </c:forEach>
 				</ul>
-				<p class="view-more-text">View All</p>
 			</div>
             <div class="calendar" id="calendarId">
                 <div id="calendar"></div>

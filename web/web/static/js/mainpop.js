@@ -75,7 +75,7 @@ jQuery(document).ready(function ($) {
                         success: function (response) {
                             if (response > 0) {
                                 var html =
-                                    "<a href='" + ctx + "/access/pendingdocument.htm' style='text-decoration: none;'>" +
+                                    "<a href='" + ctx + "/access/document/pending.htm' class='big-view'>" +
                                     "<span class='pendingCounter' id='pendingCountValue'>0</span>" +
                                     "</a>";
                                 $('#pendingCountInitial').hide();
