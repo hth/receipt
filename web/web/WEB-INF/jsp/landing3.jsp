@@ -211,11 +211,11 @@
             <c:when test="${!empty landingForm.notificationForm.notifications}">
                 <ul>
                     <c:forEach var="notification" items="${landingForm.notificationForm.notifications}" varStatus="status">
-                        <li class="si-list">
-                            <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
-                            <span class="si-general-text">${notification.notificationMessageForDisplay}</span>
-                            <span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
-                        </li>
+                    <li class="si-list">
+                        <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
+                        <span class="si-general-text">${notification.notificationMessageForDisplay}</span>
+                        <span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
+                    </li>
                     </c:forEach>
                     <li class="si-list" ng-repeat="i in items">
                         <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">

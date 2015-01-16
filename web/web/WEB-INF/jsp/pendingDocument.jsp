@@ -44,7 +44,7 @@
             ${status.count}
         </span>
         <span class="rightside-li-date-text full-li-date-text">
-            <fmt:formatDate value="${receipt.documentEntity.created}" type="both"/>
+            <fmt:formatDate value="${receipt.documentEntity.updated}" type="both"/>
         </span>
         <a href="${pageContext.request.contextPath}/access/document/${receipt.documentEntity.id}.htm" class="rightside-li-middle-text full-li-middle-text">
             ${receipt.fileName}
@@ -61,7 +61,10 @@
     </h1>
 </div>
 <div class="rightside-list-holder full-list-holder">
-    Please upload document to see something here.
+    <div class="first ajx-content">
+        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+        <p><strong>Please upload valid document to see something here.</strong></p>
+    </div>
 </div>
 </c:otherwise>
 </c:choose>

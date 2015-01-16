@@ -52,7 +52,7 @@ public class DocumentStatsController {
     @Value ("${PendingDocumentController.listRejectedDocuments:/rejectedDocument}")
     private String listRejectedDocuments;
 
-    @Value ("${PendingDocumentController.showDocument:/document}")
+    @Value ("${PendingDocumentController.showDocument:/document2}")
     private String showDocument;
 
     @Autowired private DocumentPendingService documentPendingService;
@@ -68,15 +68,26 @@ public class DocumentStatsController {
 
         int pendingMissingReceipt = 0;
         List<DocumentEntity> pendingDocumentEntityList = documentPendingService.getAllPending(receiptUser.getRid());
-        for (DocumentEntity documentEntity : pendingDocumentEntityList) {
-            if (documentEntity.getFileSystemEntities() != null) {
-                for (FileSystemEntity scaledId : documentEntity.getFileSystemEntities()) {
-                    GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
-                    String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
-                    pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), documentEntity);
+        for (DocumentEntity document : pendingDocumentEntityList) {
+            if (document.getFileSystemEntities() != null) {
+                for (FileSystemEntity scaledId : document.getFileSystemEntities()) {
+                    switch(document.getDocumentStatus()) {
+                        case REPROCESS:
+                            //TODO(hth) map S3 to get file from cloud as during reprocess file does not exist in system.
+                            pendingReceiptForm.addPending(scaledId.getOriginalFilename(), 0, document);
+                            break;
+                        case PENDING:
+                            GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
+                            String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
+                            pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), document);
+                            break;
+                        default:
+                            LOG.error("Reached unreachable condition ", document.getDocumentStatus());
+                            throw new UnsupportedOperationException("Reached unreachable condition " + document.getDocumentStatus());
+                    }
                 }
             } else {
-                LOG.error("pending document does not contains receipt documentId={}", documentEntity.getId());
+                LOG.error("pending document does not contains receipt documentId={}", document.getId());
                 ++pendingMissingReceipt;
             }
         }

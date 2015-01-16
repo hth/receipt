@@ -636,4 +636,29 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     color: black;
 }
 
+/*Warning Error Messages*/
+.first {
+    padding: 2%;
+    border: 1px solid black;
+    margin-top: 3%;
+    vertical-align: middle;
+    background-color: #FF7D70;
+    border-radius: 5px;
+}
+
+.first p {
+    margin-top: -20px;
+    color: #fff;
+    font-size: 18px;
+    padding-left: 5%;
+}
+/*Warning Error Messages*/
+
+.blank-space {
+    padding: 5px;
+}
+
+.margin-left {
+    margin-left: 10px;
+}
 /*text styles*/
