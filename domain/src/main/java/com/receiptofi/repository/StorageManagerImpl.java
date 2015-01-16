@@ -96,7 +96,7 @@ public final class StorageManagerImpl implements StorageManager {
     @Override
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
         for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
-            LOG.debug("deleted GridFs object={}", fileSystemEntity.getBlobId());
+            LOG.debug("deleting GridFs object={}", fileSystemEntity.getBlobId());
             gridFs.remove(new ObjectId(fileSystemEntity.getBlobId()));
         }
     }

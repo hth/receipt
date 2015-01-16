@@ -95,7 +95,7 @@ public class FilesUploadToS3 {
             LOG.info("Documents to upload to cloud, count={}", documents.size());
         }
 
-        int count = 0, failure = 0;
+        int success = 0, failure = 0, skipped = 0;
         for (DocumentEntity document : documents) {
             try {
                 Collection<FileSystemEntity> fileSystemEntities = document.getFileSystemEntities();
@@ -125,7 +125,9 @@ public class FilesUploadToS3 {
                         updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
                         PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
                         amazonS3Service.getS3client().putObject(putObject);
+                        success++;
                     } else {
+                        skipped ++;
                         LOG.info("Skipped file={} as it exists in S3 SNL={}",
                                 fileSystem.getBlobId(),
                                 fileSystem.getScaledFileLength());
@@ -133,7 +135,6 @@ public class FilesUploadToS3 {
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
                 fileDBService.deleteHard(document.getFileSystemEntities());
-                count++;
             } catch (AmazonServiceException e) {
                 LOG.error("Amazon S3 rejected request with an error response for some reason " +
                                 "document:{} " +
@@ -170,7 +171,7 @@ public class FilesUploadToS3 {
                     LOG.warn("on failure removed files from cloud filename={}", fileSystem.getKey());
                 }
             } finally {
-                LOG.info("Documents upload success={} failure={} total={}", count, failure, documents.size());
+                LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
             }
         }
     }
