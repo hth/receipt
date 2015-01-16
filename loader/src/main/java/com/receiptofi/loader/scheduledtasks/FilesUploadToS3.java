@@ -95,38 +95,46 @@ public class FilesUploadToS3 {
             LOG.info("Documents to upload to cloud, count={}", documents.size());
         }
 
-        int count = 0, failure = 0;
+        int success = 0, failure = 0, skipped = 0;
         for (DocumentEntity document : documents) {
             try {
                 Collection<FileSystemEntity> fileSystemEntities = document.getFileSystemEntities();
                 for (FileSystemEntity fileSystem : fileSystemEntities) {
-                    File scaledImage = FileUtil.createTempFile(
-                            FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
-                            FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
+                    if (0L == fileSystem.getScaledFileLength()) {
+                        File scaledImage = FileUtil.createTempFile(
+                                FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
+                                FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
 
-                    imageSplitService.decreaseResolution(fileDBService.getFile(fileSystem.getBlobId()).getInputStream(),
-                            new FileOutputStream(scaledImage));
+                        imageSplitService.decreaseResolution(
+                                fileDBService.getFile(fileSystem.getBlobId()).getInputStream(),
+                                new FileOutputStream(scaledImage));
 
-                    LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
-                            fileSystem.getId(),
-                            fileSystem.getOriginalFilename(),
-                            fileSystem.getBlobId(),
-                            FileUtil.fileSizeInMB(fileSystem.getFileLength()),
-                            FileUtil.fileSizeInMB(scaledImage.length()));
+                        LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
+                                fileSystem.getId(),
+                                fileSystem.getOriginalFilename(),
+                                fileSystem.getBlobId(),
+                                FileUtil.fileSizeInMB(fileSystem.getFileLength()),
+                                FileUtil.fileSizeInMB(scaledImage.length()));
 
-                    File fileForS3;
-                    if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
-                        fileForS3 = scaledImage;
+                        File fileForS3;
+                        if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
+                            fileForS3 = scaledImage;
+                        } else {
+                            fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+                        }
+                        updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
+                        PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
+                        amazonS3Service.getS3client().putObject(putObject);
+                        success++;
                     } else {
-                        fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+                        skipped ++;
+                        LOG.info("Skipped file={} as it exists in S3 SNL={}",
+                                fileSystem.getBlobId(),
+                                fileSystem.getScaledFileLength());
                     }
-                    updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
-                    PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
-                    amazonS3Service.getS3client().putObject(putObject);
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
                 fileDBService.deleteHard(document.getFileSystemEntities());
-                count++;
             } catch (AmazonServiceException e) {
                 LOG.error("Amazon S3 rejected request with an error response for some reason " +
                                 "document:{} " +
@@ -163,7 +171,7 @@ public class FilesUploadToS3 {
                     LOG.warn("on failure removed files from cloud filename={}", fileSystem.getKey());
                 }
             } finally {
-                LOG.info("Documents upload success={} failure={} total={}", count, failure, documents.size());
+                LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
             }
         }
     }
