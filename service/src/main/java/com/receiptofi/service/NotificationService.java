@@ -35,7 +35,7 @@ public class NotificationService {
     @Autowired private NotificationManager notificationManager;
 
     /**
-     * Hide notification from user
+     * Hide notification from user.
      *
      * @param message
      * @param notificationTypeEnum
@@ -61,7 +61,7 @@ public class NotificationService {
     }
 
     /**
-     * Show notification to the user
+     * Show notification to the user.
      *
      * @param message
      * @param userProfileId
@@ -102,7 +102,7 @@ public class NotificationService {
     }
 
     /**
-     * List all the notification in descending order
+     * List all the notification in descending order.
      *
      * @param userProfileId
      * @return
@@ -112,7 +112,7 @@ public class NotificationService {
     }
 
     /**
-     * List last five notification in descending order
+     * List last five notification in descending order.
      *
      * @param userProfileId
      * @return
@@ -122,7 +122,7 @@ public class NotificationService {
     }
 
     /**
-     * List last five notification in descending order
+     * List last five notification in descending order.
      *
      * @param userProfileId
      * @return

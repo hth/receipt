@@ -26,8 +26,9 @@ public class NotificationDetailForm {
 
     private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM. dd");
     private static final int OFF_SET = 0;
-    private static final int MAX_WIDTH = 53;  // or 70
-    private static final String CLASS = "class='notification'";
+    private static final int MAX_WIDTH = 52;  // or 70
+    private static final int MAX_WIDTH_DETAILED_VIEW = 78;
+    private static final String CLASS = "class='rightside-li-middle-text full-li-middle-text'";
 
     private String referenceId;
     private String href;
@@ -64,7 +65,7 @@ public class NotificationDetailForm {
             case MESSAGE:
                 return getAbbreviatedMessage();
             case DOCUMENT:
-                this.href = "./pendingdocument/" + referenceId + ".htm";
+                this.href = "./document/" + referenceId + ".htm";
                 return getReceiptUpdateURL(getAbbreviatedMessage());
             case RECEIPT:
                 this.href = "./receipt/" + referenceId + ".htm";
@@ -86,18 +87,23 @@ public class NotificationDetailForm {
      *
      * @return
      */
+    @SuppressWarnings ("unused")
     public String getNotificationMessage() {
         switch (notificationType) {
             case MESSAGE:
-                return message;
+                return "<span " + CLASS + ">" + message + "</span>";
             case DOCUMENT:
-                return getReceiptUpdateURL(message);
+                this.href = "./document/" + referenceId + ".htm";
+                return getReceiptUpdateURL(getAbbreviatedMessageForDetailedView());
             case RECEIPT:
-                return getReceiptURL(message);
+                this.href = "./receipt/" + referenceId + ".htm";
+                return getReceiptURL(getAbbreviatedMessageForDetailedView());
             case EXPENSE_REPORT:
-                return getReceiptURL(message);
+                this.href = "./receipt/" + referenceId + ".htm";
+                return getReceiptURL(getAbbreviatedMessageForDetailedView());
             case MILEAGE:
-                return getMileageURL(message);
+                this.href = "./modv/" + referenceId + ".htm";
+                return getMileageURL(getAbbreviatedMessageForDetailedView());
             default:
                 LOG.error("Reached invalid condition");
                 return "";
@@ -122,5 +128,9 @@ public class NotificationDetailForm {
 
     public String getAbbreviatedMessage() {
         return StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH);
+    }
+
+    public String getAbbreviatedMessageForDetailedView() {
+        return StringUtils.abbreviate(message, OFF_SET, MAX_WIDTH_DETAILED_VIEW);
     }
 }

@@ -45,7 +45,7 @@ public class NotificationController {
     /**
      * maps to notification.jsp
      */
-    @Value ("${next.page:/notification}")
+    @Value ("${next.page:/notification2}")
     private String nextPage;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
