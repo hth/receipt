@@ -392,6 +392,8 @@ div .sidebar-date form input {
 }
 .full-li-middle-text {
     width: 600px !important;
+    display: inline !important;
+    padding-left: 0px !important;
 }
 /*Full page end*/
 

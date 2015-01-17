@@ -40,15 +40,11 @@
     <ul>
         <c:forEach items="${pendingReceiptForm.rejected}" var="receipt" varStatus="status">
         <li>
-        <span class="rightside-li-right-text counter-li-text">
-            ${status.count}
-        </span>
-        <span class="rightside-li-date-text full-li-date-text">
-            <fmt:formatDate value="${receipt.documentEntity.updated}" type="both"/>
-        </span>
-        <a href="${pageContext.request.contextPath}/access/document/${receipt.documentEntity.id}.htm" class="rightside-li-middle-text full-li-middle-text">
-            ${receipt.fileName}
-        </a>
+            <span class="rightside-li-right-text counter-li-text">${status.count}</span>
+            <span class="rightside-li-date-text full-li-date-text"><fmt:formatDate value="${receipt.documentEntity.updated}" type="both"/></span>
+            <a href="${pageContext.request.contextPath}/access/document/${receipt.documentEntity.id}.htm" class="rightside-li-middle-text full-li-middle-text">
+                ${receipt.fileName}
+            </a>
         </li>
         </c:forEach>
     </ul>
