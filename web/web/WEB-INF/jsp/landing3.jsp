@@ -418,7 +418,7 @@
                 <c:otherwise>
                     <div class="first ajx-content">
                         <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                        <p><strong>No data available as no receipt submitted or transformed.</strong></p>
+                        <p><strong>No receipt available to map with location.</strong></p>
                     </div>
                 </c:otherwise>
                 </c:choose>
