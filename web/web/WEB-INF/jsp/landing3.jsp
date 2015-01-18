@@ -611,70 +611,26 @@
     $(document).ready(function () {
         "use strict";
 
-        var bounds = new google.maps.LatLngBounds ();
-        var map, infowindow;
+        /**
+         * Data for the markers consisting of a businessName, a LatLng and a zIndex for
+         * the order in which these markers should display on top of each
+         * other.
+         */
+        var locations = [
+            <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
+            [
+                '<div class="mapContainer">' +
+                '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
+                '<div>' +
+                '<div>${loc.bizStore.address}</div>' +
+                '</div>' +
+                '</div>',
+                ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
+            ],
+            </c:forEach>
+        ];
 
-        getGoogleMap();
-
-        function getGoogleMap() {
-            var myOptions = {
-                zoom: 4,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var $mapCanvas = $("#map-canvas");
-            map = new google.maps.Map($mapCanvas.get(0), myOptions);
-            //map.fitBounds(bounds);
-            var listenerHandle = google.maps.event.addListener(map, 'idle', function() {
-                $mapCanvas.appendTo($("#map-placeholder"));
-                google.maps.event.removeListener(listenerHandle);
-            });
-
-            infowindow = new google.maps.InfoWindow();
-            google.maps.event.addListener(map, 'click', function() {
-                infowindow.close();
-            });
-
-            /**
-             * Data for the markers consisting of a businessName, a LatLng and a zIndex for
-             * the order in which these markers should display on top of each
-             * other.
-             */
-            var locations = [
-                <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
-                [
-                    '<div class="mapContainer">' +
-                    '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
-                    '<div>' +
-                    '<div>${loc.bizStore.address}</div>' +
-                    '</div>' +
-                    '</div>',
-                    ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
-                ],
-                </c:forEach>
-            ];
-
-            for (var i = 0; i < locations.length; i++) {
-                var location    = locations[i];
-                var title       = location[0];
-                var latitude    = location[1];
-                var longitude   = location[2];
-                var xindex      = location[3];
-                displayMarker(title, latitude, longitude, xindex, map, infowindow);
-
-                // And increase the bounds to take this point
-                bounds.extend(new google.maps.LatLng (latitude, longitude));
-            }
-
-            if (locations.length > 1) {
-                //Fit these bounds to the map
-                map.fitBounds(bounds);
-            }
-            else if (locations.length == 1) {
-                map.setCenter(bounds.getCenter());
-                map.setZoom(16);
-            }
-        }
+        getGoogleMap(locations);
     });
 </script>
 </c:if>

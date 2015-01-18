@@ -421,3 +421,46 @@ function displayMarker(title, latitude, longitude, xindex, map, infowindow) {
         infowindow.open(map, marker);
     });
 }
+
+function getGoogleMap(locations) {
+    var bounds = new google.maps.LatLngBounds ();
+    var map, infowindow;
+
+    var myOptions = {
+        zoom: 4,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var $mapCanvas = $("#map-canvas");
+    map = new google.maps.Map($mapCanvas.get(0), myOptions);
+    //map.fitBounds(bounds);
+    var listenerHandle = google.maps.event.addListener(map, 'idle', function() {
+        $mapCanvas.appendTo($("#map-placeholder"));
+        google.maps.event.removeListener(listenerHandle);
+    });
+
+    infowindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(map, 'click', function() {
+        infowindow.close();
+    });
+
+    for (var i = 0; i < locations.length; i++) {
+        var location    = locations[i];
+        var title       = location[0];
+        var latitude    = location[1];
+        var longitude   = location[2];
+        var xindex      = location[3];
+        displayMarker(title, latitude, longitude, xindex, map, infowindow);
+
+        // And increase the bounds to take this point
+        bounds.extend(new google.maps.LatLng (latitude, longitude));
+    }
+
+    if (locations.length > 1) {
+        //Fit these bounds to the map
+        map.fitBounds(bounds);
+    } else if (locations.length == 1) {
+        map.setCenter(bounds.getCenter());
+        map.setZoom(16);
+    }
+}
