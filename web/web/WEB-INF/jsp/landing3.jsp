@@ -611,133 +611,26 @@
     $(document).ready(function () {
         "use strict";
 
-        var bounds = new google.maps.LatLngBounds ();
-        var map, infowindow;
+        /**
+         * Data for the markers consisting of a businessName, a LatLng and a zIndex for
+         * the order in which these markers should display on top of each
+         * other.
+         */
+        var locations = [
+            <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
+            [
+                '<div class="mapContainer">' +
+                '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
+                '<div>' +
+                '<div>${loc.bizStore.address}</div>' +
+                '</div>' +
+                '</div>',
+                ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
+            ],
+            </c:forEach>
+        ];
 
-        getGoogleMap();
-
-        function getGoogleMap() {
-            var myOptions = {
-                zoom: 4,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var $mapCanvas = $("#map-canvas");
-            map = new google.maps.Map($mapCanvas.get(0), myOptions);
-            //map.fitBounds(bounds);
-            var listenerHandle = google.maps.event.addListener(map, 'idle', function() {
-                $mapCanvas.appendTo($("#map-placeholder"));
-                google.maps.event.removeListener(listenerHandle);
-            });
-
-            infowindow = new google.maps.InfoWindow();
-            google.maps.event.addListener(map, 'click', function() {
-                infowindow.close();
-            });
-
-            /**
-             * Data for the markers consisting of a businessName, a LatLng and a zIndex for
-             * the order in which these markers should display on top of each
-             * other.
-             */
-            var locations = [
-                <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
-                [
-                    '<div class="mapContainer">' +
-                    '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
-                    '<div>' +
-                    '<div>${loc.bizStore.address}</div>' +
-                    '</div>' +
-                    '</div>',
-                    ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
-                ],
-                </c:forEach>
-            ];
-
-            for (var i = 0; i < locations.length; i++) {
-                var location    = locations[i];
-                var title       = location[0];
-                var latitude    = location[1];
-                var longitude   = location[2];
-                var xindex      = location[3];
-                displayMarker(title, latitude, longitude, xindex);
-
-                // And increase the bounds to take this point
-                bounds.extend(new google.maps.LatLng (latitude, longitude));
-            }
-
-            if (locations.length > 1) {
-                //Fit these bounds to the map
-                map.fitBounds(bounds);
-            }
-            else if (locations.length == 1) {
-                map.setCenter(bounds.getCenter());
-                map.setZoom(16);
-            }
-        }
-
-        function displayMarker(title, latitude, longitude, xindex) {
-            // Add markers to the map
-
-            // Marker sizes are expressed as a Size of X,Y
-            // where the origin of the image (0,0) is located
-            // in the top left of the image.
-
-            // Origins, anchor positions and coordinates of the marker
-            // increase in the X direction to the right and in
-            // the Y direction down.
-            var image = {
-                url: '${pageContext.request.contextPath}/static/images/beachflag.png',
-                // This marker is 20 pixels wide by 32 pixels tall.
-                size: new google.maps.Size(20, 32),
-                // The origin for this image is 0,0.
-                origin: new google.maps.Point(0,0),
-                // The anchor for this image is the base of the flagpole at 0,32.
-                anchor: new google.maps.Point(0, 32)
-            };
-            var shadow = {
-                url: '${pageContext.request.contextPath}/static/images/beachflag_shadow.png',
-                // The shadow image is larger in the horizontal dimension
-                // while the position and offset are the same as for the main image.
-                size: new google.maps.Size(37, 32),
-                origin: new google.maps.Point(0,0),
-                anchor: new google.maps.Point(0, 32)
-            };
-            // Shapes define the clickable region of the icon.
-            // The type defines an HTML &lt;area&gt; element 'poly' which
-            // traces out a polygon as a series of X,Y points. The final
-            // coordinate closes the poly by connecting to the first
-            // coordinate.
-            var shape = {
-                coord: [1, 1, 1, 20, 18, 20, 18 , 1],
-                type: 'poly'
-            };
-
-            var myLatLng = new google.maps.LatLng(latitude, longitude);
-
-            //Why re-center the US Map
-            //map.setCenter(myLatLng);
-
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                shadow: shadow,
-                icon: image,
-                shape: shape,
-                title: title,
-                zIndex: xindex
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(title);
-                infowindow.open(map, marker);
-            });
-
-            google.maps.event.addListener(marker, 'mouseover', function() {
-                infowindow.setContent(title);
-                infowindow.open(map, marker);
-            });
-        }
+        getGoogleMap(locations);
     });
 </script>
 </c:if>
