@@ -666,17 +666,14 @@
                 bounds.extend(new google.maps.LatLng (latitude, longitude));
             }
 
-            google.maps.event.addListener(map, "idle", function () {
-                if (locations.length > 1) {
-                    //Fit these bounds to the map
-                    map.fitBounds(bounds);
-                }
-                else if (locations.length == 1) {
-                    map.setCenter(bounds.getCenter());
-                    map.setZoom(16);
-                }
-                google.maps.event.removeListener(listener);
-            });
+            if (locations.length > 1) {
+                //Fit these bounds to the map
+                map.fitBounds(bounds);
+            }
+            else if (locations.length == 1) {
+                map.setCenter(bounds.getCenter());
+                map.setZoom(16);
+            }
         }
 
         function displayMarker(title, latitude, longitude, xindex) {
