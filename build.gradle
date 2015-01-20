@@ -400,7 +400,7 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task setUpProfileForJunit(dependsOn: [':clean']) {
+task setUpProfileForJunit(dependsOn: [':clean']) << {
     activeProfilewarClassesDir.mkdirs()
     activeProfilewarConfDir.mkdirs()
 
@@ -451,7 +451,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
     }
 }
 
-task prepWar(dependsOn: [unzip, copyJars]) {
+task prepWar(dependsOn: [unzip, copyJars]) << {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
 
