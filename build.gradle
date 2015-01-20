@@ -28,7 +28,7 @@ ext {
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
 
-    passFile = file('/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties')
+    passFile = file(passwordFileLocation)
     passFileLocal = file('web/resources/conf/pass.properties')
 
     baseName = "receiptofi"
@@ -416,7 +416,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
 
         if (env == 'test' || env == 'prod') {
             if (passFile.exists()) {
-                from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
+                from passwordFileLocation
             } else {
                 throw new Exception("Required pass file does not exists: $passFile.canonicalPath")
             }
@@ -473,7 +473,7 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
 
         if (env == 'test' || env == 'prod') {
             if (passFile.exists()) {
-                from '/Users/Shared/Jenkins/Documents/receiptofi-additional-files/pass.properties'
+                from passwordFileLocation
             } else {
                 throw new Exception("Required pass file does not exists: $passFile.canonicalPath")
             }
