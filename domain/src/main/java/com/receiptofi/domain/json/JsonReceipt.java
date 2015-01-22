@@ -63,6 +63,9 @@ public class JsonReceipt {
     @JsonProperty ("ptax")
     private String percentTax;
 
+    @JsonProperty ("tax")
+    private Double tax;
+
     @JsonProperty ("rid")
     private String receiptUserId;
 
@@ -84,6 +87,7 @@ public class JsonReceipt {
         }
 
         this.receiptDate = FMT.print(new DateTime(receiptEntity.getReceiptDate()));
+        this.tax = receiptEntity.getTax();
         this.percentTax = receiptEntity.getPercentTax();
         this.receiptUserId = receiptEntity.getReceiptUserId();
         this.expenseReportInFS = receiptEntity.getExpenseReportInFS();
@@ -119,6 +123,10 @@ public class JsonReceipt {
 
     public String getPercentTax() {
         return percentTax;
+    }
+
+    public Double getTax() {
+        return tax;
     }
 
     public String getReceiptUserId() {
