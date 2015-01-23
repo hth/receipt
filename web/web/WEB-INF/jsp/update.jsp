@@ -122,7 +122,7 @@
         });
 
         $(document).ready(function() {
-            $( "#phone" ).autocomplete({
+            $("#phone").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: '${pageContext. request. contextPath}/ws/r/find_phone.htm',
@@ -144,7 +144,7 @@
         });
 
         $(document).ready(function() {
-            $( ".items" ).autocomplete({
+            $(".items").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
