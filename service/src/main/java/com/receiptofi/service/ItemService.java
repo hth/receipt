@@ -51,7 +51,7 @@ public class ItemService {
     }
 
     /**
-     * Calculate percentage values of the Expense Items
+     * Calculate percentage values of the Expense Items.
      *
      * @param profileId
      * @return
@@ -86,7 +86,7 @@ public class ItemService {
     }
 
     /**
-     * Calculate sum for all the items
+     * Calculate sum for all the items.
      *
      * @param sum
      * @param items
@@ -102,7 +102,7 @@ public class ItemService {
     }
 
     /**
-     * Finds all the un-assigned items for the user
+     * Finds all the un-assigned items for the user.
      *
      * @param expenseItems
      * @param netSum
@@ -123,7 +123,7 @@ public class ItemService {
 
     /**
      * Calculate total cost of the item with tax. If there are multiple items then multiply with quantity.
-     * Helpful in showing the data in donut chart
+     * Helpful in showing the data in donut chart.
      *
      * @param sum
      * @param item
