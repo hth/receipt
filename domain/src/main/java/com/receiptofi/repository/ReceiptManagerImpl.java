@@ -372,7 +372,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     /**
-     * Ignore the current id receipt and see if there is another receipt with similar checksum exists
+     * Ignore the current id receipt and see if there is another receipt with similar checksum exists.
      *
      * @param checksum
      * @param id

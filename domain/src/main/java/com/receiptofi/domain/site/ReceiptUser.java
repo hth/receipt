@@ -20,6 +20,7 @@ import java.util.Collection;
 })
 public final class ReceiptUser extends User {
 
+    /** rid is receiptUserId */
     private String rid;
     private ProviderEnum pid;
     private UserLevelEnum userLevel;
@@ -77,6 +78,10 @@ public final class ReceiptUser extends User {
         this.userLevel = userLevel;
     }
 
+    /**
+     * Gets receiptofi user id.
+     * @return receiptUserId
+     */
     public String getRid() {
         return rid;
     }
