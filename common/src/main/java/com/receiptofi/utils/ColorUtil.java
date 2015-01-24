@@ -23,6 +23,6 @@ public class ColorUtil {
         // Saturation between 0.1 and 0.3
         float saturation = (RANDOM.nextInt(2000) + 1000) / 10000f;
         Color color = new Color(hue, saturation, LUMINANCE);
-        return POUND_SYMBOL + WordUtils.capitalize(Integer.toHexString(color.getRGB() & 0x00ffffff));
+        return POUND_SYMBOL + WordUtils.capitalizeFully(Integer.toHexString(color.getRGB() & 0x00ffffff));
     }
 }
