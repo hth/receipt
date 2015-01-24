@@ -45,7 +45,7 @@ public class JsonExpenseTag {
         this.color = color;
     }
 
-    public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTagEntity) {
-        return new JsonExpenseTag(expenseTagEntity.getId(), expenseTagEntity.getTagName(), expenseTagEntity.getTagColor());
+    public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTag) {
+        return new JsonExpenseTag(expenseTag.getId(), expenseTag.getTagName(), expenseTag.getTagColor());
     }
 }

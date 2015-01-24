@@ -86,7 +86,7 @@ public class UserProfilePreferenceService {
         return expenseTagManager.findOne(expenseTypeId);
     }
 
-    public void addExpenseType(ExpenseTagEntity expenseType) {
+    public void saveExpenseType(ExpenseTagEntity expenseType) {
         expenseTagManager.save(expenseType);
     }
 

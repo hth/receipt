@@ -1,6 +1,6 @@
 package com.receiptofi.utils;
 
-import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.awt.*;
 import java.util.Random;
@@ -12,6 +12,7 @@ import java.util.Random;
 public class ColorUtil {
     private static final Random RANDOM = new Random();
     private static final float LUMINANCE = 0.9f;
+    private static final String POUND_SYMBOL = "#";
 
     private ColorUtil() {
     }
@@ -22,6 +23,6 @@ public class ColorUtil {
         // Saturation between 0.1 and 0.3
         float saturation = (RANDOM.nextInt(2000) + 1000) / 10000f;
         Color color = new Color(hue, saturation, LUMINANCE);
-        return StringUtils.capitalize(Integer.toHexString(color.getRGB() & 0x00ffffff ));
+        return POUND_SYMBOL + WordUtils.capitalize(Integer.toHexString(color.getRGB() & 0x00ffffff));
     }
 }
