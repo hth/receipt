@@ -8,7 +8,9 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.*;
 
+import com.mongodb.DBRef;
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
@@ -20,6 +22,8 @@ import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.bson.BSONObject;
+import org.bson.BasicBSONObject;
 import org.bson.types.ObjectId;
 
 import org.joda.time.DateTime;
@@ -209,7 +213,7 @@ public final class ItemManagerImpl implements ItemManager {
     public WriteResult updateObject(ItemEntity object) {
         return mongoTemplate.updateFirst(
                 query(where("id").is(object.getId())),
-                entityUpdate(Update.update("IN", object.getName())),
+                entityUpdate(update("IN", object.getName())),
                 TABLE);
     }
 
@@ -222,9 +226,11 @@ public final class ItemManagerImpl implements ItemManager {
     @Override
     public void deleteSoft(ReceiptEntity receipt) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = query(where("RECEIPT.$id").is(new ObjectId(receipt.getId())));
-        Update update = Update.update("D", true);
-        mongoTemplate.updateMulti(query, entityUpdate(update), ItemEntity.class);
+        mongoTemplate.updateMulti(
+                query(where("RECEIPT.$id").is(new ObjectId(receipt.getId()))),
+                entityUpdate(update("D", true)),
+                ItemEntity.class
+        );
     }
 
     @Override
@@ -252,15 +258,28 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public void updateItemWithExpenseType(ItemEntity item) throws Exception {
-        ItemEntity foundItem = findOne(item.getId());
-        if (null == foundItem) {
-            LOG.error("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
-            throw new Exception("Could not update ExpenseType as no ItemEntity with Id was found: " + item.getId());
-        } else {
-            foundItem.setExpenseTag(item.getExpenseTag());
-            save(foundItem);
-        }
+    public void updateAllItemWithExpenseTag(String receiptId, String expenseTagId) {
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+        mongoTemplate.updateMulti(
+                query(where("RECEIPT.$id").is(new ObjectId(receiptId))),
+                update("EXPENSE_TAG", new DBRef(mongoTemplate.getDb(), getDBRefExpenseTag(expenseTagId))),
+                ItemEntity.class
+        );
+    }
+
+    @Override
+    public void updateItemWithExpenseTag(String itemId, String expenseTagId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(itemId)),
+                update("EXPENSE_TAG", new DBRef(mongoTemplate.getDb(), getDBRefExpenseTag(expenseTagId))),
+                ItemEntity.class
+        );
+    }
+
+    private BSONObject getDBRefExpenseTag(String expenseTagId) {
+        return new BasicBSONObject()
+                .append("$ref", ExpenseTagManagerImpl.TABLE)
+                .append("$id", new ObjectId(expenseTagId));
     }
 
     @Override

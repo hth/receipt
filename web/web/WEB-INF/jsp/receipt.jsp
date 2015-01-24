@@ -205,6 +205,58 @@
                     updateExpensofiItemList();
                 });
             });
+
+            $("#receiptExpenseTagId").change(
+                    function() {
+                        $.ajax({
+                            type: "POST",
+                            url: '${pageContext. request. contextPath}/ws/r/updateReceiptExpenseTag.htm',
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                            },
+                            data: {
+                                receiptId: $("#receiptId").val(),
+                                expenseTagId: $(this).val()
+                            },
+                            mimeType: 'application/json',
+                            dataType:'json',
+                            success: function(data) {
+                                console.log(data);
+                                if(data === true) {
+                                    //TODO update items drop down
+                                }
+                            },
+                            error: function(data) {
+                                console.log(data);
+                            }
+                        })
+                    }
+            );
+
+            $(document).on('change', '#itemId',
+                    function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '${pageContext. request. contextPath}/ws/r/updateItemExpenseTag.htm',
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                            },
+                            data: {
+                                itemId: $('input:hidden[name="' + $(this).attr("name").split(".")[0] + ".id" + '"]').val(),
+                                expenseTagId: $(this).val()
+                            },
+                            mimeType: 'application/json',
+                            dataType:'json',
+                            success: function(data) {
+                                console.log("update item expense tag successfully");
+                            },
+                            error: function(data) {
+                                console.log(data);
+                            }
+                        })
+                    }
+            );
+
         });
 
         function isChecked(checkboxId) {
@@ -378,7 +430,12 @@
                             </td>
                             <td style="text-align: right;"><fmt:formatNumber value="${receiptForm.receipt.total - receiptForm.receipt.tax}" type="currency" /></td>
                             <td style="text-align: right;">&nbsp;</td>
-                            <td style="text-align: right;">&nbsp;</td>
+                            <td style="text-align: left;">
+                                <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
+                                    <form:option value="NONE" label="--- Select ---" />
+                                    <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
+                                </form:select>
+                            </td>
                         </tr>
                         <tr>
                             <td style="text-align: right; white-space: nowrap;" colspan="3">
@@ -411,7 +468,7 @@
                                 <div class="rightAlign"><input type="submit" value="Delete" name="delete" class="btn btn-danger" /></div>
                             </td>
                             <td>
-                                <div class="leftAlign"><input type="submit" value="Update Expense Type" name="update-expense-type" class="btn btn-default" /></div>
+                                &nbsp;
                             </td>
                         </tr>
                         <tr>
