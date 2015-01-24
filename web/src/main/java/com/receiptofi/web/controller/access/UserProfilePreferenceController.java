@@ -121,7 +121,7 @@ public class UserProfilePreferenceController {
 
         try {
             ExpenseTagEntity expenseType = ExpenseTagEntity.newInstance(expenseTypeForm.getTagName(), receiptUser.getRid());
-            userProfilePreferenceService.addExpenseType(expenseType);
+            userProfilePreferenceService.saveExpenseType(expenseType);
         } catch (Exception e) {
             LOG.error(e.getLocalizedMessage());
             result.rejectValue("expName", StringUtils.EMPTY, e.getLocalizedMessage());

@@ -36,12 +36,16 @@ public class JsonExpenseTag {
     @JsonProperty ("tag")
     private String tag;
 
-    private JsonExpenseTag(String id, String tag) {
+    @JsonProperty ("color")
+    private String color;
+
+    private JsonExpenseTag(String id, String tag, String color) {
         this.id = id;
         this.tag = tag;
+        this.color = color;
     }
 
-    public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTagEntity) {
-        return new JsonExpenseTag(expenseTagEntity.getId(), expenseTagEntity.getTagName());
+    public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTag) {
+        return new JsonExpenseTag(expenseTag.getId(), expenseTag.getTagName(), expenseTag.getTagColor());
     }
 }
