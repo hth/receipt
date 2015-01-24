@@ -87,8 +87,8 @@ public class LandingService {
         }
     };
 
-    public long pendingReceipt(String profileId) {
-        return documentManager.numberOfPendingReceipts(profileId);
+    public long pendingReceipt(String rid) {
+        return documentManager.numberOfPendingReceipts(rid);
     }
 
     public long rejectedReceipt(String profileId) {
