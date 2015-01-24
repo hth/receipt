@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.utils.DateUtil;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -42,12 +43,28 @@ public class ExpenseTagEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
-    public static ExpenseTagEntity newInstance(String expName, String receiptUserId) {
-        ExpenseTagEntity expenseTagEntity = new ExpenseTagEntity();
-        expenseTagEntity.setTagName(expName);
-        expenseTagEntity.setReceiptUserId(receiptUserId);
-        expenseTagEntity.setForYear(DateUtil.now().getYear());
-        return expenseTagEntity;
+    @NotNull
+    @Field ("CLR")
+    private String tagColor;
+
+    private ExpenseTagEntity(String tagName, String receiptUserId, String tagColor) {
+        super();
+        this.tagName = tagName;
+        this.receiptUserId = receiptUserId;
+        this.forYear = DateUtil.now().getYear();
+        if (null != tagColor) {
+            this.tagColor = tagColor;
+        } else {
+            this.tagColor = ColorUtil.getRandom();
+        }
+    }
+
+    public static ExpenseTagEntity newInstance(String tagName, String receiptUserId, String tagColor) {
+        return new ExpenseTagEntity(tagName, receiptUserId, tagColor);
+    }
+
+    public static ExpenseTagEntity newInstance(String tagName, String receiptUserId) {
+        return new ExpenseTagEntity(tagName, receiptUserId, null);
     }
 
     public String getTagName() {
@@ -72,6 +89,10 @@ public class ExpenseTagEntity extends BaseEntity {
 
     public void setReceiptUserId(String receiptUserId) {
         this.receiptUserId = receiptUserId;
+    }
+
+    public String getTagColor() {
+        return tagColor;
     }
 
     @Override
