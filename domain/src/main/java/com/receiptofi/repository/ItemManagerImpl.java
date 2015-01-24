@@ -8,7 +8,7 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.*;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.mongodb.DBRef;
 import com.mongodb.WriteResult;
@@ -40,7 +40,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -178,9 +177,10 @@ public final class ItemManagerImpl implements ItemManager {
      * This method in future could be very memory extensive when there would be tons of similar items. To fix it, add
      * receipt date to items.
      * Note: Added limit to reduce number of items fetched.
+     *
      * @param itemEntity
      * @param receiptUserId
-     * @param limit - Number of items per query
+     * @param limit         - Number of items per query
      * @return
      */
     @Override
@@ -189,10 +189,10 @@ public final class ItemManagerImpl implements ItemManager {
         if (itemEntity.getReceipt().getReceiptUserId().equals(receiptUserId)) {
             items = mongoTemplate.find(
                     query(where("IN").is(itemEntity.getName())
-                            .and("RID").is(receiptUserId)
-                            .andOperator(
-                                    isNotDeleted()
-                            )
+                                    .and("RID").is(receiptUserId)
+                                    .andOperator(
+                                            isNotDeleted()
+                                    )
                     ).limit(limit),
                     ItemEntity.class,
                     TABLE);
