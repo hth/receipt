@@ -86,12 +86,9 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      */
     List<ItemEntity> findItems(String name, String bizName);
 
-    /**
-     * Get the Item from DB and then update with changed ExpenseType before persisting Item.
-     *
-     * @param item
-     */
-    void updateItemWithExpenseType(ItemEntity item) throws Exception;
+    void updateAllItemWithExpenseTag(String receiptId, String expenseTagId);
+
+    void updateItemWithExpenseTag(String itemId, String expenseTagId);
 
     /**
      * Count how many Items are using a particular Expense Type.

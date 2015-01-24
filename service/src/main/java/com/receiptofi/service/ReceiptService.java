@@ -5,6 +5,7 @@ import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CloudFileEntity;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
@@ -59,11 +60,13 @@ public class ReceiptService {
     @Autowired private CommentManager commentManager;
     @Autowired private FileSystemService fileSystemService;
     @Autowired private CloudFileService cloudFileService;
+    @Autowired private ExpensesService expensesService;
 
     /**
      * Find receipt for a receipt id for a specific user profile id.
      *
      * @param receiptId
+     * @param receiptUserId
      * @return
      */
     public ReceiptEntity findReceipt(String receiptId, String receiptUserId) {
@@ -214,15 +217,6 @@ public class ReceiptService {
     }
 
     /**
-     * Updates the ItemEntity with changed ExpenseType.
-     *
-     * @param item
-     */
-    public void updateItemWithExpenseType(ItemEntity item) throws Exception {
-        itemManager.updateItemWithExpenseType(item);
-    }
-
-    /**
      * Saves notes to receipt.
      *
      * @param notes
@@ -367,5 +361,25 @@ public class ReceiptService {
 
     public void removeExpensofiFilenameReference(String filename) {
         receiptManager.removeExpensofiFilenameReference(filename);
+    }
+
+    /**
+     * Updates expense tag of receipt and updates the same for all the items.
+     *
+     * @param receipt
+     * @param expenseTagId
+     * @return
+     */
+    public boolean updateReceiptExpenseTag(ReceiptEntity receipt, String expenseTagId) {
+        boolean updated = false;
+        if (null != receipt) {
+            ExpenseTagEntity expenseTag = expensesService.findExpenseTag(expenseTagId);
+            receipt.setExpenseTag(expenseTag);
+            receiptManager.save(receipt);
+            itemService.updateAllItemWithExpenseTag(receipt.getId(), expenseTag.getId());
+            updated = true;
+        }
+
+        return updated;
     }
 }

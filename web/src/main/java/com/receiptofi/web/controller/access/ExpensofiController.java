@@ -69,7 +69,12 @@ public class ExpensofiController {
     @Autowired private ExpensofiExcelView expensofiExcelView;
 
     @RequestMapping (value = "/items", method = RequestMethod.POST)
-    public String expensofi(@RequestBody String itemIds, Model model) throws IOException {
+    public String updateExpenseTagOfItems(
+            @RequestBody
+            String itemIds,
+
+            Model model
+    ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         JsonArray jsonItems = getJsonElements(itemIds);

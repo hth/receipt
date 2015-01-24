@@ -38,8 +38,8 @@ public class ItemAnalyticService {
 
     @Autowired private ItemManager itemManager;
 
-    public ItemEntity findItemById(String itemId, String userProfileId) {
-        return itemManager.findItem(itemId, userProfileId);
+    public ItemEntity findItemById(String itemId, String receiptUserId) {
+        return itemManager.findItem(itemId, receiptUserId);
     }
 
     /**

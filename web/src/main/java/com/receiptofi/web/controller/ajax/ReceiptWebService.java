@@ -1,11 +1,16 @@
 package com.receiptofi.web.controller.ajax;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FetcherService;
+import com.receiptofi.service.ItemService;
 import com.receiptofi.service.LandingService;
+import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.HashText;
@@ -48,9 +53,26 @@ import javax.servlet.http.HttpServletResponse;
 public class ReceiptWebService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptWebService.class);
 
-    @Autowired private FetcherService fetcherService;
-    @Autowired private LandingService landingService;
-    @Autowired private DocumentUpdateService documentUpdateService;
+    private FetcherService fetcherService;
+    private LandingService landingService;
+    private DocumentUpdateService documentUpdateService;
+    private ReceiptService receiptService;
+    private ItemService itemService;
+
+    @Autowired
+    public ReceiptWebService(
+            FetcherService fetcherService,
+            LandingService landingService,
+            DocumentUpdateService documentUpdateService,
+            ReceiptService receiptService,
+            ItemService itemService
+    ) {
+        this.fetcherService = fetcherService;
+        this.landingService = landingService;
+        this.documentUpdateService =  documentUpdateService;
+        this.receiptService = receiptService;
+        this.itemService = itemService;
+    }
 
     /**
      * @param businessName
@@ -62,7 +84,10 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    public Set<String> searchBusinessWithBusinessName(@RequestParam ("term") String businessName) {
+    public Set<String> searchBusinessWithBusinessName(
+            @RequestParam ("term")
+            String businessName
+    ) {
         try {
             return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessName) {
@@ -278,6 +303,58 @@ public class ReceiptWebService {
         } else {
             response.sendError(SC_FORBIDDEN, "Cannot access directly");
             return false;
+        }
+    }
+
+    @PreAuthorize ("hasAnyRole('ROLE_USER')")
+    @RequestMapping (
+            value = "/updateReceiptExpenseTag",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json"
+    )
+    public boolean updateExpenseTagOfReceipt(
+            @RequestParam ("receiptId")
+            String receiptId,
+
+            @RequestParam ("expenseTagId")
+            String expenseTagId,
+
+            HttpServletResponse response
+    ) throws IOException {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
+        boolean status = false;
+        if (null != receipt) {
+            status = receiptService.updateReceiptExpenseTag(receipt, expenseTagId);
+        } else {
+            response.sendError(SC_NOT_FOUND, "Could not find");
+        }
+        return status;
+    }
+
+    @PreAuthorize ("hasAnyRole('ROLE_USER')")
+    @RequestMapping (
+            value = "/updateItemExpenseTag",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json"
+    )
+    public void updateItemExpenseTag(
+            @RequestParam ("itemId")
+            String itemId,
+
+            @RequestParam ("expenseTagId")
+            String expenseTagId,
+
+            HttpServletResponse response
+    ) throws IOException {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ItemEntity item = itemService.findItem(itemId, receiptUser.getRid());
+        if (null != item) {
+            itemService.updateItemWithExpenseTag(item.getId(), expenseTagId);
+        } else {
+            response.sendError(SC_NOT_FOUND, "Could not find");
         }
     }
 }

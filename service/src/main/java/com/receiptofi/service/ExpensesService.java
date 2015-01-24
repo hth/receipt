@@ -27,4 +27,8 @@ public class ExpensesService {
     public List<ExpenseTagEntity> activeExpenseTypes(String receiptUserId) {
         return expenseTagManager.activeExpenseTypes(receiptUserId);
     }
+
+    public ExpenseTagEntity findExpenseTag(String expenseId) {
+        return expenseTagManager.findOne(expenseId);
+    }
 }

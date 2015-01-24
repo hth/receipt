@@ -34,8 +34,20 @@ public class ItemService {
     @Autowired private ItemManager itemManager;
     @Autowired private ExpenseTagManager expenseTagManager;
 
-    public long countItemsUsingExpenseType(String expenseTypeId, String userProfileId) {
-        return itemManager.countItemsUsingExpenseType(expenseTypeId, userProfileId);
+    public void updateAllItemWithExpenseTag(String receiptId, String expenseTagId) {
+        itemManager.updateAllItemWithExpenseTag(receiptId, expenseTagId);
+    }
+
+    public void updateItemWithExpenseTag(String itemId, String expenseTagId) {
+        itemManager.updateItemWithExpenseTag(itemId, expenseTagId);
+    }
+
+    public ItemEntity findItem(String itemId, String rid) {
+        return itemManager.findItem(itemId, rid);
+    }
+
+    public long countItemsUsingExpenseType(String expenseTypeId, String rid) {
+        return itemManager.countItemsUsingExpenseType(expenseTypeId, rid);
     }
 
     public List<ItemEntity> itemsForExpenseType(ExpenseTagEntity expenseTagEntity) {

@@ -167,27 +167,6 @@ public class ReceiptController extends BaseController {
         return new ModelAndView(redirectAccessLandingController);
     }
 
-    @RequestMapping (method = RequestMethod.POST, params = "update-expense-type")
-    public String expenseUpdate(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
-        LOG.info("Initiating Expense Type update on receipt rid={}", receiptForm.getReceipt().getId());
-
-        for (ItemEntity item : receiptForm.getItems()) {
-            ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseTag().getId());
-            item.setExpenseTag(expenseType);
-            try {
-                receiptService.updateItemWithExpenseType(item);
-            } catch (Exception e) {
-                LOG.error("Error updating ExpenseType={}, for ItemEntity={}, reason={}",
-                        item.getExpenseTag().getId(),
-                        item.getId(),
-                        e.getLocalizedMessage(),
-                        e);
-                //TODO(hth) send error message back saying update unsuccessful.
-            }
-        }
-        return redirectAccessLandingController;
-    }
-
     /**
      * Delete receipt through REST URL
      *

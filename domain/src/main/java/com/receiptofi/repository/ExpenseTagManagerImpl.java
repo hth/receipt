@@ -41,9 +41,9 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Repository
-public final class ExpenseTagManagerImpl implements ExpenseTagManager {
+public class ExpenseTagManagerImpl implements ExpenseTagManager {
     private static final Logger LOG = LoggerFactory.getLogger(ExpenseTagManagerImpl.class);
-    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+    public static final String TABLE = BaseEntity.getClassAnnotationValue(
             ExpenseTagEntity.class,
             Document.class,
             "collection");
