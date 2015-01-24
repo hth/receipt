@@ -107,6 +107,10 @@ public class ReceiptEntity extends BaseEntity {
     @Field ("CN")
     private CommentEntity notes;
 
+    @DBRef
+    @Field ("EXPENSE_TAG")
+    private ExpenseTagEntity expenseTag;
+
     /**
      * Note: During recheck of a receipt EXF is dropped as this is
      * not persisted between the two event.
@@ -298,6 +302,14 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setNotes(CommentEntity notes) {
         this.notes = notes;
+    }
+
+    public ExpenseTagEntity getExpenseTag() {
+        return expenseTag;
+    }
+
+    public void setExpenseTag(ExpenseTagEntity expenseTag) {
+        this.expenseTag = expenseTag;
     }
 
     public String getChecksum() {
