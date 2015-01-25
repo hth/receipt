@@ -10,23 +10,28 @@
 
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin1.css"/>
 </head>
 <body>
-<header>
-    <div class="top-account-bar">
-        <ul>
-            <li><a class="top-account-bar-text" href="#">LOG OUT</a></li>
-            <li><a class="top-account-bar-text" href="#">PROFILE</a></li>
-            <li>
+<div class="main_wrapper">
+    <div class="header">
+        <div class="header_wrapper">
+            <div class="header_left_content">
+                <div id="logo">
+                    <h1>Receiptofi</h1>
+                </div>
+            </div>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="#">PROFILE</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username" />
                 </a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
-    <div class="nav-hold">
-        <h1>Receiptofi</h1>
-    </div>
+</div>
+<header>
 </header>
 <div class="main clearfix">
 <c:choose>
