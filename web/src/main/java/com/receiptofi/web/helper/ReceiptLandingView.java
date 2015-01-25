@@ -40,26 +40,25 @@ public final class ReceiptLandingView {
     private String expenseTag;
     private String expenseColor;
 
-    private ReceiptLandingView() {
-    }
-
-    public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
-        ReceiptLandingView receiptLandingView = new ReceiptLandingView();
-        receiptLandingView.setId(receiptEntity.getId());
-        receiptLandingView.setName(receiptEntity.getBizName().getBusinessName());
-        receiptLandingView.setDate(receiptEntity.getReceiptDate());
-        receiptLandingView.setTax(receiptEntity.getTax());
-        receiptLandingView.setTotal(receiptEntity.getTotal());
-        receiptLandingView.setUserProfileId(receiptEntity.getReceiptUserId());
-        receiptLandingView.setExpenseReportInFS(receiptEntity.getExpenseReportInFS());
+    private ReceiptLandingView(ReceiptEntity receiptEntity) {
+        id = receiptEntity.getId();
+        name = receiptEntity.getBizName().getBusinessName();
+        date = receiptEntity.getReceiptDate();
+        tax = receiptEntity.getTax();
+        total = receiptEntity.getTotal();
+        userProfileId = receiptEntity.getReceiptUserId();
+        expenseReportInFS = receiptEntity.getExpenseReportInFS();
         if (null != receiptEntity.getExpenseTag()) {
-            receiptLandingView.setExpenseTag(receiptEntity.getExpenseTag().getTagName());
-            receiptLandingView.setExpenseColor(receiptEntity.getExpenseTag().getTagColor());
+            expenseTag = receiptEntity.getExpenseTag().getTagName();
+            expenseColor = receiptEntity.getExpenseTag().getTagColor();
         }
 
         /** Remove all alpha numeric characters as it creates issues with 'id' */
-        receiptLandingView.setBizNameForId(StringUtils.deleteWhitespace(receiptEntity.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", ""));
-        return receiptLandingView;
+        bizNameForId = StringUtils.deleteWhitespace(receiptEntity.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", "");
+    }
+
+    public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
+        return new ReceiptLandingView(receiptEntity);
     }
 
     public String getId() {
