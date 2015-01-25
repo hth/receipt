@@ -132,80 +132,26 @@
     </script>
 </head>
 <body>
-<div class="main_wrapper"><!--start_main_wrapper-->
-    <!--start_header-->
+<div class="main_wrapper">
     <div class="header">
         <div class="header_wrapper">
-            <!--/header_left_content-->
-
             <div class="header_left_content">
                 <div id="logo">
                     <h1>Receiptofi</h1>
                 </div>
             </div>
-
-
             <div class="header_right_login">
-                <!--start_header_right_login-->
-                <div class="sing_up"><a href="SignUp.html">Sign Up</a></div>
-                <a id="loginButton" class="active"><span>Log In</span></a>
-
-                <div id="loginBox" style="display:none;">
-
-
-                    <form id="loginForm" action="" method="POST">
-                        <fieldset id="body">
-                            <div class="login_main_arrow">
-                                <img src="static/img/rec1.png">
-
-                            </div>
-                            <fieldset>
-                                <label for="email">Email</label>
-                                <input name="login" value="" maxlength="80" id="email" placeholder="name@address.com" type="email">
-                            </fieldset>
-                            <fieldset>
-
-                                <label for="password">Password</label>
-
-                                <input name="password" value="" id="password" required="" placeholder="password" type="password">
-                            </fieldset>
-                            <input id="login" value="SIGN IN" type="submit">
-                            <label for="checkbox">
-                                <input name="remember" value="1" id="checkbox" type="checkbox">Remember me</label>
-                        </fieldset>
-
-                        <span><a href="">Forgot your password?</a></span>
-
-                    </form>
-
-
-                </div>
-                <!-- /loginBox-->
-
-                <p></p>
+                <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="#">PROFILE</a>
+                <a class="top-account-bar-text user-email" href="#">
+                    <sec:authentication property="principal.username" />
+                </a>
             </div>
-            <!-- /header_right_login-->
-
         </div>
-        <!--/header_wrapper -->
     </div>
 </div>
 
 <header>
-	<div class="top-account-bar">
-		<ul>
-			<li><a class="top-account-bar-text" href="#">LOG OUT</a></li>
-			<li><a class="top-account-bar-text" href="#">PROFILE</a></li>
-            <li>
-                <a class="top-account-bar-text user-email" href="#">
-                    <sec:authentication property="principal.username" />
-                </a>
-            </li>
-		</ul>
-	</div>
-	<div class="nav-hold">
-		<h1>Receiptofi</h1>
-	</div>
 </header>
 <div class="main clearfix">
 <div class="sidebar">
