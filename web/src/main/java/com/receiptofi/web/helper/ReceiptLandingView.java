@@ -37,6 +37,8 @@ public final class ReceiptLandingView {
     private String userProfileId;
     private String bizNameForId;
     private String expenseReportInFS;
+    private String expenseTag;
+    private String expenseColor;
 
     private ReceiptLandingView() {
     }
@@ -50,6 +52,10 @@ public final class ReceiptLandingView {
         receiptLandingView.setTotal(receiptEntity.getTotal());
         receiptLandingView.setUserProfileId(receiptEntity.getReceiptUserId());
         receiptLandingView.setExpenseReportInFS(receiptEntity.getExpenseReportInFS());
+        if (null != receiptEntity.getExpenseTag()) {
+            receiptLandingView.setExpenseTag(receiptEntity.getExpenseTag().getTagName());
+            receiptLandingView.setExpenseColor(receiptEntity.getExpenseTag().getTagColor());
+        }
 
         /** Remove all alpha numeric characters as it creates issues with 'id' */
         receiptLandingView.setBizNameForId(StringUtils.deleteWhitespace(receiptEntity.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", ""));
@@ -118,5 +124,21 @@ public final class ReceiptLandingView {
 
     public void setExpenseReportInFS(String expenseReportInFS) {
         this.expenseReportInFS = expenseReportInFS;
+    }
+
+    public String getExpenseTag() {
+        return expenseTag;
+    }
+
+    public void setExpenseTag(String expenseTag) {
+        this.expenseTag = expenseTag;
+    }
+
+    public String getExpenseColor() {
+        return expenseColor;
+    }
+
+    public void setExpenseColor(String expenseColor) {
+        this.expenseColor = expenseColor;
     }
 }
