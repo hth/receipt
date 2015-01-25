@@ -37,23 +37,28 @@ public final class ReceiptLandingView {
     private String userProfileId;
     private String bizNameForId;
     private String expenseReportInFS;
+    private String expenseTag;
+    private String expenseColor;
 
-    private ReceiptLandingView() {
+    private ReceiptLandingView(ReceiptEntity receiptEntity) {
+        id = receiptEntity.getId();
+        name = receiptEntity.getBizName().getBusinessName();
+        date = receiptEntity.getReceiptDate();
+        tax = receiptEntity.getTax();
+        total = receiptEntity.getTotal();
+        userProfileId = receiptEntity.getReceiptUserId();
+        expenseReportInFS = receiptEntity.getExpenseReportInFS();
+        if (null != receiptEntity.getExpenseTag()) {
+            expenseTag = receiptEntity.getExpenseTag().getTagName();
+            expenseColor = receiptEntity.getExpenseTag().getTagColor();
+        }
+
+        /** Remove all alpha numeric characters as it creates issues with 'id' */
+        bizNameForId = StringUtils.deleteWhitespace(receiptEntity.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", "");
     }
 
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
-        ReceiptLandingView receiptLandingView = new ReceiptLandingView();
-        receiptLandingView.setId(receiptEntity.getId());
-        receiptLandingView.setName(receiptEntity.getBizName().getBusinessName());
-        receiptLandingView.setDate(receiptEntity.getReceiptDate());
-        receiptLandingView.setTax(receiptEntity.getTax());
-        receiptLandingView.setTotal(receiptEntity.getTotal());
-        receiptLandingView.setUserProfileId(receiptEntity.getReceiptUserId());
-        receiptLandingView.setExpenseReportInFS(receiptEntity.getExpenseReportInFS());
-
-        /** Remove all alpha numeric characters as it creates issues with 'id' */
-        receiptLandingView.setBizNameForId(StringUtils.deleteWhitespace(receiptEntity.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", ""));
-        return receiptLandingView;
+        return new ReceiptLandingView(receiptEntity);
     }
 
     public String getId() {
@@ -118,5 +123,21 @@ public final class ReceiptLandingView {
 
     public void setExpenseReportInFS(String expenseReportInFS) {
         this.expenseReportInFS = expenseReportInFS;
+    }
+
+    public String getExpenseTag() {
+        return expenseTag;
+    }
+
+    public void setExpenseTag(String expenseTag) {
+        this.expenseTag = expenseTag;
+    }
+
+    public String getExpenseColor() {
+        return expenseColor;
+    }
+
+    public void setExpenseColor(String expenseColor) {
+        this.expenseColor = expenseColor;
     }
 }
