@@ -137,12 +137,13 @@
         <div class="header_wrapper">
             <div class="header_left_content">
                 <div id="logo">
-                    <h1>Receiptofi</h1>
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
                 <a class="top-account-bar-text" href="#">PROFILE</a>
+                <a class="top-account-bar-text" href="#">REPORT</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username" />
                 </a>
