@@ -47,6 +47,11 @@ public class ExpenseTagEntity extends BaseEntity {
     @Field ("CLR")
     private String tagColor;
 
+    /** To keep bean happy for auto populating drop down */
+    public ExpenseTagEntity() {
+        super();
+    }
+
     private ExpenseTagEntity(String tagName, String receiptUserId, String tagColor) {
         super();
         this.tagName = tagName;
