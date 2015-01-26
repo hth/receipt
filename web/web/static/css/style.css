@@ -434,7 +434,7 @@ div .sidebar-date form input {
     text-align: center;
     color: #333333;
     font-weight: normal;
-    font-size: 0.763em;
+    font-size: 0.863em;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-decoration: none;
     float: right;
@@ -442,7 +442,7 @@ div .sidebar-date form input {
 }
 
 .user-email {
-    font-size: 0.763em;
+    font-size: 0.863em;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: #000;
