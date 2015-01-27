@@ -173,8 +173,6 @@
         cancel  : true,
         size    : 25
     });
-</script>
-<script>
     $("#star > img").click(function(){
         var score = $(this).attr("alt");
         $('#rating').val(score);

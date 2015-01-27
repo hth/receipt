@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -39,8 +40,11 @@ public class EvalFeedbackController {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackController.class);
 
     /* Refers to feedback.jsp and next one to feedbackConfirm.jsp. */
-    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK = "/eval/feedback";
-    private static final String NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM = "/eval/feedbackConfirm";
+    @Value ("${EvalFeedbackController.nextPage:/eval/feedback2}")
+    private String nextPage;
+
+    @Value ("${EvalFeedbackController.nextPageConfirm:/eval/feedbackConfirm}")
+    private String nextPageConfirm;
 
     /* For confirming which page to show. */
     private static final String SUCCESS_EVAL = "success_eval_feedback";
@@ -49,15 +53,18 @@ public class EvalFeedbackController {
     @Autowired EvalFeedbackValidator evalFeedbackValidator;
 
     @RequestMapping (method = RequestMethod.GET, value = "/feedback")
-    public ModelAndView loadForm(@ModelAttribute ("evalFeedbackForm") EvalFeedbackForm evalFeedbackForm) {
+    public ModelAndView loadForm(
+            @ModelAttribute ("evalFeedbackForm")
+            EvalFeedbackForm evalFeedbackForm
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         LOG.info("Feedback loadForm: " + receiptUser.getRid());
-        return new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
+        return new ModelAndView(nextPage);
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "/feedback")
-    public ModelAndView postForm(
+    public ModelAndView post(
             @ModelAttribute ("evalFeedbackForm")
             EvalFeedbackForm evalFeedbackForm,
 
@@ -68,7 +75,7 @@ public class EvalFeedbackController {
         evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
             LOG.error("error in result check");
-            return new ModelAndView(NEXT_PAGE_IS_CALLED_FEEDBACK);
+            return new ModelAndView(nextPage);
         }
 
         evalFeedbackService.addFeedback(
@@ -79,7 +86,7 @@ public class EvalFeedbackController {
         LOG.info("Feedback saved successfully");
 
         httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, true);
-        return new ModelAndView("redirect:/access" + NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM + ".htm");
+        return new ModelAndView("redirect:/access" + nextPageConfirm + ".htm");
     }
 
     /**
@@ -97,10 +104,10 @@ public class EvalFeedbackController {
                 boolean condition = (boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EVAL);
                 if (condition) {
                     httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, false);
-                    return NEXT_PAGE_IS_CALLED_FEEDBACK_CONFIRM;
+                    return nextPageConfirm;
                 }
             }
         }
-        return "redirect:/access" + NEXT_PAGE_IS_CALLED_FEEDBACK + ".htm";
+        return "redirect:/access" + nextPage + ".htm";
     }
 }

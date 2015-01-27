@@ -517,6 +517,14 @@ a.big-view-lower:hover, a.big-view-lower:visited, a.big-view-lower {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.remaining-characters {
+    padding-top: 6px; !important;
+    padding-left: 5px; !important;
+    width: auto; !important;
+    padding-bottom: 2%;
+    color: #919191;
+}
+
 .invite-general-text {
     width: 280px;
     padding-left: 0;
@@ -667,6 +675,10 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 18px;
     padding-left: 5%;
 }
+
+.first-small {
+    padding: 1%; !important;
+}
 /*Warning Error Messages*/
 
 .blank-space {
@@ -721,7 +733,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 .read_btn {
-    margin: 77px 96px 0px 0px;
+    margin: 77px 96px 2px 2px;
     padding: 11px 0px;
     color: #fff;
     width: 153px;
@@ -734,6 +746,18 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border-top: none;
     font-size: 0.875em;
     font-weight: bold;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.choose_file_btn {
+    background: #FFF;
+    color: #707070;
+    border: 1px dotted #606060;
+    margin: 0px 25px 0px 0px;
+    padding-top: 15px;
+    text-align: center;
+    width: 300px; !important;
+    padding-bottom: 2%;
 }
 
 .down_form {
