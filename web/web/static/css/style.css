@@ -157,6 +157,24 @@ header h1 {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.h1 {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.h2 {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.15em;
+}
+
+.h3 {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 0.95em;
+}
+
 .main {
     width: 960px;
     height: auto;
@@ -434,7 +452,7 @@ div .sidebar-date form input {
     text-align: center;
     color: #333333;
     font-weight: normal;
-    font-size: 0.763em;
+    font-size: 0.863em;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-decoration: none;
     float: right;
@@ -442,7 +460,7 @@ div .sidebar-date form input {
 }
 
 .user-email {
-    font-size: 0.763em;
+    font-size: 0.863em;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: #000;
@@ -503,6 +521,14 @@ a.big-view-lower:hover, a.big-view-lower:visited, a.big-view-lower {
     width: 179px;
     padding-left: 17px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.remaining-characters {
+    padding-top: 6px; !important;
+    padding-left: 5px; !important;
+    width: auto; !important;
+    padding-bottom: 2%;
+    color: #919191;
 }
 
 .invite-general-text {
@@ -655,6 +681,10 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 18px;
     padding-left: 5%;
 }
+
+.first-small {
+    padding: 1%; !important;
+}
 /*Warning Error Messages*/
 
 .blank-space {
@@ -703,19 +733,37 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     background: #ccc;
 }
 
-.photo_botton {
+.photo_button {
     float: left;
     width: 45%;
 }
 
 .read_btn {
-    margin: 77px 96px 0px 0px;
+    margin: 77px 96px 2px 2px;
     padding: 11px 0px;
-    border: 0;
     color: #fff;
-    font-size: 1.1rem;
-    width: 133px;
+    width: 153px;
     cursor: pointer;
+    height: 49px;
+    background: #007AFF;
+    border-bottom: 1px solid #31578D;
+    border-left: 1px solid #31578D;
+    border-right: none;
+    border-top: none;
+    font-size: 0.875em;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.choose_file_btn {
+    background: #FFF;
+    color: #707070;
+    border: 1px dotted #606060;
+    margin: 0px 25px 0px 0px;
+    padding-top: 15px;
+    text-align: center;
+    width: 300px; !important;
+    padding-bottom: 2%;
 }
 
 .down_form {
@@ -724,10 +772,12 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     margin: 20px 5px 5px 15px;
 }
 
-.lab_ftname {
+.profile_tag {
     float: left;
     padding: 10px 8px 8px 0px;
     width: 129px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .name_txt {
@@ -735,6 +785,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     height: 40px;
     line-height: 24px;
     color: #666;
+    font-size: 1.1rem;
     padding: 2px 3px;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -743,7 +794,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     margin: 0px;
 }
 
-.row_fild {
+.row_field {
     float: left;
     width: 100%;
     margin-top: 10px;

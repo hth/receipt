@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -55,7 +56,8 @@ import java.util.Map;
 public class UserProfilePreferenceController {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
-    private static final String nextPage = "/userprofilepreference";
+    @Value("${UserProfilePreferenceController.nextPage:/userprofilepreference2}")
+    private String nextPage;
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private AccountService accountService;
