@@ -43,7 +43,7 @@ public class EvalFeedbackController {
     @Value ("${EvalFeedbackController.nextPage:/eval/feedback2}")
     private String nextPage;
 
-    @Value ("${EvalFeedbackController.nextPageConfirm:/eval/feedbackConfirm}")
+    @Value ("${EvalFeedbackController.nextPageConfirm:/eval/feedbackConfirm2}")
     private String nextPageConfirm;
 
     /* For confirming which page to show. */
