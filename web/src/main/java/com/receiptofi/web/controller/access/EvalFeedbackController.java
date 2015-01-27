@@ -40,10 +40,10 @@ public class EvalFeedbackController {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackController.class);
 
     /* Refers to feedback.jsp and next one to feedbackConfirm.jsp. */
-    @Value ("${EvalFeedbackController.nextPage:/eval/feedback2}")
+    @Value ("${EvalFeedbackController.nextPage:/eval/feedback}")
     private String nextPage;
 
-    @Value ("${EvalFeedbackController.nextPageConfirm:/eval/feedbackConfirm2}")
+    @Value ("${EvalFeedbackController.nextPageConfirm:/eval/feedbackConfirm}")
     private String nextPageConfirm;
 
     /* For confirming which page to show. */
@@ -64,7 +64,7 @@ public class EvalFeedbackController {
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "/feedback")
-    public ModelAndView post(
+    public ModelAndView submitFeedback(
             @ModelAttribute ("evalFeedbackForm")
             EvalFeedbackForm evalFeedbackForm,
 

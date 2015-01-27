@@ -1,182 +1,115 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+
     <title><fmt:message key="feedback.title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin1.css"/>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/raty/jquery.raty.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
-
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $('#comment').NobleCount('#feedbackComment', {
-                on_negative: 'error',
-                on_positive: 'success',
-                max_chars: 250
-            });
-        });
-    </script>
-
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/jquery/js/raty/jquery.raty.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<div class="main_wrapper">
+    <div class="header">
+        <div class="header_wrapper">
+            <div class="header_left_content">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="#">REPORT</a>
+                <a class="top-account-bar-text user-email" href="#">
+                    <sec:authentication property="principal.username" />
+                </a>
             </div>
         </div>
     </div>
+</div>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="rightside-title">
+        <h1 class="rightside-title-text">
+            <fmt:message key="feedback.title" />
+        </h1>
+    </div>
+    <div class="rightside-list-holder full-list-holder">
+        <form:form method="post" action="feedback.htm" modelAttribute="evalFeedbackForm" enctype="multipart/form-data">
+            <form:hidden path="rating" />
+            <h2 class="h2" style="padding-bottom:2%;">We would love to hear from you!</h2>
+            <form:textarea path="comment" id="comment" cols="54" rows="5" placeholder="Message" style="font-size: 1.2em; "/>
+            <br/>
+            <span class="si-general-text remaining-characters">
+                <span id="feedbackComment"></span> characters remaining remaining
+            </span>
+            <br/>
+            <form:errors path="comment" cssClass="first first-small ajx-content" />
 
-    <p>&nbsp;</p>
+            <h2 class="h2" style="padding-bottom: 2%; padding-top: 2%">Attachment</h2>
+            <div id="choose_file" class="read_btn choose_file_btn" onclick="getFile()">CHOOSE FILE</div>
+            <div style='height: 0;width: 0; overflow:hidden;'>
+                <form:input path="fileData" type="file" value="upload" onchange="sub(this)"/>
+            </div>
+            <br/><br/>
+            <form:errors path="fileData" cssClass="first first-small ajx-content" />
 
-    <div>
-        <section class="chunk">
-            <fieldset>
-                <legend class="hd">
-                    <span class="text"><fmt:message key="feedback.title" /></span>
-                </legend>
-                <div class="bd">
-                <form:form method="post" action="feedback.htm" modelAttribute="evalFeedbackForm" enctype="multipart/form-data">
-                    <form:hidden path="rating" />
-                    <div class="divTable">
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                Message:
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <form:textarea path="comment" id="comment" size="250" cols="50" rows="4" />
-                                <br/>
-                                <span id='feedbackComment'></span> characters remaining remaining
-                                <br/>
-                                <form:errors path="comment" cssClass="error" />
-                            </div>
-                        </div>
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                Please rate:
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <div id="star"></div>
-                            </div>
-                        </div>
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                Attachment:
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <form:input path="fileData" type="file" size="17"/>
-                                <br/>
-                                <form:errors path="fileData" cssClass="error" />
-                            </div>
-                        </div>
-                        <div class="divRow">
-                            <div class="divOfCell110" style="background-color: #eee">
-                                &nbsp;
-                            </div>
-                            <div class="divOfCell500" style="background-color: #eee">
-                                <input type="submit" value="Submit" name="submit" class="btn btn-default" />
-                            </div>
-                        </div>
-                    </div>
-                </form:form>
-                </div>
-            </fieldset>
-        </section>
+            <h2 class="h2" style="padding-bottom:2%; padding-top: 2%">Please rate us!</h2>
+            <div id="star"></div>
+            <input type="submit" value="SUBMIT" class="read_btn">
+        </form:form>
+    </div>
+    <div class="footer-tooth clearfix">
+        <div class="footer-tooth-middle"></div>
+        <div class="footer-tooth-right"></div>
     </div>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
-</div>
-
+</body>
 <script>
-    $('#star').raty({
-        score   : $('#rating').val(),
-        cancel  : true,
-        size    : 25
+    $(document).ready(function () {
+        $('#comment').NobleCount('#feedbackComment', {
+            on_negative: 'error',
+            on_positive: 'success',
+            max_chars: 250
+        });
     });
+    $('#star').raty({
+        score: $('#rating').val(),
+        cancel: true,
+        size: 25,
+        hints: ['Bad', 'Poor', 'Regular', 'Good', 'Gorgeous']
+    });
+
     $("#star > img").click(function(){
         var score = $(this).attr("alt");
         $('#rating').val(score);
     });
-</script>
 
-</body>
+    function getFile(){
+        document.getElementById("fileData").click();
+    }
+
+    function sub(obj){
+        var file = obj.value;
+        var fileName = file.split("\\");
+        if(fileName[fileName.length-1].length > 40) {
+            fileName = fileName[fileName.length-1].substring(0, 37) + "...";
+        } else {
+            fileName = fileName[fileName.length-1];
+        }
+        document.getElementById("choose_file").innerHTML = fileName;
+        document.evalFeedbackForm.submit();
+        event.preventDefault();
+    }
+</script>
+</html>
