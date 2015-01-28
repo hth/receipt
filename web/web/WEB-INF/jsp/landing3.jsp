@@ -142,6 +142,7 @@
             </div>
             <div class="header_right_login">
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
                 <a class="top-account-bar-text" href="#">REPORT</a>
                 <a class="top-account-bar-text user-email" href="#">

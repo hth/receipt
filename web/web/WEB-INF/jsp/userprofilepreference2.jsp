@@ -74,12 +74,11 @@
     <div class="rightside-content">
         <div id="tabs" class="nav-list">
             <ul class="nav-block">
-                <li><a href="#tab2">PROFILE</a></li>
-                <li><a href="#tab3">PREFERENCES</a></li>
-                <li><a href="#tab4">FEEDBACK</a></li>
+                <li><a href="#tabs-1">PROFILE</a></li>
+                <li><a href="#tabs-2">PREFERENCES</a></li>
             </ul>
 
-            <div id="tab2" class="report_my ajx-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-4" role="tabpanel" aria-hidden="false" style="display: block;">
+            <div id="tabs-1" class="report_my ajx-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-4" role="tabpanel" aria-hidden="false" style="display: block;">
                 <h1 class="h1">PROFILE</h1>
                 <hr>
                 <div class="photo_section">
@@ -114,7 +113,7 @@
                 </div>
             </div>
 
-            <div id="tab3" class="ajx-content report_my ">
+            <div id="tabs-2" class="ajx-content report_my ">
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
                 <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
@@ -130,24 +129,6 @@
                 <div class="full">
                     <input type="button" value="SAVE" style="background:#0079FF; margin-top:126px;" class="read_btn">
                 </div>
-            </div>
-
-            <div id="tab4" class="report_my ajx-content">
-                <h1 class="h1">FEEDBACK</h1>
-                <hr>
-                <h3 class="h3 padtop2per" style="padding-bottom:2%;">We would love to hear from you!</h3>
-                <textarea style="width: 561px;height: 145px; padding:1%;" placeholder="Message"></textarea>
-                <h5 class="h5 padtop2per" style="padding-bottom:2%;padding-top: 5px;">250 characters remaining</h5><br>
-
-                <h3 class="h3 padtop2per" style="padding-bottom:2%;">Attachment</h3>
-                <span><input type="button" value="CHOOSE FILE" style="background:#B5BBC2;margin: 0px 25px 0px 0px;width: 157px;" class="read_btn"></span><span>No file chosen</span>
-
-                <h3 class="h3 padtop2per" style="padding-bottom:2%;padding-top: 55px;">Please rate us!</h3>
-
-                <input type="button" value="SUBMIT" style="background:#0079FF" class="read_btn">
-
-            </div>
-            <div id="tab5" class="ajx-content">
             </div>
         </div>
     </div>
