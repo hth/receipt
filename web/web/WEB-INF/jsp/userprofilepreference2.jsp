@@ -58,6 +58,8 @@
             </div>
             <div class="header_right_login">
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
                 <a class="top-account-bar-text" href="#">REPORT</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username" />
@@ -94,17 +96,17 @@
                 <div class="down_form">
                     <form>
                         <div class="row_field">
-                            <label class="profile_tag">First name</label>
+                            <label class="profile_label">First name</label>
                             <input type="text" name="" required="true" size="20" class="name_txt"
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.firstName"/>">
                         </div>
                         <div class="row_field">
-                            <label class="profile_tag">Last name</label>
+                            <label class="profile_label">Last name</label>
                             <input type="text" required="true" size="20" name="" class="name_txt"
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.lastName"/>">
                         </div>
                         <div class="row_field">
-                            <label class="profile_tag">Email address</label>
+                            <label class="profile_label">Email address</label>
                             <input type="text" name="" size="20" class="name_txt"
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.email"/>">
                         </div>
