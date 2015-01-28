@@ -133,11 +133,11 @@ xpopup
     }
 }
 
-.h1 {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
-    font-weight: bold;
-    font-size: 1.4em;
-}
+/*.h1 {*/
+    /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;*/
+    /*font-weight: bold;*/
+    /*font-size: 1.4em;*/
+/*}*/
 
 .report {
     background: #fff;

@@ -82,9 +82,10 @@
                 <%--</sec:authorize>--%>
             </ul>
 
-            <div id="tabs-1" class="report_my ajx-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-4" role="tabpanel" aria-hidden="false" style="display: block;">
+            <div id="tabs-1" class="report_my ajx-content" style="display: block;">
                 <h1 class="h1">PROFILE</h1>
                 <hr>
+                <div class="rightside-list-holder full-list-holder">
                 <div class="photo_section">
                     <div class="photo_part">
                         <h2 class="h2">Photo</h2>
@@ -121,11 +122,13 @@
                         <input type="button" value="SAVE" style="background:#0079FF" class="read_btn">
                     <%--</form>--%>
                 </div>
+                </div>
             </div>
 
             <div id="tabs-2" class="ajx-content report_my">
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
+                <div class="rightside-list-holder full-list-holder">
                 <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
                 <div class="">
                     <input type="button" value="Home &nbsp; &times;" style="" class="white_btn">
@@ -139,12 +142,14 @@
                 <div class="full">
                     <input type="button" value="SAVE" style="background:#0079FF; margin-top:126px;" class="read_btn">
                 </div>
+                </div>
             </div>
 
             <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
             <div id="tabs-3" class="ajx-content report_my">
                 <h1 class="h1">STATUS</h1>
                 <hr>
+                <div class="rightside-list-holder full-list-holder">
                 <div class="down_form">
                     <form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
                     <form:hidden path="userProfile.receiptUserId"/>
@@ -175,6 +180,7 @@
                         <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
                         <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
                     </form:form>
+                </div>
                 </div>
             </div>
             <%--</sec:authorize>--%>

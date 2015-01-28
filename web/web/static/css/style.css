@@ -349,7 +349,7 @@ div .sidebar-date form input {
     margin-left: 10px;
     margin-top: 14px;
     margin-bottom: 50px;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 }
 
 .rightside-list-holder li {
