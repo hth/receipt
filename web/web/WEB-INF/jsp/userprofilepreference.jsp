@@ -243,7 +243,10 @@
             </div>
             <!-- If changing the access level here then update the condition check in POST method -->
             <div class="divRow">
-                <div class="divOfCell700"><input type="reset" value="Reset" name="Reset" class="btn btn-default"/> <input type="submit" value="Update" name="Update" class="btn btn-default" /></div>
+                <div class="divOfCell700">
+                    <input type="reset" value="Reset" name="Reset" class="btn btn-default"/>
+                    <input type="submit" value="Update" name="Update" class="btn btn-default" />
+                </div>
             </div>
             </form:form>
             </sec:authorize>

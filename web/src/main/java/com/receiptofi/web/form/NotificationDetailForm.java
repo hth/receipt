@@ -27,7 +27,7 @@ public class NotificationDetailForm {
     private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM. dd");
     private static final int OFF_SET = 0;
     private static final int MAX_WIDTH = 52;  // or 70
-    private static final int MAX_WIDTH_DETAILED_VIEW = 80;
+    private static final int MAX_WIDTH_DETAILED_VIEW = 70;
     private static final String CLASS = "class='rightside-li-middle-text full-li-middle-text'";
 
     private String referenceId;

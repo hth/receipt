@@ -27,7 +27,6 @@
             });
         });
     </script>
-    <script src="static/js/classie.js"></script>
     <script>
         function init() {
             window.addEventListener('scroll', function (e) {
@@ -58,6 +57,8 @@
             </div>
             <div class="header_right_login">
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
                 <a class="top-account-bar-text" href="#">REPORT</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username" />
@@ -74,12 +75,14 @@
     <div class="rightside-content">
         <div id="tabs" class="nav-list">
             <ul class="nav-block">
-                <li><a href="#tab2">PROFILE</a></li>
-                <li><a href="#tab3">PREFERENCES</a></li>
-                <li><a href="#tab4">FEEDBACK</a></li>
+                <li><a href="#tabs-1">PROFILE</a></li>
+                <li><a href="#tabs-2">PREFERENCES</a></li>
+                <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+                <li><a href="#tabs-3">STATUS</a></li>
+                <%--</sec:authorize>--%>
             </ul>
 
-            <div id="tab2" class="report_my ajx-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-4" role="tabpanel" aria-hidden="false" style="display: block;">
+            <div id="tabs-1" class="report_my ajx-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-4" role="tabpanel" aria-hidden="false" style="display: block;">
                 <h1 class="h1">PROFILE</h1>
                 <hr>
                 <div class="photo_section">
@@ -93,28 +96,34 @@
                     </div>
                 </div>
                 <div class="down_form">
-                    <form>
+                    <%--<form>--%>
                         <div class="row_field">
-                            <label class="profile_tag">First name</label>
+                            <label class="profile_label">First name</label>
                             <input type="text" name="" required="true" size="20" class="name_txt"
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.firstName"/>">
                         </div>
                         <div class="row_field">
-                            <label class="profile_tag">Last name</label>
+                            <label class="profile_label">Last name</label>
                             <input type="text" required="true" size="20" name="" class="name_txt"
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.lastName"/>">
                         </div>
                         <div class="row_field">
-                            <label class="profile_tag">Email address</label>
+                            <label class="profile_label">Email address</label>
                             <input type="text" name="" size="20" class="name_txt"
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.email"/>">
                         </div>
+                        <div class="row_field">
+                            <label class="profile_label">Last modified</label>
+                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                                <fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both"/>
+                            </label>
+                        </div>
                         <input type="button" value="SAVE" style="background:#0079FF" class="read_btn">
-                    </form>
+                    <%--</form>--%>
                 </div>
             </div>
 
-            <div id="tab3" class="ajx-content report_my ">
+            <div id="tabs-2" class="ajx-content report_my">
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
                 <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
@@ -132,23 +141,44 @@
                 </div>
             </div>
 
-            <div id="tab4" class="report_my ajx-content">
-                <h1 class="h1">FEEDBACK</h1>
+            <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+            <div id="tabs-3" class="ajx-content report_my">
+                <h1 class="h1">STATUS</h1>
                 <hr>
-                <h3 class="h3 padtop2per" style="padding-bottom:2%;">We would love to hear from you!</h3>
-                <textarea style="width: 561px;height: 145px; padding:1%;" placeholder="Message"></textarea>
-                <h5 class="h5 padtop2per" style="padding-bottom:2%;padding-top: 5px;">250 characters remaining</h5><br>
-
-                <h3 class="h3 padtop2per" style="padding-bottom:2%;">Attachment</h3>
-                <span><input type="button" value="CHOOSE FILE" style="background:#B5BBC2;margin: 0px 25px 0px 0px;width: 157px;" class="read_btn"></span><span>No file chosen</span>
-
-                <h3 class="h3 padtop2per" style="padding-bottom:2%;padding-top: 55px;">Please rate us!</h3>
-
-                <input type="button" value="SUBMIT" style="background:#0079FF" class="read_btn">
-
+                <div class="down_form">
+                    <form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
+                    <form:hidden path="userProfile.receiptUserId"/>
+                        <div class="row_field">
+                            <label class="profile_label">Profile Id</label>
+                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                                <spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" />
+                            </label>
+                        </div>
+                        <div class="row_field">
+                            <label class="profile_label">Level</label>
+                            <form:select path="userProfile.level" cssClass="styled-select slate">
+                                <form:option value="0" label="Select Account Type" />
+                                <form:options itemLabel="description" />
+                            </form:select>
+                        </div>
+                        <div class="row_field">
+                            <label class="profile_label">Status</label>
+                            <div class="profile_label">
+                                <form:checkbox path="active" id="active" />
+                                <label for="active">Active</label>
+                            </div>
+                        </div>
+                        &nbsp;<br>
+                        &nbsp;<br>
+                        &nbsp;<br>
+                        &nbsp;<br>
+                        <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
+                        <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
+                    </form:form>
+                </div>
             </div>
-            <div id="tab5" class="ajx-content">
-            </div>
+            <%--</sec:authorize>--%>
+
         </div>
     </div>
     <div class="footer-tooth clearfix">
