@@ -785,7 +785,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     width: 267px;
     height: 40px;
     line-height: 24px;
-    color: #666;
+    color: #606060;
     font-size: 1.1rem;
     padding: 2px 3px;
     border: 1px solid #ccc;
@@ -793,6 +793,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     margin: 0px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .row_field {
@@ -920,3 +921,19 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 32px;
 }
 
+.styled-select select {
+    background: transparent;
+    border: none;
+    height: 29px;
+    padding: 5px; /* If you add too much padding here, the options won't show in IE */
+    width: 268px;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.styled-select.slate {
+    /*background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;*/
+    height: 34px;
+    width: 240px;
+}

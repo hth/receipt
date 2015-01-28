@@ -27,7 +27,6 @@
             });
         });
     </script>
-    <script src="static/js/classie.js"></script>
     <script>
         function init() {
             window.addEventListener('scroll', function (e) {
@@ -78,6 +77,9 @@
             <ul class="nav-block">
                 <li><a href="#tabs-1">PROFILE</a></li>
                 <li><a href="#tabs-2">PREFERENCES</a></li>
+                <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+                <li><a href="#tabs-3">STATUS</a></li>
+                <%--</sec:authorize>--%>
             </ul>
 
             <div id="tabs-1" class="report_my ajx-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-4" role="tabpanel" aria-hidden="false" style="display: block;">
@@ -94,7 +96,7 @@
                     </div>
                 </div>
                 <div class="down_form">
-                    <form>
+                    <%--<form>--%>
                         <div class="row_field">
                             <label class="profile_label">First name</label>
                             <input type="text" name="" required="true" size="20" class="name_txt"
@@ -110,12 +112,18 @@
                             <input type="text" name="" size="20" class="name_txt"
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.email"/>">
                         </div>
+                        <div class="row_field">
+                            <label class="profile_label">Last modified</label>
+                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                                <fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both"/>
+                            </label>
+                        </div>
                         <input type="button" value="SAVE" style="background:#0079FF" class="read_btn">
-                    </form>
+                    <%--</form>--%>
                 </div>
             </div>
 
-            <div id="tabs-2" class="ajx-content report_my ">
+            <div id="tabs-2" class="ajx-content report_my">
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
                 <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
@@ -132,6 +140,45 @@
                     <input type="button" value="SAVE" style="background:#0079FF; margin-top:126px;" class="read_btn">
                 </div>
             </div>
+
+            <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+            <div id="tabs-3" class="ajx-content report_my">
+                <h1 class="h1">STATUS</h1>
+                <hr>
+                <div class="down_form">
+                    <form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
+                    <form:hidden path="userProfile.receiptUserId"/>
+                        <div class="row_field">
+                            <label class="profile_label">Profile Id</label>
+                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                                <spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" />
+                            </label>
+                        </div>
+                        <div class="row_field">
+                            <label class="profile_label">Level</label>
+                            <form:select path="userProfile.level" cssClass="styled-select slate">
+                                <form:option value="0" label="Select Account Type" />
+                                <form:options itemLabel="description" />
+                            </form:select>
+                        </div>
+                        <div class="row_field">
+                            <label class="profile_label">Status</label>
+                            <div class="profile_label">
+                                <form:checkbox path="active" id="active" />
+                                <label for="active">Active</label>
+                            </div>
+                        </div>
+                        &nbsp;<br>
+                        &nbsp;<br>
+                        &nbsp;<br>
+                        &nbsp;<br>
+                        <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
+                        <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
+                    </form:form>
+                </div>
+            </div>
+            <%--</sec:authorize>--%>
+
         </div>
     </div>
     <div class="footer-tooth clearfix">
