@@ -519,7 +519,7 @@ a.big-view-lower:hover, a.big-view-lower:visited, a.big-view-lower {
     font-size: 0.75em;
     padding-top: 15px;
     display: inline-block;
-    width: 179px;
+    width: 189px;
     padding-left: 17px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -552,9 +552,9 @@ a.notification:hover, a.notification:visited, a.notification {
     font-size: 0.75em;
     padding-top: 22px;
     display: inline-block;
-    width: 64px;
+    width: 54px;
     vertical-align: top;
-    padding-left: 17px;
+    padding-left: 7px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
