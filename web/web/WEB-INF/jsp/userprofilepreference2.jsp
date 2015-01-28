@@ -92,7 +92,7 @@
                     </div>
                     <div class="photo_button">
                         <input type="button" value="TAKE NEW PHOTO" style="background:#0079FF" class="read_btn">
-                        <input type="button" value="UPLOAD IMAGE" style="background:#0079FF;margin: 39px 96px 0px 0px;" class="read_btn">
+                        <input type="button" value="UPLOAD IMAGE" style="background:#0079FF;margin: 29px 96px 0px 0px;" class="read_btn">
                     </div>
                 </div>
                 <div class="down_form">
