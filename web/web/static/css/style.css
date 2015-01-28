@@ -349,7 +349,7 @@ div .sidebar-date form input {
     margin-left: 10px;
     margin-top: 14px;
     margin-bottom: 50px;
-    /*overflow-y: auto;*/
+    overflow-y: auto;
 }
 
 .rightside-list-holder li {
@@ -370,6 +370,10 @@ div .sidebar-date form input {
     margin-left: 10px;
     margin-top: 40px;
     border-bottom: 1px solid #919191;
+}
+
+.rightside-title-less-margin {
+    margin-top: 20px;
 }
 
 .ajx-content {
