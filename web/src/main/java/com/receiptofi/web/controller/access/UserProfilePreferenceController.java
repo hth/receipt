@@ -57,7 +57,7 @@ import java.util.Map;
 public class UserProfilePreferenceController {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
-    @Value("${UserProfilePreferenceController.nextPage:/userprofilepreference2}")
+    @Value("${UserProfilePreferenceController.nextPage:/userprofilepreference}")
     private String nextPage;
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
