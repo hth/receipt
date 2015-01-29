@@ -143,6 +143,7 @@
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
                 <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
+                    <form:hidden path="tagColor"/>
                     <div style="width: 250px">
                         <form:input path="tagName" placeholder="NEW TAG" size="20" cssClass="name_txt tag_txt" />
                         <div class="color-box"></div>
@@ -219,11 +220,11 @@
     $('.color-box').colpick({
         colorScheme:'dark',
         layout:'hex',
-        color:'ff8800',
         onSubmit:function(hsb,hex,rgb,el) {
             $(el).css('background-color', '#'+hex);
             $(el).colpickHide();
+            $('#tagColor').val('#' + hex);
         }
-    }).css('background-color', '#ff8800');
+    }).css('background-color', '${expenseTypeForm.tagColor}');
 </script>
 </html>

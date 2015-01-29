@@ -11,6 +11,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.UserProfilePreferenceForm;
 import com.receiptofi.web.validator.ExpenseTypeValidator;
@@ -78,6 +79,7 @@ public class UserProfilePreferenceController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
         ModelAndView modelAndView = populateModel(nextPage, null, userProfilePreferenceForm);
+        expenseTypeForm.setTagColor(ColorUtil.getRandom());
 
         /** Gymnastic to show BindingResult errors if any. */
         if (model.asMap().containsKey("result")) {
