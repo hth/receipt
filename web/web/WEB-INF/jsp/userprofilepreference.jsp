@@ -220,6 +220,7 @@
     $('.color-box').colpick({
         colorScheme:'dark',
         layout:'hex',
+        color: '${expenseTypeForm.tagColor.substring(1)}',
         onSubmit:function(hsb,hex,rgb,el) {
             $(el).css('background-color', '#'+hex);
             $(el).colpickHide();

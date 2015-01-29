@@ -79,7 +79,6 @@ public class UserProfilePreferenceController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
         ModelAndView modelAndView = populateModel(nextPage, null, userProfilePreferenceForm);
-        expenseTypeForm.setTagColor(ColorUtil.getRandom());
 
         /** Gymnastic to show BindingResult errors if any. */
         if (model.asMap().containsKey("result")) {
