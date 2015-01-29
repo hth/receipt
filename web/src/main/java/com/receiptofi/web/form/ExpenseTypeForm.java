@@ -3,7 +3,7 @@ package com.receiptofi.web.form;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Used in adding new expense type.
+ * Used in adding new expense tag.
  * User: hitender
  * Date: 7/26/13
  * Time: 7:17 PM
@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 })
 public final class ExpenseTypeForm {
     private String tagName;
+    private String tagColor;
 
     public static ExpenseTypeForm newInstance() {
         return new ExpenseTypeForm();
@@ -27,5 +28,13 @@ public final class ExpenseTypeForm {
 
     public void setTagName(String tagName) {
         this.tagName = StringUtils.trim(tagName);
+    }
+
+    public String getTagColor() {
+        return tagColor;
+    }
+
+    public void setTagColor(String tagColor) {
+        this.tagColor = StringUtils.trim(tagColor);
     }
 }

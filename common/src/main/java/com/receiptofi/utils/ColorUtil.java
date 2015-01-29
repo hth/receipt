@@ -1,7 +1,5 @@
 package com.receiptofi.utils;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 import java.awt.*;
 import java.util.Random;
 
@@ -17,12 +15,17 @@ public class ColorUtil {
     private ColorUtil() {
     }
 
+    /**
+     * Generates some random hex color.
+     *
+     * @return hex color code with #
+     */
     public static String getRandom() {
         float hue = RANDOM.nextFloat();
 
         // Saturation between 0.1 and 0.3
         float saturation = (RANDOM.nextInt(2000) + 1000) / 10000f;
         Color color = new Color(hue, saturation, LUMINANCE);
-        return POUND_SYMBOL + WordUtils.capitalizeFully(Integer.toHexString(color.getRGB() & 0x00ffffff));
+        return POUND_SYMBOL + Integer.toHexString(color.getRGB() & 0x00ffffff).toUpperCase();
     }
 }
