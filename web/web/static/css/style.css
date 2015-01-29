@@ -934,3 +934,11 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     height: 34px;
     width: 240px;
 }
+
+.color-box {
+    float: right;
+    width: 30px;
+    height: 43px;
+    margin: 10px;
+    border: 1px solid white;
+}

@@ -11,10 +11,13 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin1.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/colpick.js" type="text/javascript"></script>
+
     <script>
         $(function () {
             $("#tabs").tabs({
@@ -137,14 +140,17 @@
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
-                <input type="text" id="tagName" placeholder="New TAG" name="" size="20" class="name_txt tag_txt">
-                <br/>
-                <span class="si-general-text remaining-characters">
-                    <span id="textCount"></span> characters remaining
-                </span>
+                <div style="width: 250px">
+                    <input type="text" id="tagName" placeholder="New TAG" name="" size="20" class="name_txt tag_txt">
+                    <div class="color-box"></div>
+                    <br/>
+                    <span class="si-general-text remaining-characters">
+                        <span id="textCount"></span> characters remaining
+                    </span>
+                </div>
 
                 <div class="full">
-                    <input type="button" value="SAVE" style="background:#0079FF; margin-top:126px;" class="read_btn">
+                    <input type="button" value="SAVE" style="background:#0079FF; margin-top:46px;" class="read_btn">
                 </div>
             </div>
 
@@ -202,5 +208,15 @@
             max_chars: 12
         });
     });
+
+    $('.color-box').colpick({
+        colorScheme:'dark',
+        layout:'hex',
+        color:'ff8800',
+        onSubmit:function(hsb,hex,rgb,el) {
+            $(el).css('background-color', '#'+hex);
+            $(el).colpickHide();
+        }
+    }).css('background-color', '#ff8800');
 </script>
 </html>
