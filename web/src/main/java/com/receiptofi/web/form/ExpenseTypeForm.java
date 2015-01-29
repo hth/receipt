@@ -33,7 +33,7 @@ public final class ExpenseTypeForm {
     }
 
     public void setTagName(String tagName) {
-        this.tagName = StringUtils.trim(tagName);
+        this.tagName = StringUtils.trim(tagName.toUpperCase());
     }
 
     public String getTagColor() {

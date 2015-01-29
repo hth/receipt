@@ -123,11 +123,16 @@ public class UserProfilePreferenceController {
         }
 
         try {
-            ExpenseTagEntity expenseType = ExpenseTagEntity.newInstance(expenseTypeForm.getTagName(), receiptUser.getRid());
-            userProfilePreferenceService.saveExpenseType(expenseType);
+            ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
+                    expenseTypeForm.getTagName(),
+                    receiptUser.getRid(),
+                    expenseTypeForm.getTagColor());
+
+            userProfilePreferenceService.saveExpenseType(expenseTag);
         } catch (Exception e) {
-            LOG.error(e.getLocalizedMessage());
-            result.rejectValue("expName", StringUtils.EMPTY, e.getLocalizedMessage());
+            LOG.error("Error saving expenseTag={} reason={}", expenseTypeForm.getTagName(), e.getLocalizedMessage(), e);
+            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("result", result);
         }
         /** Re-direct to prevent resubmit. */
         return "redirect:/access" + nextPage + "/i" + ".htm";
@@ -193,6 +198,9 @@ public class UserProfilePreferenceController {
         populateUserProfilePreferenceForm(rid, userProfilePreferenceForm);
         ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
         modelAndView.addObject("id", rid);
+
+        //There is UI logic based on this. Set the right to be active when responding.
+        modelAndView.addObject("showTab", "#tabs-3");
         return modelAndView;
 
     }

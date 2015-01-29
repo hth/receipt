@@ -48,6 +48,20 @@
         }
         window.onload = init();
     </script>
+    <script>
+        <c:if test="${!empty showTab}">
+        $(function () {
+            <c:choose>
+            <c:when test="${showTab eq '#tabs-2'}">
+            $("#tabs").tabs({active: 1});
+            </c:when>
+            <c:when test="${showTab eq '#tabs-3'}">
+            $("#tabs").tabs({active: 2});
+            </c:when>
+            </c:choose>
+        });
+        </c:if>
+    </script>
 
 </head>
 <body>
@@ -152,8 +166,9 @@
                             <span id="textCount"></span> characters remaining
                         </span>
                         <br/><br/>
-                        <form:errors path="tagName" cssClass="first first-small ajx-content" />
                     </div>
+                    <form:errors path="tagName" cssClass="first first-small ajx-content" />
+                    <form:errors path="tagColor" cssClass="first first-small ajx-content" />
 
                     <div class="full">
                         <input type="submit" value="SAVE" class="read_btn"
