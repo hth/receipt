@@ -15,6 +15,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <%--<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>--%>
     <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/colpick.js" type="text/javascript"></script>
 
@@ -30,25 +31,7 @@
                 }
             });
         });
-    </script>
-    <script>
-        function init() {
-            window.addEventListener('scroll', function (e) {
-                var distanceY = window.pageYOffset || document.documentElement.scrollTop,
-                        shrinkOn = 300,
-                        header = document.querySelector("header");
-                if (distanceY > shrinkOn) {
-                    classie.add(header, "smaller");
-                } else {
-                    if (classie.has(header, "smaller")) {
-                        classie.remove(header, "smaller");
-                    }
-                }
-            });
-        }
-        window.onload = init();
-    </script>
-    <script>
+
         <c:if test="${!empty showTab}">
         $(function () {
             <c:choose>
@@ -150,10 +133,11 @@
                 <div class="">
                     <c:forEach var="expenseTag" items="${userProfilePreferenceForm.expenseTags}" varStatus="status">
                     <input type="button"
-                            value="<spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />&nbsp;<spring:eval expression="expenseTag.tagName" />&nbsp; &times;"
+                            value="<spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" /> <spring:eval expression="expenseTag.tagName" /> &nbsp;&nbsp;&times;"
                             style="color: <spring:eval expression="expenseTag.tagColor" />"
                             class="white_btn"
-                            id="<spring:eval expression="expenseTag.id" />">
+                            id="<spring:eval expression="expenseTag.id" />"
+                            onclick="clickedExpenseTag(this);">
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
@@ -243,5 +227,21 @@
             $('#tagColor').val('#' + hex);
         }
     }).css('background-color', '${expenseTypeForm.tagColor}');
+
+    function clickedExpenseTag(button) {
+        var tagName = '', space = '';
+        for(var i = 0; i < button.value.split(" ").length - 1; i ++) {
+            if(i != 0) {
+                tagName = tagName + space;
+                space = ' ';
+                tagName = tagName + button.value.split(" ")[i];
+                console.log(tagName);
+            }
+        }
+        $('#tagName').focus().val(tagName);
+        $('#tagColor').val($(button).attr('style').split(" ")[1]);
+        $('.color-box').css('background-color', $(button).attr('style').split(" ")[1])
+        $('#textCount').text(12 - tagName.length);
+    }
 </script>
 </html>
