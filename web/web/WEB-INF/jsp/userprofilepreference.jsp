@@ -15,6 +15,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <%--<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>--%>
     <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/colpick.js" type="text/javascript"></script>
 
@@ -30,25 +31,7 @@
                 }
             });
         });
-    </script>
-    <script>
-        function init() {
-            window.addEventListener('scroll', function (e) {
-                var distanceY = window.pageYOffset || document.documentElement.scrollTop,
-                        shrinkOn = 300,
-                        header = document.querySelector("header");
-                if (distanceY > shrinkOn) {
-                    classie.add(header, "smaller");
-                } else {
-                    if (classie.has(header, "smaller")) {
-                        classie.remove(header, "smaller");
-                    }
-                }
-            });
-        }
-        window.onload = init();
-    </script>
-    <script>
+
         <c:if test="${!empty showTab}">
         $(function () {
             <c:choose>
@@ -150,14 +133,18 @@
                 <div class="">
                     <c:forEach var="expenseTag" items="${userProfilePreferenceForm.expenseTags}" varStatus="status">
                     <input type="button"
-                            value="<spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />&nbsp;<spring:eval expression="expenseTag.tagName" />&nbsp; &times;"
+                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />"
                             style="color: <spring:eval expression="expenseTag.tagColor" />"
-                            class="white_btn">
+                            class="white_btn"
+                            id="<spring:eval expression="expenseTag.id" />"
+                            onclick="clickedExpenseTag(this);">
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
                 <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
                     <form:hidden path="tagColor"/>
+                    <form:hidden path="tagId"/>
+
                     <div style="width: 250px">
                         <form:input path="tagName" placeholder="NEW TAG" size="20" cssClass="name_txt tag_txt" />
                         <div class="color-box"></div>
@@ -171,7 +158,7 @@
                     <form:errors path="tagColor" cssClass="first first-small ajx-content" />
 
                     <div class="full">
-                        <input type="submit" value="SAVE" class="read_btn"
+                        <input type="submit" value="SAVE" class="read_btn" name="expense_tag"
                                 style="background:#0079FF; margin-top:46px; <c:out value="${(isSameUser) ? '' : 'disabled'}"/>">
                     </div>
                 </form:form>
@@ -242,5 +229,21 @@
             $('#tagColor').val('#' + hex);
         }
     }).css('background-color', '${expenseTypeForm.tagColor}');
+
+    function clickedExpenseTag(button) {
+        var tagName = '', space = '';
+        for(var i = 0; i < button.value.split(" ").length - 1; i ++) {
+            if(i != 0) {
+                tagName = tagName + space;
+                space = ' ';
+                tagName = tagName + button.value.split(" ")[i];
+            }
+        }
+        $('#tagName').focus().val(tagName);
+        $('#tagColor').val($(button).attr('style').split(" ")[1]);
+        $('.color-box').css('background-color', $(button).attr('style').split(" ")[1])
+        $('#textCount').text(12 - tagName.length);
+        $('#tagId').val($(button).attr('id'))
+    }
 </script>
 </html>

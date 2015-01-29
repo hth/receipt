@@ -1,8 +1,7 @@
 package com.receiptofi.web.form;
 
 import com.receiptofi.utils.ColorUtil;
-
-import org.apache.commons.lang3.StringUtils;
+import com.receiptofi.utils.ScrubbedInput;
 
 /**
  * Used in adding new expense tag.
@@ -19,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 public final class ExpenseTypeForm {
     private String tagName;
     private String tagColor;
+    private String tagId;
 
     private ExpenseTypeForm() {
         this.tagColor = ColorUtil.getRandom();
@@ -33,7 +33,7 @@ public final class ExpenseTypeForm {
     }
 
     public void setTagName(String tagName) {
-        this.tagName = StringUtils.trim(tagName.toUpperCase());
+        this.tagName = new ScrubbedInput(tagName).getText().toUpperCase();
     }
 
     public String getTagColor() {
@@ -41,6 +41,14 @@ public final class ExpenseTypeForm {
     }
 
     public void setTagColor(String tagColor) {
-        this.tagColor = StringUtils.trim(tagColor);
+        this.tagColor = new ScrubbedInput(tagColor).getText().toUpperCase();
+    }
+
+    public String getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(String tagId) {
+        this.tagId = new ScrubbedInput(tagId).getText().toUpperCase();
     }
 }

@@ -821,12 +821,12 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border: 0;
     color: #B8B7B7;
     font-size: 1.1rem;
-    width: 230px;
+    width: 240px;
     cursor: pointer;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 2px;
-    text-align: right;
+    text-align: left;
 }
 
 .tag_txt {

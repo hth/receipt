@@ -8,8 +8,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
-import com.mongodb.WriteResult;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 
@@ -20,11 +18,10 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -58,8 +55,8 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
             }
             mongoTemplate.save(object, TABLE);
         } catch (DataIntegrityViolationException e) {
-            LOG.error("Duplicate record entry for ExpenseType={}", e);
-            throw new RuntimeException("Expense Name: " + object.getTagName() + ", already exists");
+            LOG.error("Duplicate record entry for ExpenseTag={}", object, e);
+            throw new RuntimeException("Tag Name: " + object.getTagName() + ", already exists");
         }
     }
 
@@ -98,11 +95,22 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
 
     @Override
     public void changeVisibility(String expenseTypeId, boolean changeTo, String receiptUserId) {
-        Query query = query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(receiptUserId));
-        Update update = update("A", changeTo);
+        mongoTemplate.updateFirst(
+                query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(receiptUserId)),
+                entityUpdate(update("A", changeTo)),
+                ExpenseTagEntity.class);
+    }
 
-        //TODO try using writeResult to check for condition
-        WriteResult writeResult = mongoTemplate.updateFirst(query, entityUpdate(update), ExpenseTagEntity.class);
-        LOG.info("changeVisibility WriteResult: ", writeResult);
+    @Override
+    public void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+        try {
+            mongoTemplate.updateFirst(
+                    query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(rid)),
+                    entityUpdate(update("TAG", expenseTagName).set("CLR", expenseTagColor)),
+                    ExpenseTagEntity.class);
+        } catch (DuplicateKeyException e) {
+            LOG.error("Duplicate record entry for TagName={} rid={}", expenseTagName, rid, e);
+            throw new RuntimeException("Tag Name: " + expenseTagName + ", already exists");
+        }
     }
 }

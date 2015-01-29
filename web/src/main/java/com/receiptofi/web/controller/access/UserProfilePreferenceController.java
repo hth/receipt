@@ -11,7 +11,6 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.UserProfilePreferenceForm;
 import com.receiptofi.web.validator.ExpenseTypeValidator;
@@ -57,7 +56,7 @@ import java.util.Map;
 public class UserProfilePreferenceController {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceController.class);
 
-    @Value("${UserProfilePreferenceController.nextPage:/userprofilepreference}")
+    @Value ("${UserProfilePreferenceController.nextPage:/userprofilepreference}")
     private String nextPage;
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
@@ -97,7 +96,7 @@ public class UserProfilePreferenceController {
      * @return
      */
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (value = "/i", method = RequestMethod.POST)
+    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag")
     public String addExpenseTag(
             @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm,
@@ -123,17 +122,28 @@ public class UserProfilePreferenceController {
         }
 
         try {
-            ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
-                    expenseTypeForm.getTagName(),
-                    receiptUser.getRid(),
-                    expenseTypeForm.getTagColor());
+            if (StringUtils.isBlank(expenseTypeForm.getTagId())) {
+                ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
+                        expenseTypeForm.getTagName(),
+                        receiptUser.getRid(),
+                        expenseTypeForm.getTagColor());
 
-            userProfilePreferenceService.saveExpenseType(expenseTag);
+
+                userProfilePreferenceService.saveExpenseTag(expenseTag);
+            } else {
+                userProfilePreferenceService.updateExpenseTag(
+                        expenseTypeForm.getTagId(),
+                        expenseTypeForm.getTagName(),
+                        expenseTypeForm.getTagColor(),
+                        receiptUser.getRid()
+                );
+            }
         } catch (Exception e) {
             LOG.error("Error saving expenseTag={} reason={}", expenseTypeForm.getTagName(), e.getLocalizedMessage(), e);
             result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
         }
+
         /** Re-direct to prevent resubmit. */
         return "redirect:/access" + nextPage + "/i" + ".htm";
     }
@@ -146,6 +156,7 @@ public class UserProfilePreferenceController {
      * @param changeStatTo
      * @return
      */
+    @Deprecated
     @RequestMapping (value = "/expenseTagVisible", method = RequestMethod.GET)
     public ModelAndView changeExpenseTypeVisibleStatus(
             @RequestParam (value = "id")
@@ -185,7 +196,7 @@ public class UserProfilePreferenceController {
      */
     @PreAuthorize ("hasRole('ROLE_ADMIN')")
     @RequestMapping (value = "/their", method = RequestMethod.GET)
-    public ModelAndView getUser(
+    public ModelAndView userStatus(
             @RequestParam ("id")
             String rid,
 
@@ -202,7 +213,6 @@ public class UserProfilePreferenceController {
         //There is UI logic based on this. Set the right to be active when responding.
         modelAndView.addObject("showTab", "#tabs-3");
         return modelAndView;
-
     }
 
     private void populateUserProfilePreferenceForm(String rid, UserProfilePreferenceForm userProfilePreferenceForm) {
@@ -220,7 +230,7 @@ public class UserProfilePreferenceController {
      */
     @PreAuthorize ("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping (value = "/update", method = RequestMethod.POST)
-    public String updateUser(
+    public String userStatusUpdate(
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
