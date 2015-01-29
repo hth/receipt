@@ -146,6 +146,7 @@ public class UserProfilePreferenceController {
      * @param changeStatTo
      * @return
      */
+    @Deprecated
     @RequestMapping (value = "/expenseTagVisible", method = RequestMethod.GET)
     public ModelAndView changeExpenseTypeVisibleStatus(
             @RequestParam (value = "id")
@@ -185,7 +186,7 @@ public class UserProfilePreferenceController {
      */
     @PreAuthorize ("hasRole('ROLE_ADMIN')")
     @RequestMapping (value = "/their", method = RequestMethod.GET)
-    public ModelAndView getUser(
+    public ModelAndView userStatus(
             @RequestParam ("id")
             String rid,
 
@@ -220,7 +221,7 @@ public class UserProfilePreferenceController {
      */
     @PreAuthorize ("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping (value = "/update", method = RequestMethod.POST)
-    public String updateUser(
+    public String userStatusUpdate(
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
