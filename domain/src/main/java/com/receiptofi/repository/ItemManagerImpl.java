@@ -100,7 +100,7 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     /**
-     * User findItem instead of findOne as this is not a secure call without user profile id
+     * User findItem instead of findOne as this is not a secure call without user profile id.
      *
      * @param id
      * @return

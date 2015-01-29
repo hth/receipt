@@ -143,6 +143,8 @@
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
                 <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
                     <form:hidden path="tagColor"/>
+                    <form:hidden path="tagId"/>
+
                     <div style="width: 250px">
                         <form:input path="tagName" placeholder="NEW TAG" size="20" cssClass="name_txt tag_txt" />
                         <div class="color-box"></div>
@@ -156,7 +158,7 @@
                     <form:errors path="tagColor" cssClass="first first-small ajx-content" />
 
                     <div class="full">
-                        <input type="submit" value="SAVE" class="read_btn"
+                        <input type="submit" value="SAVE" class="read_btn" name="expense_tag"
                                 style="background:#0079FF; margin-top:46px; <c:out value="${(isSameUser) ? '' : 'disabled'}"/>">
                     </div>
                 </form:form>
@@ -241,6 +243,7 @@
         $('#tagColor').val($(button).attr('style').split(" ")[1]);
         $('.color-box').css('background-color', $(button).attr('style').split(" ")[1])
         $('#textCount').text(12 - tagName.length);
+        $('#tagId').val($(button).attr('id'))
     }
 </script>
 </html>
