@@ -146,7 +146,7 @@
                     <form:hidden path="tagId"/>
 
                     <div style="width: 250px">
-                        <form:input path="tagName" placeholder="NEW TAG" size="20" cssClass="name_txt tag_txt" />
+                        <form:input path="tagName" placeholder="NEW TAG NAME" size="20" cssClass="name_txt tag_txt" />
                         <div class="color-box"></div>
                         <br/>
                         <span class="si-general-text remaining-characters">
@@ -154,12 +154,18 @@
                         </span>
                         <br/><br/>
                     </div>
-                    <form:errors path="tagName" cssClass="first first-small ajx-content" />
-                    <form:errors path="tagColor" cssClass="first first-small ajx-content" />
+                    <div id="tagNameErrors">
+                        <form:errors path="tagName" cssClass="first first-small ajx-content" />
+                    </div>
+                    <div id="tagColorErrors">
+                        <form:errors path="tagColor" cssClass="first first-small ajx-content" />
+                    </div>
 
-                    <div class="full">
-                        <input type="submit" value="SAVE" class="read_btn" name="expense_tag"
-                                style="background:#0079FF; margin-top:46px; <c:out value="${(isSameUser) ? '' : 'disabled'}"/>">
+                    <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
+                        <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSave_bt"
+                                style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
+                        <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt"
+                                style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
                     </div>
                 </form:form>
             </div>
@@ -231,19 +237,26 @@
     }).css('background-color', '${expenseTypeForm.tagColor}');
 
     function clickedExpenseTag(button) {
+        var buttonValue = button.value.split(" ");
         var tagName = '', space = '';
-        for(var i = 0; i < button.value.split(" ").length - 1; i ++) {
+        for(var i = 0; i < buttonValue.length - 1; i ++) {
             if(i != 0) {
                 tagName = tagName + space;
                 space = ' ';
-                tagName = tagName + button.value.split(" ")[i];
+                tagName = tagName + buttonValue[i];
             }
         }
-        $('#tagName').focus().val(tagName);
         $('#tagColor').val($(button).attr('style').split(" ")[1]);
-        $('.color-box').css('background-color', $(button).attr('style').split(" ")[1])
+        $('#tagId').val($(button).attr('id'));
+
+        $('#tagName').focus().val(tagName);
+        $('.color-box').css('background-color', $(button).attr('style').split(" ")[1]);
         $('#textCount').text(12 - tagName.length);
-        $('#tagId').val($(button).attr('id'))
+
+        $('#expenseTagSave_bt').val('UPDATE');
+
+        $('#tagNameErrors').hide();
+        $('#tagColorErrors').hide();
     }
 </script>
 </html>

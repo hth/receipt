@@ -8,6 +8,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteResult;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 
@@ -111,6 +113,16 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
         } catch (DuplicateKeyException e) {
             LOG.error("Duplicate record entry for TagName={} rid={}", expenseTagName, rid, e);
             throw new RuntimeException("Tag Name: " + expenseTagName + ", already exists");
+        }
+    }
+
+    @Override
+    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+        WriteResult writeResult = mongoTemplate.remove(
+                query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(rid).and("TAG").is(expenseTagName)),
+                ExpenseTagEntity.class);
+        if (writeResult.getN() == 0) {
+            throw new RuntimeException("Matching Tag Name: " + expenseTagName + ", could not be found");
         }
     }
 }
