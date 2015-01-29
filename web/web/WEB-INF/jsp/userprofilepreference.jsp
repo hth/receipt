@@ -152,7 +152,8 @@
                     <input type="button"
                             value="<spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />&nbsp;<spring:eval expression="expenseTag.tagName" />&nbsp; &times;"
                             style="color: <spring:eval expression="expenseTag.tagColor" />"
-                            class="white_btn">
+                            class="white_btn"
+                            id="<spring:eval expression="expenseTag.id" />">
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
