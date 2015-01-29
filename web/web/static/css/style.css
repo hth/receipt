@@ -826,7 +826,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 2px;
-    text-align: right;
+    text-align: left;
 }
 
 .tag_txt {

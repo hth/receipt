@@ -133,7 +133,7 @@
                 <div class="">
                     <c:forEach var="expenseTag" items="${userProfilePreferenceForm.expenseTags}" varStatus="status">
                     <input type="button"
-                            value="<spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" /> <spring:eval expression="expenseTag.tagName" /> &nbsp;&nbsp;&times;"
+                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />"
                             style="color: <spring:eval expression="expenseTag.tagColor" />"
                             class="white_btn"
                             id="<spring:eval expression="expenseTag.id" />"
@@ -235,7 +235,6 @@
                 tagName = tagName + space;
                 space = ' ';
                 tagName = tagName + button.value.split(" ")[i];
-                console.log(tagName);
             }
         }
         $('#tagName').focus().val(tagName);
