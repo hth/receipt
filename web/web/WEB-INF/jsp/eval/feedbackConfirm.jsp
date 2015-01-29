@@ -41,7 +41,7 @@
 <header>
 </header>
 <div class="main clearfix">
-    <div class="rightside-title">
+    <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
             <fmt:message key="feedback.title"/>
         </h1>

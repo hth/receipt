@@ -36,9 +36,9 @@
 <div class="main clearfix">
 <c:choose>
 <c:when test="${!empty notificationForm.notifications}">
-    <div class="rightside-title">
+    <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            <fmt:message key="notification.title" /><c:if test="${notificationForm.notifications.size() gt 1}">s</c:if>
+            <fmt:message key="notification.title" /><c:if test="${notificationForm.notifications.size() gt 1}">S</c:if>
         </h1>
     </div>
     <div class="rightside-list-holder full-list-holder">
@@ -54,7 +54,7 @@
     </div>
 </c:when>
 <c:otherwise>
-    <div class="rightside-title">
+    <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
             <fmt:message key="notification.title" />
         </h1>

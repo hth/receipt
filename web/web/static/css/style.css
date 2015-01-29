@@ -349,7 +349,7 @@ div .sidebar-date form input {
     margin-left: 10px;
     margin-top: 14px;
     margin-bottom: 50px;
-    /*overflow-y: auto;*/
+    overflow-y: auto;
 }
 
 .rightside-list-holder li {
@@ -370,6 +370,10 @@ div .sidebar-date form input {
     margin-left: 10px;
     margin-top: 40px;
     border-bottom: 1px solid #919191;
+}
+
+.rightside-title-less-margin {
+    margin-top: 20px;
 }
 
 .ajx-content {
@@ -786,7 +790,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     height: 40px;
     line-height: 24px;
     color: #606060;
-    font-size: 1.1rem;
+    font-size: 1.1em;
     padding: 2px 3px;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -812,28 +816,21 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 .white_btn {
-    margin: 0px 18px 0px 0px;
+    margin: 10px 18px 0px 0px;
     padding: 8px 5px 8px 5px;
     border: 0;
     color: #B8B7B7;
     font-size: 1.1rem;
-    width: 110px;
+    width: 230px;
     cursor: pointer;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 2px;
+    text-align: right;
 }
 
 .tag_txt {
-    width: 267px;
-    height: 40px;
-    line-height: 24px;
-    color: #666;
-    padding: 2px 3px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
+    width: 200px !important;
     margin-top: 12px;
 }
 
@@ -936,4 +933,12 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     /*background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;*/
     height: 34px;
     width: 240px;
+}
+
+.color-box {
+    float: right;
+    width: 30px;
+    height: 43px;
+    margin: 10px;
+    border: 1px solid white;
 }

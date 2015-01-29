@@ -38,7 +38,7 @@
 <div class="main clearfix">
 <c:choose>
 <c:when test="${!empty pendingReceiptForm.pending}">
-<div class="rightside-title">
+<div class="rightside-title rightside-title-less-margin">
     <h1 class="rightside-title-text">
         Pending Document<c:if test="${pendingReceiptForm.pending.size() gt 1}">s</c:if>
     </h1>
@@ -58,7 +58,7 @@
 </div>
 </c:when>
 <c:otherwise>
-<div class="rightside-title">
+<div class="rightside-title rightside-title-less-margin">
     <h1 class="rightside-title-text">
         No Pending Document
     </h1>
