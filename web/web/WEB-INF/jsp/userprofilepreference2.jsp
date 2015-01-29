@@ -128,6 +128,8 @@
             </div>
 
             <div id="tabs-2" class="ajx-content report_my">
+                <spring:eval expression="${userProfilePreferenceForm.userProfile.receiptUserId eq pageContext.request.userPrincipal.principal.rid}" var="isSameUser" />
+
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
                 <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
@@ -140,18 +142,23 @@
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
-                <div style="width: 250px">
-                    <input type="text" id="tagName" placeholder="New TAG" name="" size="20" class="name_txt tag_txt">
-                    <div class="color-box"></div>
-                    <br/>
-                    <span class="si-general-text remaining-characters">
-                        <span id="textCount"></span> characters remaining
-                    </span>
-                </div>
+                <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
+                    <div style="width: 250px">
+                        <form:input path="tagName" placeholder="NEW TAG" size="20" cssClass="name_txt tag_txt" />
+                        <div class="color-box"></div>
+                        <br/>
+                        <span class="si-general-text remaining-characters">
+                            <span id="textCount"></span> characters remaining
+                        </span>
+                        <br/><br/>
+                        <form:errors path="tagName" cssClass="first first-small ajx-content" />
+                    </div>
 
-                <div class="full">
-                    <input type="button" value="SAVE" style="background:#0079FF; margin-top:46px;" class="read_btn">
-                </div>
+                    <div class="full">
+                        <input type="submit" value="SAVE" class="read_btn"
+                                style="background:#0079FF; margin-top:46px; <c:out value="${(isSameUser) ? '' : 'disabled'}"/>">
+                    </div>
+                </form:form>
             </div>
 
             <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
