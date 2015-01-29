@@ -933,6 +933,9 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     /*background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;*/
     height: 34px;
     width: 240px;
+    margin-top: 6px;
+    font-size: inherit;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .color-box {

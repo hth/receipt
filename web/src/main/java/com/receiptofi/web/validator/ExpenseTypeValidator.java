@@ -25,7 +25,8 @@ import org.springframework.validation.Validator;
 @Component
 public final class ExpenseTypeValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ExpenseTypeValidator.class);
-    private static final int EXPENSE_TAG_MAX_CHAR = 6;
+    private static final int EXPENSE_TAG_MAX_CHAR = 12;
+    private static final int EXPENSE_COLOR_TAG_MAX_CHAR = 7;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -36,6 +37,7 @@ public final class ExpenseTypeValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[]{"Tag Name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagColor", "field.required", new Object[]{"Tag Color"});
 
         ExpenseTypeForm expenseTypeForm = (ExpenseTypeForm) obj;
         if (expenseTypeForm.getTagName() != null && expenseTypeForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
@@ -44,7 +46,25 @@ public final class ExpenseTypeValidator implements Validator {
                     "tagName",
                     "expenseTag.tagName",
                     new Object[]{EXPENSE_TAG_MAX_CHAR},
-                    "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters ");
+                    "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters");
+        }
+
+        if (expenseTypeForm.getTagColor() != null && expenseTypeForm.getTagColor().length() > EXPENSE_COLOR_TAG_MAX_CHAR) {
+            LOG.error("Expense Tag '{}' greater than size={} ", expenseTypeForm.getTagName(), EXPENSE_COLOR_TAG_MAX_CHAR);
+            errors.rejectValue(
+                    "tagColor",
+                    "expenseTag.tagColor",
+                    new Object[]{EXPENSE_COLOR_TAG_MAX_CHAR},
+                    "Tag Color cannot extend " + EXPENSE_COLOR_TAG_MAX_CHAR + " characters");
+        }
+
+        if (expenseTypeForm.getTagColor() != null && !expenseTypeForm.getTagColor().startsWith("#")) {
+            LOG.error("Expense Tag '{}' invalid", expenseTypeForm.getTagColor());
+            errors.rejectValue(
+                    "tagColor",
+                    "expenseTag.tagColor",
+                    new Object[]{EXPENSE_COLOR_TAG_MAX_CHAR},
+                    "Tag color is missing character ''#'' from hex code");
         }
     }
 }

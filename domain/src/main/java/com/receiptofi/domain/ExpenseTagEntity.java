@@ -68,10 +68,6 @@ public class ExpenseTagEntity extends BaseEntity {
         return new ExpenseTagEntity(tagName, receiptUserId, tagColor);
     }
 
-    public static ExpenseTagEntity newInstance(String tagName, String receiptUserId) {
-        return new ExpenseTagEntity(tagName, receiptUserId, null);
-    }
-
     public String getTagName() {
         return tagName;
     }

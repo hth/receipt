@@ -1,5 +1,7 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.utils.ColorUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -18,6 +20,10 @@ public final class ExpenseTypeForm {
     private String tagName;
     private String tagColor;
 
+    private ExpenseTypeForm() {
+        this.tagColor = ColorUtil.getRandom();
+    }
+
     public static ExpenseTypeForm newInstance() {
         return new ExpenseTypeForm();
     }
@@ -27,7 +33,7 @@ public final class ExpenseTypeForm {
     }
 
     public void setTagName(String tagName) {
-        this.tagName = StringUtils.trim(tagName);
+        this.tagName = StringUtils.trim(tagName.toUpperCase());
     }
 
     public String getTagColor() {

@@ -48,6 +48,20 @@
         }
         window.onload = init();
     </script>
+    <script>
+        <c:if test="${!empty showTab}">
+        $(function () {
+            <c:choose>
+            <c:when test="${showTab eq '#tabs-2'}">
+            $("#tabs").tabs({active: 1});
+            </c:when>
+            <c:when test="${showTab eq '#tabs-3'}">
+            $("#tabs").tabs({active: 2});
+            </c:when>
+            </c:choose>
+        });
+        </c:if>
+    </script>
 
 </head>
 <body>
@@ -81,9 +95,9 @@
             <ul class="nav-block">
                 <li><a href="#tabs-1">PROFILE</a></li>
                 <li><a href="#tabs-2">PREFERENCES</a></li>
-                <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="#tabs-3">STATUS</a></li>
-                <%--</sec:authorize>--%>
+                </sec:authorize>
             </ul>
 
             <div id="tabs-1" class="report_my ajx-content" style="display: block;">
@@ -152,8 +166,9 @@
                             <span id="textCount"></span> characters remaining
                         </span>
                         <br/><br/>
-                        <form:errors path="tagName" cssClass="first first-small ajx-content" />
                     </div>
+                    <form:errors path="tagName" cssClass="first first-small ajx-content" />
+                    <form:errors path="tagColor" cssClass="first first-small ajx-content" />
 
                     <div class="full">
                         <input type="submit" value="SAVE" class="read_btn"
@@ -162,7 +177,7 @@
                 </form:form>
             </div>
 
-            <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
             <div id="tabs-3" class="ajx-content report_my">
                 <h1 class="h1">STATUS</h1>
                 <hr>
@@ -198,7 +213,7 @@
                     </form:form>
                 </div>
             </div>
-            <%--</sec:authorize>--%>
+            </sec:authorize>
 
         </div>
     </div>
@@ -220,6 +235,7 @@
     $('.color-box').colpick({
         colorScheme:'dark',
         layout:'hex',
+        color: '${expenseTypeForm.tagColor.substring(1)}',
         onSubmit:function(hsb,hex,rgb,el) {
             $(el).css('background-color', '#'+hex);
             $(el).colpickHide();
