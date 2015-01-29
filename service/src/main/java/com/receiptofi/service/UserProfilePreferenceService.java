@@ -94,6 +94,10 @@ public class UserProfilePreferenceService {
         expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
     }
 
+    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+        expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
+    }
+
     public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String receiptUserId) {
         if ("true".equalsIgnoreCase(changeStatTo)) {
             expenseTagManager.changeVisibility(expenseTypeId, false, receiptUserId);

@@ -86,6 +86,59 @@ public class UserProfilePreferenceController {
         return modelAndView;
     }
 
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_delete")
+    public String deleteExpenseTag(
+            @ModelAttribute ("userProfilePreferenceForm")
+            UserProfilePreferenceForm userProfilePreferenceForm,
+
+            @ModelAttribute ("expenseTypeForm")
+            ExpenseTypeForm expenseTypeForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
+        /** There is UI logic based on this. Set the right to be active when responding. */
+        redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
+
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
+
+        expenseTypeValidator.validate(expenseTypeForm, result);
+        if (result.hasErrors()) {
+            LOG.error("validation error");
+            redirectAttrs.addFlashAttribute("result", result);
+            /** Re-direct to prevent resubmit. */
+            return "redirect:/access" + nextPage + "/i" + ".htm";
+        }
+
+        try {
+            long count = itemService.countItemsUsingExpenseType(expenseTypeForm.getTagId(), receiptUser.getRid());
+            if (0 == count) {
+                userProfilePreferenceService.deleteExpenseTag(
+                        expenseTypeForm.getTagId(),
+                        expenseTypeForm.getTagName(),
+                        expenseTypeForm.getTagColor(),
+                        receiptUser.getRid()
+                );
+            } else {
+                result.rejectValue(
+                        "tagName",
+                        StringUtils.EMPTY,
+                        "Cannot delete " + expenseTypeForm.getTagName() + " as it is being used by at least " + count + " document(s)");
+
+                redirectAttrs.addFlashAttribute("result", result);
+            }
+        } catch (Exception e) {
+            LOG.error("Error saving expenseTag={} reason={}", expenseTypeForm.getTagName(), e.getLocalizedMessage(), e);
+            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("result", result);
+        }
+
+        /** Re-direct to prevent resubmit. */
+        return "redirect:/access" + nextPage + "/i" + ".htm";
+    }
+
     /**
      * Used for adding Expense Type
      * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
@@ -96,7 +149,7 @@ public class UserProfilePreferenceController {
      * @return
      */
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag")
+    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_save_update")
     public String addExpenseTag(
             @ModelAttribute ("userProfilePreferenceForm")
             UserProfilePreferenceForm userProfilePreferenceForm,
@@ -216,8 +269,7 @@ public class UserProfilePreferenceController {
     }
 
     private void populateUserProfilePreferenceForm(String rid, UserProfilePreferenceForm userProfilePreferenceForm) {
-        UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid);
-        userProfilePreferenceForm.setUserProfile(userProfile);
+        userProfilePreferenceForm.setUserProfile(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
     }
 
     /**
