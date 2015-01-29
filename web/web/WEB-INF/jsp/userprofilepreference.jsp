@@ -95,9 +95,9 @@
             <ul class="nav-block">
                 <li><a href="#tabs-1">PROFILE</a></li>
                 <li><a href="#tabs-2">PREFERENCES</a></li>
-                <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="#tabs-3">STATUS</a></li>
-                <%--</sec:authorize>--%>
+                </sec:authorize>
             </ul>
 
             <div id="tabs-1" class="report_my ajx-content" style="display: block;">
@@ -177,7 +177,7 @@
                 </form:form>
             </div>
 
-            <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
             <div id="tabs-3" class="ajx-content report_my">
                 <h1 class="h1">STATUS</h1>
                 <hr>
@@ -213,7 +213,7 @@
                     </form:form>
                 </div>
             </div>
-            <%--</sec:authorize>--%>
+            </sec:authorize>
 
         </div>
     </div>
