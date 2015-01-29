@@ -14,6 +14,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script>
         $(function () {
             $("#tabs").tabs({
@@ -128,13 +129,19 @@
                 <hr>
                 <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
                 <div class="">
-                    <input type="button" value="Home &nbsp; &times;" style="" class="white_btn">
-                    <input type="button" value="Home1 &nbsp; &times;" style="" class="white_btn">
-                    <input type="button" value="Home2 &nbsp; &times;" style="" class="white_btn">
-                    <input type="button" value="Home3 &nbsp; &times;" style="" class="white_btn">
+                    <c:forEach var="expenseTag" items="${userProfilePreferenceForm.expenseTags}" varStatus="status">
+                    <input type="button"
+                            value="<spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />&nbsp;<spring:eval expression="expenseTag.tagName" />&nbsp; &times;"
+                            style="color: <spring:eval expression="expenseTag.tagColor" />"
+                            class="white_btn">
+                    </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
-                <input type="text" placeholder="New tag" name="" size="20" class="tag_txt">
+                <input type="text" id="tagName" placeholder="New TAG" name="" size="20" class="name_txt tag_txt">
+                <br/>
+                <span class="si-general-text remaining-characters">
+                    <span id="textCount"></span> characters remaining
+                </span>
 
                 <div class="full">
                     <input type="button" value="SAVE" style="background:#0079FF; margin-top:126px;" class="read_btn">
@@ -187,4 +194,13 @@
     </div>
 </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $('#tagName').NobleCount('#textCount', {
+            on_negative: 'error',
+            on_positive: 'success',
+            max_chars: 12
+        });
+    });
+</script>
 </html>

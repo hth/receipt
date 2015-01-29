@@ -53,7 +53,7 @@
             <form:textarea path="comment" id="comment" cols="54" rows="5" placeholder="Message" style="font-size: 1.2em; "/>
             <br/>
             <span class="si-general-text remaining-characters">
-                <span id="feedbackComment"></span> characters remaining remaining
+                <span id="feedbackComment"></span> characters remaining
             </span>
             <br/>
             <form:errors path="comment" cssClass="first first-small ajx-content" />
