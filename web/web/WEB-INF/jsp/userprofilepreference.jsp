@@ -100,17 +100,17 @@
                     <%--<form>--%>
                         <div class="row_field">
                             <label class="profile_label">First name</label>
-                            <input type="text" required="true" size="20" class="name_txt"
+                            <input type="text" required="true" size="20" class="name_txt" id="firstName_txt" readonly
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.firstName"/>">
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last name</label>
-                            <input type="text" required="true" size="20" class="name_txt"
+                            <input type="text" required="true" size="20" class="name_txt" id="lastName_txt" readonly
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.lastName"/>">
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Email address</label>
-                            <input type="text" required="true" size="20" class="name_txt"
+                            <input type="text" required="true" size="20" class="name_txt" id="email_txt" readonly
                                     value="<spring:eval expression="userProfilePreferenceForm.userProfile.email"/>">
                         </div>
                         <div class="row_field">
@@ -119,7 +119,8 @@
                                 <fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both"/>
                             </label>
                         </div>
-                        <input type="button" value="UPDATE" style="background:#0079FF" class="read_btn">
+                        <input type="button" value="UPDATE" style="background:#0079FF" class="read_btn" hidden="true"
+                                name="profile_update" id="profileUpdate_bt">
                     <%--</form>--%>
                 </div>
             </div>
@@ -164,7 +165,7 @@
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
                         <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSave_bt"
                                 style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
-                        <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt"
+                        <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt" hidden="true"
                                 style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
                     </div>
                 </form:form>
@@ -254,9 +255,23 @@
         $('#textCount').text(12 - tagName.length);
 
         $('#expenseTagSave_bt').val('UPDATE');
+        $('#expenseTagDelete_bt').attr('hidden', false);
 
         $('#tagNameErrors').hide();
         $('#tagColorErrors').hide();
     }
+
+    $("#firstName_txt").on('click', function () {
+        $(this).prop("readonly", false).focus();
+        $('#profileUpdate_bt').attr('hidden', false);
+    });
+    $("#lastName_txt").on('click', function () {
+        $(this).prop("readonly", false).focus();
+        $('#profileUpdate_bt').attr('hidden', false);
+    });
+    $("#email_txt").on('click', function () {
+        $(this).prop("readonly", false).focus();
+        $('#profileUpdate_bt').attr('hidden', false);
+    });
 </script>
 </html>
