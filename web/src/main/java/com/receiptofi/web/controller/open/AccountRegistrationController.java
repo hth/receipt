@@ -4,11 +4,14 @@
 package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.EmailValidateEntity;
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.MailService;
+import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.helper.AvailabilityStatus;
@@ -48,10 +51,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping (value = "/open/registration")
 public class AccountRegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
-    private final UserRegistrationValidator userRegistrationValidator;
-    private final AccountService accountService;
-    private final MailService mailService;
-    private final EmailValidateService emailValidateService;
+
+    private UserRegistrationValidator userRegistrationValidator;
+    private AccountService accountService;
+    private MailService mailService;
+    private EmailValidateService emailValidateService;
+    private UserProfilePreferenceService userProfilePreferenceService;
 
     @Value ("${registrationPage:registration}")
     private String registrationPage;
@@ -65,16 +70,22 @@ public class AccountRegistrationController {
     @Value ("${recover:redirect:/open/forgot/recover.htm}")
     private String recover;
 
+    @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
+    private String[] expenseTags;
+
     @Autowired
     public AccountRegistrationController(
             UserRegistrationValidator userRegistrationValidator,
             AccountService accountService,
             MailService mailService,
-            EmailValidateService emailValidateService) {
+            EmailValidateService emailValidateService,
+            UserProfilePreferenceService userProfilePreferenceService
+    ) {
         this.userRegistrationValidator = userRegistrationValidator;
         this.accountService = accountService;
         this.mailService = mailService;
         this.emailValidateService = emailValidateService;
+        this.userProfilePreferenceService = userProfilePreferenceService;
     }
 
     @ModelAttribute ("userRegistrationForm")
@@ -133,6 +144,17 @@ public class AccountRegistrationController {
                 userAccount.getUserId(),
                 userAccount.getName(),
                 accountValidate.getAuthenticationKey());
+
+        /** Add default expense tags. */
+        for (String tag : expenseTags) {
+            ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
+                    tag,
+                    userAccount.getReceiptUserId(),
+                    ColorUtil.getRandom());
+
+            userProfilePreferenceService.saveExpenseTag(expenseTag);
+        }
+
         LOG.info("success");
         return registrationSuccess;
     }
