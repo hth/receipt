@@ -59,6 +59,9 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.nextPage:/userprofilepreference}")
     private String nextPage;
 
+    @Value ("${ExpenseTagCountMax:5}")
+    private int expenseTagCountMax;
+
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private AccountService accountService;
     @Autowired private ItemService itemService;
@@ -176,13 +179,17 @@ public class UserProfilePreferenceController {
 
         try {
             if (StringUtils.isBlank(expenseTypeForm.getTagId())) {
-                ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
-                        expenseTypeForm.getTagName(),
-                        receiptUser.getRid(),
-                        expenseTypeForm.getTagColor());
+                if (expenseTagCountMax > userProfilePreferenceService.allExpenseTypes(receiptUser.getRid()).size()) {
+                    ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
+                            expenseTypeForm.getTagName(),
+                            receiptUser.getRid(),
+                            expenseTypeForm.getTagColor());
 
-
-                userProfilePreferenceService.saveExpenseTag(expenseTag);
+                    userProfilePreferenceService.saveExpenseTag(expenseTag);
+                } else {
+                    result.rejectValue("tagName", StringUtils.EMPTY, "Reached maximum number of TAG(s) allowed");
+                    redirectAttrs.addFlashAttribute("result", result);
+                }
             } else {
                 userProfilePreferenceService.updateExpenseTag(
                         expenseTypeForm.getTagId(),
