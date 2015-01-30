@@ -59,7 +59,7 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.nextPage:/userprofilepreference}")
     private String nextPage;
 
-    @Value ("${ExpenseTagCountMax:5}")
+    @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
     private int expenseTagCountMax;
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
