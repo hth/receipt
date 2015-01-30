@@ -97,21 +97,18 @@
                     </div>
                 </div>
                 <div class="down_form">
-                    <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
+                    <form:form modelAttribute="userProfilePreferenceForm" method="post" action="i.htm">
                         <div class="row_field">
                             <label class="profile_label">First name</label>
-                            <input type="text" required="true" size="20" class="name_txt" id="firstName_txt" readonly
-                                    value="<spring:eval expression="userProfilePreferenceForm.userProfile.firstName"/>">
+                            <form:input path="userProfile.firstName" id="userProfile_firstName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last name</label>
-                            <input type="text" required="true" size="20" class="name_txt" id="lastName_txt" readonly
-                                    value="<spring:eval expression="userProfilePreferenceForm.userProfile.lastName"/>">
+                            <form:input path="userProfile.lastName" id="userProfile_lastName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Email address</label>
-                            <input type="text" required="true" size="20" class="name_txt" id="email_txt" readonly
-                                    value="<spring:eval expression="userProfilePreferenceForm.userProfile.email"/>">
+                            <form:input path="userProfile.email" id="userProfile_email" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last modified</label>
@@ -261,15 +258,15 @@
         $('#tagColorErrors').hide();
     }
 
-    $("#firstName_txt").on('click', function () {
+    $("#userProfile_firstName").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
-    $("#lastName_txt").on('click', function () {
+    $("#userProfile_lastName").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
-    $("#email_txt").on('click', function () {
+    $("#userProfile_email").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
