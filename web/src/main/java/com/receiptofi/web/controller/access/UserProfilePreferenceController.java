@@ -187,7 +187,14 @@ public class UserProfilePreferenceController {
 
                     userProfilePreferenceService.saveExpenseTag(expenseTag);
                 } else {
-                    result.rejectValue("tagName", StringUtils.EMPTY, "Reached maximum number of TAG(s) allowed");
+                    result.rejectValue("tagName",
+                            StringUtils.EMPTY,
+                            "Maximum number of TAG(s) allowed " +
+                                    expenseTagCountMax +
+                                    ". Could not add " +
+                                    expenseTypeForm.getTagName() +
+                                    "."
+                    );
                     redirectAttrs.addFlashAttribute("result", result);
                 }
             } else {
