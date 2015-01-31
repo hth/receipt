@@ -46,7 +46,7 @@ public final class ExpenseTypeValidator implements Validator {
                     "tagName",
                     "expenseTag.tagName",
                     new Object[]{EXPENSE_TAG_MAX_CHAR},
-                    "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters");
+                    "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters.");
         }
 
         if (expenseTypeForm.getTagColor() != null && expenseTypeForm.getTagColor().length() > EXPENSE_COLOR_TAG_MAX_CHAR) {
@@ -55,7 +55,7 @@ public final class ExpenseTypeValidator implements Validator {
                     "tagColor",
                     "expenseTag.tagColor",
                     new Object[]{EXPENSE_COLOR_TAG_MAX_CHAR},
-                    "Tag Color cannot extend " + EXPENSE_COLOR_TAG_MAX_CHAR + " characters");
+                    "Tag Color cannot extend " + EXPENSE_COLOR_TAG_MAX_CHAR + " characters.");
         }
 
         if (expenseTypeForm.getTagColor() != null && !expenseTypeForm.getTagColor().startsWith("#")) {
@@ -64,7 +64,7 @@ public final class ExpenseTypeValidator implements Validator {
                     "tagColor",
                     "expenseTag.tagColor",
                     new Object[]{EXPENSE_COLOR_TAG_MAX_CHAR},
-                    "Tag color is missing character ''#'' from hex code");
+                    "Tag color is missing character ''#'' from hex code.");
         }
     }
 }

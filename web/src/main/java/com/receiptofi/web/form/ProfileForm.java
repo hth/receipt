@@ -53,6 +53,7 @@ public class ProfileForm {
     private Map<String, Long> expenseTagCount = new HashMap<>();
 
     private String errorMessage;
+    private String successMessage;
 
     @SuppressWarnings ("unused")
     private ProfileForm() {
@@ -150,5 +151,13 @@ public class ProfileForm {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }

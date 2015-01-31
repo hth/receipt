@@ -106,6 +106,11 @@ public class UserProfilePreferenceController {
                 profileForm = (ProfileForm) result.getTarget();
                 populateProfileForm(profileForm, receiptUser.getRid());
 
+                /** Since we do not plan to lose profileForm from result we need to set some other values for tab 3. */
+                ProfileForm profile = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+                profileForm.setLevel(profile.getLevel());
+                profileForm.setActive(profile.isActive());
+
                 modelAndView.addObject("profileForm", profileForm);
             }
         } else {
@@ -300,11 +305,27 @@ public class UserProfilePreferenceController {
             String rid,
 
             @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm
+            ExpenseTypeForm expenseTypeForm,
+
+            Model model
     ) throws IOException {
-        ProfileForm profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
-        modelAndView.addObject("id", rid);
+        ModelAndView modelAndView;
+        ProfileForm profileForm = (ProfileForm) model.asMap().get("profileForm");
+        if(profileForm == null) {
+            profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
+            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
+        } else {
+            populateProfileForm(profileForm, rid);
+
+            /** Since we do not plan to lose profileForm from result we need to set some other values for tab 1. */
+            ProfileForm profile = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
+            profileForm.setFirstName(profile.getFirstName());
+            profileForm.setLastName(profile.getLastName());
+            profileForm.setMail(profile.getMail());
+            profileForm.setUpdated(profile.getUpdated());
+
+            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
+        }
 
         //There is UI logic based on this. Set the right to be active when responding.
         modelAndView.addObject("showTab", "#tabs-3");
@@ -326,7 +347,9 @@ public class UserProfilePreferenceController {
             ExpenseTypeForm expenseTypeForm,
 
             @ModelAttribute ("profileForm")
-            ProfileForm profileForm
+            ProfileForm profileForm,
+
+            RedirectAttributes redirectAttrs
     ) throws IOException {
 
         UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(profileForm.getRid());
@@ -347,11 +370,13 @@ public class UserProfilePreferenceController {
         try {
             accountService.saveUserAccount(userAccount);
             userProfilePreferenceService.updateProfile(userProfile);
+            profileForm.setSuccessMessage("Updated profile " + userProfile.getReceiptUserId() + " successfully.");
         } catch (Exception exce) {
             //XXX todo should there be two phase commit
             LOG.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
-            profileForm.setErrorMessage("Failed updating user profile " + exce.getLocalizedMessage());
+            profileForm.setErrorMessage("Failed updating profile " + userProfile.getReceiptUserId() + ", reason: " + exce.getLocalizedMessage());
         }
+        redirectAttrs.addFlashAttribute("profileForm", profileForm);
         return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
     }
 

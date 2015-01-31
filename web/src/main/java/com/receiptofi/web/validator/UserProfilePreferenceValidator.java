@@ -1,9 +1,9 @@
 package com.receiptofi.web.validator;
 
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.utils.Validate;
 import com.receiptofi.web.controller.open.AccountRegistrationController;
 import com.receiptofi.web.form.ProfileForm;
-import com.receiptofi.web.form.UserProfilePreferenceForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,16 +48,43 @@ public class UserProfilePreferenceValidator implements Validator {
                     "firstName",
                     "firstName",
                     new Object[]{accountRegistrationController.getNameLength()},
-                    "First name has to be at least of size " + accountRegistrationController.getNameLength() + " characters");
+                    "First name has to be at least of size " + accountRegistrationController.getNameLength() + " characters.");
         }
 
         if (profileForm.getMail() != null && profileForm.getMail().length() <= accountRegistrationController.getMailLength()) {
             LOG.error("Profile mail '{}' less than size={} ", profileForm.getMail(), accountRegistrationController.getMailLength());
             errors.rejectValue(
-                    "lastName",
-                    "lastName",
+                    "mail",
+                    "mail",
                     new Object[]{accountRegistrationController.getMailLength()},
-                    "Mail Address has to be at least of size " + accountRegistrationController.getMailLength() + " characters");
+                    "Mail Address has to be at least of size " + accountRegistrationController.getMailLength() + " characters.");
+        }
+
+        if (!Validate.isValidName(profileForm.getFirstName())) {
+            LOG.error("Profile first name '{}' is not a valid name", profileForm.getFirstName());
+            errors.rejectValue(
+                    "firstName",
+                    "firstName",
+                    new Object[]{profileForm.getFirstName()},
+                    "First Name is not a valid name " + profileForm.getFirstName() + ".");
+        }
+
+        if (!Validate.isValidName(profileForm.getLastName())) {
+            LOG.error("Profile last name '{}' is not a name", profileForm.getLastName());
+            errors.rejectValue(
+                    "lastName",
+                    "lastName",
+                    new Object[]{profileForm.getLastName()},
+                    "Last Name is not a valid name " + profileForm.getLastName() + ".");
+        }
+
+        if (!Validate.isValidMail(profileForm.getMail())) {
+            LOG.error("Profile mail '{}' is not a valid mail", profileForm.getMail());
+            errors.rejectValue(
+                    "mail",
+                    "mail",
+                    new Object[]{profileForm.getMail()},
+                    "Mail Address is not valid mail " + profileForm.getMail() + ".");
         }
     }
 }
