@@ -111,8 +111,21 @@
                             <form:input path="lastName" id="userProfile_lastName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
-                            <label class="profile_label">Mail address</label>
+                            <label class="profile_label">Email address</label>
                             <form:input path="mail" id="userProfile_mail" size="20" cssClass="name_txt" readonly="true" />
+                        </div>
+                        <div class="row_field">
+                            <label class="profile_label">Email validated</label>
+                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                                <c:choose>
+                                    <c:when test="${pageContext.request.userPrincipal.principal.accountValidated}">
+                                        Yes
+                                    </c:when>
+                                    <c:otherwise>
+                                        No
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last modified</label>

@@ -103,7 +103,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
-                    isUserActiveAndRegistrationTurnedOn(userAccount)
+                    isUserActiveAndRegistrationTurnedOn(userAccount),
+                    userAccount.isAccountValidated()
             );
         }
     }
@@ -145,7 +146,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
-                    isUserActiveAndRegistrationTurnedOn(userAccountEntity)
+                    isUserActiveAndRegistrationTurnedOn(userAccountEntity),
+                    userAccountEntity.isAccountValidated()
             );
         }
     }
