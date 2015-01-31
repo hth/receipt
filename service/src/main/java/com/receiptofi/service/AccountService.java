@@ -264,7 +264,6 @@ public class AccountService {
      * @return
      */
     @Mobile
-    @SuppressWarnings ("unused")
     public UserAccountEntity updateUID(String existingUserId, String newUserId) {
         UserAccountEntity userAccount = findByUserId(existingUserId);
         if (!userAccount.isAccountValidated()) {
@@ -281,5 +280,19 @@ public class AccountService {
         userAccountManager.save(userAccount);
 
         return userAccount;
+    }
+
+    public void updateName(String firstName, String lastName, String rid) {
+        UserAccountEntity userAccount = findByReceiptUserId(rid);
+        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(rid);
+
+        userAccount.setFirstName(firstName);
+        userAccount.setLastName(lastName);
+
+        userProfile.setFirstName(firstName);
+        userProfile.setLastName(lastName);
+
+        userProfileManager.save(userProfile);
+        userAccountManager.save(userAccount);
     }
 }

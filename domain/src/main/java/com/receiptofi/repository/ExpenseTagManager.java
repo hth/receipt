@@ -11,17 +11,17 @@ import java.util.List;
  */
 public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
 
-    List<ExpenseTagEntity> allExpenseTypes(String receiptUserId);
+    List<ExpenseTagEntity> allExpenseTypes(String rid);
 
     /**
      * Gets all active expense tag
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    List<ExpenseTagEntity> activeExpenseTypes(String receiptUserId);
+    List<ExpenseTagEntity> activeExpenseTypes(String rid);
 
-    void changeVisibility(String expenseTypeId, boolean changeTo, String receiptUserId);
+    void changeVisibility(String expenseTypeId, boolean changeTo, String rid);
 
     void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid);
 

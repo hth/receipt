@@ -83,6 +83,8 @@
                 </sec:authorize>
             </ul>
 
+            <spring:eval expression="${profileForm.rid eq pageContext.request.userPrincipal.principal.rid}" var="isSameUser" />
+
             <div id="tabs-1" class="report_my ajx-content" style="display: block;">
                 <h1 class="h1">PROFILE</h1>
                 <hr>
@@ -97,41 +99,73 @@
                     </div>
                 </div>
                 <div class="down_form">
-                    <form:form modelAttribute="userProfilePreferenceForm" method="post" action="i.htm">
+                    <form:form modelAttribute="profileForm" method="post" action="i.htm">
+                        <form:hidden path="rid"/>
+                        <form:hidden path="updated"/>
                         <div class="row_field">
                             <label class="profile_label">First name</label>
-                            <form:input path="userProfile.firstName" id="userProfile_firstName" size="20" cssClass="name_txt" readonly="true" />
+                            <form:input path="firstName" id="userProfile_firstName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last name</label>
-                            <form:input path="userProfile.lastName" id="userProfile_lastName" size="20" cssClass="name_txt" readonly="true" />
+                            <form:input path="lastName" id="userProfile_lastName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
-                            <label class="profile_label">Email address</label>
-                            <form:input path="userProfile.email" id="userProfile_email" size="20" cssClass="name_txt" readonly="true" />
+                            <label class="profile_label">Mail address</label>
+                            <form:input path="mail" id="userProfile_mail" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last modified</label>
                             <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
-                                <fmt:formatDate value="${userProfilePreferenceForm.userProfile.updated}" type="both"/>
+                                <fmt:formatDate value="${profileForm.updated}" type="both"/>
                             </label>
                         </div>
-                        <input type="button" value="UPDATE" style="background:#0079FF" class="read_btn" hidden="true"
-                                name="profile_update" id="profileUpdate_bt">
+
+                        <spring:hasBindErrors name="profileForm">
+                        <div class="row_field">
+                            <div id="tagProfileErrors" class="first first-small ajx-content">
+                                <c:if test="${errors.hasFieldErrors('firstName')}">
+                                    <br>
+                                    <form:errors path="firstName" />
+                                </c:if>
+                                <c:if test="${errors.hasFieldErrors('lastName')}">
+                                    <br>
+                                    <form:errors path="lastName"  />
+                                </c:if>
+                                <c:if test="${errors.hasFieldErrors('mail')}">
+                                    <br>
+                                    <form:errors path="mail"  />
+                                </c:if>
+                            </div>
+                        </div>
+                        </spring:hasBindErrors>
+
+                        <c:choose>
+                            <c:when test="${empty pageContext.request.userPrincipal.principal.pid}">
+                                <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
+                                    <input type="submit" value="UPDATE" style="background:#0079FF" class="read_btn" hidden="true"
+                                            name="profile_update" id="profileUpdate_bt">
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="profile_label" style="padding-top: 40px; width: 400px; !important; color: #606060; !important; font-weight: bold; !important;">
+                                    <c:out value="${pageContext.request.userPrincipal.principal.pid}"/> Social signup account.
+                                    Please update your social account to see changes here.
+                                </label>
+                            </c:otherwise>
+                        </c:choose>
                     </form:form>
                 </div>
             </div>
 
             <div id="tabs-2" class="ajx-content report_my">
-                <spring:eval expression="${userProfilePreferenceForm.userProfile.receiptUserId eq pageContext.request.userPrincipal.principal.rid}" var="isSameUser" />
-
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
                 <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
                 <div class="">
-                    <c:forEach var="expenseTag" items="${userProfilePreferenceForm.expenseTags}" varStatus="status">
+                    <c:forEach var="expenseTag" items="${profileForm.expenseTags}" varStatus="status">
                     <input type="button"
-                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> <spring:eval expression="userProfilePreferenceForm.expenseTagCount.get(expenseTag.tagName)" />"
+                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> <spring:eval expression="profileForm.expenseTagCount.get(expenseTag.tagName)" />"
                             style="color: <spring:eval expression="expenseTag.tagColor" />"
                             class="white_btn"
                             id="<spring:eval expression="expenseTag.id" />"
@@ -152,11 +186,18 @@
                         </span>
                         <br/><br/>
                     </div>
-                    <div id="tagNameErrors">
-                        <form:errors path="tagName" cssClass="first first-small ajx-content" />
-                    </div>
-                    <div id="tagColorErrors">
-                        <form:errors path="tagColor" cssClass="first first-small ajx-content" />
+
+                    <div id="tagErrors">
+                    <spring:hasBindErrors name="expenseTypeForm">
+                        <c:if test="${errors.hasFieldErrors('tagName')}">
+                            <br>
+                            <form:errors path="tagName" cssClass="first first-small ajx-content" />
+                        </c:if>
+                        <c:if test="${errors.hasFieldErrors('tagColor')}">
+                            <br>
+                            <form:errors path="tagColor" cssClass="first first-small ajx-content" />
+                        </c:if>
+                    </spring:hasBindErrors>
                     </div>
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
@@ -173,17 +214,17 @@
                 <h1 class="h1">STATUS</h1>
                 <hr>
                 <div class="down_form">
-                    <form:form method="post" modelAttribute="userProfilePreferenceForm" action="update.htm">
-                    <form:hidden path="userProfile.receiptUserId"/>
+                    <form:form method="post" modelAttribute="profileForm" action="update.htm">
+                    <form:hidden path="rid"/>
                         <div class="row_field">
                             <label class="profile_label">Profile Id</label>
                             <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
-                                <spring:eval expression="userProfilePreferenceForm.userProfile.receiptUserId" />
+                                <spring:eval expression="profileForm.rid" />
                             </label>
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Level</label>
-                            <form:select path="userProfile.level" cssClass="styled-select slate">
+                            <form:select path="level" cssClass="styled-select slate">
                                 <form:option value="0" label="Select Account Type" />
                                 <form:options itemLabel="description" />
                             </form:select>
@@ -254,10 +295,10 @@
         $('#expenseTagSaveUpdate_bt').val('UPDATE');
         $('#expenseTagDelete_bt').attr('hidden', false);
 
-        $('#tagNameErrors').hide();
-        $('#tagColorErrors').hide();
+        $('#tagErrors').hide();
     }
 
+    <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
     $("#userProfile_firstName").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
@@ -266,9 +307,10 @@
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
-    $("#userProfile_email").on('click', function () {
+    $("#userProfile_mail").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
+    </c:if>
 </script>
 </html>

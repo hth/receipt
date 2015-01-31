@@ -73,18 +73,18 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
+    public List<ExpenseTagEntity> allExpenseTypes(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(userProfileId)).with(new Sort(ASC, "TAG")),
+                query(where("RID").is(rid)).with(new Sort(ASC, "TAG")),
                 ExpenseTagEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public List<ExpenseTagEntity> activeExpenseTypes(String receiptUserId) {
+    public List<ExpenseTagEntity> activeExpenseTypes(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(receiptUserId)
+                query(where("RID").is(rid)
                                 .andOperator(
                                         isActive(),
                                         isNotDeleted()
@@ -96,9 +96,9 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public void changeVisibility(String expenseTypeId, boolean changeTo, String receiptUserId) {
+    public void changeVisibility(String expenseTypeId, boolean changeTo, String rid) {
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(receiptUserId)),
+                query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(rid)),
                 entityUpdate(update("A", changeTo)),
                 ExpenseTagEntity.class);
     }

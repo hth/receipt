@@ -73,6 +73,15 @@ public class AccountRegistrationController {
     @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
     private String[] expenseTags;
 
+    @Value ("${AccountRegistrationController.mailLength:5}")
+    private int mailLength;
+
+    @Value ("${AccountRegistrationController.nameLength:2}")
+    private int nameLength;
+
+    @Value ("${AccountRegistrationController.passwordLength:6}")
+    private int passwordLength;
+
     @Autowired
     public AccountRegistrationController(
             UserRegistrationValidator userRegistrationValidator,
@@ -230,5 +239,17 @@ public class AccountRegistrationController {
         LOG.info("Email available={} for registration", email);
         availabilityStatus = AvailabilityStatus.available();
         return String.format("{ \"valid\" : \"%s\" }", availabilityStatus.isAvailable());
+    }
+
+    public int getMailLength() {
+        return mailLength;
+    }
+
+    public int getNameLength() {
+        return nameLength;
+    }
+
+    public int getPasswordLength() {
+        return passwordLength;
     }
 }

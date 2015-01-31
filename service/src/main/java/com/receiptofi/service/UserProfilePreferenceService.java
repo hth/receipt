@@ -65,21 +65,21 @@ public class UserProfilePreferenceService {
     /**
      * Lists all the expenseTypes
      *
-     * @param userProfileId
+     * @param rid
      * @return
      */
-    public List<ExpenseTagEntity> allExpenseTypes(String userProfileId) {
-        return expenseTagManager.allExpenseTypes(userProfileId);
+    public List<ExpenseTagEntity> allExpenseTypes(String rid) {
+        return expenseTagManager.allExpenseTypes(rid);
     }
 
     /**
      * Lists all the active expense types.
      *
-     * @param userProfileId
+     * @param rid
      * @return
      */
-    public List<ExpenseTagEntity> activeExpenseTypes(String userProfileId) {
-        return expenseTagManager.activeExpenseTypes(userProfileId);
+    public List<ExpenseTagEntity> activeExpenseTypes(String rid) {
+        return expenseTagManager.activeExpenseTypes(rid);
     }
 
     public ExpenseTagEntity getExpenseType(String expenseTypeId) {
