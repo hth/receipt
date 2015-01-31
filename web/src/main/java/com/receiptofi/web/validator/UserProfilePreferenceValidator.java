@@ -5,6 +5,8 @@ import com.receiptofi.utils.Validate;
 import com.receiptofi.web.controller.open.AccountRegistrationController;
 import com.receiptofi.web.form.ProfileForm;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +71,7 @@ public class UserProfilePreferenceValidator implements Validator {
                     "First Name is not a valid name " + profileForm.getFirstName() + ".");
         }
 
-        if (!Validate.isValidName(profileForm.getLastName())) {
+        if (StringUtils.isNotBlank(profileForm.getLastName()) && !Validate.isValidName(profileForm.getLastName())) {
             LOG.error("Profile last name '{}' is not a name", profileForm.getLastName());
             errors.rejectValue(
                     "lastName",
