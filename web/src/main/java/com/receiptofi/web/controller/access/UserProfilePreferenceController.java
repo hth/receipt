@@ -12,7 +12,7 @@ import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.ProfileForm;
-import com.receiptofi.web.validator.ExpenseTypeValidator;
+import com.receiptofi.web.validator.ExpenseTagValidator;
 import com.receiptofi.web.validator.ProfileValidator;
 
 import org.apache.commons.lang3.StringUtils;
@@ -66,7 +66,7 @@ public class UserProfilePreferenceController {
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private AccountService accountService;
     @Autowired private ItemService itemService;
-    @Autowired private ExpenseTypeValidator expenseTypeValidator;
+    @Autowired private ExpenseTagValidator expenseTagValidator;
     @Autowired private ProfileValidator profileValidator;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
@@ -179,7 +179,7 @@ public class UserProfilePreferenceController {
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        expenseTypeValidator.validate(expenseTypeForm, result);
+        expenseTagValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
@@ -239,7 +239,7 @@ public class UserProfilePreferenceController {
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        expenseTypeValidator.validate(expenseTypeForm, result);
+        expenseTagValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
