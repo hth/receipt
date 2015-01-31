@@ -27,8 +27,8 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public class UserProfilePreferenceValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceValidator.class);
+public class ProfileValidator implements Validator {
+    private static final Logger LOG = LoggerFactory.getLogger(ProfileValidator.class);
 
     @Autowired AccountRegistrationController accountRegistrationController;
 

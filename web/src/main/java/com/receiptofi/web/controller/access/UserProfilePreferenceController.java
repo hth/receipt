@@ -5,7 +5,6 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
@@ -13,10 +12,8 @@ import com.receiptofi.service.ItemService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.ProfileForm;
-import com.receiptofi.web.form.ReceiptDocumentForm;
-import com.receiptofi.web.form.UserProfilePreferenceForm;
 import com.receiptofi.web.validator.ExpenseTypeValidator;
-import com.receiptofi.web.validator.UserProfilePreferenceValidator;
+import com.receiptofi.web.validator.ProfileValidator;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,8 +39,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
 
 /**
  * Note: Follow PRG model with support for result binding
@@ -72,7 +67,7 @@ public class UserProfilePreferenceController {
     @Autowired private AccountService accountService;
     @Autowired private ItemService itemService;
     @Autowired private ExpenseTypeValidator expenseTypeValidator;
-    @Autowired private UserProfilePreferenceValidator userProfilePreferenceValidator;
+    @Autowired private ProfileValidator profileValidator;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -138,7 +133,7 @@ public class UserProfilePreferenceController {
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        userProfilePreferenceValidator.validate(profileForm, result);
+        profileValidator.validate(profileForm, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
