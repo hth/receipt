@@ -97,21 +97,18 @@
                     </div>
                 </div>
                 <div class="down_form">
-                    <%--<form>--%>
+                    <form:form modelAttribute="userProfilePreferenceForm" method="post" action="i.htm">
                         <div class="row_field">
                             <label class="profile_label">First name</label>
-                            <input type="text" required="true" size="20" class="name_txt" id="firstName_txt" readonly
-                                    value="<spring:eval expression="userProfilePreferenceForm.userProfile.firstName"/>">
+                            <form:input path="userProfile.firstName" id="userProfile_firstName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last name</label>
-                            <input type="text" required="true" size="20" class="name_txt" id="lastName_txt" readonly
-                                    value="<spring:eval expression="userProfilePreferenceForm.userProfile.lastName"/>">
+                            <form:input path="userProfile.lastName" id="userProfile_lastName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Email address</label>
-                            <input type="text" required="true" size="20" class="name_txt" id="email_txt" readonly
-                                    value="<spring:eval expression="userProfilePreferenceForm.userProfile.email"/>">
+                            <form:input path="userProfile.email" id="userProfile_email" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Last modified</label>
@@ -121,7 +118,7 @@
                         </div>
                         <input type="button" value="UPDATE" style="background:#0079FF" class="read_btn" hidden="true"
                                 name="profile_update" id="profileUpdate_bt">
-                    <%--</form>--%>
+                    </form:form>
                 </div>
             </div>
 
@@ -163,7 +160,7 @@
                     </div>
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
-                        <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSave_bt"
+                        <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSaveUpdate_bt"
                                 style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
                         <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt" hidden="true"
                                 style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
@@ -254,22 +251,22 @@
         $('.color-box').css('background-color', $(button).attr('style').split(" ")[1]);
         $('#textCount').text(12 - tagName.length);
 
-        $('#expenseTagSave_bt').val('UPDATE');
+        $('#expenseTagSaveUpdate_bt').val('UPDATE');
         $('#expenseTagDelete_bt').attr('hidden', false);
 
         $('#tagNameErrors').hide();
         $('#tagColorErrors').hide();
     }
 
-    $("#firstName_txt").on('click', function () {
+    $("#userProfile_firstName").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
-    $("#lastName_txt").on('click', function () {
+    $("#userProfile_lastName").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
-    $("#email_txt").on('click', function () {
+    $("#userProfile_email").on('click', function () {
         $(this).prop("readonly", false).focus();
         $('#profileUpdate_bt').attr('hidden', false);
     });
