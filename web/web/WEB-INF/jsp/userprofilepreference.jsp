@@ -122,7 +122,7 @@
                                         Yes
                                     </c:when>
                                     <c:otherwise>
-                                        No
+                                        No (Please validate your email)
                                     </c:otherwise>
                                 </c:choose>
                             </label>
@@ -136,18 +136,18 @@
 
                         <spring:hasBindErrors name="profileForm">
                         <div class="row_field">
-                            <div id="tagProfileErrors" class="first first-small ajx-content">
+                            <div id="profileErrors" class="first first-small ajx-content">
                                 <c:if test="${errors.hasFieldErrors('firstName')}">
-                                    <br>
                                     <form:errors path="firstName" />
+                                    <br>
                                 </c:if>
                                 <c:if test="${errors.hasFieldErrors('lastName')}">
-                                    <br>
                                     <form:errors path="lastName"  />
+                                    <br>
                                 </c:if>
                                 <c:if test="${errors.hasFieldErrors('mail')}">
-                                    <br>
                                     <form:errors path="mail"  />
+                                    <br>
                                 </c:if>
                             </div>
                         </div>
@@ -197,21 +197,20 @@
                         <span class="si-general-text remaining-characters">
                             <span id="textCount"></span> characters remaining
                         </span>
-                        <br/><br/>
                     </div>
 
-                    <div id="tagErrors">
                     <spring:hasBindErrors name="expenseTypeForm">
-                        <c:if test="${errors.hasFieldErrors('tagName')}">
-                            <br>
-                            <form:errors path="tagName" cssClass="first first-small ajx-content" />
-                        </c:if>
-                        <c:if test="${errors.hasFieldErrors('tagColor')}">
-                            <br>
-                            <form:errors path="tagColor" cssClass="first first-small ajx-content" />
-                        </c:if>
-                    </spring:hasBindErrors>
+                    <div class="row_field">
+                        <div id="tagErrors" class="first first-small ajx-content">
+                            <c:if test="${errors.hasFieldErrors('tagName')}">
+                                <form:errors path="tagName"/>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('tagColor')}">
+                                <form:errors path="tagColor"/>
+                            </c:if>
+                        </div>
                     </div>
+                    </spring:hasBindErrors>
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
                         <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSaveUpdate_bt"
@@ -249,6 +248,18 @@
                                 <label for="active">Active</label>
                             </div>
                         </div>
+                        <c:if test="${!empty profileForm.successMessage || !empty profileForm.errorMessage}">
+                        <div class="row_field">
+                            <div id="profileAdmin" class="first first-small ajx-content">
+                                <c:if test="${!empty profileForm.successMessage}">
+                                    <c:out value="${profileForm.successMessage}" />
+                                </c:if>
+                                <c:if test="${!empty profileForm.errorMessage}">
+                                    <c:out value="${profileForm.errorMessage}" />
+                                </c:if>
+                            </div>
+                        </div>
+                        </c:if>
                         &nbsp;<br>
                         &nbsp;<br>
                         &nbsp;<br>
