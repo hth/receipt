@@ -16,6 +16,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <%--<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>--%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/colpick.js" type="text/javascript"></script>
 
@@ -44,6 +45,10 @@
             </c:choose>
         });
         </c:if>
+
+        $(document).ready(function () {
+            $('.timestamp').cuteTime({ refresh: 10000 });
+        });
     </script>
 
 </head>
@@ -116,20 +121,36 @@
                         </div>
                         <div class="row_field">
                             <label class="profile_label">Email validated</label>
-                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                            <label class="profile_label" style="width: 274px; !important; color: #606060; !important; font-weight: normal; !important;">
                                 <c:choose>
                                     <c:when test="${pageContext.request.userPrincipal.principal.accountValidated}">
                                         Yes
                                     </c:when>
                                     <c:otherwise>
-                                        No (Please validate your email)
+                                        No. Please validate your email.
                                     </c:otherwise>
                                 </c:choose>
                             </label>
                         </div>
+                        <c:if test="${!pageContext.request.userPrincipal.principal.accountValidated}">
+                        <div class="row_field">
+                            <label class="profile_label">Account</label>
+                            <label class="profile_label" style="width: 274px; !important; color: #606060; !important; font-weight: normal; !important;">
+                                <c:choose>
+                                    <c:when test="${profileForm.accountValidationExpired}">
+                                        Disabled since <span class="timestamp"><fmt:formatDate value="${profileForm.accountValidationExpireDay}" type="both"/></span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        Disables on
+                                        <span style="color: red; font-weight: bold"><fmt:formatDate value="${profileForm.accountValidationExpireDay}" type="both"/></span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </div>
+                        </c:if>
                         <div class="row_field">
                             <label class="profile_label">Last modified</label>
-                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                            <label class="profile_label" style="width: 274px; !important; color: #606060; !important; font-weight: normal; !important;">
                                 <fmt:formatDate value="${profileForm.updated}" type="both"/>
                             </label>
                         </div>
@@ -149,7 +170,7 @@
 
                         <spring:hasBindErrors name="profileForm">
                         <div class="row_field">
-                            <div id="profileErrors" class="first first-small ajx-content">
+                            <div class="first first-small ajx-content">
                                 <c:if test="${errors.hasFieldErrors('firstName')}">
                                     <form:errors path="firstName" />
                                     <br>
@@ -263,7 +284,7 @@
                         </div>
                         <c:if test="${!empty profileForm.successMessage || !empty profileForm.errorMessage}">
                         <div class="row_field">
-                            <div id="profileAdmin" class="first first-small ajx-content">
+                            <div class="first first-small ajx-content">
                                 <c:if test="${!empty profileForm.successMessage}">
                                     <c:out value="${profileForm.successMessage}" />
                                 </c:if>
