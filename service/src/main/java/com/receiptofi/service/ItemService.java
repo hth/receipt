@@ -68,12 +68,12 @@ public class ItemService {
      * @param profileId
      * @return
      */
-    public Map<String, BigDecimal> getAllItemExpenseForTheYear(String profileId) {
+    public Map<String, BigDecimal> getAllItemExpenseForTheYear(String rid) {
         Map<String, BigDecimal> expenseItems = new HashMap<>();
         BigDecimal netSum = ZERO;
 
         //Find sum of all items for particular expense
-        List<ExpenseTagEntity> expenseTypeEntities = expenseTagManager.activeExpenseTypes(profileId);
+        List<ExpenseTagEntity> expenseTypeEntities = expenseTagManager.activeExpenseTypes(rid);
         for (ExpenseTagEntity expenseTagEntity : expenseTypeEntities) {
 
             BigDecimal sum = ZERO;
@@ -84,7 +84,7 @@ public class ItemService {
             expenseItems.put(expenseTagEntity.getTagName(), sum);
         }
 
-        netSum = populateWithUnAssignedItems(expenseItems, netSum, profileId);
+        netSum = populateWithUnAssignedItems(expenseItems, netSum, rid);
 
         // Calculate percentage
         for (String key : expenseItems.keySet()) {
@@ -121,8 +121,8 @@ public class ItemService {
      * @param profileId
      * @return
      */
-    private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String profileId) {
-        List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(profileId);
+    private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String rid) {
+        List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(rid);
         Assert.notNull(netSum);
         BigDecimal newNetSum = netSum;
         if (unassignedItems.isEmpty()) {

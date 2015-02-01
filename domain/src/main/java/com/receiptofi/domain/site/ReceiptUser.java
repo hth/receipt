@@ -24,6 +24,7 @@ public final class ReceiptUser extends User {
     private String rid;
     private ProviderEnum pid;
     private UserLevelEnum userLevel;
+    private boolean accountValidated;
 
     public ReceiptUser(
             String username,
@@ -40,12 +41,14 @@ public final class ReceiptUser extends User {
             String rid,
             ProviderEnum pid,
             UserLevelEnum userLevel,
-            boolean active
+            boolean active,
+            boolean accountValidated
     ) {
         super(username, password, active, true, true, true, authorities);
         this.rid = rid;
         this.pid = pid;
         this.userLevel = userLevel;
+        this.accountValidated = accountValidated;
     }
 
     public ReceiptUser(
@@ -92,6 +95,10 @@ public final class ReceiptUser extends User {
 
     public ProviderEnum getPid() {
         return pid;
+    }
+
+    public boolean isAccountValidated() {
+        return accountValidated;
     }
 
     @Override

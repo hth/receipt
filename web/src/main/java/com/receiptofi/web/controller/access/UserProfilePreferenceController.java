@@ -3,19 +3,27 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.ItemService;
+import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.ExpenseTypeForm;
-import com.receiptofi.web.form.UserProfilePreferenceForm;
-import com.receiptofi.web.validator.ExpenseTypeValidator;
+import com.receiptofi.web.form.ProfileForm;
+import com.receiptofi.web.validator.ExpenseTagValidator;
+import com.receiptofi.web.validator.ProfileValidator;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +34,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,10 +72,16 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
     private int expenseTagCountMax;
 
+    @Value("${mail.validation.fail.period:30}")
+    private int mailValidationFailPeriod;
+
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private AccountService accountService;
     @Autowired private ItemService itemService;
-    @Autowired private ExpenseTypeValidator expenseTypeValidator;
+    @Autowired private ExpenseTagValidator expenseTagValidator;
+    @Autowired private ProfileValidator profileValidator;
+    @Autowired private MailService mailService;
+    @Autowired private EmailValidateService emailValidateService;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -73,28 +89,154 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            @ModelAttribute ("userProfilePreferenceForm")
-            UserProfilePreferenceForm userProfilePreferenceForm,
-
             Model model
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
-        ModelAndView modelAndView = populateModel(nextPage, null, userProfilePreferenceForm);
+        ModelAndView modelAndView;
+        ProfileForm profileForm = null;
 
         /** Gymnastic to show BindingResult errors if any. */
         if (model.asMap().containsKey("result")) {
-            model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", model.asMap().get("result"));
+            modelAndView = new ModelAndView(nextPage);
+
+            BeanPropertyBindingResult result = (BeanPropertyBindingResult) model.asMap().get("result");
+            if (result.getObjectName().equals("expenseTypeForm")) {
+                model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", result);
+
+                profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+                populateProfileForm(profileForm, receiptUser.getRid());
+
+                modelAndView.addObject("profileForm", profileForm);
+            }
+
+            if (result.getObjectName().equals("profileForm")) {
+                model.addAttribute("org.springframework.validation.BindingResult.profileForm", result);
+
+                profileForm = (ProfileForm) result.getTarget();
+                populateProfileForm(profileForm, receiptUser.getRid());
+
+                /** Since we do not plan to lose profileForm from result we need to set some other values for tab 3. */
+                ProfileForm profile = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+                profileForm.setLevel(profile.getLevel());
+                profileForm.setActive(profile.isActive());
+
+                modelAndView.addObject("profileForm", profileForm);
+            }
+        } else {
+            profileForm = (ProfileForm) model.asMap().get("profileForm");
+            if (profileForm == null) {
+                profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+            }
+            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, receiptUser.getRid());
         }
+
+        setAccountValidationInfo(receiptUser, profileForm);
         return modelAndView;
+    }
+
+    /**
+     * Sets account with validation info if account has not be validated.
+     *
+     * @param receiptUser
+     * @param profileForm
+     */
+    private void setAccountValidationInfo(ReceiptUser receiptUser, ProfileForm profileForm) {
+        if (null != profileForm && !receiptUser.isAccountValidated()) {
+            UserAccountEntity userAccountEntity = accountService.findByReceiptUserId(receiptUser.getRid());
+
+            profileForm.setAccountValidationExpireDay(
+                    DateUtil.toDateTime(userAccountEntity.getAccountValidatedBeginDate())
+                            .plusDays(mailValidationFailPeriod).toDate());
+
+            profileForm.setAccountValidationExpired(
+                    Days.daysBetween(
+                            new LocalDate(userAccountEntity.getAccountValidatedBeginDate()),
+                            new LocalDate(new Date())
+                    ).isGreaterThan(Days.days(mailValidationFailPeriod)));
+        }
+    }
+
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "profile_update")
+    public String updateProfile(
+            @ModelAttribute ("expenseTypeForm")
+            ExpenseTypeForm expenseTypeForm,
+
+            //@Valid
+            @ModelAttribute ("profileForm")
+            ProfileForm profileForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
+        /** There is UI logic based on this. Set the right to be active when responding. */
+        redirectAttrs.addFlashAttribute("showTab", "#tabs-1");
+
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        profileValidator.validate(profileForm, result);
+        if (result.hasErrors()) {
+            LOG.error("validation error");
+            redirectAttrs.addFlashAttribute("result", result);
+            /** Re-direct to prevent resubmit. */
+            return "redirect:/access" + nextPage + "/i" + ".htm";
+        }
+
+        try {
+            UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid());
+            if (null == userProfile.getProviderId()) {
+
+                /** Can incorporate condition in profileForm if its dirty object instead. */
+                if (!profileForm.getFirstName().equals(userProfile.getFirstName()) ||
+                        !profileForm.getLastName().equals(userProfile.getLastName())) {
+                    accountService.updateName(profileForm.getFirstName(), profileForm.getLastName(), receiptUser.getRid());
+                }
+
+                if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail())) {
+                    UserAccountEntity userAccount = accountService.updateUID(receiptUser.getUsername(), profileForm.getMail(), receiptUser.getRid());
+
+                    if(userAccount != null) {
+
+                        EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                                userAccount.getReceiptUserId(),
+                                userAccount.getUserId());
+
+                        mailService.accountValidationMail(
+                                userAccount.getUserId(),
+                                userAccount.getName(),
+                                accountValidate.getAuthenticationKey());
+
+                        profileForm.setSuccessMessage(
+                                "Email updated successfully. " +
+                                        "Sent validation email at your new email address " + profileForm.getMail() + ". " +
+                                        "Please validate by clicking on link in email otherwise account will disable in 30 days. " +
+                                        "After logout, you will need your new email address to log back in.");
+                        profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
+                    } else {
+                        profileForm.setErrorMessage("Account with similar email address already exists. " +
+                                "Submitted address " + profileForm.getMail() + ". " +
+                                "If you have lost your password, then please try password recovery option.");
+                        profileForm.setMail(userProfile.getEmail());
+                    }
+                } else {
+                    profileForm.setErrorMessage("No change. New email matches existing email " + profileForm.getMail() + ".");
+                }
+
+                redirectAttrs.addFlashAttribute("profileForm", profileForm);
+            }
+        } catch (Exception e) {
+            LOG.error("Error updating profile={} reason={}", receiptUser.getRid(), e.getLocalizedMessage(), e);
+            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("result", result);
+        }
+
+        /** Re-direct to prevent resubmit. */
+        return "redirect:/access" + nextPage + "/i" + ".htm";
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_delete")
     public String deleteExpenseTag(
-            @ModelAttribute ("userProfilePreferenceForm")
-            UserProfilePreferenceForm userProfilePreferenceForm,
-
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
@@ -105,9 +247,8 @@ public class UserProfilePreferenceController {
         redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
 
-        expenseTypeValidator.validate(expenseTypeForm, result);
+        expenseTagValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
@@ -146,7 +287,6 @@ public class UserProfilePreferenceController {
      * Used for adding Expense Type
      * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
      *
-     * @param userProfilePreferenceForm
      * @param expenseTypeForm
      * @param result
      * @return
@@ -154,8 +294,8 @@ public class UserProfilePreferenceController {
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_save_update")
     public String addExpenseTag(
-            @ModelAttribute ("userProfilePreferenceForm")
-            UserProfilePreferenceForm userProfilePreferenceForm,
+            @ModelAttribute ("profileForm")
+            ProfileForm profileForm,
 
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
@@ -167,9 +307,8 @@ public class UserProfilePreferenceController {
         redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
 
-        expenseTypeValidator.validate(expenseTypeForm, result);
+        expenseTagValidator.validate(expenseTypeForm, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
@@ -216,44 +355,6 @@ public class UserProfilePreferenceController {
     }
 
     /**
-     * To Show and Hide the expense type
-     * //TODO convert to ajax call instead
-     *
-     * @param expenseTagId
-     * @param changeStatTo
-     * @return
-     */
-    @Deprecated
-    @RequestMapping (value = "/expenseTagVisible", method = RequestMethod.GET)
-    public ModelAndView changeExpenseTypeVisibleStatus(
-            @RequestParam (value = "id")
-            String expenseTagId,
-
-            @RequestParam (value = "status")
-            String changeStatTo,
-
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
-
-            @ModelAttribute ("userProfilePreferenceForm")
-            UserProfilePreferenceForm userProfilePreferenceForm
-    ) {
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        //Secondary check. In case some one tries to be smart by passing parameters in URL :)
-        if (itemService.countItemsUsingExpenseType(expenseTagId, receiptUser.getRid()) == 0) {
-            userProfilePreferenceService.modifyVisibilityOfExpenseType(expenseTagId, changeStatTo, receiptUser.getRid());
-        }
-
-        populateUserProfilePreferenceForm(receiptUser.getRid(), userProfilePreferenceForm);
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
-
-        //There is UI logic based on this. Set the right to be active when responding.
-        modelAndView.addObject("showTab", "#tabs-2");
-        return modelAndView;
-    }
-
-    /**
      * Only admin has access to this link. Others get 403 error.
      *
      * @param rid
@@ -270,20 +371,29 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            @ModelAttribute ("userProfilePreferenceForm")
-            UserProfilePreferenceForm userProfilePreferenceForm
+            Model model
     ) throws IOException {
-        populateUserProfilePreferenceForm(rid, userProfilePreferenceForm);
-        ModelAndView modelAndView = populateModel(nextPage, expenseTypeForm, userProfilePreferenceForm);
-        modelAndView.addObject("id", rid);
+        ModelAndView modelAndView;
+        ProfileForm profileForm = (ProfileForm) model.asMap().get("profileForm");
+        if (null == profileForm) {
+            profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
+            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
+        } else {
+            populateProfileForm(profileForm, rid);
+
+            /** Since we do not plan to lose profileForm from result we need to set some other values for tab 1. */
+            ProfileForm profile = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
+            profileForm.setFirstName(profile.getFirstName());
+            profileForm.setLastName(profile.getLastName());
+            profileForm.setMail(profile.getMail());
+            profileForm.setUpdated(profile.getUpdated());
+
+            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
+        }
 
         //There is UI logic based on this. Set the right to be active when responding.
         modelAndView.addObject("showTab", "#tabs-3");
         return modelAndView;
-    }
-
-    private void populateUserProfilePreferenceForm(String rid, UserProfilePreferenceForm userProfilePreferenceForm) {
-        userProfilePreferenceForm.setUserProfile(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
     }
 
     /**
@@ -300,15 +410,16 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            @ModelAttribute ("userProfilePreferenceForm")
-            UserProfilePreferenceForm userProfilePreferenceForm
+            @ModelAttribute ("profileForm")
+            ProfileForm profileForm,
+
+            RedirectAttributes redirectAttrs
     ) throws IOException {
-        UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(
-                userProfilePreferenceForm.getUserProfile().getReceiptUserId()
-        );
-        userProfile.setLevel(userProfilePreferenceForm.getUserProfile().getLevel());
-        if (!userProfilePreferenceForm.isActive() || !userProfile.isActive()) {
-            if (userProfilePreferenceForm.isActive()) {
+
+        UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(profileForm.getRid());
+        userProfile.setLevel(profileForm.getLevel());
+        if (!profileForm.isActive() || !userProfile.isActive()) {
+            if (profileForm.isActive()) {
                 userProfile.active();
             } else {
                 userProfile.inActive();
@@ -323,55 +434,43 @@ public class UserProfilePreferenceController {
         try {
             accountService.saveUserAccount(userAccount);
             userProfilePreferenceService.updateProfile(userProfile);
+            profileForm.setSuccessMessage("Updated profile " + userProfile.getReceiptUserId() + " successfully.");
         } catch (Exception exce) {
             //XXX todo should there be two phase commit
             LOG.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
-            userProfilePreferenceForm.setErrorMessage("Failed updating user profile " + exce.getLocalizedMessage());
+            profileForm.setErrorMessage("Failed updating profile " + userProfile.getReceiptUserId() + ", reason: " + exce.getLocalizedMessage());
         }
+        redirectAttrs.addFlashAttribute("profileForm", profileForm);
         return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
     }
 
     /**
      * @param nextPage
-     * @param userProfilePreference
+     * @param expenseTypeForm
+     * @param profileForm
      * @return
      */
-    private ModelAndView populateModel(
-            String nextPage,
-            ExpenseTypeForm expenseTypeForm,
-            UserProfilePreferenceForm userProfilePreference
-    ) {
-        UserPreferenceEntity userPreference = userProfilePreferenceService.loadFromProfile(userProfilePreference.getUserProfile());
-        userProfilePreference.setUserAuthentication(
-                accountService.findByReceiptUserId(
-                        userProfilePreference.getUserProfile().getReceiptUserId()
-                ).getUserAuthentication()
-        );
-
+    private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, ProfileForm profileForm, String rid) {
         ModelAndView modelAndView = new ModelAndView(nextPage);
-        userProfilePreference.setUserPreference(userPreference);
-        if (expenseTypeForm != null) {
-            modelAndView.addObject("expenseTypeForm", expenseTypeForm);
-        }
+        modelAndView.addObject("profileForm", profileForm);
+        modelAndView.addObject("expenseTypeForm", expenseTypeForm);
 
-        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(userProfilePreference.getUserProfile().getReceiptUserId());
-        userProfilePreference.setExpenseTags(expenseTypes);
+        populateProfileForm(profileForm, rid);
+        return modelAndView;
+    }
 
-        Map<String, Long> expenseTypeCount = new HashMap<>();
-        int count = 0;
+    private void populateProfileForm(ProfileForm profileForm, String rid) {
+        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(rid);
+        profileForm.setExpenseTags(expenseTypes);
+
+        Map<String, Long> expenseTagWithCount = new HashMap<>();
         for (ExpenseTagEntity expenseType : expenseTypes) {
-            if (expenseType.isActive()) {
-                count++;
-            }
-
-            expenseTypeCount.put(
+            expenseTagWithCount.put(
                     expenseType.getTagName(),
-                    itemService.countItemsUsingExpenseType(expenseType.getId(), userProfilePreference.getUserProfile().getId())
+                    itemService.countItemsUsingExpenseType(expenseType.getId(), rid)
             );
         }
 
-        userProfilePreference.setExpenseTagCount(expenseTypeCount);
-        userProfilePreference.setVisibleExpenseTags(count);
-        return modelAndView;
+        profileForm.setExpenseTagCount(expenseTagWithCount);
     }
 }
