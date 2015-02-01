@@ -55,6 +55,9 @@ public class ProfileForm {
     private String errorMessage;
     private String successMessage;
 
+    private Date accountValidationExpireDay;
+    private boolean accountValidationExpired;
+
     @SuppressWarnings ("unused")
     private ProfileForm() {
     }
@@ -159,5 +162,21 @@ public class ProfileForm {
 
     public void setSuccessMessage(String successMessage) {
         this.successMessage = successMessage;
+    }
+
+    public Date getAccountValidationExpireDay() {
+        return accountValidationExpireDay;
+    }
+
+    public void setAccountValidationExpireDay(Date accountValidationExpireDay) {
+        this.accountValidationExpireDay = accountValidationExpireDay;
+    }
+
+    public boolean isAccountValidationExpired() {
+        return accountValidationExpired;
+    }
+
+    public void setAccountValidationExpired(boolean accountValidationExpired) {
+        this.accountValidationExpired = accountValidationExpired;
     }
 }

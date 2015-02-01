@@ -13,12 +13,17 @@ import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.ProfileForm;
 import com.receiptofi.web.validator.ExpenseTagValidator;
 import com.receiptofi.web.validator.ProfileValidator;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +72,9 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
     private int expenseTagCountMax;
 
+    @Value("${mail.validation.fail.period:30}")
+    private int mailValidationFailPeriod;
+
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private AccountService accountService;
     @Autowired private ItemService itemService;
@@ -84,7 +93,7 @@ public class UserProfilePreferenceController {
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ModelAndView modelAndView;
-        ProfileForm profileForm;
+        ProfileForm profileForm = null;
 
         /** Gymnastic to show BindingResult errors if any. */
         if (model.asMap().containsKey("result")) {
@@ -120,7 +129,31 @@ public class UserProfilePreferenceController {
             }
             modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, receiptUser.getRid());
         }
+
+        setAccountValidationInfo(receiptUser, profileForm);
         return modelAndView;
+    }
+
+    /**
+     * Sets account with validation info if account has not be validated.
+     *
+     * @param receiptUser
+     * @param profileForm
+     */
+    private void setAccountValidationInfo(ReceiptUser receiptUser, ProfileForm profileForm) {
+        if (null != profileForm && !receiptUser.isAccountValidated()) {
+            UserAccountEntity userAccountEntity = accountService.findByReceiptUserId(receiptUser.getRid());
+
+            profileForm.setAccountValidationExpireDay(
+                    DateUtil.toDateTime(userAccountEntity.getAccountValidatedBeginDate())
+                            .plusDays(mailValidationFailPeriod).toDate());
+
+            profileForm.setAccountValidationExpired(
+                    Days.daysBetween(
+                            new LocalDate(userAccountEntity.getAccountValidatedBeginDate()),
+                            new LocalDate(new Date())
+                    ).isGreaterThan(Days.days(mailValidationFailPeriod)));
+        }
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
@@ -159,23 +192,37 @@ public class UserProfilePreferenceController {
                     accountService.updateName(profileForm.getFirstName(), profileForm.getLastName(), receiptUser.getRid());
                 }
 
-                if (!receiptUser.getUsername().equalsIgnoreCase(profileForm.getMail())) {
-                    accountService.updateUID(receiptUser.getUsername(), profileForm.getMail());
+                if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail())) {
+                    UserAccountEntity userAccount = accountService.updateUID(receiptUser.getUsername(), profileForm.getMail(), receiptUser.getRid());
 
-                    UserAccountEntity userAccount = accountService.findByReceiptUserId(receiptUser.getRid());
-                    EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                            userAccount.getReceiptUserId(),
-                            userAccount.getUserId());
+                    if(userAccount != null) {
 
-                    mailService.accountValidationMail(
-                            userAccount.getUserId(),
-                            userAccount.getName(),
-                            accountValidate.getAuthenticationKey());
+                        EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                                userAccount.getReceiptUserId(),
+                                userAccount.getUserId());
 
-                    profileForm.setSuccessMessage("Email updated successfully. Sent validation email at new address. Please validate or account will disable in 30 days.");
-                    profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
-                    redirectAttrs.addFlashAttribute("profileForm", profileForm);
+                        mailService.accountValidationMail(
+                                userAccount.getUserId(),
+                                userAccount.getName(),
+                                accountValidate.getAuthenticationKey());
+
+                        profileForm.setSuccessMessage(
+                                "Email updated successfully. " +
+                                        "Sent validation email at your new email address " + profileForm.getMail() + ". " +
+                                        "Please validate by clicking on link in email otherwise account will disable in 30 days. " +
+                                        "After logout, you will need your new email address to log back in.");
+                        profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
+                    } else {
+                        profileForm.setErrorMessage("Account with similar email address already exists. " +
+                                "Submitted address " + profileForm.getMail() + ". " +
+                                "If you have lost your password, then please try password recovery option.");
+                        profileForm.setMail(userProfile.getEmail());
+                    }
+                } else {
+                    profileForm.setErrorMessage("No change. New email matches existing email " + profileForm.getMail() + ".");
                 }
+
+                redirectAttrs.addFlashAttribute("profileForm", profileForm);
             }
         } catch (Exception e) {
             LOG.error("Error updating profile={} reason={}", receiptUser.getRid(), e.getLocalizedMessage(), e);

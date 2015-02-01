@@ -267,6 +267,7 @@ public class AccountService {
      * @return
      */
     @Mobile
+    @SuppressWarnings ("unused")
     public UserAccountEntity updateUID(String existingUserId, String newUserId) {
         UserAccountEntity userAccount = findByUserId(existingUserId);
         if (!userAccount.isAccountValidated()) {
@@ -279,10 +280,46 @@ public class AccountService {
         UserProfileEntity userProfile = doesUserExists(existingUserId);
         userProfile.setEmail(newUserId);
 
-        userProfileManager.save(userProfile);
+        /** Always update userAccount before userProfile */
         userAccountManager.save(userAccount);
+        userProfileManager.save(userProfile);
 
         return userAccount;
+    }
+
+    /**
+     * For Web Application use this method to change user email.
+     * </p>
+     * Do not add send email in this method. Any call invokes this method needs to call accountValidationMail after it.
+     * @see com.receiptofi.service.MailService#accountValidationMail(String, String, String) ()
+     *
+     * @param existingUserId
+     * @param newUserId
+     * @param rid
+     * @return
+     */
+    public UserAccountEntity updateUID(String existingUserId, String newUserId, String rid) {
+        if (findByUserId(newUserId) == null) {
+
+            UserAccountEntity userAccount = findByReceiptUserId(rid);
+            if (!userAccount.isAccountValidated()) {
+                emailValidateService.invalidateAllEntries(userAccount.getReceiptUserId());
+            }
+            userAccount.setUserId(newUserId);
+            userAccount.setAccountValidated(false);
+            userAccount.active();
+
+            UserProfileEntity userProfile = userProfileManager.forProfilePreferenceFindByReceiptUserId(rid);
+            userProfile.setEmail(newUserId);
+
+            /** Always update userAccount before userProfile */
+            userAccountManager.save(userAccount);
+            userProfileManager.save(userProfile);
+
+            return userAccount;
+        } else {
+            return null;
+        }
     }
 
     public void updateName(String firstName, String lastName, String rid) {
