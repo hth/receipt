@@ -79,8 +79,8 @@ public class AccountService {
         return userProfileManager.findOneByMail(mail);
     }
 
-    public UserAccountEntity findByReceiptUserId(String receiptUserId) {
-        return userAccountManager.findByReceiptUserId(receiptUserId);
+    public UserAccountEntity findByReceiptUserId(String rid) {
+        return userAccountManager.findByReceiptUserId(rid);
     }
 
     public UserAccountEntity findByUserId(String mail) {
@@ -258,6 +258,9 @@ public class AccountService {
 
     /**
      * Updates existing userId with new userId.
+     * </p>
+     * Do not add send email in this method. Any call invokes this method needs to call accountValidationMail after it.
+     * @see com.receiptofi.service.MailService#accountValidationMail(String, String, String) ()
      *
      * @param existingUserId
      * @param newUserId

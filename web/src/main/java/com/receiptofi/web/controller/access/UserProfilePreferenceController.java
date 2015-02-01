@@ -3,12 +3,15 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.ItemService;
+import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.ProfileForm;
@@ -68,6 +71,8 @@ public class UserProfilePreferenceController {
     @Autowired private ItemService itemService;
     @Autowired private ExpenseTagValidator expenseTagValidator;
     @Autowired private ProfileValidator profileValidator;
+    @Autowired private MailService mailService;
+    @Autowired private EmailValidateService emailValidateService;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -156,6 +161,17 @@ public class UserProfilePreferenceController {
 
                 if (!receiptUser.getUsername().equalsIgnoreCase(profileForm.getMail())) {
                     accountService.updateUID(receiptUser.getUsername(), profileForm.getMail());
+
+                    UserAccountEntity userAccount = accountService.findByReceiptUserId(receiptUser.getRid());
+                    EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                            userAccount.getReceiptUserId(),
+                            userAccount.getUserId());
+
+                    mailService.accountValidationMail(
+                            userAccount.getUserId(),
+                            userAccount.getName(),
+                            accountValidate.getAuthenticationKey());
+
                     profileForm.setSuccessMessage("Email updated successfully. Sent validation email at new address. Please validate or account will disable in 30 days.");
                     profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
                     redirectAttrs.addFlashAttribute("profileForm", profileForm);
