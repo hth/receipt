@@ -86,7 +86,7 @@ public class UserProfilePreferenceController {
             modelAndView = new ModelAndView(nextPage);
 
             BeanPropertyBindingResult result = (BeanPropertyBindingResult) model.asMap().get("result");
-            if(result.getObjectName().equals("expenseTypeForm")) {
+            if (result.getObjectName().equals("expenseTypeForm")) {
                 model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", result);
 
                 profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
@@ -95,7 +95,7 @@ public class UserProfilePreferenceController {
                 modelAndView.addObject("profileForm", profileForm);
             }
 
-            if(result.getObjectName().equals("profileForm")) {
+            if (result.getObjectName().equals("profileForm")) {
                 model.addAttribute("org.springframework.validation.BindingResult.profileForm", result);
 
                 profileForm = (ProfileForm) result.getTarget();
@@ -149,7 +149,7 @@ public class UserProfilePreferenceController {
             if (null == userProfile.getProviderId()) {
 
                 /** Can incorporate condition in profileForm if its dirty object instead. */
-                if(!profileForm.getFirstName().equals(userProfile.getFirstName()) ||
+                if (!profileForm.getFirstName().equals(userProfile.getFirstName()) ||
                         !profileForm.getLastName().equals(userProfile.getLastName())) {
                     accountService.updateName(profileForm.getFirstName(), profileForm.getLastName(), receiptUser.getRid());
                 }
@@ -312,7 +312,7 @@ public class UserProfilePreferenceController {
     ) throws IOException {
         ModelAndView modelAndView;
         ProfileForm profileForm = (ProfileForm) model.asMap().get("profileForm");
-        if(profileForm == null) {
+        if (null == profileForm) {
             profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
             modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
         } else {
@@ -382,7 +382,6 @@ public class UserProfilePreferenceController {
     }
 
     /**
-     *
      * @param nextPage
      * @param expenseTypeForm
      * @param profileForm
