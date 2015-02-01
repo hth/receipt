@@ -109,7 +109,10 @@ public class UserProfilePreferenceController {
                 modelAndView.addObject("profileForm", profileForm);
             }
         } else {
-            profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+            profileForm = (ProfileForm) model.asMap().get("profileForm");
+            if (profileForm == null) {
+                profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+            }
             modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, receiptUser.getRid());
         }
         return modelAndView;
@@ -153,6 +156,9 @@ public class UserProfilePreferenceController {
 
                 if (!receiptUser.getUsername().equalsIgnoreCase(profileForm.getMail())) {
                     accountService.updateUID(receiptUser.getUsername(), profileForm.getMail());
+                    profileForm.setSuccessMessage("Email updated successfully. Sent validation email at new address. Please validate or account will disable in 30 days.");
+                    profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
+                    redirectAttrs.addFlashAttribute("profileForm", profileForm);
                 }
             }
         } catch (Exception e) {

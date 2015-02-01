@@ -134,6 +134,19 @@
                             </label>
                         </div>
 
+                        <c:if test="${!empty profileForm.successMessage || !empty profileForm.errorMessage}">
+                        <div class="row_field">
+                            <div class="first first-small ajx-content">
+                                <c:if test="${!empty profileForm.successMessage}">
+                                    <c:out value="${profileForm.successMessage}" />
+                                </c:if>
+                                <c:if test="${!empty profileForm.errorMessage}">
+                                    <c:out value="${profileForm.errorMessage}" />
+                                </c:if>
+                            </div>
+                        </div>
+                        </c:if>
+
                         <spring:hasBindErrors name="profileForm">
                         <div class="row_field">
                             <div id="profileErrors" class="first first-small ajx-content">
