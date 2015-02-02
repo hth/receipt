@@ -235,8 +235,6 @@ public class UserProfilePreferenceController {
                         "If you have lost your password, then please try password recovery option.");
                 profileForm.setMail(userProfile.getEmail());
             }
-        } else {
-            profileForm.setErrorMessage("No change. New email matches existing email " + profileForm.getMail() + ".");
         }
     }
 
