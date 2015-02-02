@@ -226,8 +226,9 @@ public class UserProfilePreferenceController {
                 profileForm.setSuccessMessage(
                         "Email updated successfully. " +
                                 "Sent validation email at your new email address " + profileForm.getMail() + ". " +
-                                "Please validate by clicking on link in email otherwise account will disable in 30 days. " +
-                                "After logout, you will need your new email address to log back in.");
+                                "Please validate by clicking on link in email otherwise account will disable in " +
+                                mailValidationFailPeriod + " days. After logout, you will need your new email " +
+                                "address to log back in.");
                 profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
             } else {
                 profileForm.setErrorMessage("Account with similar email address already exists. " +

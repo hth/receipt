@@ -3,9 +3,12 @@ package com.receiptofi.web.form;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.lang3.text.WordUtils;
+
+import org.joda.time.DateTime;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -165,7 +168,7 @@ public class ProfileForm {
     }
 
     public Date getAccountValidationExpireDay() {
-        return accountValidationExpireDay;
+        return DateUtil.toDateTime(accountValidationExpireDay).minusDays(1).toDate();
     }
 
     public void setAccountValidationExpireDay(Date accountValidationExpireDay) {

@@ -141,8 +141,8 @@
                                         Disabled since <span class="timestamp"><fmt:formatDate value="${profileForm.accountValidationExpireDay}" type="both"/></span>
                                     </c:when>
                                     <c:otherwise>
-                                        Disables on
-                                        <span style="color: red; font-weight: bold"><fmt:formatDate value="${profileForm.accountValidationExpireDay}" type="both"/></span>
+                                        Disables after
+                                        <span style="color: red; font-weight: bold"><fmt:formatDate value="${profileForm.accountValidationExpireDay}" type="both" pattern="MMM dd, yyyy"/></span>
                                     </c:otherwise>
                                 </c:choose>
                             </label>

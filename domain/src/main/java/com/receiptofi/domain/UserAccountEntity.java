@@ -2,9 +2,11 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
+import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -272,7 +274,7 @@ public class UserAccountEntity extends BaseEntity {
     public void setAccountValidated(boolean accountValidated) {
         isAccountValidated = accountValidated;
         if (!accountValidated) {
-            accountValidatedBeginDate = new Date();
+            accountValidatedBeginDate = DateUtil.midnight(DateTime.now().plusDays(1).toDate());
         }
     }
 
