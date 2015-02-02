@@ -21,7 +21,6 @@ import com.receiptofi.web.validator.ProfileValidator;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
@@ -72,7 +71,7 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
     private int expenseTagCountMax;
 
-    @Value("${mail.validation.fail.period:30}")
+    @Value ("${mail.validation.fail.period:30}")
     private int mailValidationFailPeriod;
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
@@ -195,7 +194,7 @@ public class UserProfilePreferenceController {
                 if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail())) {
                     UserAccountEntity userAccount = accountService.updateUID(receiptUser.getUsername(), profileForm.getMail(), receiptUser.getRid());
 
-                    if(userAccount != null) {
+                    if (userAccount != null) {
 
                         EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
                                 userAccount.getReceiptUserId(),
