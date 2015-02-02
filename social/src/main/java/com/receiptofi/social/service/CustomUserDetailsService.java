@@ -64,6 +64,7 @@ import java.util.Set;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
+
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private SocialConfig socialConfig;
@@ -73,8 +74,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private RegistrationConfig registrationConfig;
     @Autowired private GoogleAccessTokenService googleAccessTokenService;
 
-    @Value("${mail.validation.fail.period:30}")
-    private int mailValidationFailPeriod;
+    @Value ("${mail.validation.timeout.period}")
+    private int mailValidationTimeoutPeriod;
 
     /**
      * @param email - lower case string
@@ -118,7 +119,8 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
         if (registrationConfig.isRegistrationTurnedOn()) {
-            return userAccount.isActive() && userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationFailPeriod);
+            return userAccount.isActive() &&
+                    userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationTimeoutPeriod);
         }
 
         return userAccount.isActive();
@@ -154,6 +156,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     /**
      * Mobile app sends provider Id and accessToken to sign up or login.
+     *
      * @param provider
      * @param accessToken Facebook sends accessToken and Google sends authorization code
      * @return

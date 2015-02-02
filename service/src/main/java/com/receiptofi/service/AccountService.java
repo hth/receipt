@@ -128,7 +128,7 @@ public class AccountService {
                     userAuthentication
             );
             userAccount.setAccountValidated(false);
-            /** activated until mail.validation.fail.period and beyond that system will limit login and access. */
+            /** activated until mail.validation.timeout.period and beyond that system will limit login and access. */
             userAccount.active();
             userAccountManager.save(userAccount);
 
