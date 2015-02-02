@@ -64,6 +64,7 @@ import java.util.Set;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
+
     @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private SocialConfig socialConfig;
@@ -73,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private RegistrationConfig registrationConfig;
     @Autowired private GoogleAccessTokenService googleAccessTokenService;
 
-    @Value("${mail.validation.fail.period:30}")
+    @Value ("${mail.validation.fail.period}")
     private int mailValidationFailPeriod;
 
     /**
@@ -154,6 +155,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     /**
      * Mobile app sends provider Id and accessToken to sign up or login.
+     *
      * @param provider
      * @param accessToken Facebook sends accessToken and Google sends authorization code
      * @return

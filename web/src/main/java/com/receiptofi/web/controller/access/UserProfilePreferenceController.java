@@ -71,7 +71,7 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
     private int expenseTagCountMax;
 
-    @Value ("${mail.validation.fail.period:30}")
+    @Value ("${mail.validation.fail.period}")
     private int mailValidationFailPeriod;
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
