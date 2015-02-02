@@ -60,6 +60,7 @@ public class ProfileForm {
 
     private Date accountValidationExpireDay;
     private boolean accountValidationExpired;
+    private boolean accountValidated;
 
     @SuppressWarnings ("unused")
     private ProfileForm() {
@@ -181,5 +182,13 @@ public class ProfileForm {
 
     public void setAccountValidationExpired(boolean accountValidationExpired) {
         this.accountValidationExpired = accountValidationExpired;
+    }
+
+    public boolean isAccountValidated() {
+        return accountValidated;
+    }
+
+    public void setAccountValidated(boolean accountValidated) {
+        this.accountValidated = accountValidated;
     }
 }

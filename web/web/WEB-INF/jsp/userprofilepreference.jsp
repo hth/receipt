@@ -123,7 +123,7 @@
                             <label class="profile_label">Email validated</label>
                             <label class="profile_label" style="width: 274px; !important; color: #606060; !important; font-weight: normal; !important;">
                                 <c:choose>
-                                    <c:when test="${pageContext.request.userPrincipal.principal.accountValidated}">
+                                    <c:when test="${profileForm.accountValidated}">
                                         Yes
                                     </c:when>
                                     <c:otherwise>
@@ -132,7 +132,7 @@
                                 </c:choose>
                             </label>
                         </div>
-                        <c:if test="${!pageContext.request.userPrincipal.principal.accountValidated}">
+                        <c:if test="${!profileForm.accountValidated}">
                         <div class="row_field">
                             <label class="profile_label">Account</label>
                             <label class="profile_label" style="width: 274px; !important; color: #606060; !important; font-weight: normal; !important;">
