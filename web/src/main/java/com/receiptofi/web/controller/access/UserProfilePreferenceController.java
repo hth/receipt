@@ -71,8 +71,8 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
     private int expenseTagCountMax;
 
-    @Value ("${mail.validation.fail.period}")
-    private int mailValidationFailPeriod;
+    @Value ("${mail.validation.timeout.period}")
+    private int mailValidationTimeoutPeriod;
 
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private AccountService accountService;
@@ -145,13 +145,13 @@ public class UserProfilePreferenceController {
 
             profileForm.setAccountValidationExpireDay(
                     DateUtil.toDateTime(userAccountEntity.getAccountValidatedBeginDate())
-                            .plusDays(mailValidationFailPeriod).toDate());
+                            .plusDays(mailValidationTimeoutPeriod).toDate());
 
             profileForm.setAccountValidationExpired(
                     Days.daysBetween(
                             new LocalDate(userAccountEntity.getAccountValidatedBeginDate()),
                             new LocalDate(new Date())
-                    ).isGreaterThan(Days.days(mailValidationFailPeriod)));
+                    ).isGreaterThan(Days.days(mailValidationTimeoutPeriod)));
         }
     }
 
@@ -227,7 +227,7 @@ public class UserProfilePreferenceController {
                         "Email updated successfully. " +
                                 "Sent validation email at your new email address " + profileForm.getMail() + ". " +
                                 "Please validate by clicking on link in email otherwise account will disable in " +
-                                mailValidationFailPeriod + " days. After logout, you will need your new email " +
+                                mailValidationTimeoutPeriod + " days. After logout, you will need your new email " +
                                 "address to log back in.");
                 profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
             } else {

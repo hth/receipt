@@ -74,8 +74,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private RegistrationConfig registrationConfig;
     @Autowired private GoogleAccessTokenService googleAccessTokenService;
 
-    @Value ("${mail.validation.fail.period}")
-    private int mailValidationFailPeriod;
+    @Value ("${mail.validation.timeout.period}")
+    private int mailValidationTimeoutPeriod;
 
     /**
      * @param email - lower case string
@@ -119,7 +119,8 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
         if (registrationConfig.isRegistrationTurnedOn()) {
-            return userAccount.isActive() && userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationFailPeriod);
+            return userAccount.isActive() &&
+                    userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationTimeoutPeriod);
         }
 
         return userAccount.isActive();
