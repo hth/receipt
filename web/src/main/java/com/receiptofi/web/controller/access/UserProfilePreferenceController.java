@@ -186,40 +186,8 @@ public class UserProfilePreferenceController {
             if (null == userProfile.getProviderId()) {
 
                 /** Can incorporate condition in profileForm if its dirty object instead. */
-                if (!profileForm.getFirstName().equals(userProfile.getFirstName()) ||
-                        !profileForm.getLastName().equals(userProfile.getLastName())) {
-                    accountService.updateName(profileForm.getFirstName(), profileForm.getLastName(), receiptUser.getRid());
-                }
-
-                if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail())) {
-                    UserAccountEntity userAccount = accountService.updateUID(receiptUser.getUsername(), profileForm.getMail(), receiptUser.getRid());
-
-                    if (userAccount != null) {
-
-                        EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                                userAccount.getReceiptUserId(),
-                                userAccount.getUserId());
-
-                        mailService.accountValidationMail(
-                                userAccount.getUserId(),
-                                userAccount.getName(),
-                                accountValidate.getAuthenticationKey());
-
-                        profileForm.setSuccessMessage(
-                                "Email updated successfully. " +
-                                        "Sent validation email at your new email address " + profileForm.getMail() + ". " +
-                                        "Please validate by clicking on link in email otherwise account will disable in 30 days. " +
-                                        "After logout, you will need your new email address to log back in.");
-                        profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
-                    } else {
-                        profileForm.setErrorMessage("Account with similar email address already exists. " +
-                                "Submitted address " + profileForm.getMail() + ". " +
-                                "If you have lost your password, then please try password recovery option.");
-                        profileForm.setMail(userProfile.getEmail());
-                    }
-                } else {
-                    profileForm.setErrorMessage("No change. New email matches existing email " + profileForm.getMail() + ".");
-                }
+                changeProfileDetails(profileForm, receiptUser, userProfile);
+                changeEmail(profileForm, receiptUser, userProfile);
 
                 redirectAttrs.addFlashAttribute("profileForm", profileForm);
             }
@@ -231,6 +199,45 @@ public class UserProfilePreferenceController {
 
         /** Re-direct to prevent resubmit. */
         return "redirect:/access" + nextPage + "/i" + ".htm";
+    }
+
+    private void changeProfileDetails(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
+        if (!profileForm.getFirstName().equals(userProfile.getFirstName()) ||
+                !profileForm.getLastName().equals(userProfile.getLastName())) {
+            accountService.updateName(profileForm.getFirstName(), profileForm.getLastName(), receiptUser.getRid());
+        }
+    }
+
+    private void changeEmail(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
+        if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail())) {
+            UserAccountEntity userAccount = accountService.updateUID(receiptUser.getUsername(), profileForm.getMail(), receiptUser.getRid());
+
+            if (userAccount != null) {
+
+                EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                        userAccount.getReceiptUserId(),
+                        userAccount.getUserId());
+
+                mailService.accountValidationMail(
+                        userAccount.getUserId(),
+                        userAccount.getName(),
+                        accountValidate.getAuthenticationKey());
+
+                profileForm.setSuccessMessage(
+                        "Email updated successfully. " +
+                                "Sent validation email at your new email address " + profileForm.getMail() + ". " +
+                                "Please validate by clicking on link in email otherwise account will disable in 30 days. " +
+                                "After logout, you will need your new email address to log back in.");
+                profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
+            } else {
+                profileForm.setErrorMessage("Account with similar email address already exists. " +
+                        "Submitted address " + profileForm.getMail() + ". " +
+                        "If you have lost your password, then please try password recovery option.");
+                profileForm.setMail(userProfile.getEmail());
+            }
+        } else {
+            profileForm.setErrorMessage("No change. New email matches existing email " + profileForm.getMail() + ".");
+        }
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
