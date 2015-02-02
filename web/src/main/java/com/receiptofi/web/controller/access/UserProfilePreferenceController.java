@@ -140,18 +140,19 @@ public class UserProfilePreferenceController {
      * @param profileForm
      */
     private void setAccountValidationInfo(ReceiptUser receiptUser, ProfileForm profileForm) {
-        if (null != profileForm && !receiptUser.isAccountValidated()) {
-            UserAccountEntity userAccountEntity = accountService.findByReceiptUserId(receiptUser.getRid());
-
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(receiptUser.getRid());
+        if (null != profileForm && null != userAccount && !userAccount.isAccountValidated()) {
             profileForm.setAccountValidationExpireDay(
-                    DateUtil.toDateTime(userAccountEntity.getAccountValidatedBeginDate())
+                    DateUtil.toDateTime(userAccount.getAccountValidatedBeginDate())
                             .plusDays(mailValidationTimeoutPeriod).toDate());
 
             profileForm.setAccountValidationExpired(
                     Days.daysBetween(
-                            new LocalDate(userAccountEntity.getAccountValidatedBeginDate()),
+                            new LocalDate(userAccount.getAccountValidatedBeginDate()),
                             new LocalDate(new Date())
                     ).isGreaterThan(Days.days(mailValidationTimeoutPeriod)));
+        } else if (null != profileForm && null != userAccount) {
+            profileForm.setAccountValidated(userAccount.isAccountValidated());
         }
     }
 

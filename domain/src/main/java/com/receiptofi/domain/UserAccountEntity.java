@@ -99,7 +99,7 @@ public class UserAccountEntity extends BaseEntity {
     private UserAuthenticationEntity userAuthentication;
 
     @Field ("AV")
-    private boolean isAccountValidated;
+    private boolean accountValidated;
 
     @Field ("AVD")
     private Date accountValidatedBeginDate;
@@ -268,14 +268,19 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public boolean isAccountValidated() {
-        return isAccountValidated;
+        return accountValidated;
     }
 
     public void setAccountValidated(boolean accountValidated) {
-        isAccountValidated = accountValidated;
-        if (!accountValidated) {
+        if (!accountValidated && this.accountValidated) {
+            /**
+             * Update accountValidatedBeginDate with new date when account has been validated previously or else
+             * keep the date same as this can lead to continuous increase in account validation timeout period.
+             */
             accountValidatedBeginDate = DateUtil.midnight(DateTime.now().plusDays(1).toDate());
         }
+
+        this.accountValidated = accountValidated;
     }
 
     public Date getAccountValidatedBeginDate() {
@@ -283,7 +288,7 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public boolean isAccountNotValidatedBeyondSelectedDays(int mailValidationFailPeriod) {
-        return isAccountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
+        return accountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
                 new Date().getTime()).getStandardDays() > mailValidationFailPeriod);
     }
 
@@ -319,7 +324,7 @@ public class UserAccountEntity extends BaseEntity {
                 ", lastName='" + lastName + '\'' +
                 ", roles=" + roles +
                 ", userAuthentication=" + userAuthentication +
-                ", isAccountValidated=" + isAccountValidated +
+                ", accountValidated=" + accountValidated +
                 '}';
     }
 }
