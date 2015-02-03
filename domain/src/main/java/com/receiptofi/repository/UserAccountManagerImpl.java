@@ -2,10 +2,14 @@ package com.receiptofi.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.*;
+
+import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.repository.util.AppendAdditionalFields;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +19,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: hitender
@@ -87,5 +95,16 @@ public class UserAccountManagerImpl implements UserAccountManager {
                 query(where("PID").is(provider).and("AC").is(authorizationCode)),
                 UserAccountEntity.class, TABLE
         );
+    }
+
+    @Override
+    public int inactiveNonValidatedAccount(Date pastActivationDate) {
+        WriteResult writeResult = mongoTemplate.updateMulti(
+                query(where("AV").is(false).and("AVD").lt(pastActivationDate).and("A").is(true)),
+                AppendAdditionalFields.entityUpdate(update("A", false)),
+                UserAccountEntity.class
+        );
+
+        return writeResult.getN();
     }
 }

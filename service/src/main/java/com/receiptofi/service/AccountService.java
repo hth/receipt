@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -334,5 +335,9 @@ public class AccountService {
 
         userProfileManager.save(userProfile);
         userAccountManager.save(userAccount);
+    }
+
+    public int inactiveNonValidatedAccount(Date pastActivationDate) {
+        return userAccountManager.inactiveNonValidatedAccount(pastActivationDate);
     }
 }
