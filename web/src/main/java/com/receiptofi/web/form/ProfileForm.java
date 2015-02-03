@@ -8,8 +8,7 @@ import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import org.joda.time.DateTime;
-
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,19 +31,20 @@ import javax.validation.constraints.Size;
 public class ProfileForm {
     /** For profile tab. */
     @NotNull
-    @Size(min = 2, max = 32)
-    @Pattern(regexp = "^[\\p{L} .'-]+$")
+    @Size (min = 2, max = 32)
+    @Pattern (regexp = "^[\\p{L} .'-]+$")
     private String firstName;
 
-    @Size(min = 0, max = 32)
-    @Pattern(regexp = "^[\\p{L} .'-]+$")
+    @Size (min = 0, max = 32)
+    @Pattern (regexp = "^[\\p{L} .'-]+$")
     private String lastName;
 
     @NotNull
-    @Size(min = 5, max = 32)
-    @Pattern(regexp = "^[^@]+@[^@]+\\.[^@]+$")
+    @Size (min = 5, max = 32)
+    @Pattern (regexp = "^[^@]+@[^@]+\\.[^@]+$")
     private String mail;
     private Date updated;
+    private URL profileImage;
 
     /** For Admin related tab. */
     private String rid;
@@ -190,5 +190,13 @@ public class ProfileForm {
 
     public void setAccountValidated(boolean accountValidated) {
         this.accountValidated = accountValidated;
+    }
+
+    public URL getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(URL profileImage) {
+        this.profileImage = profileImage;
     }
 }
