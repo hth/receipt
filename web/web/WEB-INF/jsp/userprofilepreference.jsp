@@ -96,7 +96,11 @@
                 <div class="photo_section">
                     <div class="photo_part">
                         <h2 class="h2">Photo</h2>
-                        <div class="pic"></div>
+                        <div class="pic">
+                            <img width="170" height="175" alt=" Image from social profile"
+                                    style="font-size: 0.9em; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"
+                                    src="${profileForm.profileImage.toString()}" />
+                        </div>
                     </div>
                     <div class="photo_button">
                         <input type="button" value="TAKE NEW PHOTO" style="background:#0079FF" class="read_btn">

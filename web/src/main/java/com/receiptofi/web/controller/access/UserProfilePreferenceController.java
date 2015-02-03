@@ -43,6 +43,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +104,8 @@ public class UserProfilePreferenceController {
             if (result.getObjectName().equals("expenseTypeForm")) {
                 model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", result);
 
-                profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+                profileForm = ProfileForm.newInstance(
+                        userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
                 populateProfileForm(profileForm, receiptUser.getRid());
 
                 modelAndView.addObject("profileForm", profileForm);
@@ -115,7 +118,8 @@ public class UserProfilePreferenceController {
                 populateProfileForm(profileForm, receiptUser.getRid());
 
                 /** Since we do not plan to lose profileForm from result we need to set some other values for tab 3. */
-                ProfileForm profile = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+                ProfileForm profile = ProfileForm.newInstance(
+                        userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
                 profileForm.setLevel(profile.getLevel());
                 profileForm.setActive(profile.isActive());
 
@@ -124,7 +128,8 @@ public class UserProfilePreferenceController {
         } else {
             profileForm = (ProfileForm) model.asMap().get("profileForm");
             if (profileForm == null) {
-                profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+                profileForm = ProfileForm.newInstance(
+                        userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
             }
             modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, receiptUser.getRid());
         }
@@ -141,18 +146,29 @@ public class UserProfilePreferenceController {
      */
     private void setAccountValidationInfo(ReceiptUser receiptUser, ProfileForm profileForm) {
         UserAccountEntity userAccount = accountService.findByReceiptUserId(receiptUser.getRid());
-        if (null != profileForm && null != userAccount && !userAccount.isAccountValidated()) {
-            profileForm.setAccountValidationExpireDay(
-                    DateUtil.toDateTime(userAccount.getAccountValidatedBeginDate())
-                            .plusDays(mailValidationTimeoutPeriod).toDate());
+        if (null != userAccount && null != profileForm) {
+            if (!userAccount.isAccountValidated()) {
+                profileForm.setAccountValidationExpireDay(
+                        DateUtil.toDateTime(userAccount.getAccountValidatedBeginDate())
+                                .plusDays(mailValidationTimeoutPeriod).toDate());
 
-            profileForm.setAccountValidationExpired(
-                    Days.daysBetween(
-                            new LocalDate(userAccount.getAccountValidatedBeginDate()),
-                            new LocalDate(new Date())
-                    ).isGreaterThan(Days.days(mailValidationTimeoutPeriod)));
-        } else if (null != profileForm && null != userAccount) {
-            profileForm.setAccountValidated(userAccount.isAccountValidated());
+                profileForm.setAccountValidationExpired(
+                        Days.daysBetween(
+                                new LocalDate(userAccount.getAccountValidatedBeginDate()),
+                                new LocalDate(new Date())
+                        ).isGreaterThan(Days.days(mailValidationTimeoutPeriod)));
+            } else {
+                profileForm.setAccountValidated(userAccount.isAccountValidated());
+            }
+
+            try {
+                profileForm.setProfileImage(new URL(userAccount.getImageUrl()));
+            } catch (MalformedURLException e) {
+                LOG.error("failed parsing profile image URL for rid={} reason={}",
+                        userAccount.getReceiptUserId(),
+                        e.getLocalizedMessage(),
+                        e);
+            }
         }
     }
 
@@ -186,9 +202,20 @@ public class UserProfilePreferenceController {
             UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid());
             if (null == userProfile.getProviderId()) {
 
-                /** Can incorporate condition in profileForm if its dirty object instead. */
-                changeProfileDetails(profileForm, receiptUser, userProfile);
-                changeEmail(profileForm, receiptUser, userProfile);
+                if (receiptUser.getPid() == null) {
+                    /** Can incorporate condition in profileForm if its dirty object instead. */
+                    changeProfileDetails(profileForm, receiptUser, userProfile);
+                    changeEmail(profileForm, receiptUser, userProfile);
+                } else {
+                    /**
+                     * Should not be able to change mail id or profile information for accounts registered through
+                     * social account. Final fall back. Should be taken care on front end.
+                     */
+                    LOG.error("Social user={} rid={} tried changing profile information. This should never happen.",
+                            receiptUser.getRid(),
+                            receiptUser.getUsername());
+                    profileForm.setErrorMessage("Cannot change email for social login");
+                }
 
                 redirectAttrs.addFlashAttribute("profileForm", profileForm);
             }
@@ -211,7 +238,10 @@ public class UserProfilePreferenceController {
 
     private void changeEmail(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
         if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail())) {
-            UserAccountEntity userAccount = accountService.updateUID(receiptUser.getUsername(), profileForm.getMail(), receiptUser.getRid());
+            UserAccountEntity userAccount = accountService.updateUID(
+                    receiptUser.getUsername(),
+                    profileForm.getMail(),
+                    receiptUser.getRid());
 
             if (userAccount != null) {
 
@@ -275,7 +305,11 @@ public class UserProfilePreferenceController {
                 result.rejectValue(
                         "tagName",
                         StringUtils.EMPTY,
-                        "Cannot delete " + expenseTypeForm.getTagName() + " as it is being used by at least " + count + " document(s)");
+                        "Cannot delete " +
+                                expenseTypeForm.getTagName() +
+                                " as it is being used by at least " +
+                                count +
+                                " document(s)");
 
                 redirectAttrs.addFlashAttribute("result", result);
             }
