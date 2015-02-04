@@ -136,14 +136,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-            UserAuthenticationEntity userAuthenticate = userAccountEntity.getUserAuthentication();
 
-            //XXX Remove Todo some static password to be remove
             return new ReceiptUser(
                     StringUtils.isBlank(userAccountEntity.getUserId()) ? userProfile.getUserId() : userAccountEntity.getUserId(),
-                    null == userAuthenticate ?
-                            "$2a$12$Ce0mzNSijSvhAjGqfMKvx.SCQUqLHRQnTeOsKH9sphjC0XF3TA4Ge" :
-                            userAuthenticate.getPassword(),
+                    userAccountEntity.getUserAuthentication().getPassword(),
                     getAuthorities(userAccountEntity.getRoles()),
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),

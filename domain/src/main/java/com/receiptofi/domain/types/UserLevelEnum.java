@@ -4,6 +4,13 @@
 package com.receiptofi.domain.types;
 
 /**
+ * User level defines the roles set for a user in UserAccountEntity. Roles in UserAccountEntity sets authorities in
+ * ReceiptUser.
+ *
+ * @see com.receiptofi.domain.UserAccountEntity
+ * @see com.receiptofi.domain.site.ReceiptUser
+ * @see com.receiptofi.domain.types.RoleEnum
+ *
  * @author hitender
  * @since Mar 25, 2013 1:11:21 AM
  */
@@ -22,8 +29,8 @@ public enum UserLevelEnum {
     EMPLOYER_PAID("Employer Paid", 40),
     TECHNICIAN("Technician", 50),
     SUPERVISOR("Supervisor", 60),
-    ANALYSIS_READ("Analysis Read", 65),
-    ADMIN("Admin", 70);
+    ANALYSIS_READ("Analysis Read", 70),
+    ADMIN("Admin", 80);
 
     public final String description;
     public final int value;

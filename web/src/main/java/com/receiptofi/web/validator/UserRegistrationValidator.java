@@ -3,11 +3,15 @@
  */
 package com.receiptofi.web.validator;
 
+import com.receiptofi.utils.Validate;
+import com.receiptofi.web.controller.open.AccountRegistrationController;
 import com.receiptofi.web.form.UserRegistrationForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -27,8 +31,7 @@ import org.springframework.validation.Validator;
 public final class UserRegistrationValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidator.class);
 
-    public static final String EMAIL_REGEX = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
-    public static final String BIRTHDAY_REGEX = "\\d{2}/\\d{2}/\\d{4}";
+    @Autowired AccountRegistrationController accountRegistrationController;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -39,45 +42,29 @@ public final class UserRegistrationValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First Name"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[]{"Last Name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email ID"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
-        //ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthday", "field.required", new Object[]{"Birthday"});
 
         UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
-        if (userRegistration.getFirstName().length() < 4) {
+        if (userRegistration.getFirstName().length() < accountRegistrationController.getNameLength()) {
             errors.rejectValue("firstName",
                     "field.length",
-                    new Object[]{Integer.valueOf("4")},
+                    new Object[]{accountRegistrationController.getNameLength()},
                     "Minimum length of four characters");
         }
 
-        if (userRegistration.getLastName().length() < 4) {
-            errors.rejectValue("lastName",
-                    "field.length",
-                    new Object[]{Integer.valueOf("4")},
-                    "Minimum length of four characters");
-        }
-
-        if (!userRegistration.getEmailId().matches(EMAIL_REGEX)) {
+        if (!Validate.isValidMail(userRegistration.getEmailId())) {
             errors.rejectValue("emailId",
                     "field.email.address.not.valid",
                     new Object[]{userRegistration.getEmailId()},
                     "Email Address provided is not valid");
         }
 
-        if (userRegistration.getPassword().length() < 4) {
+        if (userRegistration.getPassword().length() < accountRegistrationController.getPasswordLength()) {
             errors.rejectValue("password",
                     "field.length",
-                    new Object[]{Integer.valueOf("4")},
+                    new Object[]{accountRegistrationController.getPasswordLength()},
                     "Minimum length of four characters");
-        }
-
-        if (userRegistration.getBirthday().length() > 0 && !userRegistration.getBirthday().matches(BIRTHDAY_REGEX)) {
-            errors.rejectValue("birthday",
-                    "field.birthday.not.valid",
-                    new Object[]{userRegistration.getBirthday()},
-                    "Birthday provided is not valid");
         }
     }
 

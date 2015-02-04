@@ -51,8 +51,12 @@ public class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSucc
             ReceiptUser receiptUser = (ReceiptUser) authentication.getPrincipal();
             receiptUserId = receiptUser.getRid();
 
-            if (receiptUser.getUserLevel() == UserLevelEnum.TECHNICIAN) {
-                LOG.info("Reset document pending documents rid={}", receiptUser.getRid());
+            /** Only UserLevelEnum.TECHNICIAN and UserLevelEnum.SUPERVISOR has access to update and modify documents. */
+            if (receiptUser.getUserLevel() == UserLevelEnum.TECHNICIAN ||
+                    receiptUser.getUserLevel() == UserLevelEnum.SUPERVISOR) {
+                LOG.info("Reset document pending documents rid={} userLevel={}",
+                        receiptUser.getRid(),
+                        receiptUser.getUserLevel());
                 messageDocumentService.resetDocumentsToInitialState(receiptUserId);
             }
         }
