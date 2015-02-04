@@ -129,6 +129,7 @@ public class AccountService {
                     userAuthentication
             );
             userAccount.setAccountValidated(false);
+            userAccount.setAccountValidatedBeginDate();
             /** activated until mail.validation.timeout.period and beyond that system will limit login and access. */
             userAccount.active();
             userAccountManager.save(userAccount);
@@ -222,6 +223,7 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_ADMIN);
+                roles.add(RoleEnum.ROLE_ANALYSIS_READ);
                 userAccountEntity.setRoles(roles);
                 break;
             case ANALYSIS_READ:

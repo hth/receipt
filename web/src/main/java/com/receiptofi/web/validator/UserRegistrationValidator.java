@@ -4,11 +4,13 @@
 package com.receiptofi.web.validator;
 
 import com.receiptofi.utils.Validate;
+import com.receiptofi.web.controller.open.AccountRegistrationController;
 import com.receiptofi.web.form.UserRegistrationForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -29,14 +31,7 @@ import org.springframework.validation.Validator;
 public final class UserRegistrationValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidator.class);
 
-    @Value ("${AccountRegistrationController.mailLength:5}")
-    private int mailLength;
-
-    @Value ("${AccountRegistrationController.nameLength:2}")
-    private int nameLength;
-
-    @Value ("${AccountRegistrationController.passwordLength:6}")
-    private int passwordLength;
+    @Autowired AccountRegistrationController accountRegistrationController;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -51,10 +46,10 @@ public final class UserRegistrationValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
 
         UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
-        if (userRegistration.getFirstName().length() < nameLength) {
+        if (userRegistration.getFirstName().length() < accountRegistrationController.getNameLength()) {
             errors.rejectValue("firstName",
                     "field.length",
-                    new Object[]{nameLength},
+                    new Object[]{accountRegistrationController.getNameLength()},
                     "Minimum length of four characters");
         }
 
@@ -65,10 +60,10 @@ public final class UserRegistrationValidator implements Validator {
                     "Email Address provided is not valid");
         }
 
-        if (userRegistration.getPassword().length() < passwordLength) {
+        if (userRegistration.getPassword().length() < accountRegistrationController.getPasswordLength()) {
             errors.rejectValue("password",
                     "field.length",
-                    new Object[]{passwordLength},
+                    new Object[]{accountRegistrationController.getPasswordLength()},
                     "Minimum length of four characters");
         }
     }

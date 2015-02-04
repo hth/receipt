@@ -19,6 +19,7 @@ public class Validate {
 
     private static Pattern objectIdPattern = Pattern.compile("^[0-9a-fA-F]{24}$");
     private static Pattern mailPattern = Pattern.compile("^[^@]+@[^@]+\\.[^@]+$");
+    private static Pattern otherMailPattern = Pattern.compile("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
     private static Pattern namePattern = Pattern.compile("^[\\p{L} .'-]+$");
 
     private Validate() {

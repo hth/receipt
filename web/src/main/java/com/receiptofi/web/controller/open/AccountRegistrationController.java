@@ -73,13 +73,13 @@ public class AccountRegistrationController {
     @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
     private String[] expenseTags;
 
-    @Value ("${AccountRegistrationController.mailLength:5}")
+    @Value ("${AccountRegistrationController.mailLength}")
     private int mailLength;
 
-    @Value ("${AccountRegistrationController.nameLength:2}")
+    @Value ("${AccountRegistrationController.nameLength}")
     private int nameLength;
 
-    @Value ("${AccountRegistrationController.passwordLength:6}")
+    @Value ("${AccountRegistrationController.passwordLength}")
     private int passwordLength;
 
     @Autowired

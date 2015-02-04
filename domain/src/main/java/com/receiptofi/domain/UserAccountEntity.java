@@ -287,6 +287,10 @@ public class UserAccountEntity extends BaseEntity {
         return accountValidatedBeginDate;
     }
 
+    public void setAccountValidatedBeginDate() {
+        this.accountValidatedBeginDate = DateUtil.midnight(DateTime.now().plusDays(1).toDate());
+    }
+
     public boolean isAccountNotValidatedBeyondSelectedDays(int mailValidationFailPeriod) {
         return accountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
                 new Date().getTime()).getStandardDays() > mailValidationFailPeriod);
