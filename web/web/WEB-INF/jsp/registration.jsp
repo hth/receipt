@@ -42,9 +42,9 @@
                 <td style="width: 51%"><form:errors path="birthday" cssClass="error" id="birthday.errors" /></td>
             </tr>
 			<tr>
-				<td style="text-align: right; width: 19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
-				<td style="width: 30%"><form:input class="tooltip" path="emailId" title="Please provide a valid email address. A confirmation email will be sent to this address. This email address will also be your login to receipt-o-fi." /></td>
-				<td style="width: 51%" id="emailIdErrors"><form:errors path="emailId" cssClass="error" id="emailId.errors"/></td>
+				<td style="text-align: right; width: 19%"><form:label for="mail" path="mail" cssErrorClass="error">Email Address:</form:label></td>
+				<td style="width: 30%"><form:input class="tooltip" path="mail" title="Please provide a valid email address. A confirmation email will be sent to this address. This email address will also be your login to receipt-o-fi." /></td>
+				<td style="width: 51%" id="emailIdErrors"><form:errors path="mail" cssClass="error" id="mail.errors"/></td>
 			</tr>
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>

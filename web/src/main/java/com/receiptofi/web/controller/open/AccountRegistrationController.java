@@ -122,7 +122,7 @@ public class AccountRegistrationController {
             return registrationPage;
         }
 
-        UserProfileEntity userProfile = accountService.doesUserExists(userRegistrationForm.getEmailId());
+        UserProfileEntity userProfile = accountService.doesUserExists(userRegistrationForm.getMail());
         if (userProfile != null) {
             LOG.warn("account exists");
             userRegistrationValidator.accountExists(userRegistrationForm, result);
@@ -132,7 +132,7 @@ public class AccountRegistrationController {
         UserAccountEntity userAccount;
         try {
             userAccount = accountService.createNewAccount(
-                    userRegistrationForm.getEmailId(),
+                    userRegistrationForm.getMail(),
                     userRegistrationForm.getFirstName(),
                     userRegistrationForm.getLastName(),
                     userRegistrationForm.getPassword(),
@@ -239,17 +239,5 @@ public class AccountRegistrationController {
         LOG.info("Email available={} for registration", email);
         availabilityStatus = AvailabilityStatus.available();
         return String.format("{ \"valid\" : \"%s\" }", availabilityStatus.isAvailable());
-    }
-
-    public int getMailLength() {
-        return mailLength;
-    }
-
-    public int getNameLength() {
-        return nameLength;
-    }
-
-    public int getPasswordLength() {
-        return passwordLength;
     }
 }

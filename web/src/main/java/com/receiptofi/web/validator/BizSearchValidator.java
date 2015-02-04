@@ -24,7 +24,7 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class BizSearchValidator implements Validator {
+public class BizSearchValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(BizSearchValidator.class);
 
     @Override

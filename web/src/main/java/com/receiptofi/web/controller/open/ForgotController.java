@@ -152,15 +152,15 @@ public class ForgotController {
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        LOG.info("Recover password process initiated for user={}", userRegistrationForm.getEmailId());
-        if (StringUtils.isEmpty(userRegistrationForm.getEmailId())) {
+        LOG.info("Recover password process initiated for user={}", userRegistrationForm.getMail());
+        if (StringUtils.isEmpty(userRegistrationForm.getMail())) {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
             return null;
         }
 
         ForgotRecoverForm forgotRecoverForm = ForgotRecoverForm.newInstance();
-        forgotRecoverForm.setEmailId(userRegistrationForm.getEmailId());
-        forgotRecoverForm.setCaptcha(userRegistrationForm.getEmailId());
+        forgotRecoverForm.setEmailId(userRegistrationForm.getMail());
+        forgotRecoverForm.setCaptcha(userRegistrationForm.getMail());
 
         return new ModelAndView(recoverPage, "forgotRecoverForm", forgotRecoverForm);
     }

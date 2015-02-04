@@ -22,7 +22,7 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class ForgotAuthenticateValidator implements Validator {
+public class ForgotAuthenticateValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotAuthenticateValidator.class);
 
     @Override

@@ -28,10 +28,17 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class UserRegistrationValidator implements Validator {
+public class UserRegistrationValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidator.class);
 
-    @Autowired AccountRegistrationController accountRegistrationController;
+    @Value ("${AccountRegistrationController.mailLength}")
+    private int mailLength;
+
+    @Value ("${AccountRegistrationController.nameLength}")
+    private int nameLength;
+
+    @Value ("${AccountRegistrationController.passwordLength}")
+    private int passwordLength;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -42,37 +49,48 @@ public final class UserRegistrationValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First Name"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email ID"});
+
+        /** Example of validation message: Email Address cannot be left blank. */
+        /** Example of validation message: Email Address field.required. */
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email Address"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
 
         UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
-        if (userRegistration.getFirstName().length() < accountRegistrationController.getNameLength()) {
+        if (userRegistration.getFirstName().length() < nameLength) {
             errors.rejectValue("firstName",
                     "field.length",
-                    new Object[]{accountRegistrationController.getNameLength()},
+                    new Object[]{nameLength},
                     "Minimum length of four characters");
         }
 
-        if (!Validate.isValidMail(userRegistration.getEmailId())) {
-            errors.rejectValue("emailId",
+        if (!Validate.isValidMail(userRegistration.getMail())) {
+            errors.rejectValue("mail",
                     "field.email.address.not.valid",
-                    new Object[]{userRegistration.getEmailId()},
+                    new Object[]{userRegistration.getMail()},
                     "Email Address provided is not valid");
         }
 
-        if (userRegistration.getPassword().length() < accountRegistrationController.getPasswordLength()) {
+        if (userRegistration.getMail() != null && userRegistration.getMail().length() <= mailLength) {
+            errors.rejectValue(
+                    "mail",
+                    "field.length",
+                    new Object[]{mailLength},
+                    "Email Address has to be at least of size " + mailLength + " characters.");
+        }
+
+        if (userRegistration.getPassword().length() < passwordLength) {
             errors.rejectValue("password",
                     "field.length",
-                    new Object[]{accountRegistrationController.getPasswordLength()},
+                    new Object[]{passwordLength},
                     "Minimum length of four characters");
         }
     }
 
     public void accountExists(Object obj, Errors errors) {
         UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
-        errors.rejectValue("emailId",
+        errors.rejectValue("mail",
                 "emailId.already.registered",
-                new Object[]{userRegistration.getEmailId()},
-                "Account already registered with this Email");
+                new Object[]{userRegistration.getMail()},
+                "Account already registered with this Email Address");
     }
 }

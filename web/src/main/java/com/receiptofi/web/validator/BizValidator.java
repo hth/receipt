@@ -22,7 +22,7 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class BizValidator implements Validator {
+public class BizValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(BizValidator.class);
 
     @Override

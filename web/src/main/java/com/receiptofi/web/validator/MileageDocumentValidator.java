@@ -21,7 +21,7 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class MileageDocumentValidator implements Validator {
+public class MileageDocumentValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(MileageDocumentValidator.class);
 
     @Override
