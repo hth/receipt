@@ -23,7 +23,7 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class EvalFeedbackValidator implements Validator {
+public class EvalFeedbackValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackValidator.class);
 
     @Override

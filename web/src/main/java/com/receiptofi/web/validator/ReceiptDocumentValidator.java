@@ -30,7 +30,7 @@ import java.text.ParseException;
         "PMD.LongVariable"
 })
 @Component
-public final class ReceiptDocumentValidator implements Validator {
+public class ReceiptDocumentValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentValidator.class);
 
     @Override

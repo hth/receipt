@@ -25,7 +25,7 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class ForgotRecoverValidator implements Validator {
+public class ForgotRecoverValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotRecoverValidator.class);
 
     @Override

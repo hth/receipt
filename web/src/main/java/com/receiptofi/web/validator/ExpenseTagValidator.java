@@ -23,7 +23,7 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public final class ExpenseTagValidator implements Validator {
+public class ExpenseTagValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ExpenseTagValidator.class);
     private static final int EXPENSE_TAG_MAX_CHAR = 12;
     private static final int EXPENSE_COLOR_TAG_MAX_CHAR = 7;
