@@ -10,7 +10,7 @@
 
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin1.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -53,10 +53,10 @@
 
 </head>
 <body>
-<div class="main_wrapper">
-    <div class="header">
+<div class="header_main">
+    <div class="header_wrappermain">
         <div class="header_wrapper">
-            <div class="header_left_content">
+            <div class="header_left_contentmain">
                 <div id="logo">
                     <h1><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>

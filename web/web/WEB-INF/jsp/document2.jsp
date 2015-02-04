@@ -10,7 +10,7 @@
 
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin1.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
@@ -28,12 +28,12 @@
     </script>
 </head>
 <body>
-<div class="main_wrapper">
-    <div class="header">
+<div class="header_main">
+    <div class="header_wrappermain">
         <div class="header_wrapper">
-            <div class="header_left_content">
+            <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1>Receiptofi</h1>
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
