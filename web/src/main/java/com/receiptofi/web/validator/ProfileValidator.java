@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -30,7 +31,11 @@ import org.springframework.validation.Validator;
 public class ProfileValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ProfileValidator.class);
 
-    @Autowired AccountRegistrationController accountRegistrationController;
+    @Value ("${AccountRegistrationController.mailLength}")
+    private int mailLength;
+
+    @Value ("${AccountRegistrationController.nameLength}")
+    private int nameLength;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -44,22 +49,22 @@ public class ProfileValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email address"});
 
         ProfileForm profileForm = (ProfileForm) obj;
-        if (profileForm.getFirstName() != null && profileForm.getFirstName().length() < accountRegistrationController.getNameLength()) {
-            LOG.error("Profile first name '{}' less than size={} ", profileForm.getFirstName(), accountRegistrationController.getNameLength());
+        if (profileForm.getFirstName() != null && profileForm.getFirstName().length() < nameLength) {
+            LOG.error("Profile first name '{}' less than size={} ", profileForm.getFirstName(), nameLength);
             errors.rejectValue(
                     "firstName",
                     "firstName",
-                    new Object[]{accountRegistrationController.getNameLength()},
-                    "First name has to be at least of size " + accountRegistrationController.getNameLength() + " characters.");
+                    new Object[]{nameLength},
+                    "First name has to be at least of size " + nameLength + " characters.");
         }
 
-        if (profileForm.getMail() != null && profileForm.getMail().length() <= accountRegistrationController.getMailLength()) {
-            LOG.error("Profile mail '{}' less than size={} ", profileForm.getMail(), accountRegistrationController.getMailLength());
+        if (profileForm.getMail() != null && profileForm.getMail().length() <= mailLength) {
+            LOG.error("Profile mail '{}' less than size={} ", profileForm.getMail(), mailLength);
             errors.rejectValue(
                     "mail",
                     "mail",
-                    new Object[]{accountRegistrationController.getMailLength()},
-                    "Mail Address has to be at least of size " + accountRegistrationController.getMailLength() + " characters.");
+                    new Object[]{mailLength},
+                    "Mail Address has to be at least of size " + mailLength + " characters.");
         }
 
         if (!Validate.isValidName(profileForm.getFirstName())) {

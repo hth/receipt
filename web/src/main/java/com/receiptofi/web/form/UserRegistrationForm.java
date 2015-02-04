@@ -19,7 +19,7 @@ public final class UserRegistrationForm {
 
     private String firstName;
     private String lastName;
-    private String emailId;
+    private String mail;
     private String birthday;
     private String password;
 
@@ -51,12 +51,12 @@ public final class UserRegistrationForm {
      *
      * @return
      */
-    public String getEmailId() {
-        return StringUtils.lowerCase(emailId);
+    public String getMail() {
+        return StringUtils.lowerCase(mail);
     }
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getBirthday() {
@@ -80,7 +80,7 @@ public final class UserRegistrationForm {
         return "UserRegistrationForm [" +
                 "firstName=" + firstName + ", " +
                 "lastName=" + lastName + ", " +
-                "emailId=" + emailId + ", " +
+                "mail=" + mail + ", " +
                 "password=" + password + "]";
     }
 }
