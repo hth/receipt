@@ -10,7 +10,7 @@
 
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin1.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/fineuploader/fineuploader-3.6.3.css'/>
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.min.css'/>
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.5/fullcalendar.print.css' media='print'/>
@@ -132,10 +132,10 @@
     </script>
 </head>
 <body>
-<div class="main_wrapper">
-    <div class="header">
+<div class="header_main">
+    <div class="header_wrappermain">
         <div class="header_wrapper">
-            <div class="header_left_content">
+            <div class="header_left_contentmain">
                 <div id="logo">
                     <h1><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>
@@ -291,7 +291,7 @@
 				<h1 class="rightside-title-text left">
                     <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
                 </h1>
-                <span class="right" style="width: 24%;">
+                <span class="right right_view" style="width: 21%;">
 					<input type="button" value="List" class="overview_view toggle_button_left" id="btnList" onclick="toggleListCalendarView(this)">
 					<span style="width:1px;background:white;float:left;">&nbsp;</span>
 					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">

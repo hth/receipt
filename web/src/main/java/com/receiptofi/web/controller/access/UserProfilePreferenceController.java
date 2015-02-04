@@ -33,6 +33,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -134,6 +135,7 @@ public class UserProfilePreferenceController {
             modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, receiptUser.getRid());
         }
 
+        Assert.notNull(profileForm, "profileForm should not be null");
         setAccountValidationInfo(receiptUser, profileForm);
         return modelAndView;
     }
@@ -142,11 +144,11 @@ public class UserProfilePreferenceController {
      * Sets account with validation info if account has not be validated.
      *
      * @param receiptUser
-     * @param profileForm
+     * @param profileForm not null
      */
     private void setAccountValidationInfo(ReceiptUser receiptUser, ProfileForm profileForm) {
         UserAccountEntity userAccount = accountService.findByReceiptUserId(receiptUser.getRid());
-        if (null != userAccount && null != profileForm) {
+        if (null != userAccount) {
             if (!userAccount.isAccountValidated()) {
                 profileForm.setAccountValidationExpireDay(
                         DateUtil.toDateTime(userAccount.getAccountValidatedBeginDate())
