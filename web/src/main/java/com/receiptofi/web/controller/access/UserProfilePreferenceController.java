@@ -163,14 +163,7 @@ public class UserProfilePreferenceController {
                 profileForm.setAccountValidated(userAccount.isAccountValidated());
             }
 
-            try {
-                profileForm.setProfileImage(new URL(userAccount.getImageUrl()));
-            } catch (MalformedURLException e) {
-                LOG.error("failed parsing profile image URL for rid={} reason={}",
-                        userAccount.getReceiptUserId(),
-                        e.getLocalizedMessage(),
-                        e);
-            }
+            profileForm.setProfileImage(userAccount.getImageUrl());
         }
     }
 

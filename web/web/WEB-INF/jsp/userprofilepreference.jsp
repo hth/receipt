@@ -99,7 +99,7 @@
                         <div class="pic">
                             <img width="170" height="175" alt=" Image from social profile"
                                     style="font-size: 0.9em; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"
-                                    src="${profileForm.profileImage.toString()}" />
+                                    src="${profileForm.profileImage}" />
                         </div>
                     </div>
                     <div class="photo_button">
