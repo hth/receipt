@@ -128,6 +128,8 @@
                 var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
                 $(loadMonthlyExpenses(eventTime, 'next'));
             });
+
+            $("#calendarId").hide();
         });
     </script>
 </head>
@@ -291,8 +293,8 @@
 				<h1 class="rightside-title-text left">
                     <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
                 </h1>
-                <span class="right right_view" style="width: 21%;">
-					<input type="button" value="List" class="overview_view toggle_button_left" id="btnList" onclick="toggleListCalendarView(this)">
+                <span class="right right_view" style="width: 24%;">
+					<input type="button" value="List" class="overview_view toggle_button_left toggle_selected" id="btnList" onclick="toggleListCalendarView(this)">
 					<span style="width:1px;background:white;float:left;">&nbsp;</span>
 					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">
 				</span>

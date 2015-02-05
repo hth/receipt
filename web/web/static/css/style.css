@@ -33,6 +33,7 @@ b {
 
 body {
     line-height: 1;
+    overflow-y: scroll;
 }
 
 ol, ul {
@@ -556,7 +557,7 @@ a.notification:hover, a.notification:visited, a.notification {
     font-size: 0.75em;
     padding-top: 22px;
     display: inline-block;
-    width: 54px;
+    width: 50px;
     vertical-align: top;
     padding-left: 7px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
