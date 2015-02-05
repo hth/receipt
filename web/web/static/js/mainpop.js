@@ -109,10 +109,6 @@ jQuery(document).ready(function ($) {
         }
     });
     //Fineuploader ends
-
-    // Load by hiding calendar by default
-    $("#calendarId").hide();
-    $("#btnList").addClass("toggle_selected");
 });
 
 function runCounter(max) {

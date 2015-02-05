@@ -129,6 +129,7 @@
                 $(loadMonthlyExpenses(eventTime, 'next'));
             });
 
+            // Load by hiding calendar by default
             $("#calendarId").hide();
         });
     </script>
@@ -146,7 +147,7 @@
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
-                <a class="top-account-bar-text" href="#">REPORT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username" />
                 </a>
