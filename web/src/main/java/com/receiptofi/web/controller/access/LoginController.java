@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
-    @Value ("${loginPage:login2}")
+    @Value ("${loginPage:login}")
     private String loginPage;
 
     //private UserAgentStringParser parser;
