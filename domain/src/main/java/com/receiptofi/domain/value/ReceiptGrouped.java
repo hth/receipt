@@ -10,6 +10,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,6 +29,7 @@ import java.util.Date;
 public class ReceiptGrouped implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptGrouped.class);
 
+    @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private BigDecimal total;
     private int year;
     private int month;
@@ -101,6 +104,10 @@ public class ReceiptGrouped implements Serializable {
 
     public int getDay() {
         return this.day;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
     }
 
     public long dateInMillisForSorting() {

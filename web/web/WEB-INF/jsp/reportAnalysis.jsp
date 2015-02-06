@@ -52,7 +52,7 @@
                 <c:forEach var="item" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
                 <li>
                     <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
-                        <spring:eval expression='item.dateTime.toString("MMM, yyyy")' />
+                        <spring:eval expression='item.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="item.total" />
                     </a>
                 </li>
                 </c:forEach>

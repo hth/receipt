@@ -960,7 +960,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 /*Report chronically*/
 .ll-t {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
-    font-size: 1em !important;
+    font-size: 1.2em !important;
     line-height: 50px !important;
 }
 
