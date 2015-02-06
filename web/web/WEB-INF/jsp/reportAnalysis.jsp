@@ -49,33 +49,13 @@
     <div class="sidebar-top-summary">
         <div class="sidebar-top-summary-upper clearfix">
             <ul>
+                <c:forEach var="item" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
                 <li>
-                    <a class="ll-t" href="#">2014</a>
+                    <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
+                        <spring:eval expression='item.dateTime.toString("MMM, yyyy")' />
+                    </a>
                 </li>
-                <li>
-                    <a class="ll-t" href="#">AUGUST</a>
-                </li>
-                <li>
-                    <a class="ll-t" href="#">JULY $243.83</a>
-                </li>
-                <li>
-                    <a class="ll-t" href="#">JUNE</a>
-                </li>
-                <li>
-                    <a class="ll-t" href="#">APRIL</a>
-                </li>
-                <li>
-                    <a class="ll-t" href="#">MARCH</a>
-                </li>
-                <li>
-                    <a class="ll-t" href="#">FEBRUARY</a>
-                </li>
-                <li>
-                    <a class="ll-t" href="#">JANUARY</a>
-                </li>
-                <li>
-                    <a class="ll-t" href="#">2013</a>
-                </li>
+                </c:forEach>
             </ul>
         </div>
     </div>
@@ -95,36 +75,13 @@
             </div>
             <div class="rightside-list-holder" id="receiptListId">
                 <ul>
+                    <c:forEach var="item" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
                     <li>
                         <span class="rightside-li-date-text">JULY 20, 2014</span>
                         <a class="rightside-li-middle-text" href="#">Some& Some</a>
                         <span class="rightside-li-right-text">$121.00</span>
                     </li>
-                    <li>
-                        <span class="rightside-li-date-text">JULY 15, 2014</span>
-                        <a class="rightside-li-middle-text" href="#">Express</a>
-                        <span class="rightside-li-right-text">$22.90</span>
-                    </li>
-                    <li>
-                        <span class="rightside-li-date-text">JULY 10, 2014</span>
-                        <a class="rightside-li-middle-text" href="#">OLA</a>
-                        <span class="rightside-li-right-text">$57.96</span>
-                    </li>
-                    <li>
-                        <span class="rightside-li-date-text">JULY 03, 2014</span>
-                        <a class="rightside-li-middle-text" href="#">Dee</a>
-                        <span class="rightside-li-right-text">$23.75</span>
-                    </li>
-                    <li>
-                        <span class="rightside-li-date-text">JULY 02, 2014</span>
-                        <a class="rightside-li-middle-text" href="#">Some Data</a>
-                        <span class="rightside-li-right-text">$14.02</span>
-                    </li>
-                    <li>
-                        <span class="rightside-li-date-text">JULY 01, 2014</span>
-                        <a class="rightside-li-middle-text" href="#">Collection Collective</a>
-                        <span class="rightside-li-right-text">$4.20</span>
-                    </li>
+                    </c:forEach>
                 </ul>
             </div>
         </div>

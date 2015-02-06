@@ -159,10 +159,10 @@ public class LandingController extends BaseController {
         Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(receiptUser.getRid());
         landingForm.setReceiptGrouped(receiptGrouped);
 
-        /** Lists all the receipt grouped by months */
-        List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(receiptUser.getRid());
-        modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
-        landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
+//        /** Lists all the receipt grouped by months */
+//        List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(receiptUser.getRid());
+//        modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
+//        landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
 
         if (receiptUser.getUserLevel().value >= UserLevelEnum.USER_COMMUNITY.value) {
             List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(receiptUser.getRid());

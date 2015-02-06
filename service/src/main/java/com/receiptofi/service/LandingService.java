@@ -128,10 +128,7 @@ public class LandingService {
     }
 
     public List<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
-        Iterator<ReceiptGrouped> groupedIterator = receiptManager.getAllObjectsGroupedByMonth(userProfileId);
-
-        List<ReceiptGrouped> receiptGroupedList = Lists.newArrayList(groupedIterator);
-        return descendingOrder.sortedCopy(receiptGroupedList);
+        return receiptManager.getAllObjectsGroupedByMonth(userProfileId);
     }
 
     /**
@@ -140,35 +137,33 @@ public class LandingService {
      * @param receiptGroupedList
      * @return
      */
-    public List<ReceiptGrouped> addMonthsIfLessThanThree(List<ReceiptGrouped> receiptGroupedList) {
-        List<ReceiptGrouped> sortedList = Lists.newArrayList(receiptGroupedList);
+    public List<ReceiptGrouped> addMonthsIfLessThanThree(List<ReceiptGrouped> receiptGroupedList, int size) {
+        List<ReceiptGrouped> copiedList = Lists.newArrayList(receiptGroupedList);
 
-        /** In case there is just receipts for one month then add empty data to show the chart pretty for at least two additional months */
-        if (sortedList.size() < 3) {
-            if (sortedList.size() == 1) {
-                ReceiptGrouped receiptGrouped = sortedList.get(0);
-                DateTime dateTime = receiptGrouped.getDateTime();
+        /**
+         * In case there is just receipts for one month then add empty data to show the chart pretty for at least two
+         * additional months.
+         */
+        if (size == 1) {
+            ReceiptGrouped receiptGrouped = copiedList.get(0);
+            DateTime dateTime = receiptGrouped.getDateTime();
 
-                dateTime = dateTime.minusMonths(1);
-                ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
-                sortedList.add(r1);
+            dateTime = dateTime.minusMonths(1);
+            ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+            copiedList.add(r1);
 
-                dateTime = dateTime.minusMonths(1);
-                ReceiptGrouped r2 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
-                sortedList.add(r2);
+            dateTime = dateTime.minusMonths(1);
+            ReceiptGrouped r2 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+            copiedList.add(r2);
+        } else if (size == 2) {
+            ReceiptGrouped receiptGrouped = copiedList.get(0);
+            DateTime dateTime = receiptGrouped.getDateTime();
 
-            } else if (sortedList.size() == 2) {
-                ReceiptGrouped receiptGrouped = sortedList.get(0);
-                DateTime dateTime = receiptGrouped.getDateTime();
-
-                dateTime = dateTime.minusMonths(1);
-                ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
-                sortedList.add(r1);
-            }
-
-            sortedList = descendingOrder.sortedCopy(sortedList);
+            dateTime = dateTime.minusMonths(1);
+            ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+            copiedList.add(r1);
         }
-        return sortedList;
+        return descendingOrder.sortedCopy(copiedList);
     }
 
     public List<ReceiptGroupedByBizLocation> getAllObjectsGroupedByBizLocation(String userProfileId) {

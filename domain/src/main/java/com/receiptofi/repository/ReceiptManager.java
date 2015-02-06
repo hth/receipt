@@ -107,7 +107,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param receiptUserId
      * @return
      */
-    Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String receiptUserId);
+    List<ReceiptGrouped> getAllObjectsGroupedByMonth(String receiptUserId);
 
     /**
      * Group receipts by location and sum up the total expense on that particular business location.
