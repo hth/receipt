@@ -523,7 +523,7 @@ public class LandingController extends BaseController {
 
             return file;
         } catch (JAXBException | IOException e) {
-            LOG.error("Error while processing reporting template: " + e.getLocalizedMessage());
+            LOG.error("Error while processing reporting template: ", e.getLocalizedMessage(), e);
             throw new RuntimeException("Error while processing reporting template");
         }
     }
