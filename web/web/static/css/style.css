@@ -197,6 +197,16 @@ header h1 {
     padding-top: 38px;
 }
 
+.report_sidebar {
+    width: 150px;
+    min-height: 500px;
+    height: auto;
+    float: left;
+    padding-left: 30px;
+    margin-bottom: 60px;
+    padding-top: 38px;
+}
+
 .sidebar-top-summary {
     width: 280px;
     height: auto;
@@ -946,3 +956,16 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     margin: 10px;
     border: 1px solid white;
 }
+
+/*Report chronically*/
+.ll-t {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
+    font-size: 1em !important;
+    line-height: 50px !important;
+}
+
+.ll-t:hover {
+    color: #007aff !important;
+    font-weight: bold;
+}
+/*Report chronically ends*/
