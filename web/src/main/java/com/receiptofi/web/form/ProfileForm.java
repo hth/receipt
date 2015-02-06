@@ -44,7 +44,7 @@ public class ProfileForm {
     @Pattern (regexp = "^[^@]+@[^@]+\\.[^@]+$")
     private String mail;
     private Date updated;
-    private URL profileImage;
+    private String profileImage;
 
     /** For Admin related tab. */
     private String rid;
@@ -192,11 +192,11 @@ public class ProfileForm {
         this.accountValidated = accountValidated;
     }
 
-    public URL getProfileImage() {
+    public String getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(URL profileImage) {
+    public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 }

@@ -44,8 +44,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -163,14 +161,7 @@ public class UserProfilePreferenceController {
                 profileForm.setAccountValidated(userAccount.isAccountValidated());
             }
 
-            try {
-                profileForm.setProfileImage(new URL(userAccount.getImageUrl()));
-            } catch (MalformedURLException e) {
-                LOG.error("failed parsing profile image URL for rid={} reason={}",
-                        userAccount.getReceiptUserId(),
-                        e.getLocalizedMessage(),
-                        e);
-            }
+            profileForm.setProfileImage(userAccount.getImageUrl());
         }
     }
 
