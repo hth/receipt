@@ -167,11 +167,9 @@ public final class ReceiptManagerImpl implements ReceiptManager {
                 sort(DESC, previousOperation())
         );
 
-        AggregationResults<ReceiptGrouped> result = mongoTemplate.aggregate(agg, TABLE, ReceiptGrouped.class);
-        return result.getMappedResults();
+        return mongoTemplate.aggregate(agg, TABLE, ReceiptGrouped.class).getMappedResults();
 
-
-        //Another way to populate ReceiptEntity instead
+        /** Another way to populate ReceiptEntity instead. */
 //        TypedAggregation<ReceiptEntity> agg = newAggregation(ReceiptEntity.class,
 //                match(where("RID").is(receiptUserId)),
 //                group("year", "month")
