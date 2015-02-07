@@ -52,15 +52,18 @@ public class ReportAnalysisController {
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
 
-        /** Lists all the receipt grouped by months */
-        List<ReceiptGrouped> groupedByMonth = landingService.getAllObjectsGroupedByMonth(receiptUser.getRid());
+        /** Lists all the receipt grouped by months. */
+        List<ReceiptGrouped> groupedByMonth = landingService.getReceiptGroupedByMonth(receiptUser.getRid());
+        reportAnalysisForm.setReceiptGroupedByMonths(groupedByMonth);
         if (groupedByMonth.size() >= 3) {
             modelAndView.addObject("months", groupedByMonth);
         } else {
             modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(groupedByMonth, groupedByMonth.size()));
         }
-        reportAnalysisForm.setReceiptGroupedByMonths(groupedByMonth);
 
+        if (!groupedByMonth.isEmpty()) {
+            reportAnalysisForm.setReceiptListViews(landingService.getReceiptsForMonths(receiptUser.getRid(), groupedByMonth));
+        }
         return modelAndView;
     }
 }

@@ -49,7 +49,15 @@
     <div class="sidebar-top-summary">
         <div class="sidebar-top-summary-upper clearfix">
             <ul>
+                <c:set var="yearVar" value="" />
                 <c:forEach var="item" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
+                <c:if test="${empty yearVar || yearVar ne item.year}">
+                    <c:set var="yearVar" value="${item.year}" />
+                    <c:if test="${yearVar eq item.year}">
+                        <span class="ll-h">${item.year}</span>
+                    </c:if>
+                </c:if>
+
                 <li>
                     <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
                         <spring:eval expression='item.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="item.total" />
@@ -67,25 +75,34 @@
             <li><a href="#tab1">OVERVIEW</a></li>
             <li><a href="#tab2">FIRST</a></li>
         </ul>
-        <div id="tab1" class="ajx-content">
-            <div class="rightside-title">
+        <div id="tab1" class="report-content">
+            <c:forEach var="receipts" items="${reportAnalysisForm.receiptListViews}"  varStatus="status">
+            <div class="rightside-title report-title">
                 <h1 class="rightside-title-text left">
-                    JULY 2014 <span style="color: #007aff;">$243.83</span>
+                    <fmt:formatDate value="${receipts.date}" pattern="MMMM, yyyy"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span style="color: #007aff;"><spring:eval expression="receipts.total" /></span>
                 </h1>
             </div>
-            <div class="rightside-list-holder" id="receiptListId">
+            <div class="rightside-list-holder rightside-list-holder-report">
                 <ul>
-                    <c:forEach var="item" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
+                    <c:forEach var="receipt" items="${receipts.receiptListViewGroupedList}"  varStatus="status">
                     <li>
-                        <span class="rightside-li-date-text">JULY 20, 2014</span>
-                        <a class="rightside-li-middle-text" href="#">Some& Some</a>
-                        <span class="rightside-li-right-text">$121.00</span>
+                        <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                        <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTagName}">&nbsp;&nbsp;&nbsp;</span>
+                        <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
+                            <spring:eval expression="receipt.name"/>
+                        </a>
+                        <span class="rightside-li-right-text">
+                            <spring:eval expression='receipt.total'/>
+                        </span>
                     </li>
                     </c:forEach>
                 </ul>
             </div>
+            </c:forEach>
         </div>
-        <div id="tab2" class="first ajx-content">
+        <div id="tab2" class="first report-content">
             <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
 
             <p><strong>No data here submitted for August 2014</strong></p>

@@ -198,7 +198,7 @@ header h1 {
 }
 
 .report_sidebar {
-    width: 150px;
+    width: 160px;
     min-height: 500px;
     height: auto;
     float: left;
@@ -363,6 +363,13 @@ div .sidebar-date form input {
     overflow-y: auto;
 }
 
+.rightside-list-holder-report {
+    width: 680px;
+    height: auto; !important;
+    min-height: 0px; !important;
+    overflow-y: hidden;
+}
+
 .rightside-list-holder li {
     width: 560px;
     height: 50px;
@@ -375,6 +382,10 @@ div .sidebar-date form input {
     z-index: none;
 }
 
+.rightside-list-holder-report li {
+    width: 660px;
+}
+
 .rightside-title {
     width: 560px;
     height: 32px;
@@ -383,12 +394,22 @@ div .sidebar-date form input {
     border-bottom: 1px solid #919191;
 }
 
+.report-title {
+    width: 660px;
+}
+
 .rightside-title-less-margin {
     margin-top: 20px;
 }
 
 .ajx-content {
     width: 578px;
+    height: auto;
+}
+
+.report-content {
+    width: 710px;
+    /*height: 550px;*/
     height: auto;
 }
 
@@ -630,6 +651,10 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     width: 330px;
     padding-left: 30px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.rightside-list-holder-report li a {
+    width: 395px;
 }
 
 .rightside-li-middle-text:hover {
@@ -958,10 +983,18 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 /*Report chronically*/
-.ll-t {
+.ll-h {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
     font-size: 1.2em !important;
-    line-height: 50px !important;
+    font-weight: bold;
+    line-height: 55px !important;
+    margin-left: -10px;
+}
+
+.ll-t {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
+    font-size: 1.1em !important;
+    line-height: 40px !important;
 }
 
 .ll-t:hover {

@@ -16,17 +16,17 @@ Main components
 
 -------------------------------- */
 
-.cd-popup-trigger {
-    text-align: center;
-    color: #FFF;
-    font-size: 14px;
-}
+/*.cd-popup-trigger {*/
+    /*text-align: center;*/
+    /*color: #FFF;*/
+    /*font-size: 14px;*/
+/*}*/
 
-@media only screen and (min-width: 1170px) {
-    .cd-popup-trigger {
+/*@media only screen and (min-width: 1170px) {*/
+    /*.cd-popup-trigger {*/
 
-    }
-}
+    /*}*/
+/*}*/
 
 /* -------------------------------- 
 

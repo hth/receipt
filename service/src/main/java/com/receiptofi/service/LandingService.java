@@ -17,6 +17,8 @@ import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
+import com.receiptofi.domain.value.ReceiptListView;
+import com.receiptofi.domain.value.ReceiptListViewGrouped;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.DocumentManager;
@@ -127,8 +129,31 @@ public class LandingService {
         return itemService.getAllItemExpenseForTheYear(profileId);
     }
 
-    public List<ReceiptGrouped> getAllObjectsGroupedByMonth(String userProfileId) {
-        return receiptManager.getAllObjectsGroupedByMonth(userProfileId);
+    public List<ReceiptGrouped> getReceiptGroupedByMonth(String rid) {
+        return receiptManager.getReceiptGroupedByMonth(rid);
+    }
+
+    public List<ReceiptListView> getReceiptsForMonths(String rid, List<ReceiptGrouped> groupedByMonth) {
+        List<ReceiptListView> receiptListViews = new LinkedList<>();
+        for(ReceiptGrouped receiptGrouped : groupedByMonth) {
+
+            ReceiptListView receiptListView = new ReceiptListView();
+            receiptListView.setMonth(receiptGrouped.getMonth());
+            receiptListView.setYear(receiptGrouped.getYear());
+            receiptListView.setDate(receiptGrouped.getDateTime().toDate());
+            receiptListView.setTotal(receiptGrouped.getTotal());
+
+            receiptListView.setReceiptListViewGroupedList(
+                    receiptManager.getReceiptForGroupedByMonth(
+                            rid,
+                            receiptGrouped.getMonth(),
+                            receiptGrouped.getYear()
+                    )
+            );
+
+            receiptListViews.add(receiptListView);
+        }
+        return receiptListViews;
     }
 
     /**

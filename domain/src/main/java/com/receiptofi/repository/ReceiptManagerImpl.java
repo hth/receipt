@@ -22,6 +22,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
+import com.receiptofi.domain.value.ReceiptListViewGrouped;
 import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +40,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapreduce.GroupBy;
@@ -150,11 +150,11 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public List<ReceiptGrouped> getAllObjectsGroupedByMonth(String receiptUserId) {
+    public List<ReceiptGrouped> getReceiptGroupedByMonth(String rid) {
         DateTime date = DateUtil.now().minusMonths(displayMonths);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
         TypedAggregation<ReceiptEntity> agg = newAggregation(ReceiptEntity.class,
-                match(where("RID").is(receiptUserId)
+                match(where("RID").is(rid)
                         .and("RTXD").gte(since.toDate())
                         .andOperator(
                                 isActive(),
@@ -181,6 +181,21 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 //
 //        AggregationResults<ReceiptEntity> result = mongoTemplate.aggregate(agg, ReceiptEntity.class);
 //        List<ReceiptEntity> stateStatsList = result.getMappedResults();
+    }
+
+    public List<ReceiptListViewGrouped> getReceiptForGroupedByMonth(String rid, int month, int year) {
+        return mongoTemplate.find(
+                query(where("RID").is(rid)
+                                .and("M").is(month)
+                                .and("Y").is(year)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
+                ).with(new Sort(DESC, "RTXD")),
+                ReceiptListViewGrouped.class,
+                TABLE
+        );
     }
 
     public Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String receiptUserId) {
