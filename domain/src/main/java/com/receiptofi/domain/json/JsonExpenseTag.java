@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
+import org.springframework.util.Assert;
+
 /**
  * User: hitender
  * Date: 12/30/14 1:51 AM
@@ -46,6 +48,7 @@ public class JsonExpenseTag {
     }
 
     public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTag) {
+        Assert.notNull(expenseTag, "ExpenseTag is null");
         return new JsonExpenseTag(expenseTag.getId(), expenseTag.getTagName(), expenseTag.getTagColor());
     }
 }
