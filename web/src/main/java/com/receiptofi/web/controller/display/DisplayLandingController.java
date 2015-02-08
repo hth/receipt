@@ -23,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
+ * Displays processed documents.
+ *
  * User: hitender
  * Date: 11/18/14 10:29 AM
  */
