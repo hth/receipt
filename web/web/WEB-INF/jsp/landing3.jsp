@@ -281,12 +281,10 @@
 	<div id="tabs" class="nav-list">
 		<ul class="nav-block">
 			<li><a href="#tab1">OVERVIEW</a></li>
-
 			<li><a href="#tab2">FIRST</a></li>
 			<li><a href="#tab3">SECOND</a></li>
-			<li><a href="#tab4">REPORTS</a></li>
             <c:if test="${isValidForMap}">
-			<li><a href="#tab5">MAP</a></li>
+			<li><a href="#tab4">MAP</a></li>
             </c:if>
 		</ul>
 		<div id="tab1" class="ajx-content">
@@ -334,88 +332,8 @@
 			<img width="95%" src="${pageContext.request.contextPath}/static/img/sec-bar.jpg"/>
 		</div>
 
-		<div id="tab4" class="report1 ajx-content">
-			<h1 class="h1">REPORTS</h1>
-			<hr>
-			<div class="contain3">
-				<!-- left content strats-->
-				<div class="left-li">
-					<ul>
-						<li>
-							<a class="ll-t" href="#">2014 AUGUST</a>
-						</li>
-						<li>
-							<a class="ll-t" href="#">JULY 2014 $243.83</a>
-						</li>
-						<li>
-							<a class="ll-t" href="#">JUNE 2014</a>
-						</li>
-						<li>
-							<a class="ll-t" href="#">APRIL 2014</a>
-						</li>
-						<li>
-							<a class="ll-t" href="#">MARCH 2014</a>
-						</li>
-						<li>
-							<a class="ll-t" href="#">FEBRUARY 2014</a>
-						</li>
-						<li>
-							<a class="ll-t" href="#">JANUARY 2014</a>
-						</li>
-						<li>
-							<a class="ll-t" href="#">2013</a>
-						</li>
-
-					</ul>
-				</div>
-				<!-- left content ends-->
-
-				<!-- right content starts-->
-
-				<div class="rightside-list-holder">
-					<div class="rightside-title">
-						<h1 class="rightside-title-text">JULY 2014 <span style="color: #007aff;">$243.83</span></h1>
-					</div>
-					<ul>
-						<li>
-							<span class="rightside-li-date-text">JULY 20, 2014</span>
-							<a class="rightside-li-middle-text  cd-popup-trigger" href="#">Some& Some</a>
-							<span class="rightside-li-right-text">$121.00</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">JULY 15, 2014</span>
-							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Express</a>
-							<span class="rightside-li-right-text">$22.90</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">JULY 10, 2014</span>
-							<a class="rightside-li-middle-text cd-popup-trigger" href="#">OLA</a>
-							<span class="rightside-li-right-text">$57.96</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">JULY 03, 2014</span>
-							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Dee</a>
-							<span class="rightside-li-right-text">$23.75</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">JULY 02, 2014</span>
-							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Some Data</a>
-							<span class="rightside-li-right-text">$14.02</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">JULY 01, 2014</span>
-							<a class="rightside-li-middle-text cd-popup-trigger" href="#">Collection Collective</a>
-							<span class="rightside-li-right-text">$4.20</span>
-						</li>
-					</ul>
-				</div>
-
-				<!-- right content ends-->
-			</div>
-		</div>
-
         <c:if test="${isValidForMap}">
-        <div id="tab5" class="ajx-content">
+        <div id="tab4" class="ajx-content">
             <div class="rightside-title">
                 <h1 class="rightside-title-text left">
                     Expense by business location
