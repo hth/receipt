@@ -129,8 +129,17 @@
                 $(loadMonthlyExpenses(eventTime, 'next'));
             });
 
-            // Load by hiding calendar by default
-            $("#calendarId").hide();
+            <c:choose>
+                <c:when test="${!empty landingForm.receiptForMonth.receipts}">
+                    $("#calendarId").hide();
+                </c:when>
+                <c:otherwise>
+                    $("#receiptListId").hide();
+                    $("#calendarId").show();
+                    $("#btnList").removeClass("toggle_selected");
+                    $("#btnCalendar").addClass("toggle_selected");
+                </c:otherwise>
+            </c:choose>
         });
     </script>
 </head>
