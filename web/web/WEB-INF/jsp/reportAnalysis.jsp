@@ -113,10 +113,15 @@
             <c:choose>
                 <c:when test="${!empty months}">
                     <div id="monthly" style="min-width: 475px; height: 425px; background-position: left 10px top;"></div>
+                </c:when>
+                <c:when test="${!empty itemExpenses}">
                     <div id="allExpenseTypes" style="min-width: 525px; height: 420px; margin: 0 auto"></div>
                 </c:when>
                 <c:otherwise>
-                    No expense analysis available as no receipt submitted or transformed
+                    <div class="first">
+                        <img style="margin-top: 5px;" width="3%" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+                        <p><strong>No expense analysis available as no receipt submitted or transformed.</strong></p>
+                    </div>
                 </c:otherwise>
             </c:choose>
         </div>
