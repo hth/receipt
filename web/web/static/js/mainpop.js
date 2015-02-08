@@ -460,3 +460,13 @@ function getGoogleMap(locations) {
         map.setZoom(16);
     }
 }
+
+function reportTabClicked() {
+    $("#analysisSidebarId").hide();
+    $("#reportSidebarId").show();
+}
+
+function analysisTabClicked() {
+    $("#reportSidebarId").hide();
+    $("#analysisSidebarId").show();
+}

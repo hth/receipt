@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -64,6 +66,11 @@ public class ReportAnalysisController {
         if (!groupedByMonth.isEmpty()) {
             reportAnalysisForm.setReceiptListViews(landingService.getReceiptsForMonths(receiptUser.getRid(), groupedByMonth));
         }
+
+        /** Used for charting in Expense Analysis tab */
+        LOG.info("Calculating Pie chart - item expense");
+        Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpenseForTheYear(receiptUser.getRid());
+        modelAndView.addObject("itemExpenses", itemExpenses);
         return modelAndView;
     }
 }

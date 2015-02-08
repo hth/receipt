@@ -60,6 +60,7 @@ public class ReceiptGrouped implements Serializable {
      *
      * @return
      */
+    @SuppressWarnings("unused")
     public BigDecimal getStringTotal() {
         return total.setScale(2, BigDecimal.ROUND_HALF_UP);
     }

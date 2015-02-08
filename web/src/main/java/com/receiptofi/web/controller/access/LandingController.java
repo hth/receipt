@@ -148,7 +148,7 @@ public class LandingController extends BaseController {
 
         List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), time);
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, time);
-        modelAndView.addObject("receiptForMonth", receiptForMonth);
+//        modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
         documentStatsForm.setPendingCount(landingService.pendingReceipt(receiptUser.getRid()));
