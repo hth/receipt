@@ -9,6 +9,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
+import com.receiptofi.domain.value.ReceiptListViewGrouped;
 
 import org.joda.time.DateTime;
 
@@ -104,10 +105,20 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     /**
      * Receipt grouped by month for last 13 months.
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String receiptUserId);
+    List<ReceiptGrouped> getReceiptGroupedByMonth(String rid);
+
+    /**
+     * Gets all receipts for month.
+     *
+     * @param rid
+     * @param month
+     * @param year
+     * @return
+     */
+    List<ReceiptListViewGrouped> getReceiptForGroupedByMonth(String rid, int month, int year);
 
     /**
      * Group receipts by location and sum up the total expense on that particular business location.

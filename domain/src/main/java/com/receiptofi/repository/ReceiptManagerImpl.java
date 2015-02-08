@@ -7,6 +7,11 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.previousOperation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -17,6 +22,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
+import com.receiptofi.domain.value.ReceiptListViewGrouped;
 import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +40,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapreduce.GroupBy;
 import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
@@ -142,28 +149,53 @@ public final class ReceiptManagerImpl implements ReceiptManager {
         return results.iterator();
     }
 
-    //TODO find a way to format the total in group by
     @Override
-    public Iterator<ReceiptGrouped> getAllObjectsGroupedByMonth(String receiptUserId) {
-        GroupBy groupBy = GroupBy.key("M", "Y")
-                .initialDocument("{ total: 0 }")
-                .reduceFunction("function(obj, result) { " +
-                        "  result.month = obj.M; " +
-                        "  result.year = obj.Y; " +
-                        "  result.total += obj.TOT; " +
-                        "}");
-
+    public List<ReceiptGrouped> getReceiptGroupedByMonth(String rid) {
         DateTime date = DateUtil.now().minusMonths(displayMonths);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
-        Criteria criteria = where("RID").is(receiptUserId)
-                .and("RTXD").gte(since.toDate())
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                );
+        TypedAggregation<ReceiptEntity> agg = newAggregation(ReceiptEntity.class,
+                match(where("RID").is(rid)
+                        .and("RTXD").gte(since.toDate())
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )),
+                group("year", "month")
+                        .first("year").as("Y")
+                        .first("month").as("M")
+                        .sum("total").as("total"),
+                sort(DESC, previousOperation())
+        );
 
-        GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
-        return results.iterator();
+        return mongoTemplate.aggregate(agg, TABLE, ReceiptGrouped.class).getMappedResults();
+
+        /** Another way to populate ReceiptEntity instead. */
+//        TypedAggregation<ReceiptEntity> agg = newAggregation(ReceiptEntity.class,
+//                match(where("RID").is(receiptUserId)),
+//                group("year", "month")
+//                        .first("year").as("Y")
+//                        .first("month").as("M")
+//                        .sum("total").as("TOT"),
+//                sort(DESC, previousOperation())
+//        );
+//
+//        AggregationResults<ReceiptEntity> result = mongoTemplate.aggregate(agg, ReceiptEntity.class);
+//        List<ReceiptEntity> stateStatsList = result.getMappedResults();
+    }
+
+    public List<ReceiptListViewGrouped> getReceiptForGroupedByMonth(String rid, int month, int year) {
+        return mongoTemplate.find(
+                query(where("RID").is(rid)
+                                .and("M").is(month)
+                                .and("Y").is(year)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
+                ).with(new Sort(DESC, "RTXD")),
+                ReceiptListViewGrouped.class,
+                TABLE
+        );
     }
 
     public Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String receiptUserId) {

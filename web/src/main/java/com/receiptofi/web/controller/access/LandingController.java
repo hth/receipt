@@ -148,7 +148,7 @@ public class LandingController extends BaseController {
 
         List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), time);
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, time);
-        modelAndView.addObject("receiptForMonth", receiptForMonth);
+//        modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
         documentStatsForm.setPendingCount(landingService.pendingReceipt(receiptUser.getRid()));
@@ -159,10 +159,10 @@ public class LandingController extends BaseController {
         Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(receiptUser.getRid());
         landingForm.setReceiptGrouped(receiptGrouped);
 
-        /** Lists all the receipt grouped by months */
-        List<ReceiptGrouped> receiptGroupedByMonth = landingService.getAllObjectsGroupedByMonth(receiptUser.getRid());
-        modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
-        landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
+//        /** Lists all the receipt grouped by months */
+//        List<ReceiptGrouped> receiptGroupedByMonth = landingService.getReceiptGroupedByMonth(receiptUser.getRid());
+//        modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
+//        landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
 
         if (receiptUser.getUserLevel().value >= UserLevelEnum.USER_COMMUNITY.value) {
             List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(receiptUser.getRid());
@@ -523,7 +523,7 @@ public class LandingController extends BaseController {
 
             return file;
         } catch (JAXBException | IOException e) {
-            LOG.error("Error while processing reporting template: " + e.getLocalizedMessage());
+            LOG.error("Error while processing reporting template: ", e.getLocalizedMessage(), e);
             throw new RuntimeException("Error while processing reporting template");
         }
     }
