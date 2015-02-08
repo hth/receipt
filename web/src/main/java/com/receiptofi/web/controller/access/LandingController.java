@@ -22,9 +22,7 @@ import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
-import com.receiptofi.service.ReportService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.DocumentStatsForm;
 import com.receiptofi.web.form.LandingDonutChart;
@@ -33,10 +31,6 @@ import com.receiptofi.web.form.NotificationForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.helper.json.Driven;
-import com.receiptofi.web.rest.Base;
-import com.receiptofi.web.rest.Header;
-import com.receiptofi.web.rest.LandingView;
-import com.receiptofi.web.rest.ReportView;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
@@ -65,21 +59,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 /**
  * @author hitender
@@ -93,7 +81,7 @@ import javax.xml.bind.Marshaller;
 })
 @Controller
 @RequestMapping (value = "/access")
-public class LandingController extends BaseController {
+public class LandingController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
     @Autowired
@@ -109,14 +97,10 @@ public class LandingController extends BaseController {
     private NotificationService notificationService;
 
     @Autowired
-    private ReportService reportService;
-
-    @Autowired
     private MileageService mileageService;
 
     private static final String PATTERN = "MMM, yyyy";
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern(PATTERN);
-    private static final SimpleDateFormat SDF = new SimpleDateFormat(PATTERN);
 
     /**
      * Refers to landing.jsp
@@ -387,152 +371,6 @@ public class LandingController extends BaseController {
             throw new RuntimeException("Empty or no document uploaded");
         }
         return files;
-    }
-
-    /**
-     * Provides user information of home page through a REST URL.
-     *
-     * @param profileId
-     * @param authKey
-     * @return
-     */
-    @RequestMapping (
-            value = "/landing/user/{profileId}/auth/{authKey}.xml",
-            method = RequestMethod.GET,
-            produces = "application/xml"
-    )
-    @ResponseBody
-    public LandingView loadRest(
-            @PathVariable
-            String profileId,
-
-            @PathVariable
-            String authKey
-    ) {
-        LOG.info("Web Service={}", profileId);
-        return landingView(profileId, authKey);
-    }
-
-    /**
-     * Provides user information of home page through a JSON URL.
-     *
-     * @param profileId
-     * @param authKey
-     * @return
-     */
-    @RequestMapping (
-            value = "/landing/user/{profileId}/auth/{authKey}.json",
-            method = RequestMethod.GET,
-            produces = "application/json"
-    )
-    @ResponseBody
-    public String loadJSON(
-            @PathVariable
-            String profileId,
-
-            @PathVariable
-            String authKey
-    ) {
-        LOG.info("JSON={}", profileId);
-        Base landingView = landingView(profileId, authKey);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-
-        String json = StringUtils.EMPTY;
-        try {
-            json = ow.writeValueAsString(landingView);
-        } catch (IOException e) {
-            LOG.error(e.getLocalizedMessage());
-        }
-
-        return json;
-    }
-
-    /**
-     * Populate Landing View object.
-     *
-     * @param profileId
-     * @param authKey
-     * @return
-     */
-    private LandingView landingView(String profileId, String authKey) {
-        UserProfileEntity userProfile = authenticate(profileId, authKey);
-        if (null == userProfile) {
-            Header header = getHeaderForProfileOrAuthFailure();
-            LandingView landingView = LandingView.newInstance(StringUtils.EMPTY, StringUtils.EMPTY, header);
-            return landingView;
-        } else {
-            long pendingCount = landingService.pendingReceipt(profileId);
-            List<ReceiptEntity> receipts = landingService.getAllReceiptsForThisMonth(profileId, DateUtil.now());
-
-            LandingView landingView = LandingView.newInstance(userProfile.getReceiptUserId(), userProfile.getEmail(), Header.newInstance(getAuth(profileId)));
-            landingView.setPendingCount(pendingCount);
-            landingView.setReceipts(receipts);
-            landingView.setStatus(Header.RESULT.SUCCESS);
-
-            LOG.info("Rest/JSON Service returned={}, rid={} ", profileId, userProfile.getReceiptUserId());
-            return landingView;
-        }
-    }
-
-    @RequestMapping (
-            value = "/landing/report/{monthYear}",
-            method = RequestMethod.GET
-    )
-    @ResponseBody
-    public String generateReport(@PathVariable String monthYear) {
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Header header = Header.newInstance(getAuth(receiptUser.getRid()));
-        try {
-            DateTime dateTime = DTF.parseDateTime(monthYear);
-            dateTime = dateTime.plusMonths(1).minusDays(1);
-
-            header.setStatus(Header.RESULT.SUCCESS);
-
-            ReportView reportView = getReportView(receiptUser, header, dateTime);
-            File file = populateDataForXML(reportView);
-            return reportService.monthlyReport(file);
-        } catch (RuntimeException e) {
-            header.setMessage("Invalid parameter. Correct format - " +
-                    PATTERN +
-                    " [Please provide parameter shown without quotes - '" +
-                    SDF.format(new Date()) +
-                    "']");
-            header.setStatus(Header.RESULT.FAILURE);
-
-            ReportView reportView = getReportView(receiptUser, header, DateTime.now().minusYears(40));
-            File file = populateDataForXML(reportView);
-            return reportService.monthlyReport(file);
-        }
-    }
-
-    private File populateDataForXML(ReportView reportView) {
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ReportView.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-            // output pretty printed
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
-
-            File file = FileUtil.createTempFile("XML-Report", ".xml");
-            jaxbMarshaller.marshal(reportView, file);
-
-            //Commenting console output
-            //jaxbMarshaller.marshal(reportView, System.out);
-
-            return file;
-        } catch (JAXBException | IOException e) {
-            LOG.error("Error while processing reporting template: ", e.getLocalizedMessage(), e);
-            throw new RuntimeException("Error while processing reporting template");
-        }
-    }
-
-    private ReportView getReportView(ReceiptUser receiptUser, Header header, DateTime dateTime) {
-        ReportView reportView = ReportView.newInstance(receiptUser.getRid(), receiptUser.getUsername(), header);
-        reportView.setReceipts(landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), dateTime));
-        reportView.setHeader(header);
-        return reportView;
     }
 
     /* http://stackoverflow.com/questions/12117799/spring-mvc-ajax-form-post-handling-possible-methods-and-their-pros-and-cons */

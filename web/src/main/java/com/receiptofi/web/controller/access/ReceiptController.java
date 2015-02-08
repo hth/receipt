@@ -7,7 +7,6 @@ import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonExpenseTag;
 import com.receiptofi.domain.json.JsonReceipt;
 import com.receiptofi.domain.json.JsonReceiptItem;
@@ -17,9 +16,8 @@ import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.web.form.ReceiptForm;
-import com.receiptofi.web.rest.JsonReceiptDetail;
 import com.receiptofi.web.helper.ReceiptLandingView;
-import com.receiptofi.web.rest.Header;
+import com.receiptofi.web.rest.JsonReceiptDetail;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +50,7 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access/receipt")
-public class ReceiptController extends BaseController {
+public class ReceiptController {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptController.class);
 
     @Value ("${ReceiptController.redirectAccessLandingController:redirect:/access/landing.htm}")
@@ -115,14 +113,14 @@ public class ReceiptController extends BaseController {
             jsonReceiptDetail.setJsonReceipt(new JsonReceipt(receiptEntity));
 
             List<JsonReceiptItem> jsonReceiptItems = new LinkedList<>();
-            for(ItemEntity itemEntity : items) {
+            for (ItemEntity itemEntity : items) {
                 JsonReceiptItem jsonReceiptItem = JsonReceiptItem.newInstance(itemEntity);
                 jsonReceiptItems.add(jsonReceiptItem);
             }
             jsonReceiptDetail.setItems(jsonReceiptItems);
 
             List<JsonExpenseTag> jsonExpenseTags = new ArrayList<>();
-            for(ExpenseTagEntity expenseTagEntity : expenseTypes) {
+            for (ExpenseTagEntity expenseTagEntity : expenseTypes) {
                 jsonExpenseTags.add(JsonExpenseTag.newInstance(expenseTagEntity));
             }
             jsonReceiptDetail.setJsonExpenseTags(jsonExpenseTags);
@@ -133,7 +131,6 @@ public class ReceiptController extends BaseController {
         return jsonReceiptDetail;
     }
 
-    @SuppressWarnings ("PMD.EmptyIfStmt")
     @RequestMapping (method = RequestMethod.POST, params = "delete")
     public String delete(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
         LOG.info("Delete receipt rid={}", receiptForm.getReceipt().getId());
@@ -165,53 +162,6 @@ public class ReceiptController extends BaseController {
             return loadForm(receiptForm.getReceipt().getId(), receiptForm);
         }
         return new ModelAndView(redirectAccessLandingController);
-    }
-
-    /**
-     * Delete receipt through REST URL
-     *
-     * @param receiptId receipt id to delete
-     * @param profileId user id
-     * @param authKey   auth key
-     * @return Header
-     */
-    @RequestMapping (value = "/d/{receiptId}/user/{profileId}/auth/{authKey}.xml", method = RequestMethod.GET)
-    @ResponseBody
-    public Header deleteRest(
-            @PathVariable
-            String receiptId,
-
-            @PathVariable
-            String profileId,
-
-            @PathVariable
-            String authKey
-    ) {
-        LOG.info("Delete receipt rid={}", receiptId);
-
-        UserProfileEntity userProfile = authenticate(profileId, authKey);
-        Header header = Header.newInstance(authKey);
-        if (userProfile != null) {
-            try {
-                boolean task = receiptService.deleteReceipt(receiptId, profileId);
-                if (task) {
-                    header.setStatus(Header.RESULT.SUCCESS);
-                    header.setMessage("Deleted receipt successfully");
-                    return header;
-                } else {
-                    header.setStatus(Header.RESULT.FAILURE);
-                    header.setMessage("Delete receipt un-successful");
-                    return header;
-                }
-            } catch (Exception exce) {
-                header.setStatus(Header.RESULT.FAILURE);
-                header.setMessage("Delete receipt un-successful");
-                return header;
-            }
-        } else {
-            header = getHeaderForProfileOrAuthFailure();
-            return header;
-        }
     }
 
     /**
