@@ -20,62 +20,62 @@
 </div>
 
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
-    <!-- Biz by expense -->
-    <script>
-        $(function () {
-            "use strict";
+<!-- Biz by expense -->
+<script>
+    $(function () {
+        "use strict";
 
-            var colors = Highcharts.getOptions().colors;
-            var categories = [${landingForm.bizNames}];
-            var data = [
-                <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
-                {
-                    y: ${item.total},
+        var colors = Highcharts.getOptions().colors;
+        var categories = [${landingForm.bizNames}];
+        var data = [
+            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
+            {
+                y: ${item.total},
+                color: colors[${status.count-1}],
+                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                id: '${item.bizNameForId}',
+                drilldown: {
+                    name: '${item.bizName}',
+                    categories: [${item.expenseTags}],
+                    data: [${item.expenseValues}],
                     color: colors[${status.count-1}],
                     url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                    id: '${item.bizNameForId}',
-                    drilldown: {
-                        name: '${item.bizName}',
-                        categories: [${item.expenseTags}],
-                        data: [${item.expenseValues}],
-                        color: colors[${status.count-1}],
-                        url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                        id: '${item.bizNameForId}'
-                    }
-                },
-                </c:forEach>
-            ];
-
-            // Build the data arrays
-            var bizNames = [];
-            var expenseTags = [];
-            for (var i = 0; i < data.length; i++) {
-
-                // add browser data
-                bizNames.push({
-                    name: categories[i],
-                    y: data[i].y,
-                    color: data[i].color,
-                    url: data[i].url,
-                    id: data[i].id
-                });
-
-                // add version data
-                for (var j = 0; j < data[i].drilldown.data.length; j++) {
-                    var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
-                    expenseTags.push({
-                        name: data[i].drilldown.categories[j],
-                        y: data[i].drilldown.data[j],
-                        color: Highcharts.Color(data[i].color).brighten(brightness).get(),
-                        url: data[i].drilldown.url,
-                        id: data[i].drilldown.id
-                    });
+                    id: '${item.bizNameForId}'
                 }
-            }
+            },
+            </c:forEach>
+        ];
 
-            loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
-        });
-    </script>
+        // Build the data arrays
+        var bizNames = [];
+        var expenseTags = [];
+        for (var i = 0; i < data.length; i++) {
+
+            // add browser data
+            bizNames.push({
+                name: categories[i],
+                y: data[i].y,
+                color: data[i].color,
+                url: data[i].url,
+                id: data[i].id
+            });
+
+            // add version data
+            for (var j = 0; j < data[i].drilldown.data.length; j++) {
+                var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
+                expenseTags.push({
+                    name: data[i].drilldown.categories[j],
+                    y: data[i].drilldown.data[j],
+                    color: Highcharts.Color(data[i].color).brighten(brightness).get(),
+                    url: data[i].drilldown.url,
+                    id: data[i].drilldown.id
+                });
+            }
+        }
+
+        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
+    });
+</script>
 </c:if>
 
 </body>

@@ -372,9 +372,9 @@
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
 <script>
-    $(document).ready(function() {
-        drawExpenseByBusiness();
-    });
+$(document).ready(function() {
+    drawExpenseByBusiness();
+});
 </script>
 </c:if>
 
@@ -412,7 +412,7 @@ function drawExpenseByBusiness() {
         var colors = Highcharts.getOptions().colors;
         var categories = [${landingForm.bizNames}];
         var data = [
-            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
+            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
             {
                 y: ${item.total},
                 color: colors[${status.count-1}],
