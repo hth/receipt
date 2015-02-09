@@ -118,10 +118,10 @@
 
             $('body')
                     .on('click', 'button.fc-prev-button', function () {
-                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"), 'prev');
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                     })
                     .on('click', 'button.fc-next-button', function () {
-                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"), 'next');
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                     });
         });
 

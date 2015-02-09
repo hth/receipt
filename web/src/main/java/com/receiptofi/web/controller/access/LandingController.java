@@ -189,7 +189,6 @@ public class LandingController {
      * Loads monthly data for the selected month in the calendar
      *
      * @param monthView
-     * @param previousOrNext
      * @return
      * @throws IOException
      */
@@ -203,9 +202,6 @@ public class LandingController {
             @RequestParam ("monthView")
             String monthView,
 
-            @RequestParam ("buttonClick")
-            String previousOrNext,
-
             @ModelAttribute ("landingForm")
             LandingForm landingForm
     ) throws IOException {
@@ -213,10 +209,6 @@ public class LandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DateTime monthYear = DTF.parseDateTime(monthView);
-        if ("next".equalsIgnoreCase(previousOrNext)) {
-//            monthYear = monthYear.minusMonths(1);
-        }
-
         List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), monthYear);
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, monthYear);
         landingForm.setReceiptForMonth(receiptForMonth);

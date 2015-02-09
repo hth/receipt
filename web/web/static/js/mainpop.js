@@ -161,13 +161,12 @@ function changeInviteText(field, text) {
     }
 }
 
-function loadMonthlyExpenses(date, clicked) {
+function loadMonthlyExpenses(date) {
     $.ajax({
         type: "POST",
         url: ctx + '/access/landing/monthly_expenses.htm',
         data: {
-            monthView: date,
-            buttonClick: clicked
+            monthView: date
         },
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
