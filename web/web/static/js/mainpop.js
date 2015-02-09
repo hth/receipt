@@ -170,8 +170,9 @@ function loadMonthlyExpenses(date) {
         },
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            $('#onLoadReceiptForMonthId').hide();
+            $('#onLoadReceiptForMonthId').remove();
             $('#refreshReceiptForMonthId').html(
+                //Add overlay or overlapping of spinner on calendar, do not push calendar down
                 "<div class='spinner medium' id='spinner'></div>"
             ).show();
         },
@@ -285,10 +286,12 @@ function toggleListCalendarView(button) {
     if(content === 'btnList') {
         $("#calendarId").hide();
         $("#receiptListId").show();
+        $(".rightside-list-holder").show().removeAttr("id");
         $("#btnList").addClass("toggle_selected");
         $("#btnCalendar").removeClass("toggle_selected");
     } else {
         $("#receiptListId").hide();
+        $(".rightside-list-holder").hide();
         $("#calendarId").show();
         $("#btnList").removeClass("toggle_selected");
         $("#btnCalendar").addClass("toggle_selected");

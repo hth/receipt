@@ -1,11 +1,7 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-<div class="rightside-list-holder" id="receiptListId">
+<div class="rightside-list-holder" id="off_screen">
+<c:choose>
+    <c:when test="${!empty landingForm.receiptForMonth.receipts}">
     <ul>
         <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
         <li>
@@ -17,6 +13,13 @@
         </li>
         </c:forEach>
     </ul>
+    </c:when>
+    <c:otherwise>
+        <div class="first first-small ajx-content">
+            <strong>No receipt data available for this month.</strong>
+        </div>
+    </c:otherwise>
+</c:choose>
 </div>
 
 <c:if test="${!empty landingForm.bizByExpenseTypes}">

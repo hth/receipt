@@ -307,6 +307,8 @@
 
             <div id="onLoadReceiptForMonthId">
             <div class="rightside-list-holder" id="receiptListId">
+                <c:choose>
+                <c:when test="${!empty landingForm.receiptForMonth.receipts}">
                 <ul>
                     <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
                     <li>
@@ -318,6 +320,13 @@
                     </li>
                     </c:forEach>
                 </ul>
+                </c:when>
+                <c:otherwise>
+                    <div class="first first-small ajx-content">
+                        <strong>No receipt data available for this month.</strong>
+                    </div>
+                </c:otherwise>
+                </c:choose>
             </div>
             </div>
 
@@ -332,7 +341,6 @@
 		</div>
 		<div id="tab2" class="first ajx-content">
 			<img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-
 			<p><strong>No data here submitted for August 2014</strong></p>
 		</div>
 
