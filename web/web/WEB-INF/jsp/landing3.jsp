@@ -119,9 +119,11 @@
             $('body')
                     .on('click', 'button.fc-prev-button', function () {
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
+                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
                     })
                     .on('click', 'button.fc-next-button', function () {
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
+                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
                     });
         });
 
@@ -295,9 +297,7 @@
 		</ul>
 		<div id="tab1" class="ajx-content">
 			<div class="rightside-title">
-				<h1 class="rightside-title-text left">
-                    <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
-                </h1>
+				<h1 class="rightside-title-text left" id="monthShownId"><fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" /></h1>
                 <span class="right right_view" style="width: 24%;">
 					<input type="button" value="List" class="overview_view toggle_button_left toggle_selected" id="btnList" onclick="toggleListCalendarView(this)">
 					<span style="width:1px;background:white;float:left;">&nbsp;</span>
