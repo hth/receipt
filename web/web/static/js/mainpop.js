@@ -55,6 +55,8 @@ jQuery(document).ready(function ($) {
     };
 
     //TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html
+    //$("#restricted-fine-uploader")
+    //    .fineUploader({
     new qq.FineUploader({
         element: $('#restricted-fine-uploader')[0],
         callbacks: {
@@ -171,7 +173,7 @@ function loadMonthlyExpenses(date, clicked) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             $('#onLoadReceiptForMonthId').hide();
             $('#refreshReceiptForMonthId').html(
-                "<div class='spinner large' id='spinner'></div>"
+                "<div class='spinner medium' id='spinner'></div>"
             ).show();
         },
         success: function (response) {
@@ -183,7 +185,7 @@ function loadMonthlyExpenses(date, clicked) {
     });
 }
 
-function loadMonthlyExpenses(month, bizNames, expenseTags) {
+function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
     $('#expenseByBusiness').highcharts({
         chart: {
             type: 'pie'

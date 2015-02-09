@@ -99,8 +99,7 @@ public class LandingController {
     @Autowired
     private MileageService mileageService;
 
-    private static final String PATTERN = "MMM, yyyy";
-    private static final DateTimeFormatter DTF = DateTimeFormat.forPattern(PATTERN);
+    private static final DateTimeFormatter DTF = DateTimeFormat.forPattern("MMM, yyyy");
 
     /**
      * Refers to landing.jsp
@@ -194,6 +193,7 @@ public class LandingController {
      * @return
      * @throws IOException
      */
+    @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
             value = "/landing/monthly_expenses",
             method = RequestMethod.POST
@@ -209,12 +209,12 @@ public class LandingController {
             @ModelAttribute ("landingForm")
             LandingForm landingForm
     ) throws IOException {
-        ModelAndView modelAndView = new ModelAndView("/z/landingTabs");
+        ModelAndView modelAndView = new ModelAndView("/z/landingTabs2");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DateTime monthYear = DTF.parseDateTime(monthView);
         if ("next".equalsIgnoreCase(previousOrNext)) {
-            monthYear = monthYear.minusMonths(1);
+//            monthYear = monthYear.minusMonths(1);
         }
 
         List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), monthYear);
@@ -223,6 +223,7 @@ public class LandingController {
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
         LOG.info("Calculating Donut chart - receipt expense");
+        /** bizNames and bizByExpenseTypes added below to landingForm*/
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
         return modelAndView;
     }

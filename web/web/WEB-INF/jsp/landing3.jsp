@@ -18,7 +18,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.0.4/highcharts.js"></script>
@@ -97,7 +96,7 @@
                 header : {
                     left : 'prev,next today',
                     center : '',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: ''
                 },
                 defaultView: 'month',
                 contentHeight: 500, //Adds another 50 in surrounding area hence 500 height
@@ -117,29 +116,27 @@
                 ]
             });
 
-            $('.fc-button-prev').click(function(){
-                var start = $("#calendar").fullCalendar('getView').start;
-                var eventTime = $.fullCalendar.formatDate(start, "MMM, yyyy");
-                $(loadMonthlyExpenses(eventTime, 'prev'));
-            });
+            $('body')
+                    .on('click', 'button.fc-prev-button', function () {
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"), 'prev');
+                    })
+                    .on('click', 'button.fc-next-button', function () {
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"), 'next');
+                    });
+        });
 
-            $('.fc-button-next').click(function(){
-                var end = $("#calendar").fullCalendar('getView').end;
-                var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
-                $(loadMonthlyExpenses(eventTime, 'next'));
-            });
-
-            <c:choose>
-                <c:when test="${!empty landingForm.receiptForMonth.receipts}">
-                    $("#calendarId").hide();
-                </c:when>
-                <c:otherwise>
-                    $("#receiptListId").hide();
-                    $("#calendarId").show();
-                    $("#btnList").removeClass("toggle_selected");
-                    $("#btnCalendar").addClass("toggle_selected");
-                </c:otherwise>
-            </c:choose>
+        $(document).ready(function() {
+        <c:choose>
+        <c:when test="${!empty landingForm.receiptForMonth.receipts}">
+            $("#calendarId").hide();
+        </c:when>
+        <c:otherwise>
+            $("#receiptListId").hide();
+            $("#calendarId").show();
+            $("#btnList").removeClass("toggle_selected");
+            $("#btnCalendar").addClass("toggle_selected");
+        </c:otherwise>
+        </c:choose>
         });
     </script>
 </head>
@@ -307,23 +304,25 @@
 					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">
 				</span>
 			</div>
-			<div class="rightside-list-holder" id="receiptListId">
-				<ul>
+
+            <div id="onLoadReceiptForMonthId">
+            <div class="rightside-list-holder" id="receiptListId">
+                <ul>
                     <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
                     <li>
-                        <span class="rightside-li-date-text">
-                            <fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/>
-                        </span>
+                        <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
                         <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
                             <spring:eval expression="receipt.name"/>
                         </a>
-                        <span class="rightside-li-right-text">
-                            <spring:eval expression='receipt.total'/>
-                        </span>
+                        <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>
                     </li>
                     </c:forEach>
-				</ul>
-			</div>
+                </ul>
+            </div>
+            </div>
+
+            <div id="refreshReceiptForMonthId"></div>
+
             <div class="calendar" id="calendarId">
                 <div id="calendar"></div>
             </div>
@@ -473,17 +472,43 @@
 	<!-- cd-popup-container -->
 </div>
 </div>
-<!-- cd-popup -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css">
-<!-- Resource style -->
-<script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
-<!-- Modernizr -->
-<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
-<!-- Resource jQuery -->
-
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
 <script>
+    $(document).ready(function() {
+        drawExpenseByBusiness();
+    });
+</script>
+</c:if>
+
+<script>
+var observeDOM = (function () {
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
+            eventListenerSupported = window.addEventListener;
+
+    return function (obj, callback) {
+        if (MutationObserver) {
+            // define a new observer
+            var obs = new MutationObserver(function (mutations, observer) {
+                if (mutations[0].addedNodes.length || mutations[0].removedNodes.length)
+                    callback();
+            });
+            // have the observer observe foo for changes in children
+            obs.observe(obj, {childList: true, subtree: true});
+        }
+        else if (eventListenerSupported) {
+            obj.addEventListener('DOMNodeInserted', callback, false);
+            obj.addEventListener('DOMNodeRemoved', callback, false);
+        }
+    }
+});
+
+// Observe a specific DOM element:
+observeDOM(document.getElementById('refreshReceiptForMonthId'), function () {
+    drawExpenseByBusiness();
+});
+
+function drawExpenseByBusiness() {
     $(function () {
         "use strict";
 
@@ -535,10 +560,10 @@
             }
         }
 
-        loadMonthlyExpenses('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
+        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
     });
+}
 </script>
-</c:if>
 
 <c:if test="${!empty months && isValidForMap}">
 <!-- Google Map -->
@@ -572,6 +597,12 @@
     });
 </script>
 </c:if>
-
+<!-- cd-popup -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css">
+<!-- Resource style -->
+<script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
+<!-- Modernizr -->
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<!-- Resource jQuery -->
 </body>
 </html>

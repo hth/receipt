@@ -1002,3 +1002,28 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-weight: bold;
 }
 /*Report chronically ends*/
+
+/* spinner start */
+.spinner {
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 50%; /* Rounds out the halo */
+    opacity: .7; /* Some subtle opacity to help blend with variable background colors */
+}
+.spinner.small {
+    height: 18px; width: 18px; /* Pixel size of the GIF you download */
+    background: url("../../static/images/spiffygif_18x18.gif");
+}
+.spinner.medium {
+    height: 50px; width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    background: url("../../static/images/spiffygif_50x50.gif");
+}
+.spinner.large {
+    height: 112px; width: 112px;
+    margin-left: auto;
+    margin-right: auto;
+    background: url("../../static/images/spiffygif_112x112.gif");
+}
+/* spinner end */
