@@ -118,20 +118,16 @@
 
             $('body')
                     .on('click', 'button.fc-prev-button', function () {
-                        $(".fc-prev-button").prop('disabled', true);
-                        $(".fc-prev-button").addClass('fc-state-disabled');
-                        $(".fc-next-button").prop('disabled', true);
-                        $(".fc-next-button").addClass('fc-state-disabled');
+                        $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
 
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
                         $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
                     })
                     .on('click', 'button.fc-next-button', function () {
-                        $(".fc-prev-button").prop('disabled', true);
-                        $(".fc-prev-button").addClass('fc-state-disabled');
-                        $(".fc-next-button").prop('disabled', true);
-                        $(".fc-next-button").addClass('fc-state-disabled');
+                        $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
 
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
@@ -250,7 +246,7 @@
                     </c:forEach>
                     <li class="si-list" ng-repeat="i in items">
                         <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
-                        <span class="si-general-text"><a class='notification' href="{{i.href}}">{{i.message}}</a></span>
+                        <span class="si-general-text"><a class='rightside-li-middle-text full-li-middle-text' href="{{i.href}}">{{i.message}}</a></span>
                         <span class="si-date-text">{{i.created}}</span>
                     </li>
                 </ul>
@@ -318,7 +314,7 @@
 			</div>
 
             <div id="onLoadReceiptForMonthId">
-            <div class="rightside-list-holder" id="receiptListId">
+            <div class="rightside-list-holder mouseScroll" id="receiptListId">
                 <c:choose>
                 <c:when test="${!empty landingForm.receiptForMonth.receipts}">
                 <ul>
