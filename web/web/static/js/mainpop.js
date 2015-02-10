@@ -177,10 +177,8 @@ function loadMonthlyExpenses(date) {
             console.log("Date:" + date);
             $('#refreshReceiptForMonthId').html(response).show();
 
-            $(".fc-prev-button").removeClass('fc-state-disabled');
-            $(".fc-prev-button").prop('disabled', false);
-            $(".fc-next-button").removeClass('fc-state-disabled');
-            $(".fc-next-button").prop('disabled', false);
+            $(".fc-prev-button").removeClass('fc-state-disabled').prop('disabled', false);
+            $(".fc-next-button").removeClass('fc-state-disabled').prop('disabled', false);
         },
         complete: function () {
             //do nothing as load removes spinner
