@@ -171,12 +171,10 @@ function loadMonthlyExpenses(date) {
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             $('#onLoadReceiptForMonthId').remove();
-            $('#refreshReceiptForMonthId').html(
-                //Add overlay or overlapping of spinner on calendar, do not push calendar down
-                "<div class='spinner medium' id='spinner'></div>"
-            ).show();
+            //Add spinner here
         },
         success: function (response) {
+            console.log("Date:" + date);
             $('#refreshReceiptForMonthId').html(response).show();
         },
         complete: function () {

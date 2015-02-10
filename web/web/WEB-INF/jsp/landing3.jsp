@@ -120,10 +120,12 @@
                     .on('click', 'button.fc-prev-button', function () {
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
+                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
                     })
                     .on('click', 'button.fc-next-button', function () {
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
+                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
                     });
         });
 
