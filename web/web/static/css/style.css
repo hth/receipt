@@ -1003,7 +1003,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 /*Report chronically ends*/
 
-/* spinner start */
+/*spinner start*/
 .spinner {
     background-position: center center;
     background-repeat: no-repeat;
@@ -1026,4 +1026,13 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     margin-right: auto;
     background: url("../../static/images/spiffygif_112x112.gif");
 }
-/* spinner end */
+/*spinner end*/
+
+/*Show and hide scroll*/
+.mouseScroll {
+    overflow: hidden;
+}
+.mouseScroll:hover {
+    overflow-y: scroll;
+}
+/*Show and hide scroll*/

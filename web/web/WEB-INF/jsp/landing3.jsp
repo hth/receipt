@@ -314,7 +314,7 @@
 			</div>
 
             <div id="onLoadReceiptForMonthId">
-            <div class="rightside-list-holder" id="receiptListId">
+            <div class="rightside-list-holder mouseScroll" id="receiptListId">
                 <c:choose>
                 <c:when test="${!empty landingForm.receiptForMonth.receipts}">
                 <ul>
