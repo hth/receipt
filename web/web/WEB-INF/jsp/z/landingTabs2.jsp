@@ -24,15 +24,12 @@
 
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.1.1/randomColor.min.js"></script>
 <script>
     $(function () {
         "use strict";
 
-        var colors = [];
-        for (var colorCount = 0; colorCount < ${landingForm.bizByExpenseTypes.size()}; colorCount++) {
-            colors.push("#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}));
-        }
-
+        var colors = randomColor({hue: 'blue', count: ${landingForm.bizByExpenseTypes.size()}});
         var categories = [${landingForm.bizNames}];
         var data = [
             <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
