@@ -28,7 +28,11 @@
     $(function () {
         "use strict";
 
-        var colors = Highcharts.getOptions().colors;
+        var colors = [];
+        for (var colorCount = 0; colorCount < ${landingForm.bizByExpenseTypes.size()}; colorCount++) {
+            colors.push("#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}));
+        }
+
         var categories = [${landingForm.bizNames}];
         var data = [
             <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
