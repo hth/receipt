@@ -23,6 +23,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.0.4/highcharts.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.1.1/randomColor.min.js"></script>
 
     <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
     <script>
@@ -425,11 +426,7 @@ function drawExpenseByBusiness() {
     $(function () {
         "use strict";
 
-        var colors = [];
-        for (var colorCount = 0; colorCount < ${landingForm.bizByExpenseTypes.size()}; colorCount++) {
-            colors.push("#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}));
-        }
-
+        var colors = randomColor({hue: 'blue', count: ${landingForm.bizByExpenseTypes.size()}});
         var categories = [${landingForm.bizNames}];
         var data = [
             <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
