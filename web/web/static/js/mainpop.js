@@ -55,6 +55,8 @@ jQuery(document).ready(function ($) {
     };
 
     //TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html
+    //$("#restricted-fine-uploader")
+    //    .fineUploader({
     new qq.FineUploader({
         element: $('#restricted-fine-uploader')[0],
         callbacks: {
@@ -159,22 +161,20 @@ function changeInviteText(field, text) {
     }
 }
 
-function loadMonthlyExpenses(date, clicked) {
+function loadMonthlyExpenses(date) {
     $.ajax({
         type: "POST",
         url: ctx + '/access/landing/monthly_expenses.htm',
         data: {
-            monthView: date,
-            buttonClick: clicked
+            monthView: date
         },
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            $('#onLoadReceiptForMonthId').hide();
-            $('#refreshReceiptForMonthId').html(
-                "<div class='spinner large' id='spinner'></div>"
-            ).show();
+            $('#onLoadReceiptForMonthId').remove();
+            //Add spinner here
         },
         success: function (response) {
+            console.log("Date:" + date);
             $('#refreshReceiptForMonthId').html(response).show();
         },
         complete: function () {
@@ -183,7 +183,7 @@ function loadMonthlyExpenses(date, clicked) {
     });
 }
 
-function loadMonthlyExpenses(month, bizNames, expenseTags) {
+function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
     $('#expenseByBusiness').highcharts({
         chart: {
             type: 'pie'
@@ -284,10 +284,12 @@ function toggleListCalendarView(button) {
     if(content === 'btnList') {
         $("#calendarId").hide();
         $("#receiptListId").show();
+        $(".rightside-list-holder").show().removeAttr("id");
         $("#btnList").addClass("toggle_selected");
         $("#btnCalendar").removeClass("toggle_selected");
     } else {
         $("#receiptListId").hide();
+        $(".rightside-list-holder").hide();
         $("#calendarId").show();
         $("#btnList").removeClass("toggle_selected");
         $("#btnCalendar").addClass("toggle_selected");

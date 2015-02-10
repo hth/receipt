@@ -18,7 +18,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script async src="${pageContext.request.contextPath}/static/js/receiptofi.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader-3.6.3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.0.4/highcharts.js"></script>
@@ -97,7 +96,7 @@
                 header : {
                     left : 'prev,next today',
                     center : '',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: ''
                 },
                 defaultView: 'month',
                 contentHeight: 500, //Adds another 50 in surrounding area hence 500 height
@@ -117,20 +116,31 @@
                 ]
             });
 
-            $('.fc-button-prev').click(function(){
-                var start = $("#calendar").fullCalendar('getView').start;
-                var eventTime = $.fullCalendar.formatDate(start, "MMM, yyyy");
-                $(loadMonthlyExpenses(eventTime, 'prev'));
-            });
+            $('body')
+                    .on('click', 'button.fc-prev-button', function () {
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
+                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
+                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
+                    })
+                    .on('click', 'button.fc-next-button', function () {
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
+                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
+                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
+                    });
+        });
 
-            $('.fc-button-next').click(function(){
-                var end = $("#calendar").fullCalendar('getView').end;
-                var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
-                $(loadMonthlyExpenses(eventTime, 'next'));
-            });
-
-            // Load by hiding calendar by default
+        $(document).ready(function() {
+        <c:choose>
+        <c:when test="${!empty landingForm.receiptForMonth.receipts}">
             $("#calendarId").hide();
+        </c:when>
+        <c:otherwise>
+            $("#receiptListId").hide();
+            $("#calendarId").show();
+            $("#btnList").removeClass("toggle_selected");
+            $("#btnCalendar").addClass("toggle_selected");
+        </c:otherwise>
+        </c:choose>
         });
     </script>
 </head>
@@ -289,32 +299,41 @@
 		</ul>
 		<div id="tab1" class="ajx-content">
 			<div class="rightside-title">
-				<h1 class="rightside-title-text left">
-                    <fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" />
-                </h1>
+				<h1 class="rightside-title-text left" id="monthShownId"><fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" /></h1>
                 <span class="right right_view" style="width: 24%;">
 					<input type="button" value="List" class="overview_view toggle_button_left toggle_selected" id="btnList" onclick="toggleListCalendarView(this)">
 					<span style="width:1px;background:white;float:left;">&nbsp;</span>
 					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">
 				</span>
 			</div>
-			<div class="rightside-list-holder" id="receiptListId">
-				<ul>
+
+            <div id="onLoadReceiptForMonthId">
+            <div class="rightside-list-holder" id="receiptListId">
+                <c:choose>
+                <c:when test="${!empty landingForm.receiptForMonth.receipts}">
+                <ul>
                     <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
                     <li>
-                        <span class="rightside-li-date-text">
-                            <fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/>
-                        </span>
+                        <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
                         <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
                             <spring:eval expression="receipt.name"/>
                         </a>
-                        <span class="rightside-li-right-text">
-                            <spring:eval expression='receipt.total'/>
-                        </span>
+                        <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>
                     </li>
                     </c:forEach>
-				</ul>
-			</div>
+                </ul>
+                </c:when>
+                <c:otherwise>
+                    <div class="first first-small ajx-content">
+                        <strong>No receipt data available for this month.</strong>
+                    </div>
+                </c:otherwise>
+                </c:choose>
+            </div>
+            </div>
+
+            <div id="refreshReceiptForMonthId"></div>
+
             <div class="calendar" id="calendarId">
                 <div id="calendar"></div>
             </div>
@@ -324,7 +343,6 @@
 		</div>
 		<div id="tab2" class="first ajx-content">
 			<img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-
 			<p><strong>No data here submitted for August 2014</strong></p>
 		</div>
 
@@ -360,128 +378,51 @@
 	<div class="footer-tooth-middle"></div>
 	<div class="footer-tooth-right"></div>
 </div>
-<div class="cd-popup" role="alert">
-	<div class="cd-popup-container">
-
-		<div id="tabde" class="report ajx-content">
-			<div style="float:left;width:55%;margin-right: 3%;">
-				<h1 class="h1">AUGUST 26, 2014
-					<span style="color: #919191;font-size: 0.8em;font-weight: normal;">12:36PM</span>
-
-				</h1>
-				<hr style="width: 100%;">
-				<div class="mar10px">
-					<h1 class="font3em">Dds Art</h1>
-
-					<p class="padtop2per">Near 123</p>
-
-					<p>Some Where 345</p>
-				</div>
-				<div class="detailHead">
-					<h1 class="font2em" style="margin-left: 5px;">Map-93 <span class="colorblue right">$1.25</span></h1>
-				</div>
-				<div class="rightside-list-holder border">
-					<ul>
-						<li>
-							<span class="rightside-li-date-text">1. KJHG Med</span>
-							<select>
-								<option value="volvo">Home</option>
-								<option value="saab">Home</option>
-							</select>
-							<span class="rightside-li-right-text">$1.99</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">2. LKJ - Ether</span>
-							<select>
-								<option value="volvo">Home</option>
-								<option value="saab">Home</option>
-							</select>
-							<span class="rightside-li-right-text">$15.99</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">3. This thing</span>
-							<select>
-								<option value="volvo">Home</option>
-								<option value="saab">Home</option>
-							</select>
-							<span class="rightside-li-right-text">$22.99</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">4. Pink stuff</span>
-							<select>
-								<option value="volvo">Home</option>
-								<option value="saab">Home</option>
-							</select>
-							<span class="rightside-li-right-text">$14.49</span>
-						</li>
-						<li style="border-bottom: 1px dotted #919191;">
-							<span class="rightside-li-date-text">5. Somethings</span>
-							<select>
-								<option value="volvo">Home</option>
-								<option value="saab">Home</option>
-							</select>
-							<span class="rightside-li-right-text">$13.19</span>
-						</li>
-					</ul>
-
-
-					<!-- second list starts-->
-					<ul>
-						<li>
-							<span class="rightside-li-date-text">ABC</span>
-
-							<span class="rightside-li-right-text">$81.65</span>
-						</li>
-						<li>
-							<span class="rightside-li-date-text">BB</span>
-							<span class="rightside-li-right-text">$7.60</span>
-						</li>
-						<li style="border-bottom: 1px solid #919191;">
-							<span class="rightside-li-date-text">ZZZ</span>
-							<span class="rightside-li-right-text">$89.25</span>
-						</li>
-					</ul>
-
-
-					<!-- second list ends -->
-					<h1 class="h1 padtop2per" style="padding-bottom:2%;">My notes</h1>
-					<textarea style="width: 561px;height: 145px; padding:1%;" placeholder="Write notes here..."></textarea>
-					<input type="button" value="DELETE" style="background:#FC462A"></input>
-					<input type="button" value="SAVE" style="background:#0079FF"></input>
-
-
-				</div>
-
-
-			</div>
-
-			<div style="width:38%;float: left;padding-top: 4%;">
-				<img style="width: 390px;height: 590px;padding-left: 8%;" src="${pageContext.request.contextPath}/static/img/details.JPG"/>
-			</div>
-		</div>
-		<a href="#0" class="cd-popup-close img-replace"></a>
-	</div>
-	<!-- cd-popup-container -->
 </div>
-</div>
-<!-- cd-popup -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css">
-<!-- Resource style -->
-<script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
-<!-- Modernizr -->
-<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
-<!-- Resource jQuery -->
-
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
 <script>
+$(document).ready(function() {
+    drawExpenseByBusiness();
+});
+</script>
+</c:if>
+
+<script>
+var observeDOM = (function () {
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
+            eventListenerSupported = window.addEventListener;
+
+    return function (obj, callback) {
+        if (MutationObserver) {
+            // define a new observer
+            var obs = new MutationObserver(function (mutations, observer) {
+                if (mutations[0].addedNodes.length || mutations[0].removedNodes.length)
+                    callback();
+            });
+            // have the observer observe foo for changes in children
+            obs.observe(obj, {childList: true, subtree: true});
+        }
+        else if (eventListenerSupported) {
+            obj.addEventListener('DOMNodeInserted', callback, false);
+            obj.addEventListener('DOMNodeRemoved', callback, false);
+        }
+    }
+});
+
+// Observe a specific DOM element:
+observeDOM(document.getElementById('refreshReceiptForMonthId'), function () {
+    drawExpenseByBusiness();
+});
+
+function drawExpenseByBusiness() {
     $(function () {
         "use strict";
 
         var colors = Highcharts.getOptions().colors;
         var categories = [${landingForm.bizNames}];
         var data = [
-            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
+            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
             {
                 y: ${item.total},
                 color: colors[${status.count-1}],
@@ -526,10 +467,10 @@
             }
         }
 
-        loadMonthlyExpenses('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
+        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
     });
+}
 </script>
-</c:if>
 
 <c:if test="${!empty months && isValidForMap}">
 <!-- Google Map -->
@@ -563,6 +504,12 @@
     });
 </script>
 </c:if>
-
+<!-- cd-popup -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css">
+<!-- Resource style -->
+<script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
+<!-- Modernizr -->
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<!-- Resource jQuery -->
 </body>
 </html>
