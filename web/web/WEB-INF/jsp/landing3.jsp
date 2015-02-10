@@ -246,7 +246,7 @@
                     </c:forEach>
                     <li class="si-list" ng-repeat="i in items">
                         <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
-                        <span class="si-general-text"><a class='notification' href="{{i.href}}">{{i.message}}</a></span>
+                        <span class="si-general-text"><a class='rightside-li-middle-text full-li-middle-text' href="{{i.href}}">{{i.message}}</a></span>
                         <span class="si-date-text">{{i.created}}</span>
                     </li>
                 </ul>
