@@ -118,11 +118,21 @@
 
             $('body')
                     .on('click', 'button.fc-prev-button', function () {
+                        $(".fc-prev-button").prop('disabled', true);
+                        $(".fc-prev-button").addClass('fc-state-disabled');
+                        $(".fc-next-button").prop('disabled', true);
+                        $(".fc-next-button").addClass('fc-state-disabled');
+
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
                         $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
                     })
                     .on('click', 'button.fc-next-button', function () {
+                        $(".fc-prev-button").prop('disabled', true);
+                        $(".fc-prev-button").addClass('fc-state-disabled');
+                        $(".fc-next-button").prop('disabled', true);
+                        $(".fc-next-button").addClass('fc-state-disabled');
+
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
                         $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
