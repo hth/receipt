@@ -455,6 +455,7 @@ a.account {
 /* End of notification */
 
 /* spinner start */
+/*Not getting used as of now */
 .spinner {
     background-position: center center;
     background-repeat: no-repeat;
