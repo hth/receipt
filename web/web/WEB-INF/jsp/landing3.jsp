@@ -369,7 +369,7 @@
             </div>
             <div class="rightside-list-holder">
                 <c:choose>
-                <c:when test="${!empty months}">
+                <c:when test="${!empty landingForm.receiptGroupedByBizLocations}">
                     <div id="map-placeholder"></div>
                 </c:when>
                 <c:otherwise>
