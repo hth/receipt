@@ -12,18 +12,19 @@ body {
 }
 
 .header {
-    border-bottom: 2px solid #09C;
-    background: linear-gradient(to bottom, #1DB4FC 0%, #10A6EE 61%, #10A6EE 99%) repeat scroll 0px 0px transparent;
+    border-bottom: 2px solid #8bafed;
+    background: linear-gradient(to bottom, #8bafed 0%, #8bafed 61%, #8bafed 99%) repeat scroll 0px 0px transparent;
     box-shadow: 1px 1px 7px 2px #CCC;
 }
 
 .header_main {
-    border-bottom: 2px solid #09C;
-    background: linear-gradient(to bottom, #1DB4FC 0%, #10A6EE 61%, #10A6EE 99%) repeat scroll 0px 0px transparent;
+    border-bottom: 2px solid #8bafed;
+    background: linear-gradient(to bottom, #8bafed 0%, #8bafed 61%, #8bafed 99%) repeat scroll 0px 0px transparent;
     box-shadow: 1px 1px 7px 2px #CCC;
     position: fixed;
     width: 100%;
     top: 0px;
+    z-index: 1000;
 }
 
 .header_wrapper {
