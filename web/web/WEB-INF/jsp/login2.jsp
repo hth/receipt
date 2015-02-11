@@ -25,25 +25,27 @@
                 <div class="sing_up"><a href="">Sign Up</a></div>
                 <a id="loginButton" class=""><span>Log In</span></a>
                 <div id="loginBox" style="display:none;">
-                    <form id="loginForm" action="" method="POST">
+                    <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
                         <fieldset id="body">
                             <div class="login_main_arrow">
                                 <img src="${pageContext.request.contextPath}/static/img/footer-pattern.png">
                             </div>
                             <fieldset>
-                                <label for="email">Email</label>
-                                <input name="login" value="" maxlength="80" id="email" placeholder="name@address.com" type="email">
+                                <label for="emailId">Email</label>
+                                <form:input path="emailId" maxlength="80" />
                             </fieldset>
                             <fieldset>
                                 <label for="password">Password</label>
-                                <input name="password" value="" id="password" required="" placeholder="password" type="password">
+                                <form:password path="password" />
                             </fieldset>
                             <input id="login" value="SIGN IN" type="submit">
                             <label for="checkbox" />
-                            <input name="remember" value="1" id="checkbox" type="checkbox">Remember me</label>
+                            <%--<input name="remember" value="1" id="checkbox" type="checkbox">Remember me--%>
+                            <input type='checkbox' id="checkbox" name='_spring_security_remember_me'/> Remember me
+                            </label>
                         </fieldset>
                         <span><a href="">Forgot your password?</a></span>
-                    </form>
+                    </form:form>
                 </div>
                 <p></p>
             </div>
@@ -55,20 +57,23 @@
 <div class="containerl">
     <div class="mainl">
         <div class="loginl">
-            <h2 class="bold">Sign up, it's free</h2>
-            <p><strong class="bold">First name</strong></p>
-            <input class="text" type="text" placeholder="Name"></input>
-            <p><strong class="bold">Last name</strong></p>
-            <input class="text" type="text" placeholder="Last name"></input>
-            <p><strong class="bold">Email</strong></p>
-            <input class="text" maxlength="80" id="email" type="text" placeholder="name@address.com"></input>
-            <p><strong class="bold">Password</strong></p>
-            <input class="text" name="password" value="" id="password" required="" placeholder="password" type="password">
-            <div class="chkmain">
-                <input class="chk" type="checkbox"></input>
-                <span class="blurb">I agree to the OLA_OLA terms</span>
-            </div>
-            <input class="right btnlogin" id="login" type="submit" value="SIGN UP"></input>
+            <h2 class="bold"><fmt:message key="signup.heading" /></h2>
+
+            <form:form method="post" modelAttribute="userRegistrationForm" action="registration.htm">
+                <p><strong class="bold">First name</strong></p>
+                <input class="text" type="text" placeholder="Name"></input>
+                <p><strong class="bold">Last name</strong></p>
+                <input class="text" type="text" placeholder="Last name"></input>
+                <p><strong class="bold">Email</strong></p>
+                <form:input path="mail" maxlength="80" placeholder="name@address.com" cssClass="text" />
+                <p><strong class="bold">Password</strong></p>
+                <input class="text" name="password" value="" id="password" required="" placeholder="password" type="password">
+                <div class="chkmain">
+                    <input class="chk" type="checkbox"></input>
+                    <span class="blurb">I agree to the OLA_OLA terms</span>
+                </div>
+                <input class="right btnlogin" id="login" type="submit" value="SIGN UP"></input>
+            </form:form>
             <div class="clear"></div>
         </div>
     </div>
