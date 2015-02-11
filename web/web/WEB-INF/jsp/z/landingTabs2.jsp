@@ -29,7 +29,7 @@
     $(function () {
         "use strict";
 
-        var colors = randomColor({hue: 'blue', count: ${landingForm.bizByExpenseTypes.size()}});
+        var colors = randomColor({hue: 'blue', luminosity: 'bright', count: ${landingForm.bizByExpenseTypes.size()}});
         var categories = [${landingForm.bizNames}];
         var data = [
             <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
