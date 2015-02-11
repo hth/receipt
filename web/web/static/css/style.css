@@ -1036,3 +1036,11 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     overflow-y: scroll;
 }
 /*Show and hide scroll*/
+
+/*Temp offset*/
+.temp_offset {
+    position: absolute;
+    left: -3000px;
+    top: -3000px;
+}
+
