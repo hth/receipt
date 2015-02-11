@@ -111,7 +111,8 @@
                         title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
                         start : '${receiptGrouped.date}',
                         end   : '${receiptGrouped.date}',
-                        url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}'
+                        url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}',
+                        allDay: true
                     },
                     </c:forEach>
                 ]
