@@ -331,7 +331,7 @@
                 </ul>
                 </c:when>
                 <c:otherwise>
-                    <div class="first first-small ajx-content">
+                    <div class="first first-small ajx-content temp_offset" id="noReceiptId">
                         <strong>No receipt data available for this month.</strong>
                     </div>
                 </c:otherwise>
@@ -348,9 +348,11 @@
                 <div id="expenseByBusiness"></div>
 			</div>
 		</div>
-		<div id="tab2" class="first ajx-content">
-			<img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-			<p><strong>No data here submitted for August 2014</strong></p>
+		<div id="tab2" class="ajx-content">
+            <div class="first temp_offset" id="noMileageId">
+                <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+                <p><strong>No data here submitted for August 2014</strong></p>
+            </div>
 		</div>
 
 		<div id="tab3" class="ajx-content">
@@ -508,6 +510,11 @@ function drawExpenseByBusiness() {
         ];
 
         getGoogleMap(locations);
+    });
+
+    $(document).ready(function () {
+        $("#noReceiptId").removeClass("temp_offset");
+        $("#noMileageId").removeClass("temp_offset");
     });
 </script>
 </c:if>
