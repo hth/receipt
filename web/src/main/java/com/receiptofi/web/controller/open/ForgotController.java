@@ -63,7 +63,7 @@ public class ForgotController {
     /** Used in JSP page /forgot/authenticateConfirm */
     private static final String SUCCESS = "success";
 
-    @Value ("${password:/forgot/password}")
+    @Value ("${password:/forgot/password2}")
     private String passwordPage;
 
     @Value ("${recoverPage:/forgot/recover}")
