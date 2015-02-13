@@ -44,9 +44,8 @@
                 <label class="sign_uplabel"><strong class="bold">Password</strong></label>
                 <input class="text" name="password" value="" id="password" required="" placeholder="password" type="password">
 
-                <div class="chkmain">
-                    <input class="chk" type="checkbox"></input>
-                    <span class="checkbox_txt">I agree to the Receiptofi terms</span>
+                <div class="checkbox">
+                    <span class="checkbox_txt"><input class="chk" type="checkbox" />I agree to the Receiptofi terms</span>
                 </div>
                 <input class="right submit_btn" id="login" type="submit" value="SIGN UP"></input>
             </form:form>
