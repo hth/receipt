@@ -34,14 +34,14 @@
         <div class="loginl">
             <h2 class="bold">Sign up, it's free</h2>
             <form:form method="post" modelAttribute="userRegistrationForm" action="registration.htm">
-                <label class="sign_uplabel"><strong class="bold">First name</strong></label>
+                <label class="signup_label"><strong class="bold">First name</strong></label>
                 <input class="text" type="text" placeholder="Name"></input>
-                <label class="sign_uplabel"><strong class="bold">Last name</strong></label>
+                <label class="signup_label"><strong class="bold">Last name</strong></label>
                 <input class="text" type="text" placeholder="Last name"></input>
-                <label class="sign_uplabel"><strong class="bold">Email</strong></label>
+                <label class="signup_label"><strong class="bold">Email</strong></label>
                 <%--<input class="text" maxlength="80" id="email" type="text" placeholder="name@address.com"></input>--%>
                 <form:input path="mail" maxlength="80" placeholder="name@address.com" cssClass="text" />
-                <label class="sign_uplabel"><strong class="bold">Password</strong></label>
+                <label class="signup_label"><strong class="bold">Password</strong></label>
                 <input class="text" name="password" value="" id="password" required="" placeholder="password" type="password">
 
                 <div class="checkbox">

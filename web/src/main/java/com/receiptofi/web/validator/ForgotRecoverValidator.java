@@ -37,16 +37,18 @@ public class ForgotRecoverValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email Address"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailId", "field.required", new Object[]{"Email address"});
 
         ForgotRecoverForm frf = (ForgotRecoverForm) obj;
         if (StringUtils.isNotEmpty(frf.getCaptcha())) {
             errors.rejectValue("captcha", "field.unmatched", new Object[]{""}, "Entered value does not match");
         }
 
-        EmailValidator emailValidator = EmailValidator.getInstance();
-        if (!emailValidator.isValid(frf.getEmailId())) {
-            errors.rejectValue("emailId", "field.email.address.not.valid", new Object[]{frf.getEmailId()}, "Email Address provided is not valid");
+        if (!errors.hasErrors()) {
+            EmailValidator emailValidator = EmailValidator.getInstance();
+            if (!emailValidator.isValid(frf.getEmailId())) {
+                errors.rejectValue("emailId", "field.email.address.not.valid", new Object[]{frf.getEmailId()}, "Email address provided is not valid");
+            }
         }
     }
 }

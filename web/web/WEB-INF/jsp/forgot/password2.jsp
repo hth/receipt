@@ -39,11 +39,7 @@
             <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
                 <spring:hasBindErrors name="forgotRecoverForm">
                     <div class="first">
-                        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-
-                        <p>
-                            <strong><form:errors path="emailId" /></strong>
-                        </p>
+                        <strong><form:errors path="emailId" /></strong>
                     </div>
                 </spring:hasBindErrors>
 
@@ -53,14 +49,12 @@
                     <form:errors path="captcha" cssClass="error" />
                 </p>
 
-                <form:label for="emailId" path="emailId" cssClass="signup_label signup_label_text">Email Address</form:label>
-                <form:input path="emailId" cssClass="text" placeholder="Email"/>
+                <form:label for="emailId" path="emailId" cssClass="signup_label signup_label_text">Email address</form:label>
+                <form:input path="emailId" cssClass="text" />
 
-                <input type="submit" value="SUBMIT" name="forgot_password" class="right submit_btn" />
+                <input type="submit" value="SEND ME VERIFICATION EMAIL" name="forgot_password" class="right submit_btn" style="width: 289px" />
             </form:form>
             <div class="clear"></div>
-            <hr>
-            <span><a href="${pageContext.request.contextPath}/login.htm">Login</a></span>
         </div>
     </div>
 </div>
