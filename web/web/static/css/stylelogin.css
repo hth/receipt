@@ -12,19 +12,18 @@ body {
 }
 
 .header {
-    border-bottom: 2px solid #8bafed;
-    background: linear-gradient(to bottom, #8bafed 0%, #8bafed 61%, #8bafed 99%) repeat scroll 0px 0px transparent;
-    box-shadow: 1px 1px 7px 2px #CCC;
+    border-bottom: 2px solid #FFF;
+    background: linear-gradient(to bottom, #FFF 0%, #FFF 61%, #FFF 99%) repeat scroll 0px 0px transparent;
+    box-shadow: 1px 1px 1px 1px #606060;
 }
 
 .header_main {
-    border-bottom: 2px solid #8bafed;
-    background: linear-gradient(to bottom, #8bafed 0%, #8bafed 61%, #8bafed 99%) repeat scroll 0px 0px transparent;
-    box-shadow: 1px 1px 7px 2px #CCC;
+    border-bottom: 2px solid #FFF;
+    background: linear-gradient(to bottom, #FFF 0%, #FFF 61%, #FFF 99%) repeat scroll 0px 0px transparent;
+    box-shadow: 1px 1px 1px 1px #606060;
     position: fixed;
     width: 100%;
     top: 0px;
-    z-index: 1000;
 }
 
 .header_wrapper {
@@ -57,6 +56,14 @@ body {
     height: 32px;
     float: right;
     margin-top: 16px;
+    position: relative;
+}
+
+.header_right_logedin {
+    width: auto;
+    height: 32px;
+    float: right;
+    margin-top: 26px;
 }
 
 .sing_up {
@@ -115,15 +122,17 @@ a {
     display: block;
     font-size: 12px;
     padding: 5px 29px 5px 10px;
+    cursor: pointer;
 }
 
 #loginBox {
     display: none;
     height: 280px;
     position: absolute;
-    right: 0;
+    right: 0px;
     top: 35px;
     z-index: 29;
+    float: right;
 }
 
 #loginForm {
@@ -135,7 +144,8 @@ a {
     width: 248px;
     top: 16px;
     right: 195px;
-    position: relative;
+    float: left;
+
 }
 
 fieldset#body {
@@ -148,7 +158,7 @@ fieldset#body {
 }
 
 .login_main_arrow {
-    bottom: 27px;
+    bottom: 28px;
     float: right;
     height: 11px;
     left: 14px;
@@ -184,6 +194,7 @@ fieldset#body {
     padding: 7px 10px 8px;
     text-shadow: 0 -1px #278DB8;
     width: auto;
+    float: left;
 }
 
 #loginForm input {
@@ -195,6 +206,7 @@ fieldset#body {
     font-weight: bold;
     padding: 8px;
     width: 100%;
+    float: left;
 }
 
 #body label {
@@ -256,26 +268,33 @@ span {
 
 .loginl {
     border: 1px solid gray;
-    padding: 2% 6% 4%;
+    padding: 4px 50px 30px 40px;
     border-radius: 2%;
 }
 
 input.text {
     height: 6.5%;
     width: 100%;
-    padding-left: 1%;
     border: 1px solid #C5C5C5;
     border-radius: 3px;
+    padding: 11px 1px 11px 10px;
+    float: left;
+    margin-bottom: 15px;
+    font-size: 18px;
 }
 
 .chkmain {
     padding-top: 1%;
     padding-bottom: 10%;
+    margin-top: 11px;
+    float: left;
 }
 
-.blurb {
-    font-size: 11px;
-    color: rgba(110, 107, 107, 1);
+.checkbox_txt {
+    font-size: 14px;
+    color: #6E6B6B;
+    vertical-align: bottom;
+    padding-left: 14px;
 }
 
 .blurb-second {
@@ -297,10 +316,49 @@ input.text {
 }
 
 .bold {
-    font-family: Calibri;
-    margin: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 20px;
 }
 
 .right_view {
     margin-top: -26px;
+}
+
+.signup_containerl {
+    width: 71%;
+    margin: 0 auto;
+}
+
+.signup_mainl {
+    margin: 3% auto;
+    width: 50%;
+}
+
+#email {
+    margin-top: 0px;
+}
+
+#password {
+    margin-top: 0px;
+}
+
+.sign_uplabel {
+    float: left;
+    margin-top: 12px;
+    margin-bottom: 2px;
+}
+
+.chk {
+    float: left;
+    font-size: 150%;
+}
+
+.submit_btn {
+    width: 125px;
+    color: #fff;
+    background-color: #0079FF;
+    cursor: pointer;
+    float: right;
+    padding: 11px 0px;
+    border-radius: 2px;
 }
