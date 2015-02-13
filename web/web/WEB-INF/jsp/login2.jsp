@@ -1,10 +1,16 @@
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OLA_OLA l sign up</title>
-    <link type="text/css" rel="stylesheet" href="static/css/stylelogin.css"></link>
-    <script src="static/js/jquery.min.js" type="text/javascript"></script>
-    <script src="static/js/login.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <title><fmt:message key="login.title"/></title>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/css/stylelogin.css'>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/login.js"></script>
 </head>
 <body>
 <div class="main_wrapper">
@@ -49,20 +55,23 @@
     <div class="signup_mainl">
         <div class="loginl">
             <h2 class="bold">Sign up, it's free</h2>
-            <label class="sign_uplabel"><strong class="bold">First name</strong></label>
-            <input class="text" type="text" placeholder="Name"></input>
-            <label class="sign_uplabel"><strong class="bold">Last name</strong></label>
-            <input class="text" type="text" placeholder="Last name"></input>
-            <label class="sign_uplabel"><strong class="bold">Email</strong></label>
-            <input class="text" maxlength="80" id="email" type="text" placeholder="name@address.com"></input>
-            <label class="sign_uplabel"><strong class="bold">Password</strong></label>
-            <input class="text" name="password" value="" id="password" required="" placeholder="password" type="password">
+            <form:form method="post" modelAttribute="userRegistrationForm" action="registration.htm">
+                <label class="sign_uplabel"><strong class="bold">First name</strong></label>
+                <input class="text" type="text" placeholder="Name"></input>
+                <label class="sign_uplabel"><strong class="bold">Last name</strong></label>
+                <input class="text" type="text" placeholder="Last name"></input>
+                <label class="sign_uplabel"><strong class="bold">Email</strong></label>
+                <%--<input class="text" maxlength="80" id="email" type="text" placeholder="name@address.com"></input>--%>
+                <form:input path="mail" maxlength="80" placeholder="name@address.com" cssClass="text" />
+                <label class="sign_uplabel"><strong class="bold">Password</strong></label>
+                <input class="text" name="password" value="" id="password" required="" placeholder="password" type="password">
 
-            <div class="chkmain">
-                <input class="chk" type="checkbox"></input>
-                <span class="blurb">I agree to the OLA_OLA terms</span>
-            </div>
-            <input class="right btnsignup" id="login" type="submit" value="SIGN UP"></input>
+                <div class="chkmain">
+                    <input class="chk" type="checkbox"></input>
+                    <span class="blurb">I agree to the Receiptofi terms</span>
+                </div>
+                <input class="right btnsignup" id="login" type="submit" value="SIGN UP"></input>
+            </form:form>
             <div class="clear"></div>
         </div>
     </div>
