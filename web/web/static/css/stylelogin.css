@@ -95,158 +95,6 @@ a {
     text-decoration: none;
 }
 
-#loginButton {
-    border-radius: 3px 3px 3px 3px;
-    color: #333;
-    float: right;
-    font-size: 12px;
-    margin-left: 5px;
-    padding: 0 3px;
-    position: relative;
-    text-decoration: none;
-    border: solid 1px #899CAA;
-    font-family: Arial;
-    background: #c0c0c0;
-    background: -moz-linear-gradient(top, #c0c0c0 5%, #e5e4e2 94%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #c0c0c0), color-stop(94%, #e5e4e2));
-    background: -webkit-linear-gradient(top, #c0c0c0 5%, #e5e4e2 94%);
-    background: -o-linear-gradient(top, #c0c0c0 5%, #e5e4e2 94%);
-    background: -ms-linear-gradient(top, #c0c0c0 5%, #e5e4e2 94%);
-    background: linear-gradient(to bottom, #c0c0c0 5%, #e5e4e2 94%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c0c0c0', endColorstr='#e5e4e2', GradientType=0);
-}
-
-#loginButton span {
-    background: url("img/arrowsign.png") no-repeat scroll 53px 11px rgba(0, 0, 0, 0);
-    color: #333;
-    display: block;
-    font-size: 12px;
-    padding: 5px 29px 5px 10px;
-    cursor: pointer;
-}
-
-#loginBox {
-    display: none;
-    height: 280px;
-    position: absolute;
-    right: 0px;
-    top: 35px;
-    z-index: 29;
-    float: right;
-}
-
-#loginForm {
-    background: none repeat scroll 0 0 #E5E4E2;
-    border: 1px solid #899CAA;
-    border-radius: 3px 0 3px 3px;
-    padding: 6px;
-    right: 242px;
-    width: 248px;
-    top: 16px;
-    right: 195px;
-    float: left;
-
-}
-
-fieldset#body {
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-radius: 3px 3px 3px 3px;
-    margin: 0;
-    padding: 10px 10px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-}
-
-.login_main_arrow {
-    bottom: 28px;
-    float: right;
-    height: 11px;
-    left: 14px;
-    position: relative;
-    width: 20px;
-}
-
-#loginForm fieldset {
-    border: 0 none;
-    display: block;
-    width: 92%;
-}
-
-#body fieldset {
-    padding: 6px 0px;
-}
-
-#loginForm #body fieldset label {
-    display: block;
-    float: none;
-    margin: 0 0 6px;
-    text-align: left;
-}
-
-#loginForm #login {
-    background: url("../images/loginbuttonbg.png") repeat-x scroll 0 0 #339CDF;
-    border: 1px solid #46a560;
-    box-shadow: none;
-    color: #FFFFFF;
-    cursor: pointer;
-    float: left;
-    margin: 0 12px 0 0;
-    padding: 7px 10px 8px;
-    text-shadow: 0 -1px #278DB8;
-    width: auto;
-    float: left;
-}
-
-#loginForm input {
-    border: 1px solid #899CAA;
-    border-radius: 3px;
-    box-shadow: 0 1px 3px #BBBBBB inset;
-    color: #3A454D;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 8px;
-    width: 100%;
-    float: left;
-}
-
-#body label {
-    color: #3A454D;
-    display: block;
-    float: left;
-    margin: 9px 0 0;
-}
-
-#loginForm #checkbox {
-    border: 0 none;
-    float: left;
-    margin: 1px 9px 0 0;
-    padding: 0;
-    width: auto;
-}
-
-#loginForm span {
-    display: block;
-    padding: 7px 0 4px;
-    text-align: center;
-}
-
-span {
-    font-family: Arial;
-}
-
-#loginForm span a {
-    color: #3A454D;
-    font-size: 12px;
-    text-shadow: 1px 1px #FFFFFF;
-}
-
-.containerl {
-}
-
-.font30 {
-    font-size: 30px;
-}
-
 .clear {
     clear: both;
 }
@@ -259,11 +107,6 @@ span {
 .left {
     float: left;
     clear: both;
-}
-
-.mainl {
-    margin: 3% auto;
-    width: 30%
 }
 
 .loginl {
@@ -291,9 +134,11 @@ input.text {
 }
 
 .checkbox_txt {
-    font-size: 14px;
+    font-size: 16px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #6E6B6B;
     vertical-align: bottom;
+    line-height: 10px;
     padding-left: 14px;
 }
 
@@ -313,11 +158,6 @@ input.text {
     color: #fff;
     background-color: #0079FF;
     cursor: pointer;
-}
-
-.bold {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin-bottom: 20px;
 }
 
 .right_view {
@@ -354,11 +194,12 @@ input.text {
 }
 
 .submit_btn {
+    font-size: 16px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     width: 125px;
     color: #fff;
     background-color: #0079FF;
     cursor: pointer;
     float: right;
     padding: 11px 0px;
-    border-radius: 2px;
 }
