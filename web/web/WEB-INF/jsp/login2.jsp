@@ -35,6 +35,18 @@
     <div class="signup_mainl">
         <div class="loginl">
             <h1 class="h1 spacing"><fmt:message key="login.heading" /></h1>
+
+            <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
+                <div class="first">
+                    <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+
+                    <p>
+                        <strong>Login not successful, try again. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}</strong>
+                    </p>
+                </div>
+                <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
+            </c:if>
+
             <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
                 <%--<form:label for="emailId" path="emailId" cssClass="sign_uplabel"><strong class="bold">Email Address</strong></form:label>--%>
                 <form:input path="emailId" cssClass="text" placeholder="Email"/>
