@@ -38,12 +38,6 @@ body {
     margin: 0 auto;
 }
 
-#logo h1 {
-    float: left;
-    font-size: 32px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
 .main_wrapper {
     width: 100%;
     height: auto;
@@ -274,18 +268,19 @@ span {
 
 .loginl {
     border: 1px solid gray;
-    padding: 2% 6% 4%;
+    padding: 4px 50px 30px 40px;
     border-radius: 2%;
 }
 
 input.text {
     height: 6.5%;
     width: 100%;
-    padding-left: 1%;
     border: 1px solid #C5C5C5;
     border-radius: 3px;
-    padding: 11px 0px 11px 10px;
+    padding: 11px 1px 11px 10px;
     float: left;
+    margin-bottom: 15px;
+    font-size: 18px;
 }
 
 .chkmain {
@@ -295,9 +290,11 @@ input.text {
     float: left;
 }
 
-.blurb {
-    font-size: 11px;
-    color: rgba(110, 107, 107, 1);
+.checkbox_txt {
+    font-size: 14px;
+    color: #6E6B6B;
+    vertical-align: bottom;
+    padding-left: 14px;
 }
 
 .blurb-second {
@@ -319,8 +316,8 @@ input.text {
 }
 
 .bold {
-    font-family: Calibri;
-    margin: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 20px;
 }
 
 .right_view {
@@ -353,9 +350,10 @@ input.text {
 
 .chk {
     float: left;
+    font-size: 150%;
 }
 
-.btnsignup {
+.submit_btn {
     width: 125px;
     color: #fff;
     background-color: #0079FF;
