@@ -34,13 +34,13 @@
 <div class="signup_containerl">
     <div class="signup_mainl">
         <div class="loginl">
-            <h1 class="h1 spacing">Sign In</h1>
+            <h1 class="h1 spacing"><fmt:message key="login.heading" /></h1>
             <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
                 <%--<form:label for="emailId" path="emailId" cssClass="sign_uplabel"><strong class="bold">Email Address</strong></form:label>--%>
                 <form:input path="emailId" cssClass="text" placeholder="Email"/>
                 <%--<form:label for="password" path="password" cssClass="sign_uplabel"><strong class="bold">Password</strong></form:label>--%>
                 <form:password path="password" cssClass="text" placeholder="Password"/>
-                <div class="chkmain">
+                <div class="checkbox">
                     <input class="chk" type='checkbox' name='_spring_security_remember_me'/>
                     <span class="checkbox_txt">Remember me on this computer</span>
                 </div>
