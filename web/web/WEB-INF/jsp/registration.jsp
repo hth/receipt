@@ -44,7 +44,7 @@
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="mail" path="mail" cssErrorClass="error">Email Address:</form:label></td>
 				<td style="width: 30%"><form:input class="tooltip" path="mail" title="Please provide a valid email address. A confirmation email will be sent to this address. This email address will also be your login to receipt-o-fi." /></td>
-				<td style="width: 51%" id="emailIdErrors"><form:errors path="mail" cssClass="error" id="mail.errors"/></td>
+				<td style="width: 51%" id="mailErrors"><form:errors path="mail" cssClass="error" id="mail.errors"/></td>
 			</tr>
 			<tr>
 				<td style="text-align: right; width: 19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
@@ -87,8 +87,8 @@
 
     $(document).ready(function() {
         // check name availability on focus lost
-        $('#emailId').blur(function() {
-            if ($('#emailId').val()) {
+        $('#mail').blur(function() {
+            if ($('#mail').val()) {
                 checkAvailability();
             } else {
                 $("#recoverId").css({'display': 'none'});
@@ -104,25 +104,25 @@
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             },
             data: JSON.stringify({
-                email: $('#emailId').val()
+                mail: $('#mail').val()
             }),
             contentType: 'application/json;charset=UTF-8',
             mimeType: 'application/json',
             dataType:'json',
             success: function (data) {
                 console.log('response=', data);
-                fieldValidated("emailId", data);
+                fieldValidated("mail", data);
             }
         });
     }
 
     function fieldValidated(field, result) {
-        if (result.valid == "true") {
-            $("#emailIdErrors").html("<span id='emailId.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
+        if (result.valid === "true") {
+            $("#mailErrors").html("<span id='mail.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
             $("label[for='" + field + "']").removeAttr('class');
             $("#recoverId").css({'display': 'none'});
         } else {
-            $("#emailIdErrors").html("<span id='" + field + ".errors' style='color:red;'>" + result.message + "</span>");
+            $("#mailErrors").html("<span id='" + field + ".errors' style='color:red;'>" + result.message + "</span>");
             //Add the button for recovery and hide button for SignUp
             $("#recoverId").css({'display': 'inline'});
         }
@@ -159,9 +159,9 @@
     $(function () {
         $(document).tooltip();
 
-        $('#emailIdErrors').blur(function () {
+        $('#mailErrors').blur(function () {
             if ($(this).val().length == 0) {
-                $("#emailIdErrors").html("<span id='emailId.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
+                $("#mailErrors").html("<span id='mail.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
                 $("#recoverId").css({'display': 'none'});
             }
         });
