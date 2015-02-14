@@ -3,6 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+
     <title><fmt:message key="login.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/css/stylelogin.css'>
@@ -45,7 +49,7 @@
 
             <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
                 <%--<form:label for="emailId" path="emailId" cssClass="sign_uplabel"><strong class="bold">Email Address</strong></form:label>--%>
-                <form:input path="emailId" cssClass="text" placeholder="Email"/>
+                <form:input path="emailId" cssClass="text" placeholder="Email address"/>
                 <%--<form:label for="password" path="password" cssClass="sign_uplabel"><strong class="bold">Password</strong></form:label>--%>
                 <form:password path="password" cssClass="text" placeholder="Password"/>
                 <div class="checkbox">
