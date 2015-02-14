@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/raphael/raphael-min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/dynamic_list_helper2.js"></script>
