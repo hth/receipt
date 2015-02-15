@@ -44,7 +44,9 @@
                 <form:label for="firstName" path="firstName" cssClass="signup_label signup_label_text">I like to call myself as:</form:label>
                 <form:input path="firstName" maxlength="80" placeholder="First name" cssClass="text" />
                 <spring:hasBindErrors name="userRegistrationForm">
-                    <form:label path="firstName" cssClass="signup_label first"><form:errors path="firstName" /></form:label>
+                    <c:if test="${errors.hasFieldErrors('firstName')}">
+                        <form:label path="firstName" cssClass="signup_label first"><form:errors path="firstName" /></form:label>
+                    </c:if>
                 </spring:hasBindErrors>
                 <div class="clear"></div>
 
@@ -55,14 +57,19 @@
                 <form:label for="mail" path="mail" cssClass="signup_label signup_label_text">Email address to stay in touch with:</form:label>
                 <form:input path="mail" maxlength="80" placeholder="Email address" cssClass="text" />
                 <spring:hasBindErrors name="userRegistrationForm">
-                    <form:label id="mailErrors" path="mail" cssClass="signup_label first"><form:errors path="mail" /></form:label>
+                    <c:if test="${errors.hasFieldErrors('mail')}">
+                        <form:label path="mail" cssClass="signup_label first"><form:errors path="mail" /></form:label>
+                    </c:if>
                 </spring:hasBindErrors>
+                <form:label id="mailErrors" path="mail" cssClass="signup_label first" cssStyle="display: none"><form:errors path="mail" /></form:label>
                 <div class="clear"></div>
 
                 <form:label for="password" path="password" cssClass="signup_label signup_label_text">Password:</form:label>
-                <form:input path="password" maxlength="80" placeholder="Password" cssClass="text" />
+                <form:password path="password" maxlength="80" placeholder="Password" cssClass="text" />
                 <spring:hasBindErrors name="userRegistrationForm">
-                    <form:label path="password" cssClass="signup_label first"><form:errors path="password" /></form:label>
+                    <c:if test="${errors.hasFieldErrors('password')}">
+                        <form:label path="password" cssClass="signup_label first"><form:errors path="password" /></form:label>
+                    </c:if>
                 </spring:hasBindErrors>
                 <div class="clear"></div>
 
@@ -71,8 +78,8 @@
                     <span class="checkbox_txt">I agree to the Receiptofi terms</span>
                 </div>
 
-                <input id="recoverId" type="submit" value="RECOVER PASSWORD" name="recover" style="display: none; width: 200px; float: left;" class="submit_btn" />
-                <input class="right submit_btn" id="login" type="submit" value="SIGN ME UP" name="signup" />
+                <input id="recover_btn_id" type="submit" value="RECOVER PASSWORD" name="recover" class="submit_btn" style="display: none; width: 200px; float: left;" />
+                <input id="submit_btn_id" type="submit" value="SIGN ME UP" name="signup" class="right submit_btn" />
             </form:form>
             <div class="clear"></div>
         </div>
@@ -80,13 +87,15 @@
 </div>
 <script type="text/javascript">
 
-    // check name availability on focus lost
-    $(document).on('change', $("#mail"), function() {
-        if ($('#mail').val()) {
-            checkAvailability();
-        } else {
-            $("#recoverId").css({'display': 'none'});
-        }
+    $(document).ready(function() {
+        // check name availability on focus lost
+        $('#mail').blur(function() {
+            if ($('#mail').val()) {
+                checkAvailability();
+            } else {
+                $("#recover_btn_id").css({'display': 'none'});
+            }
+        });
     });
 
     function checkAvailability() {
@@ -104,31 +113,23 @@
             dataType:'json',
             success: function (data) {
                 console.log('response=', data);
-                fieldValidated("mail", data);
+                fieldValidated(data);
             }
         });
     }
 
-    function fieldValidated(field, result) {
+    function fieldValidated(result) {
         if (result.valid === "true") {
-            $("#mailErrors").html("<span id='mail.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
-            $("label[for='" + field + "']").removeAttr('class');
-            $("#recoverId").css({'display': 'none'});
+            $("#mailErrors").html("Verification email will be sent to above email address").css({'display': 'inline'});
+            $("#mail.errors").css({'display': 'none'});
+//            $("#submit_btn_id").prop({'disabled': false});
         } else {
-            $("#mailErrors").html(result.message);
+            $("#mailErrors").html(result.message).css({'display': 'inline'});
             //Add the button for recovery and hide button for SignUp
-            $("#recoverId").css({'display': 'inline'});
+            $("#recover_btn_id").css({'display': 'inline'});
+//            $("#submit_btn_id").prop({'disabled': true});
         }
     }
-
-    $(function () {
-        $('#mailErrors').blur(function () {
-            if ($(this).val().length == 0) {
-                $("#mailErrors").html("<span id='mail.errors' style='color:#065c14;'>Verification email will be sent to specified email address</span>");
-                $("#recoverId").css({'display': 'none'});
-            }
-        });
-    });
 </script>
 </body>
 </html>

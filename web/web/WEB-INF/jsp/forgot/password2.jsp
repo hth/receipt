@@ -50,7 +50,9 @@
                 <form:label for="emailId" path="emailId" cssClass="signup_label signup_label_text">Email address</form:label>
                 <form:input path="emailId" cssClass="text" />
                 <spring:hasBindErrors name="forgotRecoverForm">
-                    <form:label path="emailId" cssClass="signup_label first"><form:errors path="emailId" /></form:label>
+                    <c:if test="${errors.hasFieldErrors('emailId')}">
+                        <form:label path="emailId" cssClass="signup_label first"><form:errors path="emailId" /></form:label>
+                    </c:if>
                 </spring:hasBindErrors>
 
                 <div class="clear" style="padding-bottom: 10%"></div>
