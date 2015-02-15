@@ -22,6 +22,7 @@ public final class UserRegistrationForm {
     private String mail;
     private String birthday;
     private String password;
+    private boolean accountExists = false;
 
     private UserRegistrationForm() {
     }
@@ -73,6 +74,14 @@ public final class UserRegistrationForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAccountExists() {
+        return accountExists;
+    }
+
+    public void setAccountExists(boolean accountExists) {
+        this.accountExists = accountExists;
     }
 
     @Override

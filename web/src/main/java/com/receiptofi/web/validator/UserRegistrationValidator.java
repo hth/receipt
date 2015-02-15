@@ -83,7 +83,7 @@ public class UserRegistrationValidator implements Validator {
                 errors.rejectValue("password",
                         "field.length",
                         new Object[]{passwordLength},
-                        "Minimum length of four characters");
+                        "Minimum length of " + passwordLength + " characters");
             }
         }
     }
