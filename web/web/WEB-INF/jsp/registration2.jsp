@@ -79,7 +79,7 @@
                 </div>
 
                 <input id="recover_btn_id" type="submit" value="RECOVER PASSWORD" name="recover" class="submit_btn" style="display: none; width: 200px; float: left;" />
-                <input id="submit_btn_id" type="submit" value="SIGN ME UP" name="signup" class="right submit_btn" />
+                <input id="submit_btn_id" type="submit" value="SIGN ME UP" name="signup" class="submit_btn" />
             </form:form>
             <div class="clear"></div>
         </div>
