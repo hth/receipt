@@ -54,7 +54,7 @@
                 <form:input path="lastName" maxlength="80" placeholder="Last name" cssClass="text" />
                 <form:label for="birthday" path="birthday" cssClass="signup_label signup_label_text">How old are you?</form:label>
                 <form:input path="birthday" maxlength="80" placeholder="Age" cssClass="text" />
-                <form:label for="mail" path="mail" cssClass="signup_label signup_label_text">Email address to stay in touch with:</form:label>
+                <form:label for="mail" path="mail" cssClass="signup_label signup_label_text">Valid email address as your login:</form:label>
                 <form:input path="mail" maxlength="80" placeholder="Email address" cssClass="text" />
                 <spring:hasBindErrors name="userRegistrationForm">
                     <c:if test="${errors.hasFieldErrors('mail')}">
@@ -127,12 +127,20 @@
 
     function fieldValidated(result) {
         if (result.valid === "true") {
-            $("#mailErrors").html("Verification email will be sent to above email address").css({'display': 'inline'});
-            $("#mail.errors").css({'display': 'none'});
+            $("#mailErrors")
+                    .html("Verification email will be sent to above email address")
+                    .css({'display': 'inline', 'background-color' : '#34B120', 'color' : '#FFF', 'font-family': 'Helvetica Neue, Helvetica, Arial, sans-serif'});
+            $("#mail.errors")
+                    .css({'display': 'none'});
         } else {
-            $("#mailErrors").html(result.message).css({'display': 'inline'});
+            $("#mailErrors")
+                    .html(result.message)
+                    .css({'display': 'inline'})
+                    .css("background-color","")
+                    .css("color","");
             //Add the button for recovery and hide button for SignUp
-            $("#recover_btn_id").css({'display': 'inline'});
+            $("#recover_btn_id")
+                    .css({'display': 'inline'});
         }
     }
 </script>
