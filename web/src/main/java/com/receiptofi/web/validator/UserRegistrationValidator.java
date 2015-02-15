@@ -85,6 +85,13 @@ public class UserRegistrationValidator implements Validator {
                         new Object[]{passwordLength},
                         "Minimum length of " + passwordLength + " characters");
             }
+
+            if (!userRegistration.isAcceptsAgreement()) {
+                errors.rejectValue("acceptsAgreement",
+                        "agreement.checkbox",
+                        new Object[]{userRegistration.isAcceptsAgreement()},
+                        "To continue, please check accept to terms");
+            }
         }
     }
 
