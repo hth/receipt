@@ -13,7 +13,6 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/login.js"></script>
 </head>
@@ -41,23 +40,23 @@
             <h1 class="h1 spacing"><fmt:message key="account.recover.title" /></h1>
 
             <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
+                <form:hidden path="emailId" />
+
                 <p style="display:none;visibility:hidden;">
                     <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
-                    <form:input path="captcha" />
+                    <form:input path="captcha" disabled="true"/>
                     <form:errors path="captcha" cssClass="error" />
                 </p>
 
                 <form:label for="emailId" path="emailId" cssClass="signup_label signup_label_text">Email address</form:label>
-                <form:input path="emailId" cssClass="text" />
+                <form:input path="emailId" cssClass="text" readonly="true" disabled="true" />
                 <spring:hasBindErrors name="forgotRecoverForm">
-                    <c:if test="${errors.hasFieldErrors('emailId')}">
-                        <form:label path="emailId" cssClass="signup_label first"><form:errors path="emailId" /></form:label>
-                    </c:if>
+                    <form:label path="emailId" cssClass="signup_label first"><form:errors path="emailId" /></form:label>
                 </spring:hasBindErrors>
 
                 <div class="clear" style="padding-bottom: 10%"></div>
 
-                <input type="submit" value="SEND ME VERIFICATION EMAIL" name="forgot_password" class="right submit_btn" style="width: 289px;" />
+                <input type="submit" value="SEND ME VERIFICATION EMAIL" name="forgot_password" class="right submit_btn" style="width: 289px" />
             </form:form>
             <div class="clear"></div>
         </div>

@@ -40,7 +40,7 @@ public final class AvailabilityStatus {
 
     //TODO find a valid use for this. It was meant to suggest different email address for registration
     public static AvailabilityStatus notAvailable(String name) {
-        String[] suggestions = new String[]{"To recover password click button '<b>Recover</b>' below"};
+        String[] suggestions = new String[]{"Click on '<b>RECOVER PASSWORD</b>' below if you have lost password."};
         return new AvailabilityStatus(false, suggestions);
     }
 

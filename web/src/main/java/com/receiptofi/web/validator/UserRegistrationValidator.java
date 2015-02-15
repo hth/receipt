@@ -55,34 +55,36 @@ public class UserRegistrationValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email Address"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
 
-        UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
-        if (userRegistration.getFirstName().length() < nameLength) {
-            errors.rejectValue("firstName",
-                    "field.length",
-                    new Object[]{nameLength},
-                    "Minimum length of four characters");
-        }
+        if (!errors.hasErrors()) {
+            UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
+            if (userRegistration.getFirstName().length() < nameLength) {
+                errors.rejectValue("firstName",
+                        "field.length",
+                        new Object[]{nameLength},
+                        "Minimum length of four characters");
+            }
 
-        if (!Validate.isValidMail(userRegistration.getMail())) {
-            errors.rejectValue("mail",
-                    "field.email.address.not.valid",
-                    new Object[]{userRegistration.getMail()},
-                    "Email Address provided is not valid");
-        }
+            if (!Validate.isValidMail(userRegistration.getMail())) {
+                errors.rejectValue("mail",
+                        "field.email.address.not.valid",
+                        new Object[]{userRegistration.getMail()},
+                        "Email Address provided is not valid");
+            }
 
-        if (userRegistration.getMail() != null && userRegistration.getMail().length() <= mailLength) {
-            errors.rejectValue(
-                    "mail",
-                    "field.length",
-                    new Object[]{mailLength},
-                    "Email Address has to be at least of size " + mailLength + " characters.");
-        }
+            if (userRegistration.getMail() != null && userRegistration.getMail().length() <= mailLength) {
+                errors.rejectValue(
+                        "mail",
+                        "field.length",
+                        new Object[]{mailLength},
+                        "Email Address has to be at least of size " + mailLength + " characters.");
+            }
 
-        if (userRegistration.getPassword().length() < passwordLength) {
-            errors.rejectValue("password",
-                    "field.length",
-                    new Object[]{passwordLength},
-                    "Minimum length of four characters");
+            if (userRegistration.getPassword().length() < passwordLength) {
+                errors.rejectValue("password",
+                        "field.length",
+                        new Object[]{passwordLength},
+                        "Minimum length of four characters");
+            }
         }
     }
 
