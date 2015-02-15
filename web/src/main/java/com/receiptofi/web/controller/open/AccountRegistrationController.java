@@ -126,6 +126,7 @@ public class AccountRegistrationController {
         if (userProfile != null) {
             LOG.warn("account exists");
             userRegistrationValidator.accountExists(userRegistrationForm, result);
+            userRegistrationForm.setAccountExists(true);
             return registrationPage;
         }
 

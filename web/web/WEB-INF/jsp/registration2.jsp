@@ -61,7 +61,7 @@
                         <form:label path="mail" cssClass="signup_label first"><form:errors path="mail" /></form:label>
                     </c:if>
                 </spring:hasBindErrors>
-                <form:label id="mailErrors" path="mail" cssClass="signup_label first" cssStyle="display: none"><form:errors path="mail" /></form:label>
+                <form:label id="mailErrors" path="mail" cssClass="signup_label first" cssStyle="display: none" />
                 <div class="clear"></div>
 
                 <form:label for="password" path="password" cssClass="signup_label signup_label_text">Password:</form:label>
@@ -78,7 +78,14 @@
                     <span class="checkbox_txt">I agree to the Receiptofi terms</span>
                 </div>
 
-                <input id="recover_btn_id" type="submit" value="RECOVER PASSWORD" name="recover" class="submit_btn" style="display: none; width: 200px; float: left;" />
+                <c:choose>
+                    <c:when test="${userRegistrationForm.accountExists}">
+                        <input id="recover_btn_id" type="submit" value="RECOVER PASSWORD" name="recover" class="submit_btn" style="width: 200px; float: left;" />
+                    </c:when>
+                    <c:otherwise>
+                        <input id="recover_btn_id" type="submit" value="RECOVER PASSWORD" name="recover" class="submit_btn" style="display: none; width: 200px; float: left;" />
+                    </c:otherwise>
+                </c:choose>
                 <input id="submit_btn_id" type="submit" value="SIGN ME UP" name="signup" class="submit_btn" />
             </form:form>
             <div class="clear"></div>
@@ -122,12 +129,10 @@
         if (result.valid === "true") {
             $("#mailErrors").html("Verification email will be sent to above email address").css({'display': 'inline'});
             $("#mail.errors").css({'display': 'none'});
-//            $("#submit_btn_id").prop({'disabled': false});
         } else {
             $("#mailErrors").html(result.message).css({'display': 'inline'});
             //Add the button for recovery and hide button for SignUp
             $("#recover_btn_id").css({'display': 'inline'});
-//            $("#submit_btn_id").prop({'disabled': true});
         }
     }
 </script>
