@@ -22,7 +22,8 @@ public final class UserRegistrationForm {
     private String mail;
     private String birthday;
     private String password;
-    private boolean accountExists = false;
+    private boolean accountExists;
+    private boolean acceptsAgreement;
 
     private UserRegistrationForm() {
     }
@@ -82,6 +83,14 @@ public final class UserRegistrationForm {
 
     public void setAccountExists(boolean accountExists) {
         this.accountExists = accountExists;
+    }
+
+    public boolean isAcceptsAgreement() {
+        return acceptsAgreement;
+    }
+
+    public void setAcceptsAgreement(boolean acceptsAgreement) {
+        this.acceptsAgreement = acceptsAgreement;
     }
 
     @Override

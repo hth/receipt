@@ -74,9 +74,15 @@
                 <div class="clear"></div>
 
                 <div class="checkbox">
-                    <input class="chk" type="checkbox" />
-                    <span class="checkbox_txt">I agree to the Receiptofi terms</span>
+                    <form:checkbox path="acceptsAgreement" id="acceptsAgreement" cssClass="chk" />
+                    <span class="checkbox_txt">I fully agree to the Receiptofi terms</span>
+                    <spring:hasBindErrors name="userRegistrationForm">
+                        <c:if test="${errors.hasFieldErrors('acceptsAgreement')}">
+                            <form:label path="acceptsAgreement" cssClass="signup_label first"><form:errors path="acceptsAgreement" /></form:label>
+                        </c:if>
+                    </spring:hasBindErrors>
                 </div>
+                <div class="clear"></div>
 
                 <c:choose>
                     <c:when test="${userRegistrationForm.accountExists}">
@@ -126,7 +132,7 @@
     }
 
     function fieldValidated(result) {
-        if (result.valid === "true") {
+        if (result.valid === true) {
             $("#mailErrors")
                     .html("Verification email will be sent to above email address")
                     .css({'display': 'inline', 'background-color' : '#34B120', 'color' : '#FFF', 'font-family': 'Helvetica Neue, Helvetica, Arial, sans-serif'});
