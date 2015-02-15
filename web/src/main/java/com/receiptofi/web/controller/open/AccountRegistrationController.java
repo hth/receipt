@@ -232,13 +232,13 @@ public class AccountRegistrationController {
         if (null != userProfileEntity && userProfileEntity.getEmail().equals(email)) {
             LOG.info("Email={} provided during registration exists", email);
             availabilityStatus = AvailabilityStatus.notAvailable(email);
-            return String.format("{ \"valid\" : \"%s\", \"message\" : \"<b>%s</b> is already registered. %s\" }",
+            return String.format("{ \"valid\" : %b, \"message\" : \"<b>%s</b> is already registered. %s\" }",
                     availabilityStatus.isAvailable(),
                     email,
                     StringUtils.join(availabilityStatus.getSuggestions()));
         }
         LOG.info("Email available={} for registration", email);
         availabilityStatus = AvailabilityStatus.available();
-        return String.format("{ \"valid\" : \"%s\" }", availabilityStatus.isAvailable());
+        return String.format("{ \"valid\" : %b }", availabilityStatus.isAvailable());
     }
 }

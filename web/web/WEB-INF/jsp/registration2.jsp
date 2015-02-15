@@ -126,7 +126,7 @@
     }
 
     function fieldValidated(result) {
-        if (result.valid === "true") {
+        if (result.valid === true) {
             $("#mailErrors")
                     .html("Verification email will be sent to above email address")
                     .css({'display': 'inline', 'background-color' : '#34B120', 'color' : '#FFF', 'font-family': 'Helvetica Neue, Helvetica, Arial, sans-serif'});
