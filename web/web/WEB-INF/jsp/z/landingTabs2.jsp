@@ -15,9 +15,9 @@
     </ul>
     </c:when>
     <c:otherwise>
-        <div class="first first-small ajx-content">
-            <strong>No receipt data available for this month.</strong>
-        </div>
+    <div class="first first-small ajx-content">
+        <strong>No receipt data available for this month.</strong>
+    </div>
     </c:otherwise>
 </c:choose>
 </div>

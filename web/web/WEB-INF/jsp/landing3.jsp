@@ -332,9 +332,9 @@
                 </ul>
                 </c:when>
                 <c:otherwise>
-                    <div class="first first-small ajx-content temp_offset" id="noReceiptId">
-                        <strong>No receipt data available for this month.</strong>
-                    </div>
+                <div class="first first-small ajx-content temp_offset" id="noReceiptId">
+                    <strong>No receipt data available for this month.</strong>
+                </div>
                 </c:otherwise>
                 </c:choose>
             </div>

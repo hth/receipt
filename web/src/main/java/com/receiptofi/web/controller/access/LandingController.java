@@ -205,7 +205,6 @@ public class LandingController {
             @ModelAttribute ("landingForm")
             LandingForm landingForm
     ) throws IOException {
-        ModelAndView modelAndView = new ModelAndView("/z/landingTabs2");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DateTime monthYear = DTF.parseDateTime(monthView);
@@ -217,7 +216,8 @@ public class LandingController {
         LOG.info("Calculating Donut chart - receipt expense");
         /** bizNames and bizByExpenseTypes added below to landingForm*/
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
-        return modelAndView;
+        /** Need to return ModelAndView as returning just string does not execute JSP. */
+        return new ModelAndView("/z/landingTabs2");
     }
 
     /**
