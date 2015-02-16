@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<div class="rightside-list-holder mouseScroll" id="off_screen">
+<div class="rightside-list-holder mouseScroll temp_offset" id="receiptListId_refreshReceiptForMonthId">
 <c:choose>
     <c:when test="${!empty landingForm.receiptForMonth.receipts}">
     <ul>
@@ -15,9 +15,9 @@
     </ul>
     </c:when>
     <c:otherwise>
-        <div class="first first-small ajx-content">
-            <strong>No receipt data available for this month.</strong>
-        </div>
+    <div class="first first-small ajx-content">
+        <strong>No receipt data available for this month.</strong>
+    </div>
     </c:otherwise>
 </c:choose>
 </div>
