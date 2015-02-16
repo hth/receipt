@@ -179,6 +179,9 @@ function loadMonthlyExpenses(date) {
 
             $(".fc-prev-button").removeClass('fc-state-disabled').prop('disabled', false);
             $(".fc-next-button").removeClass('fc-state-disabled').prop('disabled', false);
+
+            $("#btnList").removeClass('toggle_disabled');
+            $("#btnCalendar").removeClass('toggle_disabled');
         },
         complete: function () {
             //do nothing as load removes spinner
@@ -283,10 +286,12 @@ function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
 }
 
 function toggleListCalendarView(button) {
+    console.log("Show " + button.value);
     var content = 'btn' + button.value;
-    if(content === 'btnList') {
+    if(content === 'btnList' && !$("#btnList").hasClass('toggle_disabled')) {
         $("#calendarId").hide();
         $("#receiptListId").show();
+        $("#receiptListId_refreshReceiptForMonthId").removeClass("temp_offset");
         $(".rightside-list-holder").show().removeAttr("id");
         $("#btnList").addClass("toggle_selected");
         $("#btnCalendar").removeClass("toggle_selected");

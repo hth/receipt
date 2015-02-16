@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<div class="rightside-list-holder mouseScroll" id="off_screen">
+<div class="rightside-list-holder mouseScroll temp_offset" id="receiptListId_refreshReceiptForMonthId">
 <c:choose>
     <c:when test="${!empty landingForm.receiptForMonth.receipts}">
     <ul>

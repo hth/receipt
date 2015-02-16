@@ -704,6 +704,17 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     color: #0079FF;
 }
 
+.toggle_disabled {
+    background: #484848;
+    color: #FFF;
+}
+
+.upload-text {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.98em;
+    font-weight: bold;
+}
+
 .toggle_button_right {
     margin: 0px;
     border-bottom-right-radius: 5px;

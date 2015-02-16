@@ -122,6 +122,8 @@
                     .on('click', 'button.fc-prev-button', function () {
                         $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
                         $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $("#btnList").addClass('toggle_disabled');
+                        $("#btnCalendar").addClass('toggle_disabled');
 
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
@@ -130,6 +132,8 @@
                     .on('click', 'button.fc-next-button', function () {
                         $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
                         $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $("#btnList").addClass('toggle_disabled');
+                        $("#btnCalendar").addClass('toggle_disabled');
 
                         loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
                         $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
@@ -229,7 +233,7 @@
 		<div class="gd-title">
 			<h1 class="widget-title-text">Upload new receipt</h1>
 		</div>
-        <div id="restricted-fine-uploader"></div>
+        <div id="restricted-fine-uploader" class="upload-text"></div>
 	</div>
 	<div class="sidebar-indication">
 		<div class="si-title">
