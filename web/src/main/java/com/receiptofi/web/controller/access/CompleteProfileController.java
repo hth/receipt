@@ -1,6 +1,7 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.web.controller.open.LoginController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

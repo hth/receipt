@@ -36,6 +36,7 @@ public class AccountServiceTest {
     @Mock private UserAccountManager userAccountManager;
     @Mock private GenerateUserIdManager generateUserIdManager;
     @Mock private EmailValidateService emailValidateService;
+    @Mock private RegistrationService registrationService;
 
     private AccountService accountService;
 
@@ -49,7 +50,8 @@ public class AccountServiceTest {
                 userPreferenceManager,
                 forgotRecoverManager,
                 generateUserIdManager,
-                emailValidateService
+                emailValidateService,
+                registrationService
         );
     }
 

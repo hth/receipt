@@ -53,6 +53,7 @@ public class AccountService {
     private ForgotRecoverManager forgotRecoverManager;
     private GenerateUserIdManager generateUserIdManager;
     private EmailValidateService emailValidateService;
+    private RegistrationService registrationService;
 
     @Value ("${domain}")
     private String domain;
@@ -65,7 +66,8 @@ public class AccountService {
             UserPreferenceManager userPreferenceManager,
             ForgotRecoverManager forgotRecoverManager,
             GenerateUserIdManager generateUserIdManager,
-            EmailValidateService emailValidateService
+            EmailValidateService emailValidateService,
+            RegistrationService registrationService
     ) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
@@ -74,6 +76,7 @@ public class AccountService {
         this.forgotRecoverManager = forgotRecoverManager;
         this.generateUserIdManager = generateUserIdManager;
         this.emailValidateService = emailValidateService;
+        this.registrationService = registrationService;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -130,8 +133,11 @@ public class AccountService {
             );
             userAccount.setAccountValidated(false);
             userAccount.setAccountValidatedBeginDate();
-            /** activated until mail.validation.timeout.period and beyond that system will limit login and access. */
-            userAccount.active();
+            /**
+             * when registration is allowed and account is not validated, then user account login is active until
+             * mail.validation.timeout.period. System will limit login and access beyond the days allowed.
+             */
+            registrationService.isRegistrationAllowed(userAccount);
             userAccountManager.save(userAccount);
 
             userProfile = UserProfileEntity.newInstance(

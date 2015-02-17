@@ -10,10 +10,10 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
-import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -69,7 +69,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     private AccountService accountService;
 
     @Autowired
-    private RegistrationConfig registrationConfig;
+    private RegistrationService registrationService;
 
     @Autowired
     private ProviderConfig providerConfig;
@@ -91,7 +91,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         );
         UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(RandomString.newInstance().nextString());
         userAccount.setUserAuthentication(userAuthentication);
-        registrationConfig.changeUserAccountActiveState(userAccount);
+        registrationService.changeUserAccountActiveState(userAccount);
         LOG.info("new account created user={} provider={}", userAccount.getReceiptUserId(), userAccount.getProviderId());
         mongoTemplate.insert(userAccount);
     }
@@ -152,7 +152,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     /**
-     * //XXX TODO this method should be pushed down to cron job; as this consumes time
+     * //TODO this method should be pushed down to cron job; as this consumes time
      * Populates friends from Facebook
      *
      * @param userAccount
@@ -179,7 +179,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                         RandomString.newInstance().nextString()
                 );
                 userAccountEntity.setUserAuthentication(userAuthentication);
-                registrationConfig.changeUserAccountActiveState(userAccount);
+                registrationService.changeUserAccountActiveState(userAccount);
                 LOG.info("new account created user={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
             } else {
                 userAccountEntity.setUpdated();
