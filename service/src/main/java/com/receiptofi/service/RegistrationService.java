@@ -1,4 +1,4 @@
-package com.receiptofi.social.config;
+package com.receiptofi.service;
 
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.site.ReceiptUser;
@@ -14,12 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 /**
  * Maintains if registration is allowed.
  * User: hitender
+ * Date: 2/17/15 8:18 AM
  * Date: 6/22/14 7:30 PM
  */
 @SuppressWarnings ({
@@ -28,16 +29,16 @@ import org.springframework.ui.ModelMap;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Component
+@Service
 @Scope (BeanDefinition.SCOPE_SINGLETON)
-public class RegistrationConfig {
-    private static final Logger LOG = LoggerFactory.getLogger(RegistrationConfig.class);
+public class RegistrationService {
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationService.class);
 
     @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
 
-    @Value ("${indexController:/open/index.htm}")
-    private String indexController;
+    @Value ("${indexController:/open/login.htm}")
+    private String loginController;
 
     public void changeUserAccountActiveState(UserAccountEntity userAccount) {
         if (!registrationTurnedOn) {
@@ -80,18 +81,18 @@ public class RegistrationConfig {
     }
 
     /**
-     * Last line of defense when registration is turned off and user logs in through one of the provider.
+     * Last line of defense when registration is turned off and user logs in through one of the social provider.
      *
      * @param user
      * @return
      */
     public boolean checkRegistrationIsTurnedOn(UserDetails user) {
-        LOG.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), indexController);
+        LOG.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), loginController);
         return !(user.isEnabled() || registrationTurnedOn);
     }
 
-    public String getIndexController() {
-        return indexController;
+    public String getLoginController() {
+        return loginController;
     }
 
     public boolean isRegistrationTurnedOn() {

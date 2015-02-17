@@ -29,7 +29,7 @@
         <h1>Account successfully validated</h1>
         <p>Please log in with your email address and password entered during registration.</p>
         <p>&nbsp;</p>
-        <p><a href="${pageContext.request.contextPath}/login.htm">Click here</a> to return to the login page.</p>
+        <p><a href="${pageContext.request.contextPath}/open/login.htm">Click here</a> to return to the login page.</p>
     </div>
 </div>
 

@@ -69,10 +69,10 @@
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('192.168.1.*')" />
         <form-login
-                login-page="/login.htm"
+                login-page="/open/login.htm"
                 default-target-url="/access/landing.htm"
                 authentication-success-handler-ref="onLoginSuccessHandler"
-                authentication-failure-url="/login.htm?loginFailure=--#"
+                authentication-failure-url="/open/login.htm?loginFailure=--#"
                 username-parameter="emailId"
                 password-parameter="password" />
 

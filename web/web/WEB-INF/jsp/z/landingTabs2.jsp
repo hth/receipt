@@ -1,4 +1,7 @@
-<%@ include file="/WEB-INF/jsp/include.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <div class="rightside-list-holder mouseScroll temp_offset" id="receiptListId_refreshReceiptForMonthId">
 <c:choose>
     <c:when test="${!empty landingForm.receiptForMonth.receipts}">

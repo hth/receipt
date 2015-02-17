@@ -1,8 +1,8 @@
 package com.receiptofi.social.user;
 
 import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.annotation.Social;
-import com.receiptofi.social.config.RegistrationConfig;
 import com.receiptofi.social.service.CustomUserDetailsService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,13 +48,17 @@ public final class SignInAdapterImpl implements SignInAdapter {
 
     private final RequestCache requestCache;
     private final CustomUserDetailsService customUserDetailsService;
-    private final RegistrationConfig registrationConfig;
+    private final RegistrationService registrationService;
 
     @Inject
-    public SignInAdapterImpl(RequestCache requestCache, CustomUserDetailsService customUserDetailsService, RegistrationConfig registrationConfig) {
+    public SignInAdapterImpl(
+            RequestCache requestCache,
+            CustomUserDetailsService customUserDetailsService,
+            RegistrationService registrationService
+    ) {
         this.requestCache = requestCache;
         this.customUserDetailsService = customUserDetailsService;
-        this.registrationConfig = registrationConfig;
+        this.registrationService = registrationService;
     }
 
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
@@ -87,8 +91,8 @@ public final class SignInAdapterImpl implements SignInAdapter {
         HttpServletResponse nativeRes = request.getNativeResponse(HttpServletResponse.class);
         SavedRequest saved = requestCache.getRequest(nativeReq, nativeRes);
 
-        if (registrationConfig.checkRegistrationIsTurnedOn(user)) {
-            return registrationConfig.getIndexController();
+        if (registrationService.checkRegistrationIsTurnedOn(user)) {
+            return registrationService.getLoginController();
         }
 
         if (isProfileNotComplete(user)) {

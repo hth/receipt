@@ -1,5 +1,6 @@
 package com.receiptofi.social.config;
 
+import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.connect.ConnectionConverter;
 import com.receiptofi.social.connect.ConnectionServiceImpl;
@@ -62,7 +63,7 @@ public class SocialConfig {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private RegistrationConfig registrationConfig;
+    private RegistrationService registrationService;
 
     /**
      * When a new provider is added to the app, register its {@link org.springframework.social.connect.ConnectionFactory} here.
@@ -98,7 +99,7 @@ public class SocialConfig {
         LOG.info("Initializing ProviderSignInController");
         ConnectionFactoryLocator connFactLocator = connectionFactoryLocator();
         UsersConnectionRepository usrConnRepo = usersConnectionRepository();
-        SignInAdapterImpl signInAdapter = new SignInAdapterImpl(requestCache, customUserDetailsService, registrationConfig);
+        SignInAdapterImpl signInAdapter = new SignInAdapterImpl(requestCache, customUserDetailsService, registrationService);
         ProviderSignInController controller = new ProviderSignInController(connFactLocator, usrConnRepo, signInAdapter);
 
         controller.setSignUpUrl("/signup");

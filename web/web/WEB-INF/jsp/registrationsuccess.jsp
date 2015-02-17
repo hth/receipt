@@ -27,7 +27,7 @@
         <p>Verification email has been sent to email <b><c:out value="${email}"/></b>.</p>
         <p>Please follow the directions in the email to validated your account.</p>
         <p>&nbsp;</p>
-        <p>Click here for <a href="${pageContext.request.contextPath}/login.htm">Login</a> page</p>
+        <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Login</a> page</p>
     </div>
 </div>
 

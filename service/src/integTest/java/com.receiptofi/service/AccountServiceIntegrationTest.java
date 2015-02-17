@@ -61,6 +61,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
     private GenerateUserIdManager generateUserIdManager;
     private RegisteredDeviceManager registeredDeviceManager;
     private EmailValidateService emailValidateService;
+    private RegistrationService registrationService;
 
     private AccountService accountService;
 
@@ -81,7 +82,8 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
                 userPreferenceManager,
                 forgotRecoverManager,
                 generateUserIdManager,
-                emailValidateService
+                emailValidateService,
+                registrationService
         );
 
         userProfileCollection = getCollection(userProfileCollectionName);

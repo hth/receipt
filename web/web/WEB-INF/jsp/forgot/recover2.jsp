@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="header_right_login">
-                <div class="sing_up"><a href="${pageContext.request.contextPath}/login.htm">Sign In</a></div>
+                <div class="sing_up"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></div>
                 <div class="sing_up"><a href="${pageContext.request.contextPath}/open/registration.htm">Register</a>
                 </div>
             </div>

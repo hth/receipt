@@ -69,7 +69,7 @@
             <div class="col-xs-6">
                 <sec:authorize access="isAnonymous()">
                     <p>
-                        <a href="${pageContext.request.contextPath}/login.htm">Sign In</a>
+                        <a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a>
                     </p>
                 </sec:authorize>
             </div>

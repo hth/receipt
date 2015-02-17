@@ -1,6 +1,7 @@
-package com.receiptofi.web.controller.access;
+package com.receiptofi.web.controller.open;
 
 import com.receiptofi.service.LoginService;
+import com.receiptofi.service.RegistrationService;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
 
@@ -11,7 +12,11 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +39,7 @@ import javax.servlet.http.HttpServletRequest;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/login")
+@RequestMapping (value = "/open/login")
 public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
@@ -45,6 +50,7 @@ public class LoginController {
     private final CachedUserAgentStringParser parser;
 
     @Autowired private LoginService loginService;
+    @Autowired private RegistrationService registrationService;
 
     public LoginController() {
         //Get an UserAgentStringParser and analyze the requesting client
@@ -75,12 +81,25 @@ public class LoginController {
     }
 
     /**
-     * Loads initial form.
+     * isEnabled() false exists when properties registration.turned.on is false and user is trying to gain access
+     * or signup through one of the provider. This is last line of defense for user signing in through social provider.
+     * <p>
+     * During application start up a call is made to show index page. Hence this method and only this controller
+     * contains support for request type HEAD.
+     * <p>
+     * We have added support for HEAD request in filter to prevent failing on HEAD request. As of now there is no valid
+     * reason why filter contains this HEAD request as everything is secure after login and there are no bots or
+     * crawlers when a valid user has logged in.
+     * <p>
+     * @see <a href="http://axelfontaine.com/blog/http-head.html">http://axelfontaine.com/blog/http-head.html</a>
      *
+     * @param locale
+     * @param map
+     * @param request
      * @return
      */
-    @RequestMapping (method = RequestMethod.GET)
-    public String loadForm(Locale locale, HttpServletRequest request) {
+    @RequestMapping (method = {RequestMethod.GET, RequestMethod.HEAD})
+    public String loadForm(Locale locale, ModelMap map, HttpServletRequest request) {
         LOG.info("Locale Type={}", locale);
 
         ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
@@ -93,7 +112,20 @@ public class LoginController {
             LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, agent);
             loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString());
         }
-        return loginPage;
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LOG.info("Auth {}", authentication.getPrincipal().toString());
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return loginPage;
+        }
+
+        if (registrationService.validateIfRegistrationIsAllowed(map, authentication)) {
+            return loginPage;
+        }
+
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        map.addAttribute("userDetails", userDetails);
+        return "redirect:/access/landing.htm";
     }
 
     /**
