@@ -34,7 +34,7 @@
         <h1>Invalid Link</h1>
         <p>We apologize, but we are unable to verify the link you used to access this page. <sup>(404)</sup></p>
         <p>&nbsp;</p>
-        <p>Please <a href="../login.htm">click here</a> to return to the main page and start over.</p>
+        <p>Please <a href="/open/login.htm">click here</a> to return to the main page and start over.</p>
     </div>
     </c:if>
 

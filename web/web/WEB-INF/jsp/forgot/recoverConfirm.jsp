@@ -42,7 +42,7 @@
             <p>Since your email address has not being validate we have sent verification email.</p>
             <p>Follow directions in email to validated your account and then follow the same steps to request password reset.</p>
             <p>&nbsp;</p>
-            <p>Click here for <a href="${pageContext.request.contextPath}/login.htm">Login</a> page</p>
+            <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Login</a> page</p>
         </div>
     </c:if>
 </div>
