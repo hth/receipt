@@ -98,7 +98,14 @@
                         <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
                         <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTagName}">&nbsp;&nbsp;&nbsp;</span>
                         <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
-                            <spring:eval expression="receipt.name"/>
+                            <c:choose>
+                                <c:when test="${receipt.name.length() gt 34}">
+                                    <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                                </c:when>
+                                <c:otherwise>
+                                    <spring:eval expression="receipt.name"/>
+                                </c:otherwise>
+                            </c:choose>
                         </a>
                         <span class="rightside-li-right-text">
                             <spring:eval expression='receipt.total'/>

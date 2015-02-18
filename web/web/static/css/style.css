@@ -643,7 +643,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 0.75em;
     vertical-align: middle;
     display: inline-block;
-    width: 118px;
+    width: 122px;
     line-height: 50px;
     padding-left: 7px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -677,7 +677,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-weight: normal;
     font-size: 1em;
     vertical-align: middle;
-    width: 104px;
+    width: 100px;
     direction: rtl;
     display: inline-block;
     padding-left: 10px;

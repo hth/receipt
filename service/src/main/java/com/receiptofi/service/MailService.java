@@ -95,6 +95,9 @@ public class MailService {
     @Value ("${mail.validate.subject}")
     private String mailValidateSubject;
 
+    @Value ("${mail.registration.active.subject}")
+    private String mailRegistrationActiveSubject;
+
     @Autowired
     public MailService(AccountService accountService,
                        InviteService inviteService,
@@ -142,7 +145,7 @@ public class MailService {
             }
             LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
             sendMail(
-                    name + ": " + mailValidateSubject,
+                    name + ": " + mailRegistrationActiveSubject,
                     freemarkerToString("mail/registration-active.ftl", rootMap),
                     message,
                     helper
