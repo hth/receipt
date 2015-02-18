@@ -4,6 +4,7 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: hitender
@@ -19,4 +20,8 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode);
 
     int inactiveNonValidatedAccount(Date pastActivationDate);
+
+    List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff();
+
+    void removeRegistrationIsOffFrom(String id);
 }

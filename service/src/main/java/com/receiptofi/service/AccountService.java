@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -138,6 +139,7 @@ public class AccountService {
              * mail.validation.timeout.period. System will limit login and access beyond the days allowed.
              */
             registrationService.isRegistrationAllowed(userAccount);
+            userAccount.active();
             userAccountManager.save(userAccount);
 
             userProfile = UserProfileEntity.newInstance(
@@ -347,5 +349,13 @@ public class AccountService {
 
     public int inactiveNonValidatedAccount(Date pastActivationDate) {
         return userAccountManager.inactiveNonValidatedAccount(pastActivationDate);
+    }
+
+    public List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff() {
+        return userAccountManager.findRegisteredAccountWhenRegistrationIsOff();
+    }
+
+    public void removeRegistrationIsOffFrom(String id) {
+        userAccountManager.removeRegistrationIsOffFrom(id);
     }
 }

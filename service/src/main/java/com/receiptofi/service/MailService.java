@@ -120,6 +120,40 @@ public class MailService {
         this.userProfilePreferenceService = userProfilePreferenceService;
     }
 
+    public boolean registrationCompleteEmail(String userId, String name) {
+        Map<String, String> rootMap = new HashMap<>();
+        rootMap.put("to", name);
+        rootMap.put("contact_email", userId);
+        rootMap.put("domain", domain);
+        rootMap.put("https", https);
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+
+            // use the true flag to indicate you need a multipart message
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
+
+            String sentTo = StringUtils.isEmpty(devSentTo) ? userId : devSentTo;
+            if (sentTo.equalsIgnoreCase(devSentTo)) {
+                helper.setTo(new InternetAddress(devSentTo, emailAddressName));
+            } else {
+                helper.setTo(new InternetAddress(userId, name));
+            }
+            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
+            sendMail(
+                    name + ": " + mailValidateSubject,
+                    freemarkerToString("mail/registration-active.ftl", rootMap),
+                    message,
+                    helper
+            );
+        } catch (IOException | TemplateException | MessagingException exception) {
+            LOG.error("Validation failure email for={}", userId, exception);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Sends out email to validate account.
      *

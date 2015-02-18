@@ -107,4 +107,21 @@ public class UserAccountManagerImpl implements UserAccountManager {
 
         return writeResult.getN();
     }
+
+    @Override
+    public List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff() {
+        return mongoTemplate.find(
+                query(where("RIO").exists(true)),
+                UserAccountEntity.class
+        );
+    }
+
+    @Override
+    public void removeRegistrationIsOffFrom(String id) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                update("U", new Date()).inc("V", 1).unset("RIO"),
+                UserAccountEntity.class
+        );
+    }
 }

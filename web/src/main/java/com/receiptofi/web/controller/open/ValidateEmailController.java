@@ -42,7 +42,6 @@ public class ValidateEmailController {
 
     private EmailValidateService emailValidateService;
     private AccountService accountService;
-    private RegistrationService registrationService;
 
     @Value ("${emailValidate:redirect:/open/validate/result.htm}")
     private String validateResult;
@@ -56,12 +55,10 @@ public class ValidateEmailController {
     @Autowired
     public ValidateEmailController(
             EmailValidateService emailValidateService,
-            AccountService accountService,
-            RegistrationService registrationService
+            AccountService accountService
     ) {
         this.emailValidateService = emailValidateService;
         this.accountService = accountService;
-        this.registrationService = registrationService;
     }
 
     @RequestMapping (method = RequestMethod.GET)
@@ -84,7 +81,6 @@ public class ValidateEmailController {
                 LOG.info("authentication failed for user={}", userAccount.getReceiptUserId());
             } else {
                 userAccount.setAccountValidated(true);
-                registrationService.isRegistrationAllowed(userAccount);
                 accountService.saveUserAccount(userAccount);
 
                 emailValidate.inActive();
