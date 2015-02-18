@@ -40,12 +40,6 @@ public class RegistrationService {
     @Value ("${indexController:/open/login.htm}")
     private String loginController;
 
-    public void changeUserAccountActiveState(UserAccountEntity userAccount) {
-        if (!registrationTurnedOn) {
-            userAccount.inActive();
-        }
-    }
-
     public boolean validateIfRegistrationIsAllowed(ModelMap map, Authentication authentication) {
         if (!((UserDetails) authentication.getPrincipal()).isEnabled()) {
             ReceiptUser receiptUser = (ReceiptUser) authentication.getPrincipal();
@@ -71,12 +65,8 @@ public class RegistrationService {
      * @param userAccount
      */
     public void isRegistrationAllowed(UserAccountEntity userAccount) {
-        if (registrationTurnedOn) {
-            LOG.info("registration is allowed, marking user={} active", userAccount.getReceiptUserId());
-            userAccount.active();
-        } else {
-            LOG.info("registration is NOT allowed, marking user={} inactive", userAccount.getReceiptUserId());
-            userAccount.inActive();
+        if (!registrationTurnedOn) {
+            userAccount.setRegisteredWhenRegistrationIsOff(!registrationTurnedOn);
         }
     }
 

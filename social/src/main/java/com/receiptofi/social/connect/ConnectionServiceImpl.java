@@ -91,7 +91,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         );
         UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(RandomString.newInstance().nextString());
         userAccount.setUserAuthentication(userAuthentication);
-        registrationService.changeUserAccountActiveState(userAccount);
+        registrationService.isRegistrationAllowed(userAccount);
         LOG.info("new account created user={} provider={}", userAccount.getReceiptUserId(), userAccount.getProviderId());
         mongoTemplate.insert(userAccount);
     }
@@ -113,6 +113,8 @@ public class ConnectionServiceImpl implements ConnectionService {
             userAccount.setImageUrl(userAccountFromConnection.getImageUrl());
             userAccount.setDisplayName(userAccountFromConnection.getDisplayName());
             userAccount.setUpdated();
+            /** Social account, hence account is considered validated by default. */
+            userAccount.setAccountValidated(true);
 
             LOG.info("fetched before save userAccount={}", userAccount);
             mongoTemplate.save(userAccount);
@@ -179,7 +181,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                         RandomString.newInstance().nextString()
                 );
                 userAccountEntity.setUserAuthentication(userAuthentication);
-                registrationService.changeUserAccountActiveState(userAccount);
+                registrationService.isRegistrationAllowed(userAccount);
                 LOG.info("new account created user={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
             } else {
                 userAccountEntity.setUpdated();

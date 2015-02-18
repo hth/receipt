@@ -104,6 +104,9 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("AVD")
     private Date accountValidatedBeginDate;
 
+    @Field ("RIO")
+    private boolean registeredWhenRegistrationIsOff;
+
     private UserAccountEntity() {
         super();
         roles = new LinkedHashSet<>();
@@ -308,6 +311,14 @@ public class UserAccountEntity extends BaseEntity {
             return displayName;
         }
         return userId;
+    }
+
+    public boolean isRegisteredWhenRegistrationIsOff() {
+        return registeredWhenRegistrationIsOff;
+    }
+
+    public void setRegisteredWhenRegistrationIsOff(boolean registeredWhenRegistrationIsOff) {
+        this.registeredWhenRegistrationIsOff = registeredWhenRegistrationIsOff;
     }
 
     @Override

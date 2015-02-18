@@ -12,7 +12,6 @@ import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.LoginService;
-import com.receiptofi.service.RegistrationService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
@@ -72,7 +71,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private ConnectionService connectionService;
     @Autowired private GenerateUserIdManager generateUserIdManager;
     @Autowired private GoogleAccessTokenService googleAccessTokenService;
-    @Autowired private RegistrationService registrationService;
 
     @Value ("${mail.validation.timeout.period}")
     private int mailValidationTimeoutPeriod;
@@ -118,12 +116,13 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
-        if (registrationService.isRegistrationTurnedOn()) {
-            return userAccount.isActive() &&
+        if (userAccount.isRegisteredWhenRegistrationIsOff()) {
+            return false;
+        } else if (userAccount.isActive()) {
+            return userAccount.isAccountValidated() ||
                     userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationTimeoutPeriod);
         }
-
-        return userAccount.isActive();
+        return false;
     }
 
     @Social
