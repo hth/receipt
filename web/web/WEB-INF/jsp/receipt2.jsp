@@ -4,7 +4,6 @@
 <head>
     <title>Detail</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script async src="${pageContext.request.contextPath}/static/js/login.js"></script>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
