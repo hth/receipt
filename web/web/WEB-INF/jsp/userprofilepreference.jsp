@@ -131,7 +131,7 @@
                                         Yes
                                     </c:when>
                                     <c:otherwise>
-                                        No. Please validate your email.
+                                        <span style="color: red; font-weight: bold">No. Please validate your email.</span>
                                     </c:otherwise>
                                 </c:choose>
                             </label>
