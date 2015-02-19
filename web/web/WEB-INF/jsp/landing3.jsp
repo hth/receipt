@@ -174,7 +174,7 @@
                 <c:choose>
                     <c:when test="${!validated}">
                         <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <%--show alert--%>
+                            <%--show alert when email not validated--%>
                             <%--http://dabblet.com/gist/1576546--%>
                             <sec:authentication property="principal.username" />
                         </a>
