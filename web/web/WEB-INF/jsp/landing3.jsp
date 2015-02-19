@@ -170,9 +170,21 @@
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
                 <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT</a>
-                <a class="top-account-bar-text user-email" href="#">
-                    <sec:authentication property="principal.username" />
-                </a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <%--show alert--%>
+                            <%--http://dabblet.com/gist/1576546--%>
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
