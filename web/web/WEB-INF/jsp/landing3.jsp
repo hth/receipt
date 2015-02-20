@@ -339,7 +339,7 @@
                     <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
                     <li>
                         <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
-                        <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
+                        <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text" target="_blank">
                             <spring:eval expression="receipt.name"/>
                         </a>
                         <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>

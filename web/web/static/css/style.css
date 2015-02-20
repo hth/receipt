@@ -1066,3 +1066,151 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     top: -3000px;
 }
 
+/*Footer */
+.maha_footer {
+    float: left;
+    width: 100%;
+}
+
+.mfooter_up {
+    float: left;
+    width: 100%;
+    background: #E8E7E7;
+    margin-top: 55px;
+}
+
+.fotter_row {
+    width: 960px;
+    margin: 0 auto;
+}
+
+.fotter_column {
+    float: left;
+    width: 20%;
+    padding: 27px 0px 40px 0px;
+    text-align: center;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.mfooter_down {
+    float: left;
+    width: 100%;
+    background: #000;
+    color: #fff;
+}
+
+.fotter_copy {
+    width: 71%;
+    margin: 0 auto;
+    font-size: 11px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 16px;
+    padding: 15px 0px;
+    text-align: center;
+}
+/*Footer end*/
+
+.mainpage_slider {
+    width: 100%;
+    min-height: 400px;
+    height: auto;
+    float: left;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+.work_content {
+    float: left;
+    width: 100%;
+
+    border-top: 1px solid #6C6B6B;
+}
+
+.work_content p {
+    float: left;
+    width: 86%;
+    font-size: 15px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: justify;
+    line-height: 18px;
+    margin: 6px 58px;
+}
+
+.col_2 {
+    float: left;
+    width: 50%;
+    border-right: 1px solid #6C6B6B;
+
+    padding: 10px 30px;
+}
+
+.col_2 p {
+    float: left;
+    width: 100%;
+    font-size: 15px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: justify;
+    line-height: 18px;
+    margin: 10px 0px;
+}
+
+.we_do {
+    float: left;
+    text-align: center;
+    width: 100%;
+    padding: 85px 0px;
+    font-size: 17px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.description {
+    float: left;
+    text-align: center;
+    width: 100%;
+    padding: 12px 0px;
+    margin-top: 39px;
+    font-size: 17px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.space_height {
+    float: left;
+    width: 100%;
+    height: 40px;
+}
+
+.work_btm_content {
+    float: left;
+    width: 100%;
+}
+
+.and {
+    float: left;
+    padding: 20px 44px;
+    background: #454444;
+    margin: 20px 40px;
+    color: #fff;
+}
+
+.main_wrapper_last {
+    width: 71%;
+    margin: 0 auto;
+
+}
+
+.rightside-li-date-text-landing {
+    color: #646464;
+    font-weight: 600;
+    font-size: 0.75em;
+    vertical-align: middle;
+    display: inline-block;
+    width: 118px;
+    line-height: 50px;
+    padding-left: 7px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    float: left;
+}
+
+.doted li {
+    border-bottom: 1px dotted #919191;
+}
