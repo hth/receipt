@@ -1,62 +1,4 @@
-/* -------------------------------- 
-
-Primary style
-
--------------------------------- */
-
-/* --------------------------------
-
-Modules - reusable parts of our design
-
--------------------------------- */
-
-/* -------------------------------- 
-
-Main components 
-
--------------------------------- */
-
-/*.cd-popup-trigger {*/
-    /*text-align: center;*/
-    /*color: #FFF;*/
-    /*font-size: 14px;*/
-/*}*/
-
-/*@media only screen and (min-width: 1170px) {*/
-    /*.cd-popup-trigger {*/
-
-    /*}*/
-/*}*/
-
-/* -------------------------------- 
-
-xpopup 
-
--------------------------------- */
-.cd-popup {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(177, 182, 192, 0.9);
-    opacity: 0;
-    visibility: hidden;
-    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
-    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
-    transition: opacity 0.3s 0s, visibility 0s 0.3s;
-}
-
-.cd-popup.is-visible {
-    opacity: 1;
-    visibility: visible;
-    -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
-    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
-    transition: opacity 0.3s 0s, visibility 0s 0s;
-    padding-bottom: 3em;
-}
-
-.cd-popup-container {
+.detail-view-container {
     position: relative;
     width: 72%;
     margin: 4em auto;
@@ -79,65 +21,6 @@ xpopup
     overflow: scroll;
     height: inherit;
 }
-
-.cd-popup-container p {
-
-}
-
-.cd-popup-container .cd-popup-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 30px;
-    height: 30px;
-}
-
-.cd-popup-container .cd-popup-close::before, .cd-popup-container .cd-popup-close::after {
-    content: '';
-    position: absolute;
-    top: 12px;
-    width: 14px;
-    height: 3px;
-    background-color: #8f9cb5;
-}
-
-.cd-popup-container .cd-popup-close::before {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-    left: 8px;
-}
-
-.cd-popup-container .cd-popup-close::after {
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    right: 8px;
-}
-
-.is-visible .cd-popup-container {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0);
-}
-
-@media only screen and (min-width: 1170px) {
-    .cd-popup-container {
-        margin: 1em auto;
-    }
-}
-
-/*.h1 {*/
-    /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;*/
-    /*font-weight: bold;*/
-    /*font-size: 1.4em;*/
-/*}*/
 
 .report {
     background: #fff;
@@ -183,7 +66,7 @@ xpopup
     border-bottom: 1px dotted #919191 !important;
 }
 
-.contain3 .rightside-list-holder li {
+.contain3 .receipt-detail-holder li {
     border-bottom: 1px dotted #919191 !important;
     display: inline-block !important;
     float: none !important;
@@ -193,15 +76,15 @@ xpopup
     width: 560px !important;
 }
 
-.contain3 .rightside-list-holder li a {
+.contain3 .receipt-detail-holder li a {
     width: 280px !important;
 }
 
-.contain3 .rightside-list-holder li span {
+.contain3 .receipt-detail-holder li span {
     color: black;
 }
 
-.contain3 .rightside-list-holder {
+.contain3 .receipt-detail-holder {
     float: left;
     height: auto;
     margin-left: 90px;
@@ -222,8 +105,11 @@ p, a, h1, h2, h3, span {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.padtop2per {
+.address {
     padding-top: 2%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.95em;
+    line-height: 120%;
 }
 
 .colorblue {
@@ -255,22 +141,82 @@ p, a, h1, h2, h3, span {
     margin-left: 10px;
 }
 
-.tabde .rightside-li-right-text {
-    width: auto;
+.receipt-tag {
+    color: #030201;
+    font-weight: bold;
+    font-size: 0.95em;
+    vertical-align: middle;
+    display: inline-block;
+    width: 120px;
+    line-height: 50px;
+    padding-left: 7px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    background: #fafafa url("/static/images/arrow_down.png") no-repeat 90% 50%;
 }
 
-.rightside-list-holder.border {
+.receipt-tag select {
+    padding: 5px 7px;
+    width: 95%;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.receipt-tag select:focus  {
+    outline: none;
+}
+
+.receipt-li-price-text {
+    color: #030201;
+    font-weight: normal;
+    font-size: 1.0em;
+    vertical-align: middle;
+    display: inline-block;
+    width: 80px;
+    line-height: 50px;
+    padding-left: 7px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+.receipt-item-name {
+    padding-left: 7px;
+}
+
+.receipt-item-name a {
+    color: #007AFF;
+    line-height: 50px;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: left;
+    font-size: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    width: 325px;
+    padding-left: 0px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.receipt-item-name a:hover {
+    font-weight: bold;
+}
+
+.receipt-item-name div {
+    margin-top: -10px;
+    font-size: 0.80em;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.receipt-detail-holder.border {
     width: 100% !important;
 }
 
-.rightside-list-holder.border .rightside-li-right-text {
+.receipt-detail-holder.border {
     float: right;
     width: auto;
-}
-
-.rightside-list-holder.border select {
-    margin-left: 30%;
-    width: 18%;
 }
 
 input {

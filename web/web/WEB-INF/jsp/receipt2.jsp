@@ -13,7 +13,7 @@
 <span class="timestamp"></span>
 <div class="clear"></div>
 <div class=" is-visible" role="alert">
-    <div class="cd-popup-container" style="box-shadow:none;overflow: hidden;">
+    <div class="detail-view-container" style="box-shadow:none; overflow: hidden;">
 
         <form:form method="post" action="../receipt.htm" modelAttribute="receiptForm">
         <div style="float:left;width:55%;margin-right: 3%;">
@@ -32,36 +32,34 @@
             <div class="detailHead">
                 <h1 class="font2em" style="margin-left: 5px;">Map-93 <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span></h1>
             </div>
-            <div>
-                <table width="96%" style="margin-left: 4px; margin-right: 4px">
-                    <tr>
-                        <th width="60%"></th>
-                        <th width="20%"></th>
-                        <th width="20%"></th>
-                    </tr>
+            <div class="receipt-detail-holder border">
+                <table width="100%" style="margin-left: 4px; margin-right: 4px">
                     <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
                     <form:hidden path="items[${status.index}].id"/>
                     <tr>
-                        <td class="rightside-li-middle-text">
+                        <td class="rightside-li-date-text" style="width: 25px">
+                            ${status.count}.
+                        </td>
+                        <td class="receipt-item-name">
                             <c:choose>
                                 <c:when test="${item.quantity eq 1}">
-                                    ${status.count}. <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.name}</a>
+                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.name}</a>
                                 </c:when>
                                 <c:otherwise>
-                                    ${status.count}. <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.name}</a>
-                                    <div style="margin-top: 5px">
+                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.name}</a>
+                                    <div>
                                         ${item.quantity} @ <fmt:formatNumber value="${item.price}" type="currency" pattern="###,###.####" /> each
                                     </div>
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                        <td>
+                        <td class="receipt-tag">
                             <form:select path="items[${status.index}].expenseTag.id" id="itemId">
-                                <form:option value="NONE" label="--- Select ---" />
+                                <form:option value="NONE" label="SELECT" />
                                 <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                             </form:select>
                         </td>
-                        <td class="rightside-li-right-text">
+                        <td class="receipt-li-price-text">
                             <spring:eval expression="item.totalPriceWithoutTax" />
                             <spring:eval expression="item.taxed == T(com.receiptofi.domain.types.TaxEnum).TAXED" var="isValid" />
                             <c:choose>
