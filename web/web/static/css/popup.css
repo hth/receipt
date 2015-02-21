@@ -171,7 +171,7 @@ p, a, h1, h2, h3, span {
 
 .receipt-li-price-text {
     color: #030201;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 1.0em;
     vertical-align: middle;
     display: inline-block;
@@ -198,6 +198,18 @@ p, a, h1, h2, h3, span {
     width: 325px;
     padding-left: 0px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.receipt-comprehensive {
+    color: #030201;
+    font-size: 1em;
+    font-weight: normal;
+    text-transform: none;
+}
+
+.receipt-comprehensive-price {
+    float: right;
+    font-weight: bold
 }
 
 .receipt-item-name a:hover {

@@ -7,6 +7,99 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
+
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+
+    <script>
+        $.ajaxSetup ({
+            cache: false
+        });
+
+        $(document).focusout(function() {
+            "use strict";
+
+            $( "#notes" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/ws/nc/rn.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
+                        data: JSON.stringify({
+                            notes: request.term,
+                            receiptId: $("#receiptId").val()
+                        }),
+                        contentType: 'application/json;charset=UTF-8',
+                        mimeType: 'application/json',
+                        dataType:'json',
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data == true) {
+                                var html = '';
+                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
+                                $('#savedNotes').html(html).show();
+                                $('.timestamp').cuteTime({ refresh: 10000 });
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).focusout(function() {
+            "use strict";
+
+            $( "#recheckComment" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/ws/nc/rc.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
+                        data: JSON.stringify({
+                            notes: request.term,
+                            receiptId: $("#receiptId").val()
+                        }),
+                        contentType: 'application/json;charset=UTF-8',
+                        mimeType: 'application/json',
+                        dataType:'json',
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data == true) {
+                                var html = '';
+                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
+                                $('#savedRecheckComment').html(html).show();
+                                $('.timestamp').cuteTime({ refresh: 10000 });
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).ready(function () {
+            "use strict";
+
+            $('#notes').NobleCount('#notesCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
+            });
+            $('#recheckComment').NobleCount('#recheckCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
+            });
+
+            $('.timestamp').cuteTime({ refresh: 10000 });
+            blinkDownloadIcon();
+        });
+    </script>
 </head>
 <body>
 
@@ -74,25 +167,40 @@
                     </tr>
                     </c:forEach>
                 </table>
-                <!-- second list starts-->
+            </div>
+            <div>
                 <ul>
                     <li>
-                        <span class="rightside-li-date-text">Sub Total</span>
-
-                        <span class="rightside-li-right-text">$81.65</span>
+                        <span class="rightside-li-date-text receipt-comprehensive">Sub Total</span>
+                        <span class="rightside-li-right-text receipt-comprehensive-price"><spring:eval expression="receiptForm.receipt.subTotal" /></span>
                     </li>
                     <li>
-                        <span class="rightside-li-date-text">Tax</span>
-                        <span class="rightside-li-right-text"><spring:eval expression="receiptForm.receipt.tax" /></span>
+                        <span class="rightside-li-date-text receipt-comprehensive">Tax</span>
+                        <span class="rightside-li-right-text receipt-comprehensive-price"><spring:eval expression="receiptForm.receipt.tax" /></span>
                     </li>
                     <li style="border-bottom: 1px solid #919191;">
-                        <span class="rightside-li-date-text">Grand Total</span>
-                        <span class="rightside-li-right-text"><spring:eval expression="receiptForm.receipt.total" /></span>
+                        <span class="rightside-li-date-text receipt-comprehensive">Grand Total</span>
+                        <span class="rightside-li-right-text receipt-comprehensive-price"><spring:eval expression="receiptForm.receipt.total" /></span>
                     </li>
                 </ul>
-                <!-- second list ends -->
-                <h1 class="h1 address" style="padding-bottom:2%;">My notes</h1>
-                <textarea style="width: 561px;height: 145px; padding:1%;" placeholder="Write notes here..."></textarea>
+
+                <h2 class="h2" style="padding-bottom:2%;">Receipt notes</h2>
+                <form:textarea path="receipt.notes.text" id="notes" cols="54" rows="5" placeholder="Message" style="font-size: 1.2em; "/>
+                <br/>
+                <span class="si-general-text remaining-characters"><span id="notesCount"></span> characters remaining</span>
+                <c:choose>
+                    <c:when test="${!empty receiptForm.receipt.notes.id}">
+                        <span id="savedNotes" class="okay">
+                            Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span>
+                        </span>
+                    </c:when>
+                    <c:otherwise>
+                        <span id="savedNotes" class="okay"></span>
+                    </c:otherwise>
+                </c:choose>
+                <br/>
+                <form:errors path="receipt.notes.text" cssClass="first first-small ajx-content" />
+
                 <input type="button" value="DELETE" style="background:#FC462A;"></input>
                 <input type="button" value="SAVE" style="background:#0079FF"></input>
             </div>

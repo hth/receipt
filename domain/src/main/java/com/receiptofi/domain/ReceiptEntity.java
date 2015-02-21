@@ -334,6 +334,13 @@ public class ReceiptEntity extends BaseEntity {
         this.expenseReportInFS = expenseReportInFS;
     }
 
+    @Transient
+    @NotNull
+    @NumberFormat (style = Style.CURRENCY)
+    public Double getSubTotal() {
+        return total - tax;
+    }
+
     @Override
     public String toString() {
         return "ReceiptEntity{" +
