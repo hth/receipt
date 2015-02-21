@@ -635,6 +635,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 1.5em;
     display: block;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
 }
 
 .rightside-li-date-text {
@@ -643,10 +644,11 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 0.75em;
     vertical-align: middle;
     display: inline-block;
-    width: 122px;
+    width: 136px;
     line-height: 50px;
     padding-left: 7px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
 }
 
 .rightside-list-holder li a {
@@ -658,13 +660,13 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 1em;
     display: inline-block;
     vertical-align: middle;
-    width: 330px;
+    width: 325px;
     padding-left: 30px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .rightside-list-holder-report li a {
-    width: 395px;
+    width: 390px;
 }
 
 .rightside-li-middle-text:hover {
@@ -677,7 +679,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-weight: normal;
     font-size: 1em;
     vertical-align: middle;
-    width: 100px;
+    width: 90px;
     direction: rtl;
     display: inline-block;
     padding-left: 10px;
