@@ -166,40 +166,59 @@
                         </td>
                     </tr>
                     </c:forEach>
+                    <tr style="border-top: 1px dotted #919191;">
+                        <td colspan="2" class="receipt-item-name">
+                            Sub Total
+                        </td>
+                        <td class="receipt-tag" style="background: none">
+                            &nbsp;
+                        </td>
+                        <td class="receipt-li-price-text">
+                            <spring:eval expression="receiptForm.receipt.subTotal" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="receipt-item-name">
+                            Tax
+                        </td>
+                        <td class="receipt-tag" style="background: none">
+                            &nbsp;
+                        </td>
+                        <td class="receipt-li-price-text">
+                            <spring:eval expression="receiptForm.receipt.tax" />
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #919191;">
+                        <td colspan="2" class="receipt-item-name">
+                            Grand Total
+                        </td>
+                        <td class="receipt-tag" style="background: none">
+                            &nbsp;
+                        </td>
+                        <td class="receipt-li-price-text">
+                            <spring:eval expression="receiptForm.receipt.total" />
+                        </td>
+                    </tr>
                 </table>
-            </div>
-            <div>
-                <ul>
-                    <li>
-                        <span class="rightside-li-date-text receipt-comprehensive">Sub Total</span>
-                        <span class="rightside-li-right-text receipt-comprehensive-price"><spring:eval expression="receiptForm.receipt.subTotal" /></span>
-                    </li>
-                    <li>
-                        <span class="rightside-li-date-text receipt-comprehensive">Tax</span>
-                        <span class="rightside-li-right-text receipt-comprehensive-price"><spring:eval expression="receiptForm.receipt.tax" /></span>
-                    </li>
-                    <li style="border-bottom: 1px solid #919191;">
-                        <span class="rightside-li-date-text receipt-comprehensive">Grand Total</span>
-                        <span class="rightside-li-right-text receipt-comprehensive-price"><spring:eval expression="receiptForm.receipt.total" /></span>
-                    </li>
-                </ul>
 
-                <h2 class="h2" style="padding-bottom:2%;">Receipt notes</h2>
-                <form:textarea path="receipt.notes.text" id="notes" cols="54" rows="5" placeholder="Message" style="font-size: 1.2em; "/>
-                <br/>
-                <span class="si-general-text remaining-characters"><span id="notesCount"></span> characters remaining</span>
-                <c:choose>
-                    <c:when test="${!empty receiptForm.receipt.notes.id}">
-                        <span id="savedNotes" class="okay">
-                            Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span>
-                        </span>
-                    </c:when>
-                    <c:otherwise>
-                        <span id="savedNotes" class="okay"></span>
-                    </c:otherwise>
-                </c:choose>
-                <br/>
-                <form:errors path="receipt.notes.text" cssClass="first first-small ajx-content" />
+                <div style="padding-left: 10px">
+                    <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Receipt notes</h2>
+                    <form:textarea path="receipt.notes.text" id="notes" cols="54" rows="5" placeholder="Write receipt notes here..." cssStyle="font-size: 1.2em;"/>
+                    <br/>
+                    <span class="si-general-text remaining-characters"><span id="notesCount"></span> characters remaining</span>
+                    <c:choose>
+                        <c:when test="${!empty receiptForm.receipt.notes.id}">
+                            <span id="savedNotes" class="okay">
+                                Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="savedNotes" class="okay"></span>
+                        </c:otherwise>
+                    </c:choose>
+                    <br/>
+                    <form:errors path="receipt.notes.text" cssClass="first first-small ajx-content" />
+                </div>
 
                 <input type="button" value="DELETE" style="background:#FC462A;"></input>
                 <input type="button" value="SAVE" style="background:#0079FF"></input>
