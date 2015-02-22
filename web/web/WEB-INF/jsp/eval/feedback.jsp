@@ -50,7 +50,7 @@
         <form:form method="post" action="feedback.htm" modelAttribute="evalFeedbackForm" enctype="multipart/form-data">
             <form:hidden path="rating" />
             <h2 class="h2" style="padding-bottom:2%;">We would love to hear from you!</h2>
-            <form:textarea path="comment" id="comment" cols="54" rows="5" placeholder="Message" style="font-size: 1.2em; "/>
+            <form:textarea path="comment" id="comment" cols="54" rows="5" placeholder="Message" cssStyle="font-size: 1.2em; "/>
             <br/>
             <span class="si-general-text remaining-characters">
                 <span id="feedbackComment"></span> characters remaining

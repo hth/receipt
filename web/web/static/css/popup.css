@@ -201,18 +201,6 @@ p, a, h1, h2, h3, span {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.receipt-comprehensive {
-    color: #030201;
-    font-size: 1em;
-    font-weight: normal;
-    text-transform: none;
-}
-
-.receipt-comprehensive-price {
-    float: right;
-    font-weight: bold
-}
-
 .receipt-item-name a:hover {
     font-weight: bold;
 }
