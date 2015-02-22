@@ -152,7 +152,8 @@ p, a, h1, h2, h3, span {
     padding-left: 7px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-transform: uppercase;
-    background: #fafafa url("/static/images/arrow_down.png") no-repeat 90% 50%;
+    background: #FFFFFF url("/static/images/select_down.png") no-repeat 90% 50%;
+    background-size: 15px 15px;
 }
 
 .receipt-tag select {
