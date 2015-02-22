@@ -203,7 +203,7 @@
 
                 <div style="padding-left: 10px">
                     <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Receipt notes</h2>
-                    <form:textarea path="receipt.notes.text" id="notes" cols="54" rows="5" placeholder="Message" cssStyle="font-size: 1.2em;"/>
+                    <form:textarea path="receipt.notes.text" id="notes" cols="54" rows="5" placeholder="Write receipt notes here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
                     <span class="si-general-text remaining-characters"><span id="notesCount"></span> characters remaining</span>
                     <c:choose>
