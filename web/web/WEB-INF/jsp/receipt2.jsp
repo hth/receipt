@@ -2,12 +2,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Detail</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
+    <title>Receipt Details</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
@@ -49,39 +54,6 @@
 
         });
 
-        $(document).focusout(function() {
-            "use strict";
-
-            $( "#recheckComment" ).autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        type: "POST",
-                        url: '${pageContext. request. contextPath}/ws/nc/rc.htm',
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-                        },
-                        data: JSON.stringify({
-                            notes: request.term,
-                            receiptId: $("#receiptId").val()
-                        }),
-                        contentType: 'application/json;charset=UTF-8',
-                        mimeType: 'application/json',
-                        dataType:'json',
-                        success: function (data) {
-                            console.log('response=', data);
-                            if(data == true) {
-                                var html = '';
-                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
-                                $('#savedRecheckComment').html(html).show();
-                                $('.timestamp').cuteTime({ refresh: 10000 });
-                            }
-                        }
-                    });
-                }
-            });
-
-        });
-
         $(document).ready(function () {
             "use strict";
 
@@ -90,20 +62,23 @@
                 on_positive: 'okay',
                 max_chars: 250
             });
-            $('#recheckComment').NobleCount('#recheckCount', {
-                on_negative: 'error',
-                on_positive: 'okay',
-                max_chars: 250
-            });
 
-            $('.timestamp').cuteTime({ refresh: 10000 });
+            $('.timestamp').cuteTime({refresh: 10000});
             blinkDownloadIcon();
+        });
+
+        function blinkDownloadIcon(){
+            $('.downloadIconBlink').delay(100).fadeTo(100,0.5).delay(100).fadeTo(100,1, blinkDownloadIcon);
+        }
+
+        $(function() {
+            "use strict";
+
+            $("#notes").blur();
         });
     </script>
 </head>
 <body>
-
-<span class="timestamp"></span>
 <div class="clear"></div>
 <div class=" is-visible" role="alert">
     <div class="detail-view-container" style="box-shadow:none; overflow: hidden;">
@@ -229,8 +204,13 @@
         </div>
         </form:form>
     </div>
-    <!-- cd-popup-container -->
 </div>
-
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#64; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
+</div>
 </body>
 </html>
