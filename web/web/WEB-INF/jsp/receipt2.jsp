@@ -85,6 +85,9 @@
     <div class="detail-view-container" style="box-shadow:none; overflow: hidden;">
 
         <form:form method="post" action="../receipt.htm" modelAttribute="receiptForm">
+        <form:hidden path="receipt.id" id="receiptId"/>
+        <form:hidden path="receipt.notes.id"/>
+        <form:hidden path="receipt.notes.version"/>
         <div style="float:left;width:55%;margin-right: 3%;">
             <h1 class="h1"><fmt:formatDate pattern="MMMM dd, yyyy" value="${receiptForm.receipt.receiptDate}"/>
                 <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
