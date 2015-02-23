@@ -693,6 +693,10 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 0.8rem;
     float: left;
     font-weight: bold;
+    margin-top: 10%;
+    margin-right: 3%;
+    padding: 2% 7%;
+    color: #fff;
 }
 
 .toggle_button_left {

@@ -183,6 +183,11 @@ p, a, h1, h2, h3, span {
     text-transform: uppercase;
 }
 
+.receipt-item-check {
+    text-align: center;
+    width: 1px;
+}
+
 .receipt-item-name {
     padding-left: 7px;
 }
@@ -196,7 +201,7 @@ p, a, h1, h2, h3, span {
     font-size: 1em;
     display: inline-block;
     vertical-align: middle;
-    width: 325px;
+    width: 370px;
     padding-left: 0px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -218,13 +223,4 @@ p, a, h1, h2, h3, span {
 .receipt-detail-holder.border {
     float: right;
     width: auto;
-}
-
-input {
-    margin-top: 10%;
-    margin-right: 3%;
-    padding: 2% 7%;
-    border: 0;
-    color: #fff;
-    font-size: 1.1rem
 }

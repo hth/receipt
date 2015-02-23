@@ -232,9 +232,24 @@
             </div>
             <div class="receipt-detail-holder border">
                 <table width="100%" style="margin-left: 4px; margin-right: 4px">
+                    <tr style="border-bottom: 1px dotted #919191;">
+                        <th class="receipt-item-check"><input type="checkbox" id="select_expense_all"/></th>
+                        <th class="rightside-li-date-text" style="width: 25px">&nbsp;</th>
+                        <th class="receipt-item-name">&nbsp;</th>
+                        <th class="receipt-tag">
+                            <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
+                                <form:option value="NONE" label="SELECT" />
+                                <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
+                            </form:select>
+                        </th>
+                        <th class="receipt-li-price-text">$10.78</th>
+                    </tr>
                     <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
                     <form:hidden path="items[${status.index}].id"/>
                     <tr style="border-bottom: 1px dotted #919191;">
+                        <td class="receipt-item-check">
+                            <input type="checkbox" value="${item.id}" class="expensofiItem" onclick="resetSelectItemExpenseAll();" />
+                        </td>
                         <td class="rightside-li-date-text" style="width: 25px">
                             ${status.count}.
                         </td>
@@ -272,7 +287,10 @@
                     </tr>
                     </c:forEach>
                     <tr>
-                        <td colspan="2" class="receipt-item-name">
+                        <td colspan="2">
+
+                        </td>
+                        <td class="receipt-item-name">
                             Sub Total
                         </td>
                         <td class="receipt-tag" style="background: none">
@@ -283,7 +301,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="receipt-item-name">
+                        <td colspan="2">
+
+                        </td>
+                        <td class="receipt-item-name">
                             Tax
                         </td>
                         <td class="receipt-tag" style="background: none">
@@ -294,14 +315,14 @@
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #919191;">
-                        <td colspan="2" class="receipt-item-name">
+                        <td colspan="2">
+
+                        </td>
+                        <td class="receipt-item-name">
                             Grand Total
                         </td>
-                        <td class="receipt-tag">
-                            <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
-                                <form:option value="NONE" label="SELECT" />
-                                <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
-                            </form:select>
+                        <td class="receipt-tag" style="background: none">
+                            &nbsp;
                         </td>
                         <td class="receipt-li-price-text">
                             <spring:eval expression="receiptForm.receipt.total" />
@@ -326,10 +347,12 @@
                     </c:choose>
                     <br/>
                     <form:errors path="receipt.notes.text" cssClass="first first-small ajx-content" />
-                </div>
 
-                <input type="button" value="DELETE" style="background:#FC462A;"></input>
-                <input type="button" value="SAVE" style="background:#0079FF"></input>
+                    <input type="button" value="DELETE" class="read_btn"
+                            style="background:#FC462A; margin: 77px 10px 0px 0px;" />
+                    <input type="button" value="SAVE" class="read_btn"
+                            style="margin: 77px 10px 0px 0px;" />
+                </div>
             </div>
         </div>
         <div style="width:38%;float: left;padding-top: 4%;">
