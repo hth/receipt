@@ -235,7 +235,14 @@
                     <tr style="border-bottom: 1px dotted #919191;">
                         <th class="receipt-item-check"><input type="checkbox" id="select_expense_all"/></th>
                         <th class="rightside-li-date-text" style="width: 25px">&nbsp;</th>
-                        <th class="receipt-item-name">&nbsp;</th>
+                        <th style="vertical-align: middle">
+                            <div class="receipt-tag" style="float: left;">
+                                <select id="actionId" name="action" style="width: 150px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
+                                    <option value="NONE">ACTION</option>
+                                    <option value="expenseReport">EXPENSE REPORT</option>
+                                </select>
+                            </div>
+                        </th>
                         <th class="receipt-tag">
                             <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
                                 <form:option value="NONE" label="SELECT" />
@@ -287,46 +294,25 @@
                     </tr>
                     </c:forEach>
                     <tr>
-                        <td colspan="2">
-
-                        </td>
-                        <td class="receipt-item-name">
-                            Sub Total
-                        </td>
-                        <td class="receipt-tag" style="background: none">
-                            &nbsp;
-                        </td>
-                        <td class="receipt-li-price-text">
-                            <spring:eval expression="receiptForm.receipt.subTotal" />
-                        </td>
+                        <td class="receipt-item-check"></td>
+                        <td class="rightside-li-date-text" style="width: 25px"></td>
+                        <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Sub Total</td>
+                        <td class="receipt-tag" style="background: none;"></td>
+                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.subTotal" /></td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-
-                        </td>
-                        <td class="receipt-item-name">
-                            Tax
-                        </td>
-                        <td class="receipt-tag" style="background: none">
-                            &nbsp;
-                        </td>
-                        <td class="receipt-li-price-text">
-                            <spring:eval expression="receiptForm.receipt.tax" />
-                        </td>
+                        <td class="receipt-item-check"></td>
+                        <td class="rightside-li-date-text" style="width: 25px"></td>
+                        <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Tax</td>
+                        <td class="receipt-tag" style="background: none;"></td>
+                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.tax" /></td>
                     </tr>
                     <tr style="border-bottom: 1px solid #919191;">
-                        <td colspan="2">
-
-                        </td>
-                        <td class="receipt-item-name">
-                            Grand Total
-                        </td>
-                        <td class="receipt-tag" style="background: none">
-                            &nbsp;
-                        </td>
-                        <td class="receipt-li-price-text">
-                            <spring:eval expression="receiptForm.receipt.total" />
-                        </td>
+                        <td class="receipt-item-check"></td>
+                        <td class="rightside-li-date-text" style="width: 25px"></td>
+                        <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Grand Total</td>
+                        <td class="receipt-tag" style="background: none;"></td>
+                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.total" /></td>
                     </tr>
                 </table>
 
@@ -348,9 +334,9 @@
                     <br/>
                     <form:errors path="receipt.notes.text" cssClass="first first-small ajx-content" />
 
-                    <input type="button" value="DELETE" class="read_btn"
+                    <input type="submit" value="DELETE" class="read_btn" name="delete"
                             style="background:#FC462A; margin: 77px 10px 0px 0px;" />
-                    <input type="button" value="SAVE" class="read_btn"
+                    <input type="submit" value="RE-CHECK" class="read_btn" name="re-check"
                             style="margin: 77px 10px 0px 0px;" />
                 </div>
             </div>
