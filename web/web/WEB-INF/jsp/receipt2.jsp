@@ -55,10 +55,48 @@
 
         });
 
+        $(document).focusout(function() {
+            "use strict";
+
+            $( "#recheckComment" ).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        url: '${pageContext. request. contextPath}/ws/nc/rc.htm',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                        },
+                        data: JSON.stringify({
+                            notes: request.term,
+                            receiptId: $("#receiptId").val()
+                        }),
+                        contentType: 'application/json;charset=UTF-8',
+                        mimeType: 'application/json',
+                        dataType:'json',
+                        success: function (data) {
+                            console.log('response=', data);
+                            if(data == true) {
+                                var html = '';
+                                html = html +   "Saved - <span class=\"timestamp\">" + $.now() + "</span>";
+                                $('#savedRecheckComment').html(html).show();
+                                $('.timestamp').cuteTime({ refresh: 10000 });
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
         $(document).ready(function () {
             "use strict";
 
             $('#notes').NobleCount('#notesCount', {
+                on_negative: 'error',
+                on_positive: 'okay',
+                max_chars: 250
+            });
+            $('#recheckComment').NobleCount('#recheckCount', {
                 on_negative: 'error',
                 on_positive: 'okay',
                 max_chars: 250
@@ -237,10 +275,10 @@
                         <th class="rightside-li-date-text" style="width: 25px">&nbsp;</th>
                         <th style="vertical-align: middle">
                             <div class="receipt-tag" style="float: left;">
-                                <select id="actionId" name="action" style="width: 140px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
+                                <select id="actionId" name="action" style="width: 155px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
                                     <option value="NONE">ACTION</option>
                                     <option value="expenseReport">EXPENSE REPORT</option>
-                                    <option value="recheck">RE-CHECK</option>
+                                    <option value="recheck">RE-CHECK RECEIPT</option>
                                 </select>
                             </div>
                         </th>
@@ -338,8 +376,22 @@
                             <span id="savedNotes" class="si-general-text remaining-characters"></span>
                         </c:otherwise>
                     </c:choose>
+
+                    <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Re-Check reason</h2>
+                    <form:textarea path="receipt.recheckComment.text" id="recheckComment" cols="54" rows="5" placeholder="Write receipt recheck reason here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
-                    <form:errors path="receipt.notes.text" cssClass="first first-small ajx-content" />
+                    <span class="si-general-text remaining-characters"><span id="recheckCount"></span> characters remaining.</span>
+                    <c:choose>
+                        <c:when test="${!empty receiptForm.receipt.notes.id}">
+                            <span id="savedRecheckComment" class="si-general-text remaining-characters">
+                                Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="savedRecheckComment" class="si-general-text remaining-characters"></span>
+                        </c:otherwise>
+                    </c:choose>
+                    <br/>
 
                     <input type="submit" value="DELETE" class="read_btn" name="delete"
                             style="background:#FC462A; margin: 77px 10px 0px 0px;" />
@@ -349,7 +401,8 @@
             </div>
         </div>
         <div style="width:38%;float: left;padding-top: 4%;">
-            <img style="width: 390px;height: 590px;padding-left: 8%;" src="static/img/details.JPG"/>
+            <%--<img style="width: 390px;height: 590px;padding-left: 8%;" src="static/img/details.JPG"/>--%>
+            <div id="container" style="height: 850px"></div>
         </div>
         </form:form>
     </div>
@@ -368,6 +421,68 @@
 
         $("#notes").blur();
     });
+</script>
+
+<script>
+    function measurement(position) {
+        if (position instanceof String) {
+            if (position.indexOf("%") != -1) {
+                return position;
+            }
+        }
+        return position + "px";
+    }
+    function rotate(el, d) {
+        var s = "rotate(" + d + "deg)";
+        if (el.style) { // regular DOM Object
+            el.style.MozTransform = s;
+            el.style.WebkitTransform = s;
+            el.style.OTransform = s;
+            el.style.transform = s;
+        } else if (el.css) { // JQuery Object
+            el.css("-moz-transform", s);
+            el.css("-webkit-transform", s);
+            el.css("-o-transform", s);
+            el.css("transform", s);
+        }
+        el.setAttribute("rotation", d);
+    }
+    function calculateTop(imageHeight) {
+        if (topHeight == 0 ) {
+            return topHeight + 5;
+        }
+        return topHeight + imageHeight + 5;
+    }
+
+    // JSON data
+    var topHeight = 0,
+            info = [
+                <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
+                {
+                    src: "${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm",
+                    pos: {
+                        top: topHeight = calculateTop(${arr.height}),
+                        left: 0
+                    },
+                    rotate: ${arr.imageOrientation},
+                    zIndex: 0
+                },
+                </c:forEach>
+            ]
+            ;
+
+    var df = document.createDocumentFragment();
+    for (var i = 0, j = info.length; i < j; i++) {
+        var el = document.createElement("img");
+        el.src = info[i].src;
+        el.className = "img";
+        el.style.left = measurement(info[i].pos.left);
+        el.style.top = measurement(info[i].pos.top);
+        el.style.zIndex = info[i].zIndex;
+        rotate(el, info[i].rotate);
+        df.appendChild(el);
+    }
+    document.getElementById("container").appendChild(df);
 </script>
 </body>
 </html>
