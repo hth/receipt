@@ -237,7 +237,7 @@
                         <th class="rightside-li-date-text" style="width: 25px">&nbsp;</th>
                         <th style="vertical-align: middle">
                             <div class="receipt-tag" style="float: left;">
-                                <select id="actionId" name="action" style="width: 150px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
+                                <select id="actionId" name="action" style="width: 140px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
                                     <option value="NONE">ACTION</option>
                                     <option value="expenseReport">EXPENSE REPORT</option>
                                     <option value="recheck">RE-CHECK</option>
