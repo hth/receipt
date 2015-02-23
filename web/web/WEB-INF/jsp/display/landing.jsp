@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="description" content=""/>
-    <title>Receiptofi, Dashboard</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+    <title>Receiptofi, Dashboard</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
