@@ -73,10 +73,136 @@
         }
 
         $(function() {
-            "use strict";
-
-            $("#notes").blur();
+            $('.expensofiItem').change(updateExpensofiItemList);
         });
+
+        var items;
+        function updateExpensofiItemList() {
+            items = $('.expensofiItem:checked').map(function() {
+                return this.value
+            }).get();
+        }
+
+        $(function() {
+            $("#expensofi_button").click(
+                    function() {
+                        if(items && items.length > 0) {
+                            var jsonItems = {items:items};
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '${pageContext. request. contextPath}/access/expensofi/items.htm',
+                                data: JSON.stringify(jsonItems),
+                                dataType: 'json',
+                                beforeSend: function(xhr) {
+                                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                                    $('#download_expense_excel').html(
+                                            "<div class='spinner small' id='spinner'></div>"
+                                    ).show();
+                                },
+                                success: function(data) {
+                                    console.log(data.filename);
+                                    if(data.filename.length > 0) {
+                                        $('#download_expense_excel').html(
+                                                "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
+                                                "&nbsp;&nbsp;&nbsp;" +
+                                                "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
+                                                "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
+                                                "</a>"
+                                        ).show();
+                                    }
+                                },
+                                complete: function() {
+                                    //no need to remove spinner as it is removed during show $('#spinner').remove();
+                                    blinkDownloadIcon();
+                                }
+                            });
+                        } else {
+                            alert("Please select a checkbox to generate expense report");
+                        }
+                    }
+            );
+
+            $(document).ready(function () {
+                $('#select_expense_all').click(function () {
+                    $('.expensofiItem').prop('checked', isChecked('select_expense_all'));
+                    updateExpensofiItemList();
+                });
+            });
+
+            $("#receiptExpenseTagId").change(
+                    function() {
+                        $.ajax({
+                            type: "POST",
+                            url: '${pageContext. request. contextPath}/ws/r/updateReceiptExpenseTag.htm',
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                            },
+                            data: {
+                                receiptId: $("#receiptId").val(),
+                                expenseTagId: $(this).val()
+                            },
+                            mimeType: 'application/json',
+                            dataType:'json',
+                            success: function(data) {
+                                console.log(data);
+                                if(data === true) {
+                                    //TODO update items drop down
+                                }
+                            },
+                            error: function(data) {
+                                console.log(data);
+                            }
+                        })
+                    }
+            );
+
+            $(document).on('change', '#itemId',
+                    function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '${pageContext. request. contextPath}/ws/r/updateItemExpenseTag.htm',
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                            },
+                            data: {
+                                itemId: $('input:hidden[name="' + $(this).attr("name").split(".")[0] + ".id" + '"]').val(),
+                                expenseTagId: $(this).val()
+                            },
+                            mimeType: 'application/json',
+                            dataType:'json',
+                            success: function(data) {
+                                console.log("update item expense tag successfully");
+                            },
+                            error: function(data) {
+                                console.log(data);
+                            }
+                        })
+                    }
+            );
+
+        });
+
+        function isChecked(checkboxId) {
+            var id = '#' + checkboxId;
+            return $(id).is(":checked");
+        }
+
+        function resetSelectItemExpenseAll() {
+            if ($(".expensofiItem").length == $(".expensofiItem:checked").length) {
+                $("#select_expense_all").attr("checked", "checked");
+            } else {
+                $("#select_expense_all").removeAttr("checked");
+            }
+
+            if ($(".expensofiItem:checked").length > 0) {
+                $('#edit').attr("disabled", false);
+            } else {
+                $('#edit').attr("disabled", true);
+            }
+
+            updateExpensofiItemList();
+        }
     </script>
 </head>
 <body>
@@ -108,7 +234,7 @@
                 <table width="100%" style="margin-left: 4px; margin-right: 4px">
                     <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
                     <form:hidden path="items[${status.index}].id"/>
-                    <tr>
+                    <tr style="border-bottom: 1px dotted #919191;">
                         <td class="rightside-li-date-text" style="width: 25px">
                             ${status.count}.
                         </td>
@@ -145,7 +271,7 @@
                         </td>
                     </tr>
                     </c:forEach>
-                    <tr style="border-top: 1px dotted #919191;">
+                    <tr>
                         <td colspan="2" class="receipt-item-name">
                             Sub Total
                         </td>
@@ -171,8 +297,11 @@
                         <td colspan="2" class="receipt-item-name">
                             Grand Total
                         </td>
-                        <td class="receipt-tag" style="background: none">
-                            &nbsp;
+                        <td class="receipt-tag">
+                            <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
+                                <form:option value="NONE" label="SELECT" />
+                                <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
+                            </form:select>
                         </td>
                         <td class="receipt-li-price-text">
                             <spring:eval expression="receiptForm.receipt.total" />
@@ -216,5 +345,13 @@
         <p class="fotter_copy">&#64; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
     </div>
 </div>
+
+<script>
+    $(function() {
+        "use strict";
+
+        $("#notes").blur();
+    });
+</script>
 </body>
 </html>

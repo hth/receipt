@@ -206,8 +206,8 @@ p, a, h1, h2, h3, span {
 }
 
 .receipt-item-name div {
-    margin-top: -10px;
-    font-size: 0.80em;
+    margin-top: -15px;
+    font-size: 0.75em;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
