@@ -65,7 +65,7 @@ public class ItemService {
     /**
      * Calculate percentage values of the Expense Items.
      *
-     * @param profileId
+     * @param rid
      * @return
      */
     public Map<String, BigDecimal> getAllItemExpenseForTheYear(String rid) {

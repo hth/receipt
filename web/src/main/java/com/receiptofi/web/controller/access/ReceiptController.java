@@ -56,7 +56,7 @@ public class ReceiptController {
     @Value ("${ReceiptController.redirectAccessLandingController:redirect:/access/landing.htm}")
     private String redirectAccessLandingController;
 
-    @Value ("${ReceiptController.nextPage:/receipt2}")
+    @Value ("${ReceiptController.nextPage:/receipt}")
     private String nextPage;
 
     @Value ("${ReceiptController.nextPageByBiz:/receiptByBiz}")

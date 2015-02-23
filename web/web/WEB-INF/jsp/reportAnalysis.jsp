@@ -120,9 +120,9 @@
             <c:choose>
                 <c:when test="${!empty months}">
                     <div id="monthly" style="min-width: 475px; height: 425px; background-position: left 10px top;"></div>
-                </c:when>
-                <c:when test="${!empty itemExpenses}">
+                    <c:if test="${!empty itemExpenses}">
                     <div id="allExpenseTypes" style="min-width: 525px; height: 420px; margin: 0 auto"></div>
+                    </c:if>
                 </c:when>
                 <c:otherwise>
                     <div class="first">
@@ -170,7 +170,7 @@
                     align: 'right',
                     style: {
                         fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
+                        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif"
                     }
                 }
             },
@@ -206,7 +206,7 @@
                     y: 10,
                     style: {
                         fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
+                        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif"
                     },
                     formatter:function(){
                         if(this.y > 0)
@@ -235,7 +235,7 @@
                 text: 'Expense Share'
             },
             subtitle: {
-                text: 'For ${landingForm.receiptForMonth.year}'
+                text: 'For ${reportAnalysisForm.itemsForYear}'
             },
             tooltip: {
                 formatter: function () {
