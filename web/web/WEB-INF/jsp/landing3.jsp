@@ -542,8 +542,6 @@ function drawExpenseByBusiness() {
     });
 </script>
 </c:if>
-<!-- cd-popup -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css">
 <!-- Resource style -->
 <script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
 <!-- Modernizr -->
