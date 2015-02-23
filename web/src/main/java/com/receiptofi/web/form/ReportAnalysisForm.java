@@ -13,6 +13,7 @@ import java.util.List;
 public class ReportAnalysisForm {
     private List<ReceiptGrouped> receiptGroupedByMonths = new LinkedList<>();
     private List<ReceiptListView> receiptListViews = new LinkedList<>();
+    private int itemsForYear;
 
     public List<ReceiptGrouped> getReceiptGroupedByMonths() {
         return receiptGroupedByMonths;
@@ -28,5 +29,17 @@ public class ReportAnalysisForm {
 
     public void setReceiptListViews(List<ReceiptListView> receiptListViews) {
         this.receiptListViews = receiptListViews;
+    }
+
+    public int getItemsForYear() {
+        return itemsForYear;
+    }
+
+    /**
+     * Set year formatted as 'YYYY'
+     * @param itemsForYear
+     */
+    public void setItemsForYear(int itemsForYear) {
+        this.itemsForYear = itemsForYear;
     }
 }

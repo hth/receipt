@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +72,8 @@ public class ReportAnalysisController {
         LOG.info("Calculating Pie chart - item expense");
         Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpenseForTheYear(receiptUser.getRid());
         modelAndView.addObject("itemExpenses", itemExpenses);
+
+        reportAnalysisForm.setItemsForYear(Calendar.getInstance().get(Calendar.YEAR));
         return modelAndView;
     }
 }
