@@ -339,21 +339,26 @@
 </head>
 
 <body>
-<header>
-    <div class="top-account-bar">
-        <ul>
-            <li><a class="top-account-bar-text" href="#">LOG OUT</a></li>
-            <li><a class="top-account-bar-text" href="#">PROFILE</a></li>
-            <li>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
+            </div>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username" />
                 </a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
-    <div class="nav-hold">
-        <h1>Receiptofi Inc</h1>
-    </div>
+</div>
+
+<header>
 </header>
 <div class="main clearfix">
     <table width="100%" style="padding: 0px 10px 15px 10px; border: none">
