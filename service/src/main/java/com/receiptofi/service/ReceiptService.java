@@ -370,16 +370,15 @@ public class ReceiptService {
      * @param expenseTagId
      * @return
      */
-    public boolean updateReceiptExpenseTag(ReceiptEntity receipt, String expenseTagId) {
-        boolean updated = false;
+    public ExpenseTagEntity updateReceiptExpenseTag(ReceiptEntity receipt, String expenseTagId) {
+        ExpenseTagEntity expenseTag = null;
         if (null != receipt) {
-            ExpenseTagEntity expenseTag = expensesService.findExpenseTag(expenseTagId);
+            expenseTag = expensesService.findExpenseTag(expenseTagId);
             receipt.setExpenseTag(expenseTag);
             receiptManager.save(receipt);
             itemService.updateAllItemWithExpenseTag(receipt.getId(), expenseTag.getId());
-            updated = true;
         }
 
-        return updated;
+        return expenseTag;
     }
 }

@@ -168,6 +168,15 @@
                     $('.expensofiItem').prop('checked', isChecked('select_expense_all'));
                     updateExpensofiItemList();
                 });
+
+                <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
+                $('#download_expense_excel').html(
+                        "<span style='padding-left: 40px;'></span>" +
+                        "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
+                        "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='26' height='26' title='Download Expense Report' class='downloadIcon'>" +
+                        "</a>"
+                ).show();
+                </c:if>
             });
 
             $("#receiptExpenseTagId").change(
@@ -185,13 +194,17 @@
                             mimeType: 'application/json',
                             dataType:'json',
                             success: function(data) {
-                                console.log(data);
-                                if(data === true) {
-                                    //TODO update items drop down
+                                if(data.success === true) {
+                                    $('.noClassItem').each(function () {
+                                        $(this).val($("#receiptExpenseTagId").val());
+                                    });
+                                    $("#expenseTagColorId").css({'background-color' : data.tagColor})
+                                } else {
+                                    console.log("Response data is empty. This is error.");
                                 }
                             },
                             error: function(data) {
-                                console.log(data);
+                                console.error(data);
                             }
                         })
                     }
@@ -210,13 +223,7 @@
                                 expenseTagId: $(this).val()
                             },
                             mimeType: 'application/json',
-                            dataType:'json',
-                            success: function(data) {
-                                console.log("update item expense tag successfully");
-                            },
-                            error: function(data) {
-                                console.log(data);
-                            }
+                            dataType:'json'
                         })
                     }
             );
@@ -253,7 +260,7 @@
         <form:hidden path="receipt.id" id="receiptId"/>
         <form:hidden path="receipt.notes.id"/>
         <form:hidden path="receipt.notes.version"/>
-        <div style="float: left; width: 550px; margin-right: 18px; margin-left: 10px">
+        <div class="left" style="width: 550px; margin-right: 18px; margin-left: 10px">
             <h1 class="h1"><fmt:formatDate pattern="MMMM dd, yyyy" value="${receiptForm.receipt.receiptDate}"/>
                 <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
             </h1>
@@ -269,15 +276,8 @@
             <div class="detailHead">
                 <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
                     Map-93
-                    <span id="download_expense_excel">
-                        <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
-                            <span style="padding-left: 40px;"></span>
-                            <a href="${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm">
-                                <img src="${pageContext.request.contextPath}/static/images/download_icon_lg.png"
-                                        class="downloadIcon" width="26" height="26" title="Download Expense Report">
-                            </a>
-                        </c:if>
-                    </span>
+                    <span id="download_expense_excel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="background-color: ${receiptForm.receipt.expenseTag.tagColor}; margin-left: 80px;" id="expenseTagColorId">&nbsp;&nbsp;&nbsp;</span>
                     <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span>
                 </h1>
             </div>
@@ -287,7 +287,7 @@
                         <th class="receipt-item-check"><input type="checkbox" id="select_expense_all"/></th>
                         <th class="rightside-li-date-text" style="width: 25px">&nbsp;</th>
                         <th style="vertical-align: middle">
-                            <div class="receipt-tag" style="float: left;">
+                            <div class="receipt-tag left">
                                 <select id="actionId" name="action" style="width: 155px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
                                     <option value="NONE">ACTION</option>
                                     <option value="expenseReport">EXPENSE REPORT</option>
@@ -327,7 +327,7 @@
                             </c:choose>
                         </td>
                         <td class="receipt-tag">
-                            <form:select path="items[${status.index}].expenseTag.id" id="itemId">
+                            <form:select path="items[${status.index}].expenseTag.id" id="itemId" cssClass="noClassItem">
                                 <form:option value="NONE" label="SELECT" />
                                 <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                             </form:select>
@@ -415,7 +415,7 @@
                 </div>
             </div>
         </div>
-        <div style="vertical-align: top; float: left;">
+        <div class="left" style="vertical-align: top;">
             <div id="container" style="height: 850px"></div>
         </div>
         </form:form>

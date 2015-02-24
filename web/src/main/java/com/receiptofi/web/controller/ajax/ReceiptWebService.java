@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.ajax;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
@@ -14,6 +15,7 @@ import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.HashText;
+import com.receiptofi.web.helper.json.ReceiptExpenseTag;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -313,7 +316,7 @@ public class ReceiptWebService {
             headers = "Accept=application/json",
             produces = "application/json"
     )
-    public boolean updateExpenseTagOfReceipt(
+    public String updateExpenseTagOfReceipt(
             @RequestParam ("receiptId")
             String receiptId,
 
@@ -324,13 +327,16 @@ public class ReceiptWebService {
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
-        boolean status = false;
+        ReceiptExpenseTag receiptExpenseTag = new ReceiptExpenseTag("");
         if (null != receipt) {
-            status = receiptService.updateReceiptExpenseTag(receipt, expenseTagId);
+            ExpenseTagEntity expenseTag = receiptService.updateReceiptExpenseTag(receipt, expenseTagId);
+            Assert.notNull(expenseTag);
+            receiptExpenseTag = new ReceiptExpenseTag(expenseTag.getTagColor());
+            receiptExpenseTag.isSuccess();
         } else {
             response.sendError(SC_NOT_FOUND, "Could not find");
         }
-        return status;
+        return receiptExpenseTag.asJson();
     }
 
     @PreAuthorize ("hasAnyRole('ROLE_USER')")
