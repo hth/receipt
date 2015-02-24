@@ -122,41 +122,44 @@
         }
 
         $(function() {
-            $("#expensofi_button").click(
+            $("#actionId").on('change',
                     function() {
-                        if(items && items.length > 0) {
-                            var jsonItems = {items:items};
+                        if (this.value === 'expenseReport') {
+                            if (items && items.length > 0) {
+                                var jsonItems = {items: items};
 
-                            $.ajax({
-                                type: 'POST',
-                                url: '${pageContext. request. contextPath}/access/expensofi/items.htm',
-                                data: JSON.stringify(jsonItems),
-                                dataType: 'json',
-                                beforeSend: function(xhr) {
-                                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-                                    $('#download_expense_excel').html(
-                                            "<div class='spinner small' id='spinner'></div>"
-                                    ).show();
-                                },
-                                success: function(data) {
-                                    console.log(data.filename);
-                                    if(data.filename.length > 0) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '${pageContext. request. contextPath}/access/expensofi/items.htm',
+                                    data: JSON.stringify(jsonItems),
+                                    dataType: 'json',
+                                    beforeSend: function(xhr) {
+                                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                                         $('#download_expense_excel').html(
-                                                "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
-                                                "&nbsp;&nbsp;&nbsp;" +
-                                                "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
-                                                "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
-                                                "</a>"
+                                                "<div class='spinner small' id='spinner'></div>"
                                         ).show();
+                                    },
+                                    success: function(data) {
+                                        console.log(data.filename);
+                                        if(data.filename.length > 0) {
+                                            $('#download_expense_excel').html(
+                                                    "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
+                                                    "&nbsp;&nbsp;&nbsp;" +
+                                                    "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
+                                                    "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
+                                                    "</a>"
+                                            ).show();
+                                        }
+                                    },
+                                    complete: function() {
+                                        //no need to remove spinner as it is removed during show $('#spinner').remove();
+                                        blinkDownloadIcon();
                                     }
-                                },
-                                complete: function() {
-                                    //no need to remove spinner as it is removed during show $('#spinner').remove();
-                                    blinkDownloadIcon();
-                                }
-                            });
-                        } else {
-                            alert("Please select a checkbox to generate expense report");
+                                });
+                            } else {
+                                alert("Please select a checkbox to generate expense report");
+                                $("#actionId").val($("#actionId option:first").val());
+                            }
                         }
                     }
             );
