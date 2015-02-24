@@ -111,6 +111,7 @@ public class FilesUploadToS3Test {
         filesUploadToS3 = new FilesUploadToS3(
                 prop.getProperty("aws.s3.bucketName"),
                 prop.getProperty("aws.s3.bucketName"),
+                prop.getProperty("filesUploadToS3"),
                 documentUpdateService,
                 fileDBService,
                 imageSplitService,

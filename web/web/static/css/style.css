@@ -1076,6 +1076,9 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 .maha_footer {
     float: left;
     width: 100%;
+    /*Float to bottom*/
+    /*position: absolute;*/
+    /*bottom: 0;*/
 }
 
 .mfooter_up {
