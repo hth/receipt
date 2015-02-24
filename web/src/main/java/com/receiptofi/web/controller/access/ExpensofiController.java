@@ -4,15 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import com.mongodb.gridfs.GridFSDBFile;
-
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
-import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
@@ -21,6 +18,7 @@ import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
 import com.receiptofi.web.view.ExpensofiExcelView;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -29,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -40,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,9 +61,14 @@ import java.util.List;
 public class ExpensofiController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
 
+    @Value ("${aws.s3.bucketName}")
+    private String bucketName;
+
+    @Value ("${aws.s3.endpoint}")
+    private String awsS3Endpoint;
+
     @Autowired private ReceiptService receiptService;
     @Autowired private NotificationService notificationService;
-    @Autowired private FileDBService fileDBService;
     @Autowired private ItemAnalyticService itemAnalyticService;
     @Autowired private FileSystemProcess fileSystemProcess;
     @Autowired private ExpensofiExcelView expensofiExcelView;
@@ -86,14 +91,20 @@ public class ExpensofiController {
 
             ReceiptEntity receiptEntity = items.get(0).getReceipt();
             Collection<AnchorFileInExcel> anchorFileInExcels = new LinkedList<>();
-            for (FileSystemEntity fileId : receiptEntity.getFileSystemEntities()) {
-                GridFSDBFile gridFSDBFile = fileDBService.getFile(fileId.getBlobId());
-                InputStream is = null;
+            for (FileSystemEntity fileSystem : receiptEntity.getFileSystemEntities()) {
+                InputStream is = new URL(awsS3Endpoint +
+                        bucketName +
+                        "/" +
+                        bucketName +
+                        "/" +
+                        fileSystem.getBlobId() +
+                        "." +
+                        FilenameUtils.getExtension(fileSystem.getOriginalFilename())
+                ).openStream();
                 try {
-                    is = gridFSDBFile.getInputStream();
                     AnchorFileInExcel anchorFileInExcel = new AnchorFileInExcel(
                             IOUtils.toByteArray(is),
-                            gridFSDBFile.getContentType());
+                            fileSystem.getContentType());
                     anchorFileInExcels.add(anchorFileInExcel);
                 } catch (IOException exce) {
                     LOG.error("Failed to load receipt image: " + exce.getLocalizedMessage());
