@@ -245,14 +245,13 @@
 </head>
 <body>
 <div class="clear"></div>
-<div class=" is-visible" role="alert">
-    <div class="detail-view-container" style="box-shadow:none; overflow: hidden;">
-
+<div>
+    <div class="detail-view-container">
         <form:form method="post" action="../receipt.htm" modelAttribute="receiptForm">
         <form:hidden path="receipt.id" id="receiptId"/>
         <form:hidden path="receipt.notes.id"/>
         <form:hidden path="receipt.notes.version"/>
-        <div style="float:left;width:55%;margin-right: 3%;">
+        <div style="float: left; width: 550px; margin-right: 18px; margin-left: 10px">
             <h1 class="h1"><fmt:formatDate pattern="MMMM dd, yyyy" value="${receiptForm.receipt.receiptDate}"/>
                 <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
             </h1>
@@ -363,7 +362,7 @@
 
                 <div style="padding-left: 10px">
                     <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Receipt notes</h2>
-                    <form:textarea path="receipt.notes.text" id="notes" cols="54" rows="5" placeholder="Write receipt notes here..." cssStyle="font-size: 1.2em;"/>
+                    <form:textarea path="receipt.notes.text" id="notes" cols="50" rows="5" placeholder="Write receipt notes here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
                     <span class="si-general-text remaining-characters"><span id="notesCount"></span> characters remaining.</span>
                     <c:choose>
@@ -378,7 +377,7 @@
                     </c:choose>
 
                     <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Re-Check reason</h2>
-                    <form:textarea path="receipt.recheckComment.text" id="recheckComment" cols="54" rows="5" placeholder="Write receipt recheck reason here..." cssStyle="font-size: 1.2em;"/>
+                    <form:textarea path="receipt.recheckComment.text" id="recheckComment" cols="50" rows="5" placeholder="Write receipt recheck reason here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
                     <span class="si-general-text remaining-characters"><span id="recheckCount"></span> characters remaining.</span>
                     <c:choose>
@@ -397,11 +396,12 @@
                             style="background:#FC462A; margin: 77px 10px 0px 0px;" />
                     <input type="submit" value="RE-CHECK" class="read_btn" name="re-check"
                             style="margin: 77px 10px 0px 0px;" />
+
+                    <div style="padding-bottom: 30px;"></div>
                 </div>
             </div>
         </div>
-        <div style="width:38%;float: left;padding-top: 4%;">
-            <%--<img style="width: 390px;height: 590px;padding-left: 8%;" src="static/img/details.JPG"/>--%>
+        <div style="vertical-align: top; float: left;">
             <div id="container" style="height: 850px"></div>
         </div>
         </form:form>
@@ -459,7 +459,7 @@
             info = [
                 <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
                 {
-                    src: "${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm",
+                    src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilename.substring(arr.originalFilename.indexOf(".") + 1)}",
                     pos: {
                         top: topHeight = calculateTop(${arr.height}),
                         left: 0

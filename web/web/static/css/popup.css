@@ -18,7 +18,7 @@
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     transition-duration: 0.3s;
-    overflow: scroll;
+    /*overflow: scroll;*/
     height: inherit;
 }
 
@@ -201,7 +201,7 @@ p, a, h1, h2, h3, span {
     font-size: 1em;
     display: inline-block;
     vertical-align: middle;
-    width: 370px;
+    width: 220px;
     padding-left: 0px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
