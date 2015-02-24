@@ -224,3 +224,10 @@ p, a, h1, h2, h3, span {
     float: right;
     width: auto;
 }
+
+.downloadIconBlink {
+    background-color: darkgreen;
+}
+.downloadIcon {
+    background-color: darkgreen;
+}

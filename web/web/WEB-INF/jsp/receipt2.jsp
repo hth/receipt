@@ -143,10 +143,9 @@
                                         console.log(data.filename);
                                         if(data.filename.length > 0) {
                                             $('#download_expense_excel').html(
-                                                    "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
-                                                    "&nbsp;&nbsp;&nbsp;" +
+                                                    "<span style='padding-left: 40px;'></span>" +
                                                     "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
-                                                    "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
+                                                    "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='26' height='26' title='Download Expense Report' class='downloadIconBlink'>" +
                                                     "</a>"
                                             ).show();
                                         }
@@ -268,7 +267,19 @@
                 </p>
             </div>
             <div class="detailHead">
-                <h1 class="font2em" style="margin-left: 5px;">Map-93 <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span></h1>
+                <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
+                    Map-93
+                    <span id="download_expense_excel">
+                        <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
+                            <span style="padding-left: 40px;"></span>
+                            <a href="${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm">
+                                <img src="${pageContext.request.contextPath}/static/images/download_icon_lg.png"
+                                        class="downloadIcon" width="26" height="26" title="Download Expense Report">
+                            </a>
+                        </c:if>
+                    </span>
+                    <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span>
+                </h1>
             </div>
             <div class="receipt-detail-holder border">
                 <table width="100%" style="margin-left: 4px; margin-right: 4px">
