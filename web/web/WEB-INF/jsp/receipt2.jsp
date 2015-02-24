@@ -277,7 +277,9 @@
                 <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
                     Map-93
                     <span id="download_expense_excel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span style="background-color: ${receiptForm.receipt.expenseTag.tagColor}; margin-left: 80px;" id="expenseTagColorId">&nbsp;&nbsp;&nbsp;</span>
+                    <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="Expense Tag">
+                    <span style="background-color: ${receiptForm.receipt.expenseTag.tagColor}; margin-left: 90px;" id="expenseTagColorId">&nbsp;&nbsp;&nbsp;</span>
+                    </a>
                     <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span>
                 </h1>
             </div>

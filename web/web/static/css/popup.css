@@ -105,6 +105,10 @@ p, a, h1, h2, h3, span {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
+    text-decoration: none;
+}
+
 .address {
     padding-top: 2%;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
