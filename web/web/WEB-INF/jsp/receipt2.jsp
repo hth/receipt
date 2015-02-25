@@ -272,6 +272,13 @@
         <form:hidden path="receipt.notes.id"/>
         <form:hidden path="receipt.notes.version"/>
         <div class="left" style="width: 550px; margin-right: 18px; margin-left: 10px">
+            <c:if test="${!empty receiptForm.errorMessage}">
+            <div class="first ajx-content" style="width: 550px;">
+                <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+                <p><strong>${receiptForm.errorMessage}</strong></p>
+            </div>
+            </c:if>
+
             <h1 class="h1"><fmt:formatDate pattern="MMMM dd, yyyy" value="${receiptForm.receipt.receiptDate}"/>
                 <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
             </h1>
