@@ -132,6 +132,12 @@
             $("#actionId").on('change',
                     function() {
                         if (this.value === 'expenseReport') {
+                            $("#notesContainer").show();
+                            $("#deleteBtnId").show();
+                            $('[id^="itemCell"]').show();
+                            $("#recheckContainer").hide();
+                            $("#recheckBtnId").hide();
+
                             if (items && items.length > 0) {
                                 var jsonItems = {items: items};
 
@@ -168,6 +174,18 @@
                                 alert("Please select a checkbox to generate expense report");
                                 $("#actionId").val($("#actionId option:first").val());
                             }
+                        } else if (this.value === 'recheck') {
+                            $("#notesContainer").hide();
+                            $("#deleteBtnId").hide();
+                            $('[id^="itemCell"]').not('#itemCell1').hide();
+                            $("#recheckContainer").show();
+                            $("#recheckBtnId").show();
+                        } else {
+                            $("#notesContainer").show();
+                            $("#deleteBtnId").show();
+                            $('[id^="itemCell"]').show();
+                            $("#recheckContainer").hide();
+                            $("#recheckBtnId").hide();
                         }
                     }
             );
@@ -336,7 +354,7 @@
                     </tr>
                     <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
                     <form:hidden path="items[${status.index}].id"/>
-                    <tr style="border-bottom: 1px dotted #919191;">
+                    <tr style="border-bottom: 1px dotted #919191;" id="itemCell${status.count}">
                         <td class="receipt-item-check">
                             <input type="checkbox" value="${item.id}" class="expensofiItem" onclick="resetSelectItemExpenseAll();" />
                         </td>
@@ -405,6 +423,8 @@
                 </table>
 
                 <div style="padding-left: 10px">
+
+                    <div id="notesContainer">
                     <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Receipt notes</h2>
                     <form:textarea path="receipt.notes.text" id="notes" cols="50" rows="5" placeholder="Write receipt notes here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
@@ -419,7 +439,10 @@
                             <span id="savedNotes" class="si-general-text remaining-characters"></span>
                         </c:otherwise>
                     </c:choose>
+                    <br/>
+                    </div>
 
+                    <div id="recheckContainer" style="display: none;">
                     <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Re-Check reason</h2>
                     <form:textarea path="receipt.recheckComment.text" id="recheckComment" cols="50" rows="5" placeholder="Write receipt recheck reason here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
@@ -435,11 +458,12 @@
                         </c:otherwise>
                     </c:choose>
                     <br/>
+                    </div>
 
-                    <input type="submit" value="DELETE" class="read_btn" name="delete"
+                    <input type="submit" value="DELETE" class="read_btn" name="delete" id="deleteBtnId"
                             style="background:#FC462A; margin: 77px 10px 0px 0px;" />
-                    <input type="submit" value="RE-CHECK" class="read_btn" name="re-check"
-                            style="margin: 77px 10px 0px 0px;" />
+                    <input type="submit" value="RE-CHECK" class="read_btn" name="re-check" id="recheckBtnId"
+                            style="margin: 77px 10px 0px 0px; display: none;" />
 
                     <div style="padding-bottom: 30px;"></div>
                 </div>
