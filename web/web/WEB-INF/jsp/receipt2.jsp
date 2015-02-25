@@ -136,7 +136,8 @@
                                     beforeSend: function(xhr) {
                                         xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                                         $('#download_expense_excel').html(
-                                                "<div class='spinner small' id='spinner'></div>"
+                                                "<span style='padding-left: 40px;'></span>" +
+                                                "<span class='spinner medium-small' id='spinner'>&nbsp;&nbsp;&nbsp;&nbsp;</span>"
                                         ).show();
                                     },
                                     success: function(data) {
@@ -153,6 +154,7 @@
                                     complete: function() {
                                         //no need to remove spinner as it is removed during show $('#spinner').remove();
                                         blinkDownloadIcon();
+                                        $("#actionId").val($("#actionId option:first").val());
                                     }
                                 });
                             } else {
@@ -275,12 +277,22 @@
             </div>
             <div class="detailHead">
                 <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
-                    Map-93
-                    <span id="download_expense_excel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="Expense Tag">
-                    <span style="background-color: ${receiptForm.receipt.expenseTag.tagColor}; margin-left: 90px;" id="expenseTagColorId">&nbsp;&nbsp;&nbsp;</span>
-                    </a>
-                    <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span>
+                    <table>
+                    <tr>
+                        <td width="220px">
+                            Map-93
+                            <span id="download_expense_excel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </td>
+                        <td width="160px" style="text-align: right;">
+                            <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="Expense Tag">
+                                <span style="background-color: ${receiptForm.receipt.expenseTag.tagColor}; margin-left: 90px;" id="expenseTagColorId">&nbsp;&nbsp;&nbsp;</span>
+                            </a>
+                        </td>
+                        <td width="170px">
+                            <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span>
+                        </td>
+                    </tr>
+                    </table>
                 </h1>
             </div>
             <div class="receipt-detail-holder border">
