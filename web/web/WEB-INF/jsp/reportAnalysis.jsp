@@ -194,7 +194,7 @@
                 name: 'Monthly Expense',
                 data: [
                     <c:forEach var="month" items="${months}" varStatus="status">
-                    {y: ${month.stringTotal}, color: 'skyblue'},
+                    {y: ${month.stringTotal}, color: '#7CB5EC'},
                     </c:forEach>
                 ],
                 dataLabels: {

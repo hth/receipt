@@ -10,7 +10,14 @@
 
     <title><fmt:message key="receipt.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
+    <c:choose>
+        <c:when test="${!empty receiptForm.receipt}">
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
+        </c:when>
+        <c:otherwise>
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+        </c:otherwise>
+    </c:choose>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
@@ -125,6 +132,12 @@
             $("#actionId").on('change',
                     function() {
                         if (this.value === 'expenseReport') {
+                            $("#notesContainer").show();
+                            $("#deleteBtnId").show();
+                            $('[id^="itemCell"]').show();
+                            $("#recheckContainer").hide();
+                            $("#recheckBtnId").hide();
+
                             if (items && items.length > 0) {
                                 var jsonItems = {items: items};
 
@@ -161,6 +174,18 @@
                                 alert("Please select a checkbox to generate expense report");
                                 $("#actionId").val($("#actionId option:first").val());
                             }
+                        } else if (this.value === 'recheck') {
+                            $("#notesContainer").hide();
+                            $("#deleteBtnId").hide();
+                            $('[id^="itemCell"]').not('#itemCell1').hide();
+                            $("#recheckContainer").show();
+                            $("#recheckBtnId").show();
+                        } else {
+                            $("#notesContainer").show();
+                            $("#deleteBtnId").show();
+                            $('[id^="itemCell"]').show();
+                            $("#recheckContainer").hide();
+                            $("#recheckBtnId").hide();
                         }
                     }
             );
@@ -255,6 +280,8 @@
     </script>
 </head>
 <body>
+<c:choose>
+<c:when test="${!empty receiptForm.receipt}">
 <div class="clear"></div>
 <div>
     <div class="detail-view-container">
@@ -263,6 +290,13 @@
         <form:hidden path="receipt.notes.id"/>
         <form:hidden path="receipt.notes.version"/>
         <div class="left" style="width: 550px; margin-right: 18px; margin-left: 10px">
+            <c:if test="${!empty receiptForm.errorMessage}">
+            <div class="first ajx-content" style="width: 550px;">
+                <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+                <p><strong>${receiptForm.errorMessage}</strong></p>
+            </div>
+            </c:if>
+
             <h1 class="h1"><fmt:formatDate pattern="MMMM dd, yyyy" value="${receiptForm.receipt.receiptDate}"/>
                 <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
             </h1>
@@ -320,7 +354,7 @@
                     </tr>
                     <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
                     <form:hidden path="items[${status.index}].id"/>
-                    <tr style="border-bottom: 1px dotted #919191;">
+                    <tr style="border-bottom: 1px dotted #919191;" id="itemCell${status.count}">
                         <td class="receipt-item-check">
                             <input type="checkbox" value="${item.id}" class="expensofiItem" onclick="resetSelectItemExpenseAll();" />
                         </td>
@@ -389,6 +423,8 @@
                 </table>
 
                 <div style="padding-left: 10px">
+
+                    <div id="notesContainer">
                     <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Receipt notes</h2>
                     <form:textarea path="receipt.notes.text" id="notes" cols="50" rows="5" placeholder="Write receipt notes here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
@@ -403,7 +439,10 @@
                             <span id="savedNotes" class="si-general-text remaining-characters"></span>
                         </c:otherwise>
                     </c:choose>
+                    <br/>
+                    </div>
 
+                    <div id="recheckContainer" style="display: none;">
                     <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Re-Check reason</h2>
                     <form:textarea path="receipt.recheckComment.text" id="recheckComment" cols="50" rows="5" placeholder="Write receipt recheck reason here..." cssStyle="font-size: 1.2em;"/>
                     <br/>
@@ -419,11 +458,12 @@
                         </c:otherwise>
                     </c:choose>
                     <br/>
+                    </div>
 
-                    <input type="submit" value="DELETE" class="read_btn" name="delete"
+                    <input type="submit" value="DELETE" class="read_btn" name="delete" id="deleteBtnId"
                             style="background:#FC462A; margin: 77px 10px 0px 0px;" />
-                    <input type="submit" value="RE-CHECK" class="read_btn" name="re-check"
-                            style="margin: 77px 10px 0px 0px;" />
+                    <input type="submit" value="RE-CHECK" class="read_btn" name="re-check" id="recheckBtnId"
+                            style="margin: 77px 10px 0px 0px; display: none;" />
 
                     <div style="padding-bottom: 30px;"></div>
                 </div>
@@ -435,6 +475,47 @@
         </form:form>
     </div>
 </div>
+</c:when>
+<c:otherwise>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
+            </div>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="#">PROFILE</a>
+                <a class="top-account-bar-text user-email" href="#">
+                    <sec:authentication property="principal.username" />
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            Receipt Not Found
+        </h1>
+    </div>
+    <div class="rightside-list-holder full-list-holder">
+        <div class="first ajx-content">
+            <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+            <p><strong>Oops! we could not find this receipt.</strong></p>
+        </div>
+    </div>
+    <div class="footer-tooth clearfix">
+        <div class="footer-tooth-middle"></div>
+        <div class="footer-tooth-right"></div>
+    </div>
+</div>
+</c:otherwise>
+</c:choose>
 <div class="maha_footer">
     <div class="mfooter_up">
     </div>
