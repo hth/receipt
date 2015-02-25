@@ -10,7 +10,14 @@
 
     <title><fmt:message key="receipt.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
+    <c:choose>
+        <c:when test="${!empty receiptForm.receipt}">
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
+        </c:when>
+        <c:otherwise>
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+        </c:otherwise>
+    </c:choose>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
@@ -255,6 +262,8 @@
     </script>
 </head>
 <body>
+<c:choose>
+<c:when test="${!empty receiptForm.receipt}">
 <div class="clear"></div>
 <div>
     <div class="detail-view-container">
@@ -435,6 +444,47 @@
         </form:form>
     </div>
 </div>
+</c:when>
+<c:otherwise>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
+            </div>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="#">PROFILE</a>
+                <a class="top-account-bar-text user-email" href="#">
+                    <sec:authentication property="principal.username" />
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            Receipt Not Found
+        </h1>
+    </div>
+    <div class="rightside-list-holder full-list-holder">
+        <div class="first ajx-content">
+            <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+            <p><strong>Oops! we could not find this receipt.</strong></p>
+        </div>
+    </div>
+    <div class="footer-tooth clearfix">
+        <div class="footer-tooth-middle"></div>
+        <div class="footer-tooth-right"></div>
+    </div>
+</div>
+</c:otherwise>
+</c:choose>
 <div class="maha_footer">
     <div class="mfooter_up">
     </div>
