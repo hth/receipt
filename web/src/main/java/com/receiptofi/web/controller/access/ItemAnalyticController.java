@@ -56,7 +56,7 @@ public class ItemAnalyticController {
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping (value = "{itemId}", method = RequestMethod.GET)
-    public ModelAndView loadForm(
+    public String loadForm(
             @PathVariable("itemId")
             String itemId,
 
@@ -74,7 +74,7 @@ public class ItemAnalyticController {
             if (item.getReceipt().getReceiptDate().before(untilThisDay.toDate())) {
                 itemAnalyticForm.setMessage("Item " +  item.getName() +
                                 " was purchased more than " + searchLimitForDays +
-                                " days ago no average could be calculated.");
+                                " days ago, hence no average computed.");
             }
 
             /** Gets site average */
@@ -105,8 +105,6 @@ public class ItemAnalyticController {
             itemAnalyticForm.setExpenseTags(expenseTypes);
         }
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("itemAnalyticForm", itemAnalyticForm);
-        return modelAndView;
+        return nextPage;
     }
 }
