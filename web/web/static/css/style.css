@@ -660,8 +660,8 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 1em;
     display: inline-block;
     vertical-align: middle;
-    width: 325px;
-    padding-left: 30px;
+    width: 314px;
+    padding-left: 10px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -1226,4 +1226,8 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 .doted li {
     border-bottom: 1px dotted #919191;
+}
+
+a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
+    text-decoration: none;
 }
