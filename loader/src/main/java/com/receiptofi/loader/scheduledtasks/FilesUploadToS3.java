@@ -51,6 +51,7 @@ public class FilesUploadToS3 {
 
     private final String bucketName;
     private final String folderName;
+    private final String filesUploadToS3;
 
     private DocumentUpdateService documentUpdateService;
     private FileDBService fileDBService;
@@ -67,6 +68,9 @@ public class FilesUploadToS3 {
             @Value ("${aws.s3.bucketName}")
             String folderName,
 
+            @Value ("${filesUploadToS3}")
+            String filesUploadToS3,
+
             DocumentUpdateService documentUpdateService,
             FileDBService fileDBService,
             ImageSplitService imageSplitService,
@@ -76,6 +80,7 @@ public class FilesUploadToS3 {
     ) {
         this.bucketName = bucketName;
         this.folderName = folderName;
+        this.filesUploadToS3 = filesUploadToS3;
 
         this.documentUpdateService = documentUpdateService;
         this.fileDBService = fileDBService;
@@ -90,6 +95,16 @@ public class FilesUploadToS3 {
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.upload}")
     public void upload() {
+        /**
+         * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
+         * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
+         * fail safe to prevent uploading to dev bucket when connected to test database.
+         */
+        if ("OFF".equalsIgnoreCase(filesUploadToS3)) {
+            LOG.info("feature is {}", filesUploadToS3);
+            return;
+        }
+
         List<DocumentEntity> documents = documentUpdateService.getAllProcessedDocuments();
         if (!documents.isEmpty()) {
             LOG.info("Documents to upload to cloud, count={}", documents.size());

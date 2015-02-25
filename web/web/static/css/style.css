@@ -660,8 +660,8 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-size: 1em;
     display: inline-block;
     vertical-align: middle;
-    width: 325px;
-    padding-left: 30px;
+    width: 314px;
+    padding-left: 10px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -1042,6 +1042,10 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     height: 18px; width: 18px; /* Pixel size of the GIF you download */
     background: url("../../static/images/spiffygif_18x18.gif");
 }
+.spinner.medium-small {
+    height: 36px; width: 36px;
+    background: url("../../static/images/spiffygif_36x36.gif");
+}
 .spinner.medium {
     height: 50px; width: 50px;
     margin-left: auto;
@@ -1076,6 +1080,9 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 .maha_footer {
     float: left;
     width: 100%;
+    /*Float to bottom*/
+    /*position: absolute;*/
+    /*bottom: 0;*/
 }
 
 .mfooter_up {
@@ -1219,4 +1226,8 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 .doted li {
     border-bottom: 1px dotted #919191;
+}
+
+a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
+    text-decoration: none;
 }
