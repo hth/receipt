@@ -14,6 +14,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -28,6 +29,8 @@ import java.util.Date;
 })
 public class ReceiptGrouped implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptGrouped.class);
+
+    private static final SimpleDateFormat fullCalendarSDF = new SimpleDateFormat("yyyy-MM-dd");
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private BigDecimal total;
@@ -60,13 +63,12 @@ public class ReceiptGrouped implements Serializable {
      *
      * @return
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     public BigDecimal getStringTotal() {
         return total.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     //TODO: Note day should not be zero other wise gets an exception while setting the date with zero. May remove this code
-    @Deprecated
     public Date getDate() {
         if (year == 0 || month == 0 || day == 0) {
             //This should never happen. Add validation in receipt during save.
@@ -74,6 +76,12 @@ public class ReceiptGrouped implements Serializable {
             return DateUtil.now().toDate();
         }
         return new DateTime(year, month, day, 0, 0).toDate();
+    }
+
+
+    @SuppressWarnings ("unused")
+    public String getDateForFullCalendar() {
+        return fullCalendarSDF.format(getDate());
     }
 
     public DateTime getDateTime() {

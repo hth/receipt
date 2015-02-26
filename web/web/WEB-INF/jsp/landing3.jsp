@@ -109,8 +109,8 @@
                     <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
                     {
                         title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
-                        start : '${receiptGrouped.date}',
-                        end   : '${receiptGrouped.date}',
+                        start : '${receiptGrouped.dateForFullCalendar}',
+                        end   : '${receiptGrouped.dateForFullCalendar}',
                         url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}',
                         allDay: true
                     },
