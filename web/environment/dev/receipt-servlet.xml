@@ -7,6 +7,7 @@
        xmlns:c="http://www.springframework.org/schema/c"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
             http://www.springframework.org/schema/mvc/spring-mvc.xsd
@@ -18,6 +19,8 @@
             http://www.springframework.org/schema/cache/spring-cache.xsd
             http://www.springframework.org/schema/task
             http://www.springframework.org/schema/task/spring-task.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util.xsd
             http://www.springframework.org/schema/jms
             http://www.springframework.org/schema/jms/spring-jms.xsd">
 
@@ -30,17 +33,19 @@
     <!-- turn on declarative caching -->
     <cache:annotation-driven />
 
+    <!--suppress SpringModelInspection -->
+    <util:properties id="environmentProperty" location="classpath:/conf/dev.properties" />
     <!-- Currently not being used -->
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/redis.properties"                   order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/config.properties"                  order="2" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/config.properties"                  order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/pass.properties"                    order="3" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/pass.properties"                    order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/dev.properties"                     order="4" ignore-unresolvable="true" />
+    <context:property-placeholder properties-ref="environmentProperty" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/application-messages.properties"    order="5" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:/conf/application-messages.properties"    order="1" ignore-unresolvable="true" />
 
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31556926" />
 
