@@ -1231,3 +1231,8 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     text-decoration: none;
 }
+
+.calendar {
+    font-size: 0.95em !important;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
