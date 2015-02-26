@@ -37,7 +37,7 @@ public class ExternalService {
     private static final String ADDRESS_DECODE_URL = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
 
     /**
-     * Finds Latitude and Longitude for a given address from Google Web Service
+     * Finds Latitude and Longitude for a given address from Google Web Service.
      *
      * @param bizStoreEntity
      * @throws Exception
@@ -68,12 +68,13 @@ public class ExternalService {
     }
 
     /**
-     * Populates address, lat, lng for address submitted
+     * Populates address, lat, lng for address submitted.
      *
      * @param output         - JSON returned by google web service
      * @param bizStoreEntity
      */
     private void populateBizStore(StringBuilder output, BizStoreEntity bizStoreEntity) {
+        //TODO add check for Status Codes - https://developers.google.com/maps/documentation/geocoding/#StatusCodes
         JsonElement root = new JsonParser().parse(output.toString());
         JsonArray results = root.getAsJsonObject().getAsJsonArray("results");
         Iterator<JsonElement> jsonElementIterator = results.iterator();
