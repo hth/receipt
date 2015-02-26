@@ -116,12 +116,14 @@ public class BizService {
                 receiptEntity.setBizName(bizNameEntity);
                 receiptEntity.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException | IOException e) {
-                LOG.error(e.getLocalizedMessage(), e);
+                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
+                        biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
 
                 if (StringUtils.isNotEmpty(bizNameEntity.getId())) {
                     bizNameManager.deleteHard(bizNameEntity);
                 }
-                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+
                 throw new Exception("Address and Phone already registered with another Business Name: " +
                         biz.getBizName().getBusinessName());
             }
@@ -136,8 +138,9 @@ public class BizService {
                     receiptEntity.setBizName(bizName);
                     receiptEntity.setBizStore(bizStoreEntity);
                 } catch (DuplicateKeyException | IOException e) {
-                    LOG.error(e.getLocalizedMessage(), e);
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                    LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
+                            biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
                     throw new Exception("Address and Phone already registered with another Business Name: " +
                             biz.getBizName().getBusinessName());
                 }
