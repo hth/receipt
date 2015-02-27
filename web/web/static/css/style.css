@@ -1236,3 +1236,29 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     font-size: 0.95em !important;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
+
+.text-left {
+    text-align: left;
+}
+
+.analysis {
+    color: #919191;
+    font-weight: bold;
+    font-size: 0.8em;
+    vertical-align: middle;
+    /*display: inline-block;*/
+    width: 60px;
+    line-height: 20px;
+    padding-left: 7px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.analysis-text {
+    margin: 20px 0 30px 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 20px;
+    word-wrap: break-word;
+    width: 920px;
+}

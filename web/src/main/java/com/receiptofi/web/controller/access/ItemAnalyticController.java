@@ -43,7 +43,7 @@ import java.util.List;
 public class ItemAnalyticController {
     private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticController.class);
 
-    @Value ("${ItemAnalyticController.nextPage:/itemanalytic}")
+    @Value ("${ItemAnalyticController.nextPage:/itemanalytic2}")
     private String nextPage;
 
     @Value ("${ItemAnalyticController.searchLimitForDays:90}")
