@@ -77,7 +77,7 @@
 </div>
 
 <div class="rightside-content">
-    <div id="tabs" class="nav-list">
+    <div id="tabs" class="nav-list" style="width: 750px;">
         <ul class="nav-block">
             <li><a href="#tab1" onclick="reportTabClicked();">REPORT</a></li>
             <li><a href="#tab2" onclick="analysisTabClicked();">ANALYSIS</a></li>
@@ -118,10 +118,10 @@
         </div>
         <div id="tab2" class="report-content">
             <c:choose>
-                <c:when test="${!empty months}">
-                    <div id="monthly" style="min-width: 475px; height: 425px; background-position: left 10px top;"></div>
-                    <c:if test="${!empty itemExpenses}">
-                    <div id="allExpenseTypes" style="min-width: 525px; height: 420px; margin: 0 auto"></div>
+                <c:when test="${!empty reportAnalysisForm.receiptGroupedByMonths}">
+                    <div id="monthly" style="min-width: 575px; max-width: 740px; height: 425px; padding-left: 5px; margin: 35px 10px 30px 0;"></div>
+                    <c:if test="${!empty reportAnalysisForm.itemExpenses}">
+                    <div id="allExpenseTypes" style="min-width: 575px; height: 420px; margin: 0 auto"></div>
                     </c:if>
                 </c:when>
                 <c:otherwise>
@@ -143,7 +143,7 @@
 <script>
     $("#analysisSidebarId").hide();
 
-    <c:if test="${!empty months}">
+    <c:if test="${!empty reportAnalysisForm.receiptGroupedByMonths}">
     <!-- Monthly expense graph -->
     $(function () {
         "use strict";
@@ -154,14 +154,16 @@
                 margin: [ 50, 50, 100, 50]
             },
             title: {
-                text: 'Monthly Expenses for 13 months: ${months.get(months.size() - 1).year - 1} - ${months.get(months.size() - 1).year}'
+                text: 'Monthly Expenses for 13 months: ' +
+                '${reportAnalysisForm.receiptGroupedByMonths.get(reportAnalysisForm.receiptGroupedByMonths.size() - 1).year - 1} - ' +
+                '${reportAnalysisForm.receiptGroupedByMonths.get(reportAnalysisForm.receiptGroupedByMonths.size() - 1).year}'
             },
             credits: {
                 enabled: false
             },
             xAxis: {
                 categories: [
-                    <c:forEach var="month" items="${months}"  varStatus="status">
+                    <c:forEach var="month" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
                     '${month.monthName}',
                     </c:forEach>
                 ],
@@ -193,7 +195,7 @@
             series: [{
                 name: 'Monthly Expense',
                 data: [
-                    <c:forEach var="month" items="${months}" varStatus="status">
+                    <c:forEach var="month" items="${reportAnalysisForm.receiptGroupedByMonths}" varStatus="status">
                     {y: ${month.stringTotal}, color: '#7CB5EC'},
                     </c:forEach>
                 ],
@@ -218,7 +220,7 @@
     });
     </c:if>
 
-    <c:if test="${!empty itemExpenses}">
+    <c:if test="${!empty reportAnalysisForm.itemExpenses}">
     $(function () {
         "use strict";
 
@@ -270,9 +272,9 @@
                 data: [
 
                     <c:choose>
-                    <c:when test="${!empty itemExpenses}">
+                    <c:when test="${!empty reportAnalysisForm.itemExpenses}">
                     <c:set var="first" value="false"/>
-                    <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
+                    <c:forEach var="item" items="${reportAnalysisForm.itemExpenses}"  varStatus="status">
                     <c:choose>
                     <c:when test="${first eq false}">
                     {
@@ -297,7 +299,7 @@
                     </c:forEach>
                     </c:when>
                     <c:otherwise>
-                    <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
+                    <c:forEach var="item" items="${reportAnalysisForm.itemExpenses}"  varStatus="status">
                     {
                         name: '${item.key}',
                         y: ${item.value},

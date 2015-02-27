@@ -88,7 +88,7 @@ public class ReceiptController {
             receiptForm.setReceipt(receipt);
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTypes);
-            LOG.info("receiptForm={}", receiptForm);
+            LOG.debug("receiptForm={}", receiptForm);
         }
         return new ModelAndView(nextPage);
     }
