@@ -91,7 +91,7 @@
             </form:form>
             <div class="clear"></div>
             <hr>
-            <span><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
+            <span class="link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
         </div>
     </div>
 </div>

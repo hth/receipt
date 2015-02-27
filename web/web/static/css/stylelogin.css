@@ -210,3 +210,25 @@ input.text {
     float: right;
     padding: 11px 0px;
 }
+
+.link {
+    padding-left: 0px;
+}
+
+span.link a {
+    color: #007AFF;
+    line-height: 50px;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: left;
+    font-size: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    width: 220px;
+    padding-left: 0px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+span.link a:hover {
+    font-weight: bold;
+}
