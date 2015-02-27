@@ -47,21 +47,18 @@ public class ReportAnalysisController {
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (method = RequestMethod.GET)
-    public ModelAndView loadForm(
+    public String loadForm(
             @ModelAttribute ("reportAnalysisForm")
             ReportAnalysisForm reportAnalysisForm
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-
         /** Lists all the receipt grouped by months. */
         List<ReceiptGrouped> groupedByMonth = landingService.getReceiptGroupedByMonth(receiptUser.getRid());
-        reportAnalysisForm.setReceiptGroupedByMonths(groupedByMonth);
         if (groupedByMonth.size() >= 3) {
-            modelAndView.addObject("months", groupedByMonth);
+            reportAnalysisForm.setReceiptGroupedByMonths(groupedByMonth);
         } else {
-            modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(groupedByMonth, groupedByMonth.size()));
+            reportAnalysisForm.setReceiptGroupedByMonths(landingService.addMonthsIfLessThanThree(groupedByMonth, groupedByMonth.size()));
         }
 
         if (!groupedByMonth.isEmpty()) {
@@ -70,10 +67,9 @@ public class ReportAnalysisController {
 
         /** Used for charting in Expense Analysis tab */
         LOG.info("Calculating Pie chart - item expense");
-        Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpenseForTheYear(receiptUser.getRid());
-        modelAndView.addObject("itemExpenses", itemExpenses);
+        reportAnalysisForm.setItemExpenses(landingService.getAllItemExpenseForTheYear(receiptUser.getRid()));
 
         reportAnalysisForm.setItemsForYear(Calendar.getInstance().get(Calendar.YEAR));
-        return modelAndView;
+        return nextPage;
     }
 }
