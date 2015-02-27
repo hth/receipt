@@ -2,11 +2,10 @@ package com.receiptofi.web.form;
 
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptListView;
+import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
 
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: hitender
@@ -15,7 +14,7 @@ import java.util.Map;
 public class ReportAnalysisForm {
     private List<ReceiptGrouped> receiptGroupedByMonths = new LinkedList<>();
     private List<ReceiptListView> receiptListViews = new LinkedList<>();
-    private Map<String, BigDecimal> itemExpenses;
+    private List<ThisYearExpenseByTag> thisYearExpenseByTags;
     private int itemsForYear;
 
     public List<ReceiptGrouped> getReceiptGroupedByMonths() {
@@ -46,11 +45,22 @@ public class ReportAnalysisForm {
         this.itemsForYear = itemsForYear;
     }
 
-    public Map<String, BigDecimal> getItemExpenses() {
-        return itemExpenses;
+    public List<ThisYearExpenseByTag> getThisYearExpenseByTags() {
+        return thisYearExpenseByTags;
     }
 
-    public void setItemExpenses(Map<String, BigDecimal> itemExpenses) {
-        this.itemExpenses = itemExpenses;
+    public void setThisYearExpenseByTags(List<ThisYearExpenseByTag> thisYearExpenseByTags) {
+        this.thisYearExpenseByTags = thisYearExpenseByTags;
+    }
+
+    public String getTagColors() {
+        StringBuilder sb = new StringBuilder();
+        String colors = "";
+        for(ThisYearExpenseByTag thisYearExpenseByTag : thisYearExpenseByTags) {
+            sb.append(colors);
+            colors = ",";
+            sb.append("'").append(thisYearExpenseByTag.getTagColor()).append("'");
+        }
+        return sb.toString();
     }
 }
