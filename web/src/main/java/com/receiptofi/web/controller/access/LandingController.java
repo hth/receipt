@@ -152,11 +152,6 @@ public class LandingController {
             landingForm.setReceiptGroupedByBizLocations(receiptGroupedByBizLocations);
         }
 
-        /** Used for charting in Expense Analysis tab */
-        LOG.info("Calculating Pie chart - item expense");
-        Map<String, BigDecimal> itemExpenses = landingService.getAllItemExpenseForTheYear(receiptUser.getRid());
-        modelAndView.addObject("itemExpenses", itemExpenses);
-
         /** Used for donut chart of each receipts with respect to expense types in TAB 1 */
         LOG.info("Calculating Donut chart - receipt expense");
         /** bizNames and bizByExpenseTypes added below to landingForm*/

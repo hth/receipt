@@ -67,7 +67,7 @@ public class ReportAnalysisController {
 
         /** Used for charting in Expense Analysis tab */
         LOG.info("Calculating Pie chart - item expense");
-        reportAnalysisForm.setItemExpenses(landingService.getAllItemExpenseForTheYear(receiptUser.getRid()));
+        reportAnalysisForm.setThisYearExpenseByTags(landingService.getAllItemExpenseForTheYear(receiptUser.getRid()));
 
         reportAnalysisForm.setItemsForYear(Calendar.getInstance().get(Calendar.YEAR));
         return nextPage;

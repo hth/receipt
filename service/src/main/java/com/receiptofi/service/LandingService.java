@@ -18,7 +18,6 @@ import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.domain.value.ReceiptListView;
-import com.receiptofi.domain.value.ReceiptListViewGrouped;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.DocumentManager;
@@ -26,6 +25,7 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
+import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Maths;
@@ -125,7 +125,7 @@ public class LandingService {
         return receiptManager.getAllObjectsGroupedByDate(profileId);
     }
 
-    public Map<String, BigDecimal> getAllItemExpenseForTheYear(String profileId) {
+    public List<ThisYearExpenseByTag> getAllItemExpenseForTheYear(String profileId) {
         return itemService.getAllItemExpenseForTheYear(profileId);
     }
 

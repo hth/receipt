@@ -6,6 +6,7 @@ import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
+import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
 import com.receiptofi.utils.Maths;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: hitender
@@ -68,33 +68,33 @@ public class ItemService {
      * @param rid
      * @return
      */
-    public Map<String, BigDecimal> getAllItemExpenseForTheYear(String rid) {
-        Map<String, BigDecimal> expenseItems = new HashMap<>();
+    public List<ThisYearExpenseByTag> getAllItemExpenseForTheYear(String rid) {
+        List<ThisYearExpenseByTag> thisYearExpenseByTags = new LinkedList<>();
         BigDecimal netSum = ZERO;
 
         //Find sum of all items for particular expense
-        List<ExpenseTagEntity> expenseTypeEntities = expenseTagManager.activeExpenseTypes(rid);
-        for (ExpenseTagEntity expenseTagEntity : expenseTypeEntities) {
+        List<ExpenseTagEntity> expenseTypes = expenseTagManager.activeExpenseTypes(rid);
+        for (ExpenseTagEntity expenseTag : expenseTypes) {
 
             BigDecimal sum = ZERO;
             //Todo this query take a long time. Optimize it. Almost 150ms through this loop
-            List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseTypeForTheYear(expenseTagEntity);
+            List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseTypeForTheYear(expenseTag);
             sum = calculateSum(sum, items);
             netSum = Maths.add(netSum, sum);
-            expenseItems.put(expenseTagEntity.getTagName(), sum);
+            thisYearExpenseByTags.add(new ThisYearExpenseByTag(expenseTag.getTagName(), expenseTag.getTagColor(), sum));
         }
 
-        netSum = populateWithUnAssignedItems(expenseItems, netSum, rid);
+        netSum = populateWithUnAssignedItems(thisYearExpenseByTags, netSum, rid);
 
         // Calculate percentage
-        for (String key : expenseItems.keySet()) {
-            BigDecimal percent = Maths.percent(expenseItems.get(key));
-            expenseItems.put(key, (netSum == ZERO) ? ZERO : Maths.divide(percent, netSum));
+        for (ThisYearExpenseByTag thisYearExpenseByTag : thisYearExpenseByTags) {
+            BigDecimal percent = Maths.percent(thisYearExpenseByTag.getTotal());
+            thisYearExpenseByTag.setPercentage((netSum.compareTo(ZERO) == 0) ? ZERO : Maths.divide(percent, netSum));
             //percent = Maths.divide(percent, netSum);
             //expenseItems.put(key, percent);
         }
 
-        return expenseItems;
+        return thisYearExpenseByTags;
     }
 
     /**
@@ -116,19 +116,20 @@ public class ItemService {
     /**
      * Finds all the un-assigned items for the user.
      *
-     * @param expenseItems
+     * @param thisYearExpenseByTags
      * @param netSum
-     * @param profileId
+     * @param rid
      * @return
      */
-    private BigDecimal populateWithUnAssignedItems(Map<String, BigDecimal> expenseItems, BigDecimal netSum, String rid) {
-        List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(rid);
+    private BigDecimal populateWithUnAssignedItems(List<ThisYearExpenseByTag> thisYearExpenseByTags, BigDecimal netSum, String rid) {
         Assert.notNull(netSum);
         BigDecimal newNetSum = netSum;
-        if (unassignedItems.isEmpty()) {
+
+        List<ItemEntity> unassignedItems = itemManager.getItemEntitiesForUnAssignedExpenseTypeForTheYear(rid);
+        if (!unassignedItems.isEmpty()) {
             BigDecimal sum = calculateSum(ZERO, unassignedItems);
             newNetSum = Maths.add(newNetSum, sum);
-            expenseItems.put("Un-Assigned", sum);
+            thisYearExpenseByTags.add(new ThisYearExpenseByTag("Un-Assigned", "#808080", sum));
         }
         return newNetSum;
     }

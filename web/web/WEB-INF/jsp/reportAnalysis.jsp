@@ -120,8 +120,8 @@
             <c:choose>
                 <c:when test="${!empty reportAnalysisForm.receiptGroupedByMonths}">
                     <div id="monthly" style="min-width: 575px; max-width: 740px; height: 425px; padding-left: 5px; margin: 35px 10px 30px 0;"></div>
-                    <c:if test="${!empty reportAnalysisForm.itemExpenses}">
-                    <div id="allExpenseTypes" style="min-width: 575px; height: 420px; margin: 0 auto"></div>
+                    <c:if test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
+                    <div id="itemsByTags" style="min-width: 575px; height: 420px; margin: 0 auto"></div>
                     </c:if>
                 </c:when>
                 <c:otherwise>
@@ -220,11 +220,15 @@
     });
     </c:if>
 
-    <c:if test="${!empty reportAnalysisForm.itemExpenses}">
+    <c:if test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
     $(function () {
         "use strict";
 
-        $('#allExpenseTypes').highcharts({
+        Highcharts.setOptions({
+            colors: [${reportAnalysisForm.tagColors}]
+        });
+
+        $('#itemsByTags').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -234,7 +238,7 @@
                 enabled: false
             },
             title: {
-                text: 'Expense Share'
+                text: 'Items by Tag'
             },
             subtitle: {
                 text: 'For ${reportAnalysisForm.itemsForYear}'
@@ -272,40 +276,40 @@
                 data: [
 
                     <c:choose>
-                    <c:when test="${!empty reportAnalysisForm.itemExpenses}">
+                    <c:when test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
                     <c:set var="first" value="false"/>
-                    <c:forEach var="item" items="${reportAnalysisForm.itemExpenses}"  varStatus="status">
+                    <c:forEach var="item" items="${reportAnalysisForm.thisYearExpenseByTags}"  varStatus="status">
                     <c:choose>
                     <c:when test="${first eq false}">
                     {
-                        name: '${item.key}',
-                        y: ${item.value},
+                        name: '${item.tagName}',
+                        y: ${item.percentage},
                         sliced: true,
                         selected: true,
-                        url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
+                        url: '${pageContext.request.contextPath}/access/expenses/${item.tagName}.htm'
                     },
                     <c:set var="first" value="true"/>
                     </c:when>
                     <c:otherwise>
                     {
-                        name: '${item.key}',
-                        y: ${item.value},
+                        name: '${item.tagName}',
+                        y: ${item.percentage},
                         sliced: false,
                         selected: false,
-                        url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
+                        url: '${pageContext.request.contextPath}/access/expenses/${item.tagName}.htm'
                     },
                     </c:otherwise>
                     </c:choose>
                     </c:forEach>
                     </c:when>
                     <c:otherwise>
-                    <c:forEach var="item" items="${reportAnalysisForm.itemExpenses}"  varStatus="status">
+                    <c:forEach var="item" items="${reportAnalysisForm.thisYearExpenseByTags}"  varStatus="status">
                     {
-                        name: '${item.key}',
-                        y: ${item.value},
+                        name: '${item.tagName}',
+                        y: ${item.percentage},
                         sliced: false,
                         selected: false,
-                        url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
+                        url: '${pageContext.request.contextPath}/access/expenses/${item.tagName}.htm'
                     },
                     </c:forEach>
                     </c:otherwise>
