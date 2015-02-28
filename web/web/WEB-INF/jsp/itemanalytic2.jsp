@@ -212,7 +212,19 @@
                 },
                 min: 0
             },
-
+            plotOptions: {
+                spline: {
+                    lineWidth: 3,
+                    states: {
+                        hover: {
+                            lineWidth: 4
+                        }
+                    },
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
             series: [
                 {
                     name: 'Your ${itemAnalyticForm.days} days average',
@@ -220,7 +232,8 @@
                         <c:forEach items="${itemAnalyticForm.yourAverageItems}" var="item" varStatus="status">
                         [Date.UTC(${item.receipt.year},  ${item.receipt.month - 1}, ${item.receipt.day}), ${item.price} ],
                         </c:forEach>
-                    ]
+                    ],
+                    color: '${itemAnalyticForm.item.expenseTag.tagColor}'
                 },
                 {
                     name: 'Site\'s ${itemAnalyticForm.days} days average',
