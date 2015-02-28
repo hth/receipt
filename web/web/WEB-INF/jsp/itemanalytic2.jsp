@@ -50,6 +50,12 @@
     </div>
     <div class="rightside-list-holder full-list-holder" style="height: 850px;">
         <div class="receipt-detail-holder border">
+            <c:if test="${!empty itemAnalyticForm.message}">
+            <div class="first ajx-content">
+                <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+                <p><strong>${itemAnalyticForm.message}</strong></p>
+            </div>
+            </c:if>
             <c:choose>
             <c:when test="${!empty itemAnalyticForm.yourHistoricalItems}">
 
@@ -130,7 +136,6 @@
                     <th class="analysis">Location</th>
                     <th class="analysis">Price</th>
                 </tr>
-                <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
                 <c:forEach items="${itemAnalyticForm.yourHistoricalItems}" var="item" varStatus="status">
                 <tr>
                     <td class="analysis" style="width: 5px !important;">
@@ -164,7 +169,6 @@
                     </td>
                 </tr>
                 </c:forEach>
-                </form:form>
             </table>
             </c:if>
             </c:when>
