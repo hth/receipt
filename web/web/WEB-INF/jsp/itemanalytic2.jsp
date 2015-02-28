@@ -62,7 +62,7 @@
             <p class="analysis-text">
                 Your purchase history shows, you have purchased <b>${itemAnalyticForm.item.name}</b> at least
                 <b>${itemAnalyticForm.historicalCount}</b>
-                time<c:if test="${itemAnalyticForm.historicalCount ge 1}">s</c:if>.
+                time<c:if test="${itemAnalyticForm.historicalCount gt 1}">s</c:if>.
             </p>
 
             <table width="95%" style="margin-left: 4px; margin-right: 4px;">
@@ -105,9 +105,9 @@
 
             <c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">
             <c:choose>
-                <c:when test="${itemAnalyticForm.yourHistoricalItems.size() ge 10}">
+                <c:when test="${itemAnalyticForm.yourHistoricalItems.size() gt 10}">
                     <h2 class="h2" style="padding-top: 3%;">
-                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() ge 1}">s</c:if>
+                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() gt 1}">s</c:if>
                         of ${itemAnalyticForm.item.name}.
                     </h2>
                     <p class="analysis-text">
@@ -116,7 +116,7 @@
                 </c:when>
                 <c:otherwise>
                     <h2 class="h2" style="padding-bottom:3%; padding-top: 3%;">
-                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() ge 1}">s</c:if>
+                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() gt 1}">s</c:if>
                         of ${itemAnalyticForm.item.name}.
                     </h2>
                 </c:otherwise>
