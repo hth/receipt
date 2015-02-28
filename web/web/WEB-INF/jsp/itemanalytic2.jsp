@@ -48,7 +48,7 @@
             Historical Analysis
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder" style="height: 750px;">
+    <div class="rightside-list-holder full-list-holder" style="height: 850px;">
         <div class="receipt-detail-holder border">
             <c:choose>
             <c:when test="${!empty itemAnalyticForm.yourHistoricalItems}">
@@ -169,7 +169,12 @@
             </c:if>
             </c:when>
             <c:otherwise>
-
+                <div class="rightside-list-holder full-list-holder" style="width: 95%;">
+                    <div class="first ajx-content">
+                        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+                        <p><strong>No item found. Please hit back button and submit a valid request.</strong></p>
+                    </div>
+                </div>
             </c:otherwise>
             </c:choose>
         </div>
