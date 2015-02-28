@@ -15,7 +15,9 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.web.form.ReceiptByBizForm;
 import com.receiptofi.web.form.ReceiptForm;
+import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.rest.JsonReceiptDetail;
 
@@ -59,7 +61,7 @@ public class ReceiptController {
     @Value ("${ReceiptController.nextPage:/receipt2}")
     private String nextPage;
 
-    @Value ("${ReceiptController.nextPageByBiz:/receiptByBiz}")
+    @Value ("${ReceiptController.nextPageByBiz:/receiptByBiz2}")
     private String nextPageByBiz;
 
     @Autowired private ReceiptService receiptService;
@@ -165,27 +167,38 @@ public class ReceiptController {
     }
 
     /**
-     * @param id
+     * Finds all receipts with business name.
+     *
+     * @param bizName
      * @return
      */
-    @RequestMapping (value = "/biz/{id}", method = RequestMethod.GET)
-    public ModelAndView receiptByBizName(@PathVariable String id) throws IOException {
-        LOG.info("Loading Receipts by Biz Name id={}", id);
+    @RequestMapping (value = "/biz/{bizName}/{monthYear}", method = RequestMethod.GET)
+    public String receiptByBizName(
+            @PathVariable
+            String bizName,
 
+            @PathVariable
+            String monthYear,
+
+            @ModelAttribute ("receiptByBizForm")
+            ReceiptByBizForm receiptByBizForm
+    ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<ReceiptLandingView> receiptLandingViews = new ArrayList<>();
+        LOG.info("Loading Receipts by Biz Name id={}", bizName);
+        receiptByBizForm.setMonthYear(monthYear);
+        receiptByBizForm.setBizName(bizName);
 
-        ModelAndView modelAndView = new ModelAndView(nextPageByBiz);
-
-        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(id);
+        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(bizName);
         for (BizNameEntity bizNameEntity : bizNames) {
-            List<ReceiptEntity> receipts = receiptService.findReceipt(bizNameEntity, receiptUser.getRid());
+            List<ReceiptEntity> receipts = receiptService.findReceipt(
+                    bizNameEntity,
+                    receiptUser.getRid(),
+                    ReceiptForMonth.dtf.parseDateTime(monthYear));
             for (ReceiptEntity receiptEntity : receipts) {
-                receiptLandingViews.add(ReceiptLandingView.newInstance(receiptEntity));
+                receiptByBizForm.getReceiptLandingViews().add(ReceiptLandingView.newInstance(receiptEntity));
             }
         }
 
-        modelAndView.addObject("receiptLandingViews", receiptLandingViews);
-        return modelAndView;
+        return nextPageByBiz;
     }
 }

@@ -40,14 +40,14 @@
             {
                 y: ${item.total},
                 color: colors[${status.count-1}],
-                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
                 id: '${item.bizNameForId}',
                 drilldown: {
                     name: '${item.bizName}',
                     categories: [${item.expenseTags}],
                     data: [${item.expenseValues}],
                     color: colors[${status.count-1}],
-                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
                     id: '${item.bizNameForId}'
                 }
             },

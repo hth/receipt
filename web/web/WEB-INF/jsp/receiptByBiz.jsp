@@ -96,7 +96,7 @@
 
     <div id="onLoadReceiptForMonthId">
     <c:choose>
-    <c:when test="${!empty receiptLandingViews}">
+    <c:when test="${!empty receiptByBizForm.receiptLandingViews}">
         <table>
             <tr>
                 <td style="vertical-align: top">
@@ -108,7 +108,7 @@
                             <th style="padding: 3px;">Tax</th>
                             <th style="padding: 3px;">Total</th>
                         </tr>
-                        <c:forEach var="receipt" items="${receiptLandingViews}"  varStatus="status">
+                        <c:forEach var="receipt" items="${receiptByBizForm.receiptLandingViews}"  varStatus="status">
                             <tr>
                                 <td style="padding: 3px; text-align: right">
                                     ${status.count}
