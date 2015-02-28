@@ -68,7 +68,7 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     /**
-     * Strip all the characters other than number
+     * Strip all the characters other than number.
      *
      * @param phone
      * @return
@@ -81,7 +81,7 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     /**
-     * For web display of the address
+     * For web display of the address.
      *
      * @return
      */
@@ -92,8 +92,8 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getLocation() {
-        String[] split =  StringUtils.split(address, ", ");
-        return split[split.length - 4] + ", " + split[split.length - 3];
+        String[] split =  StringUtils.split(address, ",");
+        return split[split.length - 3] + ", " + (split[split.length - 2]).trim().split(" ")[0];
     }
 
     public String getAddressWrappedMore() {
@@ -113,7 +113,7 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     /**
-     * Remove everything other than numbers. Do the formatting on client side
+     * Remove everything other than numbers. Do the formatting on client side.
      *
      * @param phone
      */
