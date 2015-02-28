@@ -136,7 +136,6 @@
                     <th class="analysis">Location</th>
                     <th class="analysis">Price</th>
                 </tr>
-                <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
                 <c:forEach items="${itemAnalyticForm.yourHistoricalItems}" var="item" varStatus="status">
                 <tr>
                     <td class="analysis" style="width: 5px !important;">
@@ -170,7 +169,6 @@
                     </td>
                 </tr>
                 </c:forEach>
-                </form:form>
             </table>
             </c:if>
             </c:when>
