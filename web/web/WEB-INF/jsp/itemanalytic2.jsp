@@ -55,18 +55,17 @@
 
             <p class="analysis-text">
                 Below is the analysis for <b>${itemAnalyticForm.item.name}</b> bought on
-                <b><fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/></b> over a period
-                of ${itemAnalyticForm.days} days with respect to same item bought by loyal customers like you, over
-                same ${itemAnalyticForm.days} days period.
+                <b><fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/></b>. The chart
+                shows pricing of the same item bought by you with respect to same item bought by loyal customers like
+                you over same ${itemAnalyticForm.days} days period.
             </p>
             <p class="analysis-text">
-                You have purchased <b>${itemAnalyticForm.item.name}</b> at least
-                <b>${itemAnalyticForm.yourHistoricalItems.size()}</b>
-                time<c:if test="${itemAnalyticForm.yourHistoricalItems.size() ge 1}">s</c:if> over last
-                ${itemAnalyticForm.days} days.
+                Your purchase history shows, you have purchased <b>${itemAnalyticForm.item.name}</b> at least
+                <b>${itemAnalyticForm.historicalCount}</b>
+                time<c:if test="${itemAnalyticForm.historicalCount ge 1}">s</c:if>.
             </p>
 
-            <table width="95%" style="margin-left: 4px; margin-right: 4px">
+            <table width="95%" style="margin-left: 4px; margin-right: 4px;">
                 <tr style="border-bottom: 1px dotted #919191;">
                     <th class="analysis" style="width: 50px;">Date</th>
                     <th class="analysis">Business</th>
@@ -78,7 +77,9 @@
                 <tr>
                     <td class="analysis" style="width: 60px;">
                         <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
-                        <span style="background-color: ${itemAnalyticForm.item.expenseTag.tagColor}; margin-left: 10px;">&nbsp;&nbsp;</span>
+                        <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                        <span style="background-color: ${itemAnalyticForm.item.expenseTag.tagColor}; margin-left: 15px;">&nbsp;&nbsp;</span>
+                        </a>
                     </td>
                     <td class="analysis">
                         <a href="${pageContext.request.contextPath}/access/receipt/${itemAnalyticForm.item.receipt.id}.htm" style="color: #007AFF">
@@ -103,9 +104,25 @@
             <div id="container" style="min-width: 600px; max-width: 905px; height: 275px; margin: 35px 10px 20px 0px;"></div>
 
             <c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">
-            <h2 class="h2" style="padding-bottom:3%; padding-top: 3%;">Your historical purchases of ${itemAnalyticForm.item.name}</h2>
+            <c:choose>
+                <c:when test="${itemAnalyticForm.yourHistoricalItems.size() ge 10}">
+                    <h2 class="h2" style="padding-top: 3%;">
+                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() ge 1}">s</c:if>
+                        of ${itemAnalyticForm.item.name}.
+                    </h2>
+                    <p class="analysis-text">
+                        Table below shows ${itemAnalyticForm.yourHistoricalItems.size()} of ${itemAnalyticForm.historicalCount} items.
+                    </p>
+                </c:when>
+                <c:otherwise>
+                    <h2 class="h2" style="padding-bottom:3%; padding-top: 3%;">
+                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() ge 1}">s</c:if>
+                        of ${itemAnalyticForm.item.name}.
+                    </h2>
+                </c:otherwise>
+            </c:choose>
 
-            <table width="95%" style="margin-left: 4px; margin-right: 4px">
+            <table width="95%" style="margin-left: 4px; margin-right: 4px;">
                 <tr style="border-bottom: 1px dotted #919191;">
                     <th class="analysis" style="width: 5px !important;"></th>
                     <th class="analysis" style="width: 40px !important;">Date</th>
@@ -121,7 +138,9 @@
                     </td>
                     <td class="analysis" style="width: 40px !important;">
                         <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
-                        <span style="background-color: ${item.expenseTag.tagColor}; margin-left: 10px;">&nbsp;&nbsp;</span>
+                        <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                        <span style="background-color: ${item.expenseTag.tagColor}; margin-left: 15px;">&nbsp;&nbsp;</span>
+                        </a>
                     </td>
                     <td class="analysis">
                         <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm" style="color: #007AFF">
@@ -133,6 +152,15 @@
                     </td>
                     <td class="analysis">
                         <spring:eval expression="item.price" />
+                        <spring:eval expression="item.taxed == T(com.receiptofi.domain.types.TaxEnum).TAXED" var="isValid" />
+                        <c:choose>
+                            <c:when test="${!isValid}">
+                                &nbsp;
+                            </c:when>
+                            <c:otherwise>
+                                &nbsp; + (TAX)
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
                 </c:forEach>

@@ -57,11 +57,20 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     /**
      * Should be used only for listing historical data of the items for a particular user.
      *
-     * @param itemEntity
+     * @param item
      * @param receiptUserId
      * @return
      */
-    List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId, int limit);
+    List<ItemEntity> findAllByName(ItemEntity item, String receiptUserId, int limit);
+
+    /**
+     * Gets count of the item with same name purchased.
+     *
+     * @param item
+     * @param receiptUserId
+     * @return
+     */
+    long findAllByNameCount(ItemEntity item, String receiptUserId);
 
     /**
      * Delete Entity.

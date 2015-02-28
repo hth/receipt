@@ -97,6 +97,7 @@ public class ItemAnalyticController {
             itemAnalyticForm.setYourAveragePrice(yourAveragePrice);
 
             /** Users historical items */
+            itemAnalyticForm.setHistoricalCount(itemAnalyticService.findAllByNameCount(item, receiptUser.getRid()));
             List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, receiptUser.getRid(), itemLimit);
             itemAnalyticForm.setYourHistoricalItems(yourItems);
 

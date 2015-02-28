@@ -178,30 +178,43 @@ public final class ItemManagerImpl implements ItemManager {
      * receipt date to items.
      * Note: Added limit to reduce number of items fetched.
      *
-     * @param itemEntity
+     * @param item
      * @param receiptUserId
      * @param limit         - Number of items per query
      * @return
      */
     @Override
-    public List<ItemEntity> findAllByName(ItemEntity itemEntity, String receiptUserId, int limit) {
+    public List<ItemEntity> findAllByName(ItemEntity item, String receiptUserId, int limit) {
         List<ItemEntity> items;
-        if (itemEntity.getReceipt().getReceiptUserId().equals(receiptUserId)) {
+        if (item.getReceipt().getReceiptUserId().equals(receiptUserId)) {
             items = mongoTemplate.find(
-                    query(where("IN").is(itemEntity.getName())
-                                    .and("RID").is(receiptUserId)
-                                    .andOperator(
-                                            isNotDeleted()
-                                    )
-                    ).limit(limit),
+                    queryToFindByName(item.getName(), receiptUserId).limit(limit),
                     ItemEntity.class,
                     TABLE);
         } else {
-            LOG.error("One of the query is trying to get items for different rid={} item={}",
-                    receiptUserId, itemEntity.getId());
+            LOG.error("Found different rid={} item={}", receiptUserId, item.getId());
             items = new ArrayList<>();
         }
         return items;
+    }
+
+    public long findAllByNameCount(ItemEntity item, String receiptUserId) {
+        long count = 0;
+        if (item.getReceipt().getReceiptUserId().equals(receiptUserId)) {
+            count = mongoTemplate.count(queryToFindByName(item.getName(), receiptUserId), ItemEntity.class, TABLE);
+        } else {
+            LOG.error("Found different rid={} item={}", receiptUserId, item.getId());
+        }
+        return count;
+    }
+
+    private Query queryToFindByName(String itemName, String rid) {
+        return query(where("IN").is(itemName)
+                        .and("RID").is(rid)
+                        .andOperator(
+                                isNotDeleted()
+                        )
+        );
     }
 
     @Override
