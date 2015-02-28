@@ -34,7 +34,9 @@
 <div class="main clearfix">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            ${receiptByBizForm.bizName} <fmt:message key="receipt.by.biz" /> for ${receiptByBizForm.monthYear}
+            ${receiptByBizForm.bizName} <fmt:message key="receipt.by.biz" />
+                <c:if test="${receiptByBizForm.receiptLandingViews.size() gt 1}">s</c:if>
+                for ${receiptByBizForm.monthYear}
         </h1>
     </div>
     <c:choose>
@@ -43,7 +45,7 @@
         <p class="analysis-text">
             <b>${receiptByBizForm.receiptLandingViews.size()}</b>
                 transaction<c:if test="${receiptByBizForm.receiptLandingViews.size() gt 1}">s</c:if>
-                shown below for ${receiptByBizForm.bizName} in the month of ${receiptByBizForm.monthYear}.
+                occurred at ${receiptByBizForm.bizName} in the month.
         </p>
 
         <ul>
