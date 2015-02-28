@@ -43,7 +43,7 @@ import java.util.List;
 public class ItemAnalyticController {
     private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticController.class);
 
-    @Value ("${ItemAnalyticController.nextPage:/itemanalytic}")
+    @Value ("${ItemAnalyticController.nextPage:/itemanalytic2}")
     private String nextPage;
 
     @Value ("${ItemAnalyticController.searchLimitForDays:90}")
@@ -97,6 +97,7 @@ public class ItemAnalyticController {
             itemAnalyticForm.setYourAveragePrice(yourAveragePrice);
 
             /** Users historical items */
+            itemAnalyticForm.setHistoricalCount(itemAnalyticService.findAllByNameCount(item, receiptUser.getRid()));
             List<ItemEntity> yourItems = itemAnalyticService.findAllByName(item, receiptUser.getRid(), itemLimit);
             itemAnalyticForm.setYourHistoricalItems(yourItems);
 

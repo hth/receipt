@@ -124,6 +124,10 @@ public class ItemAnalyticService {
         return descendingOrderForItems().sortedCopy(items);
     }
 
+    public long findAllByNameCount(ItemEntity item, String userProfileId) {
+        return itemManager.findAllByNameCount(item, userProfileId);
+    }
+
     @SuppressWarnings ("unused")
     private List<ItemEntity> callDescendingOrdering(List<ItemEntity> items) {
         Ordering<ItemEntity> ordered = descendingOrderForItems();

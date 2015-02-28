@@ -28,6 +28,7 @@ public final class ItemAnalyticForm {
     private List<ItemEntity> yourHistoricalItems;
     private int days;
     private String message;
+    private long historicalCount;
 
     private ItemAnalyticForm() {
     }
@@ -121,5 +122,13 @@ public final class ItemAnalyticForm {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public long getHistoricalCount() {
+        return historicalCount;
+    }
+
+    public void setHistoricalCount(long historicalCount) {
+        this.historicalCount = historicalCount;
     }
 }

@@ -60,6 +60,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("BIZ_NAME")
     private BizNameEntity bizName;
 
+    @Field ("EA")
+    private boolean validatedUsingExternalAPI;
+
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
     }
@@ -85,6 +88,12 @@ public class BizStoreEntity extends BaseEntity {
     @Transient
     public String getAddressWrapped() {
         return address.replaceFirst(",", "<br/>");
+    }
+
+    @Transient
+    public String getLocation() {
+        String[] split =  StringUtils.split(address, ", ");
+        return split[split.length - 4] + ", " + split[split.length - 3];
     }
 
     public String getAddressWrappedMore() {
@@ -142,5 +151,13 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
+    }
+
+    public boolean isValidatedUsingExternalAPI() {
+        return validatedUsingExternalAPI;
+    }
+
+    public void setValidatedUsingExternalAPI(boolean validatedUsingExternalAPI) {
+        this.validatedUsingExternalAPI = validatedUsingExternalAPI;
     }
 }
