@@ -46,7 +46,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param receiptUserId
      * @return
      */
-    List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String receiptUserId);
+    List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String receiptUserId, DateTime receiptForMonth);
 
     /**
      * Gets all the user receipts. Refrain from using open ended query.

@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -319,8 +320,8 @@ public class ReceiptService {
      * @param userProfileId
      * @return
      */
-    public List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId) {
-        return receiptManager.findReceipt(bizNameEntity, userProfileId);
+    public List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String userProfileId, DateTime receiptForMonth) {
+        return receiptManager.findReceipt(bizNameEntity, userProfileId, receiptForMonth);
     }
 
     /**

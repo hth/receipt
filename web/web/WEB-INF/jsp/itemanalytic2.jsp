@@ -4,8 +4,6 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="description" content=""/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
     <title><fmt:message key="item.analytic.title"/></title>

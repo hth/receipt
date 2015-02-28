@@ -285,9 +285,10 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String receiptUserId) {
+    public List<ReceiptEntity> findReceipt(BizNameEntity bizNameEntity, String receiptUserId, DateTime receiptForMonth) {
         Criteria criteria = where("RID").is(receiptUserId)
                 .and("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))
+                .and("RTXD").gte(receiptForMonth).lte(receiptForMonth.plusMonths(1).withTimeAtStartOfDay().minusMillis(1))
                 .andOperator(
                         isActive(),
                         isNotDeleted()
