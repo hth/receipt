@@ -41,32 +41,75 @@
         </div>
     </div>
 </div>
-
 <header>
 </header>
 <div class="main clearfix">
-    <div class="report_sidebar" id="reportSidebarId">
-        <div class="sidebar-top-summary">
-            <div class="sidebar-top-summary-upper clearfix">
-                <ul>
-                    <c:set var="yearVar" value="" />
-                    <c:forEach var="item" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
-                        <c:if test="${empty yearVar || yearVar ne item.year}">
-                            <c:set var="yearVar" value="${item.year}" />
-                            <c:if test="${yearVar eq item.year}">
-                                <span class="ll-h">${item.year}</span>
-                            </c:if>
-                        </c:if>
-
-                        <li>
-                            <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
-                            <spring:eval expression='item.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="item.total" />
-                            </a>
-                        </li>
-                    </c:forEach>
-                </ul>
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            All items for expense tag: ${expenseForm.name}
+        </h1>
+    </div>
+    <div class="rightside-list-holder full-list-holder">
+        <c:choose>
+        <c:when test="${!empty expenseForm.items}">
+        <p class="analysis-text">
+            Found <b>${expenseForm.items.size()}</b>
+            item<c:if test="${expenseForm.items.size() gt 1}">s</c:if>
+            tagged under expense tag ${expenseForm.name}.
+        </p>
+        <ul>
+            <form:form method="post" action="expenses.htm" modelAttribute="expenseForm">
+            <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
+            <li>
+                <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                <span class="rightside-li-date-text" style="width: 100px;"><fmt:formatDate value="${item.receipt.receiptDate}" pattern="MMM dd, yyyy"/></span>
+                <span style="background-color: ${item.expenseTag.tagColor}" title="${item.expenseTag.tagName}">&nbsp;&nbsp;&nbsp;</span>
+                <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm" class="rightside-li-middle-text" style="width: 250px;">
+                    <c:choose>
+                        <c:when test="${item.receipt.bizName.businessName.length() gt 34}">
+                            <spring:eval expression="item.receipt.bizName.businessName.substring(0, 34)"/>...
+                        </c:when>
+                        <c:otherwise>
+                            <spring:eval expression="item.receipt.bizName.businessName"/>
+                        </c:otherwise>
+                    </c:choose>
+                </a>
+                <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm" style="width: 250px;">
+                    ${item.name}
+                </a>
+                <span class="rightside-li-right-text" style="width: 50px;">
+                    <c:choose>
+                        <c:when test="${item.tax gt 0}">
+                            <spring:eval expression='item.tax'/>&nbsp;(T)
+                        </c:when>
+                        <c:otherwise>
+                            &nbsp;
+                        </c:otherwise>
+                    </c:choose>
+                </span>
+                <span class="rightside-li-right-text" style="width: 80px;">
+                    <spring:eval expression='item.price'/>
+                </span>
+                <span class="receipt-tag" style="margin-left: -5px;">
+                    <form:select path="items[${status.index}].expenseTag.id">
+                        <form:option value="NONE" label="SELECT" />
+                        <form:options items="${expenseForm.expenseTags}" itemValue="id" itemLabel="tagName" />
+                    </form:select>
+                </span>
+            </li>
+            </c:forEach>
+            </form:form>
+        </ul>
+        </c:when>
+        <c:otherwise>
+            <div class="rightside-list-holder full-list-holder">
+                <div class="first ajx-content">
+                    <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
+                    <p><strong>No item tagged under expense tag: <b>${expenseForm.name}</b></strong></p>
+                </div>
             </div>
-        </div>
+        </c:otherwise>
+        </c:choose>
     </div>
     <div class="footer-tooth clearfix">
         <div class="footer-tooth-middle"></div>

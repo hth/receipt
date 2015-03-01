@@ -1262,3 +1262,33 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     word-wrap: break-word;
     width: 920px;
 }
+
+
+.receipt-tag {
+    color: #030201;
+    font-weight: bold;
+    font-size: 0.95em;
+    vertical-align: middle;
+    display: inline-block;
+    width: 120px;
+    line-height: 40px;
+    padding-left: 7px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    background: #FFFFFF url("/static/images/select_down.png") no-repeat 90% 50%;
+    background-size: 15px 15px;
+}
+
+.receipt-tag select {
+    padding: 5px 7px;
+    width: 95%;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.receipt-tag select:focus  {
+    outline: none;
+}

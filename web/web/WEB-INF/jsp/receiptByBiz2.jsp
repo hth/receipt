@@ -50,27 +50,34 @@
 
         <ul>
             <c:forEach var="receipt" items="${receiptByBizForm.receiptLandingViews}" varStatus="status">
-                <li>
-                    <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
-                    <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
-                    <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTag}">&nbsp;&nbsp;&nbsp;</span>
-                    <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
-                        <c:choose>
-                            <c:when test="${receipt.name.length() gt 34}">
-                                <spring:eval expression="receipt.name.substring(0, 34)"/>...
-                            </c:when>
-                            <c:otherwise>
-                                <spring:eval expression="receipt.name"/>
-                            </c:otherwise>
-                        </c:choose>
-                    </a>
-                    <span class="rightside-li-right-text" style="width: 140px;">
-                        <spring:eval expression='receipt.tax'/>&nbsp;&nbsp;&nbsp;(T)
-                    </span>
-                    <span class="rightside-li-right-text" style="width: 140px;">
-                        <spring:eval expression='receipt.total'/>
-                    </span>
-                </li>
+            <li>
+                <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTag}">&nbsp;&nbsp;&nbsp;</span>
+                <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text">
+                    <c:choose>
+                        <c:when test="${receipt.name.length() gt 34}">
+                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                        </c:when>
+                        <c:otherwise>
+                            <spring:eval expression="receipt.name"/>
+                        </c:otherwise>
+                    </c:choose>
+                </a>
+                <span class="rightside-li-right-text" style="width: 140px;">
+                    <c:choose>
+                        <c:when test="${receipt.tax gt 0}">
+                            <spring:eval expression='receipt.tax'/>&nbsp;&nbsp;&nbsp;(T)
+                        </c:when>
+                        <c:otherwise>
+                            &nbsp;&nbsp;&nbsp;
+                        </c:otherwise>
+                    </c:choose>
+                </span>
+                <span class="rightside-li-right-text" style="width: 140px;">
+                    <spring:eval expression='receipt.total'/>
+                </span>
+            </li>
             </c:forEach>
         </ul>
     </div>
