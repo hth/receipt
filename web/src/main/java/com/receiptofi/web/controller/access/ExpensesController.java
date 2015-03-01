@@ -40,14 +40,14 @@ import java.util.List;
 public class ExpensesController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensesController.class);
 
-    @Value ("${ExpensesController.nextPage:/expenses}")
+    @Value ("${ExpensesController.nextPage:/expenses2}")
     private String nextPage;
 
     @Autowired private ItemService itemService;
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping (value = "{tag}", method = RequestMethod.GET)
-    public ModelAndView forExpenseType(
+    public String forExpenseType(
             @PathVariable
             String tag,
 
@@ -74,8 +74,6 @@ public class ExpensesController {
         expenseForm.setExpenseTags(expenseTypes);
         expenseForm.setItems(items);
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("expenseForm", expenseForm);
-        return modelAndView;
+        return nextPage;
     }
 }
