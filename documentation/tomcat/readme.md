@@ -19,6 +19,12 @@ http://wolfpaulus.com/jounal/mac/tomcat7
 
 http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.html
 
+### Stop request to tomcat before unloading
+Tomcat supports unloadDelay which waits till the configured time for unloading servlets.
+This should configured in `context.xml` as follows:
+
+    <context unloadDelay="10000">
+
 #### Java setup
 - http://www.cc.gatech.edu/~simpkins/teaching/gatech/cs2340/guides/java7-macosx.html
 
