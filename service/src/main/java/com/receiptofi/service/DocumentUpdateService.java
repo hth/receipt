@@ -115,7 +115,7 @@ public class DocumentUpdateService {
             populateItemsWithBizName(items, receipt);
             itemManager.saveObjects(items);
 
-            bizService.saveNewBusinessAndOrStore(document);
+            bizService.copyBizNameAndBizStoreFromReceipt(document, receipt);
             document.setDocumentStatus(PROCESSED);
             document.setReferenceDocumentId(receipt.getId());
             document.inActive();
@@ -210,7 +210,7 @@ public class DocumentUpdateService {
             populateItemsWithBizName(items, receipt);
             itemManager.saveObjects(items);
 
-            bizService.saveNewBusinessAndOrStore(document);
+            bizService.copyBizNameAndBizStoreFromReceipt(document, receipt);
             document.setDocumentStatus(PROCESSED);
             document.inActive();
             document.addProcessedBy(new Date(), technicianId);
