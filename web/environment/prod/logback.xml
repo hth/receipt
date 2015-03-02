@@ -36,6 +36,8 @@
     <logger name="org.apache.activemq" level="OFF"/>
     <logger name="org.apache.http" level="OFF"/>
     <logger name="org.apache" level="OFF"/>
+    <!--Maps google logging is not working-->
+    <!--<logger name="maps.googleapis.com" level="ON"/>-->
     <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
 
     <root level="ALL">

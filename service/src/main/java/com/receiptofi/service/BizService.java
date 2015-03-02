@@ -115,7 +115,7 @@ public class BizService {
 
                 receiptEntity.setBizName(bizNameEntity);
                 receiptEntity.setBizStore(bizStoreEntity);
-            } catch (DuplicateKeyException | IOException e) {
+            } catch (DuplicateKeyException e) {
                 BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                 LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
                         biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
@@ -137,13 +137,19 @@ public class BizService {
 
                     receiptEntity.setBizName(bizName);
                     receiptEntity.setBizStore(bizStoreEntity);
-                } catch (DuplicateKeyException | IOException e) {
+                } catch (DuplicateKeyException e) {
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
                             biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
                     throw new Exception("Address and Phone already registered with another Business Name: " +
                             biz.getBizName().getBusinessName());
                 }
+            } else if (!bizStore.isValidatedUsingExternalAPI()) {
+                externalService.decodeAddress(bizStore);
+                bizStoreManager.save(bizStore);
+
+                receiptEntity.setBizName(bizName);
+                receiptEntity.setBizStore(bizStore);
             } else {
                 receiptEntity.setBizName(bizName);
                 receiptEntity.setBizStore(bizStore);
@@ -152,57 +158,13 @@ public class BizService {
     }
 
     /**
-     * This method is being used by Admin to create new Business and Stores. Also this method is being used by
-     * receipt update to do the same.
+     * Copies BizName and BizStore from ReceiptEntity to DocumentEntity.
      *
      * @param document
      */
-    public void saveNewBusinessAndOrStore(DocumentEntity document) throws Exception {
-        BizNameEntity bizNameEntity = document.getBizName();
-        BizStoreEntity bizStoreEntity = document.getBizStore();
-
-        BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
-        if (null == bizName) {
-            try {
-                bizNameManager.save(bizNameEntity);
-
-                bizStoreEntity.setBizName(bizNameEntity);
-                externalService.decodeAddress(bizStoreEntity);
-                bizStoreManager.save(bizStoreEntity);
-
-                document.setBizName(bizNameEntity);
-                document.setBizStore(bizStoreEntity);
-            } catch (DuplicateKeyException e) {
-                LOG.error(e.getLocalizedMessage());
-
-                if (StringUtils.isNotEmpty(bizNameEntity.getId())) {
-                    bizNameManager.deleteHard(bizNameEntity);
-                }
-                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
-                throw new Exception("Address and Phone already registered with another Business Name: " +
-                        biz.getBizName().getBusinessName());
-            }
-        } else {
-            BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
-            if (null == bizStore) {
-                try {
-                    bizStoreEntity.setBizName(bizName);
-                    externalService.decodeAddress(bizStoreEntity);
-                    bizStoreManager.save(bizStoreEntity);
-
-                    document.setBizName(bizName);
-                    document.setBizStore(bizStoreEntity);
-                } catch (DuplicateKeyException e) {
-                    LOG.error(e.getLocalizedMessage(), e);
-                    BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
-                    throw new Exception("Address and Phone already registered with another Business Name: " +
-                            biz.getBizName().getBusinessName());
-                }
-            } else {
-                document.setBizName(bizName);
-                document.setBizStore(bizStore);
-            }
-        }
+    public void copyBizNameAndBizStoreFromReceipt(DocumentEntity document, ReceiptEntity receipt) {
+        document.setBizName(receipt.getBizName());
+        document.setBizStore(receipt.getBizStore());
     }
 
     /**
