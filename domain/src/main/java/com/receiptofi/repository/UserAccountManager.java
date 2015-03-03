@@ -21,7 +21,7 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
 
     int inactiveNonValidatedAccount(Date pastActivationDate);
 
-    List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff();
+    List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff(int registrationInviteDailyLimit);
 
     void removeRegistrationIsOffFrom(String id);
 }
