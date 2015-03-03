@@ -52,6 +52,9 @@ public class ValidateEmailController {
     @Value ("${emailValidatePage:validate/failure}")
     private String validateFailurePage;
 
+    @Value ("${registration.turned.on}")
+    private boolean registrationTurnedOn;
+
     @Autowired
     public ValidateEmailController(
             EmailValidateService emailValidateService,
@@ -94,8 +97,15 @@ public class ValidateEmailController {
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "/result")
-    public String success(@ModelAttribute ("success") String success, HttpServletResponse httpServletResponse) throws IOException {
+    public String success(
+            @ModelAttribute ("success")
+            String success,
+
+            RedirectAttributes redirectAttrs,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if (StringUtils.isNotBlank(success)) {
+            redirectAttrs.addFlashAttribute("registrationTurnedOn", registrationTurnedOn);
             return Boolean.valueOf(success) ? validateSuccessPage : validateFailurePage;
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -27,7 +27,16 @@
     <div class="error_page">
         <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
         <h1>Account successfully validated</h1>
-        <p>Please log in with your email address and password entered during registration.</p>
+        <c:choose>
+            <c:when test="${!registrationTurnedOn}">
+                <p>Your email has been successfully validated.</p>
+                <p>Currently we are not accepting new users. We will notify you on your registered email when we start accepting new users.</p>
+            </c:when>
+            <c:otherwise>
+                <p>Your email has been successfully validate.</p>
+                <p>Please log in with your email address and password entered during registration.</p>
+            </c:otherwise>
+        </c:choose>
         <p>&nbsp;</p>
         <p><a href="${pageContext.request.contextPath}/open/login.htm">Click here</a> to return to the login page.</p>
     </div>
