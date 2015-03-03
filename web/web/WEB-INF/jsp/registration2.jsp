@@ -93,6 +93,13 @@
                     </c:otherwise>
                 </c:choose>
                 <input id="submit_btn_id" type="submit" value="SIGN ME UP" name="signup" class="submit_btn" />
+
+                <c:if test="${!registrationTurnedOn}">
+                <div class="registrationWhenTurnedOff">
+                Registration is open, but site is not accepting new users. When site has started accepting new users,
+                    you will be notified through email and your account would be turned active.
+                </div>
+                </c:if>
             </form:form>
             <div class="clear"></div>
         </div>
