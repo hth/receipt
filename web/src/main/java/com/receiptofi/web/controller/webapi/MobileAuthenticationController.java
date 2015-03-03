@@ -65,7 +65,7 @@ public class MobileAuthenticationController {
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        LOG.info("webApiAccessToken={}", webApiAccessToken);
+        LOG.debug("authenticatedOrCreate initiated from mobile");
 
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();

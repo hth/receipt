@@ -96,7 +96,7 @@
 
                 <c:if test="${!registrationTurnedOn}">
                 <div class="registrationWhenTurnedOff">
-                Registration is open, but site is not accepting new users. When site has started accepting new users,
+                Registration is open, but site is not accepting new users. When site starts accepting new users,
                     you will be notified through email and your account would be turned active.
                 </div>
                 </c:if>

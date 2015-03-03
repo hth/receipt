@@ -93,7 +93,7 @@ public class MobileMailController {
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        LOG.info("webApiAccessToken={}", webApiAccessToken);
+        LOG.debug("accountRecover initiated from mobile");
 
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
