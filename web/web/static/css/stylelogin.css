@@ -232,3 +232,9 @@ span.link a {
 span.link a:hover {
     font-weight: bold;
 }
+
+.registrationWhenTurnedOff {
+    margin: 110px 0 10px 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.9em;
+}

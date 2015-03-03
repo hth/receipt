@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -82,6 +83,9 @@ public class AccountRegistrationController {
     @Value ("${AccountRegistrationController.passwordLength}")
     private int passwordLength;
 
+    @Value ("${registration.turned.on}")
+    private boolean registrationTurnedOn;
+
     @Autowired
     public AccountRegistrationController(
             UserRegistrationValidator userRegistrationValidator,
@@ -103,9 +107,9 @@ public class AccountRegistrationController {
     }
 
     @RequestMapping (method = RequestMethod.GET)
-    public String loadForm() {
-        LOG.debug("New Account Registration invoked");
-        return registrationPage;
+    public ModelAndView loadForm() {
+        LOG.info("New Account Registration invoked, registrationTurnedOn={}", registrationTurnedOn);
+        return new ModelAndView(registrationPage, "registrationTurnedOn", registrationTurnedOn);
     }
 
     @RequestMapping (method = RequestMethod.POST, params = {"signup"})
