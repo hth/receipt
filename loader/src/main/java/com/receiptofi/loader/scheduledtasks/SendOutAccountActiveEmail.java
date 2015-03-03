@@ -31,6 +31,9 @@ public class SendOutAccountActiveEmail {
     @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
 
+    @Value ("${registration.invite.daily.limit}")
+    private int registrationInviteDailyLimit;
+
     @Autowired private AccountService accountService;
     @Autowired private MailService mailService;
 
@@ -38,7 +41,7 @@ public class SendOutAccountActiveEmail {
     public void registrationCompleteEmail() {
         LOG.info("begins");
         if (registrationTurnedOn) {
-            List<UserAccountEntity> userAccounts = accountService.findRegisteredAccountWhenRegistrationIsOff();
+            List<UserAccountEntity> userAccounts = accountService.findRegisteredAccountWhenRegistrationIsOff(registrationInviteDailyLimit);
 
             int success = 0, failure = 0, skipped = 0;
             for (UserAccountEntity userAccount : userAccounts) {

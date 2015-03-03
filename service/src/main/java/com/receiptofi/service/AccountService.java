@@ -351,8 +351,8 @@ public class AccountService {
         return userAccountManager.inactiveNonValidatedAccount(pastActivationDate);
     }
 
-    public List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff() {
-        return userAccountManager.findRegisteredAccountWhenRegistrationIsOff();
+    public List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff(int registrationInviteDailyLimit) {
+        return userAccountManager.findRegisteredAccountWhenRegistrationIsOff(registrationInviteDailyLimit);
     }
 
     public void removeRegistrationIsOffFrom(String id) {
