@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -97,19 +98,19 @@ public class ValidateEmailController {
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "/result")
-    public String success(
+    public ModelAndView success(
             @ModelAttribute ("success")
             String success,
 
-            RedirectAttributes redirectAttrs,
             HttpServletResponse httpServletResponse
     ) throws IOException {
+        ModelAndView modelAndView = null;
         if (StringUtils.isNotBlank(success)) {
-            redirectAttrs.addFlashAttribute("registrationTurnedOn", registrationTurnedOn);
-            return Boolean.valueOf(success) ? validateSuccessPage : validateFailurePage;
+            String nextPage =  Boolean.valueOf(success) ? validateSuccessPage : validateFailurePage;
+            modelAndView = new ModelAndView(nextPage, "registrationTurnedOn", registrationTurnedOn);
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
         }
+        return modelAndView;
     }
 }
