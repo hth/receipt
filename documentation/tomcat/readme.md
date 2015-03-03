@@ -21,9 +21,9 @@ http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.ht
 
 ### Stop request to tomcat before unloading
 Tomcat supports unloadDelay which waits till the configured time for unloading servlets.
-This should configured in `context.xml` as follows:
+This should configured in `context.xml` as follows: 20 seconds below
 
-    <context unloadDelay="10000">
+    <context unloadDelay="20000">
 
 #### Java setup
 - http://www.cc.gatech.edu/~simpkins/teaching/gatech/cs2340/guides/java7-macosx.html
