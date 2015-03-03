@@ -56,7 +56,7 @@ public class MobileMailController {
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        LOG.info("webApiAccessToken={}", webApiAccessToken);
+        LOG.info("starting to send accountValidationMail");
 
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
