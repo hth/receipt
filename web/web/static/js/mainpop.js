@@ -357,9 +357,9 @@ function orientation(id, angle, blobId, receiptUserId) {
         type: "POST",
         success: function (data) {
             if(data == true) {
-                console.log("Success: Receipt_ Image Orientation Updated");
+                console.log("Success: Receipt Image Orientation Updated");
             } else {
-                console.log("Failed: Receipt_ Image Orientation Updated");
+                console.log("Failed: Receipt Image Orientation Updated");
             }
         }
     });
