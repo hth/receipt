@@ -37,7 +37,7 @@
     <logger name="org.apache.http" level="OFF"/>
     <logger name="org.apache" level="OFF"/>
     <!--Maps google logging is not working-->
-    <logger name="com.google.maps" level="ON"/>
+    <logger name="com.google.maps" level="OFF"/>
     <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
 
     <root level="ALL">
