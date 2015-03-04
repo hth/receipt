@@ -111,7 +111,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     @Override
     public List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff(int registrationInviteDailyLimit) {
         return mongoTemplate.find(
-                query(where("RIO").exists(true)).limit(registrationInviteDailyLimit),
+                query(where("RIO").exists(true).andOperator(where("RIO").is(false))).limit(registrationInviteDailyLimit),
                 UserAccountEntity.class
         );
     }
