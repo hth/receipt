@@ -1,5 +1,6 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -15,6 +16,7 @@ import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
+import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 
@@ -55,9 +57,13 @@ public class AccountService {
     private GenerateUserIdManager generateUserIdManager;
     private EmailValidateService emailValidateService;
     private RegistrationService registrationService;
+    private UserProfilePreferenceService userProfilePreferenceService;
 
     @Value ("${domain}")
     private String domain;
+
+    @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
+    private String[] expenseTags;
 
     @Autowired
     public AccountService(
@@ -68,7 +74,8 @@ public class AccountService {
             ForgotRecoverManager forgotRecoverManager,
             GenerateUserIdManager generateUserIdManager,
             EmailValidateService emailValidateService,
-            RegistrationService registrationService
+            RegistrationService registrationService,
+            UserProfilePreferenceService userProfilePreferenceService
     ) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
@@ -78,6 +85,7 @@ public class AccountService {
         this.generateUserIdManager = generateUserIdManager;
         this.emailValidateService = emailValidateService;
         this.registrationService = registrationService;
+        this.userProfilePreferenceService = userProfilePreferenceService;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -167,6 +175,16 @@ public class AccountService {
         } catch (Exception e) {
             LOG.error("During saving UserPreferenceEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("error saving user preference ", e);
+        }
+
+        /** Add default expense tags. */
+        for (String tag : expenseTags) {
+            ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
+                    tag,
+                    userAccount.getReceiptUserId(),
+                    ColorUtil.getRandom());
+
+            userProfilePreferenceService.saveExpenseTag(expenseTag);
         }
 
         return userAccount;

@@ -57,7 +57,6 @@ public class AccountRegistrationController {
     private AccountService accountService;
     private MailService mailService;
     private EmailValidateService emailValidateService;
-    private UserProfilePreferenceService userProfilePreferenceService;
 
     @Value ("${registrationPage:registration2}")
     private String registrationPage;
@@ -70,9 +69,6 @@ public class AccountRegistrationController {
 
     @Value ("${recover:redirect:/open/forgot/recover.htm}")
     private String recover;
-
-    @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
-    private String[] expenseTags;
 
     @Value ("${AccountRegistrationController.mailLength}")
     private int mailLength;
@@ -91,14 +87,12 @@ public class AccountRegistrationController {
             UserRegistrationValidator userRegistrationValidator,
             AccountService accountService,
             MailService mailService,
-            EmailValidateService emailValidateService,
-            UserProfilePreferenceService userProfilePreferenceService
+            EmailValidateService emailValidateService
     ) {
         this.userRegistrationValidator = userRegistrationValidator;
         this.accountService = accountService;
         this.mailService = mailService;
         this.emailValidateService = emailValidateService;
-        this.userProfilePreferenceService = userProfilePreferenceService;
     }
 
     @ModelAttribute ("userRegistrationForm")
@@ -159,16 +153,7 @@ public class AccountRegistrationController {
                 userAccount.getName(),
                 accountValidate.getAuthenticationKey());
 
-        /** Add default expense tags. */
-        for (String tag : expenseTags) {
-            ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
-                    tag,
-                    userAccount.getReceiptUserId(),
-                    ColorUtil.getRandom());
-
-            userProfilePreferenceService.saveExpenseTag(expenseTag);
-        }
-
+        /** Do not add business logic here. Mobile service uses createAccount. */
         LOG.info("success");
         return registrationSuccess;
     }
