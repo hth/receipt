@@ -263,7 +263,7 @@ public class ReceiptWebService {
      * @return
      * @throws IOException
      */
-    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @PreAuthorize ("hasAnyRole('ROLE_USER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR', 'ROLE_ADMIN')")
     @RequestMapping (
             value = "/change_fs_image_orientation",
             method = RequestMethod.POST,

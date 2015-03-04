@@ -120,11 +120,11 @@ public class FetcherService {
     }
 
     public void changeFSImageOrientation(String fileSystemId, int imageOrientation, String blobId) throws Exception {
-        FileSystemEntity fileSystemEntity = fileSystemService.findById(fileSystemId);
-        if (blobId.equalsIgnoreCase(fileSystemEntity.getBlobId())) {
-            fileSystemEntity.setImageOrientation(fileSystemEntity.getImageOrientation() + imageOrientation);
-            fileSystemEntity.switchHeightAndWidth();
-            fileSystemService.save(fileSystemEntity);
+        FileSystemEntity fileSystem = fileSystemService.findById(fileSystemId);
+        if (blobId.equalsIgnoreCase(fileSystem.getBlobId())) {
+            fileSystem.setImageOrientation(fileSystem.getImageOrientation() + imageOrientation);
+            fileSystem.switchHeightAndWidth();
+            fileSystemService.save(fileSystem);
         }
     }
 }
