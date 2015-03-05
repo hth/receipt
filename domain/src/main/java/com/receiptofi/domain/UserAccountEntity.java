@@ -104,6 +104,7 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("AVD")
     private Date accountValidatedBeginDate;
 
+    /** When RegistrationIsOff, the value is true. */
     @Field ("RIO")
     private boolean registeredWhenRegistrationIsOff;
 
