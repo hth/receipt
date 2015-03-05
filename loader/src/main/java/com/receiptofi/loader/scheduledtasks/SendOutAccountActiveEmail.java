@@ -59,7 +59,7 @@ public class SendOutAccountActiveEmail {
             }
             LOG.info("Registration complete mail sent success={} skipped={}  failure={} total={}", success, skipped, failure, userAccounts.size());
         } else {
-            LOG.info("feature is {}", registrationTurnedOn);
+            LOG.info("registrationTurnedOn feature is {}", registrationTurnedOn);
         }
     }
 }

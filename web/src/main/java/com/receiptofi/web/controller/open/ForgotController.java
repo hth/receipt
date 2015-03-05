@@ -111,7 +111,10 @@ public class ForgotController {
             method = RequestMethod.GET,
             value = "password"
     )
-    public String onPasswordLinkClicked(@ModelAttribute ("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
+    public String onPasswordLinkClicked(
+            @ModelAttribute ("forgotRecoverForm")
+            ForgotRecoverForm forgotRecoverForm
+    ) {
         LOG.info("Password recovery page invoked");
         return passwordPage;
     }
