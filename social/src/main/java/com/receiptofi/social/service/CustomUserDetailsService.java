@@ -91,13 +91,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-            UserAuthenticationEntity userAuthenticate = userAccount.getUserAuthentication();
-
             LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             return new ReceiptUser(
                     userProfile.getEmail(),
-                    userAuthenticate.getPassword(),
+                    userAccount.getUserAuthentication().getPassword(),
                     getAuthorities(userAccount.getRoles()),
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),
@@ -116,7 +114,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
-        if (userAccount.isRegisteredWhenRegistrationIsOff()) {
+        if (!userAccount.isRegisteredWhenRegistrationIsOff()) {
             return false;
         } else if (userAccount.isActive()) {
             return userAccount.isAccountValidated() ||
@@ -134,17 +132,18 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("not found user={}", uid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccountEntity = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+            UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+            LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             return new ReceiptUser(
-                    StringUtils.isBlank(userAccountEntity.getUserId()) ? userProfile.getUserId() : userAccountEntity.getUserId(),
-                    userAccountEntity.getUserAuthentication().getPassword(),
-                    getAuthorities(userAccountEntity.getRoles()),
+                    StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getUserId() : userAccount.getUserId(),
+                    userAccount.getUserAuthentication().getPassword(),
+                    getAuthorities(userAccount.getRoles()),
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
-                    isUserActiveAndRegistrationTurnedOn(userAccountEntity),
-                    userAccountEntity.isAccountValidated()
+                    isUserActiveAndRegistrationTurnedOn(userAccount),
+                    userAccount.isAccountValidated()
             );
         }
     }
