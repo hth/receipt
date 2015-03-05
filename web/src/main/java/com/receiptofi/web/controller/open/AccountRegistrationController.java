@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -95,15 +96,16 @@ public class AccountRegistrationController {
         this.emailValidateService = emailValidateService;
     }
 
-    @ModelAttribute ("userRegistrationForm")
-    public UserRegistrationForm getUserRegistrationForm() {
-        return UserRegistrationForm.newInstance();
-    }
-
     @RequestMapping (method = RequestMethod.GET)
-    public ModelAndView loadForm() {
+    public String loadForm(
+            @ModelAttribute ("userRegistrationForm")
+            UserRegistrationForm userRegistrationForm,
+
+            ModelMap model
+    ) {
         LOG.info("New Account Registration invoked, registrationTurnedOn={}", registrationTurnedOn);
-        return new ModelAndView(registrationPage, "registrationTurnedOn", registrationTurnedOn);
+        model.addAttribute("registrationTurnedOn", registrationTurnedOn);
+        return registrationPage;
     }
 
     @RequestMapping (method = RequestMethod.POST, params = {"signup"})
@@ -111,12 +113,14 @@ public class AccountRegistrationController {
             @ModelAttribute ("userRegistrationForm")
             UserRegistrationForm userRegistrationForm,
 
+            ModelMap model,
             RedirectAttributes redirectAttrs,
             BindingResult result
     ) {
         userRegistrationValidator.validate(userRegistrationForm, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
+            model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return registrationPage;
         }
 
@@ -125,6 +129,7 @@ public class AccountRegistrationController {
             LOG.warn("account exists");
             userRegistrationValidator.accountExists(userRegistrationForm, result);
             userRegistrationForm.setAccountExists(true);
+            model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return registrationPage;
         }
 
@@ -138,6 +143,7 @@ public class AccountRegistrationController {
                     userRegistrationForm.getBirthday());
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user", exce.getLocalizedMessage(), exce);
+            model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return registrationPage;
         }
 
