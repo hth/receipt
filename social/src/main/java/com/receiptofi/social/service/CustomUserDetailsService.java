@@ -114,7 +114,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
-        if (userAccount.isRegisteredWhenRegistrationIsOff()) {
+        if (!userAccount.isRegisteredWhenRegistrationIsOff()) {
             return false;
         } else if (userAccount.isActive()) {
             return userAccount.isAccountValidated() ||
