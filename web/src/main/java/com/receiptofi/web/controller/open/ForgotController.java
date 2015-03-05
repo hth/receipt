@@ -107,13 +107,20 @@ public class ForgotController {
         this.loginService = loginService;
     }
 
-    @RequestMapping (method = RequestMethod.GET, value = "password")
+    @RequestMapping (
+            method = RequestMethod.GET,
+            value = "password"
+    )
     public String onPasswordLinkClicked(@ModelAttribute ("forgotRecoverForm") ForgotRecoverForm forgotRecoverForm) {
         LOG.info("Password recovery page invoked");
         return passwordPage;
     }
 
-    @RequestMapping (method = RequestMethod.POST, value = "password", params = {"forgot_password"})
+    @RequestMapping (
+            method = RequestMethod.POST,
+            value = "password",
+            params = {"forgot_password"}
+    )
     public String emailUserForPasswordRecovery(
             @ModelAttribute ("forgotRecoverForm")
             ForgotRecoverForm forgotRecoverForm,

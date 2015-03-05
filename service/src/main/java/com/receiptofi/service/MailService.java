@@ -204,12 +204,12 @@ public class MailService {
      * Send recover email to user of provided email id.
      * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
      *
-     * @param emailId
+     * @param mail
      */
-    public MailTypeEnum mailRecoverLink(String emailId) {
-        UserAccountEntity userAccount = accountService.findByUserId(emailId);
+    public MailTypeEnum mailRecoverLink(String mail) {
+        UserAccountEntity userAccount = accountService.findByUserId(mail);
         if (null == userAccount) {
-            LOG.warn("could not recover user={}", emailId);
+            LOG.warn("could not recover user={}", mail);
             return MailTypeEnum.ACCOUNT_NOT_FOUND;
         }
 
@@ -230,13 +230,13 @@ public class MailService {
                 MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
                 helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
 
-                String sentTo = StringUtils.isEmpty(devSentTo) ? emailId : devSentTo;
+                String sentTo = StringUtils.isEmpty(devSentTo) ? mail : devSentTo;
                 if (sentTo.equalsIgnoreCase(devSentTo)) {
                     helper.setTo(new InternetAddress(devSentTo, emailAddressName));
                     LOG.info("Mail recovery send to={}", devSentTo);
                 } else {
-                    helper.setTo(new InternetAddress(emailId, userAccount.getName()));
-                    LOG.info("Mail recovery send to={}", emailId);
+                    helper.setTo(new InternetAddress(mail, userAccount.getName()));
+                    LOG.info("Mail recovery send to={}", mail);
                 }
 
                 sendMail(
