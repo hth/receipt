@@ -52,17 +52,17 @@
         </div>
         </c:if>
 
-        <div class="loginl">
+        <div class="loginl" style="width: 450px;">
             <br><br>
             <!-- FACEBOOK SIGNIN -->
-            <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST">
+            <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST" cssStyle="float: left;">
                 <input type="hidden" name="scope" value="email,basic_info,user_activities" />
                 <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
                 <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
                 <button type="submit" class="submit_btn" style="width: 173px;">FACEBOOK SIGN IN</button>
             </form:form>
             <!-- GOOGLE SIGNIN -->
-            <form:form name="g_signin" id="g_signin" action="${pageContext.request.contextPath}/signin/google.htm" method="POST">
+            <form:form name="g_signin" id="g_signin" action="${pageContext.request.contextPath}/signin/google.htm" method="POST" cssStyle="float: right;">
                 <button type="submit" class="submit_btn" style="width: 173px;">GOOGLE+ SIGN IN</button>
                 <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/latitude.all.best" />
                 <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
