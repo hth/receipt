@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -91,6 +92,7 @@ public class ValidateEmailController {
                 emailValidate.setUpdated();
                 emailValidateService.saveEmailValidateEntity(emailValidate);
                 redirectAttrs.addFlashAttribute("success", "true");
+                redirectAttrs.addFlashAttribute("userRegisteredWhenRegistrationIsOff", userAccount.isRegisteredWhenRegistrationIsOff());
                 LOG.info("authentication success for user={}", userAccount.getReceiptUserId());
             }
             return validateResult;
@@ -98,19 +100,33 @@ public class ValidateEmailController {
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "/result")
-    public ModelAndView success(
+    public String success(
             @ModelAttribute ("success")
             String success,
 
+            @ModelAttribute ("userRegisteredWhenRegistrationIsOff")
+            boolean userRegisteredWhenRegistrationIsOff,
+
+            ModelMap modelMap,
+
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        ModelAndView modelAndView = null;
+        String nextPage = null;
         if (StringUtils.isNotBlank(success)) {
-            String nextPage =  Boolean.valueOf(success) ? validateSuccessPage : validateFailurePage;
-            modelAndView = new ModelAndView(nextPage, "registrationTurnedOn", registrationTurnedOn);
+            nextPage =  Boolean.valueOf(success) ? validateSuccessPage : validateFailurePage;
+            if (userRegisteredWhenRegistrationIsOff && !registrationTurnedOn) {
+                modelMap.addAttribute(
+                        "registrationMessage",
+                        "Currently we are not accepting new users. We will notify you on your registered email when " +
+                                "we start accepting new users.");
+            } else {
+                modelMap.addAttribute(
+                        "registrationMessage",
+                        "Please log in with your email address and password entered during registration.");
+            }
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-        return modelAndView;
+        return nextPage;
     }
 }
