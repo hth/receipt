@@ -161,7 +161,7 @@ public class ReceiptUpdateController {
 
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
+            LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
@@ -221,7 +221,7 @@ public class ReceiptUpdateController {
 
         mileageDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
+            LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
@@ -330,7 +330,7 @@ public class ReceiptUpdateController {
         LOG.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
+            LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
