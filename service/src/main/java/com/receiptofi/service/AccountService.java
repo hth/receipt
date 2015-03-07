@@ -1,5 +1,6 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -380,5 +381,25 @@ public class AccountService {
 
     public void removeRegistrationIsOffFrom(String id) {
         userAccountManager.removeRegistrationIsOffFrom(id);
+    }
+
+    public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {
+        if(userAccount.getAccountInactiveReason() != null) {
+            switch (userAccount.getAccountInactiveReason()) {
+                case ANV:
+                    updateAccountToValidated(userAccount.getId(), AccountInactiveReasonEnum.ANV);
+                    break;
+                default:
+                    LOG.error("Reached unreachable condition, rid={}", userAccount.getReceiptUserId());
+                    throw new RuntimeException("Reached unreachable condition " + userAccount.getReceiptUserId());
+            }
+        } else {
+            userAccount.setAccountValidated(true);
+            saveUserAccount(userAccount);
+        }
+
+        emailValidate.inActive();
+        emailValidate.setUpdated();
+        emailValidateService.saveEmailValidateEntity(emailValidate);
     }
 }

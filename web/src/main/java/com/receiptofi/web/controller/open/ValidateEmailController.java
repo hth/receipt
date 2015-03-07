@@ -86,20 +86,12 @@ public class ValidateEmailController {
                 redirectAttrs.addFlashAttribute("success", "false");
                 LOG.info("authentication failed for user={}", userAccount.getReceiptUserId());
             } else {
-                switch (userAccount.getAccountInactiveReason()) {
-                    case ANV:
-                        accountService.updateAccountToValidated(userAccount.getId(), AccountInactiveReasonEnum.ANV);
-                        break;
-                    default:
-                        userAccount.setAccountValidated(true);
-                        accountService.saveUserAccount(userAccount);
-                }
-
-                emailValidate.inActive();
-                emailValidate.setUpdated();
-                emailValidateService.saveEmailValidateEntity(emailValidate);
+                accountService.validateAccount(emailValidate, userAccount);
                 redirectAttrs.addFlashAttribute("success", "true");
-                redirectAttrs.addFlashAttribute("userRegisteredWhenRegistrationIsOff", userAccount.isRegisteredWhenRegistrationIsOff());
+                redirectAttrs.addFlashAttribute(
+                        "userRegisteredWhenRegistrationIsOff",
+                        userAccount.isRegisteredWhenRegistrationIsOff());
+
                 LOG.info("authentication success for user={}", userAccount.getReceiptUserId());
             }
             return validateResult;
