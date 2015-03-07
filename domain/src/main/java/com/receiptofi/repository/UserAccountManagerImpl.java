@@ -130,7 +130,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public void updateAccountToValidated(String id, AccountInactiveReasonEnum air) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AIR").is(air)),
-                AppendAdditionalFields.entityUpdate(update("A", true).unset("AIR")),
+                AppendAdditionalFields.entityUpdate(update("A", true).set("AV", true).unset("AIR")),
                 UserAccountEntity.class
         );
     }

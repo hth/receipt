@@ -93,7 +93,6 @@ public class ValidateEmailController {
                     default:
                         userAccount.setAccountValidated(true);
                         accountService.saveUserAccount(userAccount);
-
                 }
 
                 emailValidate.inActive();
