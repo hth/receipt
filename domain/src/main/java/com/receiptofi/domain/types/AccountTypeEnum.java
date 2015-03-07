@@ -21,8 +21,8 @@ public enum AccountTypeEnum {
     SMALL_BUSINESS_CLIENT("SMALL_BUSINESS_CLIENT", "Business with multiple clients"),
     ENTERPRISE("ENTERPRISE", "Enterprise");
 
-    private final String description;
     private final String name;
+    private final String description;
 
     private AccountTypeEnum(String name, String description) {
         this.name = name;

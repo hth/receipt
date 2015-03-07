@@ -7,6 +7,7 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -227,6 +228,10 @@ public class AccountService {
 
     public void saveUserAccount(UserAccountEntity userAccountEntity) {
         userAccountManager.save(userAccountEntity);
+    }
+
+    public void updateAccountToValidated(String id, AccountInactiveReasonEnum accountInactiveReason) {
+        userAccountManager.updateAccountToValidated(id, accountInactiveReason);
     }
 
     public UserAccountEntity changeAccountRolesToMatchUserLevel(String receiptUserId, UserLevelEnum userLevel) {

@@ -1,12 +1,12 @@
 package com.receiptofi.repository.util;
 
-import com.receiptofi.utils.DateUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Update;
+
+import java.util.Date;
 
 /**
  * User: hitender
@@ -46,7 +46,7 @@ public final class AppendAdditionalFields {
         if (null == update) {
             LOG.error("Update cannot be null");
         } else {
-            return update.set("U", DateUtil.nowTime()).inc("V", 1);
+            return update.set("U", new Date()).inc("V", 1);
         }
         return null;
     }

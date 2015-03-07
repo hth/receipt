@@ -8,6 +8,7 @@ import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.repository.util.AppendAdditionalFields;
 
@@ -101,7 +102,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public int inactiveNonValidatedAccount(Date pastActivationDate) {
         WriteResult writeResult = mongoTemplate.updateMulti(
                 query(where("AV").is(false).and("AVD").lt(pastActivationDate).and("A").is(true)),
-                AppendAdditionalFields.entityUpdate(update("A", false)),
+                AppendAdditionalFields.entityUpdate(update("A", false).set("AIR", AccountInactiveReasonEnum.ANV)),
                 UserAccountEntity.class
         );
 
@@ -120,7 +121,16 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public void removeRegistrationIsOffFrom(String id) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                update("U", new Date()).inc("V", 1).unset("RIO"),
+                AppendAdditionalFields.entityUpdate(new Update().unset("RIO")),
+                UserAccountEntity.class
+        );
+    }
+
+    @Override
+    public void updateAccountToValidated(String id, AccountInactiveReasonEnum air) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(id).and("AIR").is(air)),
+                AppendAdditionalFields.entityUpdate(update("A", true).unset("AIR")),
                 UserAccountEntity.class
         );
     }

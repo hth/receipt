@@ -1,6 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 
 import java.util.Date;
@@ -24,4 +25,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff(int registrationInviteDailyLimit);
 
     void removeRegistrationIsOffFrom(String id);
+
+    void updateAccountToValidated(String id, AccountInactiveReasonEnum air);
 }

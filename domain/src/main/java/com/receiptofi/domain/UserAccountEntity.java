@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.utils.DateUtil;
@@ -107,6 +108,9 @@ public class UserAccountEntity extends BaseEntity {
     /** When RegistrationIsOff, the value is true. */
     @Field ("RIO")
     private boolean registeredWhenRegistrationIsOff;
+
+    @Field ("AIR")
+    private AccountInactiveReasonEnum accountInactiveReason;
 
     private UserAccountEntity() {
         super();
@@ -320,6 +324,14 @@ public class UserAccountEntity extends BaseEntity {
 
     public void setRegisteredWhenRegistrationIsOff(boolean registeredWhenRegistrationIsOff) {
         this.registeredWhenRegistrationIsOff = registeredWhenRegistrationIsOff;
+    }
+
+    public AccountInactiveReasonEnum getAccountInactiveReason() {
+        return accountInactiveReason;
+    }
+
+    public void setAccountInactiveReason(AccountInactiveReasonEnum accountInactiveReason) {
+        this.accountInactiveReason = accountInactiveReason;
     }
 
     @Override
