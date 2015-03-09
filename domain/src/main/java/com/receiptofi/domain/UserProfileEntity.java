@@ -33,7 +33,8 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "USER_PROFILE")
 @CompoundIndexes ({
-        @CompoundIndex (name = "user_profile_provider_uid_em_idx", def = "{'RID': -1, 'UID': -1, 'PID': 1, 'EM' : 1}", unique = true)
+        @CompoundIndex (name = "user_profile_provider_uid_em_idx", def = "{'RID': -1, 'UID': -1, 'PID': 1, 'EM' : 1}", unique = true),
+        @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true)
 })
 public class UserProfileEntity extends BaseEntity {
 
