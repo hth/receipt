@@ -63,7 +63,7 @@ public class UserProfilePreferenceService {
     }
 
     /**
-     * Lists all the expenseTypes
+     * Lists all the expenseTypes.
      *
      * @param rid
      * @return
