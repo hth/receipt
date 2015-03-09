@@ -199,6 +199,7 @@ public class UserProfilePreferenceController {
                     /** Can incorporate condition in profileForm if its dirty object instead. */
                     changeProfileDetails(profileForm, receiptUser, userProfile);
                     changeEmail(profileForm, receiptUser, userProfile);
+                    profileForm.setSuccessMessage("Profile updated successfully.");
                 } else {
                     /**
                      * Should not be able to change mail id or profile information for accounts registered through
@@ -207,7 +208,7 @@ public class UserProfilePreferenceController {
                     LOG.error("Social user={} rid={} tried changing profile information. This should never happen.",
                             receiptUser.getRid(),
                             receiptUser.getUsername());
-                    profileForm.setErrorMessage("Cannot change email for social login");
+                    profileForm.setErrorMessage("Cannot change email for social login.");
                 }
 
                 redirectAttrs.addFlashAttribute("profileForm", profileForm);
