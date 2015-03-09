@@ -6,6 +6,7 @@ import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.net.URL;
@@ -55,8 +56,8 @@ public class ProfileForm {
     private List<ExpenseTagEntity> expenseTags;
     private Map<String, Long> expenseTagCount = new HashMap<>();
 
-    private String errorMessage;
-    private String successMessage;
+    private StringBuilder errorMessage = new StringBuilder();
+    private StringBuilder successMessage = new StringBuilder();
 
     private Date accountValidationExpireDay;
     private boolean accountValidationExpired;
@@ -153,19 +154,27 @@ public class ProfileForm {
     }
 
     public String getErrorMessage() {
-        return errorMessage;
+        return errorMessage.toString();
     }
 
     public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+        if (StringUtils.isBlank(this.errorMessage)) {
+            this.errorMessage.append(errorMessage);
+        } else {
+            this.errorMessage.append(" ").append(errorMessage);
+        }
     }
 
     public String getSuccessMessage() {
-        return successMessage;
+        return successMessage.toString();
     }
 
     public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
+        if (StringUtils.isBlank(this.successMessage)) {
+            this.successMessage.append(successMessage);
+        } else {
+            this.successMessage.append(" ").append(successMessage);
+        }
     }
 
     public Date getAccountValidationExpireDay() {
