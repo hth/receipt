@@ -2,6 +2,7 @@ package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.RegistrationService;
@@ -85,14 +86,12 @@ public class ValidateEmailController {
                 redirectAttrs.addFlashAttribute("success", "false");
                 LOG.info("authentication failed for user={}", userAccount.getReceiptUserId());
             } else {
-                userAccount.setAccountValidated(true);
-                accountService.saveUserAccount(userAccount);
-
-                emailValidate.inActive();
-                emailValidate.setUpdated();
-                emailValidateService.saveEmailValidateEntity(emailValidate);
+                accountService.validateAccount(emailValidate, userAccount);
                 redirectAttrs.addFlashAttribute("success", "true");
-                redirectAttrs.addFlashAttribute("userRegisteredWhenRegistrationIsOff", userAccount.isRegisteredWhenRegistrationIsOff());
+                redirectAttrs.addFlashAttribute(
+                        "userRegisteredWhenRegistrationIsOff",
+                        userAccount.isRegisteredWhenRegistrationIsOff());
+
                 LOG.info("authentication success for user={}", userAccount.getReceiptUserId());
             }
             return validateResult;

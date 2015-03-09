@@ -40,7 +40,7 @@ public class InactiveNonValidatedAccount {
     }
 
     /**
-     * Marks account inactive when
+     * Marks account inactive when account email address has not be validated.
      */
     @Scheduled (cron = "${loader.InactiveNonValidatedAccount.markAccountInactiveWhenNotValidated}")
     public void markAccountInactiveWhenNotValidated() {

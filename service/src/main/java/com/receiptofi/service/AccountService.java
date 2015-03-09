@@ -1,5 +1,6 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -7,6 +8,7 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -229,6 +231,10 @@ public class AccountService {
         userAccountManager.save(userAccountEntity);
     }
 
+    public void updateAccountToValidated(String id, AccountInactiveReasonEnum accountInactiveReason) {
+        userAccountManager.updateAccountToValidated(id, accountInactiveReason);
+    }
+
     public UserAccountEntity changeAccountRolesToMatchUserLevel(String receiptUserId, UserLevelEnum userLevel) {
         UserAccountEntity userAccountEntity = findByReceiptUserId(receiptUserId);
         Set<RoleEnum> roles = new LinkedHashSet<>();
@@ -375,5 +381,25 @@ public class AccountService {
 
     public void removeRegistrationIsOffFrom(String id) {
         userAccountManager.removeRegistrationIsOffFrom(id);
+    }
+
+    public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {
+        if(userAccount.getAccountInactiveReason() != null) {
+            switch (userAccount.getAccountInactiveReason()) {
+                case ANV:
+                    updateAccountToValidated(userAccount.getId(), AccountInactiveReasonEnum.ANV);
+                    break;
+                default:
+                    LOG.error("Reached unreachable condition, rid={}", userAccount.getReceiptUserId());
+                    throw new RuntimeException("Reached unreachable condition " + userAccount.getReceiptUserId());
+            }
+        } else {
+            userAccount.setAccountValidated(true);
+            saveUserAccount(userAccount);
+        }
+
+        emailValidate.inActive();
+        emailValidate.setUpdated();
+        emailValidateService.saveEmailValidateEntity(emailValidate);
     }
 }

@@ -4,13 +4,13 @@
 package com.receiptofi.web.validator;
 
 import com.receiptofi.utils.Validate;
-import com.receiptofi.web.controller.open.AccountRegistrationController;
 import com.receiptofi.web.form.UserRegistrationForm;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -57,11 +57,29 @@ public class UserRegistrationValidator implements Validator {
 
         if (!errors.hasErrors()) {
             UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
+            if (!Validate.isValidName(userRegistration.getFirstName())) {
+                LOG.warn("Profile first name '{}' is not a valid name", userRegistration.getFirstName());
+                errors.rejectValue(
+                        "firstName",
+                        "firstName",
+                        new Object[]{userRegistration.getFirstName()},
+                        "First Name is not a valid name " + userRegistration.getFirstName() + ".");
+            }
+
             if (userRegistration.getFirstName().length() < nameLength) {
                 errors.rejectValue("firstName",
                         "field.length",
                         new Object[]{nameLength},
                         "Minimum length of four characters");
+            }
+
+            if (StringUtils.isNotBlank(userRegistration.getLastName()) && !Validate.isValidName(userRegistration.getLastName())) {
+                LOG.warn("Profile last name '{}' is not a name", userRegistration.getLastName());
+                errors.rejectValue(
+                        "lastName",
+                        "lastName",
+                        new Object[]{userRegistration.getLastName()},
+                        "Last Name is not a valid name " + userRegistration.getLastName() + ".");
             }
 
             if (!Validate.isValidMail(userRegistration.getMail())) {

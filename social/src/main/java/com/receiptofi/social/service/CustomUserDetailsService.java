@@ -7,6 +7,7 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
@@ -75,6 +76,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Value ("${mail.validation.timeout.period}")
     private int mailValidationTimeoutPeriod;
 
+    @Value ("${CustomUserDetailsService.account.not.validated.message}")
+    private String accountNotValidatedMessage;
+
     /**
      * @param email - lower case string
      * @return
@@ -93,6 +97,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
+            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
             return new ReceiptUser(
                     userProfile.getEmail(),
                     userAccount.getUserAuthentication().getPassword(),
@@ -100,7 +105,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
-                    isUserActiveAndRegistrationTurnedOn(userAccount),
+                    condition,
                     userAccount.isAccountValidated()
             );
         }
@@ -113,14 +118,30 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param userAccount
      * @return
      */
-    private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
+    private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount, UserProfileEntity userProfile) {
         if (userAccount.isRegisteredWhenRegistrationIsOff()) {
-            return false;
+            throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
+                    (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
+                    " when we start accepting new users.");
         } else if (userAccount.isActive()) {
-            return userAccount.isAccountValidated() ||
-                    userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationTimeoutPeriod);
+            if (userAccount.isAccountValidated() ||
+                    userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationTimeoutPeriod)) {
+                return true;
+            } else {
+                throw new RuntimeException(accountNotValidatedMessage);
+            }
+        } else if (null != userAccount.getAccountInactiveReason()) {
+            switch (userAccount.getAccountInactiveReason()) {
+                case ANV:
+                    throw new RuntimeException(accountNotValidatedMessage);
+                default:
+                    LOG.error("Reached condition for invalid account rid={}", userAccount.getReceiptUserId());
+                    return false;
+            }
+        } else {
+            LOG.error("Reached condition for invalid account rid={}", userAccount.getReceiptUserId());
+            return false;
         }
-        return false;
     }
 
     @Social
@@ -135,6 +156,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
+            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
             return new ReceiptUser(
                     StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getUserId() : userAccount.getUserId(),
                     userAccount.getUserAuthentication().getPassword(),
@@ -142,7 +164,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getReceiptUserId(),
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
-                    isUserActiveAndRegistrationTurnedOn(userAccount),
+                    condition,
                     userAccount.isAccountValidated()
             );
         }
