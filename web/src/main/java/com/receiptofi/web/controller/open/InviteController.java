@@ -77,7 +77,7 @@ public class InviteController {
             InviteAuthenticateForm inviteAuthenticateForm
     ) {
         InviteEntity invite = inviteService.findInviteAuthenticationForKey(key);
-        if (invite != null) {
+        if (null != invite) {
             inviteAuthenticateForm.setEmailId(invite.getEmail());
             inviteAuthenticateForm.setFirstName(invite.getInvited().getFirstName());
             inviteAuthenticateForm.setLastName(invite.getInvited().getLastName());
