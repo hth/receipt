@@ -1,6 +1,6 @@
 package com.receiptofi.web.form;
 
-import org.apache.commons.lang3.StringUtils;
+import com.receiptofi.utils.ScrubbedInput;
 
 /**
  * User: hitender
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 })
 public final class ForgotRecoverForm {
 
-    private String emailId;
+    private ScrubbedInput emailId;
     private String captcha;
 
     private ForgotRecoverForm() {
@@ -26,11 +26,11 @@ public final class ForgotRecoverForm {
     }
 
     public String getEmailId() {
-        return StringUtils.lowerCase(emailId);
+        return emailId.getText().toLowerCase();
     }
 
     public void setEmailId(String emailId) {
-        this.emailId = emailId;
+        this.emailId = new ScrubbedInput(emailId);
     }
 
     public String getCaptcha() {
