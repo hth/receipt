@@ -203,7 +203,7 @@
                         <c:choose>
                             <c:when test="${empty pageContext.request.userPrincipal.principal.pid}">
                                 <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
-                                    <input type="submit" value="UPDATE" style="background:#0079FF" class="read_btn" hidden="true"
+                                    <input type="submit" value="UPDATE" style="background: #808080;" class="read_btn" disabled="disabled"
                                             name="profile_update" id="profileUpdate_bt">
                                 </div>
                             </c:when>
@@ -232,7 +232,7 @@
                             onclick="clickedExpenseTag(this);">
                     </c:forEach>
                 </div>
-                <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF">&#43; ADD TAG</h3>
+                <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF;">&#43; ADD TAG</h3>
                 <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
                     <form:hidden path="tagColor"/>
                     <form:hidden path="tagId"/>
@@ -374,15 +374,15 @@
     <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
     $("#userProfile_firstName").on('click', function () {
         $(this).prop("readonly", false).focus();
-        $('#profileUpdate_bt').attr('hidden', false);
+        $('#profileUpdate_bt').attr('disabled', false).css('background', '#0079FF');
     });
     $("#userProfile_lastName").on('click', function () {
         $(this).prop("readonly", false).focus();
-        $('#profileUpdate_bt').attr('hidden', false);
+        $('#profileUpdate_bt').attr('disabled', false).css('background', '#0079FF');
     });
     $("#userProfile_mail").on('click', function () {
         $(this).prop("readonly", false).focus();
-        $('#profileUpdate_bt').attr('hidden', false);
+        $('#profileUpdate_bt').attr('disabled', false).css('background', '#0079FF');
     });
     </c:if>
 </script>
