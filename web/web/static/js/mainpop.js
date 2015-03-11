@@ -130,7 +130,7 @@ function submitInvitationForm() {
     "use strict";
 
     var inviteEmailId = $("#inviteEmailId").val();
-    var object = {emailId: inviteEmailId};
+    var object = {mail: inviteEmailId};
 
     $.ajax({
         type: "POST",

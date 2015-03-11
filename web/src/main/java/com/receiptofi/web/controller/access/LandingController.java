@@ -27,6 +27,7 @@ import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.DocumentStatsForm;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
@@ -371,11 +372,11 @@ public class LandingController {
     )
     @ResponseBody
     public String invite(
-            @RequestParam (value = "emailId")
-            String emailId
+            @RequestParam (value = "mail")
+            ScrubbedInput mail
     ) {
         //Always lower case the email address
-        String invitedUserEmail = StringUtils.lowerCase(emailId);
+        String invitedUserEmail = mail.getText().toLowerCase();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         LOG.info("Invitation being sent to mail={}", invitedUserEmail);

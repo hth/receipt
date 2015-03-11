@@ -1396,7 +1396,7 @@
         "use strict";
 
         var inviteEmailId = jQuery("#inviteEmailId").val();
-        var object = {emailId: inviteEmailId};
+        var object = {mail: inviteEmailId};
 
         $.ajax({
             type: "POST",
