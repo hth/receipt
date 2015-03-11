@@ -6,8 +6,6 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.json.JsonExpenseTag;
 import com.receiptofi.domain.json.JsonReceipt;
 import com.receiptofi.domain.json.JsonReceiptItem;
-import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -17,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

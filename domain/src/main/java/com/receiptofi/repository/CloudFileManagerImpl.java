@@ -1,6 +1,5 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -10,8 +9,6 @@ import com.receiptofi.domain.CloudFileEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

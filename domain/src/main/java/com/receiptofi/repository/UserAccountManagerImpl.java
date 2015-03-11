@@ -2,7 +2,7 @@ package com.receiptofi.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.*;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.mongodb.WriteResult;
 
