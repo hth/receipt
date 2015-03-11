@@ -10,6 +10,7 @@ import com.receiptofi.service.InviteService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.InviteAuthenticateForm;
 import com.receiptofi.web.util.HttpRequestResponseParser;
 import com.receiptofi.web.validator.InviteAuthenticateValidator;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +55,7 @@ public class InviteController {
     /** Used in JSP page /invite/authenticateConfirm */
     private static final String SUCCESS = "success";
 
-    @Value ("${authenticatePage:/invite/authenticate}")
+    @Value ("${authenticatePage:/invite/authenticate2}")
     private String authenticatePage;
 
     @Value ("${authenticateResult:redirect:/open/invite/result.htm}")
@@ -61,6 +63,9 @@ public class InviteController {
 
     @Value ("${authenticateConfirmPage:/invite/authenticateConfirm}")
     private String authenticateConfirmPage;
+
+    @Value ("${registration.turned.on}")
+    private boolean registrationTurnedOn;
 
     @Autowired private AccountService accountService;
     @Autowired private LoginService loginService;
@@ -74,16 +79,19 @@ public class InviteController {
             String key,
 
             @ModelAttribute ("inviteAuthenticateForm")
-            InviteAuthenticateForm inviteAuthenticateForm
+            InviteAuthenticateForm inviteAuthenticateForm,
+
+            ModelMap model
     ) {
         InviteEntity invite = inviteService.findInviteAuthenticationForKey(key);
         if (null != invite) {
-            inviteAuthenticateForm.setEmailId(invite.getEmail());
-            inviteAuthenticateForm.setFirstName(invite.getInvited().getFirstName());
-            inviteAuthenticateForm.setLastName(invite.getInvited().getLastName());
+            inviteAuthenticateForm.setMail(new ScrubbedInput(invite.getEmail()));
+            inviteAuthenticateForm.setFirstName(new ScrubbedInput(invite.getInvited().getFirstName()));
+            inviteAuthenticateForm.setLastName(new ScrubbedInput(invite.getInvited().getLastName()));
             inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key);
             inviteAuthenticateForm.getForgotAuthenticateForm().setReceiptUserId(invite.getInvited().getReceiptUserId());
         }
+        model.addAttribute("registrationTurnedOn", registrationTurnedOn);
         return authenticatePage;
     }
 
@@ -100,12 +108,14 @@ public class InviteController {
             @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm form,
 
+            ModelMap model,
             RedirectAttributes redirectAttrs,
             BindingResult result
     ) {
         inviteAuthenticateValidator.validate(form, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
+            model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return authenticatePage;
         } else {
             InviteEntity invite =
@@ -114,8 +124,8 @@ public class InviteController {
                 redirectAttrs.addFlashAttribute(SUCCESS, "false");
             } else {
                 UserProfileEntity userProfile = invite.getInvited();
-                userProfile.setFirstName(form.getFirstName());
-                userProfile.setLastName(form.getLastName());
+                userProfile.setFirstName(form.getFirstName().getText());
+                userProfile.setLastName(form.getLastName().getText());
                 userProfile.active();
 
                 UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(

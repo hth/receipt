@@ -48,38 +48,34 @@ public class UserRegistrationValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First Name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First name"});
 
         /** Example of validation message: Email Address cannot be left blank. */
         /** Example of validation message: Email Address field.required. */
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email Address"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email address"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
 
         if (!errors.hasErrors()) {
             UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
             if (!Validate.isValidName(userRegistration.getFirstName())) {
-                LOG.warn("Profile first name '{}' is not a valid name", userRegistration.getFirstName());
-                errors.rejectValue(
-                        "firstName",
-                        "firstName",
-                        new Object[]{userRegistration.getFirstName()},
-                        "First Name is not a valid name " + userRegistration.getFirstName() + ".");
+                errors.rejectValue("firstName",
+                        "field.invalid",
+                        new Object[]{"First name", userRegistration.getFirstName()},
+                        "First name is not a valid name " + userRegistration.getFirstName());
             }
 
             if (userRegistration.getFirstName().length() < nameLength) {
                 errors.rejectValue("firstName",
                         "field.length",
-                        new Object[]{nameLength},
+                        new Object[]{"First name", nameLength},
                         "Minimum length of four characters");
             }
 
             if (StringUtils.isNotBlank(userRegistration.getLastName()) && !Validate.isValidName(userRegistration.getLastName())) {
-                LOG.warn("Profile last name '{}' is not a name", userRegistration.getLastName());
-                errors.rejectValue(
-                        "lastName",
-                        "lastName",
-                        new Object[]{userRegistration.getLastName()},
-                        "Last Name is not a valid name " + userRegistration.getLastName() + ".");
+                errors.rejectValue("lastName",
+                        "field.invalid",
+                        new Object[]{"Last name", userRegistration.getLastName()},
+                        "Last name is not a valid name " + userRegistration.getLastName());
             }
 
             if (!Validate.isValidMail(userRegistration.getMail())) {
@@ -93,22 +89,29 @@ public class UserRegistrationValidator implements Validator {
                 errors.rejectValue(
                         "mail",
                         "field.length",
-                        new Object[]{mailLength},
-                        "Email Address has to be at least of size " + mailLength + " characters.");
+                        new Object[]{"Email address", mailLength},
+                        "Email address has to be at least of size " + mailLength + " characters");
             }
 
             if (userRegistration.getPassword().length() < passwordLength) {
                 errors.rejectValue("password",
                         "field.length",
-                        new Object[]{passwordLength},
+                        new Object[]{"Password", passwordLength},
                         "Minimum length of " + passwordLength + " characters");
             }
 
             if (!userRegistration.isAcceptsAgreement()) {
-                errors.rejectValue("acceptsAgreement",
-                        "agreement.checkbox",
-                        new Object[]{userRegistration.isAcceptsAgreement()},
-                        "To continue, please check accept to terms");
+                if (errors.hasErrors()) {
+                    errors.rejectValue("acceptsAgreement",
+                            "agreement.checkbox",
+                            new Object[]{""},
+                            "To continue, please check accept to terms");
+                } else {
+                    errors.rejectValue("acceptsAgreement",
+                            "agreement.checkbox",
+                            new Object[]{"to continue"},
+                            "To continue, please check accept to terms");
+                }
             }
         }
     }

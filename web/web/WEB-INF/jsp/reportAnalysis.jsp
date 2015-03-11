@@ -95,6 +95,8 @@
             <li><a href="#tab2" onclick="analysisTabClicked();">ANALYSIS</a></li>
         </ul>
         <div id="tab1" class="report-content">
+            <c:choose>
+            <c:when test="${!empty reportAnalysisForm.receiptListViews}">
             <c:forEach var="receipts" items="${reportAnalysisForm.receiptListViews}"  varStatus="status">
             <div class="rightside-title report-title">
                 <h1 class="rightside-title-text left">
@@ -127,20 +129,26 @@
                 </ul>
             </div>
             </c:forEach>
+            </c:when>
+            <c:otherwise>
+            <div class="r-info">
+                No report available as no receipt submitted or transformed.
+            </div>
+            </c:otherwise>
+            </c:choose>
         </div>
         <div id="tab2" class="report-content">
             <c:choose>
                 <c:when test="${!empty reportAnalysisForm.receiptGroupedByMonths}">
-                    <div id="monthly" style="min-width: 575px; max-width: 740px; height: 425px; padding-left: 5px; margin: 35px 10px 30px 0;"></div>
-                    <c:if test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
-                    <div id="itemsByTags" style="min-width: 575px; height: 420px; margin: 0 auto"></div>
-                    </c:if>
+                <div id="monthly" style="min-width: 575px; max-width: 740px; height: 425px; padding-left: 5px; margin: 35px 10px 30px 0;"></div>
+                <c:if test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
+                <div id="itemsByTags" style="min-width: 575px; height: 420px; margin: 0 auto"></div>
+                </c:if>
                 </c:when>
                 <c:otherwise>
-                    <div class="first">
-                        <img style="margin-top: 5px;" width="3%" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                        <p><strong>No expense analysis available as no receipt submitted or transformed.</strong></p>
-                    </div>
+                <div class="r-info">
+                    No expense analysis available as no receipt submitted or transformed.
+                </div>
                 </c:otherwise>
             </c:choose>
         </div>

@@ -2,9 +2,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<div class="rightside-list-holder mouseScroll temp_offset" id="receiptListId_refreshReceiptForMonthId">
 <c:choose>
     <c:when test="${!empty landingForm.receiptForMonth.receipts}">
+    <div class="rightside-list-holder mouseScroll temp_offset" id="receiptListId_refreshReceiptForMonthId">
     <ul>
         <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
         <li>
@@ -17,14 +17,14 @@
         </li>
         </c:forEach>
     </ul>
+    </div>
     </c:when>
     <c:otherwise>
-    <div class="first first-small ajx-content">
+    <div class="r-info temp_offset" id="noReceiptId">
         <strong>No receipt data available for this month.</strong>
     </div>
     </c:otherwise>
 </c:choose>
-</div>
 
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->

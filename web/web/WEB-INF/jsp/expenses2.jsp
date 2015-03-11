@@ -61,9 +61,9 @@
             All items for expense tag: ${expenseForm.name}
         </h1>
     </div>
+    <c:choose>
+    <c:when test="${!empty expenseForm.items}">
     <div class="rightside-list-holder full-list-holder">
-        <c:choose>
-        <c:when test="${!empty expenseForm.items}">
         <p class="analysis-text">
             Found <b>${expenseForm.items.size()}</b>
             item<c:if test="${expenseForm.items.size() gt 1}">s</c:if>
@@ -112,28 +112,20 @@
             </c:forEach>
             </form:form>
         </ul>
-        </c:when>
-        <c:otherwise>
-            <div class="rightside-list-holder full-list-holder">
-                <div class="first ajx-content">
-                    <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                    <p><strong>No item tagged under expense tag: <b>${expenseForm.name}</b></strong></p>
-                </div>
-            </div>
-        </c:otherwise>
-        </c:choose>
     </div>
+    </c:when>
+    <c:otherwise>
+    <div class="r-error">
+        No item tagged under expense tag: <b>${expenseForm.name}</b>
+    </div>
+    <div class="rightside-list-holder full-list-holder">&nbsp;</div>
+    </c:otherwise>
+    </c:choose>
     <div class="footer-tooth clearfix">
         <div class="footer-tooth-middle"></div>
         <div class="footer-tooth-right"></div>
     </div>
 </div>
-<!-- cd-popup -->
-<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css">--%>
-<!-- Resource style -->
-<%--<script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>--%>
-<!-- Modernizr -->
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
-<!-- Resource jQuery -->
 </body>
 </html>

@@ -291,9 +291,8 @@
         <form:hidden path="receipt.notes.version"/>
         <div class="left" style="width: 550px; margin-right: 18px; margin-left: 10px">
             <c:if test="${!empty receiptForm.errorMessage}">
-            <div class="first ajx-content" style="width: 550px;">
-                <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                <p><strong>${receiptForm.errorMessage}</strong></p>
+            <div class="r-error">
+                ${receiptForm.errorMessage}
             </div>
             </c:if>
 
@@ -503,10 +502,9 @@
             Receipt Not Found
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder">
-        <div class="first ajx-content">
-            <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-            <p><strong>Oops! we could not find this receipt.</strong></p>
+    <div style="height: 605px;">
+        <div class="r-error">
+            Oops! we could not find this receipt.
         </div>
     </div>
     <div class="footer-tooth clearfix">

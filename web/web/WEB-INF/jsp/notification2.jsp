@@ -71,10 +71,9 @@
             <fmt:message key="notification.title" />
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder">
-        <div class="first ajx-content">
-            <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-            <p><strong>There are no notification.</strong></p>
+    <div style="height: 605px;">
+        <div class="r-info">
+            There are no notification.
         </div>
     </div>
 </c:otherwise>

@@ -5,6 +5,7 @@ import com.receiptofi.web.form.ForgotAuthenticateForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -25,6 +26,9 @@ import org.springframework.validation.Validator;
 public class ForgotAuthenticateValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotAuthenticateValidator.class);
 
+    @Value ("${AccountRegistrationController.passwordLength}")
+    private int passwordLength;
+
     @Override
     public boolean supports(Class<?> clazz) {
         return ForgotAuthenticateForm.class.equals(clazz);
@@ -43,17 +47,17 @@ public class ForgotAuthenticateValidator implements Validator {
             errors.rejectValue("passwordSecond", "field.unmatched", new Object[]{""}, "Password entered value does not match");
         }
 
-        if (faa.getPassword().length() < 4) {
+        if (faa.getPassword().length() < passwordLength) {
             errors.rejectValue("password",
                     "field.length",
-                    new Object[]{Integer.valueOf("4")},
+                    new Object[]{"Password", passwordLength},
                     "Minimum length of four characters");
         }
 
-        if (faa.getPasswordSecond().length() < 4) {
+        if (faa.getPasswordSecond().length() < passwordLength) {
             errors.rejectValue("passwordSecond",
                     "field.length",
-                    new Object[]{Integer.valueOf("4")},
+                    new Object[]{"Password", passwordLength},
                     "Minimum length of four characters");
         }
     }

@@ -6,6 +6,9 @@ package com.receiptofi.web.controller.access;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -24,6 +27,7 @@ import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.DocumentStatsForm;
 import com.receiptofi.web.form.LandingDonutChart;
 import com.receiptofi.web.form.LandingForm;
@@ -367,55 +371,73 @@ public class LandingController {
             method = RequestMethod.POST
     )
     @ResponseBody
-    public String invite(@RequestParam (value = "emailId") String emailId) {
+    public String invite(
+            @RequestParam (value = "mail")
+            ScrubbedInput mail
+    ) {
         //Always lower case the email address
-        String invitedUserEmail = StringUtils.lowerCase(emailId);
+        String invitedUserEmail = mail.getText().toLowerCase();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        LOG.info("Invitation being sent to: " + invitedUserEmail);
+        LOG.info("Invitation being sent to mail={}", invitedUserEmail);
 
+        Boolean responseStatus = Boolean.FALSE;
+        String responseMessage;
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
         if (isValid) {
-            UserProfileEntity userProfileEntity = accountService.doesUserExists(invitedUserEmail);
+            UserProfileEntity userProfile = accountService.doesUserExists(invitedUserEmail);
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
              * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
              * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
              * limit the number of invite.
              */
-            if (null == userProfileEntity || !userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
-                boolean status = invokeCorrectInvitation(invitedUserEmail, receiptUser, userProfileEntity);
-                if (status) {
+            if (null == userProfile || !userProfile.isActive() && !userProfile.isDeleted()) {
+                responseStatus = invokeCorrectInvitation(invitedUserEmail, receiptUser, userProfile);
+                if (responseStatus) {
                     notificationService.addNotification(
                             "Invitation sent to '" + invitedUserEmail + "'",
                             NotificationTypeEnum.MESSAGE,
                             receiptUser.getRid());
 
-                    return "Invitation Sent to: " + invitedUserEmail;
+                    responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
+                } else {
+                    notificationService.addNotification(
+                            "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
+                            NotificationTypeEnum.MESSAGE,
+                            receiptUser.getRid());
+
+                    responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
                 }
-                notificationService.addNotification(
-                        "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
-                        NotificationTypeEnum.MESSAGE,
-                        receiptUser.getRid());
+            } else if (userProfile.isActive() && !userProfile.isDeleted()) {
+                LOG.info("{}, already registered. Thanks! active={} deleted={}",
+                        invitedUserEmail,
+                        userProfile.isActive(),
+                        userProfile.isDeleted());
 
-                return "Unsuccessful in sending invitation: " + invitedUserEmail;
-            } else if (userProfileEntity.isActive() && !userProfileEntity.isDeleted()) {
-                LOG.info(invitedUserEmail + ", already registered. Thanks!");
-                return invitedUserEmail + ", already registered. Thanks!";
-            } else if (userProfileEntity.isDeleted()) {
-                LOG.info(invitedUserEmail + ", already registered but no longer with us. Appreciate!");
-
-                //Have to send a positive message
-                return invitedUserEmail + ", already invited. Appreciate!";
+                responseStatus = Boolean.TRUE;
+                responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already registered. Thanks!";
             } else {
-                LOG.info(invitedUserEmail + ", already invited. Thanks!");
+                LOG.info("{}, already registered but no longer with us. Appreciate! active={} deleted={}",
+                        invitedUserEmail,
+                        userProfile.isActive(),
+                        userProfile.isDeleted());
+
                 // TODO can put a condition to check or if user is still in invitation mode or has completed registration
                 // TODO Based on either condition we can let user recover password or re-send invitation
-                return invitedUserEmail + ", already invited. Thanks!";
+
+                //Have to send a positive message
+                responseStatus = Boolean.TRUE;
+                responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already invited. Appreciate!";
             }
         } else {
-            return "Invalid Email: " + invitedUserEmail;
+            responseMessage = "Invalid Email: " + StringUtils.abbreviate(invitedUserEmail, 26);
         }
+
+        JsonObject response = new JsonObject();
+        response.addProperty("status", responseStatus);
+        response.addProperty("message", responseMessage);
+        return new Gson().toJson(response);
     }
 
     protected boolean invokeCorrectInvitation(String invitedUserEmail, ReceiptUser receiptUser, UserProfileEntity userProfileEntity) {

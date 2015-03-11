@@ -1,5 +1,7 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.utils.ScrubbedInput;
+
 /**
  * User: hitender
  * Date: 6/9/13
@@ -13,10 +15,12 @@ package com.receiptofi.web.form;
 })
 public final class InviteAuthenticateForm {
 
-    private String emailId;
-    private String firstName;
-    private String lastName;
+    private ScrubbedInput firstName;
+    private ScrubbedInput lastName;
+    private ScrubbedInput mail;
+    private ScrubbedInput birthday;
     private ForgotAuthenticateForm forgotAuthenticateForm;
+    private boolean acceptsAgreement;
 
     private InviteAuthenticateForm() {
         forgotAuthenticateForm = ForgotAuthenticateForm.newInstance();
@@ -26,27 +30,27 @@ public final class InviteAuthenticateForm {
         return new InviteAuthenticateForm();
     }
 
-    public String getEmailId() {
-        return emailId;
+    public ScrubbedInput getMail() {
+        return mail;
     }
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
+    public void setMail(ScrubbedInput mail) {
+        this.mail = mail;
     }
 
-    public String getFirstName() {
+    public ScrubbedInput getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(ScrubbedInput firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public ScrubbedInput getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(ScrubbedInput lastName) {
         this.lastName = lastName;
     }
 
@@ -56,5 +60,21 @@ public final class InviteAuthenticateForm {
 
     public void setForgotAuthenticateForm(ForgotAuthenticateForm forgotAuthenticateForm) {
         this.forgotAuthenticateForm = forgotAuthenticateForm;
+    }
+
+    public ScrubbedInput getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(ScrubbedInput birthday) {
+        this.birthday = birthday;
+    }
+
+    public boolean isAcceptsAgreement() {
+        return acceptsAgreement;
+    }
+
+    public void setAcceptsAgreement(boolean acceptsAgreement) {
+        this.acceptsAgreement = acceptsAgreement;
     }
 }

@@ -46,17 +46,28 @@
             <fmt:message key="feedback.title" />
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder">
+    <div class="rightside-list-holder full-list-holder" style="height: 650px;">
         <form:form method="post" action="feedback.htm" modelAttribute="evalFeedbackForm" enctype="multipart/form-data">
             <form:hidden path="rating" />
+
+            <spring:hasBindErrors name="evalFeedbackForm">
+                <div class="r-validation">
+                <c:if test="${errors.hasFieldErrors('comment')}">
+                    <form:errors path="comment" /><br/>
+                </c:if>
+                <c:if test="${errors.hasFieldErrors('fileData')}">
+                    <form:errors path="fileData" /><br/>
+                </c:if>
+                </div>
+            </spring:hasBindErrors>
+
             <h2 class="h2" style="padding-bottom:2%;">We would love to hear from you!</h2>
-            <form:textarea path="comment" id="comment" cols="54" rows="5" placeholder="Message" cssStyle="font-size: 1.2em; "/>
+            <form:textarea path="comment" id="comment" cols="54" rows="5" placeholder="Comment" cssStyle="font-size: 1.2em; "/>
             <br/>
             <span class="si-general-text remaining-characters">
                 <span id="feedbackComment"></span> characters remaining
             </span>
             <br/>
-            <form:errors path="comment" cssClass="first first-small ajx-content" />
 
             <h2 class="h2" style="padding-bottom: 2%; padding-top: 2%">Attachment</h2>
             <div id="choose_file" class="read_btn choose_file_btn" onclick="getFile()">CHOOSE FILE</div>
@@ -64,7 +75,6 @@
                 <form:input path="fileData" type="file" value="upload" onchange="sub(this)"/>
             </div>
             <br/><br/>
-            <form:errors path="fileData" cssClass="first first-small ajx-content" />
 
             <h2 class="h2" style="padding-bottom:2%; padding-top: 2%">Please rate us!</h2>
             <div id="star"></div>

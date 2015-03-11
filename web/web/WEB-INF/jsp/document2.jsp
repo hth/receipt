@@ -81,20 +81,20 @@
         </h1>
     </div>
 
+    <c:choose>
+    <c:when test="${!empty receiptDocumentForm.errorMessage}">
+    <div class="r-error" id="existingErrorMessage">
+        ${receiptDocumentForm.errorMessage}
+    </div>
+    </c:when>
+    <c:otherwise>
     <div class="blank-space">&nbsp;</div>
+    </c:otherwise>
+    </c:choose>
 
-    <c:if test="${!empty receiptDocumentForm.errorMessage}">
-        <%--Currently this section of code is not executed unless the error message is added to the form directly without using 'result' --%>
-        <div class="first ajx-content" id="existingErrorMessage">
-            <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-            <p><strong>${receiptDocumentForm.errorMessage}</strong></p>
-        </div>
-        <div class="blank-space">&nbsp;</div>
-    </c:if>
-
-    <div class="margin-left">
     <c:choose>
     <c:when test="${empty receiptDocumentForm.receiptDocument.referenceDocumentId}">
+        <div class="margin-left">
         <form:form method="post" action="delete.htm" modelAttribute="receiptDocumentForm">
             <form:hidden path="receiptDocument.documentStatus"/>
             <form:hidden path="receiptDocument.referenceDocumentId"/>
@@ -102,16 +102,14 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <button class="gd-button" name="delete" id="deleteId">DELETE</button>
         </form:form>
+        </div>
     </c:when>
     <c:otherwise>
-        <div class="first ajx-content">
-            <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-            <p><strong>This receipt is in the process of being Re-Checked.</strong></p>
+        <div class="r-info">
+            This document is in the process of being Re-Checked.
         </div>
-        <div class="blank-space">&nbsp;</div>
     </c:otherwise>
     </c:choose>
-    </div>
 
     <div class="rightside-list-holder full-list-holder">
         <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
@@ -120,20 +118,17 @@
     </div>
 </c:when>
 <c:otherwise>
-<div class="rightside-list-holder full-list-holder">
-    <div class="first ajx-content">
-        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-        <c:choose>
-        <c:when test="${isTech}">
-        <p><strong>Oops! Seems like user has deleted this receipt recently.</strong></p>
-        </c:when>
-        <c:otherwise>
-        <p><strong>No receipt found!! Please hit back button and submit a valid request</strong></p>
-        </c:otherwise>
-        </c:choose>
-    </div>
-    <div class="blank-space">&nbsp;</div>
+<div class="r-error">
+<c:choose>
+    <c:when test="${isTech}">
+        Oops! Seems like user has deleted this receipt recently.
+    </c:when>
+    <c:otherwise>
+        No document found. Please hit back button and submit a valid request.
+    </c:otherwise>
+</c:choose>
 </div>
+<div class="rightside-list-holder full-list-holder">&nbsp;</div>
 </c:otherwise>
 </c:choose>
 

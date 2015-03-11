@@ -7,7 +7,7 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <title><fmt:message key="login.title"/></title>
+    <title><fmt:message key="account.invitation.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/css/stylelogin.css'>
 
@@ -38,10 +38,13 @@
     <div class="signup_mainl">
         <div class="loginl">
             <h1 class="h1 spacing" style="margin-bottom: 15px;">Sign up</h1>
-            <h4 class="h4" style="margin-bottom: 40px;">Start analyzing your receipts in 30 seconds or less</h4>
+            <h4 class="h4" style="margin-bottom: 40px;"><fmt:message key="invite.heading" /> and start analyzing your receipts in 30 seconds or less</h4>
 
-            <form:form method="post" modelAttribute="userRegistrationForm" action="registration.htm" autocomplete="true">
-                <spring:hasBindErrors name="userRegistrationForm">
+            <form:form method="post" modelAttribute="inviteAuthenticateForm" action="authenticate.htm" autocomplete="true">
+                <form:hidden path="forgotAuthenticateForm.receiptUserId" />
+                <form:hidden path="forgotAuthenticateForm.authenticationKey" />
+
+                <spring:hasBindErrors name="inviteAuthenticateForm">
                 <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                     <ul>
                     <c:if test="${errors.hasFieldErrors('firstName')}">
@@ -53,8 +56,8 @@
                     <c:if test="${errors.hasFieldErrors('mail')}">
                         <li><form:errors path="mail" /></li>
                     </c:if>
-                    <c:if test="${errors.hasFieldErrors('password')}">
-                        <li><form:errors path="password" /></li>
+                    <c:if test="${errors.hasFieldErrors('forgotAuthenticateForm.password')}">
+                        <li><form:errors path="forgotAuthenticateForm.password" /></li>
                     </c:if>
                     <c:if test="${errors.hasFieldErrors('acceptsAgreement')}">
                         <li><form:errors path="acceptsAgreement" /></li>
@@ -77,34 +80,26 @@
 
                 <form:label for="mail" path="mail" cssClass="signup_label signup_label_text"
                         cssErrorClass="signup_label signup_label_text lb_error">Valid email address as your login:</form:label>
-                <form:input path="mail" maxlength="80" placeholder="Email address" cssClass="text" />
+                <form:input path="mail" maxlength="80" placeholder="Email address" cssClass="text" readonly="true"/>
 
-                <form:label for="password" path="password" cssClass="signup_label signup_label_text"
+                <form:label for="password" path="forgotAuthenticateForm.password" cssClass="signup_label signup_label_text"
                         cssErrorClass="signup_label signup_label_text lb_error">Password:</form:label>
-                <form:password path="password" maxlength="80" placeholder="Password" cssClass="text" />
+                <form:password path="forgotAuthenticateForm.password" maxlength="80" placeholder="Password" cssClass="text" />
 
                 <div class="checkbox">
-                    <form:checkbox path="acceptsAgreement" id="acceptsAgreement" cssClass="chk"/>
+                    <form:checkbox path="acceptsAgreement" id="acceptsAgreement" cssClass="chk" />
                     <form:label for="acceptsAgreement" path="acceptsAgreement" cssClass="checkbox_txt"
                             cssErrorClass="checkbox_txt lb_error">I fully agree to the Receiptofi terms</form:label>
                 </div>
                 <div class="clear"></div>
 
-                <c:choose>
-                    <c:when test="${userRegistrationForm.accountExists}">
-                        <input id="recover_btn_id" type="submit" value="RECOVER PASSWORD" name="recover" class="submit_btn" style="width: 200px; float: left;" />
-                    </c:when>
-                    <c:otherwise>
-                        <input id="recover_btn_id" type="submit" value="RECOVER PASSWORD" name="recover" class="submit_btn" style="display: none; width: 200px; float: left;" />
-                    </c:otherwise>
-                </c:choose>
-                <input id="submit_btn_id" type="submit" value="SIGN ME UP" name="signup" class="submit_btn" />
+                <input id="submit_btn_id" type="submit" value="Complete Invitation" name="confirm_invitation" class="submit_btn" style="width: 175px;" />
 
                 <c:if test="${!registrationTurnedOn}">
-                <div class="registrationWhenTurnedOff">
-                Registration is open, but site is not accepting new users. When site starts accepting new users,
-                    you will be notified through email and your account would be turned active.
-                </div>
+                    <div class="registrationWhenTurnedOff">
+                        Registration is open, but site is not accepting new users. When site starts accepting new users,
+                        you will be notified through email and your account would be turned active.
+                    </div>
                 </c:if>
             </form:form>
             <div class="clear"></div>
@@ -118,57 +113,5 @@
         <p class="fotter_copy">&#64; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
     </div>
 </div>
-<script type="text/javascript">
-
-    $(document).ready(function() {
-        // check name availability on focus lost
-        $('#mail').blur(function() {
-            if ($('#mail').val()) {
-                checkAvailability();
-            } else {
-                $("#recover_btn_id").css({'display': 'none'});
-            }
-        });
-    });
-
-    function checkAvailability() {
-        $.ajax({
-            type: "POST",
-            url: '${pageContext. request. contextPath}/open/registration/availability.htm',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            },
-            data: JSON.stringify({
-                mail: $('#mail').val()
-            }),
-            contentType: 'application/json;charset=UTF-8',
-            mimeType: 'application/json',
-            dataType:'json',
-            success: function (data) {
-                console.log('response=', data);
-                fieldValidated(data);
-            }
-        });
-    }
-
-    function fieldValidated(result) {
-        if (result.valid === true) {
-            $("#mailErrors")
-                    .html("Verification email will be sent to above email address")
-                    .css({'display': 'inline', 'background-color' : '#34B120', 'color' : '#FFF', 'font-family': 'Helvetica Neue, Helvetica, Arial, sans-serif'});
-            $("#mail.errors")
-                    .css({'display': 'none'});
-        } else {
-            $("#mailErrors")
-                    .html(result.message)
-                    .css({'display': 'inline'})
-                    .css("background-color","")
-                    .css("color","");
-            //Add the button for recovery and hide button for SignUp
-            $("#recover_btn_id")
-                    .css({'display': 'inline'});
-        }
-    }
-</script>
 </body>
 </html>
