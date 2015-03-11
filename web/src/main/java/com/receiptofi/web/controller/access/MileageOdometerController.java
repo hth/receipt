@@ -44,7 +44,7 @@ public class MileageOdometerController {
     private String nextPage;
 
     @RequestMapping (value = "/{mileageId}", method = RequestMethod.GET)
-    public ModelAndView loadForm(
+    public String loadForm(
             @PathVariable ("mileageId")
             String mileageId,
 
@@ -75,7 +75,7 @@ public class MileageOdometerController {
             }
         }
 
-        return new ModelAndView(nextPage);
+        return nextPage;
     }
 
     @RequestMapping (method = RequestMethod.POST, params = "delete")

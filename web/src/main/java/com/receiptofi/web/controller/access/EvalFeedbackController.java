@@ -64,7 +64,7 @@ public class EvalFeedbackController {
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "/feedback")
-    public ModelAndView submitFeedback(
+    public String submitFeedback(
             @ModelAttribute ("evalFeedbackForm")
             EvalFeedbackForm evalFeedbackForm,
 
@@ -75,7 +75,7 @@ public class EvalFeedbackController {
         evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
             LOG.error("error in result check");
-            return new ModelAndView(nextPage);
+            return nextPage;
         }
 
         evalFeedbackService.addFeedback(
@@ -86,7 +86,7 @@ public class EvalFeedbackController {
         LOG.info("Feedback saved successfully");
 
         httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, true);
-        return new ModelAndView("redirect:/access" + nextPageConfirm + ".htm");
+        return "redirect:/access" + nextPageConfirm + ".htm";
     }
 
     /**

@@ -488,7 +488,12 @@ public class UserProfilePreferenceController {
      * @param profileForm
      * @return
      */
-    private ModelAndView populateModel(String nextPage, ExpenseTypeForm expenseTypeForm, ProfileForm profileForm, String rid) {
+    private ModelAndView populateModel(
+            String nextPage,
+            ExpenseTypeForm expenseTypeForm,
+            ProfileForm profileForm,
+            String rid
+    ) {
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("profileForm", profileForm);
         modelAndView.addObject("expenseTypeForm", expenseTypeForm);
