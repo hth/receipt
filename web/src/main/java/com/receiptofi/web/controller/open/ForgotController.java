@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -150,35 +151,6 @@ public class ForgotController {
     }
 
     /**
-     * Method just for changing the URL, hence have to use re-direct.
-     * This could be an expensive call because of redirect.
-     * Its redirected from RequestMethod.POST form.
-     *
-     * @param userRegistrationForm
-     * @return
-     * @see AccountRegistrationController#recover(UserRegistrationForm, RedirectAttributes)
-     */
-    @RequestMapping (method = RequestMethod.GET, value = "recover")
-    public ModelAndView whenAccountAlreadyExists(
-            @ModelAttribute ("userRegistrationForm")
-            UserRegistrationForm userRegistrationForm,
-
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-        LOG.info("Recover password process initiated for user={}", userRegistrationForm.getMail());
-        if (StringUtils.isEmpty(userRegistrationForm.getMail())) {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
-            return null;
-        }
-
-        ForgotRecoverForm forgotRecoverForm = ForgotRecoverForm.newInstance();
-        forgotRecoverForm.setMail(new ScrubbedInput(userRegistrationForm.getMail()));
-        forgotRecoverForm.setCaptcha(userRegistrationForm.getMail());
-
-        return new ModelAndView(recoverPage, "forgotRecoverForm", forgotRecoverForm);
-    }
-
-    /**
      * Add this gymnastic to make sure the page does not process when refreshed again or bookmarked.
      *
      * @return
@@ -207,6 +179,38 @@ public class ForgotController {
         return null;
     }
 
+    /**
+     * Called during registration when user is registered in the system.
+     *
+     * Method just for changing the URL, hence have to use re-direct.
+     * This could be an expensive call because of redirect.
+     * Its redirected from RequestMethod.POST form.
+     *
+     * @param userRegistrationForm
+     * @return
+     * @see AccountRegistrationController#recover(UserRegistrationForm, RedirectAttributes)
+     */
+    @RequestMapping (method = RequestMethod.GET, value = "recover")
+    public String whenAccountAlreadyExists(
+            @ModelAttribute ("userRegistrationForm")
+            UserRegistrationForm userRegistrationForm,
+
+            @ModelAttribute ("forgotRecoverForm")
+            ForgotRecoverForm forgotRecoverForm,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        LOG.info("Recover password process initiated for user={}", userRegistrationForm.getMail());
+        if (StringUtils.isEmpty(userRegistrationForm.getMail())) {
+            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
+            return null;
+        }
+
+        forgotRecoverForm.setMail(new ScrubbedInput(userRegistrationForm.getMail()));
+        forgotRecoverForm.setCaptcha(userRegistrationForm.getMail());
+        return recoverPage;
+    }
+
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String whenClickedOnEmailLink(
             @RequestParam ("authenticationKey")
@@ -223,23 +227,23 @@ public class ForgotController {
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "authenticate", params = {"update_password"})
-    public ModelAndView updatePassword(
+    public String updatePassword(
             @ModelAttribute ("forgotAuthenticateForm")
             ForgotAuthenticateForm forgotAuthenticateForm,
 
-            BindingResult result
+            BindingResult result,
+            ModelMap modelMap
     ) {
         forgotAuthenticateValidator.validate(forgotAuthenticateForm, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
-            return new ModelAndView(authenticatePage);
+            LOG.warn("validation error");
+            return authenticatePage;
         } else {
             ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(
                     forgotAuthenticateForm.getAuthenticationKey());
 
-            ModelAndView modelAndView = new ModelAndView(authenticateConfirm);
             if (null == forgotRecover) {
-                modelAndView.addObject(SUCCESS, false);
+                modelMap.addAttribute(SUCCESS, false);
             } else {
                 UserProfileEntity userProfileEntity = userProfilePreferenceService.findByReceiptUserId(
                         forgotRecover.getReceiptUserId());
@@ -261,14 +265,14 @@ public class ForgotController {
                 try {
                     accountService.updateAuthentication(userAuthenticationEntity);
                     accountService.invalidateAllEntries(forgotRecover.getReceiptUserId());
-                    modelAndView.addObject(SUCCESS, true);
+                    modelMap.addAttribute(SUCCESS, true);
                 } catch (Exception e) {
                     LOG.error("Error during updating of the old authentication key message={}",
                             e.getLocalizedMessage(), e);
-                    modelAndView.addObject(SUCCESS, false);
+                    modelMap.addAttribute(SUCCESS, false);
                 }
             }
-            return modelAndView;
+            return authenticateConfirm;
         }
     }
 }

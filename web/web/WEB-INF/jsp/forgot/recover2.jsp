@@ -40,7 +40,7 @@
             <h1 class="h1 spacing"><fmt:message key="account.recover.title" /></h1>
 
             <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
-                <form:hidden path="emailId" />
+                <form:hidden path="mail" />
 
                 <p style="display:none;visibility:hidden;">
                     <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
@@ -48,12 +48,19 @@
                     <form:errors path="captcha" cssClass="error" />
                 </p>
 
-                <form:label for="emailId" path="emailId" cssClass="signup_label signup_label_text">Email address</form:label>
-                <form:input path="emailId" cssClass="text" readonly="true" disabled="true" />
                 <spring:hasBindErrors name="forgotRecoverForm">
-                    <form:label path="emailId" cssClass="signup_label first"><form:errors path="emailId" /></form:label>
+                <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                    <ul>
+                        <c:if test="${errors.hasFieldErrors('mail')}">
+                        <li><form:errors path="mail" /></li>
+                        </c:if>
+                    </ul>
+                </div>
                 </spring:hasBindErrors>
 
+                <form:label for="mail" path="mail" cssClass="signup_label signup_label_text"
+                        cssErrorClass="signup_label signup_label_text lb_error">Email address</form:label>
+                <form:input path="mail" cssClass="text" readonly="true" disabled="true" />
                 <div class="clear" style="padding-bottom: 10%"></div>
 
                 <input type="submit" value="SEND ME VERIFICATION EMAIL" name="forgot_password" class="right submit_btn" style="width: 289px" />
