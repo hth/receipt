@@ -50,9 +50,9 @@
                 <spring:hasBindErrors name="forgotRecoverForm">
                 <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                     <ul>
-                    <c:if test="${errors.hasFieldErrors('mail')}">
+                        <c:if test="${errors.hasFieldErrors('mail')}">
                         <li><form:errors path="mail" /></li>
-                    </c:if>
+                        </c:if>
                     </ul>
                 </div>
                 </spring:hasBindErrors>
