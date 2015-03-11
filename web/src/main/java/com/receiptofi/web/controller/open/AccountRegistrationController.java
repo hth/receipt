@@ -4,14 +4,11 @@
 package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.EmailValidateEntity;
-import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.MailService;
-import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.helper.AvailabilityStatus;
@@ -32,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;

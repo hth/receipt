@@ -3,9 +3,6 @@
  */
 package com.receiptofi.web.controller.access;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 

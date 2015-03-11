@@ -7,7 +7,6 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;

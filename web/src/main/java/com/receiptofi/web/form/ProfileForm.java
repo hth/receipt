@@ -9,7 +9,6 @@ import com.receiptofi.utils.ScrubbedInput;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
