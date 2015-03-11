@@ -287,7 +287,7 @@
                     id="inviteEmailId"/>
 		</form>
 		<div class="gd-button-holder">
-			<button class="gd-button" style="background: #808080" onclick="submitInvitationForm()" id="sendInvite_bt" disabled="disabled">SEND INVITE</button>
+			<button class="gd-button" style="background: #808080;" onclick="submitInvitationForm()" id="sendInvite_bt" disabled="disabled">SEND INVITE</button>
 		</div>
         <div id="inviteText" class="si-general-text invite-general-text">Invitation is sent with your name and email address</div>
 	</div>
