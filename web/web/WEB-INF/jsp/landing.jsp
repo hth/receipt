@@ -497,14 +497,14 @@
                 </fieldset>
                 <div style="width: 280px; display: inline">
                     <input id="inviteEmailId" type="text"
-                           onfocus="this.value=''; setInviteBackGroundColor('white'); $('#info').html('&#8277; Invitation sent with your name and email address');                                                         "
+                           onfocus="this.value=''; setInviteBackGroundColor('white'); $('#info').html('&#8277; Invitation is sent with your name and email address');                                                         "
                            onblur="setInviteBackGroundColor('#fefefe')"
                            value=" Email address of friend here ..."
                            class="inputForInvitationEmail"
                            />
                     <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" class="btn btn-default" />
                 </div>
-                <div id="info" style="color: black; margin-top: 5px">&#8277; Invitation sent with your name and email address</div>
+                <div id="info" style="color: black; margin-top: 5px">&#8277; Invitation is sent with your name and email address</div>
 			</td>
 			<td style="vertical-align: top;">
 				<div>

@@ -1,10 +1,14 @@
 package com.receiptofi.web.validator;
 
+import com.receiptofi.utils.Validate;
 import com.receiptofi.web.form.InviteAuthenticateForm;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -25,6 +29,15 @@ import org.springframework.validation.Validator;
 public class InviteAuthenticateValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(InviteAuthenticateValidator.class);
 
+    @Value ("${AccountRegistrationController.mailLength}")
+    private int mailLength;
+
+    @Value ("${AccountRegistrationController.nameLength}")
+    private int nameLength;
+
+    @Value ("${AccountRegistrationController.passwordLength}")
+    private int passwordLength;
+
     @Override
     public boolean supports(Class<?> clazz) {
         return InviteAuthenticateForm.class.equals(clazz);
@@ -34,43 +47,70 @@ public class InviteAuthenticateValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First Name"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[]{"Last Name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email address"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "forgotAuthenticateForm.password", "field.required", new Object[]{"Password"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "forgotAuthenticateForm.passwordSecond", "field.required", new Object[]{"Retype Password"});
 
-        InviteAuthenticateForm faa = (InviteAuthenticateForm) obj;
-        if (faa.getFirstName() != null && faa.getFirstName().length() < 4) {
-            errors.rejectValue("firstName",
-                    "field.length",
-                    new Object[]{Integer.valueOf("4")},
-                    "Minimum length of four characters");
-        }
+        if (!errors.hasErrors()) {
+            InviteAuthenticateForm faa = (InviteAuthenticateForm) obj;
+            if (!Validate.isValidName(faa.getFirstName().getText())) {
+                LOG.warn("Profile first name '{}' is not a valid name", faa.getFirstName());
+                errors.rejectValue("firstName",
+                        "field.invalid",
+                        new Object[]{"First name", faa.getFirstName()},
+                        "First Name is not a valid name " + faa.getFirstName());
+            }
 
-        if (faa.getLastName() != null && faa.getLastName().length() < 4) {
-            errors.rejectValue("lastName",
-                    "field.length",
-                    new Object[]{Integer.valueOf("4")},
-                    "Minimum length of four characters");
-        }
+            if (faa.getFirstName() != null && faa.getFirstName().getText().length() < nameLength) {
+                errors.rejectValue("firstName",
+                        "field.length",
+                        new Object[]{"First mame", nameLength},
+                        "Minimum length of " + nameLength + " characters");
+            }
 
-        if (!faa.getForgotAuthenticateForm().isEqual()) {
-            errors.rejectValue("forgotAuthenticateForm.password", "field.unmatched", new Object[]{""}, "Password entered value does not match");
-            errors.rejectValue("forgotAuthenticateForm.passwordSecond", "field.unmatched", new Object[]{""}, "Password entered value does not match");
-        }
+            if (StringUtils.isNotBlank(faa.getLastName().getText()) && !Validate.isValidName(faa.getLastName().getText())) {
+                LOG.warn("Profile last name '{}' is not a name", faa.getLastName());
+                errors.rejectValue("lastName",
+                        "field.invalid",
+                        new Object[]{"Last name", faa.getLastName()},
+                        "Last Name is not a valid name " + faa.getLastName());
+            }
 
-        if (faa.getForgotAuthenticateForm().getPassword().length() < 4) {
-            errors.rejectValue("forgotAuthenticateForm.password",
-                    "field.length",
-                    new Object[]{Integer.valueOf("4")},
-                    "Minimum length of four characters");
-        }
+            if (!Validate.isValidMail(faa.getMail().getText())) {
+                errors.rejectValue("mail",
+                        "field.email.address.not.valid",
+                        new Object[]{faa.getMail()},
+                        "Email address provided is not valid");
+            }
 
-        if (faa.getForgotAuthenticateForm().getPasswordSecond().length() < 4) {
-            errors.rejectValue("forgotAuthenticateForm.passwordSecond",
-                    "field.length",
-                    new Object[]{Integer.valueOf("4")},
-                    "Minimum length of four characters");
+            if (faa.getMail() != null && faa.getMail().getText().length() <= mailLength) {
+                errors.rejectValue(
+                        "mail",
+                        "field.length",
+                        new Object[]{"Email address", mailLength},
+                        "Email Address has to be at least of size " + mailLength + " characters");
+            }
+
+            if (faa.getForgotAuthenticateForm().getPassword().length() < passwordLength) {
+                errors.rejectValue("forgotAuthenticateForm.password",
+                        "field.length",
+                        new Object[]{"Password", passwordLength},
+                        "Minimum length of " + passwordLength + " characters");
+            }
+
+            if (!faa.isAcceptsAgreement()) {
+                if (errors.hasErrors()) {
+                    errors.rejectValue("acceptsAgreement",
+                            "agreement.checkbox",
+                            new Object[]{""},
+                            "To continue, please check accept to terms");
+                } else {
+                    errors.rejectValue("acceptsAgreement",
+                            "agreement.checkbox",
+                            new Object[]{"to continue"},
+                            "To continue, please check accept to terms");
+                }
+            }
         }
     }
 }

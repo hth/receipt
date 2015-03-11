@@ -123,16 +123,45 @@
                     <form:form modelAttribute="profileForm" method="post" action="i.htm">
                         <form:hidden path="rid"/>
                         <form:hidden path="updated"/>
+
+                        <spring:hasBindErrors name="profileForm">
+                        <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
+                            <c:if test="${errors.hasFieldErrors('firstName')}">
+                                <form:errors path="firstName" /><br>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('lastName')}">
+                                <form:errors path="lastName" /><br>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('mail')}">
+                                <form:errors path="mail" /><br>
+                            </c:if>
+                        </div>
+                        </spring:hasBindErrors>
+
+                        <c:if test="${!empty profileForm.successMessage}">
+                        <div class="r-success" style="width: 98%; margin: 0 0 0 0;">
+                            <c:out value="${profileForm.successMessage}" />
+                        </div>
+                        </c:if>
+                        <c:if test="${!empty profileForm.errorMessage}">
+                        <div class="r-error" style="width: 98%; margin: 0 0 0 0;">
+                            <c:out value="${profileForm.errorMessage}" />
+                        </div>
+                        </c:if>
+
                         <div class="row_field">
-                            <label class="profile_label">First name</label>
+                            <form:label for="firstName" path="firstName" cssClass="profile_label"
+                                    cssErrorClass="profile_label lb_error">First name</form:label>
                             <form:input path="firstName" id="userProfile_firstName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
-                            <label class="profile_label">Last name</label>
+                            <form:label for="lastName" path="lastName" cssClass="profile_label"
+                                    cssErrorClass="profile_label lb_error">Last name</form:label>
                             <form:input path="lastName" id="userProfile_lastName" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
-                            <label class="profile_label">Email address</label>
+                            <form:label for="mail" path="mail" cssClass="profile_label"
+                                    cssErrorClass="profile_label lb_error">Email address</form:label>
                             <form:input path="mail" id="userProfile_mail" size="20" cssClass="name_txt" readonly="true" />
                         </div>
                         <div class="row_field">
@@ -171,38 +200,6 @@
                             </label>
                         </div>
 
-                        <c:if test="${!empty profileForm.successMessage || !empty profileForm.errorMessage}">
-                        <div class="row_field">
-                            <div class="first first-small ajx-content">
-                                <c:if test="${!empty profileForm.successMessage}">
-                                    <c:out value="${profileForm.successMessage}" />
-                                </c:if>
-                                <c:if test="${!empty profileForm.errorMessage}">
-                                    <c:out value="${profileForm.errorMessage}" />
-                                </c:if>
-                            </div>
-                        </div>
-                        </c:if>
-
-                        <spring:hasBindErrors name="profileForm">
-                        <div class="row_field">
-                            <div class="first first-small ajx-content">
-                                <c:if test="${errors.hasFieldErrors('firstName')}">
-                                    <form:errors path="firstName" />
-                                    <br>
-                                </c:if>
-                                <c:if test="${errors.hasFieldErrors('lastName')}">
-                                    <form:errors path="lastName"  />
-                                    <br>
-                                </c:if>
-                                <c:if test="${errors.hasFieldErrors('mail')}">
-                                    <form:errors path="mail"  />
-                                    <br>
-                                </c:if>
-                            </div>
-                        </div>
-                        </spring:hasBindErrors>
-
                         <c:choose>
                             <c:when test="${empty pageContext.request.userPrincipal.principal.pid}">
                                 <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
@@ -240,6 +237,19 @@
                     <form:hidden path="tagColor"/>
                     <form:hidden path="tagId"/>
 
+                    <spring:hasBindErrors name="expenseTypeForm">
+                    <div class="row_field">
+                        <div id="tagErrors" class="r-validation">
+                            <c:if test="${errors.hasFieldErrors('tagName')}">
+                                <form:errors path="tagName"/><br/>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('tagColor')}">
+                                <form:errors path="tagColor"/><br/>
+                            </c:if>
+                        </div>
+                    </div>
+                    </spring:hasBindErrors>
+
                     <div style="width: 250px">
                         <form:input path="tagName" placeholder="NEW TAG NAME" size="20" cssClass="name_txt tag_txt" />
                         <div class="color-box"></div>
@@ -248,19 +258,6 @@
                             <span id="textCount"></span> characters remaining
                         </span>
                     </div>
-
-                    <spring:hasBindErrors name="expenseTypeForm">
-                    <div class="row_field">
-                        <div id="tagErrors" class="first first-small ajx-content">
-                            <c:if test="${errors.hasFieldErrors('tagName')}">
-                                <form:errors path="tagName"/>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('tagColor')}">
-                                <form:errors path="tagColor"/>
-                            </c:if>
-                        </div>
-                    </div>
-                    </spring:hasBindErrors>
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
                         <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSaveUpdate_bt"
@@ -278,44 +275,46 @@
                 <div class="down_form">
                     <form:form method="post" modelAttribute="profileForm" action="update.htm">
                     <form:hidden path="rid"/>
-                        <div class="row_field">
-                            <label class="profile_label">Profile Id</label>
-                            <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
-                                <spring:eval expression="profileForm.rid" />
-                            </label>
+
+                    <c:if test="${!empty profileForm.successMessage}">
+                    <div class="r-success" style="width: 98%; margin: 0 0 0 0;">
+                        <c:out value="${profileForm.successMessage}" />
+                    </div>
+                    </c:if>
+                    <c:if test="${!empty profileForm.errorMessage}">
+                    <div class="r-error" style="width: 98%; margin: 0 0 0 0;">
+                        <c:out value="${profileForm.errorMessage}" />
+                    </div>
+                    </c:if>
+
+                    <div class="row_field">
+                        <label class="profile_label">Profile Id</label>
+                        <label class="profile_label" style="width: 260px; !important; color: #606060; !important; font-weight: normal; !important;">
+                            <spring:eval expression="profileForm.rid" />
+                        </label>
+                    </div>
+                    <div class="row_field">
+                        <form:label for="level" path="level" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Level</form:label>
+                        <form:select path="level" cssClass="styled-select slate">
+                            <form:option value="0" label="Select Account Type" />
+                            <form:options itemLabel="description" />
+                        </form:select>
+                    </div>
+                    <div class="row_field">
+                        <form:label for="active" path="active" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Status</form:label>
+                        <div class="profile_label">
+                            <form:checkbox path="active" id="active" />
+                            <label for="active">Active</label>
                         </div>
-                        <div class="row_field">
-                            <label class="profile_label">Level</label>
-                            <form:select path="level" cssClass="styled-select slate">
-                                <form:option value="0" label="Select Account Type" />
-                                <form:options itemLabel="description" />
-                            </form:select>
-                        </div>
-                        <div class="row_field">
-                            <label class="profile_label">Status</label>
-                            <div class="profile_label">
-                                <form:checkbox path="active" id="active" />
-                                <label for="active">Active</label>
-                            </div>
-                        </div>
-                        <c:if test="${!empty profileForm.successMessage || !empty profileForm.errorMessage}">
-                        <div class="row_field">
-                            <div class="first first-small ajx-content">
-                                <c:if test="${!empty profileForm.successMessage}">
-                                    <c:out value="${profileForm.successMessage}" />
-                                </c:if>
-                                <c:if test="${!empty profileForm.errorMessage}">
-                                    <c:out value="${profileForm.errorMessage}" />
-                                </c:if>
-                            </div>
-                        </div>
-                        </c:if>
-                        &nbsp;<br>
-                        &nbsp;<br>
-                        &nbsp;<br>
-                        &nbsp;<br>
-                        <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
-                        <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
+                    </div>
+                    &nbsp;<br>
+                    &nbsp;<br>
+                    &nbsp;<br>
+                    &nbsp;<br>
+                    <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
+                    <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
                     </form:form>
                 </div>
             </div>

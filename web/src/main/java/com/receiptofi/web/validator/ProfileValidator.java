@@ -48,50 +48,43 @@ public class ProfileValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email address"});
 
-        ProfileForm profileForm = (ProfileForm) obj;
-        if (profileForm.getFirstName() != null && profileForm.getFirstName().length() < nameLength) {
-            LOG.error("Profile first name '{}' less than size={} ", profileForm.getFirstName(), nameLength);
-            errors.rejectValue(
-                    "firstName",
-                    "firstName",
-                    new Object[]{nameLength},
-                    "First name has to be at least of size " + nameLength + " characters.");
-        }
+        if (!errors.hasErrors()) {
+            ProfileForm profileForm = (ProfileForm) obj;
+            if (!Validate.isValidName(profileForm.getFirstName().getText())) {
+                errors.rejectValue("firstName",
+                        "field.invalid",
+                        new Object[]{"First name", profileForm.getFirstName()},
+                        "First name is not a valid name " + profileForm.getFirstName() + ".");
+            }
 
-        if (profileForm.getMail() != null && profileForm.getMail().length() <= mailLength) {
-            LOG.error("Profile mail '{}' less than size={} ", profileForm.getMail(), mailLength);
-            errors.rejectValue(
-                    "mail",
-                    "mail",
-                    new Object[]{mailLength},
-                    "Mail Address has to be at least of size " + mailLength + " characters.");
-        }
+            if (profileForm.getFirstName().getText().length() < nameLength) {
+                errors.rejectValue("firstName",
+                        "field.invalid",
+                        new Object[]{"First name", profileForm.getFirstName()},
+                        "First name has to be at least of size " + nameLength + " characters.");
+            }
 
-        if (!Validate.isValidName(profileForm.getFirstName())) {
-            LOG.error("Profile first name '{}' is not a valid name", profileForm.getFirstName());
-            errors.rejectValue(
-                    "firstName",
-                    "firstName",
-                    new Object[]{profileForm.getFirstName()},
-                    "First Name is not a valid name " + profileForm.getFirstName() + ".");
-        }
+            if (StringUtils.isNotBlank(profileForm.getLastName().getText()) &&
+                    !Validate.isValidName(profileForm.getLastName().getText())) {
+                errors.rejectValue("lastName",
+                        "field.invalid",
+                        new Object[]{"Last name", profileForm.getLastName()},
+                        "Last name is not a valid name " + profileForm.getLastName() + ".");
+            }
 
-        if (StringUtils.isNotBlank(profileForm.getLastName()) && !Validate.isValidName(profileForm.getLastName())) {
-            LOG.error("Profile last name '{}' is not a name", profileForm.getLastName());
-            errors.rejectValue(
-                    "lastName",
-                    "lastName",
-                    new Object[]{profileForm.getLastName()},
-                    "Last Name is not a valid name " + profileForm.getLastName() + ".");
-        }
+            if (!Validate.isValidMail(profileForm.getMail().getText())) {
+                errors.rejectValue("mail",
+                        "field.email.address.not.valid",
+                        new Object[]{profileForm.getMail()},
+                        "Mail address is not valid mail " + profileForm.getMail() + ".");
+            }
 
-        if (!Validate.isValidMail(profileForm.getMail())) {
-            LOG.error("Profile mail '{}' is not a valid mail", profileForm.getMail());
-            errors.rejectValue(
-                    "mail",
-                    "mail",
-                    new Object[]{profileForm.getMail()},
-                    "Mail Address is not valid mail " + profileForm.getMail() + ".");
+            if (profileForm.getMail() != null && profileForm.getMail().getText().length() <= mailLength) {
+                errors.rejectValue("mail",
+                        "field.length",
+                        new Object[]{"Email address", mailLength},
+                        "Mail address has to be at least of size " + mailLength + " characters.");
+            }
         }
     }
 }

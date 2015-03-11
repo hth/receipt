@@ -34,16 +34,16 @@ public class ProfileForm {
     @NotNull
     @Size (min = 2, max = 32)
     @Pattern (regexp = "^[\\p{L} .'-]+$")
-    private String firstName;
+    private ScrubbedInput firstName;
 
     @Size (min = 0, max = 32)
     @Pattern (regexp = "^[\\p{L} .'-]+$")
-    private String lastName;
+    private ScrubbedInput lastName;
 
     @NotNull
     @Size (min = 5, max = 32)
     @Pattern (regexp = "^[^@]+@[^@]+\\.[^@]+$")
-    private String mail;
+    private ScrubbedInput mail;
     private Date updated;
     private String profileImage;
 
@@ -68,9 +68,9 @@ public class ProfileForm {
     }
 
     private ProfileForm(UserProfileEntity userProfileEntity) {
-        firstName = userProfileEntity.getFirstName();
-        lastName = userProfileEntity.getLastName();
-        mail = userProfileEntity.getEmail();
+        firstName = new ScrubbedInput(userProfileEntity.getFirstName());
+        lastName = new ScrubbedInput(userProfileEntity.getLastName());
+        mail = new ScrubbedInput(userProfileEntity.getEmail());
         rid = userProfileEntity.getReceiptUserId();
         level = userProfileEntity.getLevel();
         active = userProfileEntity.isActive();
@@ -81,28 +81,28 @@ public class ProfileForm {
         return new ProfileForm(userProfileEntity);
     }
 
-    public String getFirstName() {
+    public ScrubbedInput getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = WordUtils.capitalize(new ScrubbedInput(firstName).getText());
+    public void setFirstName(ScrubbedInput firstName) {
+        this.firstName = new ScrubbedInput(WordUtils.capitalize(firstName.getText()));
     }
 
-    public String getLastName() {
+    public ScrubbedInput getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = WordUtils.capitalize(new ScrubbedInput(lastName).getText());
+    public void setLastName(ScrubbedInput lastName) {
+        this.lastName = new ScrubbedInput(WordUtils.capitalize(lastName.getText()));
     }
 
-    public String getMail() {
+    public ScrubbedInput getMail() {
         return mail;
     }
 
-    public void setMail(String mail) {
-        this.mail = new ScrubbedInput(mail).getText().toLowerCase();
+    public void setMail(ScrubbedInput mail) {
+        this.mail = mail;
     }
 
     public String getRid() {

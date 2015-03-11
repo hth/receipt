@@ -14,6 +14,7 @@ import com.receiptofi.service.ItemService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.ProfileForm;
 import com.receiptofi.web.validator.ExpenseTagValidator;
@@ -226,15 +227,18 @@ public class UserProfilePreferenceController {
     private void changeProfileDetails(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
         if (!profileForm.getFirstName().equals(userProfile.getFirstName()) ||
                 !profileForm.getLastName().equals(userProfile.getLastName())) {
-            accountService.updateName(profileForm.getFirstName(), profileForm.getLastName(), receiptUser.getRid());
+            accountService.updateName(
+                    profileForm.getFirstName().getText(),
+                    profileForm.getLastName().getText(),
+                    receiptUser.getRid());
         }
     }
 
     private void changeEmail(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
-        if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail())) {
+        if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail().getText())) {
             UserAccountEntity userAccount = accountService.updateUID(
                     receiptUser.getUsername(),
-                    profileForm.getMail(),
+                    profileForm.getMail().getText(),
                     receiptUser.getRid());
 
             if (userAccount != null) {
@@ -259,7 +263,7 @@ public class UserProfilePreferenceController {
                 profileForm.setErrorMessage("Account with similar email address already exists. " +
                         "Submitted address " + profileForm.getMail() + ". " +
                         "If you have lost your password, then please try password recovery option.");
-                profileForm.setMail(userProfile.getEmail());
+                profileForm.setMail(new ScrubbedInput(userProfile.getEmail()));
             }
         }
     }

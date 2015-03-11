@@ -218,13 +218,13 @@ div .si-list-holder ul li img {
 	margin-left: 5px;
 }
 
-.sidebar-date {
+.sidebar-invite {
 	width: 280px;
 	height: auto;
 	min-height: 144px;
 	margin-top: 50px; }
 
-div .sidebar-date form input {
+div .sidebar-invite form input {
 	color: #919191;
 	border-radius: 4px;
 	border: 1px solid #919191;

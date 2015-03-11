@@ -39,7 +39,7 @@ public class EvalFeedbackValidator implements Validator {
         if (evalFeedbackForm.getComment().getText().length() < 15) {
             errors.rejectValue("comment",
                     "field.length",
-                    new Object[]{Integer.valueOf("15")},
+                    new Object[]{"Comment", Integer.valueOf("15")},
                     "Minimum length of 15 characters");
         }
 
@@ -54,7 +54,7 @@ public class EvalFeedbackValidator implements Validator {
             if (evalFeedbackForm.getFileName().length() < 5) {
                 errors.rejectValue("fileData",
                         "field.length",
-                        new Object[]{Integer.valueOf("5")},
+                        new Object[]{"Attached file", Integer.valueOf("5")},
                         "A file name should be minimum of five characters");
             }
 

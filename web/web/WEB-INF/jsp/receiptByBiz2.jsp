@@ -48,7 +48,7 @@
 <div class="main clearfix">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            ${receiptByBizForm.bizName} <fmt:message key="receipt.by.biz" />
+            ${receiptByBizForm.bizNameForTitle} <fmt:message key="receipt.by.biz" />
                 <c:if test="${receiptByBizForm.receiptLandingViews.size() gt 1}">s</c:if>
                 for ${receiptByBizForm.monthYear}
         </h1>
@@ -97,12 +97,11 @@
     </div>
     </c:when>
     <c:otherwise>
-    <div class="rightside-list-holder full-list-holder">
-        <div class="first ajx-content">
-            <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-            <p><strong>No receipt(s) submitted has this business name for selected month.</strong></p>
+        <div style="height: 605px;">
+            <div class="r-info">
+                No receipt submitted with this business name for the selected month.
+            </div>
         </div>
-    </div>
     </c:otherwise>
     </c:choose>
     <div class="footer-tooth clearfix">

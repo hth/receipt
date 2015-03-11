@@ -12,6 +12,7 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ForgotAuthenticateForm;
 import com.receiptofi.web.form.ForgotRecoverForm;
 import com.receiptofi.web.form.UserRegistrationForm;
@@ -77,7 +78,7 @@ public class ForgotController {
     @Value ("${recoverConfirm:redirect:/open/forgot/recoverConfirm.htm}")
     private String recoverConfirm;
 
-    @Value ("${authenticatePage:/forgot/authenticate}")
+    @Value ("${authenticatePage:/forgot/authenticate2}")
     private String authenticatePage;
 
     @Value ("${authenticationConfirmPage:/forgot/authenticateConfirm}")
@@ -137,9 +138,9 @@ public class ForgotController {
             return passwordPage;
         }
 
-        MailTypeEnum status = mailService.mailRecoverLink(forgotRecoverForm.getEmailId());
+        MailTypeEnum status = mailService.mailRecoverLink(forgotRecoverForm.getMail().getText().toLowerCase());
         if (MailTypeEnum.FAILURE == status) {
-            LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getEmailId());
+            LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getMail());
         }
 
         redirectAttrs.addFlashAttribute(
@@ -171,7 +172,7 @@ public class ForgotController {
         }
 
         ForgotRecoverForm forgotRecoverForm = ForgotRecoverForm.newInstance();
-        forgotRecoverForm.setEmailId(userRegistrationForm.getMail());
+        forgotRecoverForm.setMail(new ScrubbedInput(userRegistrationForm.getMail()));
         forgotRecoverForm.setCaptcha(userRegistrationForm.getMail());
 
         return new ModelAndView(recoverPage, "forgotRecoverForm", forgotRecoverForm);

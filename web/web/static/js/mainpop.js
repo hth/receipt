@@ -129,23 +129,44 @@ function runCounter(max) {
 function submitInvitationForm() {
     "use strict";
 
-    var inviteEmailId = jQuery("#inviteEmailId").val();
+    var inviteEmailId = $("#inviteEmailId").val();
     var object = {emailId: inviteEmailId};
 
     $.ajax({
         type: "POST",
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+            $('#sendInvite_bt').attr('disabled', 'disabled');
+            $('#inviteEmailId').attr('disabled', 'disabled');
         },
         url: ctx + "/access/landing/invite.htm",
         data: object,
         success: function (response) {
-            $('#inviteText').html(response);
-            $('#inviteEmailId').val('Email address of friend here ...');
+            console.debug(response);
+            var json = $.parseJSON(response);
+            $('#inviteEmailId').removeAttr('disabled');
+            if (json.status) {
+                $('#inviteTextMessage').html(json.message).addClass("r-success").css("margin-left", "0px").css("width", "100%").delay(5000)
+                    .fadeOut('fast', function() {
+                        if ($("#inviteEmailId").val() == '' || inviteEmailId == $("#inviteEmailId").val()) {
+                            $("#inviteEmailId").val("").attr('placeholder', 'Email address of friend here ...');
+                            $('#sendInvite_bt').css('background', '#808080').attr('disabled', 'disabled');
+                        }
+                        $("#inviteTextMessage").html("").removeClass("r-success").show();
+                });
+            } else {
+                $('#inviteTextMessage').html(json.message).addClass("r-error").css("margin-left", "0px").css("width", "100%").delay(5000)
+                    .fadeOut('fast', function() {
+                        if ($("#inviteEmailId").val() == '') {
+                            $("#inviteEmailId").val("").attr('placeholder', 'Email address of friend here ...');
+                            $('#sendInvite_bt').css('background', '#808080').attr('disabled', 'disabled');
+                        }
+                        $("#inviteTextMessage").html("").removeClass("r-error").show();
+                    });
+            }
         },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(thrownError);
+        error: function (response, xhr, ajaxOptions, thrownError) {
+            console.error(response, xhr.status, thrownError);
         }
     });
 }
@@ -153,11 +174,14 @@ function submitInvitationForm() {
 function changeInviteText(field, text) {
     if (text === 'blur') {
         if (field.value == '') {
-            field.value = 'Email address of friend here ...';
+            field.placeholder = 'Email address of friend here ...';
+            field.value = '';
+            $('#sendInvite_bt').css('background', '#808080').attr('disabled', 'disabled');
         }
     } else {
-        field.value = '';
-        $('#inviteText').html('Invitation sent with your name and email address');
+        field.placeholder = '';
+        $('#inviteText').html('Invitation is sent with your name and email address');
+        $('#sendInvite_bt').removeAttr('style').removeAttr('disabled');
     }
 }
 
@@ -291,11 +315,13 @@ function toggleListCalendarView(button) {
     if(content === 'btnList' && !$("#btnList").hasClass('toggle_disabled')) {
         $("#calendarId").hide();
         $("#receiptListId").show();
+        $("#noReceiptId").removeClass("temp_offset").show();
         $("#receiptListId_refreshReceiptForMonthId").removeClass("temp_offset");
         $(".rightside-list-holder").show().removeAttr("id");
         $("#btnList").addClass("toggle_selected");
         $("#btnCalendar").removeClass("toggle_selected");
     } else {
+        $("#noReceiptId").hide();
         $("#receiptListId").hide();
         $(".rightside-list-holder").hide();
         $("#calendarId").show();

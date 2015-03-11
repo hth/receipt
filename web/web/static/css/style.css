@@ -334,7 +334,7 @@ div .si-list-holder ul li img {
     margin-left: 5px;
 }
 
-.sidebar-date {
+.sidebar-invite {
     width: 280px;
     height: auto;
     min-height: 144px;
@@ -342,13 +342,14 @@ div .si-list-holder ul li img {
     margin-bottom: 50px;
 }
 
-div .sidebar-date form input {
+div .sidebar-invite form input {
     color: #919191;
     border-radius: 4px;
     border: 1px solid #919191;
     height: 50px;
     width: 280px;
-    font-family: arial, helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1.1em;
     margin-top: 14px;
     padding-left: 10px;
 }
@@ -357,10 +358,15 @@ div .sidebar-date form input {
 .rightside-content {
     width: 580px;
     height: auto;
+    min-height: 610px;
     float: left;
     margin-left: 40px;
     margin-bottom: 60px;
     margin-top: -46px;
+}
+
+.lb_error {
+    color: red;
 }
 
 .rightside-list-holder {
@@ -754,6 +760,48 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 .first-small {
     padding: 1%; !important;
 }
+
+.r-info, .r-success, .r-warning, .r-error, .r-validation {
+    border: 1px solid;
+    /*border-radius: 5px;*/
+    margin: 10px 0px 20px 10px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.95em;
+    width: 95%;
+}
+
+.r-info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('../../static/images/info.png');
+}
+.r-success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('../../static/images/success.png');
+}
+.r-warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('../../static/images/warning.png');
+}
+.r-error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('../../static/images/error.png');
+}
+.r-validation {
+    color: #D63301;
+    background-color: #FFCCBA;
+    background-image: url('../../static/images/validation.png');
+    margin: 10px 0 10px 0;
+}
+.r-no-bk-image {
+    background-image: none;
+}
 /*Warning Error Messages*/
 
 .blank-space {
@@ -885,7 +933,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border: 0;
     color: #B8B7B7;
     font-size: 1.1rem;
-    width: 240px;
+    width: 270px;
     cursor: pointer;
     background: #fff;
     border: 1px solid #ccc;

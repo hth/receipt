@@ -58,17 +58,15 @@
             Historical Analysis
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder" style="height: 850px;">
+    <c:if test="${!empty itemAnalyticForm.message}">
+    <div class="r-info">
+        ${itemAnalyticForm.message}
+    </div>
+    </c:if>
+    <c:choose>
+    <c:when test="${!empty itemAnalyticForm.yourHistoricalItems}">
+    <div class="rightside-list-holder" style="height: 850px; width: 940px;">
         <div class="receipt-detail-holder border">
-            <c:if test="${!empty itemAnalyticForm.message}">
-            <div class="first ajx-content">
-                <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                <p><strong>${itemAnalyticForm.message}</strong></p>
-            </div>
-            </c:if>
-            <c:choose>
-            <c:when test="${!empty itemAnalyticForm.yourHistoricalItems}">
-
             <p class="analysis-text">
                 Below is the analysis for <b>${itemAnalyticForm.item.name}</b> bought on
                 <b><fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/></b>. The chart
@@ -181,22 +179,20 @@
                 </c:forEach>
             </table>
             </c:if>
-            </c:when>
-            <c:otherwise>
-                <div class="rightside-list-holder full-list-holder" style="width: 95%;">
-                    <div class="first ajx-content">
-                        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                        <p><strong>No item found. Please hit back button and submit a valid request.</strong></p>
-                    </div>
-                </div>
-            </c:otherwise>
-            </c:choose>
         </div>
     </div>
-    <div class="footer-tooth clearfix">
-        <div class="footer-tooth-middle"></div>
-        <div class="footer-tooth-right"></div>
+</c:when>
+<c:otherwise>
+    <div class="r-info">
+        No item found. Please hit back button and submit a valid request.
     </div>
+    <div class="rightside-list-holder full-list-holder" style="width: 95%;">&nbsp;</div>
+</c:otherwise>
+</c:choose>
+<div class="footer-tooth clearfix">
+    <div class="footer-tooth-middle"></div>
+    <div class="footer-tooth-right"></div>
+</div>
 </div>
 
 <c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">

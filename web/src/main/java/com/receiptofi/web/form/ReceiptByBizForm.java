@@ -2,6 +2,8 @@ package com.receiptofi.web.form;
 
 import com.receiptofi.web.helper.ReceiptLandingView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,10 @@ public class ReceiptByBizForm {
 
     public List<ReceiptLandingView> getReceiptLandingViews() {
         return receiptLandingViews;
+    }
+
+    public String getBizNameForTitle() {
+        return StringUtils.abbreviate(bizName, 18);
     }
 
     public String getBizName() {

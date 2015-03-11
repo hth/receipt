@@ -47,14 +47,19 @@
                     <form:errors path="captcha" cssClass="error" />
                 </p>
 
-                <form:label for="emailId" path="emailId" cssClass="signup_label signup_label_text">Email address</form:label>
-                <form:input path="emailId" cssClass="text" />
                 <spring:hasBindErrors name="forgotRecoverForm">
-                    <c:if test="${errors.hasFieldErrors('emailId')}">
-                        <form:label path="emailId" cssClass="signup_label first"><form:errors path="emailId" /></form:label>
+                <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                    <ul>
+                    <c:if test="${errors.hasFieldErrors('mail')}">
+                        <li><form:errors path="mail" /></li>
                     </c:if>
+                    </ul>
+                </div>
                 </spring:hasBindErrors>
 
+                <form:label for="mail" path="mail" cssClass="signup_label signup_label_text"
+                        cssErrorClass="signup_label signup_label_text lb_error">Email address</form:label>
+                <form:input path="mail" cssClass="text" />
                 <div class="clear" style="padding-bottom: 10%"></div>
 
                 <input type="submit" value="SEND ME VERIFICATION EMAIL" name="forgot_password" class="right submit_btn" style="width: 289px;" />

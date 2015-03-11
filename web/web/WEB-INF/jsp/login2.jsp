@@ -72,8 +72,8 @@
             <hr>
             <h1 class="h1 spacing"><fmt:message key="login.heading" /></h1>
             <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
-                <div class="first">
-                    <strong>Login not successful, try again. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}</strong>
+                <div class="r-error" style="margin-left: 0; width: 100%">
+                    Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
                 </div>
                 <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
             </c:if>

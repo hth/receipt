@@ -28,7 +28,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <c:if test="${empty inviteAuthenticateForm.emailId}">
+    <c:if test="${empty inviteAuthenticateForm.mail}">
         <div class="error_page">
             <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
             <h1>Invalid Link</h1>
@@ -38,20 +38,20 @@
         </div>
     </c:if>
 
-    <c:if test="${!empty inviteAuthenticateForm.emailId}">
+    <c:if test="${!empty inviteAuthenticateForm.mail}">
         <img src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
         <p>&nbsp;</p>
         <h2>
             <fmt:message key="invite.heading" />
         </h2>
         <form:form method="post" action="authenticate.htm" modelAttribute="inviteAuthenticateForm">
-            <form:hidden path="emailId" />
+            <form:hidden path="mail" />
             <form:hidden path="forgotAuthenticateForm.receiptUserId" />
             <form:hidden path="forgotAuthenticateForm.authenticationKey" />
             <table style="background-color:#f8f8ff ; border: 0; border-spacing: 5px 10px; width: 600px">
                 <tr>
                     <td style="text-align: right; width: 19%">Login Id:</td>
-                    <td style="width: 30%">${inviteAuthenticateForm.emailId}</td>
+                    <td style="width: 30%">${inviteAuthenticateForm.mail}</td>
                     <td style="width: 51%">&nbsp;</td>
                 </tr>
                 <tr>

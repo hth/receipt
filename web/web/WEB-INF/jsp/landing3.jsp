@@ -140,20 +140,6 @@
                         $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
                     });
         });
-
-        $(document).ready(function() {
-        <c:choose>
-        <c:when test="${!empty landingForm.receiptForMonth.receipts}">
-            $("#calendarId").hide();
-        </c:when>
-        <c:otherwise>
-            $("#receiptListId").hide();
-            $("#calendarId").show();
-            $("#btnList").removeClass("toggle_selected");
-            $("#btnCalendar").addClass("toggle_selected");
-        </c:otherwise>
-        </c:choose>
-        });
     </script>
 </head>
 <body>
@@ -289,20 +275,21 @@
             </c:if>
 		</div>
 	</div>
-	<div class="sidebar-date">
+	<div class="sidebar-invite">
 		<div class="gd-title">
 			<h1 class="widget-title-text">Friend Invite</h1>
 		</div>
+        <div id="inviteTextMessage"></div>
 		<form>
-            <input type="text" value="Email address of friend here ..." size="20"
+            <input type="text" placeholder="Email address of friend here ..." size="20"
                     onfocus="changeInviteText(this, 'focus')"
                     onblur="changeInviteText(this, 'blur')"
                     id="inviteEmailId"/>
 		</form>
 		<div class="gd-button-holder">
-			<button class="gd-button" onclick="submitInvitationForm()">SEND INVITE</button>
+			<button class="gd-button" style="background: #808080" onclick="submitInvitationForm()" id="sendInvite_bt" disabled="disabled">SEND INVITE</button>
 		</div>
-        <div id="inviteText" class="si-general-text invite-general-text">Invitation sent with your name and email address</div>
+        <div id="inviteText" class="si-general-text invite-general-text">Invitation is sent with your name and email address</div>
 	</div>
 </div>
 
@@ -316,9 +303,8 @@
 		<ul class="nav-block">
 			<li><a href="#tab1">OVERVIEW</a></li>
 			<li><a href="#tab2">FIRST</a></li>
-			<li><a href="#tab3">SECOND</a></li>
             <c:if test="${isValidForMap}">
-			<li><a href="#tab4">MAP</a></li>
+			<li><a href="#tab3">MAP</a></li>
             </c:if>
 		</ul>
 		<div id="tab1" class="ajx-content">
@@ -332,29 +318,29 @@
 			</div>
 
             <div id="onLoadReceiptForMonthId">
-            <div class="rightside-list-holder mouseScroll" id="receiptListId">
                 <c:choose>
                 <c:when test="${!empty landingForm.receiptForMonth.receipts}">
-                <ul>
-                    <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
-                    <li>
-                        <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
-                        <span style="background-color: ${receipt.expenseColor};">&nbsp;&nbsp;</span>
-                        <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text" target="_blank">
-                            <spring:eval expression="receipt.name"/>
-                        </a>
-                        <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>
-                    </li>
-                    </c:forEach>
-                </ul>
+                <div class="rightside-list-holder mouseScroll" id="receiptListId">
+                    <ul>
+                        <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
+                        <li>
+                            <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                            <span style="background-color: ${receipt.expenseColor};">&nbsp;&nbsp;</span>
+                            <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text" target="_blank">
+                                <spring:eval expression="receipt.name"/>
+                            </a>
+                            <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>
+                        </li>
+                        </c:forEach>
+                    </ul>
+                </div>
                 </c:when>
                 <c:otherwise>
-                <div class="first first-small ajx-content temp_offset" id="noReceiptId">
-                    <strong>No receipt data available for this month.</strong>
+                <div class="r-info" id="noReceiptId">
+                    No receipt data available for this month.
                 </div>
                 </c:otherwise>
                 </c:choose>
-            </div>
             </div>
 
             <div id="refreshReceiptForMonthId"></div>
@@ -367,18 +353,13 @@
 			</div>
 		</div>
 		<div id="tab2" class="ajx-content">
-            <div class="first temp_offset" id="noMileageId">
-                <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                <p><strong>No data here submitted for August 2014</strong></p>
+            <div class="r-info temp_offset" id="noMileageId">
+                No data here submitted for August 2014.
             </div>
 		</div>
 
-		<div id="tab3" class="ajx-content">
-			<img width="95%" src="${pageContext.request.contextPath}/static/img/sec-bar.jpg"/>
-		</div>
-
         <c:if test="${isValidForMap}">
-        <div id="tab4" class="ajx-content">
+        <div id="tab3" class="ajx-content">
             <div class="rightside-title">
                 <h1 class="rightside-title-text left">
                     Expense by business location
@@ -390,9 +371,8 @@
                     <div id="map-placeholder"></div>
                 </c:when>
                 <c:otherwise>
-                    <div class="first ajx-content">
-                        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-                        <p><strong>No receipt available to map with location.</strong></p>
+                    <div class="r-info temp_offset" id="noMapDataId">
+                        No receipt available to map with location.
                     </div>
                 </c:otherwise>
                 </c:choose>
@@ -536,13 +516,25 @@ function drawExpenseByBusiness() {
 
         getGoogleMap(locations);
     });
-
-    $(document).ready(function () {
-        $("#noReceiptId").removeClass("temp_offset");
-        $("#noMileageId").removeClass("temp_offset");
-    });
 </script>
 </c:if>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        "use strict";
+
+        $("#calendarId").hide();
+        <c:if test="${empty landingForm.receiptForMonth.receipts}">
+        $("#btnList").addClass("toggle_selected");
+        $("#btnCalendar").removeClass("toggle_selected");
+        </c:if>
+
+        $("#noReceiptId").removeClass("temp_offset");
+        $("#noMileageId").removeClass("temp_offset");
+        $("#noMapDataId").removeClass("temp_offset");
+    });
+</script>
+
 <!-- Resource style -->
 <script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
 <!-- Modernizr -->

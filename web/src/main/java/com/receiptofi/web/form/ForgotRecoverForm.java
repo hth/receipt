@@ -15,7 +15,7 @@ import com.receiptofi.utils.ScrubbedInput;
 })
 public final class ForgotRecoverForm {
 
-    private ScrubbedInput emailId;
+    private ScrubbedInput mail;
     private String captcha;
 
     private ForgotRecoverForm() {
@@ -25,12 +25,12 @@ public final class ForgotRecoverForm {
         return new ForgotRecoverForm();
     }
 
-    public String getEmailId() {
-        return emailId.getText().toLowerCase();
+    public ScrubbedInput getMail() {
+        return mail;
     }
 
-    public void setEmailId(String emailId) {
-        this.emailId = new ScrubbedInput(emailId);
+    public void setMail(ScrubbedInput mail) {
+        this.mail = mail;
     }
 
     public String getCaptcha() {
