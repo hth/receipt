@@ -69,7 +69,6 @@ public class InviteAuthenticateValidator implements Validator {
             }
 
             if (StringUtils.isNotBlank(faa.getLastName().getText()) && !Validate.isValidName(faa.getLastName().getText())) {
-                LOG.warn("Profile last name '{}' is not a name", faa.getLastName());
                 errors.rejectValue("lastName",
                         "field.invalid",
                         new Object[]{"Last name", faa.getLastName()},
