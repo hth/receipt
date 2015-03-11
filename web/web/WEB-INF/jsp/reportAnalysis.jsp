@@ -175,7 +175,7 @@
             },
             title: {
                 text: 'Monthly Expenses for 13 months: ' +
-                '${reportAnalysisForm.receiptGroupedByMonths.get(reportAnalysisForm.receiptGroupedByMonths.size() - 1).year - 1} - ' +
+                '${reportAnalysisForm.receiptGroupedByMonths.get(0).year} - ' +
                 '${reportAnalysisForm.receiptGroupedByMonths.get(reportAnalysisForm.receiptGroupedByMonths.size() - 1).year}'
             },
             credits: {
