@@ -41,24 +41,27 @@ public class ForgotAuthenticateValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordSecond", "field.required", new Object[]{"Retype Password"});
 
-        ForgotAuthenticateForm faa = (ForgotAuthenticateForm) obj;
-        if (!faa.isEqual()) {
-            errors.rejectValue("password", "field.unmatched", new Object[]{""}, "Password entered value does not match");
-            errors.rejectValue("passwordSecond", "field.unmatched", new Object[]{""}, "Password entered value does not match");
-        }
+        if(!errors.hasErrors()) {
+            ForgotAuthenticateForm faa = (ForgotAuthenticateForm) obj;
+            if (faa.getPassword().length() < passwordLength) {
+                errors.rejectValue("password",
+                        "field.length",
+                        new Object[]{"Password", passwordLength},
+                        "Minimum length of four characters");
+            }
 
-        if (faa.getPassword().length() < passwordLength) {
-            errors.rejectValue("password",
-                    "field.length",
-                    new Object[]{"Password", passwordLength},
-                    "Minimum length of four characters");
-        }
+            if (faa.getPasswordSecond().length() < passwordLength) {
+                errors.rejectValue("passwordSecond",
+                        "field.length",
+                        new Object[]{"passwordSecond", passwordLength},
+                        "Minimum length of four characters");
+            }
 
-        if (faa.getPasswordSecond().length() < passwordLength) {
-            errors.rejectValue("passwordSecond",
-                    "field.length",
-                    new Object[]{"Password", passwordLength},
-                    "Minimum length of four characters");
+            if (!faa.isEqual()) {
+                errors.rejectValue("password", "field.unmatched.password", "Password does not match with retyped password");
+                errors.rejectValue("passwordSecond", "field.unmatched.retype.password", "Retype Password is not same as password");
+            }
+
         }
     }
 }

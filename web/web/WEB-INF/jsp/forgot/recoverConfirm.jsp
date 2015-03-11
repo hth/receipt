@@ -31,7 +31,7 @@
             <h1>Confirmation Page</h1>
             <p>An email has been sent with information regarding recovering your account password</p>
             <p>&nbsp;</p>
-            <p><a href="${pageContext.request.contextPath}/login.htm">Click to the login</a></p>
+            <p><a href="${pageContext.request.contextPath}/open/login.htm">Click to the login</a></p>
         </div>
     </c:if>
 
