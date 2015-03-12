@@ -37,10 +37,9 @@
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
                     <c:when test="${!validated}">
-                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm" style="color: red">
-                            <%--show alert when email not validated--%>
-                            <%--http://dabblet.com/gist/1576546--%>
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
                             <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
                         </a>
                     </c:when>
                     <c:otherwise>

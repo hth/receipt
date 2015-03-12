@@ -1340,3 +1340,15 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
 .receipt-tag select:focus  {
     outline: none;
 }
+
+.notification-counter {
+    position: absolute;
+    top: -1px;
+    margin-top: -7px;
+    left: 12px;
+    background-color: rgba(212, 19, 13, 1);
+    color: #fff;
+    border-radius: 3px;
+    padding: 1px 3px;
+    font: 8px Verdana;
+}
