@@ -155,7 +155,7 @@
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
-                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
                     <c:when test="${!validated}">

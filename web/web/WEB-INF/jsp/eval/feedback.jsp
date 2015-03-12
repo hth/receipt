@@ -30,10 +30,22 @@
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
-                <a class="top-account-bar-text" href="#">REPORT</a>
-                <a class="top-account-bar-text user-email" href="#">
-                    <sec:authentication property="principal.username" />
-                </a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm" style="color: red">
+                                <%--show alert when email not validated--%>
+                                <%--http://dabblet.com/gist/1576546--%>
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
