@@ -76,7 +76,7 @@ body {
     padding: 5px 20px;
     text-decoration: none;
     border: solid 1px #899CAA;
-    font-family: Arial;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: #c0c0c0;
     background: -moz-linear-gradient(top, #c0c0c0 5%, #e5e4e2 94%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #c0c0c0), color-stop(94%, #e5e4e2));
