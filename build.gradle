@@ -47,6 +47,20 @@ allprojects {
     version = '0.9.0'
 }
 
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.eriwen:gradle-js-plugin:1.12.1'
+        classpath 'com.eriwen:gradle-css-plugin:1.11.1'
+    }
+}
+
+apply plugin: 'js'
+apply plugin: 'css'
+
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
@@ -454,7 +468,68 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
     }
 }
 
-task prepWar(dependsOn: [unzip, copyJars]) << {
+css.source {
+    custom {
+        css {
+            srcDir "web/web/static/css"
+            include "*.css"
+            exclude "*.min.css"
+        }
+    }
+}
+
+javascript.source {
+    custom {
+        js {
+            srcDir "web/web/static/js"
+            include "colpick.js", "mainpop.js"
+            exclude "*.min.js"
+        }
+    }
+}
+
+css.source.custom.css.files.eachWithIndex { cssFile, idx ->
+    tasks.create(name: "dominifyCss${idx}", type: com.eriwen.gradle.css.tasks.MinifyCssTask) {
+        if (cssFile.getParentFile().getName() != "css") {
+            source = cssFile
+            dest = "${buildDir}/tmp/css/${cssFile.getParentFile().getName()}/${cssFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        } else {
+            source = cssFile
+            dest = "${buildDir}/tmp/css/${cssFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        }
+        println("CSS files minifying: $cssFile")
+    }
+}
+
+javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
+    tasks.create(name: "dominifyJs${idx}", type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+        if (jsFile.getParentFile().getName() != "js") {
+            source = jsFile
+            dest = "${buildDir}/tmp/js/${jsFile.getParentFile().getName()}/${jsFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        } else {
+            source = jsFile
+            dest = "${buildDir}/tmp/js/${jsFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        }
+        println("JS files minifying: $jsFile")
+    }
+}
+
+task individualCssMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyCss") })
+task individualJsMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyJs") })
+
+task prepWar(dependsOn: [unzip, copyJars, individualCssMinify, individualJsMinify]) << {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
 
@@ -462,6 +537,22 @@ task prepWar(dependsOn: [unzip, copyJars]) << {
         from 'web/web'
         into warDir
         exclude '**/*.classes'
+        exclude '**/static/css/*.css'
+        exclude 'web/web/static/js/mainpop.js','web/web/static/js/colpick.js'
+    }
+
+    copy {
+        from("${buildDir}/tmp/css") {
+            include "**/*.css"
+        }
+        into "${warDir}/static/css"
+    }
+
+    copy {
+        from("${buildDir}/tmp/js") {
+            include "**/*.js"
+        }
+        into "${warDir}/static/js"
     }
 
     copy {
@@ -525,6 +616,7 @@ task clean(type: Delete) {
     delete buildDir
 }
 
+//import org.apache.tools.ant.filters.ReplaceTokens
 task war(type: War, dependsOn: prepWar) {
     doFirst {
         if (env == 'test' || env == 'prod') {
@@ -549,6 +641,9 @@ task war(type: War, dependsOn: prepWar) {
 
             baseName = "ROOT-$env"
         }
+
+//        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
+//        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
 
     from warDir
@@ -666,4 +761,4 @@ publishing {
 
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
-defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport'
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport', 'publishToMavenLocal'
