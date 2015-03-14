@@ -30,10 +30,10 @@ If your servlet container doesn't support the JSP 2.1 trimDirectiveWhitespaces p
 JspServlet documentation for any initialization parameters. In for example Tomcat, you can configure it as well by
 setting trimSpaces init-param to true in for JspServlet in Tomcat's /conf/web.xml:
 
-<init-param>
-    <param-name>trimSpaces</param-name>
-    <param-value>true</param-value>
-</init-param>
+    <init-param>
+        <param-name>trimSpaces</param-name>
+        <param-value>true</param-value>
+    </init-param>
 
 A completely different alternative is the JTidyFilter. It not only trims whitespace, but it also formats HTML in a
 correct indentation.
