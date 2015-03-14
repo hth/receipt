@@ -25,6 +25,19 @@ This should configured in `context.xml` as follows: 20 seconds below
 
     <context unloadDelay="20000">
 
+### Remove whitespaces
+If your servlet container doesn't support the JSP 2.1 trimDirectiveWhitespaces property, then you need to consult its
+JspServlet documentation for any initialization parameters. In for example Tomcat, you can configure it as well by
+setting trimSpaces init-param to true in for JspServlet in Tomcat's /conf/web.xml:
+
+    <init-param>
+        <param-name>trimSpaces</param-name>
+        <param-value>true</param-value>
+    </init-param>
+
+A completely different alternative is the JTidyFilter. It not only trims whitespace, but it also formats HTML in a
+correct indentation.
+
 #### Java setup
 - http://www.cc.gatech.edu/~simpkins/teaching/gatech/cs2340/guides/java7-macosx.html
 

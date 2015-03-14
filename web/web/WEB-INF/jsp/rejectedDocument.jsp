@@ -74,12 +74,10 @@
         No Rejected Document
     </h1>
 </div>
-<div class="rightside-list-holder full-list-holder">
-    <div class="first ajx-content">
-        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-        <p><strong>When document is unclear or not a valid receipt it will show up here. Currently there is no document rejected.</strong></p>
-    </div>
+<div class="r-info">
+    When document is unclear or not a valid receipt it will show up here. Currently there is no document rejected.
 </div>
+<div class="rightside-list-holder full-list-holder"></div>
 </c:otherwise>
 </c:choose>
 <div class="footer-tooth clearfix">
