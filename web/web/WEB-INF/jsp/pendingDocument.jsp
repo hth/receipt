@@ -74,12 +74,10 @@
         No Pending Document
     </h1>
 </div>
-<div class="rightside-list-holder full-list-holder">
-    <div class="first ajx-content">
-        <img style="margin-top: 5px;" width="3%;" src="${pageContext.request.contextPath}/static/img/cross_circle.png"/>
-        <p><strong>Please upload valid document to see something here.</strong></p>
-    </div>
+<div class="r-info">
+    Please upload valid document to see something here.
 </div>
+<div class="rightside-list-holder full-list-holder"></div>
 </c:otherwise>
 </c:choose>
 <div class="footer-tooth clearfix">
