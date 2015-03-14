@@ -533,11 +533,6 @@ function drawExpenseByBusiness() {
         $("#noMapDataId").removeClass("temp_offset");
     });
 </script>
-
-<!-- Resource style -->
-<script src="${pageContext.request.contextPath}/static/js/modernizr.js"></script>
-<!-- Modernizr -->
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
-<!-- Resource jQuery -->
 </body>
 </html>
