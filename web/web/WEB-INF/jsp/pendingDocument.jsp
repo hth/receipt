@@ -85,5 +85,12 @@
     <div class="footer-tooth-right"></div>
 </div>
 </div>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
+</div>
 </body>
 </html>
