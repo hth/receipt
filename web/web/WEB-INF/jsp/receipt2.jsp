@@ -289,7 +289,7 @@
         <form:hidden path="receipt.id" id="receiptId"/>
         <form:hidden path="receipt.notes.id"/>
         <form:hidden path="receipt.notes.version"/>
-        <div class="left" style="width: 550px; margin-right: 18px; margin-left: 10px">
+        <div class="left" style="width: 560px; margin-right: 18px; margin-left: 10px">
             <c:if test="${!empty receiptForm.errorMessage}">
             <div class="r-error">
                 ${receiptForm.errorMessage}
