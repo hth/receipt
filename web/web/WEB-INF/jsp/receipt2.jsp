@@ -297,7 +297,7 @@
             </c:if>
 
             <h1 class="h1"><fmt:formatDate pattern="MMMM dd, yyyy" value="${receiptForm.receipt.receiptDate}"/>
-                <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
+                <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
             </h1>
             <hr style="width: 100%;">
             <div class="mar10px">
