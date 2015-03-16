@@ -761,4 +761,5 @@ publishing {
 
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
-defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport', 'publishToMavenLocal'
+//publishToMavenLocal for local
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'testReport', 'jacocoTestReport', 'publish'
