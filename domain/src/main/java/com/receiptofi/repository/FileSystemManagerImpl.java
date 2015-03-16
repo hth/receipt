@@ -1,12 +1,18 @@
 package com.receiptofi.repository;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.value.DiskUsageGrouped;
 
 import org.bson.types.ObjectId;
 
@@ -15,10 +21,12 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * User: hitender
@@ -66,9 +74,9 @@ public final class FileSystemManagerImpl implements FileSystemManager {
         }
     }
 
-    private void deleteSoft(FileSystemEntity fileSystemEntity) {
+    private void deleteSoft(String id) {
         mongoTemplate.updateMulti(
-                query(where("id").is(new ObjectId(fileSystemEntity.getId()))),
+                query(where("id").is(new ObjectId(id))),
                 entityUpdate(update("D", true)),
                 FileSystemEntity.class
         );
@@ -77,7 +85,36 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     @Override
     public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {
         for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
-            deleteSoft(fileSystemEntity);
+            deleteSoft(fileSystemEntity.getId());
         }
+    }
+
+    /**
+     * Note: DO NOT USE GroupBy as it affects performance really bad. Like 1_000_000 times for GroupBy takes
+     * 1 hour 45 minutes versus 20 minutes for the query below.
+     *
+     * @param rid
+     * @return
+     */
+    @Override
+    public List<DiskUsageGrouped> diskUsage(String rid) {
+        TypedAggregation<FileSystemEntity> agg = newAggregation(FileSystemEntity.class,
+                match(where("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )),
+                group("rid")
+                        .first("rid").as("rid")
+                        .sum("fileLength").as("totalLN")
+                        .sum("scaledFileLength").as("totalSLN")
+        );
+
+        return mongoTemplate.aggregate(agg, TABLE, DiskUsageGrouped.class).getMappedResults();
+    }
+
+    @Override
+    public List<FileSystemEntity> filesPending(String rid) {
+        return mongoTemplate.find(query(where("RID").is(rid).and("SLN").is(0)), FileSystemEntity.class, TABLE);
     }
 }

@@ -3,12 +3,17 @@ package com.receiptofi.web.form;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.domain.value.DiskUsageGrouped;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
+import org.springframework.format.annotation.NumberFormat;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +66,9 @@ public class ProfileForm {
     private Date accountValidationExpireDay;
     private boolean accountValidationExpired;
     private boolean accountValidated;
+
+    private DiskUsageGrouped diskUsage;
+    private long pendingDiskUsage;
 
     @SuppressWarnings ("unused")
     private ProfileForm() {
@@ -206,5 +214,32 @@ public class ProfileForm {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public void setDiskUsage(DiskUsageGrouped diskUsage) {
+        this.diskUsage = diskUsage;
+    }
+
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
+    public BigDecimal getTotalSLN_MB() {
+        return Maths.divide(diskUsage.getTotalSLN(), DiskUsageGrouped.MB);
+    }
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
+    public BigDecimal getPendingDiskUsage_MB() {
+        return Maths.divide(pendingDiskUsage, DiskUsageGrouped.MB);
+    }
+
+    /**
+     * Saved space result of file scaling.
+     *
+     * @return
+     */
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
+    public BigDecimal getDiskSaved_MB() {
+        return Maths.divide(diskUsage.getTotalLN() - pendingDiskUsage - diskUsage.getTotalSLN(), DiskUsageGrouped.MB);
+    }
+
+    public void setPendingDiskUsage(long pendingDiskUsage) {
+        this.pendingDiskUsage = pendingDiskUsage;
     }
 }

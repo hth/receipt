@@ -110,6 +110,10 @@ public final class Maths {
         }
     }
 
+    public static BigDecimal divide(long  divide, BigDecimal by) {
+        return divide(new BigDecimal(divide), by);
+    }
+
     public static BigDecimal divide(BigDecimal divide, Double by) {
         return divide(divide, new BigDecimal(by.toString()));
     }
