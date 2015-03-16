@@ -317,6 +317,7 @@ public class LandingService {
 
             fileSystem = new FileSystemEntity(
                     documentBlobId,
+                    documentImage.getRid(),
                     bufferedImage,
                     0,
                     0,
