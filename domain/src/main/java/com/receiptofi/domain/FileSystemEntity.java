@@ -38,6 +38,10 @@ public class FileSystemEntity extends BaseEntity {
     private String blobId;
 
     @NotNull
+    @Field ("RID")
+    private String rid;
+
+    @NotNull
     @Field ("H")
     private int height;
 
@@ -84,6 +88,7 @@ public class FileSystemEntity extends BaseEntity {
 
     public FileSystemEntity(
             String blobId,
+            String rid,
             BufferedImage bufferedImage,
             int imageOrientation,
             int sequence,
@@ -91,6 +96,7 @@ public class FileSystemEntity extends BaseEntity {
     ) {
         super();
         this.blobId = blobId;
+        this.rid = rid;
         this.height = bufferedImage.getHeight();
         this.width = bufferedImage.getWidth();
         this.imageOrientation = imageOrientation;
@@ -113,8 +119,8 @@ public class FileSystemEntity extends BaseEntity {
         return blobId;
     }
 
-    public void setBlobId(String blobId) {
-        this.blobId = blobId;
+    public String getRid() {
+        return rid;
     }
 
     public int getHeight() {
