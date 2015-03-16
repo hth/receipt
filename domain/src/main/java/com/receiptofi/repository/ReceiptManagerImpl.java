@@ -71,7 +71,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
             Document.class,
             "collection");
 
-    @Value ("${displayMonths:13}")
+    @Value ("${displayMonths:12}")
     private int displayMonths;
 
     @Autowired private MongoTemplate mongoTemplate;
