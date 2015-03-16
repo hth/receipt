@@ -279,20 +279,20 @@
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Disk Usage</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${profileForm.diskUsage.totalSLN}"/> MB
+                            <fmt:formatNumber value="${profileForm.totalSLN_MB}"/> MB
                         </label>
                     </div>
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Pending Usage</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${profileForm.pendingDiskUsage}"/> MB *
+                            <fmt:formatNumber value="${profileForm.pendingDiskUsage_MB}"/> MB *
                         </label>
                     </div>
-                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <sec:authorize access="hasRole('ROLE_USER')">
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Image Scaling Saving</label>
+                        <label class="profile_label" style="width: 200px;">Usage Saved By Scaling</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${profileForm.diskUsage.diskSaved}"/> MB
+                            <fmt:formatNumber value="${profileForm.diskSaved_MB}"/> MB
                         </label>
                     </div>
                     </sec:authorize>
