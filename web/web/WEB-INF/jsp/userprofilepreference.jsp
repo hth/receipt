@@ -42,6 +42,9 @@
             <c:when test="${showTab eq '#tabs-3'}">
             $("#tabs").tabs({active: 2});
             </c:when>
+            <c:when test="${showTab eq '#tabs-4'}">
+            $("#tabs").tabs({active: 3});
+            </c:when>
             </c:choose>
         });
         </c:if>
@@ -64,7 +67,7 @@
             <div class="header_right_login">
                 <a class="top-account-bar-text" href="#">LOG OUT</a>
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">PROFILE</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
                 <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
@@ -94,8 +97,9 @@
             <ul class="nav-block">
                 <li><a href="#tabs-1">PROFILE</a></li>
                 <li><a href="#tabs-2">PREFERENCES</a></li>
+                <li><a href="#tabs-3">BILLING</a></li>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <li><a href="#tabs-3">STATUS</a></li>
+                <li><a href="#tabs-4">STATUS</a></li>
                 </sec:authorize>
             </ul>
 
@@ -267,8 +271,36 @@
                 </form:form>
             </div>
 
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
             <div id="tabs-3" class="ajx-content report_my">
+                <h1 class="h1">BILLING & USAGE</h1>
+                <hr>
+                <div class="down_form">
+                    <h2 class="h2" style="padding-bottom:2%;">Usage</h2>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Disk Usage</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <fmt:formatNumber value="${profileForm.diskUsage.totalSLN}"/> MB
+                        </label>
+                    </div>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Pending Usage</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <fmt:formatNumber value="${profileForm.pendingDiskUsage}"/> MB *
+                        </label>
+                    </div>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Image Scaling Saving</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <fmt:formatNumber value="${profileForm.diskUsage.diskSaved}"/> MB
+                        </label>
+                    </div>
+                    </sec:authorize>
+                </div>
+            </div>
+
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <div id="tabs-4" class="ajx-content report_my">
                 <h1 class="h1">STATUS</h1>
                 <hr>
                 <div class="down_form">

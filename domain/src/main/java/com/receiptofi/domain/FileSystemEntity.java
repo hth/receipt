@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,10 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "FILE_SYSTEM")
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "file_system_bid", def = "{'BID': -1}"),
+        @CompoundIndex (name = "file_system_rid", def = "{'RID': -1}")
+})
 public class FileSystemEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemEntity.class);
 

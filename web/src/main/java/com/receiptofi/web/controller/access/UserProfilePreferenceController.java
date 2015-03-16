@@ -10,6 +10,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
+import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -83,6 +84,7 @@ public class UserProfilePreferenceController {
     @Autowired private ProfileValidator profileValidator;
     @Autowired private MailService mailService;
     @Autowired private EmailValidateService emailValidateService;
+    @Autowired private FileSystemService fileSystemService;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -130,6 +132,9 @@ public class UserProfilePreferenceController {
             if (profileForm == null) {
                 profileForm = ProfileForm.newInstance(
                         userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
+
+                profileForm.setDiskUsage(fileSystemService.diskUsage(receiptUser.getRid()));
+                profileForm.setPendingDiskUsage(fileSystemService.filesPendingDiskUsage(receiptUser.getRid()));
             }
             modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, receiptUser.getRid());
         }
@@ -225,8 +230,8 @@ public class UserProfilePreferenceController {
     }
 
     private void changeProfileDetails(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
-        if (!profileForm.getFirstName().equals(userProfile.getFirstName()) ||
-                !profileForm.getLastName().equals(userProfile.getLastName())) {
+        if (!profileForm.getFirstName().getText().equals(userProfile.getFirstName()) ||
+                !profileForm.getLastName().getText().equals(userProfile.getLastName())) {
             accountService.updateName(
                     profileForm.getFirstName().getText(),
                     profileForm.getLastName().getText(),
@@ -430,7 +435,7 @@ public class UserProfilePreferenceController {
         }
 
         //There is UI logic based on this. Set the right to be active when responding.
-        modelAndView.addObject("showTab", "#tabs-3");
+        modelAndView.addObject("showTab", "#tabs-4");
         return modelAndView;
     }
 
