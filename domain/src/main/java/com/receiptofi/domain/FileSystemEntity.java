@@ -200,7 +200,9 @@ public class FileSystemEntity extends BaseEntity {
     @Transient
     public void switchHeightAndWidth() {
         int tempHeight = this.height;
+        //noinspection SuspiciousNameCombination
         this.height = this.width;
+        //noinspection SuspiciousNameCombination
         this.width = tempHeight;
     }
 
