@@ -5,8 +5,9 @@ unzip
 note: chown root:wheel (always root)
 
 
-	sudo mv ~/Downloads/apache-activemq-5.10.0 /usr/local/
-	sudo ln -s /usr/local/Cellar/activemq/5.10.0 /Library/ActiveMQ
+	sudo mv ~/Downloads/apache-activemq-5.11.1 /usr/local/
+	sudo rm /Library/ActiveMQ
+	sudo ln -s /usr/local/Cellar/activemq/5.11.1 /Library/ActiveMQ
 	
 And then change owner ship to local user ***db***
 
@@ -23,4 +24,4 @@ Load
 
 For local environment start active mq by
 
-	/usr/local/Cellar/activemq/5.10.0/bin/activemq start
+	/usr/local/Cellar/activemq/5.11.1/bin/activemq start
