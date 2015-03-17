@@ -214,6 +214,8 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.0.0/4c8d1536dba3812cc1592090dc20c47a4ed3c35e/okhttp-2.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.0.0/2534c458682c73f5b9871131ab3098d3f987ca3/okio-1.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/2.13.0/6b19c1276871001fa85684475db7e4c538046b52/mongo-java-driver-2.13.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.11.1/4d501ba53065be743dd66bf13e81a0512e33e860/activemq-client-5.11.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtbuf/hawtbuf/1.11/8f0e50ad8bea37b84b698ec40cce09e47714a63e/hawtbuf-1.11.jar" />
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/receipt-servlet.xml" />
@@ -481,6 +483,8 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.0.0/4c8d1536dba3812cc1592090dc20c47a4ed3c35e/okhttp-2.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.0.0/2534c458682c73f5b9871131ab3098d3f987ca3/okio-1.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/2.13.0/6b19c1276871001fa85684475db7e4c538046b52/mongo-java-driver-2.13.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.11.1/4d501ba53065be743dd66bf13e81a0512e33e860/activemq-client-5.11.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtbuf/hawtbuf/1.11/8f0e50ad8bea37b84b698ec40cce09e47714a63e/hawtbuf-1.11.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -750,6 +754,8 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.0.0/4c8d1536dba3812cc1592090dc20c47a4ed3c35e/okhttp-2.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.0.0/2534c458682c73f5b9871131ab3098d3f987ca3/okio-1.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/2.13.0/6b19c1276871001fa85684475db7e4c538046b52/mongo-java-driver-2.13.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.11.1/4d501ba53065be743dd66bf13e81a0512e33e860/activemq-client-5.11.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtbuf/hawtbuf/1.11/8f0e50ad8bea37b84b698ec40cce09e47714a63e/hawtbuf-1.11.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1004,6 +1010,8 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.0.0/4c8d1536dba3812cc1592090dc20c47a4ed3c35e/okhttp-2.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.0.0/2534c458682c73f5b9871131ab3098d3f987ca3/okio-1.0.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/2.13.0/6b19c1276871001fa85684475db7e4c538046b52/mongo-java-driver-2.13.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtbuf/hawtbuf/1.11/8f0e50ad8bea37b84b698ec40cce09e47714a63e/hawtbuf-1.11.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.11.1/4d501ba53065be743dd66bf13e81a0512e33e860/activemq-client-5.11.1.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
