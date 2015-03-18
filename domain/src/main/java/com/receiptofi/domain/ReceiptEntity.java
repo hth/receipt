@@ -121,7 +121,7 @@ public class ReceiptEntity extends BaseEntity {
     private String expenseReportInFS;
 
     @Field ("PB")
-    private Map<String, String> processedBy = new LinkedHashMap<>();
+    private Map<Date, String> processedBy = new LinkedHashMap<>();
 
     /**
      * Used to flush or avoid duplicate receipt entry.
@@ -339,15 +339,15 @@ public class ReceiptEntity extends BaseEntity {
         this.expenseReportInFS = expenseReportInFS;
     }
 
-    public Map<String, String> getProcessedBy() {
+    public Map<Date, String> getProcessedBy() {
         return processedBy;
     }
 
-    public void setProcessedBy(Map<String, String> processedBy) {
+    public void setProcessedBy(Map<Date, String> processedBy) {
         this.processedBy = processedBy;
     }
 
-    public void addProcessedBy(String updated, String rid) {
+    public void addProcessedBy(Date updated, String rid) {
         this.processedBy.put(updated, rid);
     }
 

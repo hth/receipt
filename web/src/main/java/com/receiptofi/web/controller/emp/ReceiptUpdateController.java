@@ -168,7 +168,8 @@ public class ReceiptUpdateController {
         }
 
         try {
-            if (documentUpdateService.hasReceiptWithSimilarChecksum(receiptDocumentForm.getReceiptEntity().getChecksum())) {
+            ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
+            if (documentUpdateService.hasReceiptWithSimilarChecksum(receipt.getChecksum())) {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
                 redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
@@ -176,7 +177,6 @@ public class ReceiptUpdateController {
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
-            ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
             List<ItemEntity> items = receiptDocumentForm.getItemEntity(receipt);
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
@@ -339,9 +339,10 @@ public class ReceiptUpdateController {
         }
 
         try {
+            ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
             //TODO: Note should not happen as the condition to check for duplicate has already been satisfied when receipt was first processed.
             // Unless Technician has changed the date or some data. Date change should be exclude during re-check. Something to think about.
-            if (documentUpdateService.checkIfDuplicate(receiptDocumentForm.getReceiptEntity().getChecksum(), receiptDocumentForm.getReceiptEntity().getId())) {
+            if (documentUpdateService.checkIfDuplicate(receipt.getChecksum(), receiptDocumentForm.getReceiptEntity().getId())) {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -350,7 +351,6 @@ public class ReceiptUpdateController {
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
-            ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
             List<ItemEntity> items = receiptDocumentForm.getItemEntity(receipt);
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
