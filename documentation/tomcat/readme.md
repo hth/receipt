@@ -47,6 +47,7 @@ correct indentation.
 - sudo rm /Library/Java/Home
 - sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home /Library/Java/Home
 
+
 #### Tomcat env and auto start set up
 - http://stackoverflow.com/questions/6897476/tomcat-7-how-to-set-initial-heap-size-correctly
 - http://stackoverflow.com/questions/6398053/cant-change-tomcat-7-heap-size/10950387#10950387
