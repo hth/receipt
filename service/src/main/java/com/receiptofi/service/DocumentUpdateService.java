@@ -99,7 +99,12 @@ public class DocumentUpdateService {
      * @param document
      * @throws Exception
      */
-    public void processDocumentForReceipt(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
+    public void processDocumentForReceipt(
+            String technicianId,
+            ReceiptEntity receipt,
+            List<ItemEntity> items,
+            DocumentEntity document
+    ) {
         try {
             String transaction = Instant.now().toString();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
@@ -185,7 +190,12 @@ public class DocumentUpdateService {
      * @param document
      * @throws Exception
      */
-    public void processDocumentReceiptReCheck(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
+    public void processDocumentReceiptReCheck(
+            String technicianId,
+            ReceiptEntity receipt,
+            List<ItemEntity> items,
+            DocumentEntity document
+    ) {
         ReceiptEntity fetchedReceipt = null;
         try {
             String transaction =  Instant.now().toString();
