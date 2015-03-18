@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -100,6 +101,7 @@ public class DocumentUpdateService {
      */
     public void processDocumentForReceipt(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
         try {
+            String transaction = Instant.now().toString();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
@@ -110,6 +112,7 @@ public class DocumentUpdateService {
             document.setVersion(documentEntity.getVersion());
 
             bizService.saveNewBusinessAndOrStore(receipt);
+            receipt.addProcessedBy(transaction, technicianId);
             receiptManager.save(receipt);
 
             populateItemsWithBizName(items, receipt);
@@ -119,7 +122,7 @@ public class DocumentUpdateService {
             document.setDocumentStatus(PROCESSED);
             document.setReferenceDocumentId(receipt.getId());
             document.inActive();
-            document.addProcessedBy(new Date(), technicianId);
+            document.addProcessedBy(transaction, technicianId);
             documentManager.save(document);
 
             updateMessageManager(document, PENDING, PROCESSED);
@@ -185,6 +188,7 @@ public class DocumentUpdateService {
     public void processDocumentReceiptReCheck(String technicianId, ReceiptEntity receipt, List<ItemEntity> items, DocumentEntity document) {
         ReceiptEntity fetchedReceipt = null;
         try {
+            String transaction =  Instant.now().toString();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
@@ -213,7 +217,6 @@ public class DocumentUpdateService {
             bizService.copyBizNameAndBizStoreFromReceipt(document, receipt);
             document.setDocumentStatus(PROCESSED);
             document.inActive();
-            document.addProcessedBy(new Date(), technicianId);
 
             //Only recheck comments are updated by technician. Receipt notes are never modified
             if (StringUtils.isEmpty(document.getRecheckComment().getText())) {
@@ -252,7 +255,10 @@ public class DocumentUpdateService {
                 receipt.setNotes(null);
             }
 
+            receipt.addProcessedBy(transaction, technicianId);
             receiptManager.save(receipt);
+
+            document.addProcessedBy(transaction, technicianId);
             documentManager.save(document);
 
             updateMessageManager(document, REPROCESS, PROCESSED);
@@ -320,9 +326,9 @@ public class DocumentUpdateService {
     /**
      * Reject receipt when invalid or un-readable.
      *
+     * @param technicianId
      * @param documentId
      * @param documentOfType
-     * @throws Exception
      */
     public void processDocumentForReject(String technicianId, String documentId, DocumentOfTypeEnum documentOfType) {
         DocumentEntity document = loadActiveDocumentById(documentId);
@@ -332,7 +338,7 @@ public class DocumentUpdateService {
             document.setBizName(null);
             document.setBizStore(null);
             document.inActive();
-            document.addProcessedBy(new Date(), technicianId);
+            document.addProcessedBy(Instant.now().toString(), technicianId);
             document.markAsDeleted();
             documentManager.save(document);
 
@@ -471,35 +477,37 @@ public class DocumentUpdateService {
     /**
      * Processes Mileage document.
      * @param technicianId
-     * @param mileageEntity
+     * @param mileage
      * @param document
      */
-    public void processDocumentForMileage(String technicianId, MileageEntity mileageEntity, DocumentEntity document) {
+    public void processDocumentForMileage(String technicianId, MileageEntity mileage, DocumentEntity document) {
         try {
+            String transaction = Instant.now().toString();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
-            mileageEntity.setFileSystemEntities(documentEntity.getFileSystemEntities());
-            mileageEntity.setDocumentId(documentEntity.getId());
-            mileageService.save(mileageEntity);
+            mileage.setFileSystemEntities(documentEntity.getFileSystemEntities());
+            mileage.setDocumentId(documentEntity.getId());
+            mileage.addProcessedBy(transaction, technicianId);
+            mileageService.save(mileage);
 
             document.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
             //update the version number as the value could have changed by rotating receipt image through ajax
             document.setVersion(documentEntity.getVersion());
             document.setDocumentStatus(PROCESSED);
-            document.setReferenceDocumentId(mileageEntity.getId());
+            document.setReferenceDocumentId(mileage.getId());
             document.inActive();
-            document.addProcessedBy(new Date(), technicianId);
+            document.addProcessedBy(transaction, technicianId);
             documentManager.save(document);
 
             updateMessageManager(document, PENDING, PROCESSED);
 
             notificationService.addNotification(
-                    String.valueOf(mileageEntity.getStart()) +
+                    String.valueOf(mileage.getStart()) +
                             ", " +
                             "odometer reading processed",
                     NotificationTypeEnum.MILEAGE,
-                    mileageEntity);
+                    mileage);
         } catch (DuplicateKeyException duplicateKeyException) {
             LOG.error(duplicateKeyException.getLocalizedMessage(), duplicateKeyException);
             throw new RuntimeException("Found existing record with similar odometer reading");
