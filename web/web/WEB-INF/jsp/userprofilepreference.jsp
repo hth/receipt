@@ -272,7 +272,7 @@
             </div>
 
             <div id="tabs-3" class="ajx-content report_my">
-                <h1 class="h1">BILLING & USAGE</h1>
+                <h1 class="h1">BILLING &amp; USAGE</h1>
                 <hr>
                 <div class="down_form">
                     <h2 class="h2" style="padding-bottom:2%;">Usage</h2>
