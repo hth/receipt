@@ -91,7 +91,7 @@ public class DocumentEntity extends BaseEntity {
     private boolean imageUploadedToCloud;
 
     @Field ("PB")
-    private Map<String, String> processedBy = new LinkedHashMap<>();
+    private Map<Date, String> processedBy = new LinkedHashMap<>();
 
     public static DocumentEntity newInstance() {
         return new DocumentEntity();
@@ -214,11 +214,11 @@ public class DocumentEntity extends BaseEntity {
         return imageUploadedToCloud;
     }
 
-    public Map<String, String> getProcessedBy() {
+    public Map<Date, String> getProcessedBy() {
         return processedBy;
     }
 
-    public void addProcessedBy(String updated, String rid) {
+    public void addProcessedBy(Date updated, String rid) {
         this.processedBy.put(updated, rid);
     }
 

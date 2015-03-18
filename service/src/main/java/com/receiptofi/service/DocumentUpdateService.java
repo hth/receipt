@@ -106,7 +106,7 @@ public class DocumentUpdateService {
             DocumentEntity document
     ) {
         try {
-            String transaction = Instant.now().toString();
+            Date transaction = new Date();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
@@ -198,7 +198,7 @@ public class DocumentUpdateService {
     ) {
         ReceiptEntity fetchedReceipt = null;
         try {
-            String transaction =  Instant.now().toString();
+            Date transaction = new Date();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
             receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
@@ -348,7 +348,7 @@ public class DocumentUpdateService {
             document.setBizName(null);
             document.setBizStore(null);
             document.inActive();
-            document.addProcessedBy(Instant.now().toString(), technicianId);
+            document.addProcessedBy(new Date(), technicianId);
             document.markAsDeleted();
             documentManager.save(document);
 
@@ -492,7 +492,7 @@ public class DocumentUpdateService {
      */
     public void processDocumentForMileage(String technicianId, MileageEntity mileage, DocumentEntity document) {
         try {
-            String transaction = Instant.now().toString();
+            Date transaction = new Date();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
 
             mileage.setFileSystemEntities(documentEntity.getFileSystemEntities());
