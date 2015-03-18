@@ -21,8 +21,10 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -74,6 +76,9 @@ public class MileageEntity extends BaseEntity {
     @DBRef
     @Field ("N")
     private CommentEntity mileageNotes;
+
+    @Field ("PB")
+    private Map<String, String> processedBy = new LinkedHashMap<>();
 
     /**
      * To keep bean happy
@@ -241,5 +246,17 @@ public class MileageEntity extends BaseEntity {
                     return StringUtils.EMPTY;
                 }
         }
+    }
+
+    public Map<String, String> getProcessedBy() {
+        return processedBy;
+    }
+
+    public void setProcessedBy(Map<String, String> processedBy) {
+        this.processedBy = processedBy;
+    }
+
+    public void addProcessedBy(String updated, String rid) {
+        this.processedBy.put(updated, rid);
     }
 }

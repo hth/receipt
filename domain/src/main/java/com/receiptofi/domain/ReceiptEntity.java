@@ -23,6 +23,8 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -117,6 +119,9 @@ public class ReceiptEntity extends BaseEntity {
      */
     @Field ("EXF")
     private String expenseReportInFS;
+
+    @Field ("PB")
+    private Map<String, String> processedBy = new LinkedHashMap<>();
 
     /**
      * Used to flush or avoid duplicate receipt entry.
@@ -332,6 +337,18 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setExpenseReportInFS(String expenseReportInFS) {
         this.expenseReportInFS = expenseReportInFS;
+    }
+
+    public Map<String, String> getProcessedBy() {
+        return processedBy;
+    }
+
+    public void setProcessedBy(Map<String, String> processedBy) {
+        this.processedBy = processedBy;
+    }
+
+    public void addProcessedBy(String updated, String rid) {
+        this.processedBy.put(updated, rid);
     }
 
     @Transient

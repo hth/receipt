@@ -77,7 +77,7 @@ public class ReceiptUpdateController {
     @RequestMapping (
             value = "/update/{documentId}",
             method = RequestMethod.GET)
-    public ModelAndView getNewDocument(
+    public String getNewDocument(
             @PathVariable
             String documentId,
 
@@ -88,7 +88,7 @@ public class ReceiptUpdateController {
             HttpServletRequest httpServletRequest
     ) {
         updateReceipt(documentId, receiptDocumentForm, model, httpServletRequest);
-        return new ModelAndView(NEXT_PAGE_UPDATE);
+        return NEXT_PAGE_UPDATE;
     }
 
     private void updateReceipt(
@@ -122,7 +122,7 @@ public class ReceiptUpdateController {
     @RequestMapping (
             value = "/recheck/{documentId}",
             method = RequestMethod.GET)
-    public ModelAndView getDocumentForRecheck(
+    public String getDocumentForRecheck(
             @PathVariable
             String documentId,
 
@@ -133,7 +133,7 @@ public class ReceiptUpdateController {
             HttpServletRequest httpServletRequest
     ) {
         updateReceipt(documentId, receiptDocumentForm, model, httpServletRequest);
-        return new ModelAndView(NEXT_PAGE_RECHECK);
+        return NEXT_PAGE_RECHECK;
     }
 
     /**
@@ -147,7 +147,7 @@ public class ReceiptUpdateController {
             value = "/submit",
             method = RequestMethod.POST,
             params = "receipt-submit")
-    public ModelAndView submitReceipt(
+    public String submitReceipt(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
@@ -164,7 +164,7 @@ public class ReceiptUpdateController {
             LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
         try {
@@ -172,7 +172,7 @@ public class ReceiptUpdateController {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
                 redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-                return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+                return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
@@ -182,12 +182,12 @@ public class ReceiptUpdateController {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
             documentUpdateService.processDocumentForReceipt(receiptUser.getRid(), receipt, items, document);
-            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+            return REDIRECT_EMP_LANDING_HTM;
         } catch (Exception exce) {
             LOG.error("Error in Submit Process saving receipt, reason={}", exce.getLocalizedMessage(), exce);
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
@@ -202,7 +202,7 @@ public class ReceiptUpdateController {
             value = "/submitMileage",
             method = RequestMethod.POST,
             params = "mileage-submit")
-    public ModelAndView submitMileage(
+    public String submitMileage(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
@@ -224,19 +224,19 @@ public class ReceiptUpdateController {
             LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
         try {
             MileageEntity mileage = receiptDocumentForm.getMileageEntity();
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
             documentUpdateService.processDocumentForMileage(receiptUser.getRid(), mileage, document);
-            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+            return REDIRECT_EMP_LANDING_HTM;
         } catch (Exception exce) {
             LOG.error("Error in Submit Process saving receipt, reason={}", exce.getLocalizedMessage(), exce);
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
@@ -251,7 +251,7 @@ public class ReceiptUpdateController {
             value = "/submit",
             method = RequestMethod.POST,
             params = "receipt-reject")
-    public ModelAndView submitRejectedReceipt(
+    public String submitRejectedReceipt(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
@@ -272,7 +272,7 @@ public class ReceiptUpdateController {
             value = "/submitMileage",
             method = RequestMethod.POST,
             params = "mileage-reject")
-    public ModelAndView submitRejectedMileage(
+    public String submitRejectedMileage(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
@@ -289,7 +289,7 @@ public class ReceiptUpdateController {
      * @param redirectAttrs
      * @return
      */
-    private ModelAndView submitRejectionOfDocument(
+    private String submitRejectionOfDocument(
             String technicianId,
             ReceiptDocumentForm receiptDocumentForm,
             RedirectAttributes redirectAttrs
@@ -298,14 +298,14 @@ public class ReceiptUpdateController {
         try {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
             documentUpdateService.processDocumentForReject(technicianId, document.getId(), document.getDocumentOfType());
-            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+            return REDIRECT_EMP_LANDING_HTM;
         } catch (Exception e) {
             LOG.error("Error happened during rejecting document={} reason={}", receiptDocumentForm.getReceiptDocument().getId(), e.getLocalizedMessage(), e);
 
             String message = "Receipt could not be processed for Reject. Contact administrator with Document # ";
             receiptDocumentForm.setErrorMessage(message + receiptDocumentForm.getReceiptDocument().getId());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return new ModelAndView("redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
@@ -319,7 +319,7 @@ public class ReceiptUpdateController {
     @RequestMapping (
             value = "/recheck",
             method = RequestMethod.POST)
-    public ModelAndView submitReceiptRecheck(
+    public String submitReceiptRecheck(
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
@@ -327,13 +327,15 @@ public class ReceiptUpdateController {
             RedirectAttributes redirectAttrs
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Turk processing a receipt " + receiptDocumentForm.getReceiptDocument().getId() + " ; Title : " + receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
+        LOG.info("Turk processing a receipt id={} biz={}",
+                receiptDocumentForm.getReceiptDocument().getId(),
+                receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
             LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+            return "redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
         try {
@@ -344,7 +346,7 @@ public class ReceiptUpdateController {
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
                 redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-                return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+                return "redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
@@ -354,13 +356,13 @@ public class ReceiptUpdateController {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
             documentUpdateService.processDocumentReceiptReCheck(receiptUser.getRid(), receipt, items, document);
-            return new ModelAndView(REDIRECT_EMP_LANDING_HTM);
+            return REDIRECT_EMP_LANDING_HTM;
         } catch (Exception exce) {
             LOG.error("Error in Recheck save reason={}", exce.getLocalizedMessage(), exce);
 
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return new ModelAndView("redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm");
+            return "redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
