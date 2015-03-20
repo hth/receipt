@@ -444,6 +444,8 @@ public class UserProfilePreferenceController {
      * unlikely to perform the action below.
      *
      * @param expenseTypeForm
+     * @param profileForm
+     * @param redirectAttrs
      * @return
      * @throws IOException
      */
@@ -456,23 +458,27 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("profileForm")
             ProfileForm profileForm,
 
+            @ModelAttribute ("billingForm")
+            BillingForm billingForm,
+
             RedirectAttributes redirectAttrs
     ) throws IOException {
-
         UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(profileForm.getRid());
-        userProfile.setLevel(profileForm.getLevel());
-        if (!profileForm.isActive() || !userProfile.isActive()) {
-            if (profileForm.isActive()) {
-                userProfile.active();
-            } else {
-                userProfile.inActive();
-            }
-        }
 
+        userProfile.setLevel(profileForm.getLevel());
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
                 userProfile.getReceiptUserId(),
                 userProfile.getLevel()
         );
+
+        /** Profile active and inactive updates UserProfileEntity and UserAccountEntity as active or inactive. */
+        if (profileForm.isActive()) {
+            userProfile.active();
+            userAccount.active();
+        } else {
+            userProfile.inActive();
+            userAccount.inActive();
+        }
 
         try {
             accountService.saveUserAccount(userAccount);
@@ -483,7 +489,6 @@ public class UserProfilePreferenceController {
             LOG.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
             profileForm.setErrorMessage("Failed updating profile " + userProfile.getReceiptUserId() + ", reason: " + exce.getLocalizedMessage());
         }
-        redirectAttrs.addFlashAttribute("profileForm", profileForm);
         return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
     }
 
@@ -507,7 +512,13 @@ public class UserProfilePreferenceController {
         return modelAndView;
     }
 
-    private void populateProfileForm(ProfileForm profileForm, String rid) {
+    /**
+     * Set Expense Tag information.
+     *
+     * @param profileForm
+     * @param rid
+     */
+    private void populateExpenseTag(ProfileForm profileForm, String rid) {
         List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(rid);
         profileForm.setExpenseTags(expenseTypes);
 
