@@ -113,6 +113,10 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("AIR")
     private AccountInactiveReasonEnum accountInactiveReason;
 
+    @DBRef
+    @Field ("BILLING_ACCOUNT")
+    private BillingAccountEntity billingAccount;
+
     private UserAccountEntity() {
         super();
         roles = new LinkedHashSet<>();
@@ -132,6 +136,7 @@ public class UserAccountEntity extends BaseEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userAuthentication = userAuthentication;
+        billingAccount = new BillingAccountEntity(receiptUserId);
     }
 
     public static UserAccountEntity newInstance(
@@ -333,6 +338,14 @@ public class UserAccountEntity extends BaseEntity {
 
     public void setAccountInactiveReason(AccountInactiveReasonEnum accountInactiveReason) {
         this.accountInactiveReason = accountInactiveReason;
+    }
+
+    public BillingAccountEntity getBillingAccount() {
+        return billingAccount;
+    }
+
+    public void setBillingAccount(BillingAccountEntity billingAccount) {
+        this.billingAccount = billingAccount;
     }
 
     @Override

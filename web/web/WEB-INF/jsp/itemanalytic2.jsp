@@ -95,9 +95,20 @@
                         </a>
                     </td>
                     <td class="analysis">
-                        <a href="${pageContext.request.contextPath}/access/receipt/${itemAnalyticForm.item.receipt.id}.htm" style="color: #007AFF">
-                            ${itemAnalyticForm.item.receipt.bizName.businessName}
-                        </a>
+                        <c:choose>
+                            <c:when test="${itemAnalyticForm.item.receipt.billedStatus eq 'UNPAID'}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-3"
+                                        style="color: #007AFF">
+                                    ${itemAnalyticForm.item.receipt.bizName.businessName}
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/access/receipt/${itemAnalyticForm.item.receipt.id}.htm"
+                                        style="color: #007AFF">
+                                    ${itemAnalyticForm.item.receipt.bizName.businessName}
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                     <td class="analysis">
                         ${itemAnalyticForm.item.receipt.bizStore.location}
@@ -155,9 +166,20 @@
                         </a>
                     </td>
                     <td class="analysis">
-                        <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm" style="color: #007AFF">
-                            ${item.receipt.bizName.businessName}
-                        </a>
+                        <c:choose>
+                            <c:when test="${item.receipt.billedStatus eq 'UNPAID'}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-3"
+                                        style="color: #007AFF">
+                                    ${item.receipt.bizName.businessName}
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm"
+                                        style="color: #007AFF">
+                                    ${item.receipt.bizName.businessName}
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                     <td class="analysis">
                         ${item.receipt.bizStore.location}

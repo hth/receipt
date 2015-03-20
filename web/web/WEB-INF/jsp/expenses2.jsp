@@ -75,16 +75,34 @@
                 <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
                 <span class="rightside-li-date-text" style="width: 100px;"><fmt:formatDate value="${item.receipt.receiptDate}" pattern="MMM dd, yyyy"/></span>
                 <span style="background-color: ${item.expenseTag.tagColor}" title="${item.expenseTag.tagName}">&nbsp;&nbsp;&nbsp;</span>
-                <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm" class="rightside-li-middle-text" style="width: 250px;">
-                    <c:choose>
-                        <c:when test="${item.receipt.bizName.businessName.length() gt 34}">
-                            <spring:eval expression="item.receipt.bizName.businessName.substring(0, 34)"/>...
-                        </c:when>
-                        <c:otherwise>
-                            <spring:eval expression="item.receipt.bizName.businessName"/>
-                        </c:otherwise>
-                    </c:choose>
-                </a>
+                <c:choose>
+                    <c:when test="${item.receipt.billedStatus eq 'UNPAID'}">
+                        <a href="/access/userprofilepreference/i.htm#tabs-3"
+                                class="rightside-li-middle-text" style="width: 250px;">
+                            <c:choose>
+                                <c:when test="${item.receipt.bizName.businessName.length() gt 34}">
+                                    <spring:eval expression="item.receipt.bizName.businessName.substring(0, 34)"/>...
+                                </c:when>
+                                <c:otherwise>
+                                    <spring:eval expression="item.receipt.bizName.businessName"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm"
+                                class="rightside-li-middle-text" style="width: 250px;">
+                            <c:choose>
+                                <c:when test="${item.receipt.bizName.businessName.length() gt 34}">
+                                    <spring:eval expression="item.receipt.bizName.businessName.substring(0, 34)"/>...
+                                </c:when>
+                                <c:otherwise>
+                                    <spring:eval expression="item.receipt.bizName.businessName"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                    </c:otherwise>
+                </c:choose>
                 <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm" style="width: 250px;">
                     ${item.name}
                 </a>
