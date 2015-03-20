@@ -181,7 +181,7 @@ public class LandingService {
             ReceiptGrouped r2 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
             copiedList.add(r2);
         } else if (size == 2) {
-            ReceiptGrouped receiptGrouped = copiedList.get(0);
+            ReceiptGrouped receiptGrouped = copiedList.get(1);
             DateTime dateTime = receiptGrouped.getDateTime();
 
             dateTime = dateTime.minusMonths(1);
