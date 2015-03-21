@@ -108,20 +108,6 @@
             <div id="tabs-1" class="report_my ajx-content" style="display: block;">
                 <h1 class="h1">PROFILE</h1>
                 <hr>
-                <div class="photo_section">
-                    <div class="photo_part">
-                        <h2 class="h2">Photo</h2>
-                        <div class="pic">
-                            <img width="170" height="175" alt=" Image from social profile"
-                                    style="font-size: 0.9em; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"
-                                    src="${profileForm.profileImage}" />
-                        </div>
-                    </div>
-                    <div class="photo_button">
-                        <input type="button" value="TAKE NEW PHOTO" style="background:#0079FF" class="read_btn">
-                        <input type="button" value="UPLOAD IMAGE" style="background:#0079FF;margin: 29px 96px 0px 0px;" class="read_btn">
-                    </div>
-                </div>
                 <div class="down_form">
                     <form:form modelAttribute="profileForm" method="post" action="i.htm">
                         <form:hidden path="rid"/>
@@ -219,6 +205,22 @@
                         </c:choose>
                     </form:form>
                 </div>
+                <div class="down_form">
+                    <div class="photo_section">
+                        <div class="photo_part">
+                            <h2 class="h2">Photo</h2>
+                            <div class="pic">
+                                <img width="170" height="175" alt=" Image from social profile"
+                                        style="font-size: 0.9em; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"
+                                        src="${profileForm.profileImage}" />
+                            </div>
+                        </div>
+                        <div class="photo_button">
+                            <input type="button" value="TAKE NEW PHOTO" style="background:#0079FF" class="read_btn">
+                            <input type="button" value="UPLOAD IMAGE" style="background:#0079FF;margin: 29px 96px 0px 0px;" class="read_btn">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="tabs-2" class="ajx-content report_my">
@@ -296,6 +298,23 @@
                         </label>
                     </div>
                     </sec:authorize>
+                </div>
+
+                <div class="down_form">
+                    <h2 class="h2" style="padding-bottom:2%;">Billing</h2>
+                    <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 100px; font-weight: normal; !important;">
+                        ${billing.billedForMonth}
+                        </label>
+                        <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
+                        ${billing.billedStatus.description}
+                        </label>
+                        <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
+                            <fmt:formatDate value="${billing.updated}" type="date"/>
+                        </label>
+                    </div>
+                    </c:forEach>
                 </div>
             </div>
 

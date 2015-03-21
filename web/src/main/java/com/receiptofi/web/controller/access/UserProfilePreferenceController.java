@@ -3,12 +3,14 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.BillingService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ItemService;
@@ -85,6 +87,7 @@ public class UserProfilePreferenceController {
     @Autowired private MailService mailService;
     @Autowired private EmailValidateService emailValidateService;
     @Autowired private FileSystemService fileSystemService;
+    @Autowired private BillingService billingService;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -476,6 +479,7 @@ public class UserProfilePreferenceController {
     private BillingForm populateBilling(BillingForm billingForm, String rid) {
         billingForm.setDiskUsage(fileSystemService.diskUsage(rid));
         billingForm.setPendingDiskUsage(fileSystemService.filesPendingDiskUsage(rid));
+        billingForm.setBillings(billingService.getHistory(rid));
         return billingForm;
     }
 

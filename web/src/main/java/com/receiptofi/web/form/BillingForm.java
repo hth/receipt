@@ -1,11 +1,13 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.value.DiskUsageGrouped;
 import com.receiptofi.utils.Maths;
 
 import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * User: hitender
@@ -14,6 +16,7 @@ import java.math.BigDecimal;
 public class BillingForm {
     private DiskUsageGrouped diskUsage;
     private long pendingDiskUsage;
+    private List<BillingHistoryEntity> billings;
 
     public void setDiskUsage(DiskUsageGrouped diskUsage) {
         this.diskUsage = diskUsage;
@@ -23,6 +26,7 @@ public class BillingForm {
     public BigDecimal getTotalSLN_MB() {
         return Maths.divide(diskUsage.getTotalSLN(), DiskUsageGrouped.MB);
     }
+
     @NumberFormat (style = NumberFormat.Style.NUMBER)
     public BigDecimal getPendingDiskUsage_MB() {
         return Maths.divide(pendingDiskUsage, DiskUsageGrouped.MB);
@@ -40,5 +44,13 @@ public class BillingForm {
 
     public void setPendingDiskUsage(long pendingDiskUsage) {
         this.pendingDiskUsage = pendingDiskUsage;
+    }
+
+    public List<BillingHistoryEntity> getBillings() {
+        return billings;
+    }
+
+    public void setBillings(List<BillingHistoryEntity> billings) {
+        this.billings = billings;
     }
 }

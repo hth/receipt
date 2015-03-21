@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 3/19/15 4:42 PM
@@ -50,5 +52,9 @@ public class BillingService {
         if (null != billingHistory) {
             receipt.setBilledStatus(billingHistory.getBilledStatus());
         }
+    }
+
+    public List<BillingHistoryEntity> getHistory(String rid) {
+        return billingHistoryManager.getHistory(rid);
     }
 }

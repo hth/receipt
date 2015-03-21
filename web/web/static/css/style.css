@@ -851,7 +851,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 .photo_button {
-    float: left;
+    float: right;
     width: 45%;
 }
 
