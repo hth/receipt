@@ -277,22 +277,22 @@
                 <div class="down_form">
                     <h2 class="h2" style="padding-bottom:2%;">Usage</h2>
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Disk Usage</label>
+                        <label class="profile_label" style="width: 200px;">Disk usage</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${profileForm.totalSLN_MB}"/> MB
+                            <fmt:formatNumber value="${billingForm.totalSLN_MB}"/> MB
                         </label>
                     </div>
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Pending Usage</label>
+                        <label class="profile_label" style="width: 200px;">Pending usage</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${profileForm.pendingDiskUsage_MB}"/> MB *
+                            <fmt:formatNumber value="${billingForm.pendingDiskUsage_MB}"/> MB *
                         </label>
                     </div>
                     <sec:authorize access="hasRole('ROLE_USER')">
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Usage Saved By Scaling</label>
+                        <label class="profile_label" style="width: 200px;">Usage saved by scaling</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${profileForm.diskSaved_MB}"/> MB
+                            <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
                         </label>
                     </div>
                     </sec:authorize>
@@ -337,7 +337,7 @@
                                 cssErrorClass="profile_label lb_error">Status</form:label>
                         <div class="profile_label">
                             <form:checkbox path="active" id="active" />
-                            <label for="active">Active</label>
+                            <label for="active">&nbsp; Active</label>
                         </div>
                     </div>
                     &nbsp;<br>

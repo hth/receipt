@@ -67,9 +67,6 @@ public class ProfileForm {
     private boolean accountValidationExpired;
     private boolean accountValidated;
 
-    private DiskUsageGrouped diskUsage;
-    private long pendingDiskUsage;
-
     @SuppressWarnings ("unused")
     private ProfileForm() {
     }
@@ -214,32 +211,5 @@ public class ProfileForm {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
-    }
-
-    public void setDiskUsage(DiskUsageGrouped diskUsage) {
-        this.diskUsage = diskUsage;
-    }
-
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public BigDecimal getTotalSLN_MB() {
-        return Maths.divide(diskUsage.getTotalSLN(), DiskUsageGrouped.MB);
-    }
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public BigDecimal getPendingDiskUsage_MB() {
-        return Maths.divide(pendingDiskUsage, DiskUsageGrouped.MB);
-    }
-
-    /**
-     * Saved space result of file scaling.
-     *
-     * @return
-     */
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public BigDecimal getDiskSaved_MB() {
-        return Maths.divide(diskUsage.getTotalLN() - pendingDiskUsage - diskUsage.getTotalSLN(), DiskUsageGrouped.MB);
-    }
-
-    public void setPendingDiskUsage(long pendingDiskUsage) {
-        this.pendingDiskUsage = pendingDiskUsage;
     }
 }

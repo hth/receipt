@@ -16,6 +16,7 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
+import com.receiptofi.web.form.BillingForm;
 import com.receiptofi.web.form.ExpenseTypeForm;
 import com.receiptofi.web.form.ProfileForm;
 import com.receiptofi.web.validator.ExpenseTagValidator;
@@ -35,14 +36,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -88,87 +88,57 @@ public class UserProfilePreferenceController {
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
-    public ModelAndView loadForm(
+    public String loadAccount(
+            @ModelAttribute ("profileForm")
+            ProfileForm profileForm,
+
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            Model model
+            @ModelAttribute ("billingForm")
+            BillingForm billingForm,
+
+            ModelMap model
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ModelAndView modelAndView;
-        ProfileForm profileForm = null;
 
         /** Gymnastic to show BindingResult errors if any. */
-        if (model.asMap().containsKey("result")) {
-            modelAndView = new ModelAndView(nextPage);
-
-            BeanPropertyBindingResult result = (BeanPropertyBindingResult) model.asMap().get("result");
+        if (model.containsKey("result")) {
+            BeanPropertyBindingResult result = (BeanPropertyBindingResult) model.get("result");
             if (result.getObjectName().equals("expenseTypeForm")) {
                 model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", result);
 
-                profileForm = ProfileForm.newInstance(
-                        userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
-                populateProfileForm(profileForm, receiptUser.getRid());
+                populateProfile(profileForm, receiptUser.getRid());
+                populateExpenseTag(profileForm, receiptUser.getRid());
+                populateBilling(billingForm, receiptUser.getRid());
 
-                modelAndView.addObject("profileForm", profileForm);
+                model.addAttribute("profileForm", profileForm);
             }
 
             if (result.getObjectName().equals("profileForm")) {
                 model.addAttribute("org.springframework.validation.BindingResult.profileForm", result);
 
                 profileForm = (ProfileForm) result.getTarget();
-                populateProfileForm(profileForm, receiptUser.getRid());
 
                 /** Since we do not plan to lose profileForm from result we need to set some other values for tab 3. */
-                ProfileForm profile = ProfileForm.newInstance(
-                        userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
-                profileForm.setLevel(profile.getLevel());
-                profileForm.setActive(profile.isActive());
+                UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid());
+                profileForm.setLevel(userProfile.getLevel());
+                profileForm.setActive(userProfile.isActive());
 
-                modelAndView.addObject("profileForm", profileForm);
+                populateExpenseTag(profileForm, receiptUser.getRid());
+                populateBilling(billingForm, receiptUser.getRid());
+
+                model.addAttribute("profileForm", profileForm);
+                model.addAttribute("expenseTypeForm", expenseTypeForm);
             }
         } else {
-            profileForm = (ProfileForm) model.asMap().get("profileForm");
-            if (profileForm == null) {
-                profileForm = ProfileForm.newInstance(
-                        userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()));
-
-                profileForm.setDiskUsage(fileSystemService.diskUsage(receiptUser.getRid()));
-                profileForm.setPendingDiskUsage(fileSystemService.filesPendingDiskUsage(receiptUser.getRid()));
-            }
-            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, receiptUser.getRid());
+            populateProfile(profileForm, receiptUser.getRid());
+            populateExpenseTag(profileForm, receiptUser.getRid());
+            populateBilling(billingForm, receiptUser.getRid());
         }
 
-        Assert.notNull(profileForm, "profileForm should not be null");
-        setAccountValidationInfo(receiptUser, profileForm);
-        return modelAndView;
-    }
-
-    /**
-     * Sets account with validation info if account has not be validated.
-     *
-     * @param receiptUser
-     * @param profileForm not null
-     */
-    private void setAccountValidationInfo(ReceiptUser receiptUser, ProfileForm profileForm) {
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(receiptUser.getRid());
-        if (null != userAccount) {
-            if (!userAccount.isAccountValidated()) {
-                profileForm.setAccountValidationExpireDay(
-                        DateUtil.toDateTime(userAccount.getAccountValidatedBeginDate())
-                                .plusDays(mailValidationTimeoutPeriod).toDate());
-
-                profileForm.setAccountValidationExpired(
-                        Days.daysBetween(
-                                new LocalDate(userAccount.getAccountValidatedBeginDate()),
-                                new LocalDate(new Date())
-                        ).isGreaterThan(Days.days(mailValidationTimeoutPeriod)));
-            } else {
-                profileForm.setAccountValidated(userAccount.isAccountValidated());
-            }
-
-            profileForm.setProfileImage(userAccount.getImageUrl());
-        }
+        setAccountValidationInfo(receiptUser.getRid(), profileForm);
+        return nextPage;
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
@@ -177,7 +147,6 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
-            //@Valid
             @ModelAttribute ("profileForm")
             ProfileForm profileForm,
 
@@ -191,7 +160,7 @@ public class UserProfilePreferenceController {
 
         profileValidator.validate(profileForm, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
+            LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
             /** Re-direct to prevent resubmit. */
             return "redirect:/access" + nextPage + "/i" + ".htm";
@@ -229,48 +198,78 @@ public class UserProfilePreferenceController {
         return "redirect:/access" + nextPage + "/i" + ".htm";
     }
 
-    private void changeProfileDetails(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
-        if (!profileForm.getFirstName().getText().equals(userProfile.getFirstName()) ||
-                !profileForm.getLastName().getText().equals(userProfile.getLastName())) {
-            accountService.updateName(
-                    profileForm.getFirstName().getText(),
-                    profileForm.getLastName().getText(),
-                    receiptUser.getRid());
+    /**
+     * Used for adding Expense Type
+     * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
+     *
+     * @param expenseTypeForm
+     * @param result
+     * @return
+     */
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_save_update")
+    public String addExpenseTag(
+            @ModelAttribute ("profileForm")
+            ProfileForm profileForm,
+
+            @ModelAttribute ("billingForm")
+            BillingForm billingForm,
+
+            @ModelAttribute ("expenseTypeForm")
+            ExpenseTypeForm expenseTypeForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs
+    ) {
+        /** There is UI logic based on this. Set the right to be active when responding. */
+        redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
+
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        expenseTagValidator.validate(expenseTypeForm, result);
+        if (result.hasErrors()) {
+            LOG.warn("validation error");
+            redirectAttrs.addFlashAttribute("result", result);
+            /** Re-direct to prevent resubmit. */
+            return "redirect:/access" + nextPage + "/i" + ".htm";
         }
-    }
 
-    private void changeEmail(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
-        if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail().getText())) {
-            UserAccountEntity userAccount = accountService.updateUID(
-                    receiptUser.getUsername(),
-                    profileForm.getMail().getText(),
-                    receiptUser.getRid());
+        try {
+            if (StringUtils.isBlank(expenseTypeForm.getTagId())) {
+                if (expenseTagCountMax > userProfilePreferenceService.allExpenseTypes(receiptUser.getRid()).size()) {
+                    ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
+                            expenseTypeForm.getTagName(),
+                            receiptUser.getRid(),
+                            expenseTypeForm.getTagColor());
 
-            if (userAccount != null) {
-
-                EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                        userAccount.getReceiptUserId(),
-                        userAccount.getUserId());
-
-                mailService.accountValidationMail(
-                        userAccount.getUserId(),
-                        userAccount.getName(),
-                        accountValidate.getAuthenticationKey());
-
-                profileForm.setSuccessMessage(
-                        "Email updated successfully. " +
-                                "Sent validation email at your new email address " + profileForm.getMail() + ". " +
-                                "Please validate by clicking on link in email otherwise account will disable in " +
-                                mailValidationTimeoutPeriod + " days. After logout, you will need your new email " +
-                                "address to log back in.");
-                profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
+                    userProfilePreferenceService.saveExpenseTag(expenseTag);
+                } else {
+                    result.rejectValue("tagName",
+                            StringUtils.EMPTY,
+                            "Maximum number of TAG(s) allowed " +
+                                    expenseTagCountMax +
+                                    ". Could not add " +
+                                    expenseTypeForm.getTagName() +
+                                    "."
+                    );
+                    redirectAttrs.addFlashAttribute("result", result);
+                }
             } else {
-                profileForm.setErrorMessage("Account with similar email address already exists. " +
-                        "Submitted address " + profileForm.getMail() + ". " +
-                        "If you have lost your password, then please try password recovery option.");
-                profileForm.setMail(new ScrubbedInput(userProfile.getEmail()));
+                userProfilePreferenceService.updateExpenseTag(
+                        expenseTypeForm.getTagId(),
+                        expenseTypeForm.getTagName(),
+                        expenseTypeForm.getTagColor(),
+                        receiptUser.getRid()
+                );
             }
+        } catch (Exception e) {
+            LOG.error("Error saving expenseTag={} reason={}", expenseTypeForm.getTagName(), e.getLocalizedMessage(), e);
+            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
+            redirectAttrs.addFlashAttribute("result", result);
         }
+
+        /** Re-direct to prevent resubmit. */
+        return "redirect:/access" + nextPage + "/i" + ".htm";
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
@@ -327,77 +326,6 @@ public class UserProfilePreferenceController {
     }
 
     /**
-     * Used for adding Expense Type
-     * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
-     *
-     * @param expenseTypeForm
-     * @param result
-     * @return
-     */
-    @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_save_update")
-    public String addExpenseTag(
-            @ModelAttribute ("profileForm")
-            ProfileForm profileForm,
-
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
-
-            BindingResult result,
-            RedirectAttributes redirectAttrs
-    ) {
-        /** There is UI logic based on this. Set the right to be active when responding. */
-        redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
-
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        expenseTagValidator.validate(expenseTypeForm, result);
-        if (result.hasErrors()) {
-            LOG.error("validation error");
-            redirectAttrs.addFlashAttribute("result", result);
-            /** Re-direct to prevent resubmit. */
-            return "redirect:/access" + nextPage + "/i" + ".htm";
-        }
-
-        try {
-            if (StringUtils.isBlank(expenseTypeForm.getTagId())) {
-                if (expenseTagCountMax > userProfilePreferenceService.allExpenseTypes(receiptUser.getRid()).size()) {
-                    ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
-                            expenseTypeForm.getTagName(),
-                            receiptUser.getRid(),
-                            expenseTypeForm.getTagColor());
-
-                    userProfilePreferenceService.saveExpenseTag(expenseTag);
-                } else {
-                    result.rejectValue("tagName",
-                            StringUtils.EMPTY,
-                            "Maximum number of TAG(s) allowed " +
-                                    expenseTagCountMax +
-                                    ". Could not add " +
-                                    expenseTypeForm.getTagName() +
-                                    "."
-                    );
-                    redirectAttrs.addFlashAttribute("result", result);
-                }
-            } else {
-                userProfilePreferenceService.updateExpenseTag(
-                        expenseTypeForm.getTagId(),
-                        expenseTypeForm.getTagName(),
-                        expenseTypeForm.getTagColor(),
-                        receiptUser.getRid()
-                );
-            }
-        } catch (Exception e) {
-            LOG.error("Error saving expenseTag={} reason={}", expenseTypeForm.getTagName(), e.getLocalizedMessage(), e);
-            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
-            redirectAttrs.addFlashAttribute("result", result);
-        }
-
-        /** Re-direct to prevent resubmit. */
-        return "redirect:/access" + nextPage + "/i" + ".htm";
-    }
-
-    /**
      * Only admin has access to this link. Others get 403 error.
      *
      * @param rid
@@ -407,36 +335,29 @@ public class UserProfilePreferenceController {
      */
     @PreAuthorize ("hasRole('ROLE_ADMIN')")
     @RequestMapping (value = "/their", method = RequestMethod.GET)
-    public ModelAndView userStatus(
+    public String adminGetUserStatus(
             @RequestParam ("id")
             String rid,
+
+            @ModelAttribute ("profileForm")
+            ProfileForm profileForm,
 
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
+            @ModelAttribute ("billingForm")
+            BillingForm billingForm,
+
             Model model
     ) throws IOException {
-        ModelAndView modelAndView;
-        ProfileForm profileForm = (ProfileForm) model.asMap().get("profileForm");
-        if (null == profileForm) {
-            profileForm = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
-            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
-        } else {
-            populateProfileForm(profileForm, rid);
-
-            /** Since we do not plan to lose profileForm from result we need to set some other values for tab 1. */
-            ProfileForm profile = ProfileForm.newInstance(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid));
-            profileForm.setFirstName(profile.getFirstName());
-            profileForm.setLastName(profile.getLastName());
-            profileForm.setMail(profile.getMail());
-            profileForm.setUpdated(profile.getUpdated());
-
-            modelAndView = populateModel(nextPage, expenseTypeForm, profileForm, rid);
-        }
+        /** Since we do not plan to lose profileForm from result we need to set some other values for tab 1. */
+        populateProfile(profileForm, rid);
+        populateExpenseTag(profileForm, rid);
+        populateBilling(billingForm, rid);
 
         //There is UI logic based on this. Set the right to be active when responding.
-        modelAndView.addObject("showTab", "#tabs-4");
-        return modelAndView;
+        model.addAttribute("showTab", "#tabs-4");
+        return nextPage;
     }
 
     /**
@@ -451,7 +372,7 @@ public class UserProfilePreferenceController {
      */
     @PreAuthorize ("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping (value = "/update", method = RequestMethod.POST)
-    public String userStatusUpdate(
+    public String adminUpdateUserStatus(
             @ModelAttribute ("expenseTypeForm")
             ExpenseTypeForm expenseTypeForm,
 
@@ -493,26 +414,6 @@ public class UserProfilePreferenceController {
     }
 
     /**
-     * @param nextPage
-     * @param expenseTypeForm
-     * @param profileForm
-     * @return
-     */
-    private ModelAndView populateModel(
-            String nextPage,
-            ExpenseTypeForm expenseTypeForm,
-            ProfileForm profileForm,
-            String rid
-    ) {
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("profileForm", profileForm);
-        modelAndView.addObject("expenseTypeForm", expenseTypeForm);
-
-        populateProfileForm(profileForm, rid);
-        return modelAndView;
-    }
-
-    /**
      * Set Expense Tag information.
      *
      * @param profileForm
@@ -531,5 +432,94 @@ public class UserProfilePreferenceController {
         }
 
         profileForm.setExpenseTagCount(expenseTagWithCount);
+    }
+
+    private void populateProfile(ProfileForm profileForm, String rid) {
+        UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(rid);
+
+        profileForm.setFirstName(new ScrubbedInput(userProfile.getFirstName()));
+        profileForm.setLastName(new ScrubbedInput(userProfile.getLastName()));
+        profileForm.setMail(new ScrubbedInput(userProfile.getEmail()));
+        profileForm.setUpdated(userProfile.getUpdated());
+        profileForm.setLevel(userProfile.getLevel());
+        profileForm.setActive(userProfile.isActive());
+        profileForm.setRid(userProfile.getReceiptUserId());
+    }
+
+    /**
+     * Sets account with validation info if account has not be validated.
+     *
+     * @param rid
+     * @param profileForm not null
+     */
+    private void setAccountValidationInfo(String rid, ProfileForm profileForm) {
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+        if (null != userAccount) {
+            if (!userAccount.isAccountValidated()) {
+                profileForm.setAccountValidationExpireDay(
+                        DateUtil.toDateTime(userAccount.getAccountValidatedBeginDate())
+                                .plusDays(mailValidationTimeoutPeriod).toDate());
+
+                profileForm.setAccountValidationExpired(
+                        Days.daysBetween(
+                                new LocalDate(userAccount.getAccountValidatedBeginDate()),
+                                new LocalDate(new Date())
+                        ).isGreaterThan(Days.days(mailValidationTimeoutPeriod)));
+            } else {
+                profileForm.setAccountValidated(userAccount.isAccountValidated());
+            }
+
+            profileForm.setProfileImage(userAccount.getImageUrl());
+        }
+    }
+
+    private BillingForm populateBilling(BillingForm billingForm, String rid) {
+        billingForm.setDiskUsage(fileSystemService.diskUsage(rid));
+        billingForm.setPendingDiskUsage(fileSystemService.filesPendingDiskUsage(rid));
+        return billingForm;
+    }
+
+    private void changeProfileDetails(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
+        if (!profileForm.getFirstName().getText().equals(userProfile.getFirstName()) ||
+                !profileForm.getLastName().getText().equals(userProfile.getLastName())) {
+            accountService.updateName(
+                    profileForm.getFirstName().getText(),
+                    profileForm.getLastName().getText(),
+                    receiptUser.getRid());
+        }
+    }
+
+    private void changeEmail(ProfileForm profileForm, ReceiptUser receiptUser, UserProfileEntity userProfile) {
+        if (!userProfile.getEmail().equalsIgnoreCase(profileForm.getMail().getText())) {
+            UserAccountEntity userAccount = accountService.updateUID(
+                    receiptUser.getUsername(),
+                    profileForm.getMail().getText(),
+                    receiptUser.getRid());
+
+            if (userAccount != null) {
+
+                EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                        userAccount.getReceiptUserId(),
+                        userAccount.getUserId());
+
+                mailService.accountValidationMail(
+                        userAccount.getUserId(),
+                        userAccount.getName(),
+                        accountValidate.getAuthenticationKey());
+
+                profileForm.setSuccessMessage(
+                        "Email updated successfully. " +
+                                "Sent validation email at your new email address " + profileForm.getMail() + ". " +
+                                "Please validate by clicking on link in email otherwise account will disable in " +
+                                mailValidationTimeoutPeriod + " days. After logout, you will need your new email " +
+                                "address to log back in.");
+                profileForm.setUpdated(userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(receiptUser.getRid()).getUpdated());
+            } else {
+                profileForm.setErrorMessage("Account with similar email address already exists. " +
+                        "Submitted address " + profileForm.getMail() + ". " +
+                        "If you have lost your password, then please try password recovery option.");
+                profileForm.setMail(new ScrubbedInput(userProfile.getEmail()));
+            }
+        }
     }
 }
