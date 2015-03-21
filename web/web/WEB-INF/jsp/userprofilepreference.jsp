@@ -228,7 +228,7 @@
             <div id="tabs-2" class="ajx-content report_my">
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
-                <h2 class="h2" style="padding-bottom:2%;">Tags</h2>
+                <h2 class="h2" style="padding-bottom:2%;">Tag Expenses</h2>
                 <div class="">
                     <c:forEach var="expenseTag" items="${profileForm.expenseTags}" varStatus="status">
                     <input type="button"
@@ -279,10 +279,16 @@
                 <h1 class="h1">BILLING &amp; USAGE</h1>
                 <hr>
                 <div class="down_form">
-                    <h2 class="h2" style="padding-bottom:2%;">Billing</h2>
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing</h2>
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Monthly billed as</label>
+                        <%--<form:form method="post" modelAttribute="billingForm" action="update.htm">--%>
+                        <%--<form:select path="billingAccountType" cssClass="styled-select slate" cssStyle="width: 150px;">--%>
+                            <%--<form:option value="0" label="Select Account Type" />--%>
+                            <%--<form:options itemLabel="description" />--%>
+                        <%--</form:select>--%>
+                        <%--</form:form>--%>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
                             ${billingForm.billingAccountType.description}
                         </label>
@@ -296,7 +302,7 @@
                 </div>
 
                 <div class="down_form">
-                    <h2 class="h2" style="padding-bottom:2%;">Usage</h2>
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Usage</h2>
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Disk usage</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
@@ -320,7 +326,7 @@
                 </div>
 
                 <div class="down_form">
-                    <h2 class="h2" style="padding-bottom:2%;">Billing History</h2>
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing History</h2>
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px;">Period</label>
