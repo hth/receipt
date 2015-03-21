@@ -68,7 +68,7 @@
                 <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
                 <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTag}">&nbsp;&nbsp;&nbsp;</span>
                 <c:choose>
-                <c:when test="${receipt.billedStatus eq 'UNPAID'}">
+                <c:when test="${receipt.billedStatus eq 'NB'}">
                     <a href="/access/userprofilepreference/i.htm#tabs-3"
                             class="rightside-li-middle-text">
                         <c:choose>

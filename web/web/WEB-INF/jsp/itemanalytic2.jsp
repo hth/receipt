@@ -96,7 +96,7 @@
                     </td>
                     <td class="analysis">
                         <c:choose>
-                            <c:when test="${itemAnalyticForm.item.receipt.billedStatus eq 'UNPAID'}">
+                            <c:when test="${itemAnalyticForm.item.receipt.billedStatus eq 'NB'}">
                                 <a href="/access/userprofilepreference/i.htm#tabs-3"
                                         style="color: #007AFF">
                                     ${itemAnalyticForm.item.receipt.bizName.businessName}
@@ -167,7 +167,7 @@
                     </td>
                     <td class="analysis">
                         <c:choose>
-                            <c:when test="${item.receipt.billedStatus eq 'UNPAID'}">
+                            <c:when test="${item.receipt.billedStatus eq 'NB'}">
                                 <a href="/access/userprofilepreference/i.htm#tabs-3"
                                         style="color: #007AFF">
                                     ${item.receipt.bizName.businessName}

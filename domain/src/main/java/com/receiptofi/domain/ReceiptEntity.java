@@ -132,7 +132,7 @@ public class ReceiptEntity extends BaseEntity {
 
     @NotNull
     @Field ("BS")
-    private BilledStatusEnum billedStatus = BilledStatusEnum.UNPAID;
+    private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
     /** To keep bean happy. */
     public ReceiptEntity() {

@@ -36,7 +36,7 @@ public class BillingHistoryEntity extends BaseEntity {
 
     @NotNull
     @Field ("BS")
-    private BilledStatusEnum billedStatus = BilledStatusEnum.UNPAID;
+    private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
     @NotNull
     @Field ("BM")

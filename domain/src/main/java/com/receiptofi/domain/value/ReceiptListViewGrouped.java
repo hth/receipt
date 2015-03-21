@@ -41,7 +41,7 @@ public class ReceiptListViewGrouped {
     private ExpenseTagEntity expenseTag;
 
     @Field ("BS")
-    private BilledStatusEnum billedStatus = BilledStatusEnum.UNPAID;
+    private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
     public String getId() {
         return id;

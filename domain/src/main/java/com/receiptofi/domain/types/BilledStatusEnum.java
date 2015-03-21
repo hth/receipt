@@ -13,9 +13,9 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum BilledStatusEnum {
-    UNPAID("UNPAID", "Unpaid"),
-    PROMOTION("PROMOTION", "Promotion"),
-    PAID("PAID", "Paid");
+    NB("NB", "Not Billed"),
+    P("P", "Promotion"),
+    B("B", "Billed");
 
     private final String description;
     private final String name;

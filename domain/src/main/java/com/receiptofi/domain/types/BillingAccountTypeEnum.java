@@ -13,8 +13,8 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum BillingAccountTypeEnum {
-    UNPAID("UNPAID", "Unpaid"),
     PROMOTION("PROMOTION", "Promotion"),
+    NO_BILLING("NO_BILLING", "No Billing"),
     MONTHLY("MONTHLY", "Monthly"),
     ANNUAL("ANNUAL", "Annual");
 
