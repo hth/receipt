@@ -204,6 +204,8 @@ public class AccountService {
 
     private void billAccount(UserAccountEntity userAccount) {
         BillingAccountEntity billingAccount = userAccount.getBillingAccount();
+
+        /** Consider the account as billed from get go. */
         billingAccount.markAccountBilled();
         billingService.save(billingAccount);
 

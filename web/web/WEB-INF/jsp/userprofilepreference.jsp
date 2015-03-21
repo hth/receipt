@@ -279,6 +279,23 @@
                 <h1 class="h1">BILLING &amp; USAGE</h1>
                 <hr>
                 <div class="down_form">
+                    <h2 class="h2" style="padding-bottom:2%;">Billing</h2>
+
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Monthly billed as</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            ${billingForm.billingAccountType.description}
+                        </label>
+                    </div>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Last billed</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            ${billingForm.billedAccount}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="down_form">
                     <h2 class="h2" style="padding-bottom:2%;">Usage</h2>
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Disk usage</label>
@@ -303,19 +320,30 @@
                 </div>
 
                 <div class="down_form">
-                    <h2 class="h2" style="padding-bottom:2%;">Billing</h2>
+                    <h2 class="h2" style="padding-bottom:2%;">Billing History</h2>
+
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 100px;">Period</label>
+                        <label class="profile_label" style="width: 150px;">Bill Status</label>
+                        <label class="profile_label" style="width: 150px;">Bill Date</label>
+                    </div>
                     <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px; font-weight: normal; !important;">
-                        ${billing.billedForMonth}
+                            ${billing.billedForMonth}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
-                        ${billing.billedStatus.description}
+                            ${billing.billedStatus.description}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
-                            <c:if test="${billing.billedStatus ne 'NB'}">
+                            <c:choose>
+                            <c:when test="${billing.billedStatus eq 'NB'}">
+                                Payment Due
+                            </c:when>
+                            <c:otherwise>
                                 <fmt:formatDate value="${billing.updated}" type="date"/>
-                            </c:if>
+                            </c:otherwise>
+                            </c:choose>
                         </label>
                     </div>
                     </c:forEach>

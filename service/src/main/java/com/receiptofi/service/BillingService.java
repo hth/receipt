@@ -45,12 +45,20 @@ public class BillingService {
      */
     public void deleteHardBillingWhenAccountCreationFails(String rid) {
         if (null == userAccountManager.findByReceiptUserId(rid)) {
-            billingAccountManager.deleteHard(billingAccountManager.getBillingAccount(rid));
+            List<BillingAccountEntity> billingAccounts = billingAccountManager.getAllBillingAccount(rid);
+            billingAccounts.forEach(billingAccountManager::deleteHard);
+
             List<BillingHistoryEntity> billings = billingHistoryManager.getHistory(rid);
-            if (billings.size() > 1) {
-                LOG.error("Deleting billing history greater than 1 rid={}", rid);
-            }
             billings.forEach(billingHistoryManager::deleteHard);
+
+            if (billings.size() > 1 || billingAccounts.size() > 1) {
+                LOG.error("Deleting billing history of size={} and billing account of size={} for rid={}",
+                        billings.size(),
+                        billingAccounts.size(),
+                        rid);
+            } else if (!billings.isEmpty() || !billingAccounts.isEmpty()) {
+                LOG.info("Deleted billing history and account for rid={}", rid);
+            }
         }
     }
 
@@ -75,5 +83,9 @@ public class BillingService {
 
     public List<BillingHistoryEntity> getHistory(String rid) {
         return billingHistoryManager.getHistory(rid);
+    }
+
+    public BillingAccountEntity getBillingAccount(String rid) {
+        return billingAccountManager.getBillingAccount(rid);
     }
 }

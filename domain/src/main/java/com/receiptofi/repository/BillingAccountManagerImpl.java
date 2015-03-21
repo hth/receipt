@@ -1,17 +1,19 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BillingAccountEntity;
-import com.receiptofi.domain.BillingHistoryEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -53,6 +55,19 @@ public class BillingAccountManagerImpl implements BillingAccountManager {
 
     @Override
     public BillingAccountEntity getBillingAccount(String rid) {
-        return mongoTemplate.findOne(query(where("RID").is(rid)), BillingAccountEntity.class);
+        return mongoTemplate.findOne(
+                query(where("RID").is(rid)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
+                ),
+                BillingAccountEntity.class
+        );
+    }
+
+    @Override
+    public List<BillingAccountEntity> getAllBillingAccount(String rid) {
+        return mongoTemplate.find(query(where("RID").is(rid)), BillingAccountEntity.class);
     }
 }

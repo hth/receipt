@@ -3,6 +3,7 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
@@ -490,6 +491,10 @@ public class UserProfilePreferenceController {
         billingForm.setDiskUsage(fileSystemService.diskUsage(rid));
         billingForm.setPendingDiskUsage(fileSystemService.filesPendingDiskUsage(rid));
         billingForm.setBillings(billingService.getHistory(rid));
+
+        BillingAccountEntity billingAccount = billingService.getBillingAccount(rid);
+        billingForm.setBillingAccountType(billingAccount.getAccountBillingType());
+        billingForm.setBilledAccount(billingAccount.isBilledAccount());
         return billingForm;
     }
 
