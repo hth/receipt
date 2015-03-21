@@ -71,20 +71,6 @@ public class ProfileForm {
     private ProfileForm() {
     }
 
-    private ProfileForm(UserProfileEntity userProfileEntity) {
-        firstName = new ScrubbedInput(userProfileEntity.getFirstName());
-        lastName = new ScrubbedInput(userProfileEntity.getLastName());
-        mail = new ScrubbedInput(userProfileEntity.getEmail());
-        rid = userProfileEntity.getReceiptUserId();
-        level = userProfileEntity.getLevel();
-        active = userProfileEntity.isActive();
-        updated = userProfileEntity.getUpdated();
-    }
-
-    public static ProfileForm newInstance(UserProfileEntity userProfileEntity) {
-        return new ProfileForm(userProfileEntity);
-    }
-
     public ScrubbedInput getFirstName() {
         return firstName;
     }
