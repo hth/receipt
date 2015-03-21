@@ -344,7 +344,7 @@
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             <c:choose>
                             <c:when test="${billing.billedStatus eq 'NB'}">
-                                Payment Due
+                                <span style="color: red; font-weight: bold">Payment Due</span>
                             </c:when>
                             <c:otherwise>
                                 <fmt:formatDate value="${billing.updated}" type="date"/>
