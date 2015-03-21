@@ -73,4 +73,8 @@ public class BillingForm {
     public void setBilledAccount(boolean billedAccount) {
         this.billedAccount = billedAccount;
     }
+
+    public String billedAccountString() {
+        return billedAccount ? "Yes" : "No";
+    }
 }
