@@ -51,7 +51,7 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
 
     @Override
     public void deleteHard(BillingHistoryEntity object) {
-
+        mongoTemplate.remove(object);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
         return mongoTemplate.find(
                 query(where("RID").is(rid))
                         .with(new Sort(DESC, "BM")),
-                BillingHistoryEntity.class,
-                TABLE);
+                BillingHistoryEntity.class
+        );
     }
 }

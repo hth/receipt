@@ -174,6 +174,7 @@ public class AccountService {
 
             //Roll back
             if (userAccount != null) {
+                deleteBilling(rid);
                 userAccountManager.deleteHard(userAccount);
             }
             userAuthenticationManager.deleteHard(userAuthentication);
@@ -210,6 +211,15 @@ public class AccountService {
         BillingHistoryEntity billingHistory = new BillingHistoryEntity(userAccount.getReceiptUserId(), new Date());
         billingHistory.setBilledStatus(BilledStatusEnum.P);
         billingService.save(billingHistory);
+    }
+
+    /**
+     * Called when user account creation fails.
+     *
+     * @param rid
+     */
+    private void deleteBilling(String rid) {
+        billingService.deleteHardBillingWhenAccountCreationFails(rid);
     }
 
     /**
