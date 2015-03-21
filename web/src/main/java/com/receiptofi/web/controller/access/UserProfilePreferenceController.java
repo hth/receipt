@@ -39,6 +39,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -52,6 +53,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Note: Follow PRG model with support for result binding
@@ -357,6 +360,7 @@ public class UserProfilePreferenceController {
         populateProfile(profileForm, rid);
         populateExpenseTag(profileForm, rid);
         populateBilling(billingForm, rid);
+        setAccountValidationInfo(rid, profileForm);
 
         //There is UI logic based on this. Set the right to be active when responding.
         model.addAttribute("showTab", "#tabs-4");
@@ -455,7 +459,13 @@ public class UserProfilePreferenceController {
      * @param rid
      * @param profileForm not null
      */
-    private void setAccountValidationInfo(String rid, ProfileForm profileForm) {
+    private void setAccountValidationInfo(
+            String rid,
+
+            @NotNull
+            ProfileForm profileForm
+    ) {
+        Assert.notNull(profileForm);
         UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
         if (null != userAccount) {
             if (!userAccount.isAccountValidated()) {
