@@ -311,7 +311,9 @@
                         ${billing.billedStatus.description}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
-                            <fmt:formatDate value="${billing.updated}" type="date"/>
+                            <c:if test="${billing.billedStatus ne 'NB'}">
+                                <fmt:formatDate value="${billing.updated}" type="date"/>
+                            </c:if>
                         </label>
                     </div>
                     </c:forEach>
