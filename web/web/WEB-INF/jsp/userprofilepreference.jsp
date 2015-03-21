@@ -294,9 +294,16 @@
                         </label>
                     </div>
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Last billed</label>
+                        <label class="profile_label" style="width: 200px;">Billed</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            ${billingForm.billedAccount}
+                            <c:choose>
+                                <c:when test="${billingForm.billedAccount}">
+                                    Yes
+                                </c:when>
+                                <c:otherwise>
+                                    No
+                                </c:otherwise>
+                            </c:choose>
                         </label>
                     </div>
                 </div>
