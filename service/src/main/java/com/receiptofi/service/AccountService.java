@@ -206,10 +206,9 @@ public class AccountService {
         billingAccount.markAccountBilled();
         billingService.save(billingAccount);
 
-        /** Mark PROMOTIONAL as billed for the first month. */
-        BillingHistoryEntity billingHistory = new BillingHistoryEntity(userAccount.getReceiptUserId());
+        /** Mark PROMOTIONAL as billed for the first month. First month marked PROMOTIONAL during signup. */
+        BillingHistoryEntity billingHistory = new BillingHistoryEntity(userAccount.getReceiptUserId(), new Date());
         billingHistory.setBilledStatus(BilledStatusEnum.PROMOTION);
-        billingHistory.setBilledForMonth(new Date());
         billingService.save(billingHistory);
     }
 

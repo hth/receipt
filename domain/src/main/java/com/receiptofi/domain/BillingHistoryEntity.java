@@ -47,9 +47,10 @@ public class BillingHistoryEntity extends BaseEntity {
         super();
     }
 
-    public BillingHistoryEntity(String rid) {
+    public BillingHistoryEntity(String rid, Date billedForMonth) {
         super();
         this.rid = rid;
+        this.billedForMonth = SDF.format(billedForMonth);
     }
 
     public String getRid() {
