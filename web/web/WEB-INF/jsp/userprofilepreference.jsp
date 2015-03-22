@@ -283,15 +283,20 @@
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Monthly billed as</label>
-                        <%--<form:form method="post" modelAttribute="billingForm" action="update.htm">--%>
-                        <%--<form:select path="billingAccountType" cssClass="styled-select slate" cssStyle="width: 150px;">--%>
-                            <%--<form:option value="0" label="Select Account Type" />--%>
-                            <%--<form:options itemLabel="description" />--%>
-                        <%--</form:select>--%>
-                        <%--</form:form>--%>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            ${billingForm.billingAccountType.description}
-                        </label>
+                        <!--
+                         For Mobile user and payer: do not let them change this
+                         whereas of credit card payment: allow them to change this
+                         But for now this is temporary to test monthly billing changes
+                         -->
+                        <form:form method="post" modelAttribute="billingForm">
+                        <form:select path="billingAccountType" cssClass="styled-select slate" cssStyle="width: 175px;" onchange="">
+                            <form:option value="0" label="Select Billing Type" />
+                            <form:options itemLabel="description" />
+                        </form:select>
+                        </form:form>
+                        <%--<label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">--%>
+                            <%--${billingForm.billingAccountType.description}--%>
+                        <%--</label>--%>
                     </div>
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Billed</label>

@@ -266,7 +266,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     /**
-     * Use this method instead of findOne
+     * Use this method instead of findOne.
      *
      * @param receiptId
      * @param receiptUserId

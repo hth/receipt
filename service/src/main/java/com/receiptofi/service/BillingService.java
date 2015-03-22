@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,13 +73,14 @@ public class BillingService {
      * @param receipt
      */
     public void updateReceiptWithBillingHistory(ReceiptEntity receipt) {
-        BillingHistoryEntity billingHistory = billingHistoryManager.findBillingHistoryForMonth(
-                BillingHistoryEntity.SDF.format(receipt.getReceiptDate()),
-                receipt.getReceiptUserId());
-
+        BillingHistoryEntity billingHistory = findBillingHistoryForMonth(receipt.getReceiptDate(), receipt.getReceiptUserId());
         if (null != billingHistory) {
             receipt.setBilledStatus(billingHistory.getBilledStatus());
         }
+    }
+
+    public BillingHistoryEntity findBillingHistoryForMonth(Date date, String rid) {
+        return billingHistoryManager.findBillingHistoryForMonth(BillingHistoryEntity.SDF.format(date), rid);
     }
 
     public List<BillingHistoryEntity> getHistory(String rid) {
@@ -87,5 +89,9 @@ public class BillingService {
 
     public BillingAccountEntity getBillingAccount(String rid) {
         return billingAccountManager.getBillingAccount(rid);
+    }
+
+    public long countLastPromotion(Date date, String rid) {
+        return billingHistoryManager.countLastPromotion(date, rid);
     }
 }

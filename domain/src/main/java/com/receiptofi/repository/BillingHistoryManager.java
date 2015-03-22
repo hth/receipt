@@ -2,6 +2,7 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BillingHistoryEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,4 +14,6 @@ public interface BillingHistoryManager extends RepositoryManager<BillingHistoryE
     BillingHistoryEntity findBillingHistoryForMonth(String billedForMonth, String rid);
 
     List<BillingHistoryEntity> getHistory(String rid);
+
+    long countLastPromotion(Date thisMonth, String rid);
 }

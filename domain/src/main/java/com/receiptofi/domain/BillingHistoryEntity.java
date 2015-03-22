@@ -26,7 +26,10 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "BILLING_HISTORY")
-@CompoundIndexes ({@CompoundIndex (name = "billing_history_idx", def = "{'RID': 1}")})
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "billing_history_rid_idx", def = "{'RID': 1}"),
+        @CompoundIndex (name = "billing_history_rid_bm_idx", def = "{'RID': 1, 'BM': -1}", unique = true)
+})
 public class BillingHistoryEntity extends BaseEntity {
     public static final SimpleDateFormat SDF = new SimpleDateFormat("YYYY-MM");
 

@@ -27,4 +27,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     void removeRegistrationIsOffFrom(String id);
 
     void updateAccountToValidated(String id, AccountInactiveReasonEnum air);
+
+    List<UserAccountEntity> findAllForBilling(int skipDocuments, int limit);
 }

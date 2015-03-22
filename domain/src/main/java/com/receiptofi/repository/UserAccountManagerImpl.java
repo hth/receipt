@@ -1,5 +1,8 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -17,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -131,6 +135,14 @@ public class UserAccountManagerImpl implements UserAccountManager {
         mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AIR").is(air)),
                 AppendAdditionalFields.entityUpdate(update("A", true).set("AV", true).unset("AIR")),
+                UserAccountEntity.class
+        );
+    }
+
+    @Override
+    public List<UserAccountEntity> findAllForBilling(int skipDocuments, int limit) {
+        return mongoTemplate.find(
+                query(isActive().andOperator(isNotDeleted())).with(new Sort(DESC, "RID")).skip(skipDocuments).limit(limit),
                 UserAccountEntity.class
         );
     }
