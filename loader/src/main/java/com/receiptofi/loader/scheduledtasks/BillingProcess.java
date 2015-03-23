@@ -85,7 +85,6 @@ public class BillingProcess {
 
             Instant nextMonth = LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC);
             Date billedForMonth = Date.from(nextMonth);
-            BillingHistoryEntity billingHistory;
 
             try {
                 while (true) {
@@ -103,10 +102,7 @@ public class BillingProcess {
                             switch (billingAccount.getAccountBillingType()) {
                                 case NB:
                                     if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                        billingHistory = new BillingHistoryEntity(billingAccount.getRid(), billedForMonth);
-                                        billingHistory.setBilledStatus(BilledStatusEnum.NB);
-                                        billingHistory.setAccountBillingType(AccountBillingTypeEnum.NB);
-                                        billingService.save(billingHistory);
+                                        insertBillingHistory(billedForMonth, BilledStatusEnum.NB, AccountBillingTypeEnum.NB, billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
                                         noBillingCount++;
@@ -118,10 +114,7 @@ public class BillingProcess {
                                 case P:
                                     if (billingService.countLastPromotion(billedForMonth, billingAccount.getRid()) >= promotionalPeriod) {
                                         if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                            billingHistory = new BillingHistoryEntity(billingAccount.getRid(), billedForMonth);
-                                            billingHistory.setBilledStatus(BilledStatusEnum.NB);
-                                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.NB);
-                                            billingService.save(billingHistory);
+                                            insertBillingHistory(billedForMonth, BilledStatusEnum.NB, AccountBillingTypeEnum.NB, billingAccount.getRid());
 
                                             markBillingAccountAsBilled(billingAccount);
                                             billingAccount.setAccountBillingType(AccountBillingTypeEnum.NB);
@@ -133,10 +126,7 @@ public class BillingProcess {
                                             skippedNoBillingCount++;
                                         }
                                     } else if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                        billingHistory = new BillingHistoryEntity(billingAccount.getRid(), billedForMonth);
-                                        billingHistory.setBilledStatus(BilledStatusEnum.P);
-                                        billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
-                                        billingService.save(billingHistory);
+                                        insertBillingHistory(billedForMonth, BilledStatusEnum.P, AccountBillingTypeEnum.P, billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
                                         promotionCount++;
@@ -147,10 +137,7 @@ public class BillingProcess {
                                     break;
                                 case M30:
                                     if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                        billingHistory = new BillingHistoryEntity(billingAccount.getRid(), billedForMonth);
-                                        billingHistory.setBilledStatus(BilledStatusEnum.NB);
-                                        billingHistory.setAccountBillingType(AccountBillingTypeEnum.M30);
-                                        billingService.save(billingHistory);
+                                        insertBillingHistory(billedForMonth, BilledStatusEnum.NB, AccountBillingTypeEnum.M30, billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
                                         monthlyCount++;
@@ -163,12 +150,11 @@ public class BillingProcess {
                                     /** This would get executed on December of every year. */
                                     if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
                                         for (int i = 1; i <= 12; i++) {
-                                            billingHistory = new BillingHistoryEntity(
-                                                    billingAccount.getRid(),
-                                                    Date.from(LocalDateTime.now().plusMonths(i).toInstant(ZoneOffset.UTC)));
-                                            billingHistory.setBilledStatus(BilledStatusEnum.NB);
-                                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.A);
-                                            billingService.save(billingHistory);
+                                            insertBillingHistory(
+                                                    Date.from(LocalDateTime.now().plusMonths(i).toInstant(ZoneOffset.UTC)),
+                                                    BilledStatusEnum.NB,
+                                                    AccountBillingTypeEnum.A,
+                                                    billingAccount.getRid());
                                         }
 
                                         markBillingAccountAsBilled(billingAccount);
@@ -210,6 +196,13 @@ public class BillingProcess {
         } else {
             LOG.info("feature is {}", billingProcessStatus);
         }
+    }
+
+    private void insertBillingHistory(Date billedForMonth, BilledStatusEnum bs, AccountBillingTypeEnum abt, String rid) {
+        BillingHistoryEntity billingHistory = new BillingHistoryEntity(rid, billedForMonth);
+        billingHistory.setBilledStatus(bs);
+        billingHistory.setAccountBillingType(abt);
+        billingService.save(billingHistory);
     }
 
     private void markBillingAccountAsBilled(BillingAccountEntity billingAccount) {
