@@ -7,10 +7,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.text.SimpleDateFormat;
-
-import javax.validation.constraints.NotNull;
-
 /**
  * Each users current billing status.
  * User: hitender
@@ -25,14 +21,11 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "BILLING_ACCOUNT")
 @CompoundIndexes ({@CompoundIndex (name = "billing_account_idx", def = "{'RID': 1}")})
 public class BillingAccountEntity extends BaseEntity {
-    private static final SimpleDateFormat SDF = new SimpleDateFormat("YYYY-MM");
 
-    @NotNull
     @Field ("RID")
     private String rid;
 
     /** Defaults to PROMOTION to begin with. */
-    @NotNull
     @Field ("BAT")
     private BillingAccountTypeEnum accountBillingType = BillingAccountTypeEnum.PROMOTION;
 

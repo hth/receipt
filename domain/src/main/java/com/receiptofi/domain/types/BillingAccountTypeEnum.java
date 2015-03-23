@@ -15,7 +15,9 @@ package com.receiptofi.domain.types;
 public enum BillingAccountTypeEnum {
     PROMOTION("PROMOTION", "Promotion"),
     NO_BILLING("NO_BILLING", "No Billing"),
-    MONTHLY("MONTHLY", "Monthly"),
+    MONTHLY_30("MONTHLY_30", "Monthly 30"),
+    MONTHLY_40("MONTHLY_40", "Monthly 40"),
+    MONTHLY_50("MONTHLY_50", "Monthly 50"),
     ANNUAL("ANNUAL", "Annual");
 
     private final String description;

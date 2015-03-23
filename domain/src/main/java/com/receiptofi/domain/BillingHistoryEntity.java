@@ -1,6 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.domain.types.BillingAccountTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,15 +41,15 @@ public class BillingHistoryEntity extends BaseEntity {
     public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM");
     private static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy");
 
-    @NotNull
     @Field ("RID")
     private String rid;
 
-    @NotNull
     @Field ("BS")
     private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
-    @NotNull
+    @Field ("BAT")
+    private BillingAccountTypeEnum accountBillingType;
+
     @Field ("BM")
     private String billedForMonth;
 
@@ -73,6 +74,14 @@ public class BillingHistoryEntity extends BaseEntity {
 
     public void setBilledStatus(BilledStatusEnum billedStatus) {
         this.billedStatus = billedStatus;
+    }
+
+    public BillingAccountTypeEnum getAccountBillingType() {
+        return accountBillingType;
+    }
+
+    public void setAccountBillingType(BillingAccountTypeEnum accountBillingType) {
+        this.accountBillingType = accountBillingType;
     }
 
     public String getBilledForMonth() {
