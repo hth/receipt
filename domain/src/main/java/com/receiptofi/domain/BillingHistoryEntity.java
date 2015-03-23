@@ -2,6 +2,9 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.BilledStatusEnum;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,6 +35,8 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "billing_history_rid_bm_idx", def = "{'RID': 1, 'BM': -1}", unique = true)
 })
 public class BillingHistoryEntity extends BaseEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(BillingHistoryEntity.class);
+
     public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM");
     private static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy");
 
@@ -78,7 +83,12 @@ public class BillingHistoryEntity extends BaseEntity {
         this.billedForMonth = SDF.format(billedForMonth);
     }
 
-    public String getBilledForMonthYear() throws ParseException {
-        return SDF_MMM_YYYY.format(SDF.parse(billedForMonth));
+    public String getBilledForMonthYear() {
+        try {
+            return SDF_MMM_YYYY.format(SDF.parse(billedForMonth));
+        } catch (ParseException e) {
+            LOG.error("Date parsing date={} reason={}", billedForMonth, e.getLocalizedMessage(), e);
+            return "Not Available";
+        }
     }
 }
