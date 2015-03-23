@@ -351,6 +351,9 @@
                             <c:when test="${billing.billedStatus eq 'NB'}">
                                 <span style="color: red; font-weight: bold">Payment Due</span>
                             </c:when>
+                            <c:when test="${billing.billedStatus eq 'P'}">
+                                NA
+                            </c:when>
                             <c:otherwise>
                                 <fmt:formatDate value="${billing.updated}" type="date"/>
                             </c:otherwise>

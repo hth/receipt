@@ -3,6 +3,7 @@ package com.receiptofi.service;
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.repository.BillingAccountManager;
 import com.receiptofi.repository.BillingHistoryManager;
 import com.receiptofi.repository.UserAccountManager;
@@ -75,6 +76,16 @@ public class BillingService {
     public void updateReceiptWithBillingHistory(ReceiptEntity receipt) {
         BillingHistoryEntity billingHistory = findBillingHistoryForMonth(receipt.getReceiptDate(), receipt.getReceiptUserId());
         if (null != billingHistory) {
+            receipt.setBilledStatus(billingHistory.getBilledStatus());
+        } else {
+            /** Mark all receipts in past as PROMOTIONAL. */
+            LOG.info("Create billing history rid={} yearMonth={}",
+                    receipt.getReceiptUserId(),
+                    BillingHistoryEntity.SDF.format(receipt.getReceiptDate()));
+
+            billingHistory = new BillingHistoryEntity(receipt.getReceiptUserId(), receipt.getReceiptDate());
+            billingHistory.setBilledStatus(BilledStatusEnum.P);
+            billingHistoryManager.save(billingHistory);
             receipt.setBilledStatus(billingHistory.getBilledStatus());
         }
     }
