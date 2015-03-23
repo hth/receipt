@@ -101,7 +101,7 @@ public class BillingProcess {
                         if (billingAccount != null) {
                             switch (billingAccount.getAccountBillingType()) {
                                 case NB:
-                                    if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
+                                    if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.NB,
@@ -117,7 +117,7 @@ public class BillingProcess {
                                     break;
                                 case P:
                                     if (billingService.countLastPromotion(billedForMonth, billingAccount.getRid()) >= promotionalPeriod) {
-                                        if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
+                                        if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                             insertBillingHistory(
                                                     billedForMonth,
                                                     BilledStatusEnum.NB,
@@ -133,7 +133,7 @@ public class BillingProcess {
                                         } else {
                                             skippedNoBillingCount++;
                                         }
-                                    } else if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
+                                    } else if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.P,
@@ -148,7 +148,7 @@ public class BillingProcess {
                                     }
                                     break;
                                 case M30:
-                                    if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
+                                    if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.NB,
@@ -164,7 +164,7 @@ public class BillingProcess {
                                     break;
                                 case A:
                                     /** This would get executed on December of every year. */
-                                    if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
+                                    if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         for (int i = 1; i <= 12; i++) {
                                             insertBillingHistory(
                                                     Date.from(LocalDateTime.now().plusMonths(i).toInstant(ZoneOffset.UTC)),
@@ -212,6 +212,10 @@ public class BillingProcess {
         } else {
             LOG.info("feature is {}", billingProcessStatus);
         }
+    }
+
+    private boolean doesDocumentExistsInBillingHistory(Date billedForMonth, BillingAccountEntity billingAccount) {
+        return billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null;
     }
 
     private void insertBillingHistory(Date billedForMonth, BilledStatusEnum bs, AccountBillingTypeEnum abt, String rid) {
