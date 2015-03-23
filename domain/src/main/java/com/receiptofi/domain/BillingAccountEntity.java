@@ -1,6 +1,6 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.BillingAccountTypeEnum;
+import com.receiptofi.domain.types.AccountBillingTypeEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -27,7 +27,7 @@ public class BillingAccountEntity extends BaseEntity {
 
     /** Defaults to PROMOTION to begin with. */
     @Field ("BAT")
-    private BillingAccountTypeEnum accountBillingType = BillingAccountTypeEnum.PROMOTION;
+    private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.PROMOTION;
 
     /**
      * This is true when at least one billing has been done with @BillingAccountTypeEnum set for this record. If user
@@ -50,11 +50,11 @@ public class BillingAccountEntity extends BaseEntity {
         return rid;
     }
 
-    public BillingAccountTypeEnum getAccountBillingType() {
+    public AccountBillingTypeEnum getAccountBillingType() {
         return accountBillingType;
     }
 
-    public void setAccountBillingType(BillingAccountTypeEnum accountBillingType) {
+    public void setAccountBillingType(AccountBillingTypeEnum accountBillingType) {
         this.accountBillingType = accountBillingType;
     }
 

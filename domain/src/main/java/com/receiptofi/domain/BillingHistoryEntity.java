@@ -1,7 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.BilledStatusEnum;
-import com.receiptofi.domain.types.BillingAccountTypeEnum;
+import com.receiptofi.domain.types.AccountBillingTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,13 +10,10 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Contains users billing history with status for that month. This status will be reflected on receipts of that month.
@@ -48,7 +45,7 @@ public class BillingHistoryEntity extends BaseEntity {
     private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
     @Field ("BAT")
-    private BillingAccountTypeEnum accountBillingType;
+    private AccountBillingTypeEnum accountBillingType;
 
     @Field ("BM")
     private String billedForMonth;
@@ -76,11 +73,11 @@ public class BillingHistoryEntity extends BaseEntity {
         this.billedStatus = billedStatus;
     }
 
-    public BillingAccountTypeEnum getAccountBillingType() {
+    public AccountBillingTypeEnum getAccountBillingType() {
         return accountBillingType;
     }
 
-    public void setAccountBillingType(BillingAccountTypeEnum accountBillingType) {
+    public void setAccountBillingType(AccountBillingTypeEnum accountBillingType) {
         this.accountBillingType = accountBillingType;
     }
 

@@ -12,7 +12,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
-import com.receiptofi.domain.types.BillingAccountTypeEnum;
+import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -217,7 +217,7 @@ public class AccountService {
                 userAccount.getReceiptUserId(),
                 new Date());
         billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setAccountBillingType(BillingAccountTypeEnum.PROMOTION);
+        billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
         billingService.save(billingHistory);
 
         /** Second month marked as PROMOTIONAL too. */
@@ -225,7 +225,7 @@ public class AccountService {
                 userAccount.getReceiptUserId(),
                 Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
         billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setAccountBillingType(BillingAccountTypeEnum.PROMOTION);
+        billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
         billingService.save(billingHistory);
     }
 

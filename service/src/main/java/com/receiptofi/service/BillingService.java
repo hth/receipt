@@ -5,7 +5,7 @@ import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.BilledStatusEnum;
-import com.receiptofi.domain.types.BillingAccountTypeEnum;
+import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.repository.BillingAccountManager;
 import com.receiptofi.repository.BillingHistoryManager;
 import com.receiptofi.repository.UserAccountManager;
@@ -90,7 +90,7 @@ public class BillingService {
                         BillingHistoryEntity.SDF.format(receipt.getReceiptDate()));
 
                 billingHistory.setBilledStatus(BilledStatusEnum.P);
-                billingHistory.setAccountBillingType(BillingAccountTypeEnum.PROMOTION);
+                billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
             }
 
             billingHistoryManager.save(billingHistory);
