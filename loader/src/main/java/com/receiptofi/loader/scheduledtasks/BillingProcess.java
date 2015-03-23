@@ -214,10 +214,25 @@ public class BillingProcess {
         }
     }
 
+    /**
+     * Check if BillingHistory exists.
+     *
+     * @param billedForMonth
+     * @param billingAccount
+     * @return
+     */
     private boolean doesDocumentExistsInBillingHistory(Date billedForMonth, BillingAccountEntity billingAccount) {
         return billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null;
     }
 
+    /**
+     * Create new BillingHistory.
+     *
+     * @param billedForMonth
+     * @param bs
+     * @param abt
+     * @param rid
+     */
     private void insertBillingHistory(Date billedForMonth, BilledStatusEnum bs, AccountBillingTypeEnum abt, String rid) {
         BillingHistoryEntity billingHistory = new BillingHistoryEntity(rid, billedForMonth);
         billingHistory.setBilledStatus(bs);
@@ -225,6 +240,11 @@ public class BillingProcess {
         billingService.save(billingHistory);
     }
 
+    /**
+     * If BillingAccount is not marked as Billed then mark it as billed.
+     *
+     * @param billingAccount
+     */
     private void markBillingAccountAsBilled(BillingAccountEntity billingAccount) {
         if (!billingAccount.isBilledAccount()) {
             billingAccount.markAccountBilled();
