@@ -102,7 +102,11 @@ public class BillingProcess {
                             switch (billingAccount.getAccountBillingType()) {
                                 case NB:
                                     if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                        insertBillingHistory(billedForMonth, BilledStatusEnum.NB, AccountBillingTypeEnum.NB, billingAccount.getRid());
+                                        insertBillingHistory(
+                                                billedForMonth,
+                                                BilledStatusEnum.NB,
+                                                AccountBillingTypeEnum.NB,
+                                                billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
                                         noBillingCount++;
@@ -114,7 +118,11 @@ public class BillingProcess {
                                 case P:
                                     if (billingService.countLastPromotion(billedForMonth, billingAccount.getRid()) >= promotionalPeriod) {
                                         if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                            insertBillingHistory(billedForMonth, BilledStatusEnum.NB, AccountBillingTypeEnum.NB, billingAccount.getRid());
+                                            insertBillingHistory(
+                                                    billedForMonth,
+                                                    BilledStatusEnum.NB,
+                                                    AccountBillingTypeEnum.NB,
+                                                    billingAccount.getRid());
 
                                             markBillingAccountAsBilled(billingAccount);
                                             billingAccount.setAccountBillingType(AccountBillingTypeEnum.NB);
@@ -126,7 +134,11 @@ public class BillingProcess {
                                             skippedNoBillingCount++;
                                         }
                                     } else if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                        insertBillingHistory(billedForMonth, BilledStatusEnum.P, AccountBillingTypeEnum.P, billingAccount.getRid());
+                                        insertBillingHistory(
+                                                billedForMonth,
+                                                BilledStatusEnum.P,
+                                                AccountBillingTypeEnum.P,
+                                                billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
                                         promotionCount++;
@@ -137,7 +149,11 @@ public class BillingProcess {
                                     break;
                                 case M30:
                                     if (billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null) {
-                                        insertBillingHistory(billedForMonth, BilledStatusEnum.NB, AccountBillingTypeEnum.M30, billingAccount.getRid());
+                                        insertBillingHistory(
+                                                billedForMonth,
+                                                BilledStatusEnum.NB,
+                                                AccountBillingTypeEnum.M30,
+                                                billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
                                         monthlyCount++;
