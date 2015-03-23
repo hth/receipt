@@ -13,20 +13,22 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum AccountBillingTypeEnum {
-    P("P", "Promotion"),
-    NB("NB", "No Billing"),
-    M10("M10", "Monthly 10"),
-    M30("M30", "Monthly 30"),
-    M40("M40", "Monthly 40"),
-    M50("M50", "Monthly 50"),
-    A("A", "Annual");
+    P("P", "Promotion", 1000),
+    NB("NB", "No Billing", 0),
+    M10("M10", "Monthly 10", 10),
+    M30("M30", "Monthly 30", 30),
+    M40("M40", "Monthly 40", 40),
+    M50("M50", "Monthly 50", 50),
+    A360("A360", "Annual 360", 360);
 
     private final String description;
     private final String name;
+    private final int allowedNumberOfDocuments;
 
-    private AccountBillingTypeEnum(String name, String description) {
+    private AccountBillingTypeEnum(String name, String description, int allowedNumberOfDocuments) {
         this.name = name;
         this.description = description;
+        this.allowedNumberOfDocuments = allowedNumberOfDocuments;
     }
 
     public String getName() {
@@ -35,6 +37,10 @@ public enum AccountBillingTypeEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getAllowedNumberOfDocuments() {
+        return allowedNumberOfDocuments;
     }
 
     @Override

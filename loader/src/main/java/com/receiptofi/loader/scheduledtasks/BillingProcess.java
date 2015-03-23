@@ -162,14 +162,14 @@ public class BillingProcess {
                                         skippedMonthlyCount++;
                                     }
                                     break;
-                                case A:
+                                case A360:
                                     /** This would get executed on December of every year. */
                                     if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         for (int i = 1; i <= 12; i++) {
                                             insertBillingHistory(
                                                     Date.from(LocalDateTime.now().plusMonths(i).toInstant(ZoneOffset.UTC)),
                                                     BilledStatusEnum.NB,
-                                                    AccountBillingTypeEnum.A,
+                                                    AccountBillingTypeEnum.A360,
                                                     billingAccount.getRid());
                                         }
 
