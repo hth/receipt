@@ -67,7 +67,10 @@ public class SendOutAccountActiveEmail {
                                 billingAccount.getRid());
 
                         if (billingHistory == null) {
-                            /** Mark PROMOTIONAL as billed for the first and second month. First month marked PROMOTIONAL during signup. */
+                            /**
+                             * Mark PROMOTIONAL as billed for the first and second month.
+                             * First month marked PROMOTIONAL during signup.
+                             */
                             billingHistory = new BillingHistoryEntity(
                                     userAccount.getReceiptUserId(),
                                     new Date());
@@ -108,7 +111,8 @@ public class SendOutAccountActiveEmail {
 
                 accountService.removeRegistrationIsOffFrom(userAccount.getId());
             }
-            LOG.info("Registration complete mail sent success={} skipped={}  failure={} total={}", success, skipped, failure, userAccounts.size());
+            LOG.info("Registration complete mail sent success={} skipped={}  failure={} total={}",
+                    success, skipped, failure, userAccounts.size());
         } else {
             LOG.info("registrationTurnedOn feature is {}", registrationTurnedOn);
         }
