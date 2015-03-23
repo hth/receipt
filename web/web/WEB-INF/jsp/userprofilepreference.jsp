@@ -307,30 +307,6 @@
                 </div>
 
                 <div class="down_form">
-                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Usage</h2>
-                    <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Disk usage</label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${billingForm.totalSLN_MB}"/> MB
-                        </label>
-                    </div>
-                    <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Pending usage</label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${billingForm.pendingDiskUsage_MB}"/> MB *
-                        </label>
-                    </div>
-                    <sec:authorize access="hasRole('ROLE_USER')">
-                    <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Usage saved by scaling</label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
-                        </label>
-                    </div>
-                    </sec:authorize>
-                </div>
-
-                <div class="down_form">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing History</h2>
 
                     <div class="row_field">
@@ -361,6 +337,30 @@
                         </label>
                     </div>
                     </c:forEach>
+                </div>
+
+                <div class="down_form">
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Usage</h2>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Disk usage</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <fmt:formatNumber value="${billingForm.totalSLN_MB}"/> MB
+                        </label>
+                    </div>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Pending usage</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <fmt:formatNumber value="${billingForm.pendingDiskUsage_MB}"/> MB *
+                        </label>
+                    </div>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <div class="row_field">
+                            <label class="profile_label" style="width: 200px;">Usage saved by scaling</label>
+                            <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                                <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
+                            </label>
+                        </div>
+                    </sec:authorize>
                 </div>
             </div>
 
