@@ -88,7 +88,7 @@ public class BillingHistoryEntity extends BaseEntity {
             return SDF_MMM_YYYY.format(SDF.parse(billedForMonth));
         } catch (ParseException e) {
             LOG.error("Date parsing date={} reason={}", billedForMonth, e.getLocalizedMessage(), e);
-            return "Not Available";
+            return "Missing";
         }
     }
 }
