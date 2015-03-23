@@ -34,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -209,8 +211,17 @@ public class AccountService {
         billingAccount.markAccountBilled();
         billingService.save(billingAccount);
 
-        /** Mark PROMOTIONAL as billed for the first month. First month marked PROMOTIONAL during signup. */
-        BillingHistoryEntity billingHistory = new BillingHistoryEntity(userAccount.getReceiptUserId(), new Date());
+        /** Mark PROMOTIONAL as billed for the first and second month. First month marked PROMOTIONAL during signup. */
+        BillingHistoryEntity billingHistory = new BillingHistoryEntity(
+                userAccount.getReceiptUserId(),
+                new Date());
+        billingHistory.setBilledStatus(BilledStatusEnum.P);
+        billingService.save(billingHistory);
+
+        /** Second month marked as PROMOTIONAL too. */
+        billingHistory = new BillingHistoryEntity(
+                userAccount.getReceiptUserId(),
+                Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
         billingHistory.setBilledStatus(BilledStatusEnum.P);
         billingService.save(billingHistory);
     }
