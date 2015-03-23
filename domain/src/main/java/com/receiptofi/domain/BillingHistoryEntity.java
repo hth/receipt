@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -31,7 +32,8 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "billing_history_rid_bm_idx", def = "{'RID': 1, 'BM': -1}", unique = true)
 })
 public class BillingHistoryEntity extends BaseEntity {
-    public static final SimpleDateFormat SDF = new SimpleDateFormat("YYYY-MM");
+    public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM");
+    private static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy");
 
     @NotNull
     @Field ("RID")
@@ -74,5 +76,9 @@ public class BillingHistoryEntity extends BaseEntity {
 
     public void setBilledForMonth(Date billedForMonth) {
         this.billedForMonth = SDF.format(billedForMonth);
+    }
+
+    public String getBilledForMonthYear() throws ParseException {
+        return SDF_MMM_YYYY.format(SDF.parse(billedForMonth));
     }
 }

@@ -334,14 +334,14 @@
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing History</h2>
 
                     <div class="row_field">
-                        <label class="profile_label" style="width: 100px;">Period</label>
+                        <label class="profile_label" style="width: 100px;">Month</label>
                         <label class="profile_label" style="width: 150px;">Bill Status</label>
                         <label class="profile_label" style="width: 150px;">Bill Date</label>
                     </div>
                     <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px; font-weight: normal; !important;">
-                            ${billing.billedForMonth}
+                            ${billing.billedForMonthYear}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             ${billing.billedStatus.description}
