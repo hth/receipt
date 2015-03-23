@@ -1,7 +1,11 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.receiptofi.domain.BillingAccountEntity;
+import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.BillingService;
 import com.receiptofi.service.MailService;
 
 import org.slf4j.Logger;
@@ -12,6 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +43,7 @@ public class SendOutAccountActiveEmail {
 
     @Autowired private AccountService accountService;
     @Autowired private MailService mailService;
+    @Autowired private BillingService billingService;
 
     @Scheduled (cron = "${loader.SendOutAccountActiveEmail.registrationCompleteEmail}")
     public void registrationCompleteEmail() {
@@ -47,6 +55,49 @@ public class SendOutAccountActiveEmail {
             for (UserAccountEntity userAccount : userAccounts) {
                 if (userAccount.isRegisteredWhenRegistrationIsOff()) {
                     if (mailService.registrationCompleteEmail(userAccount.getUserId(), userAccount.getName())) {
+
+                        /** Reset new account create date as this is the time onwards PROMOTIONAL is going to be active. */
+                        BillingAccountEntity billingAccount = userAccount.getBillingAccount();
+                        billingAccount.setCreateAndUpdate(new Date());
+                        billingAccount.markAccountBilled();
+                        billingService.save(billingAccount);
+
+                        BillingHistoryEntity billingHistory = billingService.findBillingHistoryForMonth(
+                                new Date(),
+                                billingAccount.getRid());
+
+                        if (billingHistory == null) {
+                            /** Mark PROMOTIONAL as billed for the first and second month. First month marked PROMOTIONAL during signup. */
+                            billingHistory = new BillingHistoryEntity(
+                                    userAccount.getReceiptUserId(),
+                                    new Date());
+                            billingHistory.setBilledStatus(BilledStatusEnum.P);
+                            billingService.save(billingHistory);
+                        } else {
+                            billingHistory.setBilledStatus(BilledStatusEnum.P);
+                            billingService.save(billingHistory);
+                        }
+
+                        billingHistory = billingService.findBillingHistoryForMonth(
+                                Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)),
+                                billingAccount.getRid());
+
+                        if (billingHistory == null) {
+                            /**
+                             * Second month marked as PROMOTIONAL too. Second month Bill History can exists as it
+                             * would be created by billing cron task. Even if it exists this will over ride to
+                             * PROMOTIONAL status for that month.
+                             */
+                            billingHistory = new BillingHistoryEntity(
+                                    userAccount.getReceiptUserId(),
+                                    Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
+                            billingHistory.setBilledStatus(BilledStatusEnum.P);
+                            billingService.save(billingHistory);
+                        } else {
+                            billingHistory.setBilledStatus(BilledStatusEnum.P);
+                            billingService.save(billingHistory);
+                        }
+
                         success++;
                     } else {
                         failure++;
