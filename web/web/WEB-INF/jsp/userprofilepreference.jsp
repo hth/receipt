@@ -354,12 +354,12 @@
                         </label>
                     </div>
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
-                        <div class="row_field">
-                            <label class="profile_label" style="width: 200px;">Usage saved by scaling</label>
-                            <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                                <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
-                            </label>
-                        </div>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 200px;">Usage saved by scaling</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
+                        </label>
+                    </div>
                     </sec:authorize>
                 </div>
             </div>
