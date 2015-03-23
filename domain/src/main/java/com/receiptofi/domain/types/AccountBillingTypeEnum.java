@@ -13,12 +13,13 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum AccountBillingTypeEnum {
-    PROMOTION("PROMOTION", "Promotion"),
-    NO_BILLING("NO_BILLING", "No Billing"),
-    MONTHLY_30("MONTHLY_30", "Monthly 30"),
-    MONTHLY_40("MONTHLY_40", "Monthly 40"),
-    MONTHLY_50("MONTHLY_50", "Monthly 50"),
-    ANNUAL("ANNUAL", "Annual");
+    P("P", "Promotion"),
+    NB("NB", "No Billing"),
+    M10("M10", "Monthly 10"),
+    M30("M30", "Monthly 30"),
+    M40("M40", "Monthly 40"),
+    M50("M50", "Monthly 50"),
+    A("A", "Annual");
 
     private final String description;
     private final String name;

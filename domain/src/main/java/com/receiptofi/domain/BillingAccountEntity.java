@@ -25,18 +25,18 @@ public class BillingAccountEntity extends BaseEntity {
     @Field ("RID")
     private String rid;
 
-    /** Defaults to PROMOTION to begin with. */
-    @Field ("BAT")
-    private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.PROMOTION;
+    /** Defaults to P to begin with. */
+    @Field ("ABT")
+    private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.P;
 
     /**
      * This is true when at least one billing has been done with @BillingAccountTypeEnum set for this record. If user
-     * changes their mind then this record will be marked as inactive and new @BillingAccountTypeEnum with new record
-     * will be created.
+     * changes their mind then this field with be marked as false until next billing cycle.
      */
     @Field ("BA")
     private boolean billedAccount = false;
 
+    @SuppressWarnings ("unused")
     private BillingAccountEntity() {
         super();
     }

@@ -76,11 +76,11 @@ public class SendOutAccountActiveEmail {
                                     userAccount.getReceiptUserId(),
                                     new Date());
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
+                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
                             billingService.save(billingHistory);
                         } else {
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
+                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
                             billingService.save(billingHistory);
                         }
 
@@ -98,11 +98,11 @@ public class SendOutAccountActiveEmail {
                                     userAccount.getReceiptUserId(),
                                     Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
+                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
                             billingService.save(billingHistory);
                         } else {
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
+                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
                             billingService.save(billingHistory);
                         }
 

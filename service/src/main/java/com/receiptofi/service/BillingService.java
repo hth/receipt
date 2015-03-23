@@ -90,7 +90,7 @@ public class BillingService {
                         BillingHistoryEntity.SDF.format(receipt.getReceiptDate()));
 
                 billingHistory.setBilledStatus(BilledStatusEnum.P);
-                billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
+                billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
             }
 
             billingHistoryManager.save(billingHistory);

@@ -217,7 +217,7 @@ public class AccountService {
                 userAccount.getReceiptUserId(),
                 new Date());
         billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
+        billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
         billingService.save(billingHistory);
 
         /** Second month marked as PROMOTIONAL too. */
@@ -225,7 +225,7 @@ public class AccountService {
                 userAccount.getReceiptUserId(),
                 Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
         billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setAccountBillingType(AccountBillingTypeEnum.PROMOTION);
+        billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
         billingService.save(billingHistory);
     }
 

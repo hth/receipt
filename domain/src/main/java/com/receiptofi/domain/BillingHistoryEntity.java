@@ -44,7 +44,7 @@ public class BillingHistoryEntity extends BaseEntity {
     @Field ("BS")
     private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
-    @Field ("BAT")
+    @Field ("ABT")
     private AccountBillingTypeEnum accountBillingType;
 
     @Field ("BM")
