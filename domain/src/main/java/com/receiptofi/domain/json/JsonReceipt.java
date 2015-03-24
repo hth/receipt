@@ -77,7 +77,7 @@ public class JsonReceipt {
     private String expenseReportInFS;
 
     @JsonProperty ("bs")
-    private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
+    private String billedStatus = BilledStatusEnum.NB.getName();
 
     public JsonReceipt() {
     }
@@ -101,7 +101,7 @@ public class JsonReceipt {
         this.percentTax = receiptEntity.getPercentTax();
         this.receiptUserId = receiptEntity.getReceiptUserId();
         this.expenseReportInFS = receiptEntity.getExpenseReportInFS();
-        this.billedStatus = receiptEntity.getBilledStatus();
+        this.billedStatus = receiptEntity.getBilledStatus().getName();
     }
 
     public String getId() {
@@ -152,7 +152,7 @@ public class JsonReceipt {
         return expenseReportInFS;
     }
 
-    public BilledStatusEnum getBilledStatus() {
+    public String getBilledStatus() {
         return billedStatus;
     }
 }
