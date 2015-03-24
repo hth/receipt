@@ -208,11 +208,14 @@ public class AccountService {
     private void billAccount(UserAccountEntity userAccount) {
         BillingAccountEntity billingAccount = userAccount.getBillingAccount();
 
-        /** Consider the account as billed from get go. */
+        /** Consider the account as billed from get go as BillingHistory is created with Promotional. */
         billingAccount.markAccountBilled();
         billingService.save(billingAccount);
 
-        /** Mark PROMOTIONAL as billed for the first and second month. First month marked PROMOTIONAL during signup. */
+        /**
+         * Mark PROMOTIONAL as billed for the first and second month.
+         * First month marked PROMOTIONAL during signup.
+         */
         BillingHistoryEntity billingHistory = new BillingHistoryEntity(
                 userAccount.getReceiptUserId(),
                 new Date());

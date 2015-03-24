@@ -2,11 +2,13 @@ package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
+import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
+import com.receiptofi.service.ReceiptService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,7 @@ public class BillingProcess {
     private String billingProcessStatus;
     private BillingService billingService;
     private AccountService accountService;
+    private ReceiptService receiptService;
 
     @Autowired
     public BillingProcess(
@@ -54,13 +57,15 @@ public class BillingProcess {
             String billingProcessStatus,
 
             BillingService billingService,
-            AccountService accountService
+            AccountService accountService,
+            ReceiptService receiptService
     ) {
         this.promotionalPeriod = promotionalPeriod;
         this.limit = limit;
         this.billingProcessStatus = billingProcessStatus;
         this.billingService = billingService;
         this.accountService = accountService;
+        this.receiptService = receiptService;
     }
 
     /**
@@ -118,6 +123,10 @@ public class BillingProcess {
                                 case P:
                                     if (billingService.countLastPromotion(billedForMonth, billingAccount.getRid()) >= promotionalPeriod) {
                                         if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
+                                            /**
+                                             * Since the account is passed promotional period, its reset to NB and
+                                             * billing account is updated accordingly.
+                                             */
                                             insertBillingHistory(
                                                     billedForMonth,
                                                     BilledStatusEnum.NB,
@@ -188,7 +197,38 @@ public class BillingProcess {
                                     throw new RuntimeException("Reached unreachable condition");
                             }
                         } else {
-                            //This condition would not happen in prod
+                            //This condition would not happen in prod. TODO remove me in future.
+                            billingAccount = new BillingAccountEntity(userAccount.getReceiptUserId());
+                            billingAccount.markAccountBilled();
+                            billingService.save(billingAccount);
+
+                            userAccount.setBillingAccount(billingAccount);
+                            accountService.saveUserAccount(userAccount);
+
+                            /**
+                             * Mark PROMOTIONAL as billed for the first and second month.
+                             * First month marked PROMOTIONAL during signup.
+                             */
+                            BillingHistoryEntity billingHistory = new BillingHistoryEntity(
+                                    userAccount.getReceiptUserId(),
+                                    new Date());
+                            billingHistory.setBilledStatus(BilledStatusEnum.P);
+                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingService.save(billingHistory);
+
+                            /** Second month marked as PROMOTIONAL too. */
+                            billingHistory = new BillingHistoryEntity(
+                                    userAccount.getReceiptUserId(),
+                                    Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
+                            billingHistory.setBilledStatus(BilledStatusEnum.P);
+                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingService.save(billingHistory);
+
+                            List<ReceiptEntity> receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
+                            for(ReceiptEntity receipt: receipts) {
+                                receipt.setBilledStatus(BilledStatusEnum.P);
+                                receiptService.save(receipt);
+                            }
                         }
                     }
                     skipDocuments += limit;

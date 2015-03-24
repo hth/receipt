@@ -381,4 +381,12 @@ public class ReceiptService {
 
         return expenseTag;
     }
+
+    public List<ReceiptEntity> findAllReceipts(String rid) {
+        return receiptManager.findAllReceipts(rid);
+    }
+
+    public void save(ReceiptEntity receipt) {
+        receiptManager.save(receipt);
+    }
 }

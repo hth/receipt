@@ -430,4 +430,9 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         return query;
     }
+
+    @Override
+    public List<ReceiptEntity> findAllReceipts(String rid) {
+        return mongoTemplate.find(query(where("RID").is(rid)), ReceiptEntity.class);
+    }
 }
