@@ -158,13 +158,20 @@
             <c:choose>
                 <c:when test="${!empty reportAnalysisForm.receiptGroupedByMonths}">
                 <div id="monthly" style="min-width: 575px; max-width: 740px; height: 425px; padding-left: 5px; margin: 35px 10px 30px 0;"></div>
-                <c:if test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
-                <div id="itemsByTags" style="min-width: 575px; height: 420px; margin: 0 auto"></div>
-                </c:if>
+                    <c:choose>
+                        <c:when test="${!empty reportAnalysisForm.thisYearExpenseByTags && reportAnalysisForm.expensesForThisYearPopulated}">
+                            <div id="itemsByTags" style="min-width: 575px; height: 420px; margin: 0 auto"></div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="r-info">
+                                Chart 'Items by Tag' not available as no receipt submitted for this year.
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </c:when>
                 <c:otherwise>
                 <div class="r-info">
-                    No expense analysis available as no receipt submitted or transformed.
+                    No expense analysis available as no receipt submitted.
                 </div>
                 </c:otherwise>
             </c:choose>
@@ -264,7 +271,7 @@
     });
     </c:if>
 
-    <c:if test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
+    <c:if test="${!empty reportAnalysisForm.thisYearExpenseByTags && reportAnalysisForm.expensesForThisYearPopulated}">
     $(function () {
         "use strict";
 
