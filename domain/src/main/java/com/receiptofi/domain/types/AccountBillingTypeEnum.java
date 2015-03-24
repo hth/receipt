@@ -23,12 +23,12 @@ public enum AccountBillingTypeEnum {
 
     private final String description;
     private final String name;
-    private final int allowedNumberOfDocuments;
+    private final int allowedDocumentsPerMonth;
 
-    private AccountBillingTypeEnum(String name, String description, int allowedNumberOfDocuments) {
+    private AccountBillingTypeEnum(String name, String description, int allowedDocumentsPerMonth) {
         this.name = name;
         this.description = description;
-        this.allowedNumberOfDocuments = allowedNumberOfDocuments;
+        this.allowedDocumentsPerMonth = allowedDocumentsPerMonth;
     }
 
     public String getName() {
@@ -39,8 +39,8 @@ public enum AccountBillingTypeEnum {
         return description;
     }
 
-    public int getAllowedNumberOfDocuments() {
-        return allowedNumberOfDocuments;
+    public int getAllowedDocumentsPerMonth() {
+        return allowedDocumentsPerMonth;
     }
 
     @Override
