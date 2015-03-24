@@ -119,15 +119,6 @@ public class ReceiptGrouped implements Serializable {
         return total;
     }
 
-    public long dateInMillisForSorting() {
-        if (year == 0 || month == 0) {
-            //This should never happen. Add validation in receipt during save.
-            LOG.error("Setting now time as --> Year and month should not be zero. Year " + year + ", month: " + month);
-            return DateUtil.now().getMillis();
-        }
-        return new DateTime(year, month, 1, 0, 0).getMillis();
-    }
-
     @Override
     public String toString() {
         return "ReceiptGrouped{" +

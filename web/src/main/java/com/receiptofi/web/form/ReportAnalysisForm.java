@@ -4,6 +4,7 @@ import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptListView;
 import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class ReportAnalysisForm {
     private List<ReceiptListView> receiptListViews = new LinkedList<>();
     private List<ThisYearExpenseByTag> thisYearExpenseByTags;
     private int itemsForYear;
+    private boolean expensesForThisYear;
 
     public List<ReceiptGrouped> getReceiptGroupedByMonths() {
         return receiptGroupedByMonths;
@@ -51,6 +53,15 @@ public class ReportAnalysisForm {
 
     public void setThisYearExpenseByTags(List<ThisYearExpenseByTag> thisYearExpenseByTags) {
         this.thisYearExpenseByTags = thisYearExpenseByTags;
+    }
+
+    public boolean isExpensesForThisYearPopulated() {
+        for (ThisYearExpenseByTag thisYearExpenseByTag : thisYearExpenseByTags) {
+            if (thisYearExpenseByTag.getTotal().compareTo(BigDecimal.ZERO) != 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getTagColors() {

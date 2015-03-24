@@ -1,8 +1,6 @@
 package com.receiptofi.service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import com.google.common.primitives.Longs;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.DocumentEntity;
@@ -83,12 +81,6 @@ public class LandingService {
     @Autowired private ImageSplitService imageSplitService;
     @Autowired private ReceiptParserService receiptParserService;
 
-    static Ordering<ReceiptGrouped> descendingOrder = new Ordering<ReceiptGrouped>() {
-        public int compare(ReceiptGrouped left, ReceiptGrouped right) {
-            return Longs.compare(left.dateInMillisForSorting(), right.dateInMillisForSorting());
-        }
-    };
-
     public long pendingReceipt(String rid) {
         return documentManager.numberOfPendingReceipts(rid);
     }
@@ -135,7 +127,7 @@ public class LandingService {
 
     public List<ReceiptListView> getReceiptsForMonths(String rid, List<ReceiptGrouped> groupedByMonth) {
         List<ReceiptListView> receiptListViews = new LinkedList<>();
-        for(ReceiptGrouped receiptGrouped : groupedByMonth) {
+        for (ReceiptGrouped receiptGrouped : groupedByMonth) {
 
             ReceiptListView receiptListView = new ReceiptListView();
             receiptListView.setMonth(receiptGrouped.getMonth());
@@ -163,11 +155,11 @@ public class LandingService {
      * @return
      */
     public List<ReceiptGrouped> addMonthsIfLessThanThree(List<ReceiptGrouped> receiptGroupedList, int size) {
-        List<ReceiptGrouped> copiedList = Lists.newArrayList(receiptGroupedList);
+        LinkedList<ReceiptGrouped> copiedList = Lists.newLinkedList(receiptGroupedList);
 
         /**
          * In case there is just receipts for one month then add empty data to show the chart pretty for at least two
-         * additional months.
+         * additional months. Empty data appends to last month in the DESC sorted list.
          */
         if (size == 1) {
             ReceiptGrouped receiptGrouped = copiedList.get(0);
@@ -188,7 +180,8 @@ public class LandingService {
             ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
             copiedList.add(r1);
         }
-        return descendingOrder.sortedCopy(copiedList);
+
+        return copiedList;
     }
 
     public List<ReceiptGroupedByBizLocation> getAllObjectsGroupedByBizLocation(String userProfileId) {
@@ -403,6 +396,7 @@ public class LandingService {
 
     /**
      * Saves the Receipt Image, Creates ReceiptOCR, ItemOCR and Sends JMS.
+     *
      * @param documentId
      * @param userProfileId
      * @param uploadReceiptImage
