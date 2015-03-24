@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
         "PMD.LongVariable"
 })
 @Document (collection = "BILLING_ACCOUNT")
-@CompoundIndexes ({@CompoundIndex (name = "billing_account_idx", def = "{'RID': 1}")})
+@CompoundIndexes ({@CompoundIndex (name = "billing_account_idx", def = "{'RID': 1}", unique = true)})
 public class BillingAccountEntity extends BaseEntity {
 
     @Field ("RID")
