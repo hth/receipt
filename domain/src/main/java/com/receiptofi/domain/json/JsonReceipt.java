@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.BilledStatusEnum;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -75,6 +76,9 @@ public class JsonReceipt {
     @JsonProperty ("expenseReport")
     private String expenseReportInFS;
 
+    @JsonProperty ("bs")
+    private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
+
     public JsonReceipt() {
     }
 
@@ -97,6 +101,7 @@ public class JsonReceipt {
         this.percentTax = receiptEntity.getPercentTax();
         this.receiptUserId = receiptEntity.getReceiptUserId();
         this.expenseReportInFS = receiptEntity.getExpenseReportInFS();
+        this.billedStatus = receiptEntity.getBilledStatus();
     }
 
     public String getId() {
@@ -145,5 +150,9 @@ public class JsonReceipt {
 
     public String getExpenseReportInFS() {
         return expenseReportInFS;
+    }
+
+    public BilledStatusEnum getBilledStatus() {
+        return billedStatus;
     }
 }
