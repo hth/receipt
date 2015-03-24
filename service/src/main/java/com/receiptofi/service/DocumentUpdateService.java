@@ -65,6 +65,7 @@ public class DocumentUpdateService {
     @Autowired private StorageManager storageManager;
     @Autowired private FileSystemService fileSystemService;
     @Autowired private MileageService mileageService;
+    @Autowired private BillingService billingService;
 
     public DocumentEntity loadActiveDocumentById(String documentId) {
         return documentManager.findActiveOne(documentId);
@@ -117,6 +118,7 @@ public class DocumentUpdateService {
 
             bizService.saveNewBusinessAndOrStore(receipt);
             receipt.addProcessedBy(transaction, technicianId);
+            billingService.updateReceiptWithBillingHistory(receipt);
             receiptManager.save(receipt);
 
             populateItemsWithBizName(items, receipt);

@@ -1,6 +1,7 @@
 package com.receiptofi.web.helper;
 
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.BilledStatusEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,22 +40,24 @@ public final class ReceiptLandingView {
     private String expenseReportInFS;
     private String expenseTag;
     private String expenseColor;
+    private BilledStatusEnum billedStatus;
 
-    private ReceiptLandingView(ReceiptEntity receiptEntity) {
-        id = receiptEntity.getId();
-        name = receiptEntity.getBizName().getBusinessName();
-        date = receiptEntity.getReceiptDate();
-        tax = receiptEntity.getTax();
-        total = receiptEntity.getTotal();
-        userProfileId = receiptEntity.getReceiptUserId();
-        expenseReportInFS = receiptEntity.getExpenseReportInFS();
-        if (null != receiptEntity.getExpenseTag()) {
-            expenseTag = receiptEntity.getExpenseTag().getTagName();
-            expenseColor = receiptEntity.getExpenseTag().getTagColor();
+    private ReceiptLandingView(ReceiptEntity receipt) {
+        id = receipt.getId();
+        name = receipt.getBizName().getBusinessName();
+        date = receipt.getReceiptDate();
+        tax = receipt.getTax();
+        total = receipt.getTotal();
+        userProfileId = receipt.getReceiptUserId();
+        expenseReportInFS = receipt.getExpenseReportInFS();
+        if (null != receipt.getExpenseTag()) {
+            expenseTag = receipt.getExpenseTag().getTagName();
+            expenseColor = receipt.getExpenseTag().getTagColor();
         }
 
         /** Remove all alpha numeric characters as it creates issues with 'id' */
-        bizNameForId = StringUtils.deleteWhitespace(receiptEntity.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", "");
+        bizNameForId = StringUtils.deleteWhitespace(receipt.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", "");
+        billedStatus = receipt.getBilledStatus();
     }
 
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
@@ -139,5 +142,9 @@ public final class ReceiptLandingView {
 
     public void setExpenseColor(String expenseColor) {
         this.expenseColor = expenseColor;
+    }
+
+    public BilledStatusEnum getBilledStatus() {
+        return billedStatus;
     }
 }

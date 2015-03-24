@@ -115,7 +115,7 @@ public class AccountRegistrationController {
     ) {
         userRegistrationValidator.validate(userRegistrationForm, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
+            LOG.warn("validation error");
             model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return registrationPage;
         }

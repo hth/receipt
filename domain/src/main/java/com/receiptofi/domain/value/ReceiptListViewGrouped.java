@@ -2,6 +2,7 @@ package com.receiptofi.domain.value;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.types.BilledStatusEnum;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import java.util.Date;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender
@@ -36,6 +39,9 @@ public class ReceiptListViewGrouped {
     @DBRef (lazy = false)
     @Field ("EXPENSE_TAG")
     private ExpenseTagEntity expenseTag;
+
+    @Field ("BS")
+    private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
     public String getId() {
         return id;
@@ -87,5 +93,13 @@ public class ReceiptListViewGrouped {
 
     public String getExpenseColor() {
         return expenseTag == null ? "" : expenseTag.getTagColor();
+    }
+
+    public BilledStatusEnum getBilledStatus() {
+        return billedStatus;
+    }
+
+    public void setBilledStatus(BilledStatusEnum billedStatus) {
+        this.billedStatus = billedStatus;
     }
 }

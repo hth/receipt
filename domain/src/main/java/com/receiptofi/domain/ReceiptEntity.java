@@ -3,6 +3,7 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.utils.HashText;
 
@@ -128,6 +129,10 @@ public class ReceiptEntity extends BaseEntity {
      */
     @Field ("CS")
     private String checksum;
+
+    @NotNull
+    @Field ("BS")
+    private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
     /** To keep bean happy. */
     public ReceiptEntity() {
@@ -349,6 +354,14 @@ public class ReceiptEntity extends BaseEntity {
 
     public void addProcessedBy(Date updated, String rid) {
         this.processedBy.put(updated, rid);
+    }
+
+    public BilledStatusEnum getBilledStatus() {
+        return billedStatus;
+    }
+
+    public void setBilledStatus(BilledStatusEnum billedStatus) {
+        this.billedStatus = billedStatus;
     }
 
     @Transient

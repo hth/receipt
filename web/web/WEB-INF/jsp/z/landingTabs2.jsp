@@ -10,9 +10,20 @@
         <li>
             <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
             <span style="background-color: ${receipt.expenseColor};">&nbsp;&nbsp;</span>
-            <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm" class="rightside-li-middle-text" target="_blank">
-                <spring:eval expression="receipt.name"/>
-            </a>
+            <c:choose>
+            <c:when test="${receipt.billedStatus eq 'NB'}">
+                <a href="/access/userprofilepreference/i.htm#tabs-3"
+                        class="rightside-li-middle-text">
+                    <spring:eval expression="receipt.name"/>
+                </a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
+                        class="rightside-li-middle-text" target="_blank">
+                    <spring:eval expression="receipt.name"/>
+                </a>
+            </c:otherwise>
+            </c:choose>
             <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>
         </li>
         </c:forEach>

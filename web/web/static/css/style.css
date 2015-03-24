@@ -844,14 +844,13 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 .pic {
     float: left;
-    margin: 15px 0px;
     width: 170px;
     height: 175px;
     background: #ccc;
 }
 
 .photo_button {
-    float: left;
+    float: right;
     width: 45%;
 }
 
