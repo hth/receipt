@@ -24,7 +24,7 @@ public enum AccountTypeEnum {
     private final String name;
     private final String description;
 
-    private AccountTypeEnum(String name, String description) {
+    AccountTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

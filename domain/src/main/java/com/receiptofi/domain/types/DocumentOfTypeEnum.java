@@ -18,7 +18,7 @@ public enum DocumentOfTypeEnum {
     private final String description;
     private final String name;
 
-    private DocumentOfTypeEnum(String name, String description) {
+    DocumentOfTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

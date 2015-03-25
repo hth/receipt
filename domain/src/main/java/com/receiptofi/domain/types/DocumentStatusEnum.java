@@ -27,7 +27,7 @@ public enum DocumentStatusEnum {
 
     private final String description;
 
-    private DocumentStatusEnum(String description) {
+    DocumentStatusEnum(String description) {
         this.description = description;
     }
 

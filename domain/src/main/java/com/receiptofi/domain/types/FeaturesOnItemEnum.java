@@ -25,7 +25,7 @@ public enum FeaturesOnItemEnum {
     private final String description;
     private final String name;
 
-    private FeaturesOnItemEnum(String name, String description) {
+    FeaturesOnItemEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
