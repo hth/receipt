@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.BilledStatusEnum;
@@ -16,6 +15,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -67,9 +67,6 @@ public class JsonReceipt {
     @JsonProperty ("tax")
     private Double tax;
 
-    @JsonProperty ("tagId")
-    private String tagId;
-
     @JsonProperty ("rid")
     private String receiptUserId;
 
@@ -78,6 +75,9 @@ public class JsonReceipt {
 
     @JsonProperty ("bs")
     private String billedStatus = BilledStatusEnum.NB.getName();
+
+    @JsonProperty ("expenseTagId")
+    private String expenseTagId;
 
     public JsonReceipt() {
     }
@@ -89,19 +89,22 @@ public class JsonReceipt {
         this.jsonBizStore = JsonBizStore.newInstance(receiptEntity.getBizStore());
         this.jsonNotes = JsonComment.newInstance(receiptEntity.getNotes());
 
-        for (FileSystemEntity fileSystemEntity : receiptEntity.getFileSystemEntities()) {
-            this.jsonFileSystems.add(JsonFileSystem.newInstance(fileSystemEntity));
-        }
+        /**
+         * The fancy line does this looping.
+         *
+         *  for (FileSystemEntity fileSystemEntity : receiptEntity.getFileSystemEntities()) {
+         *      this.jsonFileSystems.add(JsonFileSystem.newInstance(fileSystemEntity));
+         *  }
+         */
+        this.jsonFileSystems.addAll(receiptEntity.getFileSystemEntities().stream().map(JsonFileSystem::newInstance).collect(Collectors.toList()));
 
         this.receiptDate = FMT.print(new DateTime(receiptEntity.getReceiptDate()));
         this.tax = receiptEntity.getTax();
-        if (null != receiptEntity.getExpenseTag()) {
-            this.tagId = receiptEntity.getExpenseTag().getId();
-        }
         this.percentTax = receiptEntity.getPercentTax();
         this.receiptUserId = receiptEntity.getReceiptUserId();
         this.expenseReportInFS = receiptEntity.getExpenseReportInFS();
         this.billedStatus = receiptEntity.getBilledStatus().getName();
+        this.expenseTagId = receiptEntity.getExpenseTag() == null ? "" : receiptEntity.getExpenseTag().getId();
     }
 
     public String getId() {
@@ -140,10 +143,6 @@ public class JsonReceipt {
         return tax;
     }
 
-    public String getTagId() {
-        return tagId;
-    }
-
     public String getReceiptUserId() {
         return receiptUserId;
     }
@@ -154,5 +153,9 @@ public class JsonReceipt {
 
     public String getBilledStatus() {
         return billedStatus;
+    }
+
+    public String getExpenseTagId() {
+        return expenseTagId;
     }
 }
