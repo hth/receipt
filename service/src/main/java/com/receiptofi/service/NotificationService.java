@@ -129,7 +129,8 @@ public class NotificationService {
                         ((MileageEntity) supportedEntity).getReceiptUserId(),
                         true);
                 break;
-            case DOCUMENT:
+            case DOCUMENT_UPLOADED:
+            case DOCUMENT_REJECTED:
                 addNotification(
                         message,
                         notificationType,
