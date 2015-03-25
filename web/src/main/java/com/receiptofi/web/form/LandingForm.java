@@ -30,7 +30,6 @@ public final class LandingForm {
     private List<LandingDonutChart> bizByExpenseTypes;
     private String bizNames;
 
-    private NotificationForm notificationForm;
     private List<MileageEntity> mileageEntities;
     private String mileages;
     private int mileageMonthlyTotal;
@@ -87,14 +86,6 @@ public final class LandingForm {
 
     public void setBizNames(String bizNames) {
         this.bizNames = bizNames;
-    }
-
-    public NotificationForm getNotificationForm() {
-        return notificationForm;
-    }
-
-    public void setNotificationForm(NotificationForm notificationForm) {
-        this.notificationForm = notificationForm;
     }
 
     public List<MileageEntity> getMileageEntities() {

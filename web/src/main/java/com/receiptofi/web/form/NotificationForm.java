@@ -20,28 +20,22 @@ public final class NotificationForm {
     private List<NotificationDetailForm> notifications = new ArrayList<>();
     private String count;
 
-    @SuppressWarnings ("unused")
-    private NotificationForm(String count, List<NotificationEntity> notifications) {
-        this.count = count;
+    public List<NotificationDetailForm> getNotifications() {
+        return this.notifications;
+    }
+
+    public void setNotifications(List<NotificationEntity> notifications) {
         for (NotificationEntity notification : notifications) {
             NotificationDetailForm notificationDetailForm = NotificationDetailForm.newInstance(notification);
             this.notifications.add(notificationDetailForm);
         }
     }
 
-    public static NotificationForm newInstance(List<NotificationEntity> notifications) {
-        return new NotificationForm("", notifications);
-    }
-
-    public static NotificationForm newInstance(long count, List<NotificationEntity> notifications) {
-        return new NotificationForm(String.valueOf(count), notifications);
-    }
-
-    public List<NotificationDetailForm> getNotifications() {
-        return this.notifications;
-    }
-
     public String getCount() {
         return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 }

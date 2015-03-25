@@ -49,14 +49,14 @@
 
             var page = 5;
             $scope.loadMore = function() {
-                console.log("page:" + page + "," + "notificationCount:" + '${landingForm.notificationForm.count}');
-                if(page < '${landingForm.notificationForm.count}' - 1) {
+                console.log("page:" + page + "," + "notificationCount:" + '${notificationForm.count}');
+                if(page < '${notificationForm.count}' - 1) {
                     $scope.loading = true;
                     $http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm')
                             .success(function(data, status) {
                                 if(data.length <= 5) {
                                     console.log('Request status ' + status + ":" + data.length + ":" + data);
-                                    for (var i = 0; i < 5 && page + i < '${landingForm.notificationForm.count}'; i++) {
+                                    for (var i = 0; i < 5 && page + i < '${notificationForm.count}'; i++) {
                                         var d = data[i].split(":");
                                         console.log(d[0] + ":" + d[1] + ":" + d[2]);
                                         $scope.items.push({href : d[0], message : d[1], created : d[2]});
@@ -234,13 +234,13 @@
 	</div>
 	<div class="sidebar-indication">
 		<div class="si-title">
-			<h1 class="widget-title-text">Notifications (${landingForm.notificationForm.count})</h1>
+			<h1 class="widget-title-text">Notifications (${notificationForm.count})</h1>
 		</div>
 		<div class="si-list-holder" when-scrolled="loadMore()">
             <c:choose>
-            <c:when test="${!empty landingForm.notificationForm.notifications}">
+            <c:when test="${!empty notificationForm.notifications}">
                 <ul>
-                    <c:forEach var="notification" items="${landingForm.notificationForm.notifications}" varStatus="status">
+                    <c:forEach var="notification" items="${notificationForm.notifications}" varStatus="status">
                     <li class="si-list">
                         <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
                         <span class="si-general-text">${notification.notificationMessageForDisplay}</span>
@@ -267,7 +267,7 @@
             </c:choose>
 		</div>
 		<div class="si-footer">
-            <c:if test="${!empty landingForm.notificationForm.notifications}">
+            <c:if test="${!empty notificationForm.notifications}">
                 <p class="view-more-text">
                     <a class="view-more-text" ng-href="${pageContext.request.contextPath}/access/notification.htm">View All Notifications</a>
                 </p>
