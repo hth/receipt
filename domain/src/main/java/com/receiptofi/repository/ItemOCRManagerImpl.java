@@ -70,9 +70,7 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
     public void saveObjects(List<ItemEntityOCR> objects) throws Exception {
         //TODO reflection error saving the list
         //mongoTemplate.insert(objects, TABLE);
-        for (ItemEntityOCR object : objects) {
-            save(object);
-        }
+        objects.forEach(this::save);
     }
 
     @Override

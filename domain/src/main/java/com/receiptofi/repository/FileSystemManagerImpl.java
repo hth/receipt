@@ -69,9 +69,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
-        for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
-            deleteHard(fileSystemEntity);
-        }
+        fileSystemEntities.forEach(this::deleteHard);
     }
 
     private void deleteSoft(String id) {
