@@ -14,11 +14,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -52,15 +52,17 @@ public class NotificationController {
             value = "/notification",
             method = RequestMethod.GET
     )
-    public ModelAndView loadForm() {
+    public String loadForm(
+            @ModelAttribute ("notificationForm")
+            NotificationForm notificationForm
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("LandingController loadForm: " + receiptUser.getRid());
 
         List<NotificationEntity> notifications = notificationService.getAllNotifications(receiptUser.getRid());
-
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("notificationForm", NotificationForm.newInstance(notifications.size(), notifications));
-        return modelAndView;
+        notificationForm.setNotifications(notifications);
+        notificationForm.setCount(Integer.toString(notifications.size()));
+        return nextPage;
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
@@ -73,13 +75,13 @@ public class NotificationController {
     @ResponseBody
     public List<String> paginatedNotification(
             @PathVariable ("current")
-            int current
+            int current,
+
+            @ModelAttribute ("notificationForm")
+            NotificationForm notificationForm
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        NotificationForm notificationForm = NotificationForm.newInstance(
-                notificationService.notificationsPaginated(receiptUser.getRid(), current)
-        );
-
+        notificationForm.setNotifications(notificationService.notificationsPaginated(receiptUser.getRid(), current));
         List<String> notifications = new LinkedList<>();
         for (NotificationDetailForm notificationDetailForm : notificationForm.getNotifications()) {
             notificationDetailForm.getNotificationMessageForDisplay();

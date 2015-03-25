@@ -121,7 +121,10 @@ public class LandingController {
             LandingForm landingForm,
 
             @ModelAttribute ("documentStatsForm")
-            DocumentStatsForm documentStatsForm
+            DocumentStatsForm documentStatsForm,
+
+            @ModelAttribute ("notificationForm")
+            NotificationForm notificationForm
     ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -162,13 +165,8 @@ public class LandingController {
         modelAndView.addAllObjects(ytdExpenseMap);
 
         /** Notification */
-        List<NotificationEntity> notifications = landingService.getNotifications(receiptUser.getRid());
-        landingForm.setNotificationForm(
-                NotificationForm.newInstance(
-                        landingService.notificationCount(receiptUser.getRid()),
-                        notifications
-                )
-        );
+        notificationForm.setNotifications(landingService.getNotifications(receiptUser.getRid()));
+        notificationForm.setCount(Long.toString(landingService.notificationCount(receiptUser.getRid())));
 
         /** Mileage */
         List<MileageEntity> mileageEntityList = mileageService.getMileageForThisMonth(receiptUser.getRid(), time);
