@@ -38,19 +38,19 @@ public class NotificationService {
      * Hide notification from user.
      *
      * @param message
-     * @param notificationTypeEnum
+     * @param notificationType
      * @param id
      * @param userProfileId
      * @param notified
      */
     public void addNotification(
             String message,
-            NotificationTypeEnum notificationTypeEnum,
+            NotificationTypeEnum notificationType,
             String id,
             String userProfileId,
             boolean notified
     ) {
-        NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationTypeEnum);
+        NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationType);
         notificationEntity.setMessage(message);
         notificationEntity.setReceiptUserId(userProfileId);
         if (notified) {
@@ -74,9 +74,13 @@ public class NotificationService {
      * @param message
      * @param userProfileId
      */
-    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, String userProfileId) {
-        if (notificationTypeEnum == NotificationTypeEnum.MESSAGE) {
-            addNotification(message, notificationTypeEnum, null, userProfileId, true);
+    public void addNotification(
+            String message,
+            NotificationTypeEnum notificationType,
+            String userProfileId
+    ) {
+        if (notificationType == NotificationTypeEnum.MESSAGE) {
+            addNotification(message, notificationType, null, userProfileId, true);
         } else {
             throw new UnsupportedOperationException("Incorrect method call for Notification Type");
         }
@@ -84,15 +88,19 @@ public class NotificationService {
 
     /**
      * @param message
-     * @param notificationTypeEnum
+     * @param notificationType
      * @param supportedEntity
      */
-    public void addNotification(String message, NotificationTypeEnum notificationTypeEnum, BaseEntity supportedEntity) {
-        switch (notificationTypeEnum) {
+    public void addNotification(
+            String message,
+            NotificationTypeEnum notificationType,
+            BaseEntity supportedEntity
+    ) {
+        switch (notificationType) {
             case EXPENSE_REPORT:
                 addNotification(
                         message,
-                        notificationTypeEnum,
+                        notificationType,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
                         true);
@@ -100,7 +108,7 @@ public class NotificationService {
             case RECEIPT:
                 addNotification(
                         message,
-                        notificationTypeEnum,
+                        notificationType,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
                         true);
@@ -108,7 +116,7 @@ public class NotificationService {
             case INVOICE:
                 addNotification(
                         message,
-                        notificationTypeEnum,
+                        notificationType,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
                         true);
@@ -116,7 +124,7 @@ public class NotificationService {
             case MILEAGE:
                 addNotification(
                         message,
-                        notificationTypeEnum,
+                        notificationType,
                         supportedEntity.getId(),
                         ((MileageEntity) supportedEntity).getReceiptUserId(),
                         true);
@@ -124,7 +132,7 @@ public class NotificationService {
             case DOCUMENT:
                 addNotification(
                         message,
-                        notificationTypeEnum,
+                        notificationType,
                         supportedEntity.getId(),
                         ((DocumentEntity) supportedEntity).getReceiptUserId(),
                         true);
