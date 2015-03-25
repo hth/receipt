@@ -194,24 +194,22 @@ public class ReceiptService {
     public List<ItemEntityOCR> getItemEntityFromItemEntityOCR(List<ItemEntity> items, DocumentEntity document) {
         List<ItemEntityOCR> listOfItems = new ArrayList<>();
 
-        for (ItemEntity item : items) {
-            if (StringUtils.isNotEmpty(item.getName())) {
-                ItemEntityOCR itemOCR = ItemEntityOCR.newInstance();
-                itemOCR.setName(item.getName());
-                itemOCR.setPrice(item.getPrice().toString());
-                itemOCR.setTaxed(item.getTaxed());
-                itemOCR.setSequence(item.getSequence());
-                itemOCR.setDocument(document);
-                itemOCR.setReceiptUserId(document.getReceiptUserId());
-                itemOCR.setExpenseTag(item.getExpenseTag());
-                itemOCR.setCreated(item.getCreated());
-                itemOCR.setQuantity(item.getQuantity());
-                itemOCR.setUpdated();
+        items.stream().filter(item -> StringUtils.isNotEmpty(item.getName())).forEach(item -> {
+            ItemEntityOCR itemOCR = ItemEntityOCR.newInstance();
+            itemOCR.setName(item.getName());
+            itemOCR.setPrice(item.getPrice().toString());
+            itemOCR.setTaxed(item.getTaxed());
+            itemOCR.setSequence(item.getSequence());
+            itemOCR.setDocument(document);
+            itemOCR.setReceiptUserId(document.getReceiptUserId());
+            itemOCR.setExpenseTag(item.getExpenseTag());
+            itemOCR.setCreated(item.getCreated());
+            itemOCR.setQuantity(item.getQuantity());
+            itemOCR.setUpdated();
 
-                itemOCR.setBizName(document.getBizName());
-                listOfItems.add(itemOCR);
-            }
-        }
+            itemOCR.setBizName(document.getBizName());
+            listOfItems.add(itemOCR);
+        });
 
         return listOfItems;
     }
