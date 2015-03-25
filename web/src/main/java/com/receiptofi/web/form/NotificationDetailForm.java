@@ -64,7 +64,8 @@ public class NotificationDetailForm {
         switch (notificationType) {
             case MESSAGE:
                 return getAbbreviatedMessage();
-            case DOCUMENT:
+            case DOCUMENT_UPLOADED:
+            case DOCUMENT_REJECTED:
                 this.href = "./document/" + referenceId + ".htm";
                 return getReceiptUpdateURL(getAbbreviatedMessage());
             case RECEIPT:
@@ -92,7 +93,8 @@ public class NotificationDetailForm {
         switch (notificationType) {
             case MESSAGE:
                 return "<span " + CLASS + ">" + message + "</span>";
-            case DOCUMENT:
+            case DOCUMENT_UPLOADED:
+            case DOCUMENT_REJECTED:
                 this.href = "./document/" + referenceId + ".htm";
                 return getReceiptUpdateURL(getAbbreviatedMessageForDetailedView());
             case RECEIPT:

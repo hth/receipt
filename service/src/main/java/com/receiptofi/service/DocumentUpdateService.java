@@ -365,7 +365,7 @@ public class DocumentUpdateService {
                     "Could not process document '" +
                             dbObject.get("ORIGINAL_FILENAME") +
                             "'",
-                    NotificationTypeEnum.DOCUMENT,
+                    NotificationTypeEnum.DOCUMENT_REJECTED,
                     document);
 
         } catch (Exception exce) {

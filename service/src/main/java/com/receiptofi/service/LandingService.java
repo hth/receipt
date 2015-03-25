@@ -13,6 +13,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.domain.value.ReceiptListView;
@@ -327,9 +328,15 @@ public class LandingService {
             items = new LinkedList<>();
             receiptParserService.read(receiptOCRTranslation, documentEntity, items);
 
-            //Save Document, Items and the Send JMS
+            /** Save Document, Items and the Send JMS. */
             documentManager.save(documentEntity);
             itemOCRManager.saveObjects(items);
+
+            /** Added document uploaded successfully. */
+            notificationService.addNotification(
+                    fileSystem.getOriginalFilename() + " uploaded successful",
+                    NotificationTypeEnum.DOCUMENT_UPLOADED,
+                    documentEntity);
 
             LOG.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getReceiptUserId());
             UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(documentEntity.getReceiptUserId());
