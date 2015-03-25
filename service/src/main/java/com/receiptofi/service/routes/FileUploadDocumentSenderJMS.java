@@ -41,15 +41,13 @@ public final class FileUploadDocumentSenderJMS {
 
     public void send(final DocumentEntity documentEntity, final UserProfileEntity userProfile) {
         jmsSenderTemplate.send(queueName,
-                new MessageCreator() {
-                    public Message createMessage(Session session) throws JMSException {
-                        MapMessage mapMessage = session.createMapMessage();
-                        mapMessage.setString("id", documentEntity.getId());
-                        mapMessage.setString("level", userProfile.getLevel().name());
-                        mapMessage.setString("status", documentEntity.getDocumentStatus().name());
-                        mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
-                        return mapMessage;
-                    }
+                session -> {
+                    MapMessage mapMessage = session.createMapMessage();
+                    mapMessage.setString("id", documentEntity.getId());
+                    mapMessage.setString("level", userProfile.getLevel().name());
+                    mapMessage.setString("status", documentEntity.getDocumentStatus().name());
+                    mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
+                    return mapMessage;
                 }
         );
         LOG.info("Message sent ReceiptOCR={}, level={}", documentEntity.getId(), userProfile.getLevel().getDescription());
