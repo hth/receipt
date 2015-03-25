@@ -2,7 +2,6 @@ package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.web.form.NotificationDetailForm;
 import com.receiptofi.web.form.NotificationForm;
@@ -57,10 +56,7 @@ public class NotificationController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("LandingController loadForm: " + receiptUser.getRid());
 
-        List<NotificationEntity> notifications = notificationService.getAllNotifications(
-                receiptUser.getRid(),
-                PaginationEnum.ALL.getLimit()
-        );
+        List<NotificationEntity> notifications = notificationService.getAllNotifications(receiptUser.getRid());
 
         ModelAndView modelAndView = new ModelAndView(nextPage);
         modelAndView.addObject("notificationForm", NotificationForm.newInstance(notifications.size(), notifications));

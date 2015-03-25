@@ -162,7 +162,7 @@ public class LandingController {
         modelAndView.addAllObjects(ytdExpenseMap);
 
         /** Notification */
-        List<NotificationEntity> notifications = landingService.notifications(receiptUser.getRid());
+        List<NotificationEntity> notifications = landingService.getNotifications(receiptUser.getRid());
         landingForm.setNotificationForm(
                 NotificationForm.newInstance(
                         landingService.notificationCount(receiptUser.getRid()),

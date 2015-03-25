@@ -150,7 +150,11 @@ public class NotificationService {
      * @param userProfileId
      * @return
      */
-    public List<NotificationEntity> getAllNotifications(String userProfileId, int limit) {
+    public List<NotificationEntity> getAllNotifications(String userProfileId) {
+        return getNotifications(userProfileId, PaginationEnum.ALL.getLimit());
+    }
+
+    private List<NotificationEntity> getNotifications(String userProfileId, int limit) {
         return notificationManager.getNotifications(userProfileId, 0, limit);
     }
 
@@ -160,8 +164,8 @@ public class NotificationService {
      * @param userProfileId
      * @return
      */
-    public List<NotificationEntity> notifications(String userProfileId) {
-        return getAllNotifications(userProfileId, PaginationEnum.FIVE.getLimit());
+    public List<NotificationEntity> getNotifications(String userProfileId) {
+        return getNotifications(userProfileId, PaginationEnum.FIVE.getLimit());
     }
 
     /**
