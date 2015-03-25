@@ -18,7 +18,7 @@ public enum CommentTypeEnum {
     private final String description;
     private final String name;
 
-    private CommentTypeEnum(String name, String description) {
+    CommentTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

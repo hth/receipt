@@ -24,7 +24,7 @@ public enum NotificationTypeEnum {
     private final String description;
     private final String name;
 
-    private NotificationTypeEnum(String name, String description) {
+    NotificationTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

@@ -21,7 +21,7 @@ public enum FileTypeEnum {
     private final String description;
     private final String name;
 
-    private FileTypeEnum(String name, String description) {
+    FileTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

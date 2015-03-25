@@ -21,7 +21,7 @@ public enum TaxEnum {
     private final String description;
     private final String name;
 
-    private TaxEnum(String name, String description) {
+    TaxEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

@@ -25,7 +25,7 @@ public enum AccountBillingTypeEnum {
     private final String name;
     private final int allowedDocumentsPerMonth;
 
-    private AccountBillingTypeEnum(String name, String description, int allowedDocumentsPerMonth) {
+    AccountBillingTypeEnum(String name, String description, int allowedDocumentsPerMonth) {
         this.name = name;
         this.description = description;
         this.allowedDocumentsPerMonth = allowedDocumentsPerMonth;

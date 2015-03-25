@@ -20,7 +20,7 @@ public enum BilledStatusEnum {
     private final String description;
     private final String name;
 
-    private BilledStatusEnum(String name, String description) {
+    BilledStatusEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

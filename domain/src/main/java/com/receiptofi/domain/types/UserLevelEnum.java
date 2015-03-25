@@ -40,7 +40,7 @@ public enum UserLevelEnum {
      * @param description
      * @param value - used for comparing specific access
      */
-    private UserLevelEnum(String description, int value) {
+    UserLevelEnum(String description, int value) {
         this.description = description;
         this.value = value;
     }

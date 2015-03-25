@@ -16,7 +16,7 @@ public enum AccountInactiveReasonEnum {
     private final String name;
     private final String description;
 
-    private AccountInactiveReasonEnum(String name, String description) {
+    AccountInactiveReasonEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
