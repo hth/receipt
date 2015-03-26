@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 @Mobile
 public class JsonReceipt {
-    private static final DateTimeFormatter FMT = ISODateTimeFormat.dateTime();
+    public static final DateTimeFormatter FMT = ISODateTimeFormat.dateTime();
 
     @JsonProperty ("id")
     private String id;
