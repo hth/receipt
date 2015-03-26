@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
+import org.joda.time.DateTime;
+
 /**
  * User: hitender
  * Date: 3/25/15 10:23 AM
@@ -48,12 +50,20 @@ public class JsonNotification {
     @JsonProperty ("ri")
     private String referenceId;
 
+    @JsonProperty ("c")
+    private String created;
+
+    @JsonProperty ("u")
+    private String updated;
+
     private JsonNotification(NotificationEntity notification) {
         this.id = notification.getId();
         this.message = notification.getMessage();
         this.notified = notification.isNotified();
         this.notificationType = notification.getNotificationType().getName();
         this.referenceId = notification.getReferenceId();
+        this.created = JsonReceipt.FMT.print(new DateTime(notification.getCreated()));
+        this.updated = JsonReceipt.FMT.print(new DateTime(notification.getUpdated()));
     }
 
     public static JsonNotification newInstance(NotificationEntity notification) {
