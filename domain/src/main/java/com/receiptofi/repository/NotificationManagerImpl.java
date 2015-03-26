@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,9 +62,9 @@ public final class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public List<NotificationEntity> getNotifications(String receiptUserId, int start, int limit) {
+    public List<NotificationEntity> getNotifications(String rid, int start, int limit) {
         Query query = query(
-                where("RID").is(receiptUserId).and("ND").is(true))
+                where("RID").is(rid).and("ND").is(true))
                 .addCriteria(isNotDeleted())
                 .skip(start)
                 .with(new Sort(Sort.Direction.DESC, "C"));
@@ -71,15 +72,25 @@ public final class NotificationManagerImpl implements NotificationManager {
         if (limit != PaginationEnum.ALL.getLimit()) {
             query.limit(limit);
         }
-        return mongoTemplate.find(query, NotificationEntity.class, TABLE);
+        return mongoTemplate.find(query, NotificationEntity.class);
     }
 
     @Override
-    public long notificationCount(String receiptUserId) {
+    public long notificationCount(String rid) {
         return mongoTemplate.count(
-                new Query(where("RID").is(receiptUserId)
+                new Query(where("RID").is(rid)
                         .and("ND").is(true))
                         .addCriteria(isNotDeleted()),
+                NotificationEntity.class
+        );
+    }
+
+    @Override
+    public List<NotificationEntity> getNotifications(String rid, Date since) {
+        return mongoTemplate.find(
+                query(where("RID").is(rid).and("ND").is(true).and("U").gte(since))
+                        .addCriteria(isNotDeleted())
+                        .with(new Sort(Sort.Direction.DESC, "C")),
                 NotificationEntity.class
         );
     }
