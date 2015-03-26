@@ -36,7 +36,7 @@ import java.util.List;
 })
 @Component
 public class BillingProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(DocumentStatProcessed.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BillingProcess.class);
 
     private int promotionalPeriod;
     private int limit;
