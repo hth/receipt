@@ -58,7 +58,7 @@ public class JsonReceipt {
     @JsonProperty ("files")
     private Collection<JsonFileSystem> jsonFileSystems = new LinkedList<>();
 
-    @JsonProperty ("date")
+    @JsonProperty ("receiptDate")
     private String receiptDate;
 
     @JsonProperty ("ptax")
@@ -82,12 +82,12 @@ public class JsonReceipt {
     public JsonReceipt() {
     }
 
-    public JsonReceipt(ReceiptEntity receiptEntity) {
-        this.id = receiptEntity.getId();
-        this.total = receiptEntity.getTotal();
-        this.jsonBizName = JsonBizName.newInstance(receiptEntity.getBizName());
-        this.jsonBizStore = JsonBizStore.newInstance(receiptEntity.getBizStore());
-        this.jsonNotes = JsonComment.newInstance(receiptEntity.getNotes());
+    public JsonReceipt(ReceiptEntity receipt) {
+        this.id = receipt.getId();
+        this.total = receipt.getTotal();
+        this.jsonBizName = JsonBizName.newInstance(receipt.getBizName());
+        this.jsonBizStore = JsonBizStore.newInstance(receipt.getBizStore());
+        this.jsonNotes = JsonComment.newInstance(receipt.getNotes());
 
         /**
          * The fancy line does this looping.
@@ -96,15 +96,15 @@ public class JsonReceipt {
          *      this.jsonFileSystems.add(JsonFileSystem.newInstance(fileSystemEntity));
          *  }
          */
-        this.jsonFileSystems.addAll(receiptEntity.getFileSystemEntities().stream().map(JsonFileSystem::newInstance).collect(Collectors.toList()));
+        this.jsonFileSystems.addAll(receipt.getFileSystemEntities().stream().map(JsonFileSystem::newInstance).collect(Collectors.toList()));
 
-        this.receiptDate = FMT.print(new DateTime(receiptEntity.getReceiptDate()));
-        this.tax = receiptEntity.getTax();
-        this.percentTax = receiptEntity.getPercentTax();
-        this.receiptUserId = receiptEntity.getReceiptUserId();
-        this.expenseReportInFS = receiptEntity.getExpenseReportInFS();
-        this.billedStatus = receiptEntity.getBilledStatus().getName();
-        this.expenseTagId = receiptEntity.getExpenseTag() == null ? "" : receiptEntity.getExpenseTag().getId();
+        this.receiptDate = FMT.print(new DateTime(receipt.getReceiptDate()));
+        this.tax = receipt.getTax();
+        this.percentTax = receipt.getPercentTax();
+        this.receiptUserId = receipt.getReceiptUserId();
+        this.expenseReportInFS = receipt.getExpenseReportInFS();
+        this.billedStatus = receipt.getBilledStatus().getName();
+        this.expenseTagId = receipt.getExpenseTag() == null ? "" : receipt.getExpenseTag().getId();
     }
 
     public String getId() {
