@@ -58,7 +58,7 @@ public class JsonReceipt {
     @JsonProperty ("files")
     private Collection<JsonFileSystem> jsonFileSystems = new LinkedList<>();
 
-    @JsonProperty ("date")
+    @JsonProperty ("receiptDate")
     private String receiptDate;
 
     @JsonProperty ("ptax")
