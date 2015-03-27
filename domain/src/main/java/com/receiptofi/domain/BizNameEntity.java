@@ -2,6 +2,7 @@ package com.receiptofi.domain;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -47,7 +48,7 @@ public class BizNameEntity extends BaseEntity {
      */
     public void setBusinessName(String businessName) {
         //this.businessName = WordUtils.capitalize(WordUtils.capitalizeFully(StringUtils.strip(businessName)), '.', '(', ')');
-        this.businessName = StringUtils.trim(businessName);
+        this.businessName = WordUtils.capitalizeFully(StringUtils.trim(businessName));
     }
 
     /**
