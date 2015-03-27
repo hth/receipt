@@ -25,11 +25,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,9 +66,10 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Override
     public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
-        Query query = query(where("LOK").is(false).and("DS").is(status));
-        addOrder(query.limit(limit));
-        return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("LOK").is(false).and("DS").is(status)).with(sortBy()).limit(limit),
+                MessageDocumentEntity.class,
+                TABLE);
     }
 
     @Override
@@ -122,23 +120,26 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Override
     public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
-        Query query = query(where("LOK").is(true).and("DS").is(status).and("EM").is(emailId).and("RID").is(userProfileId));
-        addOrder(query);
-        return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("LOK").is(true)
+                        .and("DS").is(status)
+                        .and("EM").is(emailId)
+                        .and("RID").is(userProfileId)
+                ).with(sortBy()),
+                MessageDocumentEntity.class,
+                TABLE);
     }
 
     @Override
     public List<MessageDocumentEntity> findAllPending() {
-        Query query = query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.PENDING));
-        addOrder(query);
-        return mongoTemplate.find(query, MessageDocumentEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.PENDING)).with(sortBy()),
+                MessageDocumentEntity.class,
+                TABLE);
     }
 
-    private void addOrder(Query query) {
-        List<Order> order = new ArrayList<>();
-        order.add(new Order(DESC, "ULE"));
-        order.add(new Order(ASC, "C"));
-        query.with(new Sort(order));
+    private Sort sortBy() {
+        return new Sort(new Order(DESC, "ULE"), new Order(ASC, "C"));
     }
 
     @Override
@@ -158,19 +159,22 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     @Override
     public WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = query(where("LOK").is(true).and("DS").is(statusFind).and("DID").is(documentId));
-        Update update = update("DS", statusSet).set("A", false);
-        return mongoTemplate.updateFirst(query, entityUpdate(update), MessageDocumentEntity.class);
+        return mongoTemplate.updateFirst(
+                query(where("LOK").is(true).and("DS").is(statusFind).and("DID").is(documentId)),
+                entityUpdate(update("DS", statusSet).set("A", false)),
+                MessageDocumentEntity.class);
     }
 
     @Override
     public WriteResult undoUpdateObject(String documentId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        Query query = query(where("LOK").is(true).and("DS").is(statusFind).and("A").is(false).and("DID").is(documentId));
-        Update update = update("LOK", false)
-                .set("A", true)
-                .set("DS", statusSet);
-        return mongoTemplate.updateFirst(query, entityUpdate(update), MessageDocumentEntity.class);
+        return mongoTemplate.updateFirst(
+                query(where("LOK").is(true)
+                        .and("DS").is(statusFind)
+                        .and("A").is(false)
+                        .and("DID").is(documentId)),
+                entityUpdate(update("LOK", false).set("A", true).set("DS", statusSet)),
+                MessageDocumentEntity.class);
     }
 
     @Override
@@ -185,18 +189,15 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Override
     public void resetDocumentsToInitialState(String receiptUserId) {
-        Query query = query(
-                where("RID").is(receiptUserId)
+        mongoTemplate.updateMulti(
+                query(where("RID").is(receiptUserId)
                         .and("DS").is(DocumentStatusEnum.PENDING)
                         .and("LOK").is(true)
-                        .and("A").is(true)
-        );
-
-        Update update = update("LOK", false)
-                .unset("EM")
-                .unset("RID")
-                .set("U", new Date());
-
-        mongoTemplate.updateMulti(query, update, MessageDocumentEntity.class);
+                        .and("A").is(true)),
+                update("LOK", false)
+                        .unset("EM")
+                        .unset("RID")
+                        .set("U", new Date()),
+                MessageDocumentEntity.class);
     }
 }
