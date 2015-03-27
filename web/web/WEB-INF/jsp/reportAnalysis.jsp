@@ -202,7 +202,7 @@
         $('#monthly').highcharts({
             chart: {
                 type: 'column',
-                margin: [ 50, 50, 100, 50]
+                margin: [ 50, 50, 100, 60]
             },
             title: {
                 text: 'Monthly Expenses for ${reportAnalysisForm.receiptGroupedByMonths.size()} months of ' +
