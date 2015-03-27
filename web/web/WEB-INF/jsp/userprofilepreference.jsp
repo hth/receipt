@@ -232,7 +232,7 @@
                 <div class="">
                     <c:forEach var="expenseTag" items="${profileForm.expenseTags}" varStatus="status">
                     <input type="button"
-                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> <spring:eval expression="profileForm.expenseTagCount.get(expenseTag.tagName)" />"
+                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> &nbsp;<spring:eval expression="profileForm.expenseTagCount.get(expenseTag.tagName)" />"
                             style="color: <spring:eval expression="expenseTag.tagColor" />"
                             class="white_btn"
                             id="<spring:eval expression="expenseTag.id" />"
