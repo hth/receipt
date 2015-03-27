@@ -334,7 +334,7 @@ public class LandingService {
 
             /** Added document uploaded successfully. */
             notificationService.addNotification(
-                    fileSystem.getOriginalFilename() + " uploaded successful",
+                    fileSystem.getOriginalFilename() + " upload successful",
                     NotificationTypeEnum.DOCUMENT_UPLOADED,
                     documentEntity);
 
