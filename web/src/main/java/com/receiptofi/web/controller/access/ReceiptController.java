@@ -105,22 +105,16 @@ public class ReceiptController {
         LOG.info("Loading Receipt Item with id={}", receiptId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
-        if (null == receiptEntity) {
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
+        if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
-            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receiptEntity.getId());
+            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
             List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(receiptUser.getRid());
 
-            jsonReceiptDetail.setJsonReceipt(new JsonReceipt(receiptEntity));
-
-            List<JsonReceiptItem> jsonReceiptItems = items.stream().map(JsonReceiptItem::newInstance).collect(Collectors.toCollection(() -> new LinkedList<>()));
-            jsonReceiptDetail.setItems(jsonReceiptItems);
-
-            List<JsonExpenseTag> jsonExpenseTags = expenseTypes.stream().map(JsonExpenseTag::newInstance).collect(Collectors.toList());
-            jsonReceiptDetail.setJsonExpenseTags(jsonExpenseTags);
-
-
+            jsonReceiptDetail.setJsonReceipt(new JsonReceipt(receipt));
+            jsonReceiptDetail.setItems(items.stream().map(JsonReceiptItem::newInstance).collect(Collectors.toCollection(LinkedList::new)));
+            jsonReceiptDetail.setJsonExpenseTags(expenseTypes.stream().map(JsonExpenseTag::newInstance).collect(Collectors.toList()));
             LOG.info("populate receipt json for id={}", receiptId);
         }
         return jsonReceiptDetail;
