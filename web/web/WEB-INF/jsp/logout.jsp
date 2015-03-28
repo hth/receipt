@@ -48,9 +48,14 @@
 </header>
 <div class="main clearfix">
     <div style="height: 605px; text-align: center;">
+        <div class="logout_container">
+            <h2 class="logout_header">LOG OUT</h2>
+            <div class="small_margin"></div>
+            To log out from your Receiptofi Account please click the button below.
+        </div>
         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input type="submit" value="LOG OUT" class="read_btn" style="background:#0079FF; margin-left: -80px; !important; position: absolute; top: 25%;">
+            <input type="submit" value="LOG OUT" class="read_btn logout_btn">
         </form>
     </div>
     <div class="footer-tooth clearfix">

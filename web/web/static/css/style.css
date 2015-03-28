@@ -1351,3 +1351,28 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     padding: 1px 3px;
     font: 8px Verdana;
 }
+
+/*Logout*/
+.logout_btn {
+    background: #0079FF;
+    width: 253px;
+    margin-left: -125px; !important;
+    position: absolute;
+    top: 35%;
+}
+
+.logout_container {
+    margin-top: 110px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.logout_header {
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 1.1;
+}
+/*Logout End*/
+
+.small_margin {
+    margin: 20px;
+}
