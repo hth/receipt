@@ -381,11 +381,11 @@
                                 <tr>
                                     <td colspan="6">
                                         <div class="leftAlign">
-                                            <form:label for="receiptDocument.bizName.businessName" path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name</form:label>
+                                            <form:label for="receiptDocument.bizName.businessName" path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name: </form:label>
                                             <form:input path="receiptDocument.bizName.businessName" id="businessName" size="52"/>
                                         </div>
                                         <div class="rightAlign">
-                                            <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date</form:label>
+                                            <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date: </form:label>
                                             <form:input path="receiptDocument.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
                                         </div>
                                     </td>
@@ -399,7 +399,7 @@
                                 <tr>
                                     <td colspan="6">
                                         <div class="leftAlign">
-                                            <form:label for="receiptDocument.bizStore.address" path="receiptDocument.bizStore.address" cssErrorClass="error">Address : </form:label>
+                                            <form:label for="receiptDocument.bizStore.address" path="receiptDocument.bizStore.address" cssErrorClass="error">Address: </form:label>
                                             <form:input path="receiptDocument.bizStore.address" id="address" size="70"/>
                                         </div>
                                         <div class="rightAlign">
