@@ -11,3 +11,12 @@
     
     # Profiles if query is slower than 10ms; default is 100ms
     slowms = 10
+
+
+Mongo Backup
+
+    mongodump --host 192.168.1.71 --port 27017 --db rm-test --out ~/Downloads/data/backup
+    
+Mongo Restore
+    
+    mongorestore --dir ~/Downloads/data/backup
