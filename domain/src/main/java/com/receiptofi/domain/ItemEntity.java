@@ -62,7 +62,7 @@ public class ItemEntity extends BaseEntity {
 
     @NotNull
     @Field ("TT")
-    private TaxEnum taxed = TaxEnum.NOT_TAXED;
+    private TaxEnum taxed = TaxEnum.NT;
 
     @NotNull
     @Field ("SEQ")

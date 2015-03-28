@@ -79,7 +79,7 @@ public class ReceiptParserService {
         ItemEntityOCR itemOCR = ItemEntityOCR.newInstance();
         itemOCR.setName(name.trim());
         itemOCR.setPrice(price.trim());
-        itemOCR.setTaxed(TaxEnum.NOT_TAXED);
+        itemOCR.setTaxed(TaxEnum.NT);
         itemOCR.setSequence(sequence);
         itemOCR.setDocument(documentEntity);
         itemOCR.setReceiptUserId(documentEntity.getReceiptUserId());

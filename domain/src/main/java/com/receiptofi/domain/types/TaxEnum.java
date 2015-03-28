@@ -15,8 +15,8 @@ package com.receiptofi.domain.types;
 })
 public enum TaxEnum {
 
-    TAXED("TAXED", "Taxed"),
-    NOT_TAXED("NOT_TAXED", "Not Taxed");
+    T("T", "Taxed"),
+    NT("NT", "Not Taxed");
 
     private final String description;
     private final String name;
