@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="header_right_login">
-                <a class="top-account-bar-text" href="#">LOG OUT</a>
+                <a class="top-account-bar-text" href="/access/signoff.htm">LOG OUT</a>
                 <a class="top-account-bar-text" href="#">REPORT</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username"/>
