@@ -182,7 +182,7 @@ public final class ReceiptDocumentForm {
         BigDecimal taxedItemTotalWithoutTax = BigDecimal.ZERO;
 
         for (ItemEntity item : items) {
-            if (item.getTaxed() == TaxEnum.TAXED) {
+            if (item.getTaxed() == TaxEnum.T) {
                 taxedItemTotalWithoutTax = Maths.add(taxedItemTotalWithoutTax, item.getTotalPriceWithoutTax());
             }
         }
@@ -195,7 +195,7 @@ public final class ReceiptDocumentForm {
         }
 
         for (ItemEntity item : items) {
-            if (item.getTaxed() == TaxEnum.TAXED) {
+            if (item.getTaxed() == TaxEnum.T) {
                 BigDecimal taxedAmount = Maths.multiply(item.getPrice().toString(), receipt.getPercentTax());
                 item.setTax(new Double(taxedAmount.toString()));
             } else {
