@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,8 +46,12 @@ import java.util.Set;
 @RequestMapping (value = "/admin")
 public class BusinessController {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessController.class);
-    private static final String NEXT_PAGE = "/admin/business";
-    private static final String EDIT_PAGE = "/admin/businessEdit";
+
+    @Value ("${nextPage:/admin/business}")
+    private String nextPage;
+
+    @Value ("${editPage:/admin/businessEdit}")
+    private String editPage;
 
     @Autowired private ExternalService externalService;
     @Autowired private BizService bizService;
@@ -55,18 +60,22 @@ public class BusinessController {
     @Autowired private BizSearchValidator bizSearchValidator;
 
     @RequestMapping (value = "/business", method = RequestMethod.GET)
-    public ModelAndView loadSearchForm(@ModelAttribute ("bizForm") BizForm bizForm, Model model) {
+    public String loadSearchForm(
+            @ModelAttribute ("bizForm")
+            BizForm bizForm,
 
+            Model model
+    ) {
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.bizForm", model.asMap().get("result"));
         }
 
-        return new ModelAndView(NEXT_PAGE);
+        return nextPage;
     }
 
     @RequestMapping (value = "/business/edit", method = RequestMethod.GET)
-    public ModelAndView editStore(
+    public String editStore(
             @RequestParam ("nameId")
             String nameId,
 
@@ -76,7 +85,6 @@ public class BusinessController {
             @ModelAttribute ("bizForm")
             BizForm bizForm
     ) {
-        ModelAndView modelAndView = new ModelAndView(EDIT_PAGE);
         BizNameEntity bizNameEntity = bizService.findName(nameId);
         bizForm.setBizNameEntity(bizNameEntity);
 
@@ -85,11 +93,11 @@ public class BusinessController {
             bizForm.setBizStore(bizStoreEntity);
         }
 
-        return modelAndView;
+        return editPage;
     }
 
     /**
-     * Reset the form
+     * Reset the form.
      *
      * @param redirectAttrs
      * @return
@@ -98,7 +106,7 @@ public class BusinessController {
     public String reset(RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("bizForm", BizForm.newInstance());
         //Re-direct to prevent resubmit
-        return "redirect:" + NEXT_PAGE + ".htm";
+        return "redirect:" + nextPage + ".htm";
     }
 
     /**
@@ -151,7 +159,7 @@ public class BusinessController {
         Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
         bizForm.setLast10BizStore(bizStoreEntities);
         //Re-direct to prevent resubmit
-        return "redirect:" + NEXT_PAGE + ".htm";
+        return "redirect:" + nextPage + ".htm";
     }
 
     /**
@@ -195,7 +203,7 @@ public class BusinessController {
         Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
         bizForm.setLast10BizStore(bizStoreEntities);
         //Re-direct to prevent resubmit
-        return "redirect:" + NEXT_PAGE + ".htm";
+        return "redirect:" + nextPage + ".htm";
     }
 
     /**
@@ -217,7 +225,7 @@ public class BusinessController {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             /** Re-direct to prevent resubmit. */
-            return "redirect:" + NEXT_PAGE + ".htm";
+            return "redirect:" + nextPage + ".htm";
         } else {
             BizStoreEntity bizStoreEntity = BizStoreEntity.newInstance();
             bizStoreEntity.setAddress(bizForm.getAddress());
@@ -238,7 +246,7 @@ public class BusinessController {
                         ", :" +
                         e.getLocalizedMessage());
                 /** Re-direct to prevent resubmit. */
-                return "redirect:" + NEXT_PAGE + ".htm";
+                return "redirect:" + nextPage + ".htm";
             }
 
             ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
@@ -254,7 +262,7 @@ public class BusinessController {
                 LOG.error("Failed to edit name={} reason={}", bizForm.getBusinessName(), e.getLocalizedMessage(), e);
                 bizForm.setBizError("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 /** Re-direct to prevent resubmit . */
-                return "redirect:" + NEXT_PAGE + ".htm";
+                return "redirect:" + nextPage + ".htm";
             }
 
             if (receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
@@ -265,7 +273,7 @@ public class BusinessController {
                         receiptEntity.getBizStore().getBizName().getBusinessName());
             }
             /** Re-direct to prevent resubmit. */
-            return "redirect:" + NEXT_PAGE + ".htm";
+            return "redirect:" + nextPage + ".htm";
         }
     }
 
@@ -290,12 +298,12 @@ public class BusinessController {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             //Re-direct to prevent resubmit
-            return "redirect:" + NEXT_PAGE + ".htm";
+            return "redirect:" + nextPage + ".htm";
         } else {
             Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
             bizForm.setLast10BizStore(bizStoreEntities);
             //Re-direct to prevent resubmit
-            return "redirect:" + NEXT_PAGE + ".htm";
+            return "redirect:" + nextPage + ".htm";
         }
     }
 
