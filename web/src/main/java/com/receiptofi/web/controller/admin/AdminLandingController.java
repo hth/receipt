@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +41,18 @@ import java.util.List;
 @RequestMapping (value = "/admin")
 public class AdminLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
-    private static final String nextPage = "/admin/landing";
+
+    @Value ("${nextPage:/admin/landing2}")
+    private String nextPage;
 
     @Autowired private AdminLandingService adminLandingService;
 
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
-    public ModelAndView loadForm(@ModelAttribute ("userSearchForm") UserSearchForm userSearchForm) {
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("userSearchForm", userSearchForm);
-        return modelAndView;
+    public String loadForm(
+            @ModelAttribute ("userSearchForm")
+            UserSearchForm userSearchForm
+    ) {
+        return nextPage;
     }
 
     /**
