@@ -70,32 +70,32 @@
                     Would change this later as the number of users increases.
                 </div>
                 <c:if test="${!empty userSearchForm.userProfiles}">
-                <div class="small_margin"></div>
-                <div class="rightside-list-holder" style="width: 920px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
-                    <ul>
-                        <li style="width: 900px;">
-                            <span class="rightside-li-date-text" style="width: 20px;"></span>
-                            <span class="rightside-li-date-text" style="width: 180px;">Level</span>
-                            <a href="#" class="rightside-li-middle-text" style="width: 340px;">First, Last Name</a>
-                            <span class="rightside-li-right-text" style="width: 340px;">Receiptofi Id</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="rightside-list-holder mouseScroll" style="width: 920px;">
-                    <ul>
-                    <c:forEach var="userProfile" items="${userSearchForm.userProfiles}"  varStatus="status">
-                        <li style="width: 900px;">
-                            <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
-                            <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description" /></span>
-                            <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${userProfile.receiptUserId}"
-                                    class="rightside-li-middle-text" style="width: 340px;" target="_blank">
-                                <spring:eval expression="userProfile.name" />
-                            </a>
-                            <span class="rightside-li-right-text" style="width: 340px;">${userProfile.email}</span>
-                        </li>
-                    </c:forEach>
-                    </ul>
-                </div>
+                    <div class="small_margin"></div>
+                    <div class="rightside-list-holder" style="width: 920px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
+                        <ul>
+                            <li style="width: 900px;">
+                                <span class="rightside-li-date-text" style="width: 20px;"></span>
+                                <span class="rightside-li-date-text" style="width: 180px;">Level</span>
+                                <a href="#" class="rightside-li-middle-text" style="width: 340px;">First, Last Name</a>
+                                <span class="rightside-li-right-text" style="width: 340px;">Receiptofi Id</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="rightside-list-holder mouseScroll" style="width: 920px;">
+                        <ul>
+                            <c:forEach var="userProfile" items="${userSearchForm.userProfiles}"  varStatus="status">
+                                <li style="width: 900px;">
+                                    <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
+                                    <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description" /></span>
+                                    <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${userProfile.receiptUserId}"
+                                            class="rightside-li-middle-text" style="width: 340px;" target="_blank">
+                                        <spring:eval expression="userProfile.name" />
+                                    </a>
+                                    <span class="rightside-li-right-text" style="width: 340px;">${userProfile.email}</span>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
                 </c:if>
             </form:form>
         </div>
