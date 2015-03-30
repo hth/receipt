@@ -2,7 +2,7 @@ package com.receiptofi.web.controller.admin;
 
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AdminLandingService;
-import com.receiptofi.web.form.UserSearchForm;
+import com.receiptofi.web.form.SearchUserForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +42,13 @@ public class SearchUserController {
     /**
      * Gymnastic for PRG example.
      *
-     * @param userSearchForm
+     * @param searchUserForm
      * @return
      */
     @RequestMapping (value = "/searchUser", method = RequestMethod.GET)
     public String loadForm(
-            @ModelAttribute ("userSearchForm")
-            UserSearchForm userSearchForm
+            @ModelAttribute ("searchUserForm")
+            SearchUserForm searchUserForm
     ) {
         return nextPage;
     }
@@ -69,19 +69,19 @@ public class SearchUserController {
     /**
      * Gymnastic for PRG example.
      *
-     * @param userSearchForm
+     * @param searchUserForm
      * @return
      */
     @RequestMapping (value = "/searchUser", method = RequestMethod.POST)
     public String loadUser(
-            @ModelAttribute ("userSearchForm")
-            UserSearchForm userSearchForm,
+            @ModelAttribute ("searchUserForm")
+            SearchUserForm searchUserForm,
 
             RedirectAttributes redirectAttrs
     ) {
-        List<UserProfileEntity> userProfileEntities = adminLandingService.findAllUsers(userSearchForm.getUserName());
-        userSearchForm.setUserProfiles(userProfileEntities);
-        redirectAttrs.addFlashAttribute("userSearchForm", userSearchForm);
+        List<UserProfileEntity> userProfileEntities = adminLandingService.findAllUsers(searchUserForm.getUserName());
+        searchUserForm.setUserProfiles(userProfileEntities);
+        redirectAttrs.addFlashAttribute("searchUserForm", searchUserForm);
         /** Re-direct to prevent resubmit. */
         return "redirect:" + nextPage + ".htm";
     }

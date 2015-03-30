@@ -4,7 +4,7 @@
 package com.receiptofi.web.controller.admin;
 
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.web.form.UserSearchForm;
+import com.receiptofi.web.form.SearchUserForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +39,13 @@ public class AdminLandingController {
     /**
      * Gymnastic for PRG example.
      *
-     * @param userSearchForm
+     * @param searchUserForm
      * @return
      */
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
     public String loadForm(
             @ModelAttribute ("userSearchForm")
-            UserSearchForm userSearchForm
+            SearchUserForm searchUserForm
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on admin page rid={}", receiptUser.getRid());

@@ -21,7 +21,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><a href="/admin/landing.htm">Receiptofi</a></h1>
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">

@@ -58,7 +58,7 @@
     <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
         <div class="down_form" style="width: 95%;">
             <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Search users to change profile settings</h2>
-            <form:form method="post" modelAttribute="userSearchForm" action="searchUser.htm">
+            <form:form method="post" modelAttribute="searchUserForm" action="searchUser.htm">
                 <div class="row_field">
                     <label class="profile_label">
                         Search Name
@@ -69,7 +69,7 @@
                     Enter at least 3 characters to find a specific user or else its list all the user below.
                     Would change this later as the number of users increases.
                 </div>
-                <c:if test="${!empty userSearchForm.userProfiles}">
+                <c:if test="${!empty searchUserForm.userProfiles}">
                     <div class="small_margin"></div>
                     <div class="rightside-list-holder" style="width: 920px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
                         <ul>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="rightside-list-holder mouseScroll" style="width: 920px;">
                         <ul>
-                            <c:forEach var="userProfile" items="${userSearchForm.userProfiles}"  varStatus="status">
+                            <c:forEach var="userProfile" items="${searchUserForm.userProfiles}"  varStatus="status">
                                 <li style="width: 900px;">
                                     <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
                                     <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description" /></span>
