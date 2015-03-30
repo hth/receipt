@@ -2,7 +2,7 @@ package com.receiptofi.web.controller.admin;
 
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AdminLandingService;
-import com.receiptofi.web.form.SearchUserForm;
+import com.receiptofi.web.form.UserSearchForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +31,10 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/admin")
-public class SearchUserController {
+public class UserSearchController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
 
-    @Value ("${nextPage:/admin/searchUser}")
+    @Value ("${nextPage:/admin/userSearch}")
     private String nextPage;
 
     @Autowired private AdminLandingService adminLandingService;
@@ -42,13 +42,13 @@ public class SearchUserController {
     /**
      * Gymnastic for PRG example.
      *
-     * @param searchUserForm
+     * @param userSearchForm
      * @return
      */
-    @RequestMapping (value = "/searchUser", method = RequestMethod.GET)
+    @RequestMapping (value = "/userSearch", method = RequestMethod.GET)
     public String loadForm(
-            @ModelAttribute ("searchUserForm")
-            SearchUserForm searchUserForm
+            @ModelAttribute ("userSearchForm")
+            UserSearchForm userSearchForm
     ) {
         return nextPage;
     }
@@ -57,7 +57,7 @@ public class SearchUserController {
      * @param name Search for user name.
      * @return
      */
-    @RequestMapping (value = "/searchUser/find_user", method = RequestMethod.GET)
+    @RequestMapping (value = "/userSearch/find_user", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findUser(
             @RequestParam ("term")
@@ -69,19 +69,19 @@ public class SearchUserController {
     /**
      * Gymnastic for PRG example.
      *
-     * @param searchUserForm
+     * @param userSearchForm
      * @return
      */
-    @RequestMapping (value = "/searchUser", method = RequestMethod.POST)
+    @RequestMapping (value = "/userSearch", method = RequestMethod.POST)
     public String loadUser(
-            @ModelAttribute ("searchUserForm")
-            SearchUserForm searchUserForm,
+            @ModelAttribute ("userSearchForm")
+            UserSearchForm userSearchForm,
 
             RedirectAttributes redirectAttrs
     ) {
-        List<UserProfileEntity> userProfileEntities = adminLandingService.findAllUsers(searchUserForm.getUserName());
-        searchUserForm.setUserProfiles(userProfileEntities);
-        redirectAttrs.addFlashAttribute("searchUserForm", searchUserForm);
+        List<UserProfileEntity> userProfileEntities = adminLandingService.findAllUsers(userSearchForm.getUserName());
+        userSearchForm.setUserProfiles(userProfileEntities);
+        redirectAttrs.addFlashAttribute("userSearchForm", userSearchForm);
         /** Re-direct to prevent resubmit. */
         return "redirect:" + nextPage + ".htm";
     }

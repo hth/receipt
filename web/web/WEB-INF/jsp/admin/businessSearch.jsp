@@ -63,7 +63,7 @@
                     <label class="profile_label">
                         Search Name
                     </label>
-                    <form:input path="userName" id="userName" size="15" cssClass="name_txt" />
+                    <form:input path="userName" id="userName" size="15" cssClass="name_txt"/>
                 </div>
                 <div class="row_field">
                     Enter at least 3 characters to find a specific user or else its list all the user below.
@@ -83,13 +83,13 @@
                     </div>
                     <div class="rightside-list-holder mouseScroll" style="width: 920px;">
                         <ul>
-                            <c:forEach var="userProfile" items="${searchUserForm.userProfiles}"  varStatus="status">
+                            <c:forEach var="userProfile" items="${searchUserForm.userProfiles}" varStatus="status">
                                 <li style="width: 900px;">
                                     <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
-                                    <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description" /></span>
+                                    <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description"/></span>
                                     <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${userProfile.receiptUserId}"
                                             class="rightside-li-middle-text" style="width: 340px;" target="_blank">
-                                        <spring:eval expression="userProfile.name" />
+                                        <spring:eval expression="userProfile.name"/>
                                     </a>
                                     <span class="rightside-li-right-text" style="width: 340px;">${userProfile.email}</span>
                                 </li>
@@ -109,12 +109,12 @@
     <div class="mfooter_up">
     </div>
     <div class="mfooter_down">
-        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version"/>)
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        $( "#userName" ).autocomplete({
+    $(document).ready(function () {
+        $("#userName").autocomplete({
             source: "${pageContext. request. contextPath}/admin/searchUser/find_user.htm"
         });
     });
