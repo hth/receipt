@@ -18,11 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,11 +39,17 @@ import java.util.List;
 public class AdminLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
 
-    @Value ("${nextPage:/admin/landing2}")
+    @Value ("${nextPage:/admin/landing}")
     private String nextPage;
 
     @Autowired private AdminLandingService adminLandingService;
 
+    /**
+     * Gymnastic for PRG example.
+     *
+     * @param userSearchForm
+     * @return
+     */
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
     public String loadForm(
             @ModelAttribute ("userSearchForm")
@@ -56,35 +59,33 @@ public class AdminLandingController {
     }
 
     /**
-     * @param name Search for user name
+     * @param name Search for user name.
      * @return
      */
     @RequestMapping (value = "/find_user", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> findUser(@RequestParam ("term") String name) throws IOException {
+    public List<String> findUser(
+            @RequestParam ("term")
+            String name
+    ) {
         return adminLandingService.findMatchingUsers(name);
     }
 
     /**
+     * Gymnastic for PRG example.
+     *
      * @param userSearchForm
      * @return
      */
     @RequestMapping (value = "/landing", method = RequestMethod.POST)
     public String loadUser(
-            @ModelAttribute ("userLoginForm")
+            @ModelAttribute ("userSearchForm")
             UserSearchForm userSearchForm,
 
             RedirectAttributes redirectAttrs
     ) {
         List<UserProfileEntity> userProfileEntities = adminLandingService.findAllUsers(userSearchForm.getUserName());
-
-        List<UserSearchForm> userSearchForms = new ArrayList<>();
-        for (UserProfileEntity user : userProfileEntities) {
-            UserSearchForm userForm = UserSearchForm.newInstance(user);
-            userSearchForms.add(userForm);
-        }
-
-        redirectAttrs.addFlashAttribute("users", userSearchForms);
+        userSearchForm.setUserProfiles(userProfileEntities);
         redirectAttrs.addFlashAttribute("userSearchForm", userSearchForm);
         /** Re-direct to prevent resubmit. */
         return "redirect:" + nextPage + ".htm";

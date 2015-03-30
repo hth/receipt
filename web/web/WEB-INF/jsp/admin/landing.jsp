@@ -1,192 +1,151 @@
-<%@ include file="/WEB-INF/jsp/include.jsp"%>
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="receipt.admin.title"/></title>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/js/alpixel/jMenu.jquery.css'/>
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/alpixel/jMenu.jquery.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-    <!-- For drop down menu -->
     <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
+        $(function () {
+            $("#tabs").tabs();
         });
 
-        $(document).ready(function() {
-            $("#jMenu").jMenu();
+        <c:if test="${!empty showTab}">
+        $(function () {
+            <c:choose>
+            <c:when test="${showTab eq '#tabs-2'}">
+            $("#tabs").tabs({active: 1});
+            </c:when>
+            </c:choose>
         });
+        </c:if>
     </script>
 
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" href="/access/signoff.htm">LOG OUT</a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username"/>
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username"/>
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
-
-    <ul id="jMenu">
-        <li>
-            <a class="fNiv">User</a>
-            <ul>
-                <li class="arrow"></li>
-                <li>
-                    <a href="landing.htm">Search</a>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <a class="fNiv">Business &nbsp;&nbsp;&nbsp;</a>
-            <ul>
-                <li class="arrow"></li>
-                <li>
-                    <a href="business.htm">Search & Add</a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-
-    <p>&nbsp;</p>
-
-    <h2>Search users to change profile settings</h2>
-    <form:form method="post" modelAttribute="userSearchForm" action="landing.htm">
-        <table style="width: 400px" class="etable">
-            <tr>
-                <th style="padding: 3px;">Search Name: </th>
-                <td style="padding: 3px;">&nbsp;<form:input path="userName" size="25" /></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    Enter at least 3 characters to find a specific user or else its list all the user below.
-                    Would change this later as the number of users increases.
-                </td>
-            </tr>
-            <c:if test="${!empty users}">
-                <table style="width: 400px" class="etable">
-                    <tbody>
-                        <tr>
-                            <th style="padding: 3px;"></th>
-                            <th style="padding: 3px;">Level</th>
-                            <th style="padding: 3px;">First, Last Name</th>
-                            <th style="padding: 3px">Mail Id</th>
-                        </tr>
-                    </tbody>
-                    <c:forEach var="user" items="${users}"  varStatus="status">
-                    <tr>
-                        <td style="padding: 3px;text-align: left; vertical-align: top">
-                            ${status.count}
-                        </td>
-                        <td style="padding: 3px; text-align: left; vertical-align: top" title="${user.level}">
-                            <spring:eval expression="user.level.description" />
-                        </td>
-                        <td style="padding: 3px; text-align: left; vertical-align: top" title="${user.userName}">
-                            <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${user.receiptUserId}">
-                                <spring:eval expression="user.userName" />
-                            </a>
-                        </td>
-                        <td style="padding: 3px; text-align: left; vertical-align: top">
-                            ${user.emailId}
-                        </td>
-                    </tr>
-                    </c:forEach>
-                </table>
-            </c:if>
-        </table>
-    </form:form>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="sidebar_no_use">
+    </div>
+    <div class="rightside-content">
+        <div id="tabs" class="nav-list">
+            <ul class="nav-block">
+                <li><a href="#tabs-1">USER</a></li>
+                <li><a href="#tabs-2">BUSINESS</a></li>
+            </ul>
 
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved. (<fmt:message key="build.version" />)</p>
+            <div id="tabs-1" class="report_my ajx-content" style="display: block;">
+                <h1 class="h1">USER</h1>
+                <hr>
+                <div class="down_form" style="width: 100%;">
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Search users to change profile settings</h2>
+                    <form:form method="post" modelAttribute="userSearchForm" action="landing.htm">
+                        <div class="row_field">
+                            <label class="profile_label">
+                                Search Name
+                            </label>
+                            <form:input path="userName" id="userName" size="15" cssClass="name_txt" />
+                        </div>
+                        <div class="row_field">
+                            Enter at least 3 characters to find a specific user or else its list all the user below.
+                            Would change this later as the number of users increases.
+                        </div>
+                        <c:if test="${!empty userSearchForm.userProfiles}">
+                        <div class="small_margin"></div>
+                        <div class="rightside-list-holder" style="width: 850px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
+                            <ul>
+                                <li style="width: 800px;">
+                                    <span class="rightside-li-date-text" style="width: 20px;"></span>
+                                    <span class="rightside-li-date-text" style="width: 165px;">Level</span>
+                                    <a href="#" class="rightside-li-middle-text" style="width: 300px;">First, Last Name</a>
+                                    <span class="rightside-li-right-text" style="width: 300px;">RID</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="rightside-list-holder mouseScroll" style="width: 850px;">
+                            <ul>
+                            <c:forEach var="userProfile" items="${userSearchForm.userProfiles}"  varStatus="status">
+                                <li style="width: 800px;">
+                                    <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
+                                    <span class="rightside-li-date-text" style="width: 165px;"><spring:eval expression="userProfile.level.description" /></span>
+                                    <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${userProfile.receiptUserId}"
+                                            class="rightside-li-middle-text" style="width: 300px;" target="_blank">
+                                        <spring:eval expression="userProfile.name" />
+                                    </a>
+                                    <span class="rightside-li-right-text" style="width: 300px;">${userProfile.email}</span>
+                                </li>
+                            </c:forEach>
+                            </ul>
+                        </div>
+                        </c:if>
+                    </form:form>
+                </div>
+            </div>
+
+            <div id="tabs-2" class="report_my ajx-content" style="display: block;">
+                <h1 class="h1">BUSINESS</h1>
+                <hr>
+                <div class="down_form">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-tooth clearfix">
+        <div class="footer-tooth-middle"></div>
+        <div class="footer-tooth-right"></div>
+    </div>
 </div>
-
-<script type="text/javascript">
-    function split(val) {
-        return val.split(/,\s*/);
-    }
-    function extractLast(term) {
-        return split(term).pop();
-    }
-
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
+    </div>
+</div>
+<script>
     $(document).ready(function() {
-
         $( "#userName" ).autocomplete({
             source: "${pageContext. request. contextPath}/admin/find_user.htm"
         });
