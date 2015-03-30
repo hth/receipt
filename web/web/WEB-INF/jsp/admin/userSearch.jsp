@@ -21,7 +21,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                    <h1><a href="/admin/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
@@ -52,13 +52,52 @@
 <div class="main clearfix">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            Admin Actions
+            User Search
         </h1>
     </div>
     <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
         <div class="down_form" style="width: 95%;">
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/userSearch.htm">User search</a></h2>
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/businessSearch.htm">Business search</a></h2>
+            <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Search users to change profile settings</h2>
+            <form:form method="post" modelAttribute="userSearchForm" action="userSearch.htm">
+                <div class="row_field">
+                    <label class="profile_label">
+                        Search Name
+                    </label>
+                    <form:input path="userName" id="userName" size="15" cssClass="name_txt" />
+                </div>
+                <div class="row_field">
+                    Enter at least 3 characters to find a specific user or else its list all the user below.
+                    Would change this later as the number of users increases.
+                </div>
+                <c:if test="${!empty userSearchForm.userProfiles}">
+                    <div class="small_margin"></div>
+                    <div class="rightside-list-holder" style="width: 920px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
+                        <ul>
+                            <li style="width: 900px;">
+                                <span class="rightside-li-date-text" style="width: 20px;"></span>
+                                <span class="rightside-li-date-text" style="width: 180px;">Level</span>
+                                <a href="#" class="rightside-li-middle-text" style="width: 340px;">First, Last Name</a>
+                                <span class="rightside-li-right-text" style="width: 340px;">Receiptofi Id</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="rightside-list-holder mouseScroll" style="width: 920px;">
+                        <ul>
+                            <c:forEach var="userProfile" items="${userSearchForm.userProfiles}"  varStatus="status">
+                                <li style="width: 900px;">
+                                    <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
+                                    <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description" /></span>
+                                    <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${userProfile.receiptUserId}"
+                                            class="rightside-li-middle-text" style="width: 340px;" target="_blank">
+                                        <spring:eval expression="userProfile.name" />
+                                    </a>
+                                    <span class="rightside-li-right-text" style="width: 340px;">${userProfile.email}</span>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </c:if>
+            </form:form>
         </div>
     </div>
     <div class="footer-tooth clearfix">
@@ -76,7 +115,7 @@
 <script>
     $(document).ready(function() {
         $( "#userName" ).autocomplete({
-            source: "${pageContext. request. contextPath}/admin/find_user.htm"
+            source: "${pageContext. request. contextPath}/admin/searchUser/find_user.htm"
         });
     });
 </script>

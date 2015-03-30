@@ -20,7 +20,7 @@ import java.util.List;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class SearchUserForm {
+public final class UserSearchForm {
 
     private String userName = StringUtils.EMPTY;
     private List<UserProfileEntity> userProfiles;
