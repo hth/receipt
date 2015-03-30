@@ -21,7 +21,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                    <h1><a href="/admin/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
@@ -58,7 +58,7 @@
     <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
         <div class="down_form" style="width: 95%;">
             <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Search users to change profile settings</h2>
-            <form:form method="post" modelAttribute="userSearchForm" action="landing.htm">
+            <form:form method="post" modelAttribute="userSearchForm" action="searchUser.htm">
                 <div class="row_field">
                     <label class="profile_label">
                         Search Name
@@ -115,7 +115,7 @@
 <script>
     $(document).ready(function() {
         $( "#userName" ).autocomplete({
-            source: "${pageContext. request. contextPath}/admin/find_user.htm"
+            source: "${pageContext. request. contextPath}/admin/searchUser/find_user.htm"
         });
     });
 </script>
