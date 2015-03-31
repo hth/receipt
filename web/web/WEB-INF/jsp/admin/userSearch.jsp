@@ -55,8 +55,8 @@
             User Search
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px; width: 940px;">
-        <div class="down_form" style="width: 920px;">
+    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
+        <div class="down_form" style="width: 930px;">
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Search users to change profile settings</h2>
             <form:form method="post" modelAttribute="userSearchForm" action="userSearch.htm">
                 <div class="row_field">
@@ -72,25 +72,25 @@
                 <c:if test="${!empty userSearchForm.userProfiles}">
                     <div class="rightside-list-holder" style="width: 920px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
                         <ul>
-                            <li style="width: 900px;">
+                            <li style="width: 885px;">
                                 <span class="rightside-li-date-text" style="width: 20px;"></span>
                                 <span class="rightside-li-date-text" style="width: 180px;">Level</span>
-                                <a href="#" class="rightside-li-middle-text" style="width: 340px;">First, Last Name</a>
-                                <span class="rightside-li-right-text" style="width: 340px;">Receiptofi Id</span>
+                                <a href="#" class="rightside-li-middle-text" style="width: 320px;">First, Last Name</a>
+                                <span class="rightside-li-right-text" style="width: 320px;">Receiptofi Id</span>
                             </li>
                         </ul>
                     </div>
                     <div class="rightside-list-holder mouseScroll" style="width: 920px;">
                         <ul>
                             <c:forEach var="userProfile" items="${userSearchForm.userProfiles}"  varStatus="status">
-                                <li style="width: 900px;">
+                                <li style="width: 885px;">
                                     <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
                                     <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description" /></span>
                                     <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${userProfile.receiptUserId}"
-                                            class="rightside-li-middle-text" style="width: 340px;" target="_blank">
+                                            class="rightside-li-middle-text" style="width: 320px;" target="_blank">
                                         <spring:eval expression="userProfile.name" />
                                     </a>
-                                    <span class="rightside-li-right-text" style="width: 340px;">${userProfile.email}</span>
+                                    <span class="rightside-li-right-text" style="width: 320px;">${userProfile.email}</span>
                                 </li>
                             </c:forEach>
                         </ul>
