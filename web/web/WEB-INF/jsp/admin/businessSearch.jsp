@@ -52,50 +52,49 @@
 <div class="main clearfix">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            User Search
+            Business Search
         </h1>
     </div>
     <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
         <div class="down_form" style="width: 930px;">
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Search users to change profile settings</h2>
-            <form:form method="post" modelAttribute="userSearchForm" action="userSearch.htm">
+            <form:form method="post" modelAttribute="bizForm" action="businessSearch.htm">
+                <spring:hasBindErrors name="bizForm">
+                    <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
+                        <c:if test="${errors.hasFieldErrors('businessName')}">
+                            <form:errors path="businessName" /><br>
+                        </c:if>
+                        <c:if test="${errors.hasFieldErrors('address')}">
+                            <form:errors path="address" /><br>
+                        </c:if>
+                        <c:if test="${errors.hasFieldErrors('phone')}">
+                            <form:errors path="phone" /><br>
+                        </c:if>
+                    </div>
+                </spring:hasBindErrors>
+
                 <div class="row_field">
                     <label class="profile_label">
-                        Search Name
+                        Name
                     </label>
-                    <form:input path="userName" id="userName" size="15" cssClass="name_txt" />
+                    <form:input path="businessName" id="businessName" class="name_txt"/>
                 </div>
                 <div class="row_field">
-                    Enter at least 3 characters to find a specific user or else its list all the user below.
-                    Would change this later as the number of users increases.
+                    <label class="profile_label">
+                        Address
+                    </label>
+                    <form:input path="address" id="address" class="name_txt"/>
                 </div>
-                <c:if test="${!empty userSearchForm.userProfiles}">
-                    <div class="rightside-list-holder" style="width: 920px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
-                        <ul>
-                            <li style="width: 885px;">
-                                <span class="rightside-li-date-text" style="width: 20px;"></span>
-                                <span class="rightside-li-date-text" style="width: 180px;">Level</span>
-                                <a href="#" class="rightside-li-middle-text" style="width: 320px;">First, Last Name</a>
-                                <span class="rightside-li-right-text" style="width: 320px;">Receiptofi Id</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="rightside-list-holder mouseScroll" style="width: 920px;">
-                        <ul>
-                            <c:forEach var="userProfile" items="${userSearchForm.userProfiles}"  varStatus="status">
-                                <li style="width: 885px;">
-                                    <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
-                                    <span class="rightside-li-date-text" style="width: 180px;"><spring:eval expression="userProfile.level.description" /></span>
-                                    <a href="${pageContext.request.contextPath}/access/userprofilepreference/their.htm?id=${userProfile.receiptUserId}"
-                                            class="rightside-li-middle-text" style="width: 320px;" target="_blank">
-                                        <spring:eval expression="userProfile.name" />
-                                    </a>
-                                    <span class="rightside-li-right-text" style="width: 320px;">${userProfile.email}</span>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                </c:if>
+                <div class="row_field">
+                    <label class="profile_label">
+                        Phone
+                    </label>
+                    <form:input path="phone" id="phone" class="name_txt"/>
+                </div>
+
+                <input type="submit" value="Search Business" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0px;" name="search" />
+                <input type="submit" value="Add a Store or New Business" class="gd-button" style="margin: 20px 5px 10px 0px;" name="add" />
+                <input type="submit" value="Reset" class="gd-button" style="width: 130px;  margin: 20px 5px 10px 0px;" name="reset" />
             </form:form>
         </div>
     </div>
@@ -111,11 +110,51 @@
         <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $(document).ready(function() {
-        $( "#userName" ).autocomplete({
-            source: "${pageContext. request. contextPath}/admin/searchUser/find_user.htm"
+        $( "#businessName" ).autocomplete({
+            source: "${pageContext. request. contextPath}/ws/r/find_company.htm"
         });
+
+    });
+
+    $(document).ready(function() {
+        $( "#address" ).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '${pageContext. request. contextPath}/ws/r/find_address.htm',
+                    data: {
+                        term: request.term,
+                        nameParam: $("#businessName").val()
+                    },
+                    success: function (data) {
+                        console.log('response=', data);
+                        response(data);
+                    }
+                });
+            }
+        });
+
+    });
+
+    $(document).ready(function() {
+        $( "#phone" ).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '${pageContext. request. contextPath}/ws/r/find_phone.htm',
+                    data: {
+                        term: request.term,
+                        nameParam: $("#businessName").val(),
+                        addressParam: $("#address").val()
+                    },
+                    success: function (data) {
+                        console.log('response=', data);
+                        response(data);
+                    }
+                });
+            }
+        });
+
     });
 </script>
 </body>

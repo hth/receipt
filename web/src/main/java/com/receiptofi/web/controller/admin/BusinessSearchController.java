@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashSet;
@@ -44,10 +43,10 @@ import java.util.Set;
 })
 @Controller
 @RequestMapping (value = "/admin")
-public class BusinessController {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessController.class);
+public class BusinessSearchController {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessSearchController.class);
 
-    @Value ("${nextPage:/admin/business}")
+    @Value ("${nextPage:/admin/businessSearch}")
     private String nextPage;
 
     @Value ("${editPage:/admin/businessEdit}")
@@ -59,7 +58,7 @@ public class BusinessController {
     @Autowired private BizValidator bizValidator;
     @Autowired private BizSearchValidator bizSearchValidator;
 
-    @RequestMapping (value = "/business", method = RequestMethod.GET)
+    @RequestMapping (value = "/businessSearch", method = RequestMethod.GET)
     public String loadSearchForm(
             @ModelAttribute ("bizForm")
             BizForm bizForm,
@@ -74,7 +73,7 @@ public class BusinessController {
         return nextPage;
     }
 
-    @RequestMapping (value = "/business/edit", method = RequestMethod.GET)
+    @RequestMapping (value = "/businessSearch/edit", method = RequestMethod.GET)
     public String editStore(
             @RequestParam ("nameId")
             String nameId,
@@ -102,7 +101,7 @@ public class BusinessController {
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "reset")
+    @RequestMapping (value = "/businessSearch", method = RequestMethod.POST, params = "reset")
     public String reset(RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("bizForm", BizForm.newInstance());
         //Re-direct to prevent resubmit
@@ -116,7 +115,7 @@ public class BusinessController {
      * @param bizForm
      * @return
      */
-    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "edit")
+    @RequestMapping (value = "/businessSearch", method = RequestMethod.POST, params = "edit")
     public String editBiz(
             @ModelAttribute ("bizForm")
             BizForm bizForm,
@@ -170,7 +169,7 @@ public class BusinessController {
      * @param bizForm
      * @return
      */
-    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "delete_store")
+    @RequestMapping (value = "/businessSearch", method = RequestMethod.POST, params = "delete_store")
     public String deleteBizStore(@ModelAttribute ("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -211,7 +210,7 @@ public class BusinessController {
      * @param result
      * @return
      */
-    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "add")
+    @RequestMapping (value = "/businessSearch", method = RequestMethod.POST, params = "add")
     public String addBiz(
             @ModelAttribute ("bizForm")
             BizForm bizForm,
@@ -284,7 +283,7 @@ public class BusinessController {
      * @param result
      * @return
      */
-    @RequestMapping (value = "/business", method = RequestMethod.POST, params = "search")
+    @RequestMapping (value = "/businessSearch", method = RequestMethod.POST, params = "search")
     public String searchBiz(
             @ModelAttribute ("bizForm")
             BizForm bizForm,
