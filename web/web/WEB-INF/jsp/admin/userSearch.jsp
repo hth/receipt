@@ -70,7 +70,7 @@
                     Would change this later as the number of users increases.
                 </div>
                 <c:if test="${!empty userSearchForm.userProfiles}">
-                    <div class="rightside-list-holder" style="width: 920px; min-height: 50px; height: 50px; overflow-y: hidden; margin-bottom: 0px;">
+                    <div class="rightside-list-holder" style="width: 920px; min-height: 40px; height: 40px; overflow-y: hidden; margin-bottom: 0px;">
                         <ul>
                             <li style="width: 885px;">
                                 <span class="rightside-li-date-text" style="width: 20px;"></span>

@@ -291,8 +291,6 @@ public class BusinessSearchController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
-        redirectAttrs.addFlashAttribute("bizForm", bizForm);
-
         bizSearchValidator.validate(bizForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
@@ -301,6 +299,7 @@ public class BusinessSearchController {
         } else {
             Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
             bizForm.setLast10BizStore(bizStoreEntities);
+            redirectAttrs.addFlashAttribute("bizForm", bizForm);
             //Re-direct to prevent resubmit
             return "redirect:" + nextPage + ".htm";
         }
