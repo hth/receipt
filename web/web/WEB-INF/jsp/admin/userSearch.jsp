@@ -55,7 +55,7 @@
             User Search
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
+    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 750px;">
         <div class="down_form" style="width: 930px;">
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Search users to change profile settings</h2>
             <form:form method="post" modelAttribute="userSearchForm" action="userSearch.htm">
@@ -114,7 +114,7 @@
 <script>
     $(document).ready(function() {
         $( "#userName" ).autocomplete({
-            source: "${pageContext. request. contextPath}/admin/searchUser/find_user.htm"
+            source: "${pageContext. request. contextPath}/admin/userSearch/find_user.htm"
         });
     });
 </script>
