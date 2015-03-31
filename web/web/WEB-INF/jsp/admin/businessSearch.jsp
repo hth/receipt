@@ -49,28 +49,29 @@
 </div>
 <header>
 </header>
-<div class="main clearfix">
+<div class="main clearfix" style="width: 1560px;">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
             Business Search
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
-        <div class="down_form" style="width: 930px;">
+    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px; width: 1560px;">
+        <div class="down_form" style="width: 1530px;">
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Search users to change profile settings</h2>
             <form:form method="post" modelAttribute="bizForm" action="businessSearch.htm">
+
                 <spring:hasBindErrors name="bizForm">
-                    <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
-                        <c:if test="${errors.hasFieldErrors('businessName')}">
-                            <form:errors path="businessName" /><br>
-                        </c:if>
-                        <c:if test="${errors.hasFieldErrors('address')}">
-                            <form:errors path="address" /><br>
-                        </c:if>
-                        <c:if test="${errors.hasFieldErrors('phone')}">
-                            <form:errors path="phone" /><br>
-                        </c:if>
-                    </div>
+                <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
+                    <c:if test="${errors.hasFieldErrors('businessName')}">
+                        <form:errors path="businessName" /><br>
+                    </c:if>
+                    <c:if test="${errors.hasFieldErrors('address')}">
+                        <form:errors path="address" /><br>
+                    </c:if>
+                    <c:if test="${errors.hasFieldErrors('phone')}">
+                        <form:errors path="phone" /><br>
+                    </c:if>
+                </div>
                 </spring:hasBindErrors>
 
                 <div class="row_field">
@@ -96,10 +97,50 @@
                 <input type="submit" value="Add a Store or New Business" class="gd-button" style="margin: 20px 5px 10px 0px;" name="add" />
                 <input type="submit" value="Reset" class="gd-button" style="width: 130px;  margin: 20px 5px 10px 0px;" name="reset" />
             </form:form>
+
+            <c:if test="${!empty bizForm.last10BizStore}">
+            <div class="row_field">
+                Last 10 records for same business. Search is limited to just 10 records.
+            </div>
+            <div class="rightside-list-holder" style="width: 1520px; min-height: 40px; height: 40px; overflow-y: hidden; margin-bottom: 0px;">
+                <ul>
+                    <li style="width: 1485px;">
+                        <span class="rightside-li-date-text" style="width: 20px;"></span>
+                        <a href="#" class="rightside-li-middle-text" style="width: 350px;">Store Name</a>
+                        <a href="#" class="rightside-li-middle-text" style="width: 670px;">Address</a>
+                        <span class="rightside-li-right-text" style="width: 60px;">Lat</span>
+                        <span class="rightside-li-right-text" style="width: 60px;">Lng</span>
+                        <span class="rightside-li-right-text" style="width: 140px;">Phone</span>
+                        <span class="rightside-li-right-text" style="width: 160px;">Created</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="rightside-list-holder mouseScroll" style="width: 1520px;">
+                <ul>
+                    <c:forEach var="bizStore" items="${bizForm.last10BizStore}"  varStatus="status">
+                        <li style="width: 1485px;">
+                            <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
+                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId="
+                                    class="rightside-li-middle-text" style="width: 350px;" target="_blank">
+                                <spring:eval expression="bizStore.bizName.businessName" />
+                            </a>
+                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}"
+                                    class="rightside-li-middle-text" style="width: 670px;" target="_blank">
+                                <spring:eval expression="bizStore.address" />
+                            </a>
+                            <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lat" /></span>
+                            <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lng" /></span>
+                            <span class="rightside-li-date-text" style="width: 140px;" title="<spring:eval expression="bizStore.phone"/>"><spring:eval expression="bizStore.phoneFormatted"/></span>
+                            <span class="rightside-li-date-text" style="width: 160px;"><fmt:formatDate value="${bizStore.created}" type="both" /></span>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+            </c:if>
         </div>
     </div>
-    <div class="footer-tooth clearfix">
-        <div class="footer-tooth-middle"></div>
+    <div class="footer-tooth clearfix" style="width: 1560px;">
+        <div class="footer-tooth-middle" style="width: 1558px;"></div>
         <div class="footer-tooth-right"></div>
     </div>
 </div>
