@@ -271,7 +271,7 @@ public class BusinessSearchController {
 
             if (receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
                 bizForm.setAddedBizStore(receiptEntity.getBizStore());
-                bizForm.setLast10BizStore(bizService.getAllStoresForBusinessName(receiptEntity));
+                bizForm.setLast10BizStore(bizService.getAllStoresForSameBusinessNameId(receiptEntity));
                 redirectAttrs.addFlashAttribute("bizForm", bizForm);
             } else {
                 bizForm.setErrorMessage(

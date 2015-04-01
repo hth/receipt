@@ -167,12 +167,14 @@ public class BizService {
     }
 
     /**
-     * Find last ten business stores for business name
+     * Find last ten business stores for business name having the same Id as is BizNameEntity. Some business with same
+     * name will not show up here. It will match the BizNameEntity Id for recently added business store with address
+     * or with just added new address for existing business store.
      *
      * @param receiptEntity
      * @return
      */
-    public Set<BizStoreEntity> getAllStoresForBusinessName(ReceiptEntity receiptEntity) {
+    public Set<BizStoreEntity> getAllStoresForSameBusinessNameId(ReceiptEntity receiptEntity) {
         Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
         bizStoreEntities.addAll(
                 bizStoreManager.findAllWithStartingAddressStartingPhone(
