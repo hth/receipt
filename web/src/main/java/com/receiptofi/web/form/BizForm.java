@@ -31,9 +31,7 @@ public final class BizForm {
     private Set<BizStoreEntity> last10BizStore;
     private Map<String, Long> receiptCount = new HashMap<>();
 
-    private String bizError;
     private String errorMessage;
-    private String bizSuccess;
     private String successMessage;
 
     /** To make bean happy */
@@ -112,27 +110,27 @@ public final class BizForm {
     }
 
     /** To be used in future for sending confirmation regarding adding Biz Name and Store success or failure */
-    public String getBizError() {
-        return bizError;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setBizError(String bizError) {
-        if (StringUtils.isEmpty(this.bizError)) {
-            this.bizError = bizError;
+    public void setErrorMessage(String errorMessage) {
+        if (StringUtils.isEmpty(this.errorMessage)) {
+            this.errorMessage = errorMessage;
         } else {
-            this.bizError = this.bizError + ", " + bizError;
+            this.errorMessage = this.errorMessage + ", " + errorMessage;
         }
     }
 
-    public String getBizSuccess() {
-        return bizSuccess;
+    public String getSuccessMessage() {
+        return successMessage;
     }
 
-    public void setBizSuccess(String bizSuccess) {
-        if (StringUtils.isEmpty(this.bizSuccess)) {
-            this.bizSuccess = bizSuccess;
+    public void setSuccessMessage(String successMessage) {
+        if (StringUtils.isEmpty(this.successMessage)) {
+            this.successMessage = successMessage;
         } else {
-            this.bizSuccess = this.bizSuccess + ", " + bizSuccess;
+            this.successMessage = this.successMessage + ", " + successMessage;
         }
     }
 }
