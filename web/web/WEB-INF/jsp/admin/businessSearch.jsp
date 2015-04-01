@@ -90,19 +90,19 @@
                     <label class="profile_label">
                         Name
                     </label>
-                    <form:input path="businessName" id="businessName" class="name_txt"/>
+                    <form:input path="businessName" id="businessName" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
                 <div class="row_field">
                     <label class="profile_label">
                         Address
                     </label>
-                    <form:input path="address" id="address" class="name_txt"/>
+                    <form:input path="address" id="address" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
                 <div class="row_field">
                     <label class="profile_label">
                         Phone
                     </label>
-                    <form:input path="phone" id="phone" class="name_txt"/>
+                    <form:input path="phone" id="phone" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
 
                 <input type="submit" value="Search Business" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0px;" name="search" />
