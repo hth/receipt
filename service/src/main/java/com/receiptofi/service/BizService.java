@@ -160,6 +160,7 @@ public class BizService {
      * Copies BizName and BizStore from ReceiptEntity to DocumentEntity.
      *
      * @param document
+     * @param receipt
      */
     public void copyBizNameAndBizStoreFromReceipt(DocumentEntity document, ReceiptEntity receipt) {
         document.setBizName(receipt.getBizName());
