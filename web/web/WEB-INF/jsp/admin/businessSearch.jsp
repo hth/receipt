@@ -60,15 +60,15 @@
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Search users to change profile settings</h2>
             <form:form method="post" modelAttribute="bizForm" action="businessSearch.htm">
 
-                <c:if test="${!empty bizForm.bizError}">
+                <c:if test="${!empty bizForm.errorMessage}">
                 <div class="r-error" style="width: 98%; margin: 0 0 0 0;">
-                    <c:out value="${bizForm.bizError}" />
+                    <c:out value="${bizForm.errorMessage}" />
                 </div>
                 </c:if>
 
-                <c:if test="${!empty bizForm.bizSuccess}">
+                <c:if test="${!empty bizForm.successMessage}">
                 <div class="r-success" style="width: 98%; margin: 0 0 0 0;">
-                    <c:out value="${bizForm.bizSuccess}" />
+                    <c:out value="${bizForm.successMessage}" />
                 </div>
                 </c:if>
 
@@ -130,21 +130,21 @@
             <div class="rightside-list-holder mouseScroll" style="width: 1520px;">
                 <ul>
                     <c:forEach var="bizStore" items="${bizForm.last10BizStore}"  varStatus="status">
-                        <li style="width: 1485px;">
-                            <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
-                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId="
-                                    class="rightside-li-middle-text" style="width: 350px;" target="_blank">
-                                <spring:eval expression="bizStore.bizName.businessName" /> &nbsp;(<spring:eval expression="bizForm.receiptCount.get(bizStore.id)" />)
-                            </a>
-                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}"
-                                    class="rightside-li-middle-text" style="width: 670px;" target="_blank">
-                                <spring:eval expression="bizStore.address" />
-                            </a>
-                            <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lat" /></span>
-                            <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lng" /></span>
-                            <span class="rightside-li-date-text" style="width: 140px;" title="<spring:eval expression="bizStore.phone"/>"><spring:eval expression="bizStore.phoneFormatted"/></span>
-                            <span class="rightside-li-date-text" style="width: 160px;"><fmt:formatDate value="${bizStore.created}" type="both" /></span>
-                        </li>
+                    <li style="width: 1485px;">
+                        <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
+                        <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId="
+                                class="rightside-li-middle-text" style="width: 350px;" target="_blank">
+                            <spring:eval expression="bizStore.bizName.businessName" /> &nbsp;(<spring:eval expression="bizForm.receiptCount.get(bizStore.id)" />)
+                        </a>
+                        <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}"
+                                class="rightside-li-middle-text" style="width: 670px;" target="_blank">
+                            <spring:eval expression="bizStore.address" />
+                        </a>
+                        <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lat" /></span>
+                        <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lng" /></span>
+                        <span class="rightside-li-date-text" style="width: 140px;" title="<spring:eval expression="bizStore.phone"/>"><spring:eval expression="bizStore.phoneFormatted"/></span>
+                        <span class="rightside-li-date-text" style="width: 160px;"><fmt:formatDate value="${bizStore.created}" type="both" /></span>
+                    </li>
                     </c:forEach>
                 </ul>
             </div>
