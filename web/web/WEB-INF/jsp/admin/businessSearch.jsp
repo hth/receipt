@@ -60,6 +60,18 @@
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Search users to change profile settings</h2>
             <form:form method="post" modelAttribute="bizForm" action="businessSearch.htm">
 
+                <c:if test="${!empty bizForm.bizError}">
+                <div class="r-error" style="width: 98%; margin: 0 0 0 0;">
+                    <c:out value="${bizForm.bizError}" />
+                </div>
+                </c:if>
+
+                <c:if test="${!empty bizForm.bizSuccess}">
+                <div class="r-success" style="width: 98%; margin: 0 0 0 0;">
+                    <c:out value="${bizForm.bizSuccess}" />
+                </div>
+                </c:if>
+
                 <spring:hasBindErrors name="bizForm">
                 <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
                     <c:if test="${errors.hasFieldErrors('businessName')}">
@@ -122,7 +134,7 @@
                             <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
                             <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId="
                                     class="rightside-li-middle-text" style="width: 350px;" target="_blank">
-                                <spring:eval expression="bizStore.bizName.businessName" />
+                                <spring:eval expression="bizStore.bizName.businessName" /> &nbsp;(<spring:eval expression="bizForm.receiptCount.get(bizStore.id)" />)
                             </a>
                             <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}"
                                     class="rightside-li-middle-text" style="width: 670px;" target="_blank">

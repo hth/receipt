@@ -32,7 +32,9 @@ public final class BizForm {
     private Map<String, Long> receiptCount = new HashMap<>();
 
     private String bizError;
+    private String errorMessage;
     private String bizSuccess;
+    private String successMessage;
 
     /** To make bean happy */
     private BizForm() {
