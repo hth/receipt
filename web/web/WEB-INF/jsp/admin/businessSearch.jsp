@@ -87,21 +87,15 @@
                 </spring:hasBindErrors>
 
                 <div class="row_field">
-                    <label class="profile_label">
-                        Name
-                    </label>
+                    <label class="profile_label">Name</label>
                     <form:input path="businessName" id="businessName" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
                 <div class="row_field">
-                    <label class="profile_label">
-                        Address
-                    </label>
+                    <label class="profile_label">Address</label>
                     <form:input path="address" id="address" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
                 <div class="row_field">
-                    <label class="profile_label">
-                        Phone
-                    </label>
+                    <label class="profile_label">Phone</label>
                     <form:input path="phone" id="phone" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
 
