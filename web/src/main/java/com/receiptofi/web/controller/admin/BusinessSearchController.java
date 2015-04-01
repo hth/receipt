@@ -102,8 +102,13 @@ public class BusinessSearchController {
      * @return
      */
     @RequestMapping (value = "/businessSearch", method = RequestMethod.POST, params = "reset")
-    public String reset(RedirectAttributes redirectAttrs) {
-        redirectAttrs.addFlashAttribute("bizForm", BizForm.newInstance());
+    public String reset(
+            @ModelAttribute ("bizForm")
+            BizForm bizForm,
+
+            RedirectAttributes redirectAttrs
+    ) {
+        redirectAttrs.addFlashAttribute("bizForm", bizForm);
         //Re-direct to prevent resubmit
         return "redirect:" + nextPage + ".htm";
     }
@@ -265,10 +270,12 @@ public class BusinessSearchController {
             }
 
             if (receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
-                redirectAttrs.addFlashAttribute("bizStore", receiptEntity.getBizStore());
+                bizForm.setAddedBizStore(receiptEntity.getBizStore());
                 bizForm.setLast10BizStore(bizService.getAllStoresForBusinessName(receiptEntity));
+                redirectAttrs.addFlashAttribute("bizForm", bizForm);
             } else {
-                bizForm.setErrorMessage("Address uniquely identified with another Biz Name: " +
+                bizForm.setErrorMessage(
+                        "Address uniquely identified with another Biz Name: " +
                         receiptEntity.getBizStore().getBizName().getBusinessName());
             }
             /** Re-direct to prevent resubmit. */

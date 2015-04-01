@@ -30,6 +30,7 @@ public final class BizForm {
 
     private Set<BizStoreEntity> last10BizStore;
     private Map<String, Long> receiptCount = new HashMap<>();
+    private BizStoreEntity addedBizStore;
 
     private String errorMessage;
     private String successMessage;
@@ -132,5 +133,13 @@ public final class BizForm {
         } else {
             this.successMessage = this.successMessage + ", " + successMessage;
         }
+    }
+
+    public BizStoreEntity getAddedBizStore() {
+        return addedBizStore;
+    }
+
+    public void setAddedBizStore(BizStoreEntity addedBizStore) {
+        this.addedBizStore = addedBizStore;
     }
 }
