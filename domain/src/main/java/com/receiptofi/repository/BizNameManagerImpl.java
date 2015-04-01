@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -56,8 +55,7 @@ public final class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public BizNameEntity findOneByName(String businessName) {
-        Criteria criteria = where("N").is(businessName);
-        return mongoTemplate.findOne(query(criteria), BizNameEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("N").is(businessName)), BizNameEntity.class, TABLE);
     }
 
     @Override
@@ -76,10 +74,6 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     public Set<String> findAllDistinctBizStr(String businessName) {
-        Set<String> set = new HashSet<>();
-        for (BizNameEntity bizNameEntity : findAllBizWithMatchingName(businessName)) {
-            set.add(bizNameEntity.getBusinessName());
-        }
-        return set;
+        return findAllBizWithMatchingName(businessName).stream().map(BizNameEntity::getBusinessName).collect(Collectors.toSet());
     }
 }
