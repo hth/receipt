@@ -108,7 +108,7 @@
                 <div class="row_field">
                 Added...
                 </div>
-                <div class="rightside-list-holder" style="width: 1520px; min-height: 40px; height: 40px; overflow-y: hidden; margin-bottom: 0px;">
+                <div class="rightside-list-holder" style="width: 1520px; min-height: 40px; height: 40px; overflow-y: hidden; margin-bottom: 0;">
                     <ul>
                         <li style="width: 1485px;">
                             <span class="rightside-li-date-text" style="width: 20px;"></span>
@@ -150,7 +150,7 @@
             <div class="row_field">
                 Last 10 records for same business. Search is limited to just 10 records.
             </div>
-            <div class="rightside-list-holder" style="width: 1520px; min-height: 40px; height: 40px; overflow-y: hidden; margin-bottom: 0px;">
+            <div class="rightside-list-holder" style="width: 1520px; min-height: 40px; height: 40px; overflow-y: hidden; margin-bottom: 0;">
                 <ul>
                     <li style="width: 1485px;">
                         <span class="rightside-li-date-text" style="width: 20px;"></span>
