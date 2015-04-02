@@ -40,8 +40,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
     private MongoTemplate mongoTemplate;
 
-    @Value ("${production.switch}")
-    private String productionSwitch;
+    @Value ("${device.lastAccessed.now}")
+    private String deviceLastAccessedNow;
 
     @Autowired
     public RegisteredDeviceManagerImpl(MongoTemplate mongoTemplate) {
@@ -81,7 +81,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public RegisteredDeviceEntity lastAccessed(String rid, String did) {
         return mongoTemplate.findAndModify(
                 query(where("RID").is(rid).and("DID").is(did)),
-                update("U", productionSwitch.equals("ON") ? new Date() : DateTime.now().minusYears(1).toDate()),
+                update("U", deviceLastAccessedNow.equals("ON") ? new Date() : DateTime.now().minusYears(1).toDate()),
                 RegisteredDeviceEntity.class,
                 TABLE
         );
