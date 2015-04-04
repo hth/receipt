@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -38,9 +39,7 @@ public class AdminLandingService {
     public List<String> findMatchingUsers(String name) {
         List<String> users = new ArrayList<>();
         List<UserProfileEntity> userProfileEntities = userProfileManager.searchAllByName(name);
-        for (UserProfileEntity userProfile : userProfileEntities) {
-            users.add(userProfile.getFirstName() + ", " + userProfile.getLastName());
-        }
+        users.addAll(userProfileEntities.stream().map(UserProfileEntity::getName).collect(Collectors.toList()));
         LOG.debug("List of users={}", users);
         return users;
     }

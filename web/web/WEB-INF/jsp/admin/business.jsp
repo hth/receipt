@@ -123,23 +123,23 @@
 
     <p>&nbsp;</p>
 
-    <c:if test="${!empty bizForm.bizError}">
+    <c:if test="${!empty bizForm.errorMessage}">
     <div class="ui-widget">
         <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
             <p>
                 <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                <span style="display:block; width: auto">${bizForm.bizError}</span>
+                <span style="display:block; width: auto">${bizForm.errorMessage}</span>
             </p>
         </div>
     </div>
     </c:if>
 
-    <c:if test="${!empty bizForm.bizSuccess}">
+    <c:if test="${!empty bizForm.successMessage}">
         <div class="ui-widget">
             <div class="ui-state-highlight ui-corner-all alert-success" style="margin-top: 0px; padding: 0 .7em;">
                 <p>
                     <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width: auto">${bizForm.bizSuccess}</span>
+                    <span style="display:block; width: auto">${bizForm.successMessage}</span>
                 </p>
             </div>
         </div>

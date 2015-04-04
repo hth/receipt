@@ -18,7 +18,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     BizStoreEntity findOne(BizStoreEntity bizStoreEntity);
 
     /**
-     * Search for specific Biz, Address or Phone. Limited to 30
+     * Search for specific Biz, Address or Phone. Limited to 10.
      *
      * @param bizAddress
      * @param bizPhone
