@@ -240,11 +240,11 @@
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF;">&#43; ADD TAG</h3>
-                <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
+                <form:form modelAttribute="expenseTagForm" method="post" action="i.htm">
                     <form:hidden path="tagColor"/>
                     <form:hidden path="tagId"/>
 
-                    <spring:hasBindErrors name="expenseTypeForm">
+                    <spring:hasBindErrors name="expenseTagForm">
                     <div class="row_field">
                         <div id="tagErrors" class="r-validation">
                             <c:if test="${errors.hasFieldErrors('tagName')}">
@@ -443,13 +443,13 @@
     $('.color-box').colpick({
         colorScheme:'dark',
         layout:'hex',
-        color: '${expenseTypeForm.tagColor.substring(1)}',
+        color: '${expenseTagForm.tagColor.substring(1)}',
         onSubmit:function(hsb,hex,rgb,el) {
             $(el).css('background-color', '#'+hex);
             $(el).colpickHide();
             $('#tagColor').val('#' + hex);
         }
-    }).css('background-color', '${expenseTypeForm.tagColor}');
+    }).css('background-color', '${expenseTagForm.tagColor}');
 
     function clickedExpenseTag(button) {
         var buttonValue = button.value.split(" ");

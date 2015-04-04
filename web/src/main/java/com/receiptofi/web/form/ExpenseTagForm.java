@@ -15,17 +15,17 @@ import com.receiptofi.utils.ScrubbedInput;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class ExpenseTypeForm {
+public final class ExpenseTagForm {
     private String tagName;
     private String tagColor;
     private String tagId;
 
-    private ExpenseTypeForm() {
+    private ExpenseTagForm() {
         this.tagColor = ColorUtil.getRandom();
     }
 
-    public static ExpenseTypeForm newInstance() {
-        return new ExpenseTypeForm();
+    public static ExpenseTagForm newInstance() {
+        return new ExpenseTagForm();
     }
 
     public String getTagName() {

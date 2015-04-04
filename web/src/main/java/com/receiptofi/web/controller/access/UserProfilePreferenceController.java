@@ -4,7 +4,6 @@
 package com.receiptofi.web.controller.access;
 
 import com.receiptofi.domain.BillingAccountEntity;
-import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -20,7 +19,7 @@ import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.BillingForm;
-import com.receiptofi.web.form.ExpenseTypeForm;
+import com.receiptofi.web.form.ExpenseTagForm;
 import com.receiptofi.web.form.ProfileForm;
 import com.receiptofi.web.validator.ExpenseTagValidator;
 import com.receiptofi.web.validator.ProfileValidator;
@@ -99,8 +98,8 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("profileForm")
             ProfileForm profileForm,
 
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute ("expenseTagForm")
+            ExpenseTagForm expenseTagForm,
 
             @ModelAttribute ("billingForm")
             BillingForm billingForm,
@@ -112,8 +111,8 @@ public class UserProfilePreferenceController {
         /** Gymnastic to show BindingResult errors if any. */
         if (model.containsKey("result")) {
             BeanPropertyBindingResult result = (BeanPropertyBindingResult) model.get("result");
-            if (result.getObjectName().equals("expenseTypeForm")) {
-                model.addAttribute("org.springframework.validation.BindingResult.expenseTypeForm", result);
+            if (result.getObjectName().equals("expenseTagForm")) {
+                model.addAttribute("org.springframework.validation.BindingResult.expenseTagForm", result);
 
                 populateProfile(profileForm, receiptUser.getRid());
                 populateExpenseTag(profileForm, receiptUser.getRid());
@@ -136,7 +135,7 @@ public class UserProfilePreferenceController {
                 populateBilling(billingForm, receiptUser.getRid());
 
                 model.addAttribute("profileForm", profileForm);
-                model.addAttribute("expenseTypeForm", expenseTypeForm);
+                model.addAttribute("expenseTagForm", expenseTagForm);
             }
         } else {
             populateProfile(profileForm, receiptUser.getRid());
@@ -151,8 +150,8 @@ public class UserProfilePreferenceController {
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.POST, params = "profile_update")
     public String updateProfile(
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute ("expenseTagForm")
+            ExpenseTagForm expenseTagForm,
 
             @ModelAttribute ("profileForm")
             ProfileForm profileForm,
@@ -209,7 +208,7 @@ public class UserProfilePreferenceController {
      * Used for adding Expense Type
      * Note: Gymnastic : The form that is being posted should be the last in order. Or else validation fails to work
      *
-     * @param expenseTypeForm
+     * @param expenseTagForm
      * @param result
      * @return
      */
@@ -222,8 +221,8 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("billingForm")
             BillingForm billingForm,
 
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute ("expenseTagForm")
+            ExpenseTagForm expenseTagForm,
 
             BindingResult result,
             RedirectAttributes redirectAttrs
@@ -233,7 +232,7 @@ public class UserProfilePreferenceController {
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        expenseTagValidator.validate(expenseTypeForm, result);
+        expenseTagValidator.validate(expenseTagForm, result);
         if (result.hasErrors()) {
             LOG.warn("validation error");
             redirectAttrs.addFlashAttribute("result", result);
@@ -242,12 +241,12 @@ public class UserProfilePreferenceController {
         }
 
         try {
-            if (StringUtils.isBlank(expenseTypeForm.getTagId())) {
+            if (StringUtils.isBlank(expenseTagForm.getTagId())) {
                 if (expenseTagCountMax > userProfilePreferenceService.allExpenseTypes(receiptUser.getRid()).size()) {
                     ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
-                            expenseTypeForm.getTagName(),
+                            expenseTagForm.getTagName(),
                             receiptUser.getRid(),
-                            expenseTypeForm.getTagColor());
+                            expenseTagForm.getTagColor());
 
                     userProfilePreferenceService.saveExpenseTag(expenseTag);
                 } else {
@@ -256,21 +255,21 @@ public class UserProfilePreferenceController {
                             "Maximum number of TAG(s) allowed " +
                                     expenseTagCountMax +
                                     ". Could not add " +
-                                    expenseTypeForm.getTagName() +
+                                    expenseTagForm.getTagName() +
                                     "."
                     );
                     redirectAttrs.addFlashAttribute("result", result);
                 }
             } else {
                 userProfilePreferenceService.updateExpenseTag(
-                        expenseTypeForm.getTagId(),
-                        expenseTypeForm.getTagName(),
-                        expenseTypeForm.getTagColor(),
+                        expenseTagForm.getTagId(),
+                        expenseTagForm.getTagName(),
+                        expenseTagForm.getTagColor(),
                         receiptUser.getRid()
                 );
             }
         } catch (Exception e) {
-            LOG.error("Error saving expenseTag={} reason={}", expenseTypeForm.getTagName(), e.getLocalizedMessage(), e);
+            LOG.error("Error saving expenseTag={} reason={}", expenseTagForm.getTagName(), e.getLocalizedMessage(), e);
             result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
         }
@@ -282,8 +281,8 @@ public class UserProfilePreferenceController {
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_delete")
     public String deleteExpenseTag(
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute ("expenseTagForm")
+            ExpenseTagForm expenseTagForm,
 
             BindingResult result,
             RedirectAttributes redirectAttrs
@@ -293,7 +292,7 @@ public class UserProfilePreferenceController {
 
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        expenseTagValidator.validate(expenseTypeForm, result);
+        expenseTagValidator.validate(expenseTagForm, result);
         if (result.hasErrors()) {
             LOG.error("validation error");
             redirectAttrs.addFlashAttribute("result", result);
@@ -302,12 +301,12 @@ public class UserProfilePreferenceController {
         }
 
         try {
-            long count = itemService.countItemsUsingExpenseType(expenseTypeForm.getTagId(), receiptUser.getRid());
+            long count = itemService.countItemsUsingExpenseType(expenseTagForm.getTagId(), receiptUser.getRid());
             if (0 == count) {
                 userProfilePreferenceService.deleteExpenseTag(
-                        expenseTypeForm.getTagId(),
-                        expenseTypeForm.getTagName(),
-                        expenseTypeForm.getTagColor(),
+                        expenseTagForm.getTagId(),
+                        expenseTagForm.getTagName(),
+                        expenseTagForm.getTagColor(),
                         receiptUser.getRid()
                 );
             } else {
@@ -315,7 +314,7 @@ public class UserProfilePreferenceController {
                         "tagName",
                         StringUtils.EMPTY,
                         "Cannot delete " +
-                                expenseTypeForm.getTagName() +
+                                expenseTagForm.getTagName() +
                                 " as it is being used by at least " +
                                 count +
                                 " document(s)");
@@ -323,7 +322,7 @@ public class UserProfilePreferenceController {
                 redirectAttrs.addFlashAttribute("result", result);
             }
         } catch (Exception e) {
-            LOG.error("Error saving expenseTag={} reason={}", expenseTypeForm.getTagName(), e.getLocalizedMessage(), e);
+            LOG.error("Error saving expenseTag={} reason={}", expenseTagForm.getTagName(), e.getLocalizedMessage(), e);
             result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
         }
@@ -336,7 +335,7 @@ public class UserProfilePreferenceController {
      * Only admin has access to this link. Others get 403 error.
      *
      * @param rid
-     * @param expenseTypeForm
+     * @param expenseTagForm
      * @return
      * @throws IOException
      */
@@ -349,8 +348,8 @@ public class UserProfilePreferenceController {
             @ModelAttribute ("profileForm")
             ProfileForm profileForm,
 
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute ("expenseTagForm")
+            ExpenseTagForm expenseTagForm,
 
             @ModelAttribute ("billingForm")
             BillingForm billingForm,
@@ -372,7 +371,7 @@ public class UserProfilePreferenceController {
      * Only Admin can update the user level. Others get 403 error. If the user cannot access /their, then its highly
      * unlikely to perform the action below.
      *
-     * @param expenseTypeForm
+     * @param expenseTagForm
      * @param profileForm
      * @param redirectAttrs
      * @return
@@ -381,8 +380,8 @@ public class UserProfilePreferenceController {
     @PreAuthorize ("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping (value = "/update", method = RequestMethod.POST)
     public String adminUpdateUserStatus(
-            @ModelAttribute ("expenseTypeForm")
-            ExpenseTypeForm expenseTypeForm,
+            @ModelAttribute ("expenseTagForm")
+            ExpenseTagForm expenseTagForm,
 
             @ModelAttribute ("profileForm")
             ProfileForm profileForm,
