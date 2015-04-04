@@ -58,10 +58,7 @@ public class ExternalService {
             double lat = results[0].geometry.location.lat;
             double lng = results[0].geometry.location.lng;
 
-            bizStoreEntity.setLat(lat);
-            bizStoreEntity.setLng(lng);
             bizStoreEntity.setCoordinate(new Coordinate(lat, lng));
-
             bizStoreEntity.setValidatedUsingExternalAPI(true);
         } catch (Exception e) {
             LOG.error("Failed to get address from google java API service, reason={}", e.getLocalizedMessage(), e);
