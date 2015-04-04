@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.value.Coordinate;
 import com.receiptofi.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -48,13 +52,14 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("PH")
     private String phone;
 
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
     @Field ("LAT")
     private double lat;
 
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
     @Field ("LNG")
     private double lng;
+
+    @Field ("COR")
+    private Coordinate coordinate;
 
     @DBRef
     @Field ("BIZ_NAME")
@@ -160,4 +165,14 @@ public class BizStoreEntity extends BaseEntity {
     public void setValidatedUsingExternalAPI(boolean validatedUsingExternalAPI) {
         this.validatedUsingExternalAPI = validatedUsingExternalAPI;
     }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+
 }

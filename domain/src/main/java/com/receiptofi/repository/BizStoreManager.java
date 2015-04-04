@@ -2,6 +2,7 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.annotation.TemporaryCode;
 
 import java.util.List;
 
@@ -57,4 +58,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      */
     @Deprecated
     List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit);
+
+    @TemporaryCode
+    List<BizStoreEntity> findAll();
 }

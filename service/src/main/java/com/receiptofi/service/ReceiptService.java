@@ -387,4 +387,8 @@ public class ReceiptService {
     public void save(ReceiptEntity receipt) {
         receiptManager.save(receipt);
     }
+
+    public ItemService getItemService() {
+        return itemService;
+    }
 }

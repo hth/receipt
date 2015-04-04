@@ -4,6 +4,7 @@ import static java.math.BigDecimal.ZERO;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.annotation.TemporaryCode;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
@@ -145,5 +146,15 @@ public class ItemService {
     public BigDecimal calculateTotalCost(BigDecimal sum, ItemEntity item) {
         Assert.notNull(sum);
         return Maths.add(sum, item.getTotalPriceWithTax());
+    }
+
+    @TemporaryCode
+    public void getAll() {
+        List<ItemEntity> itemEntities = itemManager.getAll();
+        for(ItemEntity itemEntity : itemEntities) {
+            itemEntity.setReceiptId(itemEntity.getReceipt().getId());
+            itemEntity.setBusinessNameId(itemEntity.getBizName().getId());
+            itemManager.save(itemEntity);
+        }
     }
 }
