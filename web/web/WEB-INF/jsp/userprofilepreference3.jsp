@@ -254,7 +254,7 @@
 		<div id="tabs-2">
             <spring:eval expression="${userProfilePreferenceForm.userProfile.receiptUserId eq pageContext.request.userPrincipal.principal.rid}" var="isSameUser" />
 
-            <form:form modelAttribute="expenseTypeForm" method="post" action="i.htm">
+            <form:form modelAttribute="expenseTagForm" method="post" action="i.htm">
                 <div style="width: 325px">
                     <section class="chunk">
                         <fieldset>

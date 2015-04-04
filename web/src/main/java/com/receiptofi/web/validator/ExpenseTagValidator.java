@@ -1,7 +1,7 @@
 package com.receiptofi.web.validator;
 
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.web.form.ExpenseTypeForm;
+import com.receiptofi.web.form.ExpenseTagForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +39,9 @@ public class ExpenseTagValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[]{"Tag Name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagColor", "field.required", new Object[]{"Tag Color"});
 
-        ExpenseTypeForm expenseTypeForm = (ExpenseTypeForm) obj;
-        if (expenseTypeForm.getTagName() != null && expenseTypeForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
-            LOG.error("Expense Tag '{}' greater than size={} ", expenseTypeForm.getTagName(), EXPENSE_TAG_MAX_CHAR);
+        ExpenseTagForm expenseTagForm = (ExpenseTagForm) obj;
+        if (expenseTagForm.getTagName() != null && expenseTagForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
+            LOG.error("Expense Tag '{}' greater than size={} ", expenseTagForm.getTagName(), EXPENSE_TAG_MAX_CHAR);
             errors.rejectValue(
                     "tagName",
                     "expenseTag.tagName",
@@ -49,8 +49,8 @@ public class ExpenseTagValidator implements Validator {
                     "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters.");
         }
 
-        if (expenseTypeForm.getTagColor() != null && expenseTypeForm.getTagColor().length() > EXPENSE_COLOR_TAG_MAX_CHAR) {
-            LOG.error("Expense Tag '{}' greater than size={} ", expenseTypeForm.getTagName(), EXPENSE_COLOR_TAG_MAX_CHAR);
+        if (expenseTagForm.getTagColor() != null && expenseTagForm.getTagColor().length() > EXPENSE_COLOR_TAG_MAX_CHAR) {
+            LOG.error("Expense Tag '{}' greater than size={} ", expenseTagForm.getTagName(), EXPENSE_COLOR_TAG_MAX_CHAR);
             errors.rejectValue(
                     "tagColor",
                     "expenseTag.tagColor",
@@ -58,8 +58,8 @@ public class ExpenseTagValidator implements Validator {
                     "Tag Color cannot extend " + EXPENSE_COLOR_TAG_MAX_CHAR + " characters.");
         }
 
-        if (expenseTypeForm.getTagColor() != null && !expenseTypeForm.getTagColor().startsWith("#")) {
-            LOG.error("Expense Tag '{}' invalid", expenseTypeForm.getTagColor());
+        if (expenseTagForm.getTagColor() != null && !expenseTagForm.getTagColor().startsWith("#")) {
+            LOG.error("Expense Tag '{}' invalid", expenseTagForm.getTagColor());
             errors.rejectValue(
                     "tagColor",
                     "expenseTag.tagColor",
