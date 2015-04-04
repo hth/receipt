@@ -344,12 +344,12 @@ public class ReceiptService {
     /**
      * Used for updating expense report info in the receipt.
      *
-     * @param receiptEntity
+     * @param receipt
      * @return
      */
-    public boolean updateReceiptWithExpReportFilename(ReceiptEntity receiptEntity) {
+    public boolean updateReceiptWithExpReportFilename(ReceiptEntity receipt) {
         try {
-            receiptManager.save(receiptEntity);
+            save(receipt);
         } catch (Exception e) {
             LOG.error("Failed updating ReceiptEntity with Expense Report Filename, reason={}", e.getLocalizedMessage(), e);
             return false;
@@ -373,7 +373,7 @@ public class ReceiptService {
         if (null != receipt) {
             expenseTag = expensesService.findExpenseTag(expenseTagId);
             receipt.setExpenseTag(expenseTag);
-            receiptManager.save(receipt);
+            save(receipt);
             itemService.updateAllItemWithExpenseTag(receipt.getId(), expenseTag.getId());
         }
 
