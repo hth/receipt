@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -64,12 +65,11 @@ public class FetcherService {
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if (null != bizNameEntity) {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
-                    bizAddress, bizNameEntity, BizStoreEntity.ADDRESS_FIELD_NAME);
+                    bizAddress,
+                    bizNameEntity,
+                    BizStoreEntity.ADDRESS_FIELD_NAME);
 
-            for (BizStoreEntity bizStoreEntity : list) {
-                address.add(bizStoreEntity.getAddress());
-            }
-
+            address.addAll(list.stream().map(BizStoreEntity::getAddress).collect(Collectors.toList()));
             LOG.info("found addresses count={} unique count={}", list.size(), address.size());
         }
         return address;
