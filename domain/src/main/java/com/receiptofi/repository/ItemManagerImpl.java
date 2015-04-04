@@ -330,4 +330,9 @@ public final class ItemManagerImpl implements ItemManager {
                 query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()),
                 ItemEntity.class);
     }
+
+    @Override
+    public List<ItemEntity> getAll() {
+        return mongoTemplate.findAll(ItemEntity.class);
+    }
 }

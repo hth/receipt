@@ -5,6 +5,7 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.value.Coordinate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,7 @@ public class ExternalService {
 
             bizStoreEntity.setLat(lat);
             bizStoreEntity.setLng(lng);
+            bizStoreEntity.setCoordinate(new Coordinate(lat, lng));
 
             bizStoreEntity.setValidatedUsingExternalAPI(true);
         } catch (Exception e) {

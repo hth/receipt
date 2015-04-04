@@ -3,7 +3,10 @@ package com.receiptofi.service;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.annotation.TemporaryCode;
+import com.receiptofi.domain.value.Coordinate;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 
@@ -41,6 +44,7 @@ public class BizService {
     @Autowired private BizStoreManager bizStoreManager;
     @Autowired private ExternalService externalService;
     @Autowired private ReceiptService receiptService;
+    @Autowired private ItemService itemService;
 
     public BizNameEntity findName(String bizId) {
         return bizNameManager.findOne(bizId);
@@ -190,5 +194,16 @@ public class BizService {
 
     public void deleteBizName(BizNameEntity bizName) {
         bizNameManager.deleteHard(bizName);
+    }
+
+    @TemporaryCode
+    public void getAllBizStore() {
+        List<BizStoreEntity> bizStoreEntities = bizStoreManager.findAll();
+        for(BizStoreEntity bizStore : bizStoreEntities) {
+            bizStore.setCoordinate(new Coordinate(bizStore.getLat(), bizStore.getLng()));
+            bizStoreManager.save(bizStore);
+        }
+
+        itemService.getAll();
     }
 }

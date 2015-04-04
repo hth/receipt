@@ -38,8 +38,7 @@ import javax.validation.constraints.Size;
 })
 // mongoTemplate.ensureIndex(new Index().on("lastName",Order.ASCENDING), Customer.class);
 @Document (collection = "ITEM")
-//TODO(hth) @DBRef RECEIPT index does not look correct to me
-@CompoundIndexes ({@CompoundIndex (name = "user_item_idx", def = "{'RECEIPT': -1, 'RID': 1}")})
+@CompoundIndexes ({@CompoundIndex (name = "item_ri_bi_rid_idx", def = "{'RI': -1, 'BI' : -1, 'RID': -1}")})
 public class ItemEntity extends BaseEntity {
 
     @Size (min = 1, max = 128)
@@ -88,53 +87,14 @@ public class ItemEntity extends BaseEntity {
     @Field ("EXPENSE_TAG")
     private ExpenseTagEntity expenseTag;
 
+    @Field ("RI")
+    private String receiptId;
+
+    @Field ("BI")
+    private String businessNameId;
+
     public ItemEntity() {
         super();
-    }
-
-    private ItemEntity(
-            String name,
-            Double price,
-            TaxEnum taxed,
-            int sequence,
-            ReceiptEntity receipt,
-            String receiptUserId
-    ) {
-        super();
-        this.name = name;
-        this.price = price;
-        this.taxed = taxed;
-        this.receipt = receipt;
-        this.receiptUserId = receiptUserId;
-        this.sequence = sequence;
-        this.receiptDate = receipt.getReceiptDate();
-    }
-
-    public static ItemEntity newInstance() {
-        return new ItemEntity();
-    }
-
-    /**
-     * This method is used when the Entity is created for the first time.
-     *
-     * @param name
-     * @param price
-     * @param taxed
-     * @param sequence
-     * @param receipt
-     * @param userProfileId
-     * @return
-     */
-    @Deprecated
-    public static ItemEntity newInstance(
-            String name,
-            Double price,
-            TaxEnum taxed,
-            int sequence,
-            ReceiptEntity receipt,
-            String userProfileId
-    ) {
-        return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
     }
 
     public String getName() {
@@ -219,9 +179,10 @@ public class ItemEntity extends BaseEntity {
 
     public void setReceipt(ReceiptEntity receipt) {
         this.receipt = receipt;
-        if (receipt != null && receipt.getReceiptDate() != null) {
+        if (null != receipt && null != receipt.getReceiptDate()) {
             //receipt null during reflection when just one of the field is populated
             this.receiptDate = receipt.getReceiptDate();
+            this.receiptId = receipt.getId();
         }
     }
 
@@ -247,6 +208,7 @@ public class ItemEntity extends BaseEntity {
 
     public void setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
+        this.businessNameId = bizName.getId();
     }
 
     public ExpenseTagEntity getExpenseTag() {
@@ -255,6 +217,22 @@ public class ItemEntity extends BaseEntity {
 
     public void setExpenseTag(ExpenseTagEntity expenseTag) {
         this.expenseTag = expenseTag;
+    }
+
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public String getBusinessNameId() {
+        return businessNameId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
+    }
+
+    public void setBusinessNameId(String businessNameId) {
+        this.businessNameId = businessNameId;
     }
 
     @Override

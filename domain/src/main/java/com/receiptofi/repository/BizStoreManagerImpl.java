@@ -186,4 +186,9 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 BizStoreEntity.class,
                 TABLE);
     }
+
+    @Override
+    public List<BizStoreEntity> findAll() {
+        return mongoTemplate.findAll(BizStoreEntity.class);
+    }
 }
