@@ -76,6 +76,8 @@ public class FetcherService {
     }
 
     /**
+     *
+     * @param bizPhone
      * @param bizAddress
      * @param bizName
      * @return
@@ -87,12 +89,12 @@ public class FetcherService {
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if (null != bizNameEntity) {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
-                    bizPhone, bizAddress, bizNameEntity, BizStoreEntity.PHONE_FIELD_NAME);
+                    bizPhone,
+                    bizAddress,
+                    bizNameEntity,
+                    BizStoreEntity.PHONE_FIELD_NAME);
 
-            for (BizStoreEntity bizStoreEntity : list) {
-                phone.add(Formatter.phone(bizStoreEntity.getPhone()));
-            }
-
+            phone.addAll(list.stream().map(bizStoreEntity -> Formatter.phone(bizStoreEntity.getPhone())).collect(Collectors.toList()));
             LOG.info("found phones count={} unique count={}", list.size(), phone.size());
         }
         return phone;
@@ -109,12 +111,7 @@ public class FetcherService {
     public Set<String> findDistinctItems(String itemName, String bizName) {
         LOG.info("Search for item name={} Biz Name={}", itemName, bizName);
         List<ItemEntity> itemList = itemManager.findItems(itemName, bizName);
-
-        Set<String> itemSet = new HashSet<>();
-        for (ItemEntity re : itemList) {
-            itemSet.add(re.getName());
-        }
-
+        Set<String> itemSet = itemList.stream().map(ItemEntity::getName).collect(Collectors.toSet());
         LOG.info("found item count={} unique count={}", itemList.size(), itemSet.size());
         return itemSet;
     }
