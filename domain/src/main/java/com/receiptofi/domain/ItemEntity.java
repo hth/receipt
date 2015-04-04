@@ -97,50 +97,6 @@ public class ItemEntity extends BaseEntity {
         super();
     }
 
-    private ItemEntity(
-            String name,
-            Double price,
-            TaxEnum taxed,
-            int sequence,
-            ReceiptEntity receipt,
-            String receiptUserId
-    ) {
-        super();
-        this.name = name;
-        this.price = price;
-        this.taxed = taxed;
-        this.receiptUserId = receiptUserId;
-        this.sequence = sequence;
-        this.receiptDate = receipt.getReceiptDate();
-    }
-
-    public static ItemEntity newInstance() {
-        return new ItemEntity();
-    }
-
-    /**
-     * This method is used when the Entity is created for the first time.
-     *
-     * @param name
-     * @param price
-     * @param taxed
-     * @param sequence
-     * @param receipt
-     * @param userProfileId
-     * @return
-     */
-    @Deprecated
-    public static ItemEntity newInstance(
-            String name,
-            Double price,
-            TaxEnum taxed,
-            int sequence,
-            ReceiptEntity receipt,
-            String userProfileId
-    ) {
-        return new ItemEntity(name, price, taxed, sequence, receipt, userProfileId);
-    }
-
     public String getName() {
         return name;
     }

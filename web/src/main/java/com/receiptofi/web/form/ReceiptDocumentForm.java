@@ -143,7 +143,7 @@ public final class ReceiptDocumentForm {
                 name = StringUtils.replace(name, "\t", " ");
                 name = name.replaceAll("\\s+", " ");
 
-                ItemEntity item = ItemEntity.newInstance();
+                ItemEntity item = new ItemEntity();
                 item.setName(WordUtils.capitalize(WordUtils.capitalizeFully(name), '.', '(', ')'));
                 item.setPrice(Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue());
                 item.setQuantity(itemOCR.getQuantity());
