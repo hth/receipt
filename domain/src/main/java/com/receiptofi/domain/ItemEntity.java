@@ -227,14 +227,6 @@ public class ItemEntity extends BaseEntity {
         return businessNameId;
     }
 
-    public void setReceiptId(String receiptId) {
-        this.receiptId = receiptId;
-    }
-
-    public void setBusinessNameId(String businessNameId) {
-        this.businessNameId = businessNameId;
-    }
-
     @Override
     public String toString() {
         return "ItemEntity [name=" + name + ", price=" + price + ", taxed=" + taxed + ", receipt=" + receipt + "]";

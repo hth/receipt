@@ -71,7 +71,6 @@ public class BusinessController {
             model.addAttribute("org.springframework.validation.BindingResult.bizForm", model.asMap().get("result"));
         }
 
-        bizService.getAllBizStore();
         return nextPage;
     }
 

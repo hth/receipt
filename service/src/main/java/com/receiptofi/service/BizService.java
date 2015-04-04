@@ -44,7 +44,6 @@ public class BizService {
     @Autowired private BizStoreManager bizStoreManager;
     @Autowired private ExternalService externalService;
     @Autowired private ReceiptService receiptService;
-    @Autowired private ItemService itemService;
 
     public BizNameEntity findName(String bizId) {
         return bizNameManager.findOne(bizId);
@@ -194,16 +193,5 @@ public class BizService {
 
     public void deleteBizName(BizNameEntity bizName) {
         bizNameManager.deleteHard(bizName);
-    }
-
-    @TemporaryCode
-    public void getAllBizStore() {
-        List<BizStoreEntity> bizStoreEntities = bizStoreManager.findAll();
-        for(BizStoreEntity bizStore : bizStoreEntities) {
-            bizStore.setCoordinate(new Coordinate(bizStore.getLat(), bizStore.getLng()));
-            bizStoreManager.save(bizStore);
-        }
-
-        itemService.getAll();
     }
 }

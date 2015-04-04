@@ -116,6 +116,4 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      * Collection size.
      */
     long collectionSize();
-
-    List<ItemEntity> getAll();
 }

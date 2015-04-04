@@ -147,14 +147,4 @@ public class ItemService {
         Assert.notNull(sum);
         return Maths.add(sum, item.getTotalPriceWithTax());
     }
-
-    @TemporaryCode
-    public void getAll() {
-        List<ItemEntity> itemEntities = itemManager.getAll();
-        for(ItemEntity itemEntity : itemEntities) {
-            itemEntity.setReceiptId(itemEntity.getReceipt().getId());
-            itemEntity.setBusinessNameId(itemEntity.getBizName().getId());
-            itemManager.save(itemEntity);
-        }
-    }
 }

@@ -52,12 +52,6 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("PH")
     private String phone;
 
-    @Field ("LAT")
-    private double lat;
-
-    @Field ("LNG")
-    private double lng;
-
     @Field ("COR")
     private Coordinate coordinate;
 
@@ -135,19 +129,11 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
+        return coordinate.getLat();
     }
 
     public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
+        return coordinate.getLng();
     }
 
     public BizNameEntity getBizName() {

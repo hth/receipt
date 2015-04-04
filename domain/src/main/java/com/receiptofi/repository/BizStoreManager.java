@@ -58,7 +58,4 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      */
     @Deprecated
     List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit);
-
-    @TemporaryCode
-    List<BizStoreEntity> findAll();
 }
