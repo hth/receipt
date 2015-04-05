@@ -100,18 +100,18 @@ public class ReceiptService {
             itemManager.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
 
-            if (receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
+            if (null != receipt.getRecheckComment() && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
                 commentManager.deleteHard(receipt.getRecheckComment());
             }
-            if (receipt.getNotes() != null && !StringUtils.isEmpty(receipt.getNotes().getId())) {
+            if (null != receipt.getNotes() && !StringUtils.isEmpty(receipt.getNotes().getId())) {
                 commentManager.deleteHard(receipt.getNotes());
             }
 
             if (!StringUtils.isEmpty(receipt.getDocumentId())) {
-                DocumentEntity documentEntity = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
-                if (documentEntity != null) {
-                    itemOCRManager.deleteWhereReceipt(documentEntity);
-                    documentManager.deleteHard(documentEntity);
+                DocumentEntity document = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
+                if (null != document) {
+                    itemOCRManager.deleteWhereReceipt(document);
+                    documentManager.deleteHard(document);
                     receipt.setDocumentId(null);
                 }
             }
