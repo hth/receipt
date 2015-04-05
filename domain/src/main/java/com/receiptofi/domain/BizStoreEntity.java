@@ -14,9 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.validation.constraints.NotNull;
 
 /**
@@ -91,7 +88,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getLocation() {
-        String[] split =  StringUtils.split(address, ",");
+        String[] split = StringUtils.split(address, ",");
         return split[split.length - 3] + ", " + (split[split.length - 2]).trim().split(" ")[0];
     }
 
@@ -128,10 +125,12 @@ public class BizStoreEntity extends BaseEntity {
         return Formatter.phone(phone);
     }
 
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLat() {
         return coordinate.getLat();
     }
 
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLng() {
         return coordinate.getLng();
     }
@@ -159,6 +158,4 @@ public class BizStoreEntity extends BaseEntity {
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
-
-
 }

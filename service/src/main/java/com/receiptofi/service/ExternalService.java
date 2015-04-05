@@ -43,23 +43,23 @@ public class ExternalService {
     /**
      * Find and populate Address, Latitude and Longitude for a given address from Google API Service.
      *
-     * @param bizStoreEntity
+     * @param bizStore
      */
-    public void decodeAddress(BizStoreEntity bizStoreEntity) {
+    public void decodeAddress(BizStoreEntity bizStore) {
         try {
-            GeocodingResult[] results = GeocodingApi.geocode(context, bizStoreEntity.getAddress()).await();
+            GeocodingResult[] results = GeocodingApi.geocode(context, bizStore.getAddress()).await();
             Assert.notNull(results, "Geocoding result from address is null");
             Assert.notNull(results[0].geometry, "Address is null hence geometry is null");
             Assert.notNull(results[0].geometry.location, "Geometry is null hence location is null");
 
             String formattedAddress = results[0].formattedAddress;
-            bizStoreEntity.setAddress(formattedAddress);
+            bizStore.setAddress(formattedAddress);
 
             double lat = results[0].geometry.location.lat;
             double lng = results[0].geometry.location.lng;
 
-            bizStoreEntity.setCoordinate(new Coordinate(lat, lng));
-            bizStoreEntity.setValidatedUsingExternalAPI(true);
+            bizStore.setCoordinate(new Coordinate(lat, lng));
+            bizStore.setValidatedUsingExternalAPI(true);
         } catch (Exception e) {
             LOG.error("Failed to get address from google java API service, reason={}", e.getLocalizedMessage(), e);
         }
