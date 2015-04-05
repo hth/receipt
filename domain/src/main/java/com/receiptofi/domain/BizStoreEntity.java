@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 
@@ -124,10 +125,12 @@ public class BizStoreEntity extends BaseEntity {
         return Formatter.phone(phone);
     }
 
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLat() {
         return coordinate.getLat();
     }
 
+    @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLng() {
         return coordinate.getLng();
     }
@@ -155,6 +158,4 @@ public class BizStoreEntity extends BaseEntity {
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
-
-
 }

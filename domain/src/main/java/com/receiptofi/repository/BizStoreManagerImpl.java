@@ -55,7 +55,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public BizStoreEntity findOne(String id) {
-        return mongoTemplate.findOne(query(where("id").is(id)), BizStoreEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), BizStoreEntity.class);
     }
 
     @Override
@@ -64,7 +64,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     public BizStoreEntity noStore() {
-        return mongoTemplate.findOne(query(where("AD").is(StringUtils.EMPTY)), BizStoreEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("AD").is(StringUtils.EMPTY)), BizStoreEntity.class);
     }
 
     public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
@@ -74,7 +74,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             query.addCriteria(where("PH").is(bizStoreEntity.getPhone()));
         }
 
-        return mongoTemplate.findOne(query, BizStoreEntity.class, TABLE);
+        return mongoTemplate.findOne(query, BizStoreEntity.class);
     }
 
     @Override
@@ -95,13 +95,13 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
             return mongoTemplate.find(
                     query(criteriaB).addCriteria(criteriaA).limit(PaginationEnum.TEN.getLimit()),
-                    BizStoreEntity.class,
-                    TABLE);
+                    BizStoreEntity.class
+            );
         } else {
             return mongoTemplate.find(
                     query(criteriaA).limit(PaginationEnum.TEN.getLimit()),
-                    BizStoreEntity.class,
-                    TABLE);
+                    BizStoreEntity.class
+            );
         }
     }
 
@@ -133,7 +133,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             }
         }
         Assert.notNull(query);
-        return mongoTemplate.find(query.limit(PaginationEnum.TEN.getLimit()), BizStoreEntity.class, TABLE);
+        return mongoTemplate.find(query.limit(PaginationEnum.TEN.getLimit()), BizStoreEntity.class);
     }
 
     @Override
@@ -151,7 +151,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             );
         }
         query.fields().include(fieldName);
-        return mongoTemplate.find(query, BizStoreEntity.class, TABLE);
+        return mongoTemplate.find(query, BizStoreEntity.class);
     }
 
     @Override
@@ -175,15 +175,30 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             query = query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
         }
         query.fields().include(fieldName);
-        return mongoTemplate.find(query, BizStoreEntity.class, TABLE);
+        return mongoTemplate.find(query, BizStoreEntity.class);
     }
 
     @Override
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
-        Sort sort = new Sort(Sort.Direction.DESC, "C");
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))).with(sort).limit(limit),
-                BizStoreEntity.class,
-                TABLE);
+                query(
+                        where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
+                        .with(new Sort(Sort.Direction.DESC, "C"))
+                        .limit(limit),
+                BizStoreEntity.class
+        );
+    }
+
+    @Override
+    public List<BizStoreEntity> getAll() {
+        return mongoTemplate.findAll(BizStoreEntity.class);
+    }
+
+    @Override
+    public List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI() {
+        return mongoTemplate.find(
+                query(where("EA").is(false)),
+                BizStoreEntity.class
+        );
     }
 }

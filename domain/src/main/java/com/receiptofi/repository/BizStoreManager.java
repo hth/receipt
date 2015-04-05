@@ -2,7 +2,6 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.annotation.TemporaryCode;
 
 import java.util.List;
 
@@ -58,4 +57,19 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      */
     @Deprecated
     List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit);
+
+
+    /**
+     * This is mostly being used when data is corrupted, like missing addresses or lat or lng.
+     *
+     * @return
+     */
+    List<BizStoreEntity> getAll();
+
+    /**
+     * Gets all the data where the addresses have not been validated using external api.
+     *
+     * @return
+     */
+    List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI();
 }
