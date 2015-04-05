@@ -13,7 +13,6 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
@@ -57,7 +56,7 @@ public class ReceiptService {
     @Autowired private ItemOCRManager itemOCRManager;
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private FileUploadDocumentSenderJMS senderJMS;
-    @Autowired private CommentManager commentManager;
+    @Autowired private CommentService commentService;
     @Autowired private FileSystemService fileSystemService;
     @Autowired private CloudFileService cloudFileService;
     @Autowired private ExpensesService expensesService;
@@ -100,18 +99,18 @@ public class ReceiptService {
             itemManager.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
 
-            if (receipt.getRecheckComment() != null && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
-                commentManager.deleteHard(receipt.getRecheckComment());
+            if (null != receipt.getRecheckComment() && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
+                commentService.deleteHard(receipt.getRecheckComment());
             }
-            if (receipt.getNotes() != null && !StringUtils.isEmpty(receipt.getNotes().getId())) {
-                commentManager.deleteHard(receipt.getNotes());
+            if (null != receipt.getNotes() && !StringUtils.isEmpty(receipt.getNotes().getId())) {
+                commentService.deleteHard(receipt.getNotes());
             }
 
             if (!StringUtils.isEmpty(receipt.getDocumentId())) {
-                DocumentEntity documentEntity = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
-                if (documentEntity != null) {
-                    itemOCRManager.deleteWhereReceipt(documentEntity);
-                    documentManager.deleteHard(documentEntity);
+                DocumentEntity document = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
+                if (null != document) {
+                    itemOCRManager.deleteWhereReceipt(document);
+                    documentManager.deleteHard(document);
                     receipt.setDocumentId(null);
                 }
             }
@@ -235,7 +234,7 @@ public class ReceiptService {
         }
         try {
             commentEntity.setUpdated();
-            commentManager.save(commentEntity);
+            commentService.save(commentEntity);
             if (commentEntityBoolean) {
                 receiptEntity.setNotes(commentEntity);
                 receiptManager.save(receiptEntity);
@@ -268,7 +267,7 @@ public class ReceiptService {
         }
         try {
             commentEntity.setUpdated();
-            commentManager.save(commentEntity);
+            commentService.save(commentEntity);
             if (commentEntityBoolean) {
                 receiptEntity.setRecheckComment(commentEntity);
                 receiptManager.save(receiptEntity);
@@ -300,7 +299,7 @@ public class ReceiptService {
         }
         try {
             commentEntity.setUpdated();
-            commentManager.save(commentEntity);
+            commentService.save(commentEntity);
             if (commentEntityBoolean) {
                 documentEntity.setRecheckComment(commentEntity);
                 documentManager.save(documentEntity);
