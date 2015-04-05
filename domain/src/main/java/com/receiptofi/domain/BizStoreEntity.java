@@ -12,10 +12,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.format.annotation.NumberFormat;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -91,7 +87,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getLocation() {
-        String[] split =  StringUtils.split(address, ",");
+        String[] split = StringUtils.split(address, ",");
         return split[split.length - 3] + ", " + (split[split.length - 2]).trim().split(" ")[0];
     }
 
