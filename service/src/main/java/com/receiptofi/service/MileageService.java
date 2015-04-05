@@ -6,7 +6,6 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
-import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.MileageManager;
 
@@ -37,7 +36,7 @@ public class MileageService {
     private static final Logger LOG = LoggerFactory.getLogger(MileageService.class);
 
     @Autowired private MileageManager mileageManager;
-    @Autowired private CommentManager commentManager;
+    @Autowired private CommentService commentService;
     @Autowired private DocumentManager documentManager;
     @Autowired private FileSystemService fileSystemService;
     @Autowired private CloudFileService cloudFileService;
@@ -78,7 +77,7 @@ public class MileageService {
                 if (Integer.compare(m1.getStart(), m2.getStart()) == 1) {
                     m2.mergeEndingMileage(m1);
                     if (m2.getMileageNotes() != null) {
-                        commentManager.save(m2.getMileageNotes());
+                        commentService.save(m2.getMileageNotes());
                     }
                     mileageManager.save(m2);
                     mileageManager.deleteHard(m1);
@@ -86,7 +85,7 @@ public class MileageService {
                 } else if (Integer.compare(m1.getStart(), m2.getStart()) == -1) {
                     m1.mergeEndingMileage(m2);
                     if (m1.getMileageNotes() != null) {
-                        commentManager.save(m1.getMileageNotes());
+                        commentService.save(m1.getMileageNotes());
                     }
                     mileageManager.save(m1);
                     mileageManager.deleteHard(m2);
@@ -164,7 +163,7 @@ public class MileageService {
         }
         try {
             commentEntity.setUpdated();
-            commentManager.save(commentEntity);
+            commentService.save(commentEntity);
             if (commentEntityBoolean) {
                 mileageEntity.setMileageNotes(commentEntity);
                 mileageManager.save(mileageEntity);

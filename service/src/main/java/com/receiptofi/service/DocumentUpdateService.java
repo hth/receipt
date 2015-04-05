@@ -18,7 +18,6 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
-import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
@@ -60,7 +59,7 @@ public class DocumentUpdateService {
     @Autowired private MessageDocumentManager messageDocumentManager;
     @Autowired private BizService bizService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
-    @Autowired private CommentManager commentManager;
+    @Autowired private CommentService commentService;
     @Autowired private NotificationService notificationService;
     @Autowired private StorageManager storageManager;
     @Autowired private FileSystemService fileSystemService;
@@ -232,7 +231,7 @@ public class DocumentUpdateService {
             //Only recheck comments are updated by technician. Receipt notes are never modified
             if (StringUtils.isEmpty(document.getRecheckComment().getText())) {
                 CommentEntity comment = document.getRecheckComment();
-                commentManager.deleteHard(comment);
+                commentService.deleteHard(comment);
                 document.setRecheckComment(null);
                 receipt.setRecheckComment(null);
             } else {
@@ -251,7 +250,7 @@ public class DocumentUpdateService {
                 }
                 if (!comment.getText().equalsIgnoreCase(fetchedRecheckComment)) {
                     comment.setUpdated();
-                    commentManager.save(comment);
+                    commentService.save(comment);
                 }
                 document.setRecheckComment(comment);
                 receipt.setRecheckComment(comment);
@@ -487,6 +486,7 @@ public class DocumentUpdateService {
 
     /**
      * Processes Mileage document.
+     *
      * @param technicianId
      * @param mileage
      * @param document
