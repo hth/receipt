@@ -57,7 +57,7 @@
     </div>
     <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 1000px; width: 1560px;">
         <div class="down_form" style="width: 1530px;">
-            <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Search users to change profile settings</h2>
+            <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Add new Business or Stores to existing business</h2>
             <form:form method="post" modelAttribute="bizForm" action="businessSearch.htm">
 
                 <c:if test="${!empty bizForm.errorMessage}">

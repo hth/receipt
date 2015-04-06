@@ -1,254 +1,170 @@
-<%@ include file="/WEB-INF/jsp/include.jsp"%>
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="receipt.admin.title"/></title>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/js/alpixel/jMenu.jquery.css'/>
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/alpixel/jMenu.jquery.js"></script>
-
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-
-            $(document).ready(function() {
-                $("#jMenu").jMenu();
-            });
-        });
-    </script>
-
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/admin/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" href="/access/signoff.htm">LOG OUT</a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username"/>
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username"/>
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
-
-    <ul id="jMenu">
-        <li>
-            <a class="fNiv">User</a>
-            <ul>
-                <li class="arrow"></li>
-                <li>
-                    <a href="../landing.htm">Search</a>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <a class="fNiv">Business &nbsp;&nbsp;&nbsp;</a>
-            <ul>
-                <li class="arrow"></li>
-                <li>
-                    <a href="../business.htm">Search & Add</a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-
-    <p>&nbsp;</p>
-
-    <c:if test="${!empty bizForm.errorMessage}">
-        <div class="ui-widget">
-            <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
-                <p>
-                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width: auto">${bizForm.errorMessage}</span>
-                </p>
-            </div>
-        </div>
-    </c:if>
-
-    <c:if test="${!empty bizForm.successMessage}">
-        <div class="ui-widget">
-            <div class="ui-state-highlight ui-corner-all alert-success" style="margin-top: 0px; padding: 0 .7em;">
-                <p>
-                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width: auto">${bizForm.successMessage}</span>
-                </p>
-            </div>
-        </div>
-    </c:if>
-
-    <h2>Edit Business or Store information</h2>
-    <form:form method="post" modelAttribute="bizForm" action="../business.htm">
-        <form:hidden path="nameId" />
-        <form:hidden path="addressId" />
-
-        <table style="width: 760px" class="etable">
-            <tr>
-                <td style="padding: 3px;">
-                    <form:label for="businessName" path="businessName" cssErrorClass="error">Biz Name:</form:label>
-                </td>
-                <td style="padding: 3px;" colspan="3">
-                    <form:input path="businessName" id="businessName" class="inputForBusinessName"/>
-                    <form:errors path="businessName" cssClass="error" />
-                </td>
-            </tr>
-            <c:if test="${not empty bizForm.addressId}">
-            <tr>
-                <td style="padding: 3px;">
-                    <form:label for="address" path="address" cssErrorClass="error">Address:</form:label>
-                </td>
-                <td style="padding: 3px;">
-                    <form:input path="address" id="address" class="inputForBusinessAddress"/>
-                </td>
-                <td style="padding: 3px;">
-                    <form:label for="phone" path="phone" cssErrorClass="error">Phone:</form:label>
-                </td>
-                <td style="padding: 3px;">
-                    <form:input path="phone" id="phone" class="inputForBusinessPhone"/>
-                </td>
-            </tr>
-            </c:if>
-            <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.bizForm'].allErrors}">
-            <tr>
-                <td style="padding: 3px;">
-                    &nbsp;
-                </td>
-                <td style="padding: 3px;">
-                    <form:errors path="address" cssClass="error" />
-                </td>
-                <td style="padding: 3px;" colspan="2">
-                    <form:errors path="phone" cssClass="error" />
-                </td>
-            </tr>
-            </c:if>
-            <tr>
-                <td style="padding: 3px;" colspan="4">
-                    <input type="submit" value="Edit" name="edit" class="btn btn-default" />
-                    <input type="submit" value="Delete Store" name="delete_store" class="btn btn-default" />
-                    <input type="submit" value="Search Business" name="search" class="btn btn-default" />
-                </td>
-            </tr>
-        </table>
-    </form:form>
-
-    <c:if test="${!empty bizForm.last10BizStore}">
-        <br/>
-        Last 10 records for same business. Search is limited to just 10 records.
-        <table style="width: 760px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;">Store Name</th>
-                <th style="padding:3px;">Address</th>
-                <th style="padding:3px;">Lat, Lng</th>
-                <th style="padding:3px;">Phone</th>
-                <th style="padding:3px;">Created</th>
-            </tr>
-            </tbody>
-            <c:forEach var="bizStore" items="${bizForm.last10BizStore}"  varStatus="status">
-            <tr>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=">
-                    <spring:eval expression="bizStore.bizName.businessName" />
-                    </a>
-
-                    <br/><br/>
-                    <i>Store Referred</i> - <b><spring:eval expression="bizForm.receiptCount.get(bizStore.id)" /></b> <i>time(s) in receipt</i>
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <a href="business/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}">
-                    <spring:eval expression="bizStore.addressWrappedMore" />
-                    </a>
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <spring:eval expression="bizStore.lat" />, <spring:eval expression="bizStore.lng" />
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top" title="<spring:eval expression="bizStore.phone"/>">
-                    <spring:eval expression="bizStore.phoneFormatted"/>
-                </td>
-                <td style="padding:3px; text-align: left; vertical-align: top">
-                    <fmt:formatDate value="${bizStore.created}" type="both" />
-                </td>
-            </tr>
-            </c:forEach>
-        </table>
-    </c:if>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
+<header>
+</header>
+<div class="main clearfix" style="width: 1560px;">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            Edit Business or Store information
+        </h1>
+    </div>
+    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 1000px; width: 1560px;">
+        <c class="down_form" style="width: 1530px;">
+            <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Edit Business or Store information</h2>
+            <form:form method="post" modelAttribute="bizForm" action="../businessSearch.htm">
+                <form:hidden path="nameId" />
+                <form:hidden path="addressId" />
 
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+                <c:if test="${!empty bizForm.errorMessage}">
+                    <div class="r-error" style="width: 98%; margin: 0 0 0 0;">
+                        <c:out value="${bizForm.errorMessage}" />
+                    </div>
+                </c:if>
+
+                <c:if test="${!empty bizForm.successMessage}">
+                    <div class="r-success" style="width: 98%; margin: 0 0 0 0;">
+                        <c:out value="${bizForm.successMessage}" />
+                    </div>
+                </c:if>
+
+                <spring:hasBindErrors name="bizForm">
+                    <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
+                        <c:if test="${errors.hasFieldErrors('businessName')}">
+                            <form:errors path="businessName" /><br>
+                        </c:if>
+                        <c:if test="${errors.hasFieldErrors('address')}">
+                            <form:errors path="address" /><br>
+                        </c:if>
+                        <c:if test="${errors.hasFieldErrors('phone')}">
+                            <form:errors path="phone" /><br>
+                        </c:if>
+                    </div>
+                </spring:hasBindErrors>
+
+                <div class="row_field">
+                    <label class="profile_label">Name</label>
+                    <form:input path="businessName" id="businessName" class="name_txt" cssStyle="width: 690px;"/>
+                </div>
+                <c:if test="${not empty bizForm.addressId}">
+                <div class="row_field">
+                    <label class="profile_label">Address</label>
+                    <form:input path="address" id="address" class="name_txt" cssStyle="width: 690px;"/>
+                </div>
+                <div class="row_field">
+                    <label class="profile_label">Phone</label>
+                    <form:input path="phone" id="phone" class="name_txt" cssStyle="width: 690px;"/>
+                </div>
+                </c:if>
+
+                <input type="submit" value="Edit" name="edit" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0;" name="search" />
+                <input type="submit" value="Delete Store" name="delete_store" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0;" name="add" />
+                <input type="submit" value="Search Business" name="search" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0;" name="reset" />
+            </form:form>
+
+            <c:if test="${!empty bizForm.last10BizStore}">
+            <div class="row_field">
+                Last 10 records for same business. Search is limited to just 10 records.
+            </div>
+            <div class="rightside-list-holder" style="width: 1520px; min-height: 40px; height: 40px; overflow-y: hidden; margin-bottom: 0;">
+                <ul>
+                    <li style="width: 1485px;">
+                        <span class="rightside-li-date-text" style="width: 20px;"></span>
+                        <a href="#" class="rightside-li-middle-text" style="width: 20px;"></a>
+                        <a href="#" class="rightside-li-middle-text" style="width: 350px;">Store Name</a>
+                        <a href="#" class="rightside-li-middle-text" style="width: 655px;">Address</a>
+                        <span class="rightside-li-right-text" style="width: 60px;">Lat</span>
+                        <span class="rightside-li-right-text" style="width: 60px;">Lng</span>
+                        <span class="rightside-li-right-text" style="width: 130px;">Phone</span>
+                        <span class="rightside-li-right-text" style="width: 160px;">Created</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="rightside-list-holder mouseScroll" style="width: 1520px;">
+                <ul>
+                    <c:forEach var="bizStore" items="${bizForm.last10BizStore}"  varStatus="status">
+                        <li style="width: 1485px;">
+                            <span class="rightside-li-date-text" style="width: 20px;">${status.count}</span>
+                            <a href="#" class="rightside-li-middle-text" style="width: 20px; padding-left: 0; !important;" target="_blank">
+                                <img src="${pageContext.request.contextPath}/static/images/search-icon-small.png" style="width: 20px; height: 20px; margin-top: 20px;">
+                            </a>
+                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId="
+                                    class="rightside-li-middle-text" style="width: 350px;" target="_blank">
+                                <spring:eval expression="bizStore.bizName.businessName" /> &nbsp;(<spring:eval expression="bizForm.receiptCount.get(bizStore.id)" />)
+                            </a>
+                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}"
+                                    class="rightside-li-middle-text" style="width: 655px;" target="_blank">
+                                <spring:eval expression="bizStore.address" />
+                            </a>
+                            <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lat" /></span>
+                            <span class="rightside-li-date-text" style="width: 60px;"><spring:eval expression="bizStore.lng" /></span>
+                            <span class="rightside-li-date-text" style="width: 130px;" title="<spring:eval expression="bizStore.phone"/>"><spring:eval expression="bizStore.phoneFormatted"/></span>
+                            <span class="rightside-li-date-text" style="width: 160px;"><fmt:formatDate value="${bizStore.created}" type="both" /></span>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+            </c:if>
+        </div>
+    </div>
+    <div class="footer-tooth clearfix" style="width: 1560px;">
+        <div class="footer-tooth-middle" style="width: 1558px;"></div>
+        <div class="footer-tooth-right"></div>
+    </div>
 </div>
-
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
         $( "#businessName" ).autocomplete({
