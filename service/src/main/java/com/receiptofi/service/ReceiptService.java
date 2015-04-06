@@ -11,6 +11,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.repository.DocumentManager;
@@ -70,6 +71,18 @@ public class ReceiptService {
      */
     public ReceiptEntity findReceipt(String receiptId, String receiptUserId) {
         return receiptManager.findReceipt(receiptId, receiptUserId);
+    }
+
+    /**
+     * Find receipt for a receipt id for a specific user profile id.
+     *
+     * @param receiptId
+     * @param receiptUserId
+     * @return
+     */
+    @Mobile
+    public ReceiptEntity findReceiptForMobile(String receiptId, String receiptUserId) {
+        return receiptManager.findReceiptForMobile(receiptId, receiptUserId);
     }
 
     /**

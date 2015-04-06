@@ -80,7 +80,7 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     @Autowired private StorageManager storageManager;
 
     @Override
-    public List<ReceiptEntity> getAllReceipts(String receiptUserId) {
+    public List<ReceiptEntity> getAllActiveReceipts(String receiptUserId) {
         Criteria criteria = where("RID").is(receiptUserId)
                 .andOperator(
                         isActive(),
@@ -89,6 +89,15 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         Sort sort = new Sort(DESC, "RTXD").and(new Sort(DESC, "C"));
         return mongoTemplate.find(query(criteria).with(sort), ReceiptEntity.class, TABLE);
+    }
+
+    @Override
+    public List<ReceiptEntity> getAllReceipts(String receiptUserId) {
+        return mongoTemplate.find(
+                query(where("RID").is(receiptUserId))
+                        .with(new Sort(DESC, "RTXD").and(new Sort(DESC, "C"))),
+                ReceiptEntity.class,
+                TABLE);
     }
 
     @Override
@@ -120,9 +129,9 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public List<ReceiptEntity> getAllUpdatedReceiptSince(String receiptUserId, Date since) {
-        Sort sort = new Sort(DESC, "RTXD").and(new Sort(DESC, "C"));
         return mongoTemplate.find(
-                query(where("RID").is(receiptUserId).and("U").gte(since)).with(sort),
+                query(where("RID").is(receiptUserId).and("U").gte(since))
+                        .with(new Sort(DESC, "RTXD").and(new Sort(DESC, "C"))),
                 ReceiptEntity.class,
                 TABLE
         );
@@ -274,14 +283,30 @@ public final class ReceiptManagerImpl implements ReceiptManager {
      */
     @Override
     public ReceiptEntity findReceipt(String receiptId, String receiptUserId) {
-        Query query = query(where("id").is(receiptId)
-                        .and("RID").is(receiptUserId)
+        return mongoTemplate.findOne(
+                query(where("id").is(receiptId).and("RID").is(receiptUserId)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
                         )
-        );
-        return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
+                ),
+                ReceiptEntity.class,
+                TABLE);
+    }
+
+    /**
+     * Use this method instead of findOne.
+     *
+     * @param receiptId
+     * @param receiptUserId
+     * @return
+     */
+    @Override
+    public ReceiptEntity findReceiptForMobile(String receiptId, String receiptUserId) {
+        return mongoTemplate.findOne(
+                query(where("id").is(receiptId).and("RID").is(receiptUserId)),
+                ReceiptEntity.class,
+                TABLE);
     }
 
     @Override

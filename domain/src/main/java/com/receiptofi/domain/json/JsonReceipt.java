@@ -79,6 +79,12 @@ public class JsonReceipt {
     @JsonProperty ("expenseTagId")
     private String expenseTagId;
 
+    @JsonProperty ("a")
+    private boolean active;
+
+    @JsonProperty ("d")
+    private boolean deleted;
+
     public JsonReceipt() {
     }
 
@@ -105,6 +111,8 @@ public class JsonReceipt {
         this.expenseReportInFS = receipt.getExpenseReportInFS();
         this.billedStatus = receipt.getBilledStatus().getName();
         this.expenseTagId = receipt.getExpenseTag() == null ? "" : receipt.getExpenseTag().getId();
+        this.active = receipt.isActive();
+        this.deleted = receipt.isDeleted();
     }
 
     public String getId() {
@@ -157,5 +165,13 @@ public class JsonReceipt {
 
     public String getExpenseTagId() {
         return expenseTagId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }

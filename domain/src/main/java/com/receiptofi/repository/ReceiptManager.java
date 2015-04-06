@@ -31,6 +31,16 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     ReceiptEntity findReceipt(String receiptId, String receiptUserId);
 
     /**
+     * Get receipt for specific user ignoring other status of this receipt.
+     *
+     * @param receiptId
+     * @param receiptUserId
+     * @return
+     */
+    @Mobile
+    ReceiptEntity findReceiptForMobile(String receiptId, String receiptUserId);
+
+    /**
      * Get receipt for specific user.
      *
      * @param receiptId
@@ -54,6 +64,14 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param receiptUserId
      * @return
      */
+    List<ReceiptEntity> getAllActiveReceipts(String receiptUserId);
+
+    /**
+     *
+     * @param receiptUserId
+     * @return
+     */
+    @Mobile
     List<ReceiptEntity> getAllReceipts(String receiptUserId);
 
     /**
