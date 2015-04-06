@@ -96,8 +96,14 @@ public class LandingService {
      * @param profileId
      * @return
      */
+    @Mobile
+    @SuppressWarnings ("unused")
     public List<ReceiptEntity> getAllReceipts(String profileId) {
         return receiptManager.getAllReceipts(profileId);
+    }
+
+    public List<ReceiptEntity> getAllActiveReceipts(String profileId) {
+        return receiptManager.getAllActiveReceipts(profileId);
     }
 
     public List<ReceiptEntity> getAllReceiptsForTheYear(String profileId, DateTime startOfTheYear) {
@@ -255,7 +261,7 @@ public class LandingService {
      * @param userProfileId
      */
     public Map<String, BigDecimal> computeTotalExpense(String userProfileId) {
-        return computeToDateExpense(getAllReceipts(userProfileId));
+        return computeToDateExpense(getAllActiveReceipts(userProfileId));
     }
 
     /**
