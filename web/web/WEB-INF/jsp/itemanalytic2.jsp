@@ -12,7 +12,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.0.4/highcharts.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.4/highcharts.js"></script>
 
     <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
 </head>
