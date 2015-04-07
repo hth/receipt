@@ -19,7 +19,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fineuploader.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fine-uploader.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.4/highcharts.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.js"></script>
