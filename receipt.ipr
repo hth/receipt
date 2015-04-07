@@ -1175,7 +1175,7 @@
   </component>
   <component name="IdProvider" IDEtalkID="11DA1DB66DD62DDA1ED602B7079FE97C" />
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{angular, fullcalendar, highcharts, jquery, jquery-ui, moment, randomColor, raphael}" />
+    <file url="PROJECT" libraries="{angular, exporting, fullcalendar, highcharts, jquery, jquery-ui, moment, randomColor, raphael}" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
