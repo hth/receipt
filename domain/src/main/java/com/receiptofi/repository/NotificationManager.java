@@ -14,6 +14,4 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
     List<NotificationEntity> getNotifications(String rid, int start, int limit);
 
     long notificationCount(String rid);
-
-    List<NotificationEntity> getNotifications(String rid, Date since);
 }

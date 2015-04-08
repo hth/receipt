@@ -34,7 +34,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Repository
-public final class NotificationManagerImpl implements NotificationManager {
+public class NotificationManagerImpl implements NotificationManager {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             NotificationEntity.class,
@@ -81,16 +81,6 @@ public final class NotificationManagerImpl implements NotificationManager {
                 new Query(where("RID").is(rid)
                         .and("ND").is(true))
                         .addCriteria(isNotDeleted()),
-                NotificationEntity.class
-        );
-    }
-
-    @Override
-    public List<NotificationEntity> getNotifications(String rid, Date since) {
-        return mongoTemplate.find(
-                query(where("RID").is(rid).and("ND").is(true).and("U").gte(since))
-                        .addCriteria(isNotDeleted())
-                        .with(new Sort(Sort.Direction.DESC, "C")),
                 NotificationEntity.class
         );
     }

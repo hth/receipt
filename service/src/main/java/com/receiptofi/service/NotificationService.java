@@ -183,9 +183,4 @@ public class NotificationService {
     public long notificationCount(String rid) {
         return notificationManager.notificationCount(rid);
     }
-
-    @Mobile
-    public List<NotificationEntity> getNotifications(String rid, Date since) {
-        return notificationManager.getNotifications(rid, since);
-    }
 }
