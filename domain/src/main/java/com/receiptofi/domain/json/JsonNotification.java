@@ -61,7 +61,7 @@ public class JsonNotification {
         this.message = notification.getMessage();
         this.notified = notification.isNotified();
         this.notificationType = notification.getNotificationType().getName();
-        this.referenceId = notification.getReferenceId();
+        this.referenceId = notification.getReferenceId() == null ? "" : notification.getReferenceId();
         this.created = JsonReceipt.FMT.print(new DateTime(notification.getCreated()));
         this.updated = JsonReceipt.FMT.print(new DateTime(notification.getUpdated()));
     }
