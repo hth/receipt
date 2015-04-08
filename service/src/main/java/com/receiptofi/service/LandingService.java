@@ -10,7 +10,6 @@ import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
@@ -46,7 +45,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -90,8 +88,14 @@ public class LandingService {
         return documentManager.numberOfRejectedReceipts(profileId);
     }
 
-    public List<ReceiptEntity> getAllActiveReceipts(String profileId) {
-        return receiptManager.getAllActiveReceipts(profileId);
+    /**
+     * Do not use this open end query.
+     *
+     * @param profileId
+     * @return
+     */
+    public List<ReceiptEntity> getAllReceipts(String profileId) {
+        return receiptManager.getAllReceipts(profileId);
     }
 
     public List<ReceiptEntity> getAllReceiptsForTheYear(String profileId, DateTime startOfTheYear) {
@@ -243,7 +247,7 @@ public class LandingService {
      * @param userProfileId
      */
     public Map<String, BigDecimal> computeTotalExpense(String userProfileId) {
-        return computeToDateExpense(getAllActiveReceipts(userProfileId));
+        return computeToDateExpense(getAllReceipts(userProfileId));
     }
 
     /**

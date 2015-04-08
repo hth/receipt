@@ -152,6 +152,7 @@ public class NotificationService {
      * @param rid
      * @return
      */
+    @Mobile
     public List<NotificationEntity> getAllNotifications(String rid) {
         return getNotifications(rid, PaginationEnum.ALL.getLimit());
     }
@@ -182,10 +183,5 @@ public class NotificationService {
 
     public long notificationCount(String rid) {
         return notificationManager.notificationCount(rid);
-    }
-
-    @Mobile
-    public List<NotificationEntity> getNotifications(String rid, Date since) {
-        return notificationManager.getNotifications(rid, since);
     }
 }

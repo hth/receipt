@@ -80,7 +80,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Autowired private StorageManager storageManager;
 
     @Override
-    public List<ReceiptEntity> getAllActiveReceipts(String receiptUserId) {
+    public List<ReceiptEntity> getAllReceipts(String receiptUserId) {
         Criteria criteria = where("RID").is(receiptUserId)
                 .andOperator(
                         isActive(),
