@@ -64,7 +64,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param receiptUserId
      * @return
      */
-    List<ReceiptEntity> getAllActiveReceipts(String receiptUserId);
+    List<ReceiptEntity> getAllReceipts(String receiptUserId);
 
     /**
      * Get receipts only the selected year.
