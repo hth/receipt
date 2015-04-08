@@ -64,7 +64,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Repository
-public final class ReceiptManagerImpl implements ReceiptManager {
+public class ReceiptManagerImpl implements ReceiptManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             ReceiptEntity.class,
@@ -92,15 +92,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public List<ReceiptEntity> getAllReceipts(String receiptUserId) {
-        return mongoTemplate.find(
-                query(where("RID").is(receiptUserId))
-                        .with(new Sort(DESC, "RTXD").and(new Sort(DESC, "C"))),
-                ReceiptEntity.class,
-                TABLE);
-    }
-
-    @Override
     public List<ReceiptEntity> getAllReceiptsForTheYear(String receiptUserId, DateTime startOfTheYear) {
         Criteria criteria = where("RID").is(receiptUserId)
                 .and("RTXD").gte(startOfTheYear)
@@ -125,16 +116,6 @@ public final class ReceiptManagerImpl implements ReceiptManager {
 
         Sort sort = new Sort(DESC, "RTXD").and(new Sort(DESC, "C"));
         return mongoTemplate.find(query(criteria).with(sort), ReceiptEntity.class, TABLE);
-    }
-
-    @Override
-    public List<ReceiptEntity> getAllUpdatedReceiptSince(String receiptUserId, Date since) {
-        return mongoTemplate.find(
-                query(where("RID").is(receiptUserId).and("U").gte(since))
-                        .with(new Sort(DESC, "RTXD").and(new Sort(DESC, "C"))),
-                ReceiptEntity.class,
-                TABLE
-        );
     }
 
     @Override

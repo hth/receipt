@@ -90,18 +90,6 @@ public class LandingService {
         return documentManager.numberOfRejectedReceipts(profileId);
     }
 
-    /**
-     * Do not use this open end query.
-     *
-     * @param profileId
-     * @return
-     */
-    @Mobile
-    @SuppressWarnings ("unused")
-    public List<ReceiptEntity> getAllReceipts(String profileId) {
-        return receiptManager.getAllReceipts(profileId);
-    }
-
     public List<ReceiptEntity> getAllActiveReceipts(String profileId) {
         return receiptManager.getAllActiveReceipts(profileId);
     }
@@ -112,12 +100,6 @@ public class LandingService {
 
     public List<ReceiptEntity> getAllReceiptsForThisMonth(String profileId, DateTime monthYear) {
         return receiptManager.getAllReceiptsForThisMonth(profileId, monthYear);
-    }
-
-    @Mobile
-    @SuppressWarnings ("unused")
-    public List<ReceiptEntity> getAllUpdatedReceiptSince(String profileId, Date since) {
-        return receiptManager.getAllUpdatedReceiptSince(profileId, since);
     }
 
     public Iterator<ReceiptGrouped> getReceiptGroupedByDate(String profileId) {

@@ -67,14 +67,6 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     List<ReceiptEntity> getAllActiveReceipts(String receiptUserId);
 
     /**
-     *
-     * @param receiptUserId
-     * @return
-     */
-    @Mobile
-    List<ReceiptEntity> getAllReceipts(String receiptUserId);
-
-    /**
      * Get receipts only the selected year.
      *
      * @param receiptUserId
@@ -90,16 +82,6 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     List<ReceiptEntity> getAllReceiptsForThisMonth(String receiptUserId, DateTime monthYear);
-
-    /**
-     * Gets all updated receipts since specified time
-     *
-     * @param receiptUserId
-     * @param since
-     * @return
-     */
-    @Mobile
-    List<ReceiptEntity> getAllUpdatedReceiptSince(String receiptUserId, Date since);
 
     /**
      * Get receipts associated with year, month, day.
