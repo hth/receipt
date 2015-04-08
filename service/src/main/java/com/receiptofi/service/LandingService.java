@@ -88,6 +88,12 @@ public class LandingService {
         return documentManager.numberOfRejectedReceipts(profileId);
     }
 
+    /**
+     * Do not use this open end query.
+     *
+     * @param profileId
+     * @return
+     */
     public List<ReceiptEntity> getAllReceipts(String profileId) {
         return receiptManager.getAllReceipts(profileId);
     }
