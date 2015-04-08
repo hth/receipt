@@ -152,7 +152,6 @@ public class NotificationService {
      * @param rid
      * @return
      */
-    @Mobile
     public List<NotificationEntity> getAllNotifications(String rid) {
         return getNotifications(rid, PaginationEnum.ALL.getLimit());
     }
