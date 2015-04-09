@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
 
-    List<ExpenseTagEntity> allExpenseTypes(String rid);
+    List<ExpenseTagEntity> getAllExpenseTags(String rid);
 
     /**
      * Gets all active expense tag

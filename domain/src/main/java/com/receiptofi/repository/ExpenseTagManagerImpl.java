@@ -73,7 +73,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public List<ExpenseTagEntity> allExpenseTypes(String rid) {
+    public List<ExpenseTagEntity> getAllExpenseTags(String rid) {
         return mongoTemplate.find(
                 query(where("RID").is(rid)).with(new Sort(ASC, "TAG")),
                 ExpenseTagEntity.class,
