@@ -183,4 +183,12 @@ public class NotificationService {
     public long notificationCount(String rid) {
         return notificationManager.notificationCount(rid);
     }
+
+    public int deleteInactiveNotification(Date sinceDate) {
+        return notificationManager.deleteHardInactiveNotification(sinceDate);
+    }
+
+    public int setNotificationInactive(Date sinceDate) {
+        return notificationManager.setNotificationInactive(sinceDate);
+    }
 }

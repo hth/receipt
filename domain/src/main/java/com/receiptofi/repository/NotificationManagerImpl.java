@@ -1,9 +1,12 @@
 package com.receiptofi.repository;
 
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -78,10 +82,32 @@ public class NotificationManagerImpl implements NotificationManager {
     @Override
     public long notificationCount(String rid) {
         return mongoTemplate.count(
-                new Query(where("RID").is(rid)
+                query(where("RID").is(rid)
                         .and("ND").is(true))
                         .addCriteria(isNotDeleted()),
                 NotificationEntity.class
         );
+    }
+
+    @Override
+    public int deleteHardInactiveNotification(Date sinceDate) {
+        return mongoTemplate.remove(
+                query(where("A").is(false).and("C").gte(sinceDate)),
+                        NotificationEntity.class
+        ).getN();
+    }
+
+    @Override
+    public int setNotificationInactive(Date sinceDate) {
+        return mongoTemplate.updateMulti(
+                query(where("C").gte(sinceDate)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
+                ),
+                entityUpdate(update("A", false)),
+                NotificationEntity.class
+        ).getN();
     }
 }

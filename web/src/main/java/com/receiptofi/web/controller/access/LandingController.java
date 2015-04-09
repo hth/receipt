@@ -165,8 +165,8 @@ public class LandingController {
         modelAndView.addAllObjects(ytdExpenseMap);
 
         /** Notification */
-        notificationForm.setNotifications(landingService.getNotifications(receiptUser.getRid()));
-        notificationForm.setCount(Long.toString(landingService.notificationCount(receiptUser.getRid())));
+        notificationForm.setNotifications(notificationService.getNotifications(receiptUser.getRid()));
+        notificationForm.setCount(Long.toString(notificationService.notificationCount(receiptUser.getRid())));
 
         /** Mileage */
         List<MileageEntity> mileageEntityList = mileageService.getMileageForThisMonth(receiptUser.getRid(), time);
