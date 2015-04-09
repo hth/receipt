@@ -32,6 +32,7 @@ public class RestoreBizStoreDataProcess {
 
     private boolean searchAddressesNotValidatedThroughExternalApi;
     private String restoreAddresses;
+    private int recordFetchLimit;
     private BizStoreManager bizStoreManager;
     private ExternalService externalService;
 
@@ -43,11 +44,15 @@ public class RestoreBizStoreDataProcess {
             @Value ("${restoreAddresses:ON}")
             String restoreAddresses,
 
+            @Value ("${recordFetchLimit:100}")
+            int recordFetchLimit,
+
             BizStoreManager bizStoreManager,
             ExternalService externalService
     ) {
         this.searchAddressesNotValidatedThroughExternalApi = searchAddressesNotValidatedThroughExternalApi;
         this.restoreAddresses = restoreAddresses;
+        this.recordFetchLimit = recordFetchLimit;
         this.bizStoreManager = bizStoreManager;
         this.externalService = externalService;
     }
@@ -58,30 +63,41 @@ public class RestoreBizStoreDataProcess {
         if ("ON".equalsIgnoreCase(restoreAddresses)) {
             List<BizStoreEntity> bizStores;
 
-            if (searchAddressesNotValidatedThroughExternalApi) {
-                LOG.info("Looking for BizStoreEntity that were not updated through external api");
-                bizStores = bizStoreManager.getAllWhereNotValidatedUsingExternalAPI();
-            } else {
-                LOG.info("Updating all the BizStoreEntity data");
-                bizStores = bizStoreManager.getAll();
-            }
-
-            int success = 0, failure = 0;
+            int success = 0, failure = 0, total = 0;
             try {
-                for (BizStoreEntity bizStore : bizStores) {
-                    try {
-                        externalService.decodeAddress(bizStore);
-                        bizStoreManager.save(bizStore);
-                        success++;
-                    } catch (Exception e) {
-                        LOG.error("Error updating bizStore, reason={}", e.getLocalizedMessage(), e);
-                        failure++;
+                int skip = 0;
+                while (true) {
+                    if (searchAddressesNotValidatedThroughExternalApi) {
+                        LOG.info("Looking for BizStoreEntity that were not updated through external api");
+                        bizStores = bizStoreManager.getAllWhereNotValidatedUsingExternalAPI(skip, recordFetchLimit);
+                    } else {
+                        LOG.info("Updating all the BizStoreEntity data");
+                        bizStores = bizStoreManager.getAll(skip, recordFetchLimit);
+                    }
+
+                    if (bizStores.isEmpty()) {
+                        break;
+                    } else {
+                        skip += recordFetchLimit;
+                        total += bizStores.size();
+                    }
+
+                    for (BizStoreEntity bizStore : bizStores) {
+                        try {
+                            externalService.decodeAddress(bizStore);
+                            bizStoreManager.save(bizStore);
+                            success++;
+                        } catch (Exception e) {
+                            LOG.error("Error updating bizStore, reason={}", e.getLocalizedMessage(), e);
+                            failure++;
+                        }
                     }
                 }
             } catch (Exception e) {
-                LOG.error("Error and quiting updating, reason={}", e.getLocalizedMessage(), e);
+                LOG.error("Error decoding, reason={}", e.getLocalizedMessage(), e);
             } finally {
-                LOG.info("Complete count={} success={} failure={}", bizStores.size(), success, failure);
+                LOG.info("Complete searchAddressesNotValidatedThroughExternalApi={} count={} success={} failure={}",
+                        searchAddressesNotValidatedThroughExternalApi, total, success, failure);
             }
         } else {
             LOG.info("feature is {}", restoreAddresses);

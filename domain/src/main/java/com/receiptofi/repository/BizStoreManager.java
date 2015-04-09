@@ -64,12 +64,12 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      *
      * @return
      */
-    List<BizStoreEntity> getAll();
+    List<BizStoreEntity> getAll(int skip, int limit);
 
     /**
      * Gets all the data where the addresses have not been validated using external api.
      *
      * @return
      */
-    List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI();
+    List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int skip, int limit);
 }
