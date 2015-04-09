@@ -19,13 +19,18 @@
      
     MONGO_DATABASE="rm-test"
     APP_NAME="receiptofi"
+    TIMESTAMP=`date +%F-%H%M`
+    BACKUP_NAME="$APP_NAME-$TIMESTAMP"
+    
+    USERNAME="$USER"
+    BACKUPS_DIR="/Users/$USERNAME/backups/mongo/$APP_NAME"
+    echo "##############"
+    echo "$BACKUPS_DIR"
+    echo "##############"
     
     MONGO_HOST="127.0.0.1"
     MONGO_PORT="27017"
-    TIMESTAMP=`date +%F-%H%M`
     MONGODUMP_PATH="mongodump"
-    BACKUPS_DIR="/Users/hitender/backups/mongo/$APP_NAME"
-    BACKUP_NAME="$APP_NAME-$TIMESTAMP"
      
     mongo admin --eval "printjson(db.fsyncLock())"
     echo "#############################################"
