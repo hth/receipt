@@ -68,7 +68,7 @@ public class RestoreBizStoreDataProcess {
                 int skip = 0;
                 while (true) {
                     if (searchAddressesNotValidatedThroughExternalApi) {
-                        LOG.info("Looking for BizStoreEntity that were not updated through external api");
+                        LOG.info("Get BizStoreEntity that were not updated through external api");
                         bizStores = bizStoreManager.getAllWhereNotValidatedUsingExternalAPI(skip, recordFetchLimit);
                     } else {
                         LOG.info("Updating all the BizStoreEntity data");
