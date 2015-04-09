@@ -42,7 +42,7 @@ public class DocumentsPurgeProcess {
             @Value ("${purgeRejectedDocumentAfterDay:15}")
             int purgeRejectedDocumentAfterDay,
 
-            @Value ("${purgeMaxDocumentsADay:1}")
+            @Value ("${purgeMaxDocumentsADay:10000}")
             int purgeMaxDocumentsADay,
 
             @Value ("${purgeRejectedDocument:ON}")
@@ -69,7 +69,7 @@ public class DocumentsPurgeProcess {
                     count++;
 
                     if (purgeMaxDocumentsADay > 0 && count == purgeMaxDocumentsADay) {
-                        LOG.info("reached purge documents per day max={}", purgeMaxDocumentsADay);
+                        LOG.info("Reached purge documents per day max={}", purgeMaxDocumentsADay);
                         break;
                     }
                 }
