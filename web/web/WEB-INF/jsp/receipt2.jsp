@@ -363,10 +363,10 @@
                         <td class="receipt-item-name">
                             <c:choose>
                                 <c:when test="${item.quantity eq 1}">
-                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.name}</a>
+                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.nameAbb}</a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.name}</a>
+                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.nameAbb}</a>
                                     <div>
                                         ${item.quantity} @ <fmt:formatNumber value="${item.price}" type="currency" pattern="###,###.####" /> each
                                     </div>

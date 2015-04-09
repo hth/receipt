@@ -104,7 +104,7 @@
                     </c:otherwise>
                 </c:choose>
                 <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm" style="width: 250px;">
-                    ${item.name}
+                    ${item.nameAbb}
                 </a>
                 <span class="rightside-li-right-text" style="width: 50px;">
                     <c:choose>
