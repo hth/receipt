@@ -20,3 +20,8 @@ Mongo Backup
 Mongo Restore
     
     mongorestore --dir ~/Downloads/data/backup
+    mongorestore --host 192.168.1.71 --port 27017 --dir ~/Downloads/data/backup
+    
+Mongo Restore single collection
+    
+    mongorestore --host 192.168.1.71 --port 27017 --db rm-test --collection fs.chunks /Users/hitender/Downloads/data/backup/rm-test/fs.chunks.bson
