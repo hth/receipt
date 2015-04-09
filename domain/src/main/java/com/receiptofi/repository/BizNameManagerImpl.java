@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public void save(BizNameEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if (object.getId() != null) {
+        if (null != object.getId()) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
@@ -73,7 +74,15 @@ public final class BizNameManagerImpl implements BizNameManager {
         return mongoTemplate.find(query(where("N").regex("^" + businessName, "i")), BizNameEntity.class, TABLE);
     }
 
+    @Override
     public Set<String> findAllDistinctBizStr(String businessName) {
         return findAllBizWithMatchingName(businessName).stream().map(BizNameEntity::getBusinessName).collect(Collectors.toSet());
+    }
+
+    public List<BizNameEntity> findAll(int skip, int limit) {
+        return mongoTemplate.find(
+                new Query().skip(skip).limit(limit),
+                BizNameEntity.class
+        );
     }
 }
