@@ -24,8 +24,8 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Component
-public class PurgeDocumentsProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(PurgeDocumentsProcess.class);
+public class DocumentsPurgeProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentsPurgeProcess.class);
 
     private DocumentManager documentManager;
 
@@ -38,7 +38,7 @@ public class PurgeDocumentsProcess {
     private int count;
 
     @Autowired
-    public PurgeDocumentsProcess(
+    public DocumentsPurgeProcess(
             @Value ("${purgeRejectedDocumentAfterDay:15}")
             int purgeRejectedDocumentAfterDay,
 
