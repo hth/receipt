@@ -8,6 +8,8 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO;
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.utils.Maths;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -40,6 +42,7 @@ import javax.validation.constraints.Size;
 @Document (collection = "ITEM")
 @CompoundIndexes ({@CompoundIndex (name = "item_ri_bi_rid_idx", def = "{'RI': -1, 'BI' : -1, 'RID': -1}")})
 public class ItemEntity extends BaseEntity {
+    private static int ITEM_NAME_MAX_LENGTH = 28;
 
     @Size (min = 1, max = 128)
     @Field ("IN")
@@ -98,6 +101,19 @@ public class ItemEntity extends BaseEntity {
     }
 
     public String getName() {
+        return name;
+    }
+
+    /**
+     * Any name greater than ITEM_NAME_MAX_LENGTH would be abbreviated.
+     *
+     * @return
+     */
+    @Transient
+    public String getNameAbb() {
+        if (name.length() > ITEM_NAME_MAX_LENGTH) {
+            return StringUtils.abbreviate(name, ITEM_NAME_MAX_LENGTH);
+        }
         return name;
     }
 

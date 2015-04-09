@@ -47,7 +47,6 @@ public class BizNameEntity extends BaseEntity {
      * @param businessName
      */
     public void setBusinessName(String businessName) {
-        //this.businessName = WordUtils.capitalize(WordUtils.capitalizeFully(StringUtils.strip(businessName)), '.', '(', ')');
         this.businessName = WordUtils.capitalizeFully(StringUtils.trim(businessName));
     }
 
