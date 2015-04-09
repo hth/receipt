@@ -190,14 +190,14 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> getAll() {
-        return mongoTemplate.findAll(BizStoreEntity.class);
+    public List<BizStoreEntity> getAll(int skip, int limit) {
+        return mongoTemplate.find(new Query().skip(skip).limit(limit), BizStoreEntity.class);
     }
 
     @Override
-    public List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI() {
+    public List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int skip, int limit) {
         return mongoTemplate.find(
-                query(where("EA").is(false)),
+                query(where("EA").is(false)).skip(skip).limit(limit),
                 BizStoreEntity.class
         );
     }
