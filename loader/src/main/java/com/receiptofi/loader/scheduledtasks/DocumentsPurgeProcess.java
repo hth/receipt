@@ -24,8 +24,8 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Component
-public class PurgeDocumentsProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(PurgeDocumentsProcess.class);
+public class DocumentsPurgeProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentsPurgeProcess.class);
 
     private DocumentManager documentManager;
 
@@ -38,11 +38,11 @@ public class PurgeDocumentsProcess {
     private int count;
 
     @Autowired
-    public PurgeDocumentsProcess(
+    public DocumentsPurgeProcess(
             @Value ("${purgeRejectedDocumentAfterDay:15}")
             int purgeRejectedDocumentAfterDay,
 
-            @Value ("${purgeMaxDocumentsADay:1}")
+            @Value ("${purgeMaxDocumentsADay:10000}")
             int purgeMaxDocumentsADay,
 
             @Value ("${purgeRejectedDocument:ON}")
@@ -56,7 +56,7 @@ public class PurgeDocumentsProcess {
         this.documentManager = documentManager;
     }
 
-    @Scheduled (cron = "${loader.PurgeDocumentsProcess.purgeRejectedDocument}")
+    @Scheduled (cron = "${loader.DocumentsPurgeProcess.purgeRejectedDocument}")
     public void purgeRejectedDocument() {
         LOG.info("begins");
         if ("ON".equalsIgnoreCase(purgeRejectedDocument)) {
@@ -69,7 +69,7 @@ public class PurgeDocumentsProcess {
                     count++;
 
                     if (purgeMaxDocumentsADay > 0 && count == purgeMaxDocumentsADay) {
-                        LOG.info("reached purge documents per day max={}", purgeMaxDocumentsADay);
+                        LOG.info("Reached purge documents per day max={}", purgeMaxDocumentsADay);
                         break;
                     }
                 }

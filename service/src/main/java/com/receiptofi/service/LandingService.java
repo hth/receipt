@@ -414,12 +414,4 @@ public class LandingService {
         documentEntity.setBizName(bizNameManager.noName());
         documentEntity.setBizStore(bizStoreManager.noStore());
     }
-
-    public List<NotificationEntity> getNotifications(String userProfileId) {
-        return notificationService.getNotifications(userProfileId);
-    }
-
-    public long notificationCount(String userProfileId) {
-        return notificationService.notificationCount(userProfileId);
-    }
 }

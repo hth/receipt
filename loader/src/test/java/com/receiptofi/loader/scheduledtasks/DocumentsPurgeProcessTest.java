@@ -26,11 +26,11 @@ import java.util.Arrays;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class PurgeDocumentsProcessTest {
+public class DocumentsPurgeProcessTest {
 
     int purgeMaxDocumentsADay = 1;
     int purgeRejectedDocumentAfterDay = 1;
-    private PurgeDocumentsProcess purgeDocumentsProcess;
+    private DocumentsPurgeProcess documentsPurgeProcess;
     @Mock private DocumentManager documentManager;
 
     @Before
@@ -40,42 +40,42 @@ public class PurgeDocumentsProcessTest {
 
     @Test
     public void whenPurgeIsTurnedOn() {
-        purgeDocumentsProcess = new PurgeDocumentsProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "ON", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "ON", documentManager);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
-        purgeDocumentsProcess.purgeRejectedDocument();
+        documentsPurgeProcess.purgeRejectedDocument();
         verify(documentManager, times(1)).deleteHard(any(DocumentEntity.class));
     }
 
     @Test
     public void whenPurgeIsTurnedOff() {
-        purgeDocumentsProcess = new PurgeDocumentsProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "OFF", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "OFF", documentManager);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
-        purgeDocumentsProcess.purgeRejectedDocument();
+        documentsPurgeProcess.purgeRejectedDocument();
         verify(documentManager, never()).deleteHard(any(DocumentEntity.class));
     }
 
     @Test
     public void purgeAll() {
-        purgeDocumentsProcess = new PurgeDocumentsProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
-        purgeDocumentsProcess.purgeRejectedDocument();
+        documentsPurgeProcess.purgeRejectedDocument();
         verify(documentManager, times(2)).deleteHard(any(DocumentEntity.class));
     }
 
     @Test
     public void purgeEmpty() {
-        purgeDocumentsProcess = new PurgeDocumentsProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(new ArrayList<DocumentEntity>());
-        purgeDocumentsProcess.purgeRejectedDocument();
+        documentsPurgeProcess.purgeRejectedDocument();
         verify(documentManager, never()).deleteHard(any(DocumentEntity.class));
     }
 
     @Test
     public void purgeException() {
-        purgeDocumentsProcess = new PurgeDocumentsProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         doThrow(Exception.class).when(documentManager).deleteHard((DocumentEntity) anyObject());
-        purgeDocumentsProcess.purgeRejectedDocument();
-        assertEquals(0, purgeDocumentsProcess.getCount());
+        documentsPurgeProcess.purgeRejectedDocument();
+        assertEquals(0, documentsPurgeProcess.getCount());
     }
 }

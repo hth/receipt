@@ -14,4 +14,20 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
     List<NotificationEntity> getNotifications(String rid, int start, int limit);
 
     long notificationCount(String rid);
+
+    /**
+     * Delete notification older than sinceDate.
+     *
+     * @param sinceDate
+     * @return
+     */
+    int deleteHardInactiveNotification(Date sinceDate);
+
+    /**
+     * Set the notification inactive when older than sinceDate.
+     *
+     * @param sinceDate
+     * @return
+     */
+    int setNotificationInactive(Date sinceDate);
 }

@@ -38,9 +38,8 @@ public class NotificationEntity extends BaseEntity {
     private NotificationTypeEnum notificationType;
 
     /**
-     * Could be a receipt id or Document id
+     * Could be a receipt id or Document id or empty when its just an invite.
      */
-    @NotNull
     @Field ("REF")
     private String referenceId;
 
