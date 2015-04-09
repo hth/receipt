@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BIZ_NAME")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "biz_name_idx", def = "{'N': 1}", unique = true),
+        @CompoundIndex (name = "biz_name_idx", def = "{'N': 1}", unique = false),
 })
 public class BizNameEntity extends BaseEntity {
 
