@@ -55,11 +55,11 @@ public class ExpensesController {
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.debug("rid={} expenseType={}", receiptUser.getRid(), tag);
-        List<ExpenseTagEntity> expenseTypes = expensesService.activeExpenseTypes(receiptUser.getRid());
+        List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
         List<ItemEntity> items = new ArrayList<>();
 
         if (!"Un-Assigned".equalsIgnoreCase(tag)) {
-            for (ExpenseTagEntity expenseTagEntity : expenseTypes) {
+            for (ExpenseTagEntity expenseTagEntity : expenseTags) {
                 if (expenseTagEntity.getTagName().equalsIgnoreCase(tag)) {
                     items = itemService.itemsForExpenseType(expenseTagEntity);
                     break;
@@ -70,7 +70,7 @@ public class ExpensesController {
         }
 
         expenseForm.setName(tag);
-        expenseForm.setExpenseTags(expenseTypes);
+        expenseForm.setExpenseTags(expenseTags);
         expenseForm.setItems(items);
 
         return nextPage;

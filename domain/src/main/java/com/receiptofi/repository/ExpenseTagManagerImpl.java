@@ -82,7 +82,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public List<ExpenseTagEntity> activeExpenseTypes(String rid) {
+    public List<ExpenseTagEntity> getExpenseTags(String rid) {
         return mongoTemplate.find(
                 query(where("RID").is(rid)
                                 .andOperator(
@@ -96,18 +96,18 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public void changeVisibility(String expenseTypeId, boolean changeTo, String rid) {
+    public void changeVisibility(String expenseTagId, boolean changeTo, String rid) {
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(rid)),
+                query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid)),
                 entityUpdate(update("A", changeTo)),
                 ExpenseTagEntity.class);
     }
 
     @Override
-    public void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+    public void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid) {
         try {
             mongoTemplate.updateFirst(
-                    query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(rid)),
+                    query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid)),
                     entityUpdate(update("TAG", expenseTagName).set("CLR", expenseTagColor)),
                     ExpenseTagEntity.class);
         } catch (DuplicateKeyException e) {
@@ -117,9 +117,9 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+    public void deleteExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid) {
         WriteResult writeResult = mongoTemplate.remove(
-                query(where("id").is(new ObjectId(expenseTypeId)).and("RID").is(rid).and("TAG").is(expenseTagName)),
+                query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid).and("TAG").is(expenseTagName)),
                 ExpenseTagEntity.class);
         if (writeResult.getN() == 0) {
             throw new RuntimeException("Matching Tag Name: " + expenseTagName + ", could not be found");
