@@ -4,7 +4,6 @@ import static java.math.BigDecimal.ZERO;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.annotation.TemporaryCode;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
@@ -74,8 +73,8 @@ public class ItemService {
         BigDecimal netSum = ZERO;
 
         //Find sum of all items for particular expense
-        List<ExpenseTagEntity> expenseTypes = expenseTagManager.activeExpenseTypes(rid);
-        for (ExpenseTagEntity expenseTag : expenseTypes) {
+        List<ExpenseTagEntity> expenseTags = expenseTagManager.getExpenseTags(rid);
+        for (ExpenseTagEntity expenseTag : expenseTags) {
 
             BigDecimal sum = ZERO;
             //Todo this query take a long time. Optimize it. Almost 150ms through this loop

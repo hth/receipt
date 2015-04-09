@@ -242,7 +242,7 @@ public class UserProfilePreferenceController {
 
         try {
             if (StringUtils.isBlank(expenseTagForm.getTagId())) {
-                if (expenseTagCountMax > userProfilePreferenceService.allExpenseTypes(receiptUser.getRid()).size()) {
+                if (expenseTagCountMax > userProfilePreferenceService.getAllExpenseTypes(receiptUser.getRid()).size()) {
                     ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
                             expenseTagForm.getTagName(),
                             receiptUser.getRid(),
@@ -427,7 +427,7 @@ public class UserProfilePreferenceController {
      * @param rid
      */
     private void populateExpenseTag(ProfileForm profileForm, String rid) {
-        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.allExpenseTypes(rid);
+        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.getAllExpenseTypes(rid);
         profileForm.setExpenseTags(expenseTypes);
 
         Map<String, Long> expenseTagWithCount = new HashMap<>();

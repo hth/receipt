@@ -85,11 +85,11 @@ public class ReceiptController {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
-            List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(receiptUser.getRid());
+            List<ExpenseTagEntity> expenseTags = userProfilePreferenceService.getExpenseTags(receiptUser.getRid());
 
             receiptForm.setReceipt(receipt);
             receiptForm.setItems(items);
-            receiptForm.setExpenseTags(expenseTypes);
+            receiptForm.setExpenseTags(expenseTags);
             LOG.debug("receiptForm={}", receiptForm);
         }
         return new ModelAndView(nextPage);
@@ -110,11 +110,11 @@ public class ReceiptController {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
-            List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.activeExpenseTypes(receiptUser.getRid());
+            List<ExpenseTagEntity> expenseTags = userProfilePreferenceService.getExpenseTags(receiptUser.getRid());
 
             jsonReceiptDetail.setJsonReceipt(new JsonReceipt(receipt));
             jsonReceiptDetail.setItems(items.stream().map(JsonReceiptItem::newInstance).collect(Collectors.toCollection(LinkedList::new)));
-            jsonReceiptDetail.setJsonExpenseTags(expenseTypes.stream().map(JsonExpenseTag::newInstance).collect(Collectors.toList()));
+            jsonReceiptDetail.setJsonExpenseTags(expenseTags.stream().map(JsonExpenseTag::newInstance).collect(Collectors.toList()));
             LOG.info("populate receipt json for id={}", receiptId);
         }
         return jsonReceiptDetail;
