@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * This was temporary code to change all caps biz name to fully capitalize instead.
  * User: hitender
  * Date: 4/8/15 11:35 PM
  */
@@ -28,6 +29,7 @@ import java.util.List;
 })
 @Component
 @TemporaryCode
+@Deprecated
 public class StoreBizNameUpdateProcess {
     private static final Logger LOG = LoggerFactory.getLogger(StoreBizNameUpdateProcess.class);
 
@@ -40,7 +42,7 @@ public class StoreBizNameUpdateProcess {
             @Value ("${recordFetchLimit:1000}")
             int recordFetchLimit,
 
-            @Value ("${storeBizNameUpdateProcess:ON}")
+            @Value ("${storeBizNameUpdateProcess:OFF}")
             String storeBizNameUpdateProcess,
 
             BizNameManager bizNameManager
