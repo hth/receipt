@@ -330,7 +330,7 @@ public class ReceiptWebService {
         ReceiptExpenseTag receiptExpenseTag = new ReceiptExpenseTag("");
         if (null != receipt) {
             ExpenseTagEntity expenseTag = receiptService.updateReceiptExpenseTag(receipt, expenseTagId);
-            Assert.notNull(expenseTag);
+            Assert.notNull(expenseTag, "ExpenseTag should not be null");
             receiptExpenseTag = new ReceiptExpenseTag(expenseTag.getTagColor());
             receiptExpenseTag.isSuccess();
         } else {

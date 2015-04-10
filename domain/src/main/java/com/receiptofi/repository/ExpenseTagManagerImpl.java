@@ -64,7 +64,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
 
     @Override
     public ExpenseTagEntity findOne(String id) {
-        return mongoTemplate.findOne(query(where("id").is(id)), ExpenseTagEntity.class, TABLE);
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
@@ -90,6 +90,21 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
                                         isNotDeleted()
                                 )
                 ).with(new Sort(ASC, "TAG")),
+                ExpenseTagEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public ExpenseTagEntity getExpenseTag(String rid, String expenseTagId) {
+        return mongoTemplate.findOne(
+                query(where("id").is(new ObjectId(expenseTagId))
+                                .and("RID").is(rid)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
+                ),
                 ExpenseTagEntity.class,
                 TABLE
         );

@@ -21,6 +21,8 @@ public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
      */
     List<ExpenseTagEntity> getExpenseTags(String rid);
 
+    ExpenseTagEntity getExpenseTag(String rid, String expenseTagId);
+
     void changeVisibility(String expenseTagId, boolean changeTo, String rid);
 
     void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid);

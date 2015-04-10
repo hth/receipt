@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -381,12 +382,14 @@ public class ReceiptService {
      * @return
      */
     public ExpenseTagEntity updateReceiptExpenseTag(ReceiptEntity receipt, String expenseTagId) {
-        ExpenseTagEntity expenseTag = null;
-        if (null != receipt) {
-            expenseTag = expensesService.findExpenseTag(expenseTagId);
+        Assert.notNull(receipt, "ReceiptEntity should not be null");
+        ExpenseTagEntity expenseTag = expensesService.findExpenseTag(receipt.getReceiptUserId(), expenseTagId);
+        if (null != expenseTag) {
             receipt.setExpenseTag(expenseTag);
             save(receipt);
             itemService.updateAllItemWithExpenseTag(receipt.getId(), expenseTag.getId());
+        } else {
+            LOG.error("No such expenseTagId={} found for rid={}", expenseTagId, receipt.getReceiptUserId());
         }
 
         return expenseTag;
