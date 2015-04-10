@@ -111,14 +111,6 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public void changeVisibility(String expenseTagId, boolean changeTo, String rid) {
-        mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid)),
-                entityUpdate(update("A", changeTo)),
-                ExpenseTagEntity.class);
-    }
-
-    @Override
     public void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid) {
         try {
             mongoTemplate.updateFirst(
