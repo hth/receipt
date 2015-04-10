@@ -82,8 +82,8 @@ public class UserProfilePreferenceService {
         return expenseTagManager.getExpenseTags(rid);
     }
 
-    public ExpenseTagEntity getExpenseType(String expenseTypeId) {
-        return expenseTagManager.findOne(expenseTypeId);
+    public ExpenseTagEntity getExpenseTag(String rid, String expenseTypeId) {
+        return expenseTagManager.getExpenseTag(rid, expenseTypeId);
     }
 
     public void saveExpenseTag(ExpenseTagEntity expenseType) {

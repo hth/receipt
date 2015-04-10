@@ -444,7 +444,7 @@ public class DocumentUpdateService {
     private void populateItemsWithBizName(List<ItemEntity> items, ReceiptEntity receipt) {
         for (ItemEntity item : items) {
             item.setBizName(receipt.getBizName());
-            populateWithExpenseType(item);
+            populateWithExpenseTag(item);
         }
     }
 
@@ -456,9 +456,9 @@ public class DocumentUpdateService {
      *
      * @param item
      */
-    private void populateWithExpenseType(ItemEntity item) {
+    private void populateWithExpenseTag(ItemEntity item) {
         if (null != item.getExpenseTag() && null != item.getExpenseTag().getId()) {
-            ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseType(item.getExpenseTag().getId());
+            ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseTag(item.getReceiptUserId(), item.getExpenseTag().getId());
             item.setExpenseTag(expenseType);
         }
     }
