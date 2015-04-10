@@ -25,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -97,6 +98,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
 
     @Override
     public ExpenseTagEntity getExpenseTag(String rid, String expenseTagId) {
+        Assert.hasText(expenseTagId, "ExpenseTagId is empty");
         return mongoTemplate.findOne(
                 query(where("id").is(new ObjectId(expenseTagId))
                                 .and("RID").is(rid)
