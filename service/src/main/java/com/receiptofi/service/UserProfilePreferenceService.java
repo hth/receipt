@@ -8,6 +8,8 @@ import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +85,10 @@ public class UserProfilePreferenceService {
     }
 
     public ExpenseTagEntity getExpenseTag(String rid, String expenseTypeId) {
-        return expenseTagManager.getExpenseTag(rid, expenseTypeId);
+        if (StringUtils.isNotBlank(expenseTypeId)) {
+            return expenseTagManager.getExpenseTag(rid, expenseTypeId);
+        }
+        return null;
     }
 
     public void saveExpenseTag(ExpenseTagEntity expenseType) {
