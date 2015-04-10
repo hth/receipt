@@ -98,14 +98,6 @@ public class UserProfilePreferenceService {
         expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
     }
 
-    public void modifyVisibilityOfExpenseType(String expenseTypeId, String changeStatTo, String receiptUserId) {
-        if ("true".equalsIgnoreCase(changeStatTo)) {
-            expenseTagManager.changeVisibility(expenseTypeId, false, receiptUserId);
-        } else {
-            expenseTagManager.changeVisibility(expenseTypeId, true, receiptUserId);
-        }
-    }
-
     public void deleteHard(UserProfileEntity userProfile) {
         userProfileManager.deleteHard(userProfile);
     }
