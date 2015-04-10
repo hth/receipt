@@ -132,4 +132,12 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
             throw new RuntimeException("Matching Tag Name: " + expenseTagName + ", could not be found");
         }
     }
+
+    @Override
+    public boolean doesExits(String rid, String expenseTagName) {
+        return mongoTemplate.count(
+                query(where("RID").is(rid).and("TAG").is(expenseTagName)),
+                ExpenseTagEntity.class
+        ) > 0;
+    }
 }
