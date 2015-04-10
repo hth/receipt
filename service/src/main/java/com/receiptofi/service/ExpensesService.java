@@ -28,7 +28,7 @@ public class ExpensesService {
         return expenseTagManager.getExpenseTags(rid);
     }
 
-    public ExpenseTagEntity findExpenseTag(String expenseId) {
-        return expenseTagManager.findOne(expenseId);
+    public ExpenseTagEntity findExpenseTag(String rid, String expenseId) {
+        return expenseTagManager.getExpenseTag(rid, expenseId);
     }
 }
