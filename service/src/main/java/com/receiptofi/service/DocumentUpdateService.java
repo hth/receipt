@@ -107,13 +107,7 @@ public class DocumentUpdateService {
         try {
             Date transaction = new Date();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
-
-            receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
-
-            document.setFileSystemEntities(documentEntity.getFileSystemEntities());
-
-            //update the version number as the value could have changed by rotating receipt image through ajax
-            document.setVersion(documentEntity.getVersion());
+            updateFileSystemEntityWithVersion(receipt, document, documentEntity);
 
             bizService.saveNewBusinessAndOrStore(receipt);
             receipt.addProcessedBy(transaction, technicianId);
@@ -200,21 +194,15 @@ public class DocumentUpdateService {
         try {
             Date transaction = new Date();
             DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
-
-            receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
-
-            document.setFileSystemEntities(documentEntity.getFileSystemEntities());
-
-            //update the version number as the value could have changed by rotating receipt image through ajax
-            document.setVersion(documentEntity.getVersion());
+            updateFileSystemEntityWithVersion(receipt, document, documentEntity);
 
             bizService.saveNewBusinessAndOrStore(receipt);
             if (StringUtils.isNotEmpty(receipt.getId())) {
-                fetchedReceipt = receiptManager.findOne(receipt.getId());
+                fetchedReceipt = receiptManager.findReceiptWhileRecheck(receipt.getId(), document.getReceiptUserId());
                 if (null == fetchedReceipt) {
                     // By creating new receipt with old id, we move the pending receipt from the list back to users account
-                    LOG.warn("Something had gone wrong with original Receipt={}, " +
-                            "so creating another with old receipt id", receipt.getId());
+                    LOG.error("** Something gone wrong with original Receipt={}, creating another with old receipt id",
+                            receipt.getId());
                 } else {
                     receipt.setVersion(fetchedReceipt.getVersion());
                     receipt.setCreated(fetchedReceipt.getCreated());
@@ -266,6 +254,7 @@ public class DocumentUpdateService {
             }
 
             receipt.addProcessedBy(transaction, technicianId);
+            billingService.updateReceiptWithBillingHistory(receipt);
             receiptManager.save(receipt);
 
             document.addProcessedBy(transaction, technicianId);
@@ -503,8 +492,7 @@ public class DocumentUpdateService {
 
             document.setFileSystemEntities(documentEntity.getFileSystemEntities());
 
-            //update the version number as the value could have changed by rotating receipt image through ajax
-            document.setVersion(documentEntity.getVersion());
+            updateDocumentVersion(document, documentEntity);
             document.setDocumentStatus(PROCESSED);
             document.setReferenceDocumentId(mileage.getId());
             document.inActive();
@@ -526,5 +514,28 @@ public class DocumentUpdateService {
             LOG.error(e.getLocalizedMessage(), e);
             //add roll back
         }
+    }
+
+    /**
+     * Copies fileSystemEntity from existing documentEntity to receipt and document.
+     *
+     * @param receipt
+     * @param document
+     * @param documentEntity
+     */
+    private void updateFileSystemEntityWithVersion(
+            ReceiptEntity receipt,
+            DocumentEntity document,
+            DocumentEntity documentEntity
+    ) {
+        receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
+        document.setFileSystemEntities(documentEntity.getFileSystemEntities());
+
+        updateDocumentVersion(document, documentEntity);
+    }
+
+    private void updateDocumentVersion(DocumentEntity document, DocumentEntity documentEntity) {
+        /** Update the version number as the value could have changed by rotating receipt image through ajax. */
+        document.setVersion(documentEntity.getVersion());
     }
 }
