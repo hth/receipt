@@ -99,24 +99,15 @@ public final class ItemManagerImpl implements ItemManager {
         }
     }
 
-    /**
-     * Use this method instead of findOne
-     *
-     * @param itemId
-     * @param receiptUserId
-     * @return
-     */
     @Override
-    public ItemEntity findItem(String itemId, String receiptUserId) {
-        Query query = query(where("id").is(itemId).and("RID").is(receiptUserId));
-        return mongoTemplate.findOne(query, ItemEntity.class, TABLE);
+    public ItemEntity findItem(String itemId, String rid) {
+        return mongoTemplate.findOne(query(where("id").is(itemId).and("RID").is(rid)), ItemEntity.class, TABLE);
     }
 
     @Override
     public List<ItemEntity> getAllItemsOfReceipt(String receiptId) {
-        Sort sort = new Sort(Direction.ASC, "SEQ");
         return mongoTemplate.find(
-                query(where("RECEIPT.$id").is(new ObjectId(receiptId))).with(sort),
+                query(where("RECEIPT.$id").is(new ObjectId(receiptId))).with(new Sort(Direction.ASC, "SEQ")),
                 ItemEntity.class, TABLE);
     }
 
@@ -163,31 +154,31 @@ public final class ItemManagerImpl implements ItemManager {
      * Note: Added limit to reduce number of items fetched.
      *
      * @param item
-     * @param receiptUserId
+     * @param rid
      * @param limit         - Number of items per query
      * @return
      */
     @Override
-    public List<ItemEntity> findAllByName(ItemEntity item, String receiptUserId, int limit) {
+    public List<ItemEntity> findAllByName(ItemEntity item, String rid, int limit) {
         List<ItemEntity> items;
-        if (item.getReceipt().getReceiptUserId().equals(receiptUserId)) {
+        if (item.getReceipt().getReceiptUserId().equals(rid)) {
             items = mongoTemplate.find(
-                    queryToFindByName(item.getName(), receiptUserId).limit(limit),
+                    queryToFindByName(item.getName(), rid).limit(limit),
                     ItemEntity.class,
                     TABLE);
         } else {
-            LOG.error("Found different rid={} item={}", receiptUserId, item.getId());
+            LOG.error("Found different rid={} item={}", rid, item.getId());
             items = new ArrayList<>();
         }
         return items;
     }
 
-    public long findAllByNameCount(ItemEntity item, String receiptUserId) {
+    public long findAllByNameCount(ItemEntity item, String rid) {
         long count = 0;
-        if (item.getReceipt().getReceiptUserId().equals(receiptUserId)) {
-            count = mongoTemplate.count(queryToFindByName(item.getName(), receiptUserId), ItemEntity.class, TABLE);
+        if (item.getReceipt().getReceiptUserId().equals(rid)) {
+            count = mongoTemplate.count(queryToFindByName(item.getName(), rid), ItemEntity.class, TABLE);
         } else {
-            LOG.error("Found different rid={} item={}", receiptUserId, item.getId());
+            LOG.error("Found different rid={} item={}", rid, item.getId());
         }
         return count;
     }
@@ -280,12 +271,17 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public long countItemsUsingExpenseType(String expenseTypeId, String receiptUserId) {
-        Criteria criteria = where("EXPENSE_TAG.$id").is(new ObjectId(expenseTypeId))
-                .and("RID").is(receiptUserId);
-
-        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
-        return mongoTemplate.count(query, ItemEntity.class);
+    public long countItemsUsingExpenseType(String expenseTypeId, String rid) {
+        return mongoTemplate.count(
+                query(where("EXPENSE_TAG.$id").is(new ObjectId(expenseTypeId))
+                        .and("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                ItemEntity.class
+        );
     }
 
     /**
@@ -297,21 +293,30 @@ public final class ItemManagerImpl implements ItemManager {
      */
     @Override
     public List<ItemEntity> getItemEntitiesForSpecificExpenseTypeForTheYear(ExpenseTagEntity expenseType) {
-        Criteria criteria = where("EXPENSE_TAG.$id").is(new ObjectId(expenseType.getId()))
-                .and("RTX").gte(DateUtil.startOfYear());
-
-        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
-        return mongoTemplate.find(query, ItemEntity.class);
+        return mongoTemplate.find(
+                query(where("EXPENSE_TAG.$id").is(new ObjectId(expenseType.getId()))
+                        .and("RTX").gte(DateUtil.startOfYear())
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                ItemEntity.class
+        );
     }
 
     @Override
-    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String receiptUserId) {
-        Criteria criteria = where("EXPENSE_TAG").is(StringUtils.trimToNull(null))
-                .and("RID").is(receiptUserId)
-                .and("RTX").gte(DateUtil.startOfYear());
-
+    public List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String rid) {
         return mongoTemplate.find(
-                query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted()),
-                ItemEntity.class);
+                query(where("EXPENSE_TAG").is(StringUtils.trimToNull(null))
+                        .and("RID").is(rid)
+                        .and("RTX").gte(DateUtil.startOfYear())
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                ItemEntity.class
+        );
     }
 }

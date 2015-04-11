@@ -26,13 +26,13 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     List<ItemEntity> getAllItemsOfReceipt(String receiptId);
 
     /**
-     * Finds users item as the session supplies receiptUserId.
+     * Find Item for RID with Item Id.
      *
      * @param itemId
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    ItemEntity findItem(String itemId, String receiptUserId);
+    ItemEntity findItem(String itemId, String rid);
 
     /**
      * Gets items with specified name until the specified date.
@@ -58,19 +58,19 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      * Should be used only for listing historical data of the items for a particular user.
      *
      * @param item
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    List<ItemEntity> findAllByName(ItemEntity item, String receiptUserId, int limit);
+    List<ItemEntity> findAllByName(ItemEntity item, String rid, int limit);
 
     /**
      * Gets count of the item with same name purchased.
      *
      * @param item
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    long findAllByNameCount(ItemEntity item, String receiptUserId);
+    long findAllByNameCount(ItemEntity item, String rid);
 
     /**
      * Delete Entity.
@@ -103,14 +103,14 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
      * Count how many Items are using a particular Expense Type.
      *
      * @param expenseTypeId
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    long countItemsUsingExpenseType(String expenseTypeId, String receiptUserId);
+    long countItemsUsingExpenseType(String expenseTypeId, String rid);
 
     List<ItemEntity> getItemEntitiesForSpecificExpenseTypeForTheYear(ExpenseTagEntity expenseType);
 
-    List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String receiptUserId);
+    List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String rid);
 
     /**
      * Collection size.
