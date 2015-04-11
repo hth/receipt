@@ -74,11 +74,6 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
     }
 
     @Override
-    public ItemEntityOCR findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt) {
         Query query = query(where("DOCUMENT.$id").is(new ObjectId(receipt.getId())));
         Sort sort = new Sort(Direction.ASC, "SEQ");

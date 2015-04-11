@@ -11,6 +11,7 @@ import java.util.List;
  * Date: 12/25/13 4:16 AM
  */
 public interface MileageManager extends RepositoryManager<MileageEntity> {
+    MileageEntity getById(String id);
 
     MileageEntity findOne(String id, String receiptUserId);
 

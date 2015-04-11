@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,8 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     @Override
-    public BizNameEntity findOne(String id) {
+    public BizNameEntity getById(String id) {
+        Assert.hasText(id, "Id empty for BizNameEntity");
         return mongoTemplate.findOne(query(where("id").is(id)), BizNameEntity.class, TABLE);
     }
 

@@ -10,5 +10,6 @@ import com.receiptofi.domain.UserAuthenticationEntity;
  * @since Dec 16, 2012 1:20:31 PM
  */
 public interface UserAuthenticationManager extends RepositoryManager<UserAuthenticationEntity> {
+    UserAuthenticationEntity getById(String id);
 
 }

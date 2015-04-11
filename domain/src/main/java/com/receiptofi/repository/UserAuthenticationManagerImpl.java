@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 /**
  * @author hitender
@@ -59,7 +60,8 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     }
 
     @Override
-    public UserAuthenticationEntity findOne(String id) {
+    public UserAuthenticationEntity getById(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
     }
 

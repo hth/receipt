@@ -57,11 +57,6 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     }
 
     @Override
-    public ForgotRecoverEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public ForgotRecoverEntity findByAuthenticationKey(String key) {
         Criteria criteria = where("AUTH").is(key);
         Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());

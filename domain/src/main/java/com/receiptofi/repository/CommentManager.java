@@ -9,4 +9,5 @@ import com.receiptofi.domain.CommentEntity;
  */
 public interface CommentManager extends RepositoryManager<CommentEntity> {
 
+    CommentEntity getById(String id);
 }

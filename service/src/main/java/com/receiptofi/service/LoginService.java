@@ -37,12 +37,12 @@ public class LoginService {
     }
 
     private UserAuthenticationEntity loadAuthenticationEntity(UserAccountEntity userAccount) {
-        return userAuthenticationManager.findOne(userAccount.getUserAuthentication().getId());
+        return userAuthenticationManager.getById(userAccount.getUserAuthentication().getId());
     }
 
     public void saveUpdateBrowserInfo(String cookieId, String ip, String userAgent) {
         try {
-            BrowserEntity browserEntity = browserManager.findOne(cookieId);
+            BrowserEntity browserEntity = browserManager.getByCookie(cookieId);
             if (null == browserEntity) {
                 browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent);
                 browserManager.save(browserEntity);

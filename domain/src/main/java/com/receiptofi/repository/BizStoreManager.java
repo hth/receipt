@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
+    BizStoreEntity getById(String id);
+
     BizStoreEntity noStore();
 
     BizStoreEntity findOne(BizStoreEntity bizStoreEntity);

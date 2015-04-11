@@ -64,11 +64,6 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public ExpenseTagEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void deleteHard(ExpenseTagEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
     }

@@ -28,8 +28,8 @@ public class FileSystemService {
         fileSystemManager.save(fileSystemEntity);
     }
 
-    public FileSystemEntity findById(String id) {
-        return fileSystemManager.findOne(id);
+    public FileSystemEntity getById(String id) {
+        return fileSystemManager.getById(id);
     }
 
     public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {

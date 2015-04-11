@@ -10,5 +10,6 @@ import java.util.List;
  */
 public interface CloudFileManager extends RepositoryManager<CloudFileEntity> {
 
+    CloudFileEntity getById(String id);
     List<CloudFileEntity> getAllMarkedAsDeleted();
 }

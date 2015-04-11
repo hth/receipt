@@ -64,13 +64,10 @@ public final class StorageManagerImpl implements StorageManager {
         return persist(object);
     }
 
-    @Override
-    public UploadDocumentImage findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
     private void deleteSoft(String id) {
+        Assert.hasText(id, "Id is empty");
         GridFSDBFile receiptBlob = get(id);
+        Assert.notNull(receiptBlob, "receiptBlob is empty");
         receiptBlob.put("D", true);
         receiptBlob.save();
     }

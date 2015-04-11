@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 /**
  * User: hitender
@@ -43,7 +44,8 @@ public final class CommentManagerImpl implements CommentManager {
     }
 
     @Override
-    public CommentEntity findOne(String id) {
+    public CommentEntity getById(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(query(where("id").is(id)), CommentEntity.class);
     }
 

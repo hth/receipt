@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
@@ -122,7 +123,8 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public UserProfileEntity findOne(String id) {
+    public UserProfileEntity getById(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(query(where("id").is(id)), UserProfileEntity.class, TABLE);
     }
 

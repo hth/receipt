@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 /**
  * @author hitender
@@ -52,7 +53,8 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
-    public UserPreferenceEntity findOne(String id) {
+    public UserPreferenceEntity getById(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), UserPreferenceEntity.class, TABLE);
     }
 

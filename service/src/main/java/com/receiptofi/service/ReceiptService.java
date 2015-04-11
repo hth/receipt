@@ -105,7 +105,7 @@ public class ReceiptService {
      * @param receiptId - Receipt id to delete
      */
     public boolean deleteReceipt(String receiptId, String receiptUserId) throws Exception {
-        ReceiptEntity receipt = receiptManager.findOne(receiptId, receiptUserId);
+        ReceiptEntity receipt = receiptManager.getReceipt(receiptId, receiptUserId);
         if (null == receipt) {
             return false;
         }
@@ -151,7 +151,7 @@ public class ReceiptService {
      */
     public void reopen(String receiptId, String receiptUserId) throws Exception {
         try {
-            ReceiptEntity receipt = receiptManager.findOne(receiptId, receiptUserId);
+            ReceiptEntity receipt = receiptManager.getReceipt(receiptId, receiptUserId);
             if (null == receipt.getDocumentId()) {
                 LOG.error("No receiptOCR id found in Receipt={}, aborting the reopen process", receipt.getId());
                 throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");

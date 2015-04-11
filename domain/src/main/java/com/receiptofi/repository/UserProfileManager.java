@@ -15,6 +15,7 @@ import java.util.List;
  * @since Dec 23, 2012 3:45:26 AM
  */
 public interface UserProfileManager extends RepositoryManager<UserProfileEntity> {
+    UserProfileEntity getById(String id);
 
     UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object);
 

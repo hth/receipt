@@ -54,7 +54,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public BizStoreEntity findOne(String id) {
+    public BizStoreEntity getById(String id) {
+        Assert.hasText(id, "Id empty for BizStore");
         return mongoTemplate.findOne(query(where("id").is(id)), BizStoreEntity.class);
     }
 

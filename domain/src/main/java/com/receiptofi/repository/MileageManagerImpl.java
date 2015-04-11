@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -51,7 +52,8 @@ public class MileageManagerImpl implements MileageManager {
     }
 
     @Override
-    public MileageEntity findOne(String id) {
+    public MileageEntity getById(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(query(where("id").is(id)), MileageEntity.class, TABLE);
     }
 

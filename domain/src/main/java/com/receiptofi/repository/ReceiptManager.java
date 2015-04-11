@@ -13,7 +13,6 @@ import com.receiptofi.domain.value.ReceiptListViewGrouped;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,29 +24,38 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
     /**
      * @param receiptId
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    ReceiptEntity findReceipt(String receiptId, String receiptUserId);
+    ReceiptEntity findReceipt(String receiptId, String rid);
+
+    /**
+     * Use this method when doing recheck.
+     *
+     * @param receiptId
+     * @param rid
+     * @return
+     */
+    ReceiptEntity findReceiptWhileRecheck(String receiptId, String rid);
 
     /**
      * Get receipt for specific user ignoring other status of this receipt.
      *
      * @param receiptId
-     * @param receiptUserId
+     * @param rid
      * @return
      */
     @Mobile
-    ReceiptEntity findReceiptForMobile(String receiptId, String receiptUserId);
+    ReceiptEntity findReceiptForMobile(String receiptId, String rid);
 
     /**
      * Get receipt for specific user.
      *
      * @param receiptId
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    ReceiptEntity findOne(String receiptId, String receiptUserId);
+    ReceiptEntity getReceipt(String receiptId, String rid);
 
     /**
      * Find all receipts with BizName for the user
@@ -61,27 +69,27 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     /**
      * Gets all the user receipts. Refrain from using open ended query.
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    List<ReceiptEntity> getAllReceipts(String receiptUserId);
+    List<ReceiptEntity> getAllReceipts(String rid);
 
     /**
      * Get receipts only the selected year.
      *
-     * @param receiptUserId
+     * @param rid
      * @param startOfTheYear
      * @return
      */
-    List<ReceiptEntity> getAllReceiptsForTheYear(String receiptUserId, DateTime startOfTheYear);
+    List<ReceiptEntity> getAllReceiptsForTheYear(String rid, DateTime startOfTheYear);
 
     /**
      * Gets user receipts for current month.
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    List<ReceiptEntity> getAllReceiptsForThisMonth(String receiptUserId, DateTime monthYear);
+    List<ReceiptEntity> getAllReceiptsForThisMonth(String rid, DateTime monthYear);
 
     /**
      * Get receipts associated with year, month, day.
@@ -97,10 +105,10 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     /**
      * Receipt grouped by day.
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String receiptUserId);
+    Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String rid);
 
     /**
      * Receipt grouped by month for last 13 months.
@@ -123,10 +131,10 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     /**
      * Group receipts by location and sum up the total expense on that particular business location.
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String receiptUserId);
+    Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String rid);
 
     ReceiptEntity findWithReceiptOCR(String documentId);
 

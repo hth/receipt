@@ -8,4 +8,5 @@ import com.receiptofi.domain.BrowserEntity;
  * Time: 4:08 PM
  */
 public interface BrowserManager extends RepositoryManager<BrowserEntity> {
+    BrowserEntity getByCookie(String id);
 }

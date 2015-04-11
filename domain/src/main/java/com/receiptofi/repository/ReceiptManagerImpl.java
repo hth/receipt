@@ -5,6 +5,7 @@ package com.receiptofi.repository;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
@@ -48,8 +49,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,8 +81,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Autowired private StorageManager storageManager;
 
     @Override
-    public List<ReceiptEntity> getAllReceipts(String receiptUserId) {
-        Criteria criteria = where("RID").is(receiptUserId)
+    public List<ReceiptEntity> getAllReceipts(String rid) {
+        Criteria criteria = where("RID").is(rid)
                 .andOperator(
                         isActive(),
                         isNotDeleted()
@@ -92,8 +93,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public List<ReceiptEntity> getAllReceiptsForTheYear(String receiptUserId, DateTime startOfTheYear) {
-        Criteria criteria = where("RID").is(receiptUserId)
+    public List<ReceiptEntity> getAllReceiptsForTheYear(String rid, DateTime startOfTheYear) {
+        Criteria criteria = where("RID").is(rid)
                 .and("RTXD").gte(startOfTheYear)
                 .andOperator(
                         isActive(),
@@ -105,8 +106,8 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public List<ReceiptEntity> getAllReceiptsForThisMonth(String receiptUserId, DateTime monthYear) {
-        Criteria criteria = where("RID").is(receiptUserId)
+    public List<ReceiptEntity> getAllReceiptsForThisMonth(String rid, DateTime monthYear) {
+        Criteria criteria = where("RID").is(rid)
                 .and("M").is(monthYear.getMonthOfYear())
                 .and("Y").is(monthYear.getYear())
                 .andOperator(
@@ -119,7 +120,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String receiptUserId) {
+    public Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String rid) {
         GroupBy groupBy = GroupBy.key("T", "M", "Y")
                 .initialDocument("{ total: 0 }")
                 .reduceFunction("function(obj, result) { " +
@@ -129,7 +130,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                         "  result.total += obj.TOT; " +
                         "}");
 
-        Criteria criteria = where("RID").is(receiptUserId)
+        Criteria criteria = where("RID").is(rid)
                 .andOperator(
                         isActive(),
                         isNotDeleted()
@@ -161,7 +162,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
         /** Another way to populate ReceiptEntity instead. */
 //        TypedAggregation<ReceiptEntity> agg = newAggregation(ReceiptEntity.class,
-//                match(where("RID").is(receiptUserId)),
+//                match(where("RID").is(rid)),
 //                group("year", "month")
 //                        .first("year").as("Y")
 //                        .first("month").as("M")
@@ -188,7 +189,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
         );
     }
 
-    public Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String receiptUserId) {
+    public Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String rid) {
         GroupBy groupBy = GroupBy.key("BIZ_STORE", "BIZ_NAME")
                 .initialDocument("{ total: 0 }")
                 .reduceFunction("function(obj, result) { " +
@@ -200,7 +201,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
         DateTime date = DateUtil.now().minusMonths(displayMonths);
         DateTime since = new DateTime(date.getYear(), date.getMonthOfYear(), 1, 0, 0);
-        Criteria criteria = where("RID").is(receiptUserId)
+        Criteria criteria = where("RID").is(rid)
                 .and("RTXD").gte(since.toDate())
                 .andOperator(
                         isActive(),
@@ -235,37 +236,24 @@ public class ReceiptManagerImpl implements ReceiptManager {
         }
     }
 
-    /**
-     * Use findReceipt method instead of findOne
-     *
-     * @param id
-     * @return
-     */
-    @Deprecated
     @Override
-    public ReceiptEntity findOne(String id) {
-        return mongoTemplate.findOne(query(where("id").is(id)), ReceiptEntity.class, TABLE);
-    }
-
-    @Override
-    public ReceiptEntity findOne(String receiptId, String receiptUserId) {
-        Query query = query(where("id").is(receiptId)
-                .and("RID").is(receiptUserId));
-
+    public ReceiptEntity getReceipt(String id, String rid) {
+        Assert.hasText(id, "Id is empty");
+        Query query = query(where("id").is(id).and("RID").is(rid));
         return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
     }
 
     /**
-     * Use this method instead of findOne.
      *
-     * @param receiptId
-     * @param receiptUserId
+     * @param id
+     * @param rid
      * @return
      */
     @Override
-    public ReceiptEntity findReceipt(String receiptId, String receiptUserId) {
+    public ReceiptEntity findReceipt(String id, String rid) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(
-                query(where("id").is(receiptId).and("RID").is(receiptUserId)
+                query(where("id").is(id).and("RID").is(rid)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -276,16 +264,37 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     /**
-     * Use this method instead of findOne.
+     * Use this method when doing recheck.
      *
-     * @param receiptId
-     * @param receiptUserId
+     * @param id
+     * @param rid
      * @return
      */
     @Override
-    public ReceiptEntity findReceiptForMobile(String receiptId, String receiptUserId) {
+    public ReceiptEntity findReceiptWhileRecheck(String id, String rid) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(
-                query(where("id").is(receiptId).and("RID").is(receiptUserId)),
+                query(where("id").is(id).and("RID").is(rid)
+                                .andOperator(
+                                        isNotActive(),
+                                        isNotDeleted()
+                                )
+                ),
+                ReceiptEntity.class,
+                TABLE);
+    }
+
+    /**
+     *
+     * @param id
+     * @param rid
+     * @return
+     */
+    @Override
+    public ReceiptEntity findReceiptForMobile(String id, String rid) {
+        Assert.hasText(id, "Id is empty");
+        return mongoTemplate.findOne(
+                query(where("id").is(id).and("RID").is(rid)),
                 ReceiptEntity.class,
                 TABLE);
     }

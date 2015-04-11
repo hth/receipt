@@ -84,11 +84,11 @@ public class BusinessSearchController {
             @ModelAttribute ("bizForm")
             BizForm bizForm
     ) {
-        BizNameEntity bizNameEntity = bizService.findName(nameId);
+        BizNameEntity bizNameEntity = bizService.getByBizNameId(nameId);
         bizForm.setBizNameEntity(bizNameEntity);
 
         if (StringUtils.isNotEmpty(storeId)) {
-            BizStoreEntity bizStoreEntity = bizService.findStore(storeId);
+            BizStoreEntity bizStoreEntity = bizService.getByStoreId(storeId);
             bizForm.setBizStore(bizStoreEntity);
         }
 
@@ -131,7 +131,8 @@ public class BusinessSearchController {
 
         BizStoreEntity bizStoreEntity;
         if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
-            bizStoreEntity = bizService.findStore(bizForm.getAddressId());
+            //TODO verify this getAddressId()
+            bizStoreEntity = bizService.getByStoreId(bizForm.getAddressId());
             bizStoreEntity.setAddress(bizForm.getAddress());
             bizStoreEntity.setPhone(bizForm.getPhone());
             try {
@@ -147,7 +148,7 @@ public class BusinessSearchController {
 
         BizNameEntity bizNameEntity;
         if (StringUtils.isNotEmpty(bizForm.getNameId())) {
-            bizNameEntity = bizService.findName(bizForm.getNameId());
+            bizNameEntity = bizService.getByBizNameId(bizForm.getNameId());
             bizNameEntity.setBusinessName(bizForm.getBusinessName());
             try {
                 bizService.saveName(bizNameEntity);
@@ -182,7 +183,8 @@ public class BusinessSearchController {
 
         BizStoreEntity bizStoreEntity;
         if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
-            bizStoreEntity = bizService.findStore(bizForm.getAddressId());
+            //TODO verify this getAddressId()
+            bizStoreEntity = bizService.getByStoreId(bizForm.getAddressId());
             BizNameEntity bizNameEntity = bizStoreEntity.getBizName();
 
             Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
