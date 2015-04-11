@@ -120,7 +120,7 @@ public class FilesUploadToS3 {
                     if (0L == fileSystem.getScaledFileLength()) {
 
                         GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
-                        if (fs != null) {
+                        if (null != fs) {
                             File scaledImage = FileUtil.createTempFile(
                                     FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
                                     FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
@@ -145,13 +145,13 @@ public class FilesUploadToS3 {
                             success++;
                         } else {
                             skipped++;
-                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile={}",
-                                    fileSystem.getBlobId(),
-                                    fileSystem.getScaledFileLength());
+                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile={}", fileSystem.getBlobId());
                         }
                     } else {
                         skipped++;
-                        LOG.info("Skipped file={} as it exists in S3 SNL={}", fileSystem.getBlobId());
+                        LOG.info("Skipped file={} as it exists in S3 SNL={}",
+                                fileSystem.getBlobId(),
+                                fileSystem.getScaledFileLength());
                     }
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
