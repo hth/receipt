@@ -157,13 +157,13 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay) {
         return mongoTemplate.find(
-                query(
-                        where("DS").is(DocumentStatusEnum.REJECT)
-                                .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay)
+                query(where("DS").is(DocumentStatusEnum.REJECT)
+                        .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay))
+                        .andOperator(
+                            isNotActive(),
+                            isDeleted()
                         )
-                )
-                        .addCriteria(isNotActive())
-                        .addCriteria(isDeleted()),
+                ),
                 DocumentEntity.class,
                 TABLE
         );
@@ -172,10 +172,12 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public List<DocumentEntity> getAllProcessedDocuments() {
         return mongoTemplate.find(
-                query(where("IU").is(false).and("DS").is(DocumentStatusEnum.PROCESSED))
-                        .addCriteria(isNotActive())
-                        .addCriteria(isNotDeleted())
-                        .with(new Sort(Direction.ASC, "U")),
+                query(where("IU").is(false).and("DS").is(DocumentStatusEnum.PROCESSED)
+                        .andOperator(
+                                isNotActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(Direction.ASC, "U")),
                 DocumentEntity.class,
                 TABLE
         );
@@ -184,9 +186,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long getTotalPending() {
         return mongoTemplate.count(
-                query(
-                        where("DS").is(DocumentStatusEnum.PENDING)
-                ).addCriteria(isNotDeleted()),
+                query(where("DS").is(DocumentStatusEnum.PENDING).andOperator(isNotDeleted())),
                 DocumentEntity.class
         );
     }
