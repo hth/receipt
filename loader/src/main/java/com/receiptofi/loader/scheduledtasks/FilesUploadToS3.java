@@ -144,8 +144,9 @@ public class FilesUploadToS3 {
                             amazonS3Service.getS3client().putObject(putObject);
                             success++;
                         } else {
+                            //TODO keep an eye on this issue. Should not happen.
                             skipped++;
-                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile={}", fileSystem.getBlobId());
+                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                         }
                     } else {
                         skipped++;
