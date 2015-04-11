@@ -1,5 +1,7 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.mongodb.gridfs.GridFSDBFile;
+
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
@@ -116,36 +118,40 @@ public class FilesUploadToS3 {
                 Collection<FileSystemEntity> fileSystemEntities = document.getFileSystemEntities();
                 for (FileSystemEntity fileSystem : fileSystemEntities) {
                     if (0L == fileSystem.getScaledFileLength()) {
-                        File scaledImage = FileUtil.createTempFile(
-                                FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
-                                FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
 
-                        imageSplitService.decreaseResolution(
-                                fileDBService.getFile(fileSystem.getBlobId()).getInputStream(),
-                                new FileOutputStream(scaledImage));
+                        GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
+                        if (fs != null) {
+                            File scaledImage = FileUtil.createTempFile(
+                                    FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
+                                    FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
 
-                        LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
-                                fileSystem.getId(),
-                                fileSystem.getOriginalFilename(),
-                                fileSystem.getBlobId(),
-                                FileUtil.fileSizeInMB(fileSystem.getFileLength()),
-                                FileUtil.fileSizeInMB(scaledImage.length()));
+                            imageSplitService.decreaseResolution(fs.getInputStream(), new FileOutputStream(scaledImage));
+                            LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
+                                    fileSystem.getId(),
+                                    fileSystem.getOriginalFilename(),
+                                    fileSystem.getBlobId(),
+                                    FileUtil.fileSizeInMB(fileSystem.getFileLength()),
+                                    FileUtil.fileSizeInMB(scaledImage.length()));
 
-                        File fileForS3;
-                        if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
-                            fileForS3 = scaledImage;
+                            File fileForS3;
+                            if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
+                                fileForS3 = scaledImage;
+                            } else {
+                                fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+                            }
+                            updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
+                            PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
+                            amazonS3Service.getS3client().putObject(putObject);
+                            success++;
                         } else {
-                            fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+                            skipped++;
+                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile={}",
+                                    fileSystem.getBlobId(),
+                                    fileSystem.getScaledFileLength());
                         }
-                        updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
-                        PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
-                        amazonS3Service.getS3client().putObject(putObject);
-                        success++;
                     } else {
-                        skipped ++;
-                        LOG.info("Skipped file={} as it exists in S3 SNL={}",
-                                fileSystem.getBlobId(),
-                                fileSystem.getScaledFileLength());
+                        skipped++;
+                        LOG.info("Skipped file={} as it exists in S3 SNL={}", fileSystem.getBlobId());
                     }
                 }
                 documentUpdateService.cloudUploadSuccessful(document.getId());
