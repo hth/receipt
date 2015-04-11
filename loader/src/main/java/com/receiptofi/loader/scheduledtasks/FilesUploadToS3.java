@@ -177,13 +177,13 @@ public class FilesUploadToS3 {
 
                 failure++;
             } catch (Exception e) {
-                LOG.error("image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
+                LOG.error("Image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
 
                 failure++;
 
                 for (FileSystemEntity fileSystem : document.getFileSystemEntities()) {
                     amazonS3Service.getS3client().deleteObject(bucketName, folderName + "/" + fileSystem.getKey());
-                    LOG.warn("on failure removed files from cloud filename={}", fileSystem.getKey());
+                    LOG.warn("On failure removed files from cloud filename={}", fileSystem.getKey());
                 }
             } finally {
                 LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());

@@ -56,6 +56,9 @@ public class JsonNotification {
     @JsonProperty ("u")
     private String updated;
 
+    @JsonProperty ("a")
+    private boolean active;
+
     private JsonNotification(NotificationEntity notification) {
         this.id = notification.getId();
         this.message = notification.getMessage();
@@ -64,6 +67,7 @@ public class JsonNotification {
         this.referenceId = notification.getReferenceId() == null ? "" : notification.getReferenceId();
         this.created = JsonReceipt.FMT.print(new DateTime(notification.getCreated()));
         this.updated = JsonReceipt.FMT.print(new DateTime(notification.getUpdated()));
+        this.active = notification.isActive();
     }
 
     public static JsonNotification newInstance(NotificationEntity notification) {
