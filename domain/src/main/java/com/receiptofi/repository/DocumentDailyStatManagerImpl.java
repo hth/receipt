@@ -48,11 +48,6 @@ public class DocumentDailyStatManagerImpl implements DocumentDailyStatManager {
     }
 
     @Override
-    public DocumentDailyStatEntity findOne(String id) {
-        throw new UnsupportedOperationException("This method is not supported");
-    }
-
-    @Override
     public void deleteHard(DocumentDailyStatEntity object) {
         throw new UnsupportedOperationException("This method is not supported");
     }

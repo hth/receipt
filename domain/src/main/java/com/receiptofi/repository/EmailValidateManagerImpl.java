@@ -46,13 +46,8 @@ public final class EmailValidateManagerImpl implements EmailValidateManager {
     }
 
     @Override
-    public EmailValidateEntity findOne(String id) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public void deleteHard(EmailValidateEntity object) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override
@@ -71,12 +66,7 @@ public final class EmailValidateManagerImpl implements EmailValidateManager {
     }
 
     @Override
-    public EmailValidateEntity reInviteActiveInvite(String email, UserProfileEntity invitedBy) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public EmailValidateEntity find(String email) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new UnsupportedOperationException("This method is not supported");
     }
 }

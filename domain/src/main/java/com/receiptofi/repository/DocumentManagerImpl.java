@@ -79,11 +79,6 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public DocumentEntity findOne(String id) {
-        throw new UnsupportedOperationException("This method is not supported");
-    }
-
-    @Override
     public DocumentEntity findOne(String id, String receiptUserId) {
         return mongoTemplate.findOne(
                 query(where("id").is(id).and("RID").is(receiptUserId)),

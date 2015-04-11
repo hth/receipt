@@ -152,11 +152,6 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public MessageDocumentEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         return mongoTemplate.updateFirst(

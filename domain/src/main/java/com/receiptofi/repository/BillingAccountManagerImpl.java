@@ -44,11 +44,6 @@ public class BillingAccountManagerImpl implements BillingAccountManager {
     }
 
     @Override
-    public BillingAccountEntity findOne(String id) {
-        return null;
-    }
-
-    @Override
     public void deleteHard(BillingAccountEntity object) {
         mongoTemplate.remove(object);
     }

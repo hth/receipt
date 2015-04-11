@@ -100,22 +100,6 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     /**
-     * User findItem instead of findOne as this is not a secure call without user profile id.
-     *
-     * @param id
-     * @return
-     * @deprecated
-     */
-    @Deprecated
-    @Override
-    public ItemEntity findOne(String id) {
-        return mongoTemplate.findOne(
-                query(where("id").is(id)).with(new Sort(Direction.ASC, "SEQ")),
-                ItemEntity.class,
-                TABLE);
-    }
-
-    /**
      * Use this method instead of findOne
      *
      * @param itemId

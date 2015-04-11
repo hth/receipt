@@ -53,11 +53,6 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
     }
 
     @Override
-    public BillingHistoryEntity findOne(String id) {
-        return null;
-    }
-
-    @Override
     public void deleteHard(BillingHistoryEntity object) {
         mongoTemplate.remove(object);
     }

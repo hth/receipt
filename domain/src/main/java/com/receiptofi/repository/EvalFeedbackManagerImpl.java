@@ -42,11 +42,6 @@ public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
     }
 
     @Override
-    public EvalFeedbackEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void deleteHard(EvalFeedbackEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
     }

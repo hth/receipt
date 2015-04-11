@@ -52,11 +52,6 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     }
 
     @Override
-    public RememberMeTokenEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void deleteHard(RememberMeTokenEntity rememberMeTokenEntity) {
         mongoTemplate.remove(rememberMeTokenEntity);
     }

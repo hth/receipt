@@ -41,11 +41,6 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
     }
 
     @Override
-    public ItemFeatureEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void deleteHard(ItemFeatureEntity object) {
         mongoTemplate.remove(object, TABLE);
     }

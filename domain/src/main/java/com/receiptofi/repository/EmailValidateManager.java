@@ -12,7 +12,5 @@ public interface EmailValidateManager extends RepositoryManager<EmailValidateEnt
 
     void invalidateAllEntries(String receiptUserId);
 
-    EmailValidateEntity reInviteActiveInvite(String email, UserProfileEntity invitedBy);
-
     EmailValidateEntity find(String email);
 }

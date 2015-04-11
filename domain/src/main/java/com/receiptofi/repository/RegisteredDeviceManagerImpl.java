@@ -88,11 +88,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public RegisteredDeviceEntity findOne(String id) {
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    @Override
     public void deleteHard(RegisteredDeviceEntity object) {
         mongoTemplate.remove(object);
     }
