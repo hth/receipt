@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
@@ -192,9 +193,6 @@ public class LandingService {
         Map<String, Map<String, BigDecimal>> maps = new HashMap<>();
 
         for (ReceiptEntity receipt : receipts) {
-            BizNameEntity bizNameEntity = receipt.getBizName();
-            bizNameEntity = bizNameManager.findOne(bizNameEntity.getId());
-
             List<ItemEntity> itemEntities = itemService.getAllItemsOfReceipt(receipt.getId());
             if (!itemEntities.isEmpty()) {
                 Map<String, BigDecimal> itemMaps = new HashMap<>();
@@ -219,7 +217,8 @@ public class LandingService {
                     }
                 }
 
-                String bizName = StringEscapeUtils.escapeEcmaScript(bizNameEntity.getBusinessName());
+                Assert.hasText(receipt.getBizName().getBusinessName(), "Business name is empty.");
+                String bizName = StringEscapeUtils.escapeEcmaScript(receipt.getBizName().getBusinessName());
                 if (maps.containsKey(bizName)) {
                     Map<String, BigDecimal> mapData = maps.get(bizName);
                     for (String key : itemMaps.keySet()) {
