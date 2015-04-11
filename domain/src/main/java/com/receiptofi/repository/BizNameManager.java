@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public interface BizNameManager extends RepositoryManager<BizNameEntity> {
 
+    BizNameEntity getById(String id);
+
     BizNameEntity noName();
 
     /**

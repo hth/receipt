@@ -12,6 +12,8 @@ import java.util.List;
  * Date: 4/23/14 6:43 AM
  */
 public interface UserAccountManager extends RepositoryManager<UserAccountEntity> {
+    UserAccountEntity getById(String id);
+
     UserAccountEntity findByReceiptUserId(String rid);
 
     UserAccountEntity findByUserId(String mail);

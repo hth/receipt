@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
@@ -58,7 +59,8 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     }
 
     @Override
-    public FileSystemEntity findOne(String id) {
+    public FileSystemEntity getById(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
     }
 

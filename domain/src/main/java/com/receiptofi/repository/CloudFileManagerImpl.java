@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -41,7 +42,8 @@ public class CloudFileManagerImpl implements CloudFileManager {
     }
 
     @Override
-    public CloudFileEntity findOne(String id) {
+    public CloudFileEntity getById(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(query(where("id").is(id)), CloudFileEntity.class);
     }
 

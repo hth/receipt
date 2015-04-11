@@ -11,6 +11,7 @@ import java.util.List;
  * Date: 12/23/13 9:21 PM
  */
 public interface FileSystemManager extends RepositoryManager<FileSystemEntity> {
+    FileSystemEntity getById(String id);
 
     void deleteSoft(Collection<FileSystemEntity> fileSystemEntities);
 

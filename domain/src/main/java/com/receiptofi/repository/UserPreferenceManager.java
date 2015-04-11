@@ -12,5 +12,7 @@ import com.receiptofi.domain.UserProfileEntity;
  */
 public interface UserPreferenceManager extends RepositoryManager<UserPreferenceEntity> {
 
+    UserPreferenceEntity getById(String id);
+
     UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
 }
