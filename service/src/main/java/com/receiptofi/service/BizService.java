@@ -45,16 +45,16 @@ public class BizService {
     @Autowired private ExternalService externalService;
     @Autowired private ReceiptService receiptService;
 
-    public BizNameEntity findName(String bizId) {
-        return bizNameManager.findOne(bizId);
+    public BizNameEntity getByBizNameId(String bizId) {
+        return bizNameManager.getById(bizId);
     }
 
     public void saveName(BizNameEntity bizNameEntity) throws Exception {
         bizNameManager.save(bizNameEntity);
     }
 
-    public BizStoreEntity findStore(String storeId) {
-        return bizStoreManager.findOne(storeId);
+    public BizStoreEntity getByStoreId(String storeId) {
+        return bizStoreManager.getById(storeId);
     }
 
     public void saveStore(BizStoreEntity bizStoreEntity) throws Exception {

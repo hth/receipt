@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 /**
  * User: hitender
@@ -40,8 +41,9 @@ public final class BrowserManagerImpl implements BrowserManager {
     }
 
     @Override
-    public BrowserEntity findOne(String cookieId) {
-        return mongoTemplate.findOne(query(where("CK").is(cookieId)), BrowserEntity.class);
+    public BrowserEntity getByCookie(String cookie) {
+        Assert.hasText(cookie, "Cookie is empty");
+        return mongoTemplate.findOne(query(where("CK").is(cookie)), BrowserEntity.class);
     }
 
     @Override
