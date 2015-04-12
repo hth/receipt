@@ -30,7 +30,12 @@
                 </div>
             </div>
             <div class="header_right_login">
-                <a class="top-account-bar-text" href="/access/signoff.htm">LOG OUT</a>
+                <a class="top-account-bar-text" style="margin-top: -2px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
                 <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
