@@ -63,11 +63,13 @@ public class NotificationManagerImpl implements NotificationManager {
     @Override
     public List<NotificationEntity> getNotifications(String rid, int start, int limit) {
         Query query = query(
-                where("RID").is(rid).and("ND").is(true))
-                .addCriteria(isNotDeleted())
-                .skip(start)
-                .with(new Sort(Sort.Direction.DESC, "C"));
-
+                where("RID").is(rid)
+                        .and("ND").is(true)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+        ).skip(start).with(new Sort(Sort.Direction.DESC, "C"));
         if (limit != PaginationEnum.ALL.getLimit()) {
             query.limit(limit);
         }
