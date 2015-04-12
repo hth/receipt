@@ -349,7 +349,7 @@
                 </div>
             </div>
             <div class="header_right_login">
-                <a class="top-account-bar-text" href="#">
+                <a class="top-account-bar-text" style="margin-top: -2px;" href="#">
                     <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                         <input type="submit" value="LOG OUT" class="logout_btn"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

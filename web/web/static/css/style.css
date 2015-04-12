@@ -1384,7 +1384,7 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
 
     /*optional*/
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 0.863em;
+    font-size: 0.963em;
     color: #333333;
     font-weight: normal;
     text-decoration: none;
@@ -1392,7 +1392,7 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
 }
 
 .logout_btn:focus {
-    outline: 0;
+    outline: 0; !important;
 }
 
 /*Logout End*/
