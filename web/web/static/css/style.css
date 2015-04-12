@@ -151,6 +151,12 @@ header nav {
     text-decoration: none;
 }
 
+/*JQuery UI tab outline remove */
+.ui-widget * {
+    outline: none;
+}
+/*JQuery UI tab outline remove ends */
+
 header h1 {
     float: left;
     color: #000;
