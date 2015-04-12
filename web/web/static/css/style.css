@@ -454,19 +454,23 @@ div .sidebar-invite form input {
 .full-list-holder li {
     width: 930px;
 }
+
 .counter-li-text {
     display: none;
     width: 40px !important;
 }
+
 .full-li-date-text {
     display: none;
     width: 218px !important;
 }
+
 .full-li-middle-text {
     width: 600px !important;
     display: inline !important;
     padding-left: 0px !important;
 }
+
 /*Full page end*/
 
 /*Footer*/
@@ -765,7 +769,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border: 1px solid;
     /*border-radius: 5px;*/
     margin: 10px 0px 20px 10px;
-    padding:15px 10px 15px 50px;
+    padding: 15px 10px 15px 50px;
     background-repeat: no-repeat;
     background-position: 10px center;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -778,30 +782,36 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     background-color: #BDE5F8;
     background-image: url('../../static/images/info.png');
 }
+
 .r-success {
     color: #4F8A10;
     background-color: #DFF2BF;
-    background-image:url('../../static/images/success.png');
+    background-image: url('../../static/images/success.png');
 }
+
 .r-warning {
     color: #9F6000;
     background-color: #FEEFB3;
     background-image: url('../../static/images/warning.png');
 }
+
 .r-error {
     color: #D8000C;
     background-color: #FFBABA;
     background-image: url('../../static/images/error.png');
 }
+
 .r-validation {
     color: #D63301;
     background-color: #FFCCBA;
     background-image: url('../../static/images/validation.png');
     margin: 10px 0 10px 0;
 }
+
 .r-no-bk-image {
     background-image: none;
 }
+
 /*Warning Error Messages*/
 
 .blank-space {
@@ -811,6 +821,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 .margin-left {
     margin-left: 10px;
 }
+
 /*text styles*/
 
 /** For google map */
@@ -829,6 +840,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border: 1px solid red;
     padding: 5px;
 }
+
 /** Google map ends */
 
 .photo_section {
@@ -1076,6 +1088,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     color: #007aff !important;
     font-weight: bold;
 }
+
 /*Report chronically ends*/
 
 /*spinner start*/
@@ -1085,35 +1098,46 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border-radius: 50%; /* Rounds out the halo */
     opacity: .7; /* Some subtle opacity to help blend with variable background colors */
 }
+
 .spinner.small {
-    height: 18px; width: 18px; /* Pixel size of the GIF you download */
+    height: 18px;
+    width: 18px; /* Pixel size of the GIF you download */
     background: url("../../static/images/spiffygif_18x18.gif");
 }
+
 .spinner.medium-small {
-    height: 36px; width: 36px;
+    height: 36px;
+    width: 36px;
     background: url("../../static/images/spiffygif_36x36.gif");
 }
+
 .spinner.medium {
-    height: 50px; width: 50px;
+    height: 50px;
+    width: 50px;
     margin-left: auto;
     margin-right: auto;
     background: url("../../static/images/spiffygif_50x50.gif");
 }
+
 .spinner.large {
-    height: 112px; width: 112px;
+    height: 112px;
+    width: 112px;
     margin-left: auto;
     margin-right: auto;
     background: url("../../static/images/spiffygif_112x112.gif");
 }
+
 /*spinner end*/
 
 /*Show and hide scroll*/
 .mouseScroll {
     overflow: hidden;
 }
+
 .mouseScroll:hover {
     overflow-y: scroll;
 }
+
 /*Show and hide scroll*/
 
 /*Temp offset*/
@@ -1168,6 +1192,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     padding: 15px 0px;
     text-align: center;
 }
+
 /*Footer end*/
 
 .mainpage_slider {
@@ -1310,7 +1335,6 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     width: 920px;
 }
 
-
 .receipt-tag {
     color: #030201;
     font-weight: bold;
@@ -1336,7 +1360,7 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     -webkit-appearance: none;
 }
 
-.receipt-tag select:focus  {
+.receipt-tag select:focus {
     outline: none;
 }
 
@@ -1352,27 +1376,23 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     font: 8px Verdana;
 }
 
-/*Logout*/
+/*Logout Button*/
 .logout_btn {
-    background: #0079FF;
-    width: 253px;
-    margin-left: -125px; !important;
-    position: absolute;
-    top: 35%;
-}
+    background: none !important;
+    border: none;
+    padding: 0 !important;
 
-.logout_container {
-    margin-top: 110px;
+    /*optional*/
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.863em;
+    color: #333333;
+    font-weight: normal;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.logout_header {
-    font-weight: 400;
-    font-size: 34px;
-    line-height: 1.1;
+.logout_btn:focus {
+    outline: 0;
 }
 
-.small_margin {
-    margin: 20px;
-}
 /*Logout End*/
