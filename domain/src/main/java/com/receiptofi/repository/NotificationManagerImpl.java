@@ -87,7 +87,7 @@ public class NotificationManagerImpl implements NotificationManager {
     @Override
     public int deleteHardInactiveNotification(Date sinceDate) {
         return mongoTemplate.remove(
-                query(where("A").is(false).and("C").gte(sinceDate)),
+                query(where("A").is(false).and("C").lte(sinceDate)),
                         NotificationEntity.class
         ).getN();
     }
@@ -95,7 +95,7 @@ public class NotificationManagerImpl implements NotificationManager {
     @Override
     public int setNotificationInactive(Date sinceDate) {
         return mongoTemplate.updateMulti(
-                query(where("C").gte(sinceDate)
+                query(where("C").lte(sinceDate)
                                 .andOperator(
                                         isActive(),
                                         isNotDeleted()
