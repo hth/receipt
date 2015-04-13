@@ -256,6 +256,7 @@ public class DocumentUpdateService {
             billingService.updateReceiptWithBillingHistory(receipt);
             receiptManager.save(receipt);
 
+            document.setProcessedBy(documentEntity.getProcessedBy());
             document.addProcessedBy(transaction, technicianId);
             documentManager.save(document);
 
