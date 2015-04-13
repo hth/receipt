@@ -80,8 +80,12 @@ public class NotificationManagerImpl implements NotificationManager {
     public long notificationCount(String rid) {
         return mongoTemplate.count(
                 query(where("RID").is(rid)
-                        .and("ND").is(true))
-                        .addCriteria(isNotDeleted()),
+                        .and("ND").is(true)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
                 NotificationEntity.class
         );
     }
@@ -90,7 +94,7 @@ public class NotificationManagerImpl implements NotificationManager {
     public int deleteHardInactiveNotification(Date sinceDate) {
         return mongoTemplate.remove(
                 query(where("A").is(false).and("C").lte(sinceDate)),
-                        NotificationEntity.class
+                NotificationEntity.class
         ).getN();
     }
 
