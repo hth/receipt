@@ -204,6 +204,7 @@ public class DocumentUpdateService {
                 } else {
                     receipt.setVersion(fetchedReceipt.getVersion());
                     receipt.setCreated(fetchedReceipt.getCreated());
+                    receipt.setProcessedBy(fetchedReceipt.getProcessedBy());
                 }
             }
 

@@ -174,6 +174,7 @@ public class ReceiptService {
                     receiptOCR.setDocumentStatus(DocumentStatusEnum.REPROCESS);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());
                     receiptOCR.setNotes(receipt.getNotes());
+                    receiptOCR.setProcessedBy(receipt.getProcessedBy());
 
                     /** All activity at the end is better because you never know what could go wrong during populating other data */
                     receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS);
