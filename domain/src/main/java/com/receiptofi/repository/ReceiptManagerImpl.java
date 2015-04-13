@@ -403,7 +403,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public boolean hasRecordWithSimilarChecksum(String checksum) {
-        return !mongoTemplate.find(checksumQuery(checksum), ReceiptEntity.class, TABLE).isEmpty();
+        return !mongoTemplate.find(checksumQuery(checksum).addCriteria(isActive()), ReceiptEntity.class, TABLE).isEmpty();
     }
 
     @Override
