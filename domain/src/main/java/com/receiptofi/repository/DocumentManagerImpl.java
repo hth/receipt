@@ -34,6 +34,7 @@ import org.springframework.data.mongodb.core.mapreduce.GroupBy;
 import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -79,9 +80,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public DocumentEntity findOne(String id, String receiptUserId) {
+    public DocumentEntity findOne(String id, String rid) {
         return mongoTemplate.findOne(
-                query(where("id").is(id).and("RID").is(receiptUserId)),
+                query(where("id").is(id).and("RID").is(rid)),
                 DocumentEntity.class,
                 TABLE
         );
@@ -89,8 +90,9 @@ public final class DocumentManagerImpl implements DocumentManager {
 
     @Override
     public DocumentEntity findActiveOne(String id) {
+        Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(
-                query(where("id").is(id)).addCriteria(isActive()),
+                query(where("id").is(id).andOperator(isActive())),
                 DocumentEntity.class,
                 TABLE
         );
@@ -111,9 +113,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public long numberOfPendingReceipts(String receiptUserId) {
+    public long numberOfPendingReceipts(String rid) {
         return mongoTemplate.count(
-                query(where("RID").is(receiptUserId))
+                query(where("RID").is(rid))
                         .addCriteria(isActive())
                         .addCriteria(isNotDeleted()),
                 TABLE
@@ -121,9 +123,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public long numberOfRejectedReceipts(String receiptUserId) {
+    public long numberOfRejectedReceipts(String rid) {
         return mongoTemplate.count(
-                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.REJECT))
+                query(where("RID").is(rid).and("DS").is(DocumentStatusEnum.REJECT))
                         .addCriteria(isNotActive())
                         .addCriteria(isDeleted()),
                 TABLE
@@ -131,9 +133,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public List<DocumentEntity> getAllPending(String receiptUserId) {
+    public List<DocumentEntity> getAllPending(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(receiptUserId))
+                query(where("RID").is(rid))
                         .addCriteria(isActive())
                         .addCriteria(isNotDeleted())
                         .with(new Sort(Direction.ASC, "C")),
@@ -143,9 +145,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public List<DocumentEntity> getAllRejected(String receiptUserId) {
+    public List<DocumentEntity> getAllRejected(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(receiptUserId).and("DS").is(DocumentStatusEnum.REJECT))
+                query(where("RID").is(rid).and("DS").is(DocumentStatusEnum.REJECT))
                         .addCriteria(isNotActive())
                         .addCriteria(isDeleted())
                         .with(new Sort(Direction.ASC, "C")),

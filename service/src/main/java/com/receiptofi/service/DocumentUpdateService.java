@@ -11,6 +11,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
@@ -34,8 +35,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -417,11 +420,20 @@ public class DocumentUpdateService {
     }
 
     private void deleteReceiptOCR(DocumentEntity document) {
+        String fileNames = document.getFileSystemEntities().stream()
+                .map(FileSystemEntity::getOriginalFilename)
+                .collect(Collectors.joining(", "));
+
         documentManager.deleteHard(document);
         itemOCRManager.deleteWhereReceipt(document);
         messageDocumentManager.deleteAllForReceiptOCR(document.getId());
         storageManager.deleteHard(document.getFileSystemEntities());
         fileSystemService.deleteHard(document.getFileSystemEntities());
+
+        /** Added document deleted successfully. */
+        notificationService.addNotification(fileNames + " deleted.",
+                NotificationTypeEnum.DOCUMENT_DELETED,
+                document);
     }
 
     /**
