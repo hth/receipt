@@ -49,8 +49,8 @@
 
             var page = 5;
             $scope.loadMore = function() {
-                console.log("loading onwards: " + page + ", " + "total count: " + '${notificationForm.count}');
                 if (page < '${notificationForm.count}') {
+                    console.log("loading onwards: " + page + ", " + "total count: " + '${notificationForm.count}');
                     $scope.loading = true;
                     $http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm')
                             .success(function(data, status) {
@@ -58,7 +58,7 @@
                                     console.log('Request status ' + status + ":" + data.length + ":" + data + ", Page " + page);
                                     for (var i = 0; i < 5 && i < data.length; i++) {
                                         var d = data[i].split(":");
-                                        console.log(d[0] + ":" + d[1] + ":" + d[2]);
+                                        console.log("Adding: " + d[0] + ":" + d[1] + ":" + d[2]);
                                         $scope.items.push({href : d[0], message : d[1], created : d[2]});
                                     }
                                 } else {
