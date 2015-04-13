@@ -419,9 +419,9 @@ public class DocumentUpdateService {
     }
 
     private void deleteReceiptOCR(DocumentEntity document) {
-        String fileNames = document.getFileSystemEntities().stream()
+        String fileDeleteMessage = document.getFileSystemEntities().stream()
                 .map(FileSystemEntity::getOriginalFilename)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(", ")) + " deleted.";
 
         documentManager.deleteHard(document);
         itemOCRManager.deleteWhereReceipt(document);
@@ -430,7 +430,8 @@ public class DocumentUpdateService {
         fileSystemService.deleteHard(document.getFileSystemEntities());
 
         /** Added document deleted successfully. */
-        notificationService.addNotification(fileNames + " deleted.",
+        notificationService.addNotification(
+                fileDeleteMessage,
                 NotificationTypeEnum.DOCUMENT_DELETED,
                 document);
     }
