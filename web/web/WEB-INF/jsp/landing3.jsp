@@ -49,14 +49,14 @@
 
             var page = 5;
             $scope.loadMore = function() {
-                console.log("page:" + page + "," + "notificationCount:" + '${notificationForm.count}');
-                if(page < '${notificationForm.count}' - 1) {
+                console.log("loading onwards: " + page + ", " + "total count: " + '${notificationForm.count}');
+                if (page < '${notificationForm.count}') {
                     $scope.loading = true;
                     $http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm')
                             .success(function(data, status) {
                                 if(data.length <= 5) {
-                                    console.log('Request status ' + status + ":" + data.length + ":" + data);
-                                    for (var i = 0; i < 5 && page + i < '${notificationForm.count}'; i++) {
+                                    console.log('Request status ' + status + ":" + data.length + ":" + data + ", Page " + page);
+                                    for (var i = 0; i < 5 && i < data.length; i++) {
                                         var d = data[i].split(":");
                                         console.log(d[0] + ":" + d[1] + ":" + d[2]);
                                         $scope.items.push({href : d[0], message : d[1], created : d[2]});
