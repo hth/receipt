@@ -14,6 +14,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
@@ -34,6 +35,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -62,6 +64,7 @@ public class ReceiptService {
     @Autowired private FileSystemService fileSystemService;
     @Autowired private CloudFileService cloudFileService;
     @Autowired private ExpensesService expensesService;
+    @Autowired private NotificationService notificationService;
 
     /**
      * Find receipt for a receipt id for a specific user profile id.
@@ -110,6 +113,9 @@ public class ReceiptService {
             return false;
         }
         if (receipt.isActive()) {
+            /** Notification message when receipt is deleted. */
+            String md = receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt deleted";
+
             itemManager.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
 
@@ -134,6 +140,9 @@ public class ReceiptService {
                 CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey());
                 cloudFileService.save(cloudFile);
             }
+
+            /** Added document deleted successfully. */
+            notificationService.addNotification(md, NotificationTypeEnum.RECEIPT_DELETED, receipt);
             return true;
         } else {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());

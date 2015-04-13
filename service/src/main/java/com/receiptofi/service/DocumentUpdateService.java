@@ -129,11 +129,7 @@ public class DocumentUpdateService {
             updateMessageManager(document, PENDING, PROCESSED);
 
             notificationService.addNotification(
-                    receipt.getTotalString()
-                            + " '" +
-                            receipt.getBizName().getBusinessName() +
-                            "' " +
-                            "receipt processed",
+                    receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt processed",
                     NotificationTypeEnum.RECEIPT,
                     receipt);
 
@@ -352,9 +348,7 @@ public class DocumentUpdateService {
             DBObject dbObject = gridFSDBFile.getMetaData();
 
             notificationService.addNotification(
-                    "Could not process document '" +
-                            dbObject.get("ORIGINAL_FILENAME") +
-                            "'",
+                    "Could not process document '" + dbObject.get("ORIGINAL_FILENAME") + "'",
                     NotificationTypeEnum.DOCUMENT_REJECTED,
                     document);
 
@@ -421,7 +415,7 @@ public class DocumentUpdateService {
     private void deleteReceiptOCR(DocumentEntity document) {
         String fileDeleteMessage = document.getFileSystemEntities().stream()
                 .map(FileSystemEntity::getOriginalFilename)
-                .collect(Collectors.joining(", ")) + " deleted.";
+                .collect(Collectors.joining(", ")) + " deleted";
 
         documentManager.deleteHard(document);
         itemOCRManager.deleteWhereReceipt(document);
