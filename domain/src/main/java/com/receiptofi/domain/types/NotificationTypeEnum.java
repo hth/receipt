@@ -20,7 +20,8 @@ public enum NotificationTypeEnum {
     DOCUMENT("DOCUMENT", "Document"),
     EXPENSE_REPORT("EXPENSE_REPORT", "Expense Report"),
     DOCUMENT_UPLOADED("DOCUMENT_UPLOADED", "Document Uploaded"),
-    DOCUMENT_REJECTED("DOCUMENT_REJECTED", "Document Rejected");
+    DOCUMENT_REJECTED("DOCUMENT_REJECTED", "Document Rejected"),
+    DOCUMENT_DELETED("DOCUMENT_DELETED", "Document Deleted");
 
     private final String description;
     private final String name;

@@ -16,11 +16,11 @@ import java.util.List;
  */
 public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
-    long numberOfPendingReceipts(String receiptUserId);
+    long numberOfPendingReceipts(String rid);
 
-    long numberOfRejectedReceipts(String receiptUserId);
+    long numberOfRejectedReceipts(String rid);
 
-    DocumentEntity findOne(String documentId, String receiptUserId);
+    DocumentEntity findOne(String documentId, String rid);
 
     /**
      * Mostly used by technician and above level.
@@ -41,10 +41,10 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     /**
      * Get all the pending receipts.
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    List<DocumentEntity> getAllPending(String receiptUserId);
+    List<DocumentEntity> getAllPending(String rid);
 
     /**
      * Document all pending.
@@ -68,10 +68,10 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     /**
      * Get all the rejected receipts.
      *
-     * @param receiptUserId
+     * @param rid
      * @return
      */
-    List<DocumentEntity> getAllRejected(String receiptUserId);
+    List<DocumentEntity> getAllRejected(String rid);
 
     List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay);
 

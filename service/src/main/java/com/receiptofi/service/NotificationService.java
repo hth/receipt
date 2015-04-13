@@ -134,6 +134,7 @@ public class NotificationService {
             case DOCUMENT:
             case DOCUMENT_UPLOADED:
             case DOCUMENT_REJECTED:
+            case DOCUMENT_DELETED:
                 addNotification(
                         message,
                         notificationType,
