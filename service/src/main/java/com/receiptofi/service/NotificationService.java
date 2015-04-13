@@ -107,6 +107,7 @@ public class NotificationService {
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
                         true);
                 break;
+            case RECEIPT_DELETED:
             case RECEIPT:
                 addNotification(
                         message,

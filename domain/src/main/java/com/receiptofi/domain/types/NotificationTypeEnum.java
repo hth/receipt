@@ -15,6 +15,7 @@ public enum NotificationTypeEnum {
 
     MESSAGE("MESSAGE", "Message"),
     RECEIPT("RECEIPT", "Receipt"),
+    RECEIPT_DELETED("RECEIPT_DELETED", "Receipt Deleted"),
     INVOICE("INVOICE", "Invoice"),
     MILEAGE("MILEAGE", "Mileage"),
     DOCUMENT("DOCUMENT", "Document"),

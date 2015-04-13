@@ -218,6 +218,10 @@ public class DocumentEntity extends BaseEntity {
         return processedBy;
     }
 
+    public void setProcessedBy(Map<Date, String> processedBy) {
+        this.processedBy = processedBy;
+    }
+
     public void addProcessedBy(Date updated, String rid) {
         this.processedBy.put(updated, rid);
     }

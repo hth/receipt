@@ -129,11 +129,7 @@ public class DocumentUpdateService {
             updateMessageManager(document, PENDING, PROCESSED);
 
             notificationService.addNotification(
-                    receipt.getTotalString()
-                            + " '" +
-                            receipt.getBizName().getBusinessName() +
-                            "' " +
-                            "receipt processed",
+                    receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt processed",
                     NotificationTypeEnum.RECEIPT,
                     receipt);
 
@@ -208,6 +204,7 @@ public class DocumentUpdateService {
                 } else {
                     receipt.setVersion(fetchedReceipt.getVersion());
                     receipt.setCreated(fetchedReceipt.getCreated());
+                    receipt.setProcessedBy(fetchedReceipt.getProcessedBy());
                 }
             }
 
@@ -259,6 +256,7 @@ public class DocumentUpdateService {
             billingService.updateReceiptWithBillingHistory(receipt);
             receiptManager.save(receipt);
 
+            document.setProcessedBy(documentEntity.getProcessedBy());
             document.addProcessedBy(transaction, technicianId);
             documentManager.save(document);
 
@@ -352,9 +350,7 @@ public class DocumentUpdateService {
             DBObject dbObject = gridFSDBFile.getMetaData();
 
             notificationService.addNotification(
-                    "Could not process document '" +
-                            dbObject.get("ORIGINAL_FILENAME") +
-                            "'",
+                    "Could not process document '" + dbObject.get("ORIGINAL_FILENAME") + "'",
                     NotificationTypeEnum.DOCUMENT_REJECTED,
                     document);
 
@@ -419,9 +415,9 @@ public class DocumentUpdateService {
     }
 
     private void deleteReceiptOCR(DocumentEntity document) {
-        String fileNames = document.getFileSystemEntities().stream()
+        String fileDeleteMessage = document.getFileSystemEntities().stream()
                 .map(FileSystemEntity::getOriginalFilename)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(", ")) + " deleted";
 
         documentManager.deleteHard(document);
         itemOCRManager.deleteWhereReceipt(document);
@@ -430,7 +426,8 @@ public class DocumentUpdateService {
         fileSystemService.deleteHard(document.getFileSystemEntities());
 
         /** Added document deleted successfully. */
-        notificationService.addNotification(fileNames + " deleted.",
+        notificationService.addNotification(
+                fileDeleteMessage,
                 NotificationTypeEnum.DOCUMENT_DELETED,
                 document);
     }

@@ -3,6 +3,8 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -20,6 +22,7 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "MESSAGE_DOCUMENT")
+@CompoundIndexes ({@CompoundIndex (name = "message_document_idx", def = "{'RID': -1, 'DID': 1}")})
 public class MessageDocumentEntity extends BaseEntity {
 
     @Field ("EM")

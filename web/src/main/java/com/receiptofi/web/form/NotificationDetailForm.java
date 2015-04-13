@@ -64,6 +64,7 @@ public class NotificationDetailForm {
         switch (notificationType) {
             case MESSAGE:
             case DOCUMENT_DELETED:
+            case RECEIPT_DELETED:
                 return getAbbreviatedMessage();
             case DOCUMENT:
             case DOCUMENT_UPLOADED:
@@ -95,6 +96,7 @@ public class NotificationDetailForm {
         switch (notificationType) {
             case MESSAGE:
             case DOCUMENT_DELETED:
+            case RECEIPT_DELETED:
                 return "<span " + CLASS + ">" + message + "</span>";
             case DOCUMENT:
             case DOCUMENT_UPLOADED:
