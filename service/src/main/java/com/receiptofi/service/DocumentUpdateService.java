@@ -553,8 +553,7 @@ public class DocumentUpdateService {
     public Map<Date, UserProfileEntity> getProcessedByUserName(Map<Date, String> processedBy) {
         Map<Date, UserProfileEntity> processedByUser = new LinkedHashMap<>();
         for (Date date : processedBy.keySet()) {
-            UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(processedBy.get(date));
-            processedByUser.put(date, userProfile);
+            processedByUser.put(date, userProfilePreferenceService.findByReceiptUserId(processedBy.get(date)));
         }
         return processedByUser;
     }
