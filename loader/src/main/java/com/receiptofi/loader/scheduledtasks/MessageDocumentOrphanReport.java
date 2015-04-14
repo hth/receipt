@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,9 +31,10 @@ import java.util.List;
 })
 @Component
 public class MessageDocumentOrphanReport {
-    private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MessageDocumentOrphanReport.class);
 
     private String messageDocumentOrphanReport;
+    private int pendingSinceDays;
     private MessageDocumentService messageDocumentService;
     private DocumentUpdateService documentUpdateService;
 
@@ -38,10 +43,14 @@ public class MessageDocumentOrphanReport {
             @Value ("${messageDocumentOrphanReport:ON}")
             String messageDocumentOrphanReport,
 
+            @Value ("${pendingSinceDays:2}")
+            int pendingSinceDays,
+
             MessageDocumentService messageDocumentService,
             DocumentUpdateService documentUpdateService
     ) {
         this.messageDocumentOrphanReport = messageDocumentOrphanReport;
+        this.pendingSinceDays = pendingSinceDays;
         this.messageDocumentService = messageDocumentService;
         this.documentUpdateService = documentUpdateService;
     }
@@ -49,7 +58,9 @@ public class MessageDocumentOrphanReport {
     @Scheduled (cron = "${loader.MessageDocumentOrphanReport.orphanMessageDocument}")
     public void orphanMessageDocument() {
         if (messageDocumentOrphanReport.equals("ON")) {
-            List<MessageDocumentEntity> pendingDocuments = messageDocumentService.findAllPending();
+            Instant since = LocalDateTime.now().minusDays(pendingSinceDays).toInstant(ZoneOffset.UTC);
+            Date sinceDate = Date.from(since);
+            List<MessageDocumentEntity> pendingDocuments = messageDocumentService.findAllPending(sinceDate);
 
             int count = pendingDocuments.size(), success = 0, failure = 0;
             try {

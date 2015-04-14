@@ -131,9 +131,9 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public List<MessageDocumentEntity> findAllPending() {
+    public List<MessageDocumentEntity> findAllPending(Date since) {
         return mongoTemplate.find(
-                query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.PENDING)).with(sortBy()),
+                query(where("DS").is(DocumentStatusEnum.PENDING).and("C").lte(since)).with(sortBy()),
                 MessageDocumentEntity.class,
                 TABLE);
     }
