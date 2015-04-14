@@ -26,7 +26,6 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.MessageDocumentManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.StorageManager;
-import com.receiptofi.service.wrapper.DocumentProcessBy;
 
 import org.apache.commons.lang3.StringUtils;
 
