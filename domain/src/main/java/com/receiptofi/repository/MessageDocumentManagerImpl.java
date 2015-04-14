@@ -131,9 +131,9 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public List<MessageDocumentEntity> findAllPending() {
+    public List<MessageDocumentEntity> findAllPending(Date since) {
         return mongoTemplate.find(
-                query(where("LOK").is(true).and("DS").is(DocumentStatusEnum.PENDING)).with(sortBy()),
+                query(where("DS").is(DocumentStatusEnum.PENDING).and("C").lte(since)).with(sortBy()),
                 MessageDocumentEntity.class,
                 TABLE);
     }
@@ -186,13 +186,16 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     public void resetDocumentsToInitialState(String receiptUserId) {
         mongoTemplate.updateMulti(
                 query(where("RID").is(receiptUserId)
-                        .and("DS").is(DocumentStatusEnum.PENDING)
+                        .orOperator(
+                                where("DS").is(DocumentStatusEnum.PENDING),
+                                where("DS").is(DocumentStatusEnum.REPROCESS)
+                        )
                         .and("LOK").is(true)
                         .and("A").is(true)),
-                update("LOK", false)
-                        .unset("EM")
-                        .unset("RID")
-                        .set("U", new Date()),
+                entityUpdate(
+                        update("LOK", false)
+                                .unset("EM")
+                                .unset("RID")),
                 MessageDocumentEntity.class);
     }
 }

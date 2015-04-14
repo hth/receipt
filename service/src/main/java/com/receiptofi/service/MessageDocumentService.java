@@ -6,6 +6,7 @@ import com.receiptofi.repository.MessageDocumentManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,8 +28,8 @@ public class MessageDocumentService {
         messageDocumentManager.resetDocumentsToInitialState(receiptUserId);
     }
 
-    public List<MessageDocumentEntity> findAllPending() {
-        return messageDocumentManager.findAllPending();
+    public List<MessageDocumentEntity> findAllPending(Date since) {
+        return messageDocumentManager.findAllPending(since);
     }
 
     public int deleteAllForReceiptOCR(String did) {

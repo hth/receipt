@@ -5,6 +5,7 @@ import com.mongodb.WriteResult;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
 
     List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status, int limit);
 
-    List<MessageDocumentEntity> findAllPending();
+    List<MessageDocumentEntity> findAllPending(Date since);
 
     List<MessageDocumentEntity> findPending(String emailId, String receiptUserId, DocumentStatusEnum status);
 
