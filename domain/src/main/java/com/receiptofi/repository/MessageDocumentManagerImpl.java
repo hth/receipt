@@ -178,8 +178,8 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public void deleteAllForReceiptOCR(String documentId) {
-        mongoTemplate.remove(query(where("DID").is(documentId)), MessageDocumentEntity.class);
+    public int deleteAllForReceiptOCR(String documentId) {
+        return mongoTemplate.remove(query(where("DID").is(documentId)), MessageDocumentEntity.class).getN();
     }
 
     @Override

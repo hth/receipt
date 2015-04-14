@@ -50,12 +50,28 @@ public class MessageDocumentOrphanReport {
     public void orphanMessageDocument() {
         if (messageDocumentOrphanReport.equals("ON")) {
             List<MessageDocumentEntity> pendingDocuments = messageDocumentService.findAllPending();
-            for (MessageDocumentEntity messageDocument : pendingDocuments) {
-                DocumentEntity document = documentUpdateService.loadActiveDocumentById(messageDocument.getDocumentId());
-                if (null == document) {
-                    LOG.error("Orphan Message DocumentId={} messageDocumentId={}",
-                            messageDocument.getDocumentId(), messageDocument.getId());
+
+            int count = pendingDocuments.size(), success = 0, failure = 0;
+            try {
+                for (MessageDocumentEntity messageDocument : pendingDocuments) {
+                    DocumentEntity document = documentUpdateService.loadActiveDocumentById(messageDocument.getDocumentId());
+                    if (null == document) {
+                        LOG.error("Orphan Message DocumentId={} messageDocumentId={}",
+                                messageDocument.getDocumentId(), messageDocument.getId());
+                        int deleted = messageDocumentService.deleteAllForReceiptOCR(messageDocument.getDocumentId());
+                        if (deleted > 0) {
+                            success += deleted;
+                            LOG.info("Deleted messageDocument did={}", messageDocument.getDocumentId());
+                        } else {
+                            failure++;
+                            LOG.error("Failed to deleted did={}", messageDocument.getDocumentId());
+                        }
+                    }
                 }
+            } catch(Exception e) {
+                LOG.error("Error during deleting orphan messageDocument, reason={}", e.getLocalizedMessage(), e);
+            } finally {
+                LOG.info("Orphan messageDocument count={} success={} failure={}", count, success, failure);
             }
         } else {
             LOG.info("feature is {}", messageDocumentOrphanReport);

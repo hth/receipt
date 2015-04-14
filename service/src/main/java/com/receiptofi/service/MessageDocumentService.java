@@ -30,4 +30,8 @@ public class MessageDocumentService {
     public List<MessageDocumentEntity> findAllPending() {
         return messageDocumentManager.findAllPending();
     }
+
+    public int deleteAllForReceiptOCR(String did) {
+        return messageDocumentManager.deleteAllForReceiptOCR(did);
+    }
 }

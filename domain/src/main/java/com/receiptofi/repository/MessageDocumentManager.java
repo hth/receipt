@@ -46,7 +46,7 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
      *
      * @param documentId
      */
-    void deleteAllForReceiptOCR(String documentId);
+    int deleteAllForReceiptOCR(String documentId);
 
     /**
      * Resets document to state before assigning to technician.
