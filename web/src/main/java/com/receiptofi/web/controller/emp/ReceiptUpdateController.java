@@ -96,9 +96,9 @@ public class ReceiptUpdateController {
             Model model,
             HttpServletRequest httpServletRequest
     ) {
-         /** Gymnastic to show BindingResult errors if any or any special receipt document containing error message. */
+        /** Gymnastic to show BindingResult errors if any or any special receipt document containing error message. */
         if (model.asMap().containsKey("result")) {
-             /** result contains validation errors. */
+            /** result contains validation errors. */
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(documentId, receiptDocumentForm, httpServletRequest);
@@ -365,28 +365,41 @@ public class ReceiptUpdateController {
         }
     }
 
-    private void loadBasedOnAppropriateUserLevel(String documentId, ReceiptDocumentForm receiptDocumentForm, HttpServletRequest request) {
+    private void loadBasedOnAppropriateUserLevel(
+            String documentId,
+            ReceiptDocumentForm receiptDocumentForm,
+            HttpServletRequest request
+    ) {
         Assert.notNull(receiptDocumentForm, "ReceiptDocumentForm should not be null");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DocumentEntity document = documentUpdateService.loadActiveDocumentById(documentId);
         if (null == document || document.isDeleted()) {
-            if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR")) {
+            if (request.isUserInRole("ROLE_ADMIN") ||
+                    request.isUserInRole("ROLE_TECHNICIAN") ||
+                    request.isUserInRole("ROLE_SUPERVISOR")) {
                 LOG.warn("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
                 receiptDocumentForm.setErrorMessage("Receipt could not be found. Looks like user deleted the receipt before technician could process it.");
             } else {
                 LOG.warn("No such receipt exists. Request made by: " + receiptUser.getRid());
                 receiptDocumentForm.setErrorMessage("No such receipt exists");
             }
-        } else if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_TECHNICIAN") || request.isUserInRole("ROLE_SUPERVISOR") || document.getReceiptUserId().equalsIgnoreCase(receiptUser.getRid())) {
-            //Important: The condition below makes sure when validation fails it does not over write the item list
+        } else if (request.isUserInRole("ROLE_ADMIN") ||
+                request.isUserInRole("ROLE_TECHNICIAN") ||
+                request.isUserInRole("ROLE_SUPERVISOR") ||
+                document.getReceiptUserId().equalsIgnoreCase(receiptUser.getRid())) {
+
+            /** Important: The condition below makes sure when validation fails it does not over write the item list. */
             if (null == receiptDocumentForm.getReceiptDocument() && null == receiptDocumentForm.getItems()) {
                 receiptDocumentForm.setReceiptDocument(document);
+                receiptDocumentForm.setProcessedBy(documentUpdateService.getProcessedByUserName(document.getProcessedBy()));
 
                 List<ItemEntityOCR> items = documentUpdateService.loadItemsOfReceipt(document);
                 receiptDocumentForm.setItems(items);
             }
-            //helps load the image on failure
+
+            /** Helps load the image on failure. */
+            Assert.notNull(receiptDocumentForm.getReceiptDocument(), "ReceiptDocument is null for recheck by emp.");
             receiptDocumentForm.getReceiptDocument().setFileSystemEntities(document.getFileSystemEntities());
         } else {
             LOG.warn("Un-authorized access by user={} accessing receipt={}", receiptUser.getRid(), documentId);

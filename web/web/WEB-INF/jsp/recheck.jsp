@@ -453,6 +453,19 @@
                                     <form:errors path="receiptDocument.total" cssClass="error" />
                                 </td>
                             </tr>
+                            <c:forEach items="${receiptDocumentForm.processedBy.keySet()}" var="processedByKey" varStatus="status">
+                            <tr>
+                                <td style="text-align: left">
+                                    ${status.index + 1}
+                                </td>
+                                <td colspan="4" style="text-align: left; vertical-align: top">
+                                    ${processedByKey}&nbsp;&nbsp;
+                                    ${receiptDocumentForm.processedBy.get(processedByKey).name}&nbsp;&nbsp;
+                                    ${receiptDocumentForm.processedBy.get(processedByKey).mail}&nbsp;&nbsp;
+                                    ${receiptDocumentForm.processedBy.get(processedByKey).rid}
+                                </td>
+                            </tr>
+                            </c:forEach>
                             <tr style="height: 6em;">
                                 <td colspan="3">&nbsp;</td>
                                 <td colspan="2" align="left"><input type="submit" value="Receipt Re-Check" name="recheck" class="btn btn-default" /></td>

@@ -10,6 +10,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.TaxEnum;
+import com.receiptofi.service.wrapper.DocumentProcessBy;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Maths;
@@ -22,11 +23,15 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a Form Backing Object (FBO) for showing the receipt and its items.
+ *
  * @author hitender
  * @since Jan 7, 2013 9:30:32 AM
  */
@@ -39,9 +44,10 @@ import java.util.List;
 public final class ReceiptDocumentForm {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentForm.class);
 
-    DocumentEntity receiptDocument;
-    MileageEntity mileage;
-    List<ItemEntityOCR> items;
+    private DocumentEntity receiptDocument;
+    private MileageEntity mileage;
+    private List<ItemEntityOCR> items;
+    private Map<Date, DocumentProcessBy> processedBy = new LinkedHashMap<>();
 
     /** Used for showing error messages to user when the request action fails to execute */
     String errorMessage;
@@ -95,6 +101,14 @@ public final class ReceiptDocumentForm {
 
     public String getErrorMessage() {
         return this.errorMessage;
+    }
+
+    public Map<Date, DocumentProcessBy> getProcessedBy() {
+        return processedBy;
+    }
+
+    public void setProcessedBy(Map<Date, DocumentProcessBy> processedBy) {
+        this.processedBy = processedBy;
     }
 
     @Override

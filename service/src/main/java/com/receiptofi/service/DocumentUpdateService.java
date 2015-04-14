@@ -16,6 +16,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
@@ -25,6 +26,7 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.MessageDocumentManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.StorageManager;
+import com.receiptofi.service.wrapper.DocumentProcessBy;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,7 +38,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -520,7 +524,7 @@ public class DocumentUpdateService {
             throw new RuntimeException("Found existing record with similar odometer reading");
         } catch (Exception e) {
             LOG.error(e.getLocalizedMessage(), e);
-            //add roll back
+            //TODO add roll back
         }
     }
 
@@ -545,5 +549,14 @@ public class DocumentUpdateService {
     private void updateDocumentVersion(DocumentEntity document, DocumentEntity documentEntity) {
         /** Update the version number as the value could have changed by rotating receipt image through ajax. */
         document.setVersion(documentEntity.getVersion());
+    }
+
+    public Map<Date, DocumentProcessBy> getProcessedByUserName(Map<Date, String> processedBy) {
+        Map<Date, DocumentProcessBy> processedByUser = new LinkedHashMap<>();
+        for (Date date : processedBy.keySet()) {
+            UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(processedBy.get(date));
+            processedByUser.put(date, new DocumentProcessBy(userProfile.getName(), userProfile.getEmail(), processedBy.get(date)));
+        }
+        return processedByUser;
     }
 }
