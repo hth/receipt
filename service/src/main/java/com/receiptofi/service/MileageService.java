@@ -180,8 +180,8 @@ public class MileageService {
      *
      * @param mileageId - Mileage id to delete
      */
-    public boolean deleteHardMileage(String mileageId, String userProfileId) throws Exception {
-        MileageEntity mileage = mileageManager.findOne(mileageId, userProfileId);
+    public boolean deleteHardMileage(String mileageId, String rid) throws Exception {
+        MileageEntity mileage = mileageManager.findOne(mileageId, rid);
         if (mileage != null) {
             mileageManager.deleteHard(mileage);
             for (FileSystemEntity fileSystem : mileage.getFileSystemEntities()) {
@@ -189,7 +189,7 @@ public class MileageService {
                 cloudFileService.save(cloudFile);
             }
             fileSystemService.deleteHard(mileage.getFileSystemEntities());
-            DocumentEntity documentEntity = documentManager.findOne(mileage.getDocumentId(), userProfileId);
+            DocumentEntity documentEntity = documentManager.findDocumentByRid(mileage.getDocumentId(), rid);
             if (documentEntity != null) {
                 documentManager.deleteHard(documentEntity);
             }

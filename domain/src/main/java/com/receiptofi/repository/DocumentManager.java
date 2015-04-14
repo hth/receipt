@@ -20,7 +20,7 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
     long numberOfRejectedReceipts(String rid);
 
-    DocumentEntity findOne(String documentId, String rid);
+    DocumentEntity findDocumentByRid(String documentId, String rid);
 
     /**
      * Mostly used by technician and above level.

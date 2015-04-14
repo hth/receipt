@@ -80,7 +80,7 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public DocumentEntity findOne(String id, String rid) {
+    public DocumentEntity findDocumentByRid(String id, String rid) {
         return mongoTemplate.findOne(
                 query(where("id").is(id).and("RID").is(rid)),
                 DocumentEntity.class,

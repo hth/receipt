@@ -79,8 +79,8 @@ public class DocumentUpdateService {
         return documentManager.findRejectedOne(documentId);
     }
 
-    public DocumentEntity findOne(String documentId, String userProfileId) {
-        return documentManager.findOne(documentId, userProfileId);
+    public DocumentEntity findDocumentByRid(String documentId, String rid) {
+        return documentManager.findDocumentByRid(documentId, rid);
     }
 
     public List<ItemEntityOCR> loadItemsOfReceipt(DocumentEntity receipt) {
@@ -513,9 +513,7 @@ public class DocumentUpdateService {
             updateMessageManager(document, PENDING, PROCESSED);
 
             notificationService.addNotification(
-                    String.valueOf(mileage.getStart()) +
-                            ", " +
-                            "odometer reading processed",
+                    String.valueOf(mileage.getStart()) + ", " + "odometer reading processed",
                     NotificationTypeEnum.MILEAGE,
                     mileage);
         } catch (DuplicateKeyException duplicateKeyException) {
@@ -541,7 +539,6 @@ public class DocumentUpdateService {
     ) {
         receipt.setFileSystemEntities(documentEntity.getFileSystemEntities());
         document.setFileSystemEntities(documentEntity.getFileSystemEntities());
-
         updateDocumentVersion(document, documentEntity);
     }
 
@@ -550,6 +547,12 @@ public class DocumentUpdateService {
         document.setVersion(documentEntity.getVersion());
     }
 
+    /**
+     * Get details for processed by rid.
+     *
+     * @param processedBy
+     * @return
+     */
     public Map<Date, UserProfileEntity> getProcessedByUserName(Map<Date, String> processedBy) {
         Map<Date, UserProfileEntity> processedByUser = new LinkedHashMap<>();
         for (Date date : processedBy.keySet()) {
