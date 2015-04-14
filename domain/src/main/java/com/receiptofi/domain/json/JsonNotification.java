@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
-import org.joda.time.DateTime;
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -65,8 +67,8 @@ public class JsonNotification {
         this.notified = notification.isNotified();
         this.notificationType = notification.getNotificationType().getName();
         this.referenceId = notification.getReferenceId() == null ? "" : notification.getReferenceId();
-        this.created = JsonReceipt.FMT.print(new DateTime(notification.getCreated()));
-        this.updated = JsonReceipt.FMT.print(new DateTime(notification.getUpdated()));
+        this.created = DateFormatUtils.format(notification.getCreated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.updated = DateFormatUtils.format(notification.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.active = notification.isActive();
     }
 
