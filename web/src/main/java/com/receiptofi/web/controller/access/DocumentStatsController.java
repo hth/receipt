@@ -137,7 +137,7 @@ public class DocumentStatsController {
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        DocumentEntity documentEntity = documentUpdateService.findOne(documentId, receiptUser.getRid());
+        DocumentEntity documentEntity = documentUpdateService.findDocumentByRid(documentId, receiptUser.getRid());
         receiptDocumentForm.setReceiptDocument(documentEntity);
 
         return new ModelAndView(showDocument);

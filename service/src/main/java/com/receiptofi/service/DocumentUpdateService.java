@@ -79,8 +79,8 @@ public class DocumentUpdateService {
         return documentManager.findRejectedOne(documentId);
     }
 
-    public DocumentEntity findOne(String documentId, String userProfileId) {
-        return documentManager.findOne(documentId, userProfileId);
+    public DocumentEntity findDocumentByRid(String documentId, String rid) {
+        return documentManager.findDocumentByRid(documentId, rid);
     }
 
     public List<ItemEntityOCR> loadItemsOfReceipt(DocumentEntity receipt) {

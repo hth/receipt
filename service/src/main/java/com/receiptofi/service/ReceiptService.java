@@ -35,7 +35,6 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -107,8 +106,8 @@ public class ReceiptService {
      *
      * @param receiptId - Receipt id to delete
      */
-    public boolean deleteReceipt(String receiptId, String receiptUserId) throws Exception {
-        ReceiptEntity receipt = receiptManager.getReceipt(receiptId, receiptUserId);
+    public boolean deleteReceipt(String receiptId, String rid) throws Exception {
+        ReceiptEntity receipt = receiptManager.getReceipt(receiptId, rid);
         if (null == receipt) {
             return false;
         }
@@ -127,7 +126,7 @@ public class ReceiptService {
             }
 
             if (!StringUtils.isEmpty(receipt.getDocumentId())) {
-                DocumentEntity document = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
+                DocumentEntity document = documentManager.findDocumentByRid(receipt.getDocumentId(), rid);
                 if (null != document) {
                     itemOCRManager.deleteWhereReceipt(document);
                     documentManager.deleteHard(document);
@@ -155,12 +154,12 @@ public class ReceiptService {
      * Then delete all the items.
      *
      * @param receiptId
-     * @param receiptUserId
+     * @param rid
      * @throws Exception
      */
-    public void reopen(String receiptId, String receiptUserId) throws Exception {
+    public void reopen(String receiptId, String rid) throws Exception {
         try {
-            ReceiptEntity receipt = receiptManager.getReceipt(receiptId, receiptUserId);
+            ReceiptEntity receipt = receiptManager.getReceipt(receiptId, rid);
             if (null == receipt.getDocumentId()) {
                 LOG.error("No receiptOCR id found in Receipt={}, aborting the reopen process", receipt.getId());
                 throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
@@ -169,7 +168,7 @@ public class ReceiptService {
                     receipt.inActive();
                     List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
 
-                    DocumentEntity receiptOCR = documentManager.findOne(receipt.getDocumentId(), receiptUserId);
+                    DocumentEntity receiptOCR = documentManager.findDocumentByRid(receipt.getDocumentId(), rid);
                     receiptOCR.active();
                     receiptOCR.setDocumentStatus(DocumentStatusEnum.REPROCESS);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());

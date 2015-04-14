@@ -1,9 +1,12 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.repository.MessageDocumentManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -22,5 +25,9 @@ public class MessageDocumentService {
 
     public void resetDocumentsToInitialState(String receiptUserId) {
         messageDocumentManager.resetDocumentsToInitialState(receiptUserId);
+    }
+
+    public List<MessageDocumentEntity> findAllPending() {
+        return messageDocumentManager.findAllPending();
     }
 }
