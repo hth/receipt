@@ -551,11 +551,11 @@ public class DocumentUpdateService {
         document.setVersion(documentEntity.getVersion());
     }
 
-    public Map<Date, DocumentProcessBy> getProcessedByUserName(Map<Date, String> processedBy) {
-        Map<Date, DocumentProcessBy> processedByUser = new LinkedHashMap<>();
+    public Map<Date, UserProfileEntity> getProcessedByUserName(Map<Date, String> processedBy) {
+        Map<Date, UserProfileEntity> processedByUser = new LinkedHashMap<>();
         for (Date date : processedBy.keySet()) {
             UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(processedBy.get(date));
-            processedByUser.put(date, new DocumentProcessBy(userProfile.getName(), userProfile.getEmail(), processedBy.get(date)));
+            processedByUser.put(date, userProfile);
         }
         return processedByUser;
     }

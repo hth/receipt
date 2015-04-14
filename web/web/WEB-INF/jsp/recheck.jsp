@@ -461,8 +461,8 @@
                                 <td colspan="4" style="text-align: left; vertical-align: top">
                                     ${processedByKey}&nbsp;&nbsp;
                                     ${receiptDocumentForm.processedBy.get(processedByKey).name}&nbsp;&nbsp;
-                                    ${receiptDocumentForm.processedBy.get(processedByKey).mail}&nbsp;&nbsp;
-                                    ${receiptDocumentForm.processedBy.get(processedByKey).rid}
+                                    ${receiptDocumentForm.processedBy.get(processedByKey).email}&nbsp;&nbsp;
+                                    ${receiptDocumentForm.processedBy.get(processedByKey).receiptUserId}
                                 </td>
                             </tr>
                             </c:forEach>

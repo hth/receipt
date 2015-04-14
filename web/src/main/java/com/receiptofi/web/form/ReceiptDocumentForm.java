@@ -8,6 +8,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.service.wrapper.DocumentProcessBy;
@@ -47,7 +48,7 @@ public final class ReceiptDocumentForm {
     private DocumentEntity receiptDocument;
     private MileageEntity mileage;
     private List<ItemEntityOCR> items;
-    private Map<Date, DocumentProcessBy> processedBy = new LinkedHashMap<>();
+    private Map<Date, UserProfileEntity> processedBy = new LinkedHashMap<>();
 
     /** Used for showing error messages to user when the request action fails to execute */
     String errorMessage;
@@ -103,11 +104,11 @@ public final class ReceiptDocumentForm {
         return this.errorMessage;
     }
 
-    public Map<Date, DocumentProcessBy> getProcessedBy() {
+    public Map<Date, UserProfileEntity> getProcessedBy() {
         return processedBy;
     }
 
-    public void setProcessedBy(Map<Date, DocumentProcessBy> processedBy) {
+    public void setProcessedBy(Map<Date, UserProfileEntity> processedBy) {
         this.processedBy = processedBy;
     }
 
