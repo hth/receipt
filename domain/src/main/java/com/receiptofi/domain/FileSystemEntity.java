@@ -198,6 +198,11 @@ public class FileSystemEntity extends BaseEntity {
     }
 
     @Transient
+    public String getOriginalFilenameForS3() {
+        return originalFilename.substring(originalFilename.indexOf(".") + 1);
+    }
+
+    @Transient
     public void switchHeightAndWidth() {
         int tempHeight = this.height;
         //noinspection SuspiciousNameCombination
