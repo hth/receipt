@@ -667,6 +667,38 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     text-transform: uppercase;
 }
 
+/** For date form MMM, dd */
+.rightside-li-date-text-short {
+    width: 60px; !important;
+}
+/** End for date MMM, dd */
+
+/** For showing different attributes */
+.rightside-li-date-text-show-attr {
+    width: 72px; !important;
+}
+/** For showing different attributes ends */
+
+.rightside-list-holder li p a {
+    color: #007AFF;
+    line-height: 50px;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: left;
+    font-size: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    width: 15px;
+    padding-left: 0px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.downloadIcon {
+    text-align: center;
+    display: block;
+    background-color: darkgreen;
+}
+
 .rightside-list-holder li a {
     color: #007AFF;
     line-height: 50px;

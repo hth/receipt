@@ -8,7 +8,20 @@
     <ul>
         <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
         <li>
-            <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+            <c:choose>
+                <c:when test="${!empty receipt.expenseReportInFS}">
+                    <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receipt.date}" pattern="MMM. dd"/></span>
+                    <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
+                        <a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm' style="margin-top: -2px;">
+                            <img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png'
+                                    width='15' height='16' title='Download Expense Report' class='downloadIcon'>
+                        </a>
+                    </p>
+                </c:when>
+                <c:otherwise>
+                    <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                </c:otherwise>
+            </c:choose>
             <span style="background-color: ${receipt.expenseColor};">&nbsp;&nbsp;</span>
             <c:choose>
             <c:when test="${receipt.billedStatus eq 'NB'}">
