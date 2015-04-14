@@ -9,12 +9,14 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.BilledStatusEnum;
 
-import org.joda.time.DateTime;
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +40,7 @@ import java.util.stream.Collectors;
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 @Mobile
 public class JsonReceipt {
-    public static final DateTimeFormatter FMT = ISODateTimeFormat.dateTime();
+    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.sssZZZ";
 
     @JsonProperty ("id")
     private String id;
@@ -104,7 +106,7 @@ public class JsonReceipt {
          */
         this.jsonFileSystems.addAll(receipt.getFileSystemEntities().stream().map(JsonFileSystem::newInstance).collect(Collectors.toList()));
 
-        this.receiptDate = FMT.print(new DateTime(receipt.getReceiptDate()));
+        this.receiptDate = DateFormatUtils.format(receipt.getReceiptDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.tax = receipt.getTax();
         this.percentTax = receipt.getPercentTax();
         this.receiptUserId = receipt.getReceiptUserId();
