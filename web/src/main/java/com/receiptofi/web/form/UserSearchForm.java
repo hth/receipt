@@ -4,7 +4,6 @@
 package com.receiptofi.web.form;
 
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 

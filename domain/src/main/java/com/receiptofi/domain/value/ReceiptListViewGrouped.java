@@ -11,8 +11,6 @@ import org.springframework.format.annotation.NumberFormat;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * User: hitender
  * Date: 2/6/15 4:20 AM

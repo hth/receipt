@@ -11,9 +11,6 @@ import com.receiptofi.domain.types.BilledStatusEnum;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.TimeZone;

@@ -5,7 +5,6 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.repository.NotificationManager;

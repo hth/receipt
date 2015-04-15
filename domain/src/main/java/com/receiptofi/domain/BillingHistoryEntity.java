@@ -1,7 +1,7 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BilledStatusEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
