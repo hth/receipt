@@ -67,7 +67,7 @@ public class MessageDocumentOrphanReport {
                 for (MessageDocumentEntity messageDocument : pendingDocuments) {
                     DocumentEntity document = documentUpdateService.loadActiveDocumentById(messageDocument.getDocumentId());
                     if (null == document) {
-                        LOG.error("Orphan Message DocumentId={} messageDocumentId={}",
+                        LOG.warn("Orphan Message DocumentId={} messageDocumentId={}",
                                 messageDocument.getDocumentId(), messageDocument.getId());
                         int deleted = messageDocumentService.deleteAllForReceiptOCR(messageDocument.getDocumentId());
                         if (deleted > 0) {
