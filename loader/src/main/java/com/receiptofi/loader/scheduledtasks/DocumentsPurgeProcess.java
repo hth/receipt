@@ -62,7 +62,6 @@ public class DocumentsPurgeProcess {
         this.documentUpdateService = documentUpdateService;
     }
 
-    //TODO What happens when you delete rejected document and FileSystem
     @Scheduled (cron = "${loader.DocumentsPurgeProcess.purgeRejectedDocument}")
     public void purgeRejectedDocument() {
         LOG.info("begins");
