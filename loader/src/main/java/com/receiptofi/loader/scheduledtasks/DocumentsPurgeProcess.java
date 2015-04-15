@@ -39,7 +39,7 @@ public class DocumentsPurgeProcess {
 
     @Autowired
     public DocumentsPurgeProcess(
-            @Value ("${purgeRejectedDocumentAfterDay:15}")
+            @Value ("${purgeRejectedDocumentAfterDay:1}")
             int purgeRejectedDocumentAfterDay,
 
             @Value ("${purgeMaxDocumentsADay:10000}")
@@ -56,6 +56,7 @@ public class DocumentsPurgeProcess {
         this.documentManager = documentManager;
     }
 
+    //TODO
     @Scheduled (cron = "${loader.DocumentsPurgeProcess.purgeRejectedDocument}")
     public void purgeRejectedDocument() {
         LOG.info("begins");
