@@ -2,12 +2,10 @@ package com.receiptofi.service;
 
 import com.google.common.collect.Lists;
 
-import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;

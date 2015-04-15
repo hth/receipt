@@ -3,10 +3,7 @@ package com.receiptofi.service;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.DocumentEntity;
-import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.annotation.TemporaryCode;
-import com.receiptofi.domain.value.Coordinate;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 

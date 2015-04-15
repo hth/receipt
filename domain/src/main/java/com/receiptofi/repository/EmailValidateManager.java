@@ -1,7 +1,6 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.EmailValidateEntity;
-import com.receiptofi.domain.UserProfileEntity;
 
 /**
  * User: hitender

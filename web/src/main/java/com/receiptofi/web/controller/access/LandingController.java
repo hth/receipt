@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.MileageEntity;
-import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;

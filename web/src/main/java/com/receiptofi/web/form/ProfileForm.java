@@ -1,19 +1,13 @@
 package com.receiptofi.web.form;
 
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.domain.value.DiskUsageGrouped;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import org.springframework.format.annotation.NumberFormat;
-
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
