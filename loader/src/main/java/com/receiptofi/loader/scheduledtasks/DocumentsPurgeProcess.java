@@ -1,7 +1,9 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.repository.DocumentManager;
+import com.receiptofi.service.DocumentUpdateService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,6 +31,7 @@ public class DocumentsPurgeProcess {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentsPurgeProcess.class);
 
     private DocumentManager documentManager;
+    private DocumentUpdateService documentUpdateService;
 
     private int purgeRejectedDocumentAfterDay;
     private int purgeMaxDocumentsADay;
@@ -48,12 +52,14 @@ public class DocumentsPurgeProcess {
             @Value ("${purgeRejectedDocument:ON}")
             String purgeRejectedDocument,
 
-            DocumentManager documentManager
+            DocumentManager documentManager,
+            DocumentUpdateService documentUpdateService
     ) {
         this.purgeRejectedDocumentAfterDay = purgeRejectedDocumentAfterDay;
         this.purgeMaxDocumentsADay = purgeMaxDocumentsADay;
         this.purgeRejectedDocument = purgeRejectedDocument;
         this.documentManager = documentManager;
+        this.documentUpdateService = documentUpdateService;
     }
 
     //TODO What happens when you delete rejected document and FileSystem
@@ -66,7 +72,7 @@ public class DocumentsPurgeProcess {
                 List<DocumentEntity> documents = documentManager.getAllRejected(purgeRejectedDocumentAfterDay);
                 found = documents.size();
                 for (DocumentEntity documentEntity : documents) {
-                    documentManager.deleteHard(documentEntity);
+                    documentUpdateService.deleteRejectedDocument(documentEntity);
                     count++;
 
                     if (purgeMaxDocumentsADay > 0 && count == purgeMaxDocumentsADay) {

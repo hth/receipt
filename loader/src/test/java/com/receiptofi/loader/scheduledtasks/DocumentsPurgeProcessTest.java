@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.repository.DocumentManager;
+import com.receiptofi.service.DocumentUpdateService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +33,7 @@ public class DocumentsPurgeProcessTest {
     int purgeRejectedDocumentAfterDay = 1;
     private DocumentsPurgeProcess documentsPurgeProcess;
     @Mock private DocumentManager documentManager;
+    @Mock private DocumentUpdateService documentUpdateService;
 
     @Before
     public void setUp() {
@@ -40,41 +42,41 @@ public class DocumentsPurgeProcessTest {
 
     @Test
     public void whenPurgeIsTurnedOn() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "ON", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         documentsPurgeProcess.purgeRejectedDocument();
-        verify(documentManager, times(1)).deleteHard(any(DocumentEntity.class));
+        verify(documentUpdateService, times(1)).deleteRejectedDocument(any(DocumentEntity.class));
     }
 
     @Test
     public void whenPurgeIsTurnedOff() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "OFF", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "OFF", documentManager, documentUpdateService);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         documentsPurgeProcess.purgeRejectedDocument();
-        verify(documentManager, never()).deleteHard(any(DocumentEntity.class));
+        verify(documentUpdateService, never()).deleteRejectedDocument(any(DocumentEntity.class));
     }
 
     @Test
     public void purgeAll() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         documentsPurgeProcess.purgeRejectedDocument();
-        verify(documentManager, times(2)).deleteHard(any(DocumentEntity.class));
+        verify(documentUpdateService, times(2)).deleteRejectedDocument(any(DocumentEntity.class));
     }
 
     @Test
     public void purgeEmpty() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
-        when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(new ArrayList<DocumentEntity>());
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
+        when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(new ArrayList<>());
         documentsPurgeProcess.purgeRejectedDocument();
-        verify(documentManager, never()).deleteHard(any(DocumentEntity.class));
+        verify(documentUpdateService, never()).deleteRejectedDocument(any(DocumentEntity.class));
     }
 
     @Test
     public void purgeException() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager);
+        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
-        doThrow(Exception.class).when(documentManager).deleteHard((DocumentEntity) anyObject());
+        doThrow(Exception.class).when(documentUpdateService).deleteRejectedDocument(anyObject());
         documentsPurgeProcess.purgeRejectedDocument();
         assertEquals(0, documentsPurgeProcess.getCount());
     }
