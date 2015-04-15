@@ -39,7 +39,7 @@ public class DocumentsPurgeProcess {
 
     @Autowired
     public DocumentsPurgeProcess(
-            @Value ("${purgeRejectedDocumentAfterDay:1}")
+            @Value ("${purgeRejectedDocumentAfterDay:15}")
             int purgeRejectedDocumentAfterDay,
 
             @Value ("${purgeMaxDocumentsADay:10000}")
@@ -56,7 +56,7 @@ public class DocumentsPurgeProcess {
         this.documentManager = documentManager;
     }
 
-    //TODO
+    //TODO What happens when you delete rejected document and FileSystem
     @Scheduled (cron = "${loader.DocumentsPurgeProcess.purgeRejectedDocument}")
     public void purgeRejectedDocument() {
         LOG.info("begins");
