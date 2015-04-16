@@ -469,6 +469,7 @@
             </div>
         </div>
         <div class="left" style="vertical-align: top;">
+            <!-- Script is called to populate div element container -->
             <div id="container" style="height: 850px"></div>
         </div>
         </form:form>
@@ -548,6 +549,7 @@
     });
 </script>
 
+<!-- Loads image -->
 <script>
     function measurement(position) {
         if (position instanceof String) {

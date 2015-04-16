@@ -531,22 +531,9 @@
             </td>
             <td>&nbsp;</td>
             <td style="vertical-align: top;">
-                <%--<div id="holder" style="height: 850px">--%>
-                    <%--<c:choose>--%>
-                    <%--<c:when test="${empty receiptDocumentForm.receiptDocument}">--%>
-                        <%--&nbsp;--%>
-                    <%--</c:when>--%>
-                    <%--<c:otherwise>--%>
-                        <%--<div src="" id="receiptDocument.image"></div>--%>
-                    <%--</c:otherwise>--%>
-                    <%--</c:choose>--%>
-                <%--</div>--%>
-
                 <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
                     <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
-                            <%--<div src="" id="receipt.image"></div>--%>
                     </div>
-                    <%--<div id="container" style="height: 850px"></div>--%>
                 </c:forEach>
             </td>
         </tr>
@@ -621,68 +608,5 @@
         $(document).tooltip();
     });
 </script>
-
-<script>
-    function measurement(position) {
-        if (position instanceof String) {
-            if (position.indexOf("%") != -1) {
-                return position;
-            }
-        }
-        return position + "px";
-    }
-    function rotate(el, d) {
-        var s = "rotate(" + d + "deg)";
-        if (el.style) { // regular DOM Object
-            el.style.MozTransform = s;
-            el.style.WebkitTransform = s;
-            el.style.OTransform = s;
-            el.style.transform = s;
-        } else if (el.css) { // JQuery Object
-            el.css("-moz-transform", s);
-            el.css("-webkit-transform", s);
-            el.css("-o-transform", s);
-            el.css("transform", s);
-        }
-        el.setAttribute("rotation", d);
-    }
-    function calculateTop(imageHeight) {
-        if (topHeight == 0 ) {
-            return topHeight + 5;
-        }
-        return topHeight + imageHeight + 5;
-    }
-
-    // JSON data
-    var topHeight = 0,
-        info = [
-            <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-            {
-                src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilenameForS3}",
-                pos: {
-                    top: topHeight = calculateTop(${arr.height}),
-                    left: 0
-                },
-                rotate: ${arr.imageOrientation},
-                zIndex: 0
-            },
-            </c:forEach>
-        ]
-    ;
-
-    var df = document.createDocumentFragment();
-    for (var i = 0, j = info.length; i < j; i++) {
-        var el = document.createElement("img");
-        el.src = info[i].src;
-        el.className = "img";
-        el.style.left = measurement(info[i].pos.left);
-        el.style.top = measurement(info[i].pos.top);
-        el.style.zIndex = info[i].zIndex;
-        rotate(el, info[i].rotate);
-        df.appendChild(el);
-    }
-    document.getElementById("container").appendChild(df);
-</script>
-
 </body>
 </html>
