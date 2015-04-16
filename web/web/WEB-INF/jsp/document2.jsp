@@ -21,9 +21,30 @@
     <script>
         /* add background color to holder in tr tag */
         window.onload = function () {
-            <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-            fetchReceiptImage('${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.receiptUserId}');
-            </c:forEach>
+            <c:choose>
+                <c:when test="${!empty receiptDocumentForm.receiptDocument.referenceDocumentId}">
+                    <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
+                        fetchReceiptImage(
+                        'https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilenameForS3}',
+                        "holder_" + ${status.index},
+                        '${arr.id}',
+                        ${arr.imageOrientation},
+                        '${arr.blobId}',
+                        '${receiptDocumentForm.receiptDocument.receiptUserId}');
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
+                    fetchReceiptImage(
+                        '${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm',
+                        "holder_" + ${status.index},
+                        '${arr.id}',
+                        ${arr.imageOrientation},
+                        '${arr.blobId}',
+                        '${receiptDocumentForm.receiptDocument.receiptUserId}');
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
         };
     </script>
 </head>
