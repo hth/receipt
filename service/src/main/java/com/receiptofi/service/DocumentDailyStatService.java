@@ -65,7 +65,7 @@ public class DocumentDailyStatService {
         return daily;
     }
 
-    public void save(DocumentDailyStatEntity documentDailyStatEntity) {
-        documentDailyStatManager.save(documentDailyStatEntity);
+    public void save(DocumentDailyStatEntity documentDailyStat) {
+        documentDailyStatManager.save(documentDailyStat);
     }
 }
