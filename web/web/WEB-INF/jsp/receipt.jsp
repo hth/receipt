@@ -534,6 +534,7 @@
             </td>
             <td style="width: 6px;">&nbsp;</td>
             <td style="vertical-align: top; text-align: center">
+                <!-- Script is called to populate div element container -->
                 <div id="container" style="height: 850px"></div>
             </td>
         </tr>
@@ -572,6 +573,7 @@
     });
 </script>
 
+<!-- Loads image -->
 <script>
     function measurement(position) {
         if (position instanceof String) {

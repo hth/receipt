@@ -469,6 +469,7 @@
             </div>
         </div>
         <div class="left" style="vertical-align: top;">
+            <!-- Script is called to populate div element container -->
             <div id="container" style="height: 850px"></div>
         </div>
         </form:form>
@@ -548,6 +549,7 @@
     });
 </script>
 
+<!-- Loads image -->
 <script>
     function measurement(position) {
         if (position instanceof String) {
@@ -584,7 +586,7 @@
             info = [
                 <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
                 {
-                    src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilename.substring(arr.originalFilename.indexOf(".") + 1)}",
+                    src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilenameForS3}",
                     pos: {
                         top: topHeight = calculateTop(${arr.height}),
                         left: 0

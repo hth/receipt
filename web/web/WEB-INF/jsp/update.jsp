@@ -26,7 +26,13 @@
 		/* add background color to holder in tr tag */
         window.onload = function () {
             <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-                fetchReceiptImage('${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.receiptUserId}');
+                fetchReceiptImage(
+                        '${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm',
+                        "holder_" + ${status.index},
+                        '${arr.id}',
+                        ${arr.imageOrientation},
+                        '${arr.blobId}',
+                        '${receiptDocumentForm.receiptDocument.receiptUserId}');
             </c:forEach>
         };
 
@@ -523,6 +529,7 @@
                             </table>
                         </form:form>
 
+                        <!-- To test upload for multiple image to show up, I believe -->
                         <%--<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>--%>
                         <%--<div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em" class="hidden"></div>--%>
 
@@ -535,22 +542,9 @@
             </td>
             <td>&nbsp;</td>
             <td style="vertical-align: top;">
-                <%--<div id="holder" style="height: 850px">--%>
-                <%--<c:choose>--%>
-                <%--<c:when test="${empty receiptDocumentForm.receiptDocument}">--%>
-                    <%--&nbsp;--%>
-                <%--</c:when>--%>
-                <%--<c:otherwise>--%>
-                    <%--<div id="container" style="height: 850px"></div>--%>
-                <%--</c:otherwise>--%>
-                <%--</c:choose>--%>
-                <%--</div>--%>
-
                 <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
                     <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
-                        <%--<div src="" id="receipt.image"></div>--%>
                     </div>
-                    <%--<div id="container" style="height: 850px"></div>--%>
                 </c:forEach>
             </td>
         </tr>
@@ -726,6 +720,7 @@
     });
 </script>
 
+<!-- To test upload for multiple image to show up, I believe -->
 <%--<script>--%>
     <%--$(document).ready(function () {--%>
         <%--"use strict";--%>
