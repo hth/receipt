@@ -62,7 +62,7 @@ public class MessageDocumentOrphanReport {
             Date sinceDate = Date.from(since);
             List<MessageDocumentEntity> pendingDocuments = messageDocumentService.findAllPending(sinceDate);
 
-            int count = pendingDocuments.size(), success = 0, failure = 0;
+            int count = pendingDocuments.size(), success = 0, failure = 0, skipped = 0;
             try {
                 for (MessageDocumentEntity messageDocument : pendingDocuments) {
                     DocumentEntity document = documentUpdateService.loadActiveDocumentById(messageDocument.getDocumentId());
@@ -77,12 +77,15 @@ public class MessageDocumentOrphanReport {
                             failure++;
                             LOG.error("Failed to deleted did={}", messageDocument.getDocumentId());
                         }
+                    } else {
+                        skipped++;
                     }
                 }
             } catch(Exception e) {
                 LOG.error("Error during deleting orphan messageDocument, reason={}", e.getLocalizedMessage(), e);
             } finally {
-                LOG.info("Orphan messageDocument count={} success={} failure={}", count, success, failure);
+                LOG.info("Orphan messageDocument count={} success={} skipped={} failure={}",
+                        count, success, skipped, failure);
             }
         } else {
             LOG.info("feature is {}", messageDocumentOrphanReport);
