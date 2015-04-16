@@ -656,9 +656,9 @@
     // JSON data
     var topHeight = 0,
         info = [
-            <c:forEach items="${receiptForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
+            <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
             {
-                src: "${pageContext.request.contextPath}/filedownload/receiptimage/${arr.blobId}.htm",
+                src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilenameForS3}",
                 pos: {
                     top: topHeight = calculateTop(${arr.height}),
                     left: 0
