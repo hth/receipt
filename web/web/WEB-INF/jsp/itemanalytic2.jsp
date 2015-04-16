@@ -85,7 +85,7 @@
 
             <table width="95%" style="margin-left: 4px; margin-right: 4px;">
                 <tr style="border-bottom: 1px dotted #919191;">
-                    <th class="analysis" style="width: 50px;">Date</th>
+                    <th class="analysis" style="width: 50px; !important;">Date</th>
                     <th class="analysis">Business</th>
                     <th class="analysis">Location</th>
                     <th class="analysis">Price</th>
@@ -93,11 +93,8 @@
                     <th class="analysis">Site's Average</th>
                 </tr>
                 <tr>
-                    <td class="analysis" style="width: 60px;">
+                    <td class="analysis" style="width: 50px; !important;">
                         <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
-                        <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
-                        <span style="background-color: ${itemAnalyticForm.item.expenseTag.tagColor}; margin-left: 15px;">&nbsp;&nbsp;</span>
-                        </a>
                     </td>
                     <td class="analysis">
                         <c:choose>
@@ -108,6 +105,11 @@
                                 </a>
                             </c:when>
                             <c:otherwise>
+                                <c:if test="${!empty item.expenseTag.tagColor}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                                    <span style="background-color: ${itemAnalyticForm.item.expenseTag.tagColor}; margin-left: 0px;">&nbsp;&nbsp;</span>
+                                </a>
+                                </c:if>
                                 <a href="${pageContext.request.contextPath}/access/receipt/${itemAnalyticForm.item.receipt.id}.htm"
                                         style="color: #007AFF">
                                     ${itemAnalyticForm.item.receipt.bizName.businessName}
@@ -166,9 +168,6 @@
                     </td>
                     <td class="analysis" style="width: 40px !important;">
                         <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
-                        <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
-                        <span style="background-color: ${item.expenseTag.tagColor}; margin-left: 15px;">&nbsp;&nbsp;</span>
-                        </a>
                     </td>
                     <td class="analysis">
                         <c:choose>
@@ -179,6 +178,9 @@
                                 </a>
                             </c:when>
                             <c:otherwise>
+                                <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                                    <span style="background-color: ${item.expenseTag.tagColor}; margin-left: 0px;">&nbsp;&nbsp;</span>
+                                </a>
                                 <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm"
                                         style="color: #007AFF">
                                     ${item.receipt.bizName.businessName}
