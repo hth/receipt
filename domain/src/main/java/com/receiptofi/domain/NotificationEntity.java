@@ -2,6 +2,8 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.NotificationTypeEnum;
 
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -19,6 +21,10 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "NOTIFICATION")
+/** Updated index. */
+@CompoundIndexes (value = {
+        @CompoundIndex (name = "notification_idx", def = "{'C': -1, 'RID': 1}", background = true)
+})
 public class NotificationEntity extends BaseEntity {
 
     @NotNull
