@@ -71,7 +71,7 @@ public abstract class BaseEntity implements Serializable {
 
         @SuppressWarnings ("unchecked")
         Annotation annotation = classType.getAnnotation(annotationType);
-        if (annotation != null) {
+        if (null != annotation) {
             try {
                 value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
             } catch (Exception annotationException) {
