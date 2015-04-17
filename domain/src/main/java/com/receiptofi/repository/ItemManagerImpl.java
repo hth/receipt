@@ -250,7 +250,7 @@ public final class ItemManagerImpl implements ItemManager {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         mongoTemplate.updateMulti(
                 query(where("RECEIPT.$id").is(new ObjectId(receiptId))),
-                update("EXPENSE_TAG", new DBRef(mongoTemplate.getDb(), getDBRefExpenseTag(expenseTagId))),
+                update("EXPENSE_TAG", new DBRef(ExpenseTagManagerImpl.TABLE, expenseTagId)),
                 ItemEntity.class
         );
     }
@@ -259,15 +259,9 @@ public final class ItemManagerImpl implements ItemManager {
     public void updateItemWithExpenseTag(String itemId, String expenseTagId) {
         mongoTemplate.updateFirst(
                 query(where("id").is(itemId)),
-                update("EXPENSE_TAG", new DBRef(mongoTemplate.getDb(), getDBRefExpenseTag(expenseTagId))),
+                update("EXPENSE_TAG", new DBRef(ExpenseTagManagerImpl.TABLE, expenseTagId)),
                 ItemEntity.class
         );
-    }
-
-    private BSONObject getDBRefExpenseTag(String expenseTagId) {
-        return new BasicBSONObject()
-                .append("$ref", ExpenseTagManagerImpl.TABLE)
-                .append("$id", new ObjectId(expenseTagId));
     }
 
     @Override
