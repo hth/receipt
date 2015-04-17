@@ -78,12 +78,14 @@ public class MileageManagerImpl implements MileageManager {
 
     @Override
     public boolean updateStartDate(String mileageId, DateTime startDate, String receiptUserId) {
-        return updateDateInRecord(mileageId, "SD", startDate, receiptUserId).getLastError().ok();
+        /** One one record should be updated. */
+        return updateDateInRecord(mileageId, "SD", startDate, receiptUserId).getN() == 1;
     }
 
     @Override
     public boolean updateEndDate(String mileageId, DateTime endDate, String receiptUserId) {
-        return updateDateInRecord(mileageId, "ED", endDate, receiptUserId).getLastError().ok();
+        /** One one record should be updated. */
+        return updateDateInRecord(mileageId, "ED", endDate, receiptUserId).getN() == 1;
     }
 
     private WriteResult updateDateInRecord(String mileageId, String fieldName, DateTime dateTime, String receiptUserId) {
