@@ -197,6 +197,7 @@ subprojects {
         compile 'redis.clients:jedis:2.7.0'
 
         compile 'com.amazonaws:aws-java-sdk-s3:1.9.30'
+        compile 'org.quartz-scheduler:quartz:2.2.1'
         /** ------- */
 
         compile 'org.apache.commons:commons-collections4:4.0'
@@ -233,7 +234,6 @@ subprojects {
         compile 'javax.inject:javax.inject:1'
         compile 'org.apache.activemq:activemq-client:5.11.1'
         compile 'javax.mail:mail:1.4.7'
-        compile 'org.quartz-scheduler:quartz:2.2.1'
         compile 'org.apache.commons:commons-lang3:3.4'
 
         compile 'org.apache.tika:tika-parsers:1.7'
