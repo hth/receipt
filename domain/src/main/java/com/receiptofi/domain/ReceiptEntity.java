@@ -40,10 +40,11 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "RECEIPT")
+/** Updated index. */
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "receipt_idx", def = "{'FS': -1, 'RID': -1}"),
-        @CompoundIndex (name = "receipt_unique_idx", def = "{'CS': -1}", unique = true),
-        @CompoundIndex (name = "receipt_expense_Report", def = "{'EXF': -1}")
+        @CompoundIndex (name = "receipt_idx", def = "{'RTXD': -1, 'RID': 1}", background = true),
+        @CompoundIndex (name = "receipt_unique_idx", def = "{'CS': -1}", unique = true, background = true),
+        @CompoundIndex (name = "receipt_expense_Report", def = "{'EXF': -1}", background = true)
 })
 public class ReceiptEntity extends BaseEntity {
 

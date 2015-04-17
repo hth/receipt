@@ -25,7 +25,8 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "DOCUMENT_DAILY_STAT")
-@CompoundIndexes ({@CompoundIndex (name = "document_daily_stat_idx", def = "{'DT': 1}", unique = true)})
+/** Updated index. */
+@CompoundIndexes ({@CompoundIndex (name = "document_daily_stat_idx", def = "{'DT': -1}", unique = true, background = true)})
 public class DocumentDailyStatEntity extends BaseEntity {
 
     @NotNull
