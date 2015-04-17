@@ -157,9 +157,9 @@ public class MileageWebService {
                             ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                     );
                     if (status) {
-                        return createJSONUsingMileageDateUpdateResponse(status, mileageEntity);
+                        return createJSONUsingMileageDateUpdateResponse(true, mileageEntity);
                     } else {
-                        return createJSONUsingMileageDateUpdateResponse(status, "Failed to update trip start date");
+                        return createJSONUsingMileageDateUpdateResponse(false, "Failed to update trip start date");
                     }
                 }
             } catch (RuntimeException re) {
