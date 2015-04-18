@@ -157,7 +157,6 @@ subprojects {
 
     dependencies {
         compile files('../lib/spring-social-core-1.1.0.RELEASE.jar')
-        compile files('../lib/spring-social-facebook-1.1.1.RELEASE.jar')
         compile files('../lib/spring-social-google-1.0.0.RELEASE.jar')
         compile files('../lib/spring-social-security-1.1.0.RELEASE.jar')
         compile files('../lib/spring-social-web-1.1.0.RELEASE.jar')
@@ -190,6 +189,8 @@ subprojects {
         compile "$springDataGroup:spring-data-mongodb:1.7.0.RELEASE"
         compile "$springDataGroup:spring-data-commons:1.10.0.RELEASE"
         compile 'org.mongodb:mongo-java-driver:3.0.0'
+
+        compile 'org.springframework.social:spring-social-facebook:2.0.0.RELEASE'
 
         /** --- Specific to Receipt Web Application ---- */
         //TODO remove or use
