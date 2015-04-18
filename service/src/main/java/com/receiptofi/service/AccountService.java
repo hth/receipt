@@ -65,7 +65,7 @@ public class AccountService {
     private GenerateUserIdManager generateUserIdManager;
     private EmailValidateService emailValidateService;
     private RegistrationService registrationService;
-    private UserProfilePreferenceService userProfilePreferenceService;
+    private ExpensesService expensesService;
     private BillingService billingService;
 
     @Value ("${domain}")
@@ -84,7 +84,7 @@ public class AccountService {
             GenerateUserIdManager generateUserIdManager,
             EmailValidateService emailValidateService,
             RegistrationService registrationService,
-            UserProfilePreferenceService userProfilePreferenceService,
+            ExpensesService expensesService,
             BillingService billingService
     ) {
         this.userAccountManager = userAccountManager;
@@ -95,7 +95,7 @@ public class AccountService {
         this.generateUserIdManager = generateUserIdManager;
         this.emailValidateService = emailValidateService;
         this.registrationService = registrationService;
-        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.expensesService = expensesService;
         this.billingService = billingService;
     }
 
@@ -199,7 +199,7 @@ public class AccountService {
                     rid,
                     ColorUtil.getRandom());
 
-            userProfilePreferenceService.saveExpenseTag(expenseTag);
+            expensesService.saveExpenseTag(expenseTag);
         }
 
         return userAccount;

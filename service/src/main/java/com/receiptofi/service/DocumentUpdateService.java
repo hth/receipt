@@ -70,6 +70,7 @@ public class DocumentUpdateService {
     @Autowired private FileSystemService fileSystemService;
     @Autowired private MileageService mileageService;
     @Autowired private BillingService billingService;
+    @Autowired private ExpensesService expensesService;
 
     public DocumentEntity loadActiveDocumentById(String documentId) {
         return documentManager.findActiveOne(documentId);
@@ -458,7 +459,7 @@ public class DocumentUpdateService {
      */
     private void populateWithExpenseTag(ItemEntity item) {
         if (null != item.getExpenseTag() && null != item.getExpenseTag().getId()) {
-            ExpenseTagEntity expenseType = userProfilePreferenceService.getExpenseTag(item.getReceiptUserId(), item.getExpenseTag().getId());
+            ExpenseTagEntity expenseType = expensesService.getExpenseTag(item.getReceiptUserId(), item.getExpenseTag().getId());
             item.setExpenseTag(expenseType);
         }
     }

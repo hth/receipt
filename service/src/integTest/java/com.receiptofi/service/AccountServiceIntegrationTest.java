@@ -62,7 +62,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
     private RegisteredDeviceManager registeredDeviceManager;
     private EmailValidateService emailValidateService;
     private RegistrationService registrationService;
-    private UserProfilePreferenceService userProfilePreferenceService;
+    private ExpensesService expensesService;
     private BillingService billingService;
 
     private AccountService accountService;
@@ -86,7 +86,7 @@ public class AccountServiceIntegrationTest extends RealMongoForTests {
                 generateUserIdManager,
                 emailValidateService,
                 registrationService,
-                userProfilePreferenceService,
+                expensesService,
                 billingService
         );
 
