@@ -203,7 +203,7 @@
 				<span class="general-text">
                     Last sync:
                     <span class="timestamp" id="pendingCountSyncedId">
-                        <fmt:formatDate value="${documentStatsForm.pendingCountSynced}" type="both"/>
+                        <fmt:formatDate value="${documentStatsForm.pendingCountSynced}" type="both" timeZone="UTC"/>
                     </span>
                 </span>
 			</div>
@@ -225,7 +225,7 @@
 				<span class="general-text">
                     Last sync:
                     <span class="timestamp">
-                        <fmt:formatDate value="${documentStatsForm.rejectedCountSynced}" type="both"/>
+                        <fmt:formatDate value="${documentStatsForm.rejectedCountSynced}" type="both" timeZone="UTC"/>
                     </span>
                 </span>
 			</div>

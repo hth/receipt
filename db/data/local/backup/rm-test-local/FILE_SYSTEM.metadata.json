@@ -1,1 +1,1 @@
-{"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test-local.FILE_SYSTEM"},{"v":1,"key":{"BID":-1},"name":"file_system_bid","ns":"rm-test-local.FILE_SYSTEM"},{"v":1,"key":{"RID":-1},"name":"file_system_rid","ns":"rm-test-local.FILE_SYSTEM"}]}
+{"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test-local.FILE_SYSTEM"}]}

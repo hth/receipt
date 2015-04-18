@@ -22,8 +22,6 @@ import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.bson.BSONObject;
-import org.bson.BasicBSONObject;
 import org.bson.types.ObjectId;
 
 import org.joda.time.DateTime;
