@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.social.facebook.api.EducationExperience;
+import org.springframework.social.facebook.api.EducationEntry;
 import org.springframework.social.facebook.api.Reference;
 import org.springframework.social.facebook.api.WorkEntry;
 
@@ -144,7 +144,7 @@ public class UserProfileEntity extends BaseEntity {
     private List<WorkEntry> work;
 
     @Field ("EE")
-    private List<EducationExperience> educationExperiences;
+    private List<EducationEntry> education;
 
     @NotNull
     @Field ("ULE")
@@ -466,12 +466,12 @@ public class UserProfileEntity extends BaseEntity {
         this.work.add(work);
     }
 
-    public List<EducationExperience> getEducationExperiences() {
-        return educationExperiences;
+    public List<EducationEntry> getEducation() {
+        return education;
     }
 
-    public void setEducationExperiences(List<EducationExperience> educationExperiences) {
-        this.educationExperiences = educationExperiences;
+    public void setEducation(List<EducationEntry> education) {
+        this.education = education;
     }
 
     public UserLevelEnum getLevel() {
