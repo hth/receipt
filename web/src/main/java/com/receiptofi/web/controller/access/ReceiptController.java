@@ -12,6 +12,7 @@ import com.receiptofi.domain.json.JsonReceipt;
 import com.receiptofi.domain.json.JsonReceiptItem;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.repository.BizNameManager;
+import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -67,7 +68,7 @@ public class ReceiptController {
     @Autowired private ReceiptService receiptService;
     @Autowired private ItemService itemService;
     @Autowired private BizNameManager bizNameManager;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    @Autowired private ExpensesService expensesService;
 
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
     public ModelAndView loadForm(
@@ -85,7 +86,7 @@ public class ReceiptController {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
-            List<ExpenseTagEntity> expenseTags = userProfilePreferenceService.getExpenseTags(receiptUser.getRid());
+            List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
 
             receiptForm.setReceipt(receipt);
             receiptForm.setItems(items);
@@ -110,7 +111,7 @@ public class ReceiptController {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
-            List<ExpenseTagEntity> expenseTags = userProfilePreferenceService.getExpenseTags(receiptUser.getRid());
+            List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
 
             jsonReceiptDetail.setJsonReceipt(new JsonReceipt(receipt));
             jsonReceiptDetail.setItems(items.stream().map(JsonReceiptItem::newInstance).collect(Collectors.toCollection(LinkedList::new)));

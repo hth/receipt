@@ -64,45 +64,6 @@ public class UserProfilePreferenceService {
         return userProfileManager.getProfileUpdateSince(rid, since);
     }
 
-    /**
-     * Lists all the expenseTypes.
-     *
-     * @param rid
-     * @return
-     */
-    public List<ExpenseTagEntity> getAllExpenseTypes(String rid) {
-        return expenseTagManager.getAllExpenseTags(rid);
-    }
-
-    /**
-     * Lists all the active expense types.
-     *
-     * @param rid
-     * @return
-     */
-    public List<ExpenseTagEntity> getExpenseTags(String rid) {
-        return expenseTagManager.getExpenseTags(rid);
-    }
-
-    public ExpenseTagEntity getExpenseTag(String rid, String expenseTypeId) {
-        if (StringUtils.isNotBlank(expenseTypeId)) {
-            return expenseTagManager.getExpenseTag(rid, expenseTypeId);
-        }
-        return null;
-    }
-
-    public void saveExpenseTag(ExpenseTagEntity expenseType) {
-        expenseTagManager.save(expenseType);
-    }
-
-    public void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
-        expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
-    }
-
-    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
-        expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
-    }
-
     public void deleteHard(UserProfileEntity userProfile) {
         userProfileManager.deleteHard(userProfile);
     }

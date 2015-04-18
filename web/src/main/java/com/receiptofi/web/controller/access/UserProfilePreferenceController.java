@@ -12,6 +12,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
 import com.receiptofi.service.EmailValidateService;
+import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.MailService;
@@ -91,6 +92,7 @@ public class UserProfilePreferenceController {
     @Autowired private EmailValidateService emailValidateService;
     @Autowired private FileSystemService fileSystemService;
     @Autowired private BillingService billingService;
+    @Autowired private ExpensesService expensesService;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -242,13 +244,13 @@ public class UserProfilePreferenceController {
 
         try {
             if (StringUtils.isBlank(expenseTagForm.getTagId())) {
-                if (expenseTagCountMax > userProfilePreferenceService.getAllExpenseTypes(receiptUser.getRid()).size()) {
+                if (expenseTagCountMax > expensesService.getAllExpenseTypes(receiptUser.getRid()).size()) {
                     ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
                             expenseTagForm.getTagName(),
                             receiptUser.getRid(),
                             expenseTagForm.getTagColor());
 
-                    userProfilePreferenceService.saveExpenseTag(expenseTag);
+                    expensesService.saveExpenseTag(expenseTag);
                 } else {
                     result.rejectValue("tagName",
                             StringUtils.EMPTY,
@@ -261,7 +263,7 @@ public class UserProfilePreferenceController {
                     redirectAttrs.addFlashAttribute("result", result);
                 }
             } else {
-                userProfilePreferenceService.updateExpenseTag(
+                expensesService.updateExpenseTag(
                         expenseTagForm.getTagId(),
                         expenseTagForm.getTagName(),
                         expenseTagForm.getTagColor(),
@@ -303,7 +305,7 @@ public class UserProfilePreferenceController {
         try {
             long count = itemService.countItemsUsingExpenseType(expenseTagForm.getTagId(), receiptUser.getRid());
             if (0 == count) {
-                userProfilePreferenceService.deleteExpenseTag(
+                expensesService.deleteExpenseTag(
                         expenseTagForm.getTagId(),
                         expenseTagForm.getTagName(),
                         expenseTagForm.getTagColor(),
@@ -427,7 +429,7 @@ public class UserProfilePreferenceController {
      * @param rid
      */
     private void populateExpenseTag(ProfileForm profileForm, String rid) {
-        List<ExpenseTagEntity> expenseTypes = userProfilePreferenceService.getAllExpenseTypes(rid);
+        List<ExpenseTagEntity> expenseTypes = expensesService.getAllExpenseTypes(rid);
         profileForm.setExpenseTags(expenseTypes);
 
         Map<String, Long> expenseTagWithCount = new HashMap<>();
