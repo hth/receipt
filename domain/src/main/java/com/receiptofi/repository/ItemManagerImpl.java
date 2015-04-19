@@ -38,6 +38,7 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -287,11 +288,11 @@ public final class ItemManagerImpl implements ItemManager {
     public List<ItemEntity> getItemEntitiesForSpecificExpenseTypeForTheYear(ExpenseTagEntity expenseType) {
         return mongoTemplate.find(
                 query(where("EXPENSE_TAG.$id").is(new ObjectId(expenseType.getId()))
-                        .and("RTX").gte(DateUtil.startOfYear())
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
+                                .and("RTX").gte(DateUtil.startOfYear())
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
                 ),
                 ItemEntity.class
         );
@@ -310,5 +311,14 @@ public final class ItemManagerImpl implements ItemManager {
                 ),
                 ItemEntity.class
         );
+    }
+
+    @Override
+    public boolean removeExpenseTagReferences(String rid, String expenseTagId) {
+        return mongoTemplate.updateMulti(
+                query(where("RID").is(rid).and("EXPENSE_TAG.$id").is(new ObjectId(expenseTagId))),
+                entityUpdate(new Update().unset("EXPENSE_TAG")),
+                TABLE
+        ).getN() > 0;
     }
 }

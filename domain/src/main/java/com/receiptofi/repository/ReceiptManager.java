@@ -191,6 +191,17 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
     List<ReceiptEntity> findAllReceipts(String rid);
 
+    long countReceiptsUsingExpenseType(String expenseTypeId, String rid);
+
+    /**
+     * Remove reference to expense tag.
+     *
+     * @param rid
+     * @param expenseTagId
+     * @return
+     */
+    boolean removeExpenseTagReferences(String rid, String expenseTagId);
+
     /**
      * Collection size.
      */

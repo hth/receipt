@@ -113,6 +113,15 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
     List<ItemEntity> getItemEntitiesForUnAssignedExpenseTypeForTheYear(String rid);
 
     /**
+     * Remove reference to expense tag.
+     *
+     * @param rid
+     * @param expenseTagId
+     * @return
+     */
+    boolean removeExpenseTagReferences(String rid, String expenseTagId);
+
+    /**
      * Collection size.
      */
     long collectionSize();

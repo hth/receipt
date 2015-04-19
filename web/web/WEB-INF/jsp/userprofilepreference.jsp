@@ -225,6 +225,18 @@
             <div id="tabs-2" class="ajx-content report_my">
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
+
+                <c:if test="${!empty expenseTagForm.successMessage}">
+                    <div class="r-success" style="width: 98%; margin: 20px 0 10px 0;">
+                        <c:out value="${expenseTagForm.successMessage}" />
+                    </div>
+                </c:if>
+                <c:if test="${!empty expenseTagForm.errorMessage}">
+                    <div class="r-error" style="width: 98%; margin: 20px 0 10px 0;">
+                        <c:out value="${expenseTagForm.errorMessage}" />
+                    </div>
+                </c:if>
+
                 <h2 class="h2" style="padding-bottom:2%;">Tag Expenses</h2>
                 <div class="">
                     <c:forEach var="expenseTag" items="${profileForm.expenseTags}" varStatus="status">

@@ -16,6 +16,7 @@ import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.MailService;
+import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
@@ -93,6 +94,7 @@ public class UserProfilePreferenceController {
     @Autowired private FileSystemService fileSystemService;
     @Autowired private BillingService billingService;
     @Autowired private ExpensesService expensesService;
+    @Autowired private ReceiptService receiptService;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -303,26 +305,32 @@ public class UserProfilePreferenceController {
         }
 
         try {
-            long count = itemService.countItemsUsingExpenseType(expenseTagForm.getTagId(), receiptUser.getRid());
-            if (0 == count) {
-                expensesService.deleteExpenseTag(
-                        expenseTagForm.getTagId(),
-                        expenseTagForm.getTagName(),
-                        expenseTagForm.getTagColor(),
-                        receiptUser.getRid()
-                );
-            } else {
-                result.rejectValue(
-                        "tagName",
-                        StringUtils.EMPTY,
-                        "Cannot delete " +
-                                expenseTagForm.getTagName() +
-                                " as it is being used by at least " +
-                                count +
-                                " document(s)");
+            long tagItemCount = itemService.countItemsUsingExpenseType(
+                    expenseTagForm.getTagId(),
+                    receiptUser.getRid());
 
-                redirectAttrs.addFlashAttribute("result", result);
+            long tagReceiptCount = receiptService.countReceiptsUsingExpenseType(
+                    expenseTagForm.getTagId(),
+                    receiptUser.getRid());
+
+            expensesService.deleteExpenseTag(
+                    expenseTagForm.getTagId(),
+                    expenseTagForm.getTagName(),
+                    expenseTagForm.getTagColor(),
+                    receiptUser.getRid()
+            );
+
+            expenseTagForm.setSuccessMessage("Deleted Expense Tag: " + expenseTagForm.getTagName() + " successfully.");
+            if (tagReceiptCount > 0) {
+                expenseTagForm.setSuccessMessage("Removed expense tag from " + tagReceiptCount + " receipt(s).");
+                if (tagItemCount > 0) {
+                    expenseTagForm.setSuccessMessage("And, removed expense tag from  " + tagItemCount + " item(s).");
+                }
+            } else if (tagItemCount > 0) {
+                expenseTagForm.setSuccessMessage("Removed expense tag from  " + tagItemCount + " item(s).");
             }
+
+            redirectAttrs.addFlashAttribute("expenseTagForm", expenseTagForm);
         } catch (Exception e) {
             LOG.error("Error saving expenseTag={} reason={}", expenseTagForm.getTagName(), e.getLocalizedMessage(), e);
             result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
