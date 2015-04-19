@@ -101,6 +101,10 @@ public class ReceiptService {
         return receiptManager.findThisDayReceipts(year, month, day, receiptUserId);
     }
 
+    public long countReceiptsUsingExpenseType(String expenseTypeId, String rid) {
+        return receiptManager.countReceiptsUsingExpenseType(expenseTypeId, rid);
+    }
+
     /**
      * Delete a Receipt and its associated data.
      *

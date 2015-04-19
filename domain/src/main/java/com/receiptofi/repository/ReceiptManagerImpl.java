@@ -19,6 +19,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
@@ -94,15 +95,16 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public List<ReceiptEntity> getAllReceiptsForTheYear(String rid, DateTime startOfTheYear) {
-        Criteria criteria = where("RID").is(rid)
-                .and("RTXD").gte(startOfTheYear)
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                );
-
-        Sort sort = new Sort(DESC, "RTXD").and(new Sort(DESC, "C"));
-        return mongoTemplate.find(query(criteria).with(sort), ReceiptEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("RID").is(rid)
+                        .and("RTXD").gte(startOfTheYear)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(DESC, "RTXD").and(new Sort(DESC, "C"))),
+                ReceiptEntity.class,
+                TABLE);
     }
 
     @Override
@@ -239,8 +241,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Override
     public ReceiptEntity getReceipt(String id, String rid) {
         Assert.hasText(id, "Id is empty");
-        Query query = query(where("id").is(id).and("RID").is(rid));
-        return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id).and("RID").is(rid)), ReceiptEntity.class, TABLE);
     }
 
     /**
@@ -315,8 +316,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public ReceiptEntity findWithReceiptOCR(String documentId) {
-        Query query = query(where("DID").is(documentId));
-        return mongoTemplate.findOne(query, ReceiptEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("DID").is(documentId)), ReceiptEntity.class, TABLE);
     }
 
     @Override
@@ -337,9 +337,10 @@ public class ReceiptManagerImpl implements ReceiptManager {
             removeCompleteReminiscenceOfSoftDeletedReceipt(checksum);
         }
 
-        Query query = query(where("id").is(object.getId()));
-        Update update = Update.update("D", true).set("CS", checksum);
-        mongoTemplate.updateFirst(query, entityUpdate(update), ReceiptEntity.class);
+        mongoTemplate.updateFirst(
+                query(where("id").is(object.getId())),
+                entityUpdate(Update.update("D", true).set("CS", checksum)),
+                ReceiptEntity.class);
     }
 
     /**
@@ -348,8 +349,11 @@ public class ReceiptManagerImpl implements ReceiptManager {
      * @param checksum
      */
     private void removeCompleteReminiscenceOfSoftDeletedReceipt(String checksum) {
-        Criteria criteria = where("CS").is(checksum);
-        List<ReceiptEntity> duplicateDeletedReceipts = mongoTemplate.find(query(criteria), ReceiptEntity.class, TABLE);
+        List<ReceiptEntity> duplicateDeletedReceipts = mongoTemplate.find(
+                query(where("CS").is(checksum)),
+                ReceiptEntity.class,
+                TABLE);
+
         for (ReceiptEntity receiptEntity : duplicateDeletedReceipts) {
             itemManager.deleteWhereReceipt(receiptEntity);
             fileSystemManager.deleteHard(receiptEntity.getFileSystemEntities());
@@ -360,14 +364,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public long countAllReceiptForAStore(BizStoreEntity bizStoreEntity) {
-        Criteria criteria = where("BIZ_STORE.$id").is(new ObjectId(bizStoreEntity.getId()));
-        return mongoTemplate.count(query(criteria), TABLE);
+        return mongoTemplate.count(query(where("BIZ_STORE.$id").is(new ObjectId(bizStoreEntity.getId()))), TABLE);
     }
 
     @Override
     public long countAllReceiptForABizName(BizNameEntity bizNameEntity) {
-        Criteria criteria = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
-        return mongoTemplate.count(query(criteria), TABLE);
+        return mongoTemplate.count(query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))), TABLE);
     }
 
     @Override
@@ -449,5 +451,28 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Override
     public List<ReceiptEntity> findAllReceipts(String rid) {
         return mongoTemplate.find(query(where("RID").is(rid)), ReceiptEntity.class);
+    }
+
+    @Override
+    public long countReceiptsUsingExpenseType(String expenseTypeId, String rid) {
+        return mongoTemplate.count(
+                query(where("EXPENSE_TAG.$id").is(new ObjectId(expenseTypeId))
+                                .and("RID").is(rid)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
+                ),
+                ReceiptEntity.class
+        );
+    }
+
+    @Override
+    public boolean removeExpenseTagReferences(String rid, String expenseTagId) {
+        return mongoTemplate.updateMulti(
+                query(where("RID").is(rid).and("EXPENSE_TAG.$id").is(new ObjectId(expenseTagId))),
+                entityUpdate(new Update().unset("EXPENSE_TAG")),
+                TABLE
+        ).getN() > 0;
     }
 }

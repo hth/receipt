@@ -2,6 +2,8 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.repository.ExpenseTagManager;
+import com.receiptofi.repository.ItemManager;
+import com.receiptofi.repository.ReceiptManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,6 +27,8 @@ import java.util.List;
 public class ExpensesService {
 
     @Autowired private ExpenseTagManager expenseTagManager;
+    @Autowired private ReceiptManager receiptManager;
+    @Autowired private ItemManager itemManager;
 
     /**
      * Lists all the active expense types.
@@ -66,6 +70,8 @@ public class ExpensesService {
     }
 
     public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+        receiptManager.removeExpenseTagReferences(rid, expenseTypeId);
+        itemManager.removeExpenseTagReferences(rid, expenseTypeId);
         expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
     }
 }
