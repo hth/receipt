@@ -7,6 +7,9 @@ import com.receiptofi.repository.ReceiptManager;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,7 @@ import java.util.List;
 })
 @Service
 public class ExpensesService {
+    private static final Logger LOG = LoggerFactory.getLogger(ExpensesService.class);
 
     @Autowired private ExpenseTagManager expenseTagManager;
     @Autowired private ReceiptManager receiptManager;
@@ -69,9 +73,11 @@ public class ExpensesService {
         expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
     }
 
-    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
-        receiptManager.removeExpenseTagReferences(rid, expenseTypeId);
-        itemManager.removeExpenseTagReferences(rid, expenseTypeId);
-        expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
+    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String rid) {
+        boolean removedFromReceipts = receiptManager.removeExpenseTagReferences(rid, expenseTypeId);
+        boolean removedFromItems = itemManager.removeExpenseTagReferences(rid, expenseTypeId);
+
+        LOG.info("Deleted expense tags from receipt={} and items={}", removedFromReceipts, removedFromItems);
+        expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, rid);
     }
 }

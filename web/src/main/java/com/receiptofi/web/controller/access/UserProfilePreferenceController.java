@@ -316,7 +316,6 @@ public class UserProfilePreferenceController {
             expensesService.deleteExpenseTag(
                     expenseTagForm.getTagId(),
                     expenseTagForm.getTagName(),
-                    expenseTagForm.getTagColor(),
                     receiptUser.getRid()
             );
 
