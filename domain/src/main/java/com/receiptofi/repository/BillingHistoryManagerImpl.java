@@ -65,8 +65,7 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
     @Override
     public List<BillingHistoryEntity> getHistory(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid))
-                        .with(new Sort(DESC, "BM")),
+                query(where("RID").is(rid)).with(new Sort(DESC, "BM")),
                 BillingHistoryEntity.class
         );
     }
