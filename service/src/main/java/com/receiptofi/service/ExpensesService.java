@@ -73,7 +73,7 @@ public class ExpensesService {
         expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
     }
 
-    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String rid) {
         boolean removedFromReceipts = receiptManager.removeExpenseTagReferences(rid, expenseTypeId);
         boolean removedFromItems = itemManager.removeExpenseTagReferences(rid, expenseTypeId);
 
