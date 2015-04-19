@@ -121,7 +121,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public void deleteExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid) {
+    public void deleteExpenseTag(String expenseTagId, String expenseTagName, String rid) {
         WriteResult writeResult = mongoTemplate.remove(
                 query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid).and("TAG").is(expenseTagName)),
                 ExpenseTagEntity.class);
