@@ -1,6 +1,7 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ReceiptManager;
@@ -73,6 +74,7 @@ public class ExpensesService {
         expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
     }
 
+    @Mobile
     public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String rid) {
         boolean removedFromReceipts = receiptManager.removeExpenseTagReferences(rid, expenseTypeId);
         boolean removedFromItems = itemManager.removeExpenseTagReferences(rid, expenseTypeId);
