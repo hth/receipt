@@ -586,7 +586,7 @@
             info = [
                 <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
                 {
-                    src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilenameForS3}",
+                    src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.key}",
                     pos: {
                         top: topHeight = calculateTop(${arr.height}),
                         left: 0

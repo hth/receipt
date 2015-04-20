@@ -25,7 +25,7 @@
         window.onload = function () {
             <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
             fetchReceiptImage(
-                    'https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.blobId}.${arr.originalFilenameForS3}',
+                    'https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.key}',
                     "holder_" + ${status.index},
                     '${arr.id}',
                     ${arr.imageOrientation},

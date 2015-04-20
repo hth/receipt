@@ -5,8 +5,6 @@ package com.receiptofi.domain;
 
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
-import com.receiptofi.utils.DateUtil;
-
 import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
@@ -42,10 +40,10 @@ public abstract class BaseEntity implements Serializable {
     private Integer version;
 
     @Field ("U")
-    private Date updated = DateUtil.nowTime();
+    private Date updated = new Date();
 
     @Field ("C")
-    private Date created = DateUtil.nowTime();
+    private Date created = new Date();
 
     @Field ("A")
     private boolean active = true;
@@ -132,7 +130,7 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public void setUpdated() {
-        this.updated = DateTime.now().toDate();
+        this.updated = new Date();
     }
 
     @DateTimeFormat (iso = ISO.NONE)

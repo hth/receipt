@@ -2,6 +2,8 @@ package com.receiptofi.domain;
 
 import com.receiptofi.utils.FileUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import javax.validation.constraints.NotNull;
 
@@ -35,6 +38,9 @@ import javax.validation.constraints.NotNull;
 })
 public class FileSystemEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemEntity.class);
+
+    public static final SimpleDateFormat SDF_YEAR_AND_MONTH = new SimpleDateFormat("yyyy-MM");
+    public static final SimpleDateFormat SDF_DATE = new SimpleDateFormat("dd");
 
     /** Means image it aligned vertically. */
     public static final int DEFAULT_ORIENTATION_ANGLE = 0;
@@ -198,11 +204,6 @@ public class FileSystemEntity extends BaseEntity {
     }
 
     @Transient
-    public String getOriginalFilenameForS3() {
-        return originalFilename.substring(originalFilename.indexOf(".") + 1);
-    }
-
-    @Transient
     public void switchHeightAndWidth() {
         int tempHeight = this.height;
         //noinspection SuspiciousNameCombination
@@ -212,12 +213,20 @@ public class FileSystemEntity extends BaseEntity {
     }
 
     /**
-     * Name of the file on cloud.
+     * Name with location of the file in cloud.
      *
      * @return
      */
     @Transient
     public String getKey() {
-        return blobId + FileUtil.DOT + FileUtil.getFileExtension(originalFilename);
+        return new StringBuilder()
+                .append(SDF_YEAR_AND_MONTH.format(getCreated()))
+                .append("/")
+                .append(SDF_DATE.format(getCreated()))
+                .append("/")
+                .append(blobId)
+                .append(FileUtil.DOT)
+                .append(FileUtil.getFileExtension(originalFilename))
+                .toString();
     }
 }
