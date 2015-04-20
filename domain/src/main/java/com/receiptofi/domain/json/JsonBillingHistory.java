@@ -30,6 +30,9 @@ import com.receiptofi.domain.annotation.Mobile;
 @Mobile
 public class JsonBillingHistory {
 
+    @JsonProperty ("id")
+    private String id;
+
     @JsonProperty ("bs")
     private String billedStatus;
 
@@ -40,6 +43,7 @@ public class JsonBillingHistory {
     private String billedForMonth;
 
     public JsonBillingHistory(BillingHistoryEntity billingHistory) {
+        this.id = billingHistory.getId();
         this.billedStatus = billingHistory.getBilledStatus().name();
         this.accountBillingType = billingHistory.getAccountBillingType().name();
         this.billedForMonth = billingHistory.getBilledForMonthYear();
