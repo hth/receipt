@@ -35,20 +35,16 @@ import java.util.stream.Collectors;
 @Mobile
 public class JsonBilling {
 
-    @JsonProperty ("rid")
-    private String receiptUserId;
-
     @JsonProperty ("bt")
     private String accountBillingType;
 
     @JsonProperty ("ba")
     private boolean billedAccount;
 
-    @JsonProperty ("bh")
+    @JsonProperty ("billingHistories")
     private List<JsonBillingHistory> billingHistories = new LinkedList<>();
 
     public JsonBilling(BillingAccountEntity billingAccount, List<BillingHistoryEntity> billings) {
-        this.receiptUserId = billingAccount.getRid();
         this.accountBillingType = billingAccount.getAccountBillingType().name();
         this.billedAccount = billingAccount.isBilledAccount();
         this.billingHistories.addAll(billings.stream().map(JsonBillingHistory::new).collect(Collectors.toList()));
