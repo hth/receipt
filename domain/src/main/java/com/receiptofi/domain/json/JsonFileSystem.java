@@ -47,7 +47,7 @@ public class JsonFileSystem {
 
     public static JsonFileSystem newInstance(FileSystemEntity fileSystemEntity) {
         return new JsonFileSystem(
-                fileSystemEntity.getBlobId(),
+                fileSystemEntity.getKey(),
                 fileSystemEntity.getImageOrientation(),
                 fileSystemEntity.getSequence()
         );
