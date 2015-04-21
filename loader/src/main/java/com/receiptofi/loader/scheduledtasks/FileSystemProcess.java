@@ -1,5 +1,7 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.receiptofi.domain.CronStatsEntity;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.FileUtil;
@@ -37,6 +39,7 @@ public class FileSystemProcess {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);
 
     private ReceiptService receiptService;
+    private CronStatsService cronStatsService;
 
     private String expensofiReportLocation;
     private int deleteExcelFileAfterDay;
@@ -58,19 +61,26 @@ public class FileSystemProcess {
             @Value ("${removeExpiredExcelFiles:ON}")
             String removeExpiredExcelFiles,
 
-            ReceiptService receiptService
+            ReceiptService receiptService,
+            CronStatsService cronStatsService
     ) {
         this.expensofiReportLocation = expensofiReportLocation;
         this.deleteExcelFileAfterDay = deleteExcelFileAfterDay;
         this.removeExpiredExcelFiles = removeExpiredExcelFiles;
         this.receiptService = receiptService;
+        this.cronStatsService = cronStatsService;
     }
 
     @Scheduled (cron = "${loader.FileSystemProcess.removeExpiredExcelFiles}")
     public void removeExpiredExcelFiles() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                FileSystemProcess.class,
+                "removeExpiredExcelFiles",
+                removeExpiredExcelFiles);
+
         if ("ON".equalsIgnoreCase(removeExpiredExcelFiles)) {
             LOG.info("feature is {}", removeExpiredExcelFiles);
-            int found = 0;
+            int found = 0, failure = 0;
             try {
                 AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(deleteExcelFileAfterDay).toDate());
                 File directory = new File(expensofiReportLocation);
@@ -83,8 +93,15 @@ public class FileSystemProcess {
                 }
             } catch (Exception e) {
                 LOG.error("found error={}", e.getLocalizedMessage(), e);
+                failure++;
             } finally {
-                LOG.info("complete deletedExcelFile={}, foundExcelFile={}", countOfDeletedExcelFiles, found);
+                cronStats.addStats("foundExcelFile", found);
+                cronStats.addStats("failure", failure);
+                cronStats.addStats("deletedExcelFile", countOfDeletedExcelFiles);
+                cronStatsService.save(cronStats);
+
+                LOG.info("complete foundExcelFile={} failure={} deletedExcelFile={}",
+                        found, failure, countOfDeletedExcelFiles);
             }
         } else {
             LOG.info("feature is {}", removeExpiredExcelFiles);
@@ -114,13 +131,7 @@ public class FileSystemProcess {
         File directory = file.getParentFile();
 
         if (directory.exists()) {
-            FilenameFilter textFilter = new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.startsWith(FileUtil.TEMP_FILE_START_WITH);
-                }
-            };
-
+            FilenameFilter textFilter = (dir, name) -> name.startsWith(FileUtil.TEMP_FILE_START_WITH);
             countOfDeletedXmlFiles = directory.listFiles(textFilter).length;
             for (File f : directory.listFiles(textFilter)) {
                 LOG.debug("File={}{}{}", directory, File.separator, f.getName());

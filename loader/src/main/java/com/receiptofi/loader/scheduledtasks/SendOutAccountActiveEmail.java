@@ -2,11 +2,13 @@ package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.MailService;
 
 import org.slf4j.Logger;
@@ -45,10 +47,17 @@ public class SendOutAccountActiveEmail {
     @Autowired private AccountService accountService;
     @Autowired private MailService mailService;
     @Autowired private BillingService billingService;
+    @Autowired private CronStatsService cronStatsService;
 
     @Scheduled (cron = "${loader.SendOutAccountActiveEmail.registrationCompleteEmail}")
     public void registrationCompleteEmail() {
         LOG.info("begins");
+
+        CronStatsEntity cronStats = new CronStatsEntity(
+                SendOutAccountActiveEmail.class,
+                "registrationCompleteEmail",
+                registrationTurnedOn ? "ON" : "OFF");
+
         if (registrationTurnedOn) {
             List<UserAccountEntity> userAccounts = accountService.findRegisteredAccountWhenRegistrationIsOff(registrationInviteDailyLimit);
 
@@ -116,8 +125,15 @@ public class SendOutAccountActiveEmail {
 
                 accountService.removeRegistrationIsOffFrom(userAccount.getId());
             }
-            LOG.info("Registration complete mail sent success={} skipped={}  failure={} total={}",
-                    success, skipped, failure, userAccounts.size());
+
+            cronStats.addStats("total", userAccounts.size());
+            cronStats.addStats("success", success);
+            cronStats.addStats("skipped", skipped);
+            cronStats.addStats("failure", failure);
+            cronStatsService.save(cronStats);
+
+            LOG.info("Registration complete mail sent total={} success={} skipped={}  failure={}",
+                    userAccounts.size(), success, skipped, failure);
         } else {
             LOG.info("registrationTurnedOn feature is {}", registrationTurnedOn);
         }

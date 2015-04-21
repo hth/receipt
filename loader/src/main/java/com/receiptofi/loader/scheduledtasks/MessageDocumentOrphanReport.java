@@ -1,7 +1,9 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.MessageDocumentService;
 
@@ -37,6 +39,7 @@ public class MessageDocumentOrphanReport {
     private int pendingSinceDays;
     private MessageDocumentService messageDocumentService;
     private DocumentUpdateService documentUpdateService;
+    private CronStatsService cronStatsService;
 
     @Autowired
     public MessageDocumentOrphanReport(
@@ -47,17 +50,24 @@ public class MessageDocumentOrphanReport {
             int pendingSinceDays,
 
             MessageDocumentService messageDocumentService,
-            DocumentUpdateService documentUpdateService
+            DocumentUpdateService documentUpdateService,
+            CronStatsService cronStatsService
     ) {
         this.messageDocumentOrphanReport = messageDocumentOrphanReport;
         this.pendingSinceDays = pendingSinceDays;
         this.messageDocumentService = messageDocumentService;
         this.documentUpdateService = documentUpdateService;
+        this.cronStatsService = cronStatsService;
     }
 
     @Scheduled (cron = "${loader.MessageDocumentOrphanReport.orphanMessageDocument}")
     public void orphanMessageDocument() {
-        if (messageDocumentOrphanReport.equals("ON")) {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                MessageDocumentOrphanReport.class,
+                "messageDocumentOrphanReport",
+                messageDocumentOrphanReport);
+
+        if ("ON".equals(messageDocumentOrphanReport)) {
             Instant since = LocalDateTime.now().minusDays(pendingSinceDays).toInstant(ZoneOffset.UTC);
             Date sinceDate = Date.from(since);
             List<MessageDocumentEntity> pendingDocuments = messageDocumentService.findAllPending(sinceDate);
@@ -84,6 +94,12 @@ public class MessageDocumentOrphanReport {
             } catch(Exception e) {
                 LOG.error("Error during deleting orphan messageDocument, reason={}", e.getLocalizedMessage(), e);
             } finally {
+                cronStats.addStats("pendingDocuments", count);
+                cronStats.addStats("success", success);
+                cronStats.addStats("skipped", skipped);
+                cronStats.addStats("failure", failure);
+                cronStatsService.save(cronStats);
+
                 LOG.info("Orphan messageDocument count={} success={} skipped={} failure={}",
                         count, success, skipped, failure);
             }

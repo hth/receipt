@@ -2,10 +2,12 @@ package com.receiptofi.loader.scheduledtasks;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
@@ -61,6 +63,7 @@ public class FilesUploadToS3 {
     private AmazonS3Service amazonS3Service;
     private FileSystemService fileSystemService;
     private AffineTransformService affineTransformService;
+    private CronStatsService cronStatsService;
 
     @Autowired
     public FilesUploadToS3(
@@ -78,7 +81,8 @@ public class FilesUploadToS3 {
             ImageSplitService imageSplitService,
             AmazonS3Service amazonS3Service,
             FileSystemService fileSystemService,
-            AffineTransformService affineTransformService
+            AffineTransformService affineTransformService,
+            CronStatsService cronStatsService
     ) {
         this.bucketName = bucketName;
         this.folderName = folderName;
@@ -90,6 +94,7 @@ public class FilesUploadToS3 {
         this.amazonS3Service = amazonS3Service;
         this.fileSystemService = fileSystemService;
         this.affineTransformService = affineTransformService;
+        this.cronStatsService = cronStatsService;
     }
 
     /**
@@ -97,6 +102,11 @@ public class FilesUploadToS3 {
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.upload}")
     public void upload() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                FilesUploadToS3.class,
+                "upload",
+                filesUploadToS3);
+
         /**
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
@@ -193,6 +203,12 @@ public class FilesUploadToS3 {
                     LOG.warn("On failure removed files from cloud filename={}", fileSystem.getKey());
                 }
             } finally {
+                cronStats.addStats("success", success);
+                cronStats.addStats("skipped", skipped);
+                cronStats.addStats("failure", failure);
+                cronStats.addStats("found", documents.size());
+                cronStatsService.save(cronStats);
+
                 LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
             }
         }

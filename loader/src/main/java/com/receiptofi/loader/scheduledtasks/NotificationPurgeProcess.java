@@ -1,5 +1,7 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.receiptofi.domain.CronStatsEntity;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.NotificationService;
 
 import org.slf4j.Logger;
@@ -30,6 +32,7 @@ public class NotificationPurgeProcess {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentsPurgeProcess.class);
 
     private NotificationService notificationService;
+    private CronStatsService cronStatsService;
 
     private int inactiveNotificationAfterDay;
     private int purgeNotificationAfterDay;
@@ -46,17 +49,25 @@ public class NotificationPurgeProcess {
             @Value ("${purgeNotification:ON}")
             String purgeNotification,
 
-            NotificationService notificationService
+            NotificationService notificationService,
+            CronStatsService cronStatsService
     ) {
         this.purgeNotificationAfterDay = purgeNotificationAfterDay;
         this.inactiveNotificationAfterDay = inactiveNotificationAfterDay;
         this.purgeNotification = purgeNotification;
         this.notificationService = notificationService;
+        this.cronStatsService = cronStatsService;
     }
 
     @Scheduled (cron = "${loader.NotificationPurgeProcess.purgeNotificationDocument}")
     public void purgeNotificationDocument() {
         LOG.info("begins");
+
+        CronStatsEntity cronStats = new CronStatsEntity(
+                NotificationPurgeProcess.class,
+                "purgeNotificationDocument",
+                purgeNotification);
+
         if ("ON".equalsIgnoreCase(purgeNotification)) {
             int deletedCount = 0, inactiveCount = 0;
             try {
@@ -70,6 +81,10 @@ public class NotificationPurgeProcess {
             } catch (Exception e) {
                 LOG.error("Error during notification purge or marking inactive, reason={}", e.getLocalizedMessage(), e);
             } finally {
+                cronStats.addStats("deleted", deletedCount);
+                cronStats.addStats("inactive", inactiveCount);
+                cronStatsService.save(cronStats);
+
                 LOG.info("Notification deletedCount={} inactiveCount={}", deletedCount, inactiveCount);
             }
         } else {

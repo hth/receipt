@@ -1,8 +1,10 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.annotation.TemporaryCode;
 import com.receiptofi.repository.BizNameManager;
+import com.receiptofi.service.CronStatsService;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -36,6 +38,7 @@ public class StoreBizNameUpdateProcess {
     private int recordFetchLimit;
     private String storeBizNameUpdateProcess;
     private BizNameManager bizNameManager;
+    private CronStatsService cronStatsService;
 
     @Autowired
     public StoreBizNameUpdateProcess(
@@ -45,16 +48,24 @@ public class StoreBizNameUpdateProcess {
             @Value ("${storeBizNameUpdateProcess:OFF}")
             String storeBizNameUpdateProcess,
 
-            BizNameManager bizNameManager
+            BizNameManager bizNameManager,
+            CronStatsService cronStatsService
     ) {
         this.recordFetchLimit = recordFetchLimit;
         this.storeBizNameUpdateProcess = storeBizNameUpdateProcess;
         this.bizNameManager = bizNameManager;
+        this.cronStatsService = cronStatsService;
     }
 
     @Scheduled (cron = "${loader.StoreBizNameUpdateProcess.updateNameOfBiz}")
     public void updateNameOfBiz() {
         LOG.info("begins");
+
+        CronStatsEntity cronStats = new CronStatsEntity(
+                StoreBizNameUpdateProcess.class,
+                "updateNameOfBiz",
+                storeBizNameUpdateProcess);
+
         if ("ON".equalsIgnoreCase(storeBizNameUpdateProcess)) {
             List<BizNameEntity> bizNames;
 
@@ -85,6 +96,11 @@ public class StoreBizNameUpdateProcess {
             } catch (Exception e) {
                 LOG.error("Error decoding, reason={}", e.getLocalizedMessage(), e);
             } finally {
+                cronStats.addStats("total", total);
+                cronStats.addStats("success", success);
+                cronStats.addStats("failure", failure);
+                cronStatsService.save(cronStats);
+
                 LOG.info("Complete updated bizName count={} success={} failure={}", total, success, failure);
             }
         } else {

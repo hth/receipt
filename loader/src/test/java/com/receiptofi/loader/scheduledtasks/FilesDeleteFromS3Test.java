@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import com.receiptofi.domain.CloudFileEntity;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.CloudFileService;
+import com.receiptofi.service.CronStatsService;
 
 import net.logstash.logback.encoder.org.apache.commons.lang.ArrayUtils;
 
@@ -38,6 +39,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 @SuppressWarnings ({
@@ -58,6 +60,7 @@ public class FilesDeleteFromS3Test {
     @Mock private DeleteObjectsResult deleteObjectsResult;
     @Mock private DeleteObjectsRequest deleteObjectsRequest;
     @Mock private MultiObjectDeleteException multiObjectDeleteException;
+    @Mock private CronStatsService cronStatsService;
 
     private FilesDeleteFromS3 filesDeleteFromS3;
     private Properties prop = new Properties();
@@ -85,14 +88,15 @@ public class FilesDeleteFromS3Test {
                 prop.getProperty("aws.s3.bucketName"),
                 prop.getProperty("aws.s3.bucketName"),
                 cloudFileService,
-                amazonS3Service);
+                amazonS3Service,
+                cronStatsService);
 
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
     }
 
     @Test
     public void deleteWhenEmpty() {
-        when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(new ArrayList<CloudFileEntity>());
+        when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(new ArrayList<>());
 
         filesDeleteFromS3.delete();
         verify(amazonS3Service, never()).getS3client();
@@ -101,7 +105,7 @@ public class FilesDeleteFromS3Test {
 
     @Test
     public void deleteException() {
-        when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(Arrays.asList(cloudFileEntity));
+        when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(Collections.singletonList(cloudFileEntity));
         when(amazonS3Service.getS3client().deleteObjects(any(DeleteObjectsRequest.class))).thenThrow(multiObjectDeleteException);
 
         filesDeleteFromS3.delete();

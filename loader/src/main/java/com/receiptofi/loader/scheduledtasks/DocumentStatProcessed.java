@@ -1,6 +1,8 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentDailyStatEntity;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentDailyStatService;
 import com.receiptofi.utils.DateUtil;
 
@@ -38,6 +40,7 @@ public class DocumentStatProcessed {
     private String statStartDate;
     private String generateDocumentStat;
     private DocumentDailyStatService dailyStatService;
+    private CronStatsService cronStatsService;
 
     @Autowired
     public DocumentStatProcessed(
@@ -47,34 +50,59 @@ public class DocumentStatProcessed {
             @Value ("${generateDocumentStat:ON}")
             String generateDocumentStat,
 
-            DocumentDailyStatService dailyStatService
+            DocumentDailyStatService dailyStatService,
+            CronStatsService cronStatsService
     ) {
         this.statStartDate = statStartDate;
         this.generateDocumentStat = generateDocumentStat;
         this.dailyStatService = dailyStatService;
+        this.cronStatsService = cronStatsService;
     }
 
     @Scheduled (cron = "${loader.DocumentStatProcessed.computeDocumentDailyStat}")
     public void computeDocumentDailyStat() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                DocumentStatProcessed.class,
+                "computeDocumentDailyStat",
+                generateDocumentStat);
+
         if ("ON".equalsIgnoreCase(generateDocumentStat)) {
             LOG.info("feature is {}", generateDocumentStat);
-            DocumentDailyStatEntity lastEntry = dailyStatService.getLastEntry();
-            if (null == lastEntry) {
-                LOG.warn("initializing DocumentDailyStatEntity");
-                initialized();
-                lastEntry = dailyStatService.getLastEntry();
-            }
 
-            Assert.notNull(lastEntry);
-
-            int days = Days.daysBetween(new DateTime(lastEntry.getDate()), DateUtil.midnight(DateTime.now())).getDays();
-            LOG.info("last stat computed for document processed on date={} was {} days ago", lastEntry.getDate(), days);
-            if (days > A_DAY) {
-                Date computeSince = new DateTime(lastEntry.getDate()).plusDays(1).toDate();
-                Map<Date, DocumentDailyStatEntity> dailyStat = dailyStatService.computeDailyStats(computeSince);
-                for (Date day : dailyStat.keySet()) {
-                    dailyStatService.save(dailyStat.get(day));
+            int success = 0, failure = 0, skipped = 0, found = 0;
+            try {
+                DocumentDailyStatEntity lastEntry = dailyStatService.getLastEntry();
+                if (null == lastEntry) {
+                    LOG.warn("initializing DocumentDailyStatEntity");
+                    initialized();
+                    lastEntry = dailyStatService.getLastEntry();
                 }
+
+                Assert.notNull(lastEntry);
+
+                int days = Days.daysBetween(new DateTime(lastEntry.getDate()), DateUtil.midnight(DateTime.now())).getDays();
+                LOG.info("last stat computed for document processed on date={} was {} days ago", lastEntry.getDate(), days);
+                if (days > A_DAY) {
+                    Date computeSince = new DateTime(lastEntry.getDate()).plusDays(1).toDate();
+                    Map<Date, DocumentDailyStatEntity> dailyStat = dailyStatService.computeDailyStats(computeSince);
+                    found = dailyStat.size();
+
+                    for (Date day : dailyStat.keySet()) {
+                        dailyStatService.save(dailyStat.get(day));
+                        success++;
+                    }
+                } else {
+                    skipped++;
+                }
+            } catch (Exception e) {
+                LOG.error("Error computing daily document stats, reason={}", e.getLocalizedMessage(), e);
+                failure++;
+            } finally {
+                cronStats.addStats("found", found);
+                cronStats.addStats("success", success);
+                cronStats.addStats("skipped", skipped);
+                cronStats.addStats("failure", failure);
+                cronStatsService.save(cronStats);
             }
         } else {
             LOG.info("feature is {}", generateDocumentStat);

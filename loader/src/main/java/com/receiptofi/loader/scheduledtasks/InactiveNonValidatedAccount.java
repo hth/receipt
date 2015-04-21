@@ -1,6 +1,8 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.CronStatsService;
 
 import org.joda.time.DateTime;
 
@@ -33,10 +35,15 @@ public class InactiveNonValidatedAccount {
     private String inactiveNonValidatedAccount;
 
     private AccountService accountService;
+    private CronStatsService cronStatsService;
 
     @Autowired
-    public InactiveNonValidatedAccount(AccountService accountService) {
+    public InactiveNonValidatedAccount(
+            AccountService accountService,
+            CronStatsService cronStatsService
+    ) {
         this.accountService = accountService;
+        this.cronStatsService = cronStatsService;
     }
 
     /**
@@ -44,14 +51,23 @@ public class InactiveNonValidatedAccount {
      */
     @Scheduled (cron = "${loader.InactiveNonValidatedAccount.markAccountInactiveWhenNotValidated}")
     public void markAccountInactiveWhenNotValidated() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                InactiveNonValidatedAccount.class,
+                "markAccountInactiveWhenNotValidated",
+                inactiveNonValidatedAccount);
+
+        int count = 0;
         LOG.info("begins");
-        if (inactiveNonValidatedAccount.equalsIgnoreCase("ON")) {
+        if ("ON".equals(inactiveNonValidatedAccount)) {
             DateTime pastActivationDate = DateTime.now().minusDays(mailValidationTimeoutPeriod);
             LOG.info("marking accounts inactive which are past activation date={}", pastActivationDate.toString());
-            int count = accountService.inactiveNonValidatedAccount(pastActivationDate.toDate());
-            LOG.info("marked total number of account inactive={}", count);
+            count = accountService.inactiveNonValidatedAccount(pastActivationDate.toDate());
+            LOG.info("marked total number of account markedInactive={}", count);
         } else {
             LOG.info("feature is {}", inactiveNonValidatedAccount);
         }
+
+        cronStats.addStats("markedInactive", count);
+        cronStatsService.save(cronStats);
     }
 }

@@ -1,7 +1,9 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.repository.DocumentManager;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
 
 import org.slf4j.Logger;
@@ -30,6 +32,7 @@ public class DocumentsPurgeProcess {
 
     private DocumentManager documentManager;
     private DocumentUpdateService documentUpdateService;
+    private CronStatsService cronStatsService;
 
     private int purgeRejectedDocumentAfterDay;
     private int purgeMaxDocumentsADay;
@@ -37,7 +40,7 @@ public class DocumentsPurgeProcess {
     //TODO(hth) add to AOP to turn on and off instead
     private String purgeRejectedDocument;
 
-    private int count;
+    private int deleted;
 
     @Autowired
     public DocumentsPurgeProcess(
@@ -51,36 +54,50 @@ public class DocumentsPurgeProcess {
             String purgeRejectedDocument,
 
             DocumentManager documentManager,
-            DocumentUpdateService documentUpdateService
+            DocumentUpdateService documentUpdateService,
+            CronStatsService cronStatsService
     ) {
         this.purgeRejectedDocumentAfterDay = purgeRejectedDocumentAfterDay;
         this.purgeMaxDocumentsADay = purgeMaxDocumentsADay;
         this.purgeRejectedDocument = purgeRejectedDocument;
         this.documentManager = documentManager;
         this.documentUpdateService = documentUpdateService;
+        this.cronStatsService = cronStatsService;
     }
 
     @Scheduled (cron = "${loader.DocumentsPurgeProcess.purgeRejectedDocument}")
     public void purgeRejectedDocument() {
         LOG.info("begins");
+
+        CronStatsEntity cronStats = new CronStatsEntity(
+                DocumentsPurgeProcess.class,
+                "purgeRejectedDocument",
+                purgeRejectedDocument);
+
         if ("ON".equalsIgnoreCase(purgeRejectedDocument)) {
-            int found = 0;
+            int found = 0, failure = 0;
             try {
                 List<DocumentEntity> documents = documentManager.getAllRejected(purgeRejectedDocumentAfterDay);
                 found = documents.size();
                 for (DocumentEntity documentEntity : documents) {
                     documentUpdateService.deleteRejectedDocument(documentEntity);
-                    count++;
+                    deleted++;
 
-                    if (purgeMaxDocumentsADay > 0 && count == purgeMaxDocumentsADay) {
+                    if (purgeMaxDocumentsADay > 0 && deleted == purgeMaxDocumentsADay) {
                         LOG.info("Reached purge documents per day max={}", purgeMaxDocumentsADay);
                         break;
                     }
                 }
             } catch (Exception e) {
                 LOG.error("error purge document, reason={}", e.getLocalizedMessage(), e);
+                failure++;
             } finally {
-                LOG.info("complete deleted={}, found={}", count, found);
+                cronStats.addStats("found", found);
+                cronStats.addStats("failure", failure);
+                cronStats.addStats("deleted", deleted);
+                cronStatsService.save(cronStats);
+
+                LOG.info("complete found={} failure={} deleted={}", found, failure, deleted);
             }
         } else {
             LOG.info("feature is {}", purgeRejectedDocument);
@@ -90,7 +107,7 @@ public class DocumentsPurgeProcess {
     /**
      * Counts number of rejected documents deleted
      */
-    protected int getCount() {
-        return count;
+    protected int getDeleted() {
+        return deleted;
     }
 }

@@ -1,7 +1,9 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.repository.BizStoreManager;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.ExternalService;
 
 import org.slf4j.Logger;
@@ -35,6 +37,7 @@ public class RestoreBizStoreDataProcess {
     private int recordFetchLimit;
     private BizStoreManager bizStoreManager;
     private ExternalService externalService;
+    private CronStatsService cronStatsService;
 
     @Autowired
     public RestoreBizStoreDataProcess(
@@ -48,19 +51,27 @@ public class RestoreBizStoreDataProcess {
             int recordFetchLimit,
 
             BizStoreManager bizStoreManager,
-            ExternalService externalService
+            ExternalService externalService,
+            CronStatsService cronStatsService
     ) {
         this.searchAddressesNotValidatedThroughExternalApi = searchAddressesNotValidatedThroughExternalApi;
         this.restoreAddresses = restoreAddresses;
         this.recordFetchLimit = recordFetchLimit;
         this.bizStoreManager = bizStoreManager;
         this.externalService = externalService;
+        this.cronStatsService = cronStatsService;
     }
 
     @Scheduled (cron = "${loader.RestoreBizStoreDataProcess.restoreAddresses}")
     public void restoreAddresses() {
         LOG.info("begins");
-        if ("ON".equalsIgnoreCase(restoreAddresses)) {
+
+        CronStatsEntity cronStats = new CronStatsEntity(
+                RestoreBizStoreDataProcess.class,
+                "restoreAddresses",
+                restoreAddresses);
+
+        if (restoreAddresses.equals("ON")) {
             List<BizStoreEntity> bizStores;
 
             int success = 0, failure = 0, total = 0;
@@ -96,6 +107,12 @@ public class RestoreBizStoreDataProcess {
             } catch (Exception e) {
                 LOG.error("Error decoding, reason={}", e.getLocalizedMessage(), e);
             } finally {
+                cronStats.addStats("selective", searchAddressesNotValidatedThroughExternalApi ? "YES" : "NO");
+                cronStats.addStats("total", total);
+                cronStats.addStats("success", success);
+                cronStats.addStats("failure", failure);
+                cronStatsService.save(cronStats);
+
                 LOG.info("Complete searchAddressesNotValidatedThroughExternalApi={} count={} success={} failure={}",
                         searchAddressesNotValidatedThroughExternalApi, total, success, failure);
             }

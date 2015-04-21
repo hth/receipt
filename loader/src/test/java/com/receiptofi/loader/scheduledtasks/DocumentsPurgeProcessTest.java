@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.repository.DocumentManager;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
 
 import org.junit.Before;
@@ -34,6 +35,7 @@ public class DocumentsPurgeProcessTest {
     private DocumentsPurgeProcess documentsPurgeProcess;
     @Mock private DocumentManager documentManager;
     @Mock private DocumentUpdateService documentUpdateService;
+    @Mock private CronStatsService cronStatsService;
 
     @Before
     public void setUp() {
@@ -42,7 +44,14 @@ public class DocumentsPurgeProcessTest {
 
     @Test
     public void whenPurgeIsTurnedOn() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
+        documentsPurgeProcess = new DocumentsPurgeProcess(
+                purgeRejectedDocumentAfterDay,
+                purgeMaxDocumentsADay,
+                "ON",
+                documentManager,
+                documentUpdateService,
+                cronStatsService);
+
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         documentsPurgeProcess.purgeRejectedDocument();
         verify(documentUpdateService, times(1)).deleteRejectedDocument(any(DocumentEntity.class));
@@ -50,7 +59,14 @@ public class DocumentsPurgeProcessTest {
 
     @Test
     public void whenPurgeIsTurnedOff() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, purgeMaxDocumentsADay, "OFF", documentManager, documentUpdateService);
+        documentsPurgeProcess = new DocumentsPurgeProcess(
+                purgeRejectedDocumentAfterDay,
+                purgeMaxDocumentsADay,
+                "OFF",
+                documentManager,
+                documentUpdateService,
+                cronStatsService);
+
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         documentsPurgeProcess.purgeRejectedDocument();
         verify(documentUpdateService, never()).deleteRejectedDocument(any(DocumentEntity.class));
@@ -58,7 +74,14 @@ public class DocumentsPurgeProcessTest {
 
     @Test
     public void purgeAll() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
+        documentsPurgeProcess = new DocumentsPurgeProcess(
+                purgeRejectedDocumentAfterDay,
+                -purgeMaxDocumentsADay,
+                "ON",
+                documentManager,
+                documentUpdateService,
+                cronStatsService);
+
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         documentsPurgeProcess.purgeRejectedDocument();
         verify(documentUpdateService, times(2)).deleteRejectedDocument(any(DocumentEntity.class));
@@ -66,7 +89,14 @@ public class DocumentsPurgeProcessTest {
 
     @Test
     public void purgeEmpty() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
+        documentsPurgeProcess = new DocumentsPurgeProcess(
+                purgeRejectedDocumentAfterDay,
+                -purgeMaxDocumentsADay,
+                "ON",
+                documentManager,
+                documentUpdateService,
+                cronStatsService);
+
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(new ArrayList<>());
         documentsPurgeProcess.purgeRejectedDocument();
         verify(documentUpdateService, never()).deleteRejectedDocument(any(DocumentEntity.class));
@@ -74,10 +104,17 @@ public class DocumentsPurgeProcessTest {
 
     @Test
     public void purgeException() {
-        documentsPurgeProcess = new DocumentsPurgeProcess(purgeRejectedDocumentAfterDay, -purgeMaxDocumentsADay, "ON", documentManager, documentUpdateService);
+        documentsPurgeProcess = new DocumentsPurgeProcess(
+                purgeRejectedDocumentAfterDay,
+                -purgeMaxDocumentsADay,
+                "ON",
+                documentManager,
+                documentUpdateService,
+                cronStatsService);
+
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         doThrow(Exception.class).when(documentUpdateService).deleteRejectedDocument(anyObject());
         documentsPurgeProcess.purgeRejectedDocument();
-        assertEquals(0, documentsPurgeProcess.getCount());
+        assertEquals(0, documentsPurgeProcess.getDeleted());
     }
 }
