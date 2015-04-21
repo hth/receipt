@@ -530,6 +530,7 @@ function drawExpenseByBusiness() {
          */
         var locations = [
             <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
+            <c:if test="${loc.bizStore.validatedUsingExternalAPI && !empty loc.bizStore.coordinate}">
             [
                 '<div class="mapContainer">' +
                 '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
@@ -539,6 +540,7 @@ function drawExpenseByBusiness() {
                 '</div>',
                 ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
             ],
+            </c:if>
             </c:forEach>
         ];
 
