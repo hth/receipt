@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.receiptofi.domain.DocumentDailyStatEntity;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentDailyStatService;
 
 import org.joda.time.DateTime;
@@ -30,6 +31,7 @@ public class DocumentStatProcessedTest {
 
     @Mock private DocumentDailyStatService documentDailyStatService;
     @Mock private DocumentDailyStatEntity documentDailyStatEntity;
+    @Mock private CronStatsService cronStatsService;
 
     private DocumentStatProcessed documentStatProcessed;
 
@@ -39,7 +41,8 @@ public class DocumentStatProcessedTest {
         documentStatProcessed = new DocumentStatProcessed(
                 DateTime.now().minusDays(1).toString(),
                 "ON",
-                documentDailyStatService
+                documentDailyStatService,
+                cronStatsService
         );
     }
 
@@ -48,7 +51,8 @@ public class DocumentStatProcessedTest {
         documentStatProcessed = new DocumentStatProcessed(
                 DateTime.now().minusDays(1).toString(),
                 "OFF",
-                documentDailyStatService
+                documentDailyStatService,
+                cronStatsService
         );
 
         documentStatProcessed.computeDocumentDailyStat();

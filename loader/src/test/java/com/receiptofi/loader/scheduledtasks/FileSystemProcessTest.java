@@ -10,6 +10,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.ReceiptService;
 
 import org.junit.Before;
@@ -31,6 +32,7 @@ public class FileSystemProcessTest {
 
     @Rule public TemporaryFolder folder = new TemporaryFolder();
     @Mock private ReceiptService receiptService;
+    @Mock private CronStatsService cronStatsService;
     private FileSystemProcess fileSystemProcess;
     private File createdFile;
 
@@ -38,7 +40,7 @@ public class FileSystemProcessTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         createdFile = folder.newFile("file.xml");
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService);
+        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService, cronStatsService);
     }
 
     @Test
@@ -49,7 +51,7 @@ public class FileSystemProcessTest {
 
     @Test
     public void whenRemoveExpiredExcelFilesIsTurnedOff() {
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService);
+        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService, cronStatsService);
         fileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, never()).removeExpensofiFilenameReference(any(String.class));
     }

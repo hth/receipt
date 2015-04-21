@@ -25,6 +25,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
@@ -85,6 +86,7 @@ public class FilesUploadToS3Test {
     @Mock private FileSystemService fileSystemService;
     @Mock private AffineTransformService affineTransformService;
     @Mock private BufferedImage bufferedImage;
+    @Mock private CronStatsService cronStatsService;
 
     private FilesUploadToS3 filesUploadToS3;
     private Properties prop = new Properties();
@@ -117,7 +119,8 @@ public class FilesUploadToS3Test {
                 imageSplitService,
                 amazonS3Service,
                 fileSystemService,
-                affineTransformService
+                affineTransformService,
+                cronStatsService
         );
         when(gridFSDBFile.getInputStream()).thenReturn(inputStream);
         when(fileDBService.getFile(anyString())).thenReturn(gridFSDBFile);
@@ -140,7 +143,7 @@ public class FilesUploadToS3Test {
 
     @Test
     public void testEmptyDocumentList() {
-        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(new ArrayList<DocumentEntity>());
+        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(new ArrayList<>());
         filesUploadToS3.upload();
         assertEquals(0, documentUpdateService.getAllProcessedDocuments().size());
         verify(documentUpdateService, never()).cloudUploadSuccessful(any(String.class));

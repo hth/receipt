@@ -2,12 +2,14 @@ package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
+import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
+import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.ReceiptService;
 
 import org.slf4j.Logger;
@@ -44,6 +46,7 @@ public class BillingProcess {
     private BillingService billingService;
     private AccountService accountService;
     private ReceiptService receiptService;
+    private CronStatsService cronStatsService;
 
     @Autowired
     public BillingProcess(
@@ -58,7 +61,8 @@ public class BillingProcess {
 
             BillingService billingService,
             AccountService accountService,
-            ReceiptService receiptService
+            ReceiptService receiptService,
+            CronStatsService cronStatsService
     ) {
         this.promotionalPeriod = promotionalPeriod;
         this.limit = limit;
@@ -66,6 +70,7 @@ public class BillingProcess {
         this.billingService = billingService;
         this.accountService = accountService;
         this.receiptService = receiptService;
+        this.cronStatsService = cronStatsService;
     }
 
     /**
@@ -73,6 +78,11 @@ public class BillingProcess {
      */
     @Scheduled (cron = "${loader.BillingProcess.monthly}")
     public void createPlaceholderForBilling() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                BillingProcess.class,
+                "createPlaceholderForBilling",
+                billingProcessStatus);
+
         if ("ON".equalsIgnoreCase(billingProcessStatus)) {
             LOG.info("feature is {}", billingProcessStatus);
             int skipDocuments = 0,
@@ -225,7 +235,7 @@ public class BillingProcess {
                             billingService.save(billingHistory);
 
                             List<ReceiptEntity> receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
-                            for(ReceiptEntity receipt: receipts) {
+                            for (ReceiptEntity receipt : receipts) {
                                 receipt.setBilledStatus(BilledStatusEnum.P);
                                 receiptService.save(receipt);
                             }
@@ -236,6 +246,20 @@ public class BillingProcess {
             } catch (Exception e) {
                 LOG.error("error during billing reason={}", e.getLocalizedMessage(), e);
             } finally {
+                cronStats.addStats("billedForMonth", BillingHistoryEntity.SDF.format(billedForMonth));
+                cronStats.addStats("totalCount", totalCount);
+                cronStats.addStats("successCount", successCount);
+                cronStats.addStats("failureCount", failureCount);
+                cronStats.addStats("noBillingCount", noBillingCount);
+                cronStats.addStats("skippedNoBillingCount", skippedNoBillingCount);
+                cronStats.addStats("promotionCount", promotionCount);
+                cronStats.addStats("skippedPromotionCount", skippedPromotionCount);
+                cronStats.addStats("monthlyCount", monthlyCount);
+                cronStats.addStats("skippedMonthlyCount", skippedMonthlyCount);
+                cronStats.addStats("annualCount", annualCount);
+                cronStats.addStats("skippedAnnualCount", skippedAnnualCount);
+                cronStatsService.save(cronStats);
+
                 LOG.info("billedForMonth={} totalCount={} successCount={} failureCount={} " +
                                 "noBillingCount={} skippedNoBillingCount={} " +
                                 "promotionCount={} skippedPromotionCount={} " +
