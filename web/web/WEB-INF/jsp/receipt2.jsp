@@ -586,7 +586,7 @@
             info = [
                 <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
                 {
-                    src: "https://s3-us-west-2.amazonaws.com/chk.test/chk.test/${arr.key}",
+                    src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/${arr.key}",
                     pos: {
                         top: topHeight = calculateTop(${arr.height}),
                         left: 0
