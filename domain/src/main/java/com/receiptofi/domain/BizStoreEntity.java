@@ -127,12 +127,20 @@ public class BizStoreEntity extends BaseEntity {
 
     @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLat() {
-        return coordinate.getLat();
+        if (null != coordinate) {
+            return coordinate.getLat();
+        } else {
+            return 0.0;
+        }
     }
 
     @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLng() {
-        return coordinate.getLng();
+        if (null != coordinate) {
+            return coordinate.getLng();
+        } else {
+            return 0.0;
+        }
     }
 
     public BizNameEntity getBizName() {
