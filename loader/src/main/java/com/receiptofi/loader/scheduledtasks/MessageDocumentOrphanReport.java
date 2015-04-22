@@ -63,8 +63,8 @@ public class MessageDocumentOrphanReport {
     @Scheduled (cron = "${loader.MessageDocumentOrphanReport.orphanMessageDocument}")
     public void orphanMessageDocument() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                MessageDocumentOrphanReport.class,
-                "messageDocumentOrphanReport",
+                MessageDocumentOrphanReport.class.getName(),
+                "Message_Document_Orphan_Report",
                 messageDocumentOrphanReport);
 
         if ("ON".equals(messageDocumentOrphanReport)) {

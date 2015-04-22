@@ -52,8 +52,8 @@ public class InactiveNonValidatedAccount {
     @Scheduled (cron = "${loader.InactiveNonValidatedAccount.markAccountInactiveWhenNotValidated}")
     public void markAccountInactiveWhenNotValidated() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                InactiveNonValidatedAccount.class,
-                "markAccountInactiveWhenNotValidated",
+                InactiveNonValidatedAccount.class.getName(),
+                "Mark_Account_Inactive_When_Not_Validated",
                 inactiveNonValidatedAccount);
 
         int count = 0;

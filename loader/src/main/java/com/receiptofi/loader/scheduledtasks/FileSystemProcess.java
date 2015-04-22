@@ -74,7 +74,7 @@ public class FileSystemProcess {
     @Scheduled (cron = "${loader.FileSystemProcess.removeExpiredExcelFiles}")
     public void removeExpiredExcelFiles() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                FileSystemProcess.class,
+                FileSystemProcess.class.getName(),
                 "removeExpiredExcelFiles",
                 removeExpiredExcelFiles);
 
@@ -131,8 +131,8 @@ public class FileSystemProcess {
         File directory = file.getParentFile();
 
         CronStatsEntity cronStats = new CronStatsEntity(
-                FileSystemProcess.class,
-                "removeTempFiles",
+                FileSystemProcess.class.getName(),
+                "Remove_Temp_Files",
                 removeExpiredExcelFiles);
 
         if (directory.exists()) {

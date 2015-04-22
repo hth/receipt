@@ -1,6 +1,8 @@
 package com.receiptofi.domain;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +24,10 @@ import java.util.Map;
         "PMD.LongVariable"
 })
 @Document (collection = "CRON_STATS")
+/** Updated index. */
+@CompoundIndexes (value = {
+    @CompoundIndex (name = "cron_stats_idx", def = "{'C': -1}", background = true)
+})
 public class CronStatsEntity extends BaseEntity {
 
     @Field ("CN")
@@ -40,8 +46,8 @@ public class CronStatsEntity extends BaseEntity {
     @Field ("ST")
     private Map<String, String> stats = new LinkedHashMap<>();
 
-    public CronStatsEntity(Class className, String taskName, String processStatus) {
-        this.className = className.getName();
+    public CronStatsEntity(String className, String taskName, String processStatus) {
+        this.className = className;
         this.taskName = taskName;
         this.processStatus = processStatus;
     }
@@ -50,12 +56,24 @@ public class CronStatsEntity extends BaseEntity {
         return className;
     }
 
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
     public String getTaskName() {
         return taskName;
     }
 
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
     public String getProcessStatus() {
         return processStatus;
+    }
+
+    public void setProcessStatus(String processStatus) {
+        this.processStatus = processStatus;
     }
 
     public Map<String, String> getStats() {

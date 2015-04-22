@@ -68,8 +68,8 @@ public class FilesDeleteFromS3 {
     @Scheduled (cron = "${loader.FilesDeleteFromS3.delete}")
     public void delete() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                FilesDeleteFromS3.class,
-                "delete",
+                FilesDeleteFromS3.class.getName(),
+                "Delete",
                 "ON");
 
         DeleteObjectsResult deleteObjectsResult = null;

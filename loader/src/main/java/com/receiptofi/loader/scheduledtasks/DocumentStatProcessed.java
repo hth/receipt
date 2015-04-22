@@ -62,8 +62,8 @@ public class DocumentStatProcessed {
     @Scheduled (cron = "${loader.DocumentStatProcessed.computeDocumentDailyStat}")
     public void computeDocumentDailyStat() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                DocumentStatProcessed.class,
-                "computeDocumentDailyStat",
+                DocumentStatProcessed.class.getName(),
+                "Compute_Document_Daily_Stat",
                 generateDocumentStat);
 
         if ("ON".equalsIgnoreCase(generateDocumentStat)) {

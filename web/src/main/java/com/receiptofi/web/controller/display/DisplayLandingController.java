@@ -48,7 +48,7 @@ public class DisplayLandingController {
     @Value ("${nextPage:/display/landing}")
     private String nextPage;
 
-    @Value ("${numberOfDays:30}")
+    @Value ("${numberOfDays:45}")
     private int numberOfDays;
 
     @PreAuthorize ("hasRole('ROLE_ANALYSIS_READ')")

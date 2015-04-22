@@ -64,8 +64,8 @@ public class NotificationPurgeProcess {
         LOG.info("begins");
 
         CronStatsEntity cronStats = new CronStatsEntity(
-                NotificationPurgeProcess.class,
-                "purgeNotificationDocument",
+                NotificationPurgeProcess.class.getName(),
+                "Purge_Notification_Document",
                 purgeNotification);
 
         if ("ON".equalsIgnoreCase(purgeNotification)) {

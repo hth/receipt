@@ -62,8 +62,8 @@ public class StoreBizNameUpdateProcess {
         LOG.info("begins");
 
         CronStatsEntity cronStats = new CronStatsEntity(
-                StoreBizNameUpdateProcess.class,
-                "updateNameOfBiz",
+                StoreBizNameUpdateProcess.class.getName(),
+                "Update_Name_Of_Biz",
                 storeBizNameUpdateProcess);
 
         if ("ON".equalsIgnoreCase(storeBizNameUpdateProcess)) {
