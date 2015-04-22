@@ -67,7 +67,7 @@
                 </tr>
                 <c:forEach items="${stats.value}" var="cronStatsValue2" varStatus="status">
                 <tr>
-                    <td class="analysis"><fmt:formatDate value="${cronStatsValue2.created}" pattern="MMM. dd" /></td>
+                    <td class="analysis"><fmt:formatDate value="${cronStatsValue2.created}" pattern="MMM. dd HH:mm:ss:SSS" /></td>
                     <td class="analysis">${cronStatsValue2.processStatus}</td>
                     <td class="analysis">${cronStatsValue2.duration}</td>
                     <c:forEach items="${cronStatsValue2.stats}" var="statValue" varStatus="status">
