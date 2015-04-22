@@ -79,8 +79,8 @@ public class BillingProcess {
     @Scheduled (cron = "${loader.BillingProcess.monthly}")
     public void createPlaceholderForBilling() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                BillingProcess.class,
-                "createPlaceholderForBilling",
+                BillingProcess.class.getName(),
+                "Create_Placeholder_For_Billing",
                 billingProcessStatus);
 
         if ("ON".equalsIgnoreCase(billingProcessStatus)) {

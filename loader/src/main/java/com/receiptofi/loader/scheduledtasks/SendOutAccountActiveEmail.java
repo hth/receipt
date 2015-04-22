@@ -54,8 +54,8 @@ public class SendOutAccountActiveEmail {
         LOG.info("begins");
 
         CronStatsEntity cronStats = new CronStatsEntity(
-                SendOutAccountActiveEmail.class,
-                "registrationCompleteEmail",
+                SendOutAccountActiveEmail.class.getName(),
+                "Registration_Complete_Email",
                 registrationTurnedOn ? "ON" : "OFF");
 
         if (registrationTurnedOn) {

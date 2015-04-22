@@ -67,8 +67,8 @@ public class RestoreBizStoreDataProcess {
         LOG.info("begins");
 
         CronStatsEntity cronStats = new CronStatsEntity(
-                RestoreBizStoreDataProcess.class,
-                "restoreAddresses",
+                RestoreBizStoreDataProcess.class.getName(),
+                "Restore_Addresses",
                 restoreAddresses);
 
         if (restoreAddresses.equals("ON")) {

@@ -103,8 +103,8 @@ public class FilesUploadToS3 {
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.upload}")
     public void upload() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                FilesUploadToS3.class,
-                "upload",
+                FilesUploadToS3.class.getName(),
+                "Upload",
                 filesUploadToS3);
 
         /**

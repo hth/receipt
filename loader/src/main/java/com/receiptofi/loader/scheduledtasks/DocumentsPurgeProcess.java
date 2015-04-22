@@ -70,8 +70,8 @@ public class DocumentsPurgeProcess {
         LOG.info("begins");
 
         CronStatsEntity cronStats = new CronStatsEntity(
-                DocumentsPurgeProcess.class,
-                "purgeRejectedDocument",
+                DocumentsPurgeProcess.class.getName(),
+                "Purge_Rejected_Document",
                 purgeRejectedDocument);
 
         if ("ON".equalsIgnoreCase(purgeRejectedDocument)) {

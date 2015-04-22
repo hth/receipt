@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -27,7 +30,12 @@ public class CronStatsService {
         cronStatsManager.save(cronStats);
     }
 
-    public void deleteHard(CronStatsEntity cronStats) {
-        cronStatsManager.deleteHard(cronStats);
+    public Map<String, List<CronStatsEntity>> getUniqueCronTasks(int limit) {
+        Map<String, List<CronStatsEntity>> taskStats = new LinkedHashMap<>();
+        List<String> tasks = cronStatsManager.getUniqueCronTasks();
+        for (String task : tasks) {
+            taskStats.put(task, cronStatsManager.getHistoricalData(task, limit));
+        }
+        return taskStats;
     }
 }

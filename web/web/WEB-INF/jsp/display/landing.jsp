@@ -355,6 +355,7 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </a>
+                <a class="top-account-bar-text" href="/display/cronStats.htm">STATS</a>
                 <a class="top-account-bar-text user-email" href="#">
                     <sec:authentication property="principal.username" />
                 </a>
