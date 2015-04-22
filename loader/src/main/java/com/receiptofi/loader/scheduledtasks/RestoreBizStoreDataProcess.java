@@ -96,8 +96,12 @@ public class RestoreBizStoreDataProcess {
                     for (BizStoreEntity bizStore : bizStores) {
                         try {
                             externalService.decodeAddress(bizStore);
-                            bizStoreManager.save(bizStore);
-                            success++;
+                            if (bizStore.isValidatedUsingExternalAPI()) {
+                                bizStoreManager.save(bizStore);
+                                success++;
+                            } else {
+                                failure++;
+                            }
                         } catch (Exception e) {
                             LOG.error("Error updating bizStore, reason={}", e.getLocalizedMessage(), e);
                             failure++;
