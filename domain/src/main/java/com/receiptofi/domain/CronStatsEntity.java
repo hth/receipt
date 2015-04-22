@@ -56,24 +56,12 @@ public class CronStatsEntity extends BaseEntity {
         return className;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
     public String getTaskName() {
         return taskName;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
     public String getProcessStatus() {
         return processStatus;
-    }
-
-    public void setProcessStatus(String processStatus) {
-        this.processStatus = processStatus;
     }
 
     public Map<String, String> getStats() {
@@ -102,6 +90,6 @@ public class CronStatsEntity extends BaseEntity {
 
     @Transient
     public long getDuration() {
-        return Duration.between(end.toInstant(), getCreated().toInstant()).getSeconds();
+        return Duration.between(getCreated().toInstant(), end.toInstant()).getSeconds();
     }
 }
