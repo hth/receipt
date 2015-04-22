@@ -61,7 +61,7 @@ public class FileSystemProcessTest {
         doThrow(Exception.class).when(receiptService).removeExpensofiFilenameReference(anyString());
         fileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, times(1)).removeExpensofiFilenameReference(any(String.class));
-        assertEquals(0, fileSystemProcess.getCountOfDeletedExcelFiles());
+        assertEquals(0, fileSystemProcess.getDeletedExcelFiles());
     }
 
     @Test
@@ -73,6 +73,6 @@ public class FileSystemProcessTest {
     @Test
     public void removeTempFiles() throws Exception {
         fileSystemProcess.removeTempFiles();
-        assertTrue("deleted files successfully", fileSystemProcess.getCountOfDeletedXmlFiles() > 0);
+        assertTrue("deleted files successfully", fileSystemProcess.getTotalXmlFiles() > 0);
     }
 }
