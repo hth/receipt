@@ -47,8 +47,8 @@ public class FileSystemProcess {
     //TODO(hth) add to AOP to turn on and off instead
     private String removeExpiredExcelFiles;
 
-    private int countOfDeletedExcelFiles;
-    private int countOfDeletedXmlFiles;
+    private int deletedExcelFiles;
+    private int totalXmlFiles;
 
     @Autowired
     public FileSystemProcess(
@@ -89,19 +89,19 @@ public class FileSystemProcess {
                 for (String filename : files) {
                     removeExpiredExcel(getExcelFile(filename));
                     receiptService.removeExpensofiFilenameReference(filename);
-                    countOfDeletedExcelFiles++;
+                    deletedExcelFiles++;
                 }
             } catch (Exception e) {
-                LOG.error("found error={}", e.getLocalizedMessage(), e);
+                LOG.error("totalXmlFiles error={}", e.getLocalizedMessage(), e);
                 failure++;
             } finally {
                 cronStats.addStats("foundExcelFile", found);
                 cronStats.addStats("failure", failure);
-                cronStats.addStats("deletedExcelFile", countOfDeletedExcelFiles);
+                cronStats.addStats("deletedExcelFiles", deletedExcelFiles);
                 cronStatsService.save(cronStats);
 
-                LOG.info("complete foundExcelFile={} failure={} deletedExcelFile={}",
-                        found, failure, countOfDeletedExcelFiles);
+                LOG.info("complete foundExcelFile={} failure={} deletedExcelFiles={}",
+                        found, failure, deletedExcelFiles);
             }
         } else {
             LOG.info("feature is {}", removeExpiredExcelFiles);
@@ -130,14 +130,26 @@ public class FileSystemProcess {
         File file = FileUtil.createTempFile("delete", ".xml");
         File directory = file.getParentFile();
 
+        CronStatsEntity cronStats = new CronStatsEntity(
+                FileSystemProcess.class,
+                "removeTempFiles",
+                removeExpiredExcelFiles);
+
         if (directory.exists()) {
+            int deleted = 0;
             FilenameFilter textFilter = (dir, name) -> name.startsWith(FileUtil.TEMP_FILE_START_WITH);
-            countOfDeletedXmlFiles = directory.listFiles(textFilter).length;
+            totalXmlFiles = directory.listFiles(textFilter).length;
             for (File f : directory.listFiles(textFilter)) {
                 LOG.debug("File={}{}{}", directory, File.separator, f.getName());
                 FileUtils.deleteQuietly(f);
+                deleted++;
             }
-            LOG.info("removed total temp files count={}", countOfDeletedXmlFiles);
+
+            cronStats.addStats("totalXmlFiles", totalXmlFiles);
+            cronStats.addStats("deleted", deleted);
+            cronStatsService.save(cronStats);
+
+            LOG.info("removed total temp files totalXmlFiles={} deleted={}", totalXmlFiles, deleted);
         } else {
             LOG.info("{} directory doesn't exists", directory);
         }
@@ -145,11 +157,11 @@ public class FileSystemProcess {
         FileUtils.deleteQuietly(file);
     }
 
-    protected int getCountOfDeletedExcelFiles() {
-        return countOfDeletedExcelFiles;
+    protected int getDeletedExcelFiles() {
+        return deletedExcelFiles;
     }
 
-    protected int getCountOfDeletedXmlFiles() {
-        return countOfDeletedXmlFiles;
+    protected int getTotalXmlFiles() {
+        return totalXmlFiles;
     }
 }
