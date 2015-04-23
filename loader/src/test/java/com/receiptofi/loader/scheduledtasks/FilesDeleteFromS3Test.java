@@ -115,7 +115,7 @@ public class FilesDeleteFromS3Test {
 
     @Test
     public void delete() {
-        when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(Arrays.asList(cloudFileEntity));
+        when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(Collections.singletonList(cloudFileEntity));
         when(amazonS3Service.getS3client().deleteObjects(any(DeleteObjectsRequest.class))).thenReturn(deleteObjectsResult);
 
         filesDeleteFromS3.delete();
