@@ -75,7 +75,7 @@ public class FileSystemProcess {
     public void removeExpiredExcelFiles() {
         CronStatsEntity cronStats = new CronStatsEntity(
                 FileSystemProcess.class.getName(),
-                "removeExpiredExcelFiles",
+                "Remove_Expired_Excel_Files",
                 removeExpiredExcelFiles);
 
         if ("ON".equalsIgnoreCase(removeExpiredExcelFiles)) {
