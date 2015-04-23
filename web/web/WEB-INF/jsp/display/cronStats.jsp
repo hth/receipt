@@ -59,10 +59,9 @@
                     <th class="analysis">DATE</th>
                     <th class="analysis">RUN</th>
                     <th class="analysis">DURATION</th>
-                    <c:forEach items="${taskStats.value}" var="cronStatsValue1" varStatus="status">
-                        <c:forEach items="${cronStatsValue1.stats}" var="statKey" varStatus="status">
-                            <th class="analysis">${statKey.key}</th>
-                        </c:forEach>
+                    <c:set var="cronStatsValue1" value="${taskStats.value.get(0)}" property="T(com.receiptofi.domain.CronStatsEntity)"/>
+                    <c:forEach items="${cronStatsValue1.stats}" var="statKey" varStatus="status">
+                        <th class="analysis">${statKey.key}</th>
                     </c:forEach>
                 </tr>
                 <c:forEach items="${taskStats.value}" var="cronStatsValue2" varStatus="status">
