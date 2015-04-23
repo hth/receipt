@@ -61,6 +61,7 @@ import java.util.Properties;
 
 /**
  * ActiveProfiles makes sure upload test does not run on PROD.
+ * Note: Run this test through gradle and not IntelliJ
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",

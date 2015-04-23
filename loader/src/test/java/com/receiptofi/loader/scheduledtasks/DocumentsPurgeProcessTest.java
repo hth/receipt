@@ -1,6 +1,7 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
@@ -115,6 +116,7 @@ public class DocumentsPurgeProcessTest {
         when(documentManager.getAllRejected(purgeRejectedDocumentAfterDay)).thenReturn(Arrays.asList(new DocumentEntity(), new DocumentEntity()));
         doThrow(Exception.class).when(documentUpdateService).deleteRejectedDocument(anyObject());
         documentsPurgeProcess.purgeRejectedDocument();
-        assertEquals(0, documentsPurgeProcess.getDeleted());
+        assertTrue(documentsPurgeProcess.getCronStats().getStats().containsKey("failure"));
+        assertEquals("1", documentsPurgeProcess.getCronStats().getStats().get("failure"));
     }
 }

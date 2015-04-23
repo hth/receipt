@@ -42,6 +42,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
+/**
+ * Note: Run this test through gradle and not IntelliJ
+ */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",

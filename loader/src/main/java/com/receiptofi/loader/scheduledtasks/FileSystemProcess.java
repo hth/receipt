@@ -47,8 +47,7 @@ public class FileSystemProcess {
     //TODO(hth) add to AOP to turn on and off instead
     private String removeExpiredExcelFiles;
 
-    private int deletedExcelFiles;
-    private int totalXmlFiles;
+    private CronStatsEntity cronStats;
 
     @Autowired
     public FileSystemProcess(
@@ -73,14 +72,14 @@ public class FileSystemProcess {
 
     @Scheduled (cron = "${loader.FileSystemProcess.removeExpiredExcelFiles}")
     public void removeExpiredExcelFiles() {
-        CronStatsEntity cronStats = new CronStatsEntity(
+        cronStats = new CronStatsEntity(
                 FileSystemProcess.class.getName(),
                 "Remove_Expired_Excel_Files",
                 removeExpiredExcelFiles);
 
         if ("ON".equalsIgnoreCase(removeExpiredExcelFiles)) {
             LOG.info("feature is {}", removeExpiredExcelFiles);
-            int found = 0, failure = 0;
+            int found = 0, failure = 0, deletedExcelFiles = 0;
             try {
                 AgeFileFilter cutoff = new AgeFileFilter(DateUtil.now().minusDays(deleteExcelFileAfterDay).toDate());
                 File directory = new File(expensofiReportLocation);
@@ -130,7 +129,7 @@ public class FileSystemProcess {
         File file = FileUtil.createTempFile("delete", ".xml");
         File directory = file.getParentFile();
 
-        CronStatsEntity cronStats = new CronStatsEntity(
+        cronStats = new CronStatsEntity(
                 FileSystemProcess.class.getName(),
                 "Remove_Temp_Files",
                 removeExpiredExcelFiles);
@@ -138,7 +137,7 @@ public class FileSystemProcess {
         if (directory.exists()) {
             int deleted = 0;
             FilenameFilter textFilter = (dir, name) -> name.startsWith(FileUtil.TEMP_FILE_START_WITH);
-            totalXmlFiles = directory.listFiles(textFilter).length;
+            int totalXmlFiles = directory.listFiles(textFilter).length;
             for (File f : directory.listFiles(textFilter)) {
                 LOG.debug("File={}{}{}", directory, File.separator, f.getName());
                 FileUtils.deleteQuietly(f);
@@ -157,11 +156,7 @@ public class FileSystemProcess {
         FileUtils.deleteQuietly(file);
     }
 
-    protected int getDeletedExcelFiles() {
-        return deletedExcelFiles;
-    }
-
-    protected int getTotalXmlFiles() {
-        return totalXmlFiles;
+    protected CronStatsEntity getCronStats() {
+        return cronStats;
     }
 }

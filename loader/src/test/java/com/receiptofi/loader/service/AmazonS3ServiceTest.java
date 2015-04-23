@@ -28,6 +28,7 @@ import java.util.Properties;
  * For this test it is imperative to have properties files in place before executing any test.
  * Based on environment profile, appropriate properties files are copied under $build/$explodedWar.
  * For this reason build.gradle file has task called $setUpProperties.
+ * Note: Run this test through gradle and not IntelliJ
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",

@@ -34,13 +34,13 @@ public class DocumentsPurgeProcess {
     private DocumentUpdateService documentUpdateService;
     private CronStatsService cronStatsService;
 
+    private CronStatsEntity cronStats;
+
     private int purgeRejectedDocumentAfterDay;
     private int purgeMaxDocumentsADay;
 
     //TODO(hth) add to AOP to turn on and off instead
     private String purgeRejectedDocument;
-
-    private int deleted;
 
     @Autowired
     public DocumentsPurgeProcess(
@@ -69,13 +69,13 @@ public class DocumentsPurgeProcess {
     public void purgeRejectedDocument() {
         LOG.info("begins");
 
-        CronStatsEntity cronStats = new CronStatsEntity(
+        cronStats = new CronStatsEntity(
                 DocumentsPurgeProcess.class.getName(),
                 "Purge_Rejected_Document",
                 purgeRejectedDocument);
 
         if ("ON".equalsIgnoreCase(purgeRejectedDocument)) {
-            int found = 0, failure = 0;
+            int found = 0, failure = 0, deleted = 0;
             try {
                 List<DocumentEntity> documents = documentManager.getAllRejected(purgeRejectedDocumentAfterDay);
                 found = documents.size();
@@ -104,10 +104,7 @@ public class DocumentsPurgeProcess {
         }
     }
 
-    /**
-     * Counts number of rejected documents deleted
-     */
-    protected int getDeleted() {
-        return deleted;
+    protected CronStatsEntity getCronStats() {
+        return cronStats;
     }
 }
