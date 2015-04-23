@@ -61,7 +61,8 @@ public class ExternalService {
             bizStore.setCoordinate(new Coordinate(lat, lng));
             bizStore.setValidatedUsingExternalAPI(true);
         } catch (Exception e) {
-            LOG.error("Failed to get address from google java API service, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed to get address from google java API service bizStoreId={} bizStoreAddress={} reason={}",
+                    bizStore.getId(), bizStore.getAddress(), e.getLocalizedMessage(), e);
         }
     }
 }
