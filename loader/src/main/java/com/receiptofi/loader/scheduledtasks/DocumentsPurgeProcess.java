@@ -44,7 +44,7 @@ public class DocumentsPurgeProcess {
 
     @Autowired
     public DocumentsPurgeProcess(
-            @Value ("${purgeRejectedDocumentAfterDay:15}")
+            @Value ("${purgeRejectedDocumentAfterDay:0}")
             int purgeRejectedDocumentAfterDay,
 
             @Value ("${purgeMaxDocumentsADay:10000}")
