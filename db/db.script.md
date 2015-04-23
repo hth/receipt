@@ -1,4 +1,4 @@
-#### Date Apr 23 2015 - Build 1000
+#### Date Apr 23 2015 - Build 1004
 Removed reminisce of file and FileSystem (Not sure why this happened). Needs to be investigated.
     db.getCollection('fs.files').remove({"_id" : ObjectId("552ad915036462c8689d434b")})
     db.getCollection('FILE_SYSTEM').remove({"BID" : "552ad915036462c8689d434b"})
