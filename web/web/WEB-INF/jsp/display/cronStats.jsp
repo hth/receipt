@@ -50,22 +50,21 @@
 </header>
 <div class="main clearfix">
     <div class="rightside-list-holder" style="height: 850px; width: 940px;">
-        <c:forEach items="${cronStatsForm.taskStats}" var="stats" varStatus="status">
+        <c:forEach items="${cronStatsForm.taskStats}" var="taskStats" varStatus="status">
         <div class="receipt-detail-holder border" style="padding-bottom: 20px;">
-            <p class="analysis" style="padding-bottom: 10px;">${stats.key}</p>
+            <p class="analysis" style="padding-bottom: 10px;">${taskStats.key}</p>
 
             <table width="99%" style="margin-left: 4px; margin-right: 4px;">
                 <tr style="border-bottom: 1px dotted #919191;">
                     <th class="analysis">DATE</th>
                     <th class="analysis">RUN</th>
                     <th class="analysis">DURATION</th>
-                    <c:forEach items="${stats.value}" var="cronStatsValue1" varStatus="status">
-                        <c:forEach items="${cronStatsValue1.stats}" var="statKey" varStatus="status">
-                            <th class="analysis">${statKey.key}</th>
-                        </c:forEach>
+                    <c:set var="cronStatsValue1" value="${taskStats.value.get(0)}" property="T(com.receiptofi.domain.CronStatsEntity)"/>
+                    <c:forEach items="${cronStatsValue1.stats}" var="statKey" varStatus="status">
+                        <th class="analysis">${statKey.key}</th>
                     </c:forEach>
                 </tr>
-                <c:forEach items="${stats.value}" var="cronStatsValue2" varStatus="status">
+                <c:forEach items="${taskStats.value}" var="cronStatsValue2" varStatus="status">
                 <tr>
                     <td class="analysis"><fmt:formatDate value="${cronStatsValue2.created}" pattern="MMM. dd HH:mm:ss:SSS" /></td>
                     <td class="analysis">${cronStatsValue2.processStatus}</td>
