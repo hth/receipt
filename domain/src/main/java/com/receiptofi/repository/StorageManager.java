@@ -40,14 +40,14 @@ public interface StorageManager extends RepositoryManager<UploadDocumentImage> {
      */
     void deleteHard(String id);
 
-    void deleteHard(Collection<FileSystemEntity> fileSystemEntities);
+    void deleteHard(Collection<FileSystemEntity> fileSystems);
 
     /**
      * Add a field delete and set the value to true
      *
-     * @param fileSystemEntities
+     * @param fileSystems
      */
-    void deleteSoft(Collection<FileSystemEntity> fileSystemEntities);
+    void deleteSoft(Collection<FileSystemEntity> fileSystems);
 
     /**
      * Gets size of the GridFs

@@ -54,7 +54,7 @@ public class FileDBService {
         storageManager.deleteHard(fileId);
     }
 
-    public void deleteHard(Collection<FileSystemEntity> fileId) {
-        storageManager.deleteHard(fileId);
+    public void deleteHard(Collection<FileSystemEntity> fileSystems) {
+        storageManager.deleteHard(fileSystems);
     }
 }

@@ -73,9 +73,10 @@ public final class StorageManagerImpl implements StorageManager {
     }
 
     @Override
-    public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {
-        for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
-            deleteSoft(fileSystemEntity.getBlobId());
+    public void deleteSoft(Collection<FileSystemEntity> fileSystems) {
+        for (FileSystemEntity fileSystem : fileSystems) {
+            LOG.debug("Deleting GridFs object={}", fileSystem.getBlobId());
+            deleteSoft(fileSystem.getBlobId());
         }
     }
 
@@ -91,10 +92,10 @@ public final class StorageManagerImpl implements StorageManager {
     }
 
     @Override
-    public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
-        for (FileSystemEntity fileSystemEntity : fileSystemEntities) {
-            LOG.debug("deleting GridFs object={}", fileSystemEntity.getBlobId());
-            gridFs.remove(new ObjectId(fileSystemEntity.getBlobId()));
+    public void deleteHard(Collection<FileSystemEntity> fileSystems) {
+        for (FileSystemEntity fileSystem : fileSystems) {
+            LOG.debug("Deleting GridFs object={}", fileSystem.getBlobId());
+            gridFs.remove(new ObjectId(fileSystem.getBlobId()));
         }
     }
 
