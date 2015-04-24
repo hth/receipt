@@ -201,10 +201,7 @@
                 </c:choose>
                 </span>
 				<span class="general-text">
-                    Last sync:
-                    <span class="timestamp" id="pendingCountSyncedId">
-                        <fmt:formatDate value="${documentStatsForm.pendingCountSynced}" type="both" timeZone="UTC"/>
-                    </span>
+                    Last sync: <span class="timestamp" id="pendingCountSyncedId"></span>
                 </span>
 			</div>
 		</div>
@@ -223,10 +220,7 @@
                     </c:choose>
                 </span>
 				<span class="general-text">
-                    Last sync:
-                    <span class="timestamp">
-                        <fmt:formatDate value="${documentStatsForm.rejectedCountSynced}" type="both" timeZone="UTC"/>
-                    </span>
+                    Last sync: <span class="timestamp"></span>
                 </span>
 			</div>
 		</div>
