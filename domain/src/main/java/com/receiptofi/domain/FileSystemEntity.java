@@ -2,8 +2,6 @@ package com.receiptofi.domain;
 
 import com.receiptofi.utils.FileUtil;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
