@@ -184,16 +184,16 @@
 </header>
 <div class="main clearfix">
 <div class="sidebar">
-	<div class="sidebar-top-summary">
-		<div class="sidebar-top-summary-upper clearfix">
-			<h1 id="pendingCountInitial">
+    <div class="sidebar-top-summary">
+        <div class="sidebar-top-summary-upper clearfix">
+            <h1 id="pendingCountInitial">
                 <a href='${pageContext. request. contextPath}/access/document/pending.htm' class="big-view">
                     ${documentStatsForm.pendingCount}
                 </a>
             </h1>
-			<h1 id="pendingCountId"></h1>
+            <h1 id="pendingCountId"></h1>
 
-			<div class="sts-upper-right">
+            <div class="sts-upper-right">
                 <span class="top-summary-textb">
                 <c:choose>
                     <c:when test="${documentStatsForm.pendingCount le 1}">Receipt pending</c:when>
@@ -203,16 +203,16 @@
 				<span class="general-text">
                     Last sync: <span class="timestamp" id="pendingCountSyncedId"></span>
                 </span>
-			</div>
-		</div>
-		<div class="sidebar-top-summary-lower clearfix">
-			<h1>
+            </div>
+        </div>
+        <div class="sidebar-top-summary-lower clearfix">
+            <h1>
                 <a href='${pageContext. request. contextPath}/access/document/rejected.htm' class="big-view-lower">
-			        ${documentStatsForm.rejectedCount}
+                    ${documentStatsForm.rejectedCount}
                 </a>
             </h1>
 
-			<div class="sts-upper-right">
+            <div class="sts-upper-right">
 				<span class="top-summary-textb">
                     <c:choose>
                         <c:when test="${documentStatsForm.rejectedCount le 1}">Receipt rejected</c:when>
@@ -222,9 +222,9 @@
 				<span class="general-text">
                     Last sync: <span class="timestamp"></span>
                 </span>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 	<div class="sidebar-git-datum">
 		<div class="gd-title">
 			<h1 class="widget-title-text">Upload new receipt</h1>
