@@ -18,7 +18,6 @@ import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.DeleteObjectsResult;
 import com.amazonaws.services.s3.model.MultiObjectDeleteException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

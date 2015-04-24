@@ -5,8 +5,6 @@ package com.receiptofi.domain;
 
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
-import org.joda.time.DateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
