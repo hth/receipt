@@ -110,9 +110,13 @@ public class LoginController {
             Cookie cookie = cookies[0];
             String cookieId = cookie.getValue();
             String ip = getClientIpAddress(request);
+            String category = agent.getDeviceCategory().getCategory().toString();
+            String family = agent.getFamily().toString();
+            String osFamilyName = agent.getOperatingSystem().getFamilyName();
+            String versionNumber = agent.getVersionNumber().toVersionString();
 
             LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, agent);
-            loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString());
+            loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString(), category, family, osFamilyName, versionNumber);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

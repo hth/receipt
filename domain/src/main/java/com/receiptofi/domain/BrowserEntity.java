@@ -20,31 +20,60 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BROWSER")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "browser_idx", def = "{'U': 1}", unique = true),
+        @CompoundIndex (name = "browser_idx", def = "{'U': -1}", unique = true),
 })
 public class BrowserEntity extends BaseEntity {
 
-    @NotNull
     @Field ("CK")
     private String cookieId;
 
-    @NotNull
     @Field ("IP")
     private String ipAddress;
 
-    @NotNull
     @Field ("UA")
     private String userAgent;
 
-    private BrowserEntity(String cookieId, String ipAddress, String userAgent) {
+    @Field ("CA")
+    String category;
+
+    @Field ("FA")
+    String family;
+
+    @Field ("OS")
+    String osFamilyName;
+
+    @Field ("VN")
+    String versionNumber;
+
+    private BrowserEntity(
+            String cookieId,
+            String ipAddress,
+            String userAgent,
+            String category,
+            String family,
+            String osFamilyName,
+            String versionNumber
+    ) {
         super();
         this.cookieId = cookieId;
         this.ipAddress = ipAddress;
         this.userAgent = userAgent;
+        this.category = category;
+        this.family = family;
+        this.osFamilyName = osFamilyName;
+        this.versionNumber = versionNumber;
     }
 
-    public static BrowserEntity newInstance(String cookieId, String ip, String userAgent) {
-        return new BrowserEntity(cookieId, ip, userAgent);
+    public static BrowserEntity newInstance(
+            String cookieId,
+            String ip,
+            String userAgent,
+            String category,
+            String family,
+            String osFamilyName,
+            String versionNumber
+    ) {
+        return new BrowserEntity(cookieId, ip, userAgent, category, family, osFamilyName, versionNumber);
     }
 
     public String getCookieId() {
