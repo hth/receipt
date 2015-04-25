@@ -1,5 +1,6 @@
 package com.receiptofi.web.controller.open;
 
+import com.receiptofi.security.OnLoginAuthenticationSuccessHandler;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.RegistrationService;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
@@ -51,6 +52,7 @@ public class LoginController {
 
     @Autowired private LoginService loginService;
     @Autowired private RegistrationService registrationService;
+    @Autowired private OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler;
 
     public LoginController() {
         //Get an UserAgentStringParser and analyze the requesting client
@@ -123,9 +125,7 @@ public class LoginController {
             return loginPage;
         }
 
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        map.addAttribute("userDetails", userDetails);
-        return "redirect:/access/landing.htm";
+        return "redirect:" + onLoginAuthenticationSuccessHandler.determineTargetUrl(authentication);
     }
 
     /**

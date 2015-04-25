@@ -5,6 +5,7 @@ import com.receiptofi.domain.types.RoleEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -35,10 +36,17 @@ import javax.servlet.http.HttpServletResponse;
 public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
 
-    private static final String ACCESS_LANDING_HTM = "/access/landing.htm";
-    private static final String EMP_LANDING_HTM = "/emp/landing.htm";
-    private static final String ADMIN_LANDING_HTM = "/admin/landing.htm";
-    private static final String DISPLAY_LANDING_HTM = "/display/landing.htm";
+    @Value ("${accessLanding:/access/landing.htm}")
+    private String accessLanding;
+
+    @Value ("${empLanding:/emp/landing.htm}")
+    private String empLanding;
+
+    @Value ("${adminLanding:/admin/landing.htm}")
+    private String adminLanding;
+
+    @Value ("${displayLanding:/display/landing.htm}")
+    private String displayLanding;
 
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -94,32 +102,22 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
      * Builds the landing URL according to the user role when they log in.
      * Refer: http://www.baeldung.com/spring_redirect_after_login
      */
-    protected String determineTargetUrl(Authentication authentication) {
-        String targetURL;
-
+    public String determineTargetUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         GrantedAuthority grantedAuthority = authorities.iterator().next();
         switch (RoleEnum.valueOf(grantedAuthority.getAuthority())) {
             case ROLE_USER:
-                targetURL = ACCESS_LANDING_HTM;
-                break;
+                return accessLanding;
             case ROLE_SUPERVISOR:
-                targetURL = EMP_LANDING_HTM;
-                break;
             case ROLE_TECHNICIAN:
-                targetURL = EMP_LANDING_HTM;
-                break;
+                return empLanding;
             case ROLE_ADMIN:
-                targetURL = ADMIN_LANDING_HTM;
-                break;
+                return adminLanding;
             case ROLE_ANALYSIS_READ:
-                targetURL = DISPLAY_LANDING_HTM;
-                break;
+                return displayLanding;
             default:
                 LOG.error("Role set is not defined");
                 throw new IllegalStateException("Role set is not defined");
         }
-
-        return targetURL;
     }
 }
