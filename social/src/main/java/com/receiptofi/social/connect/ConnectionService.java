@@ -5,7 +5,7 @@ import com.receiptofi.domain.types.ProviderEnum;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
-import org.springframework.social.facebook.api.FacebookProfile;
+import org.springframework.social.facebook.api.User;
 import org.springframework.social.google.api.plus.Person;
 import org.springframework.util.MultiValueMap;
 
@@ -35,7 +35,7 @@ public interface ConnectionService {
 
     List<String> getUserIds(ProviderEnum providerId, String providerUserId);
 
-    void copyAndSaveFacebookToUserProfile(FacebookProfile facebookUserProfile, UserAccountEntity userAccount);
+    void copyAndSaveFacebookToUserProfile(User facebookUserProfile, UserAccountEntity userAccount);
 
     void copyAndSaveGoogleToUserProfile(Person googleUserProfile, UserAccountEntity userAccount);
 }

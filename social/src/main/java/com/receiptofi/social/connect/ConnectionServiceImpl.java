@@ -3,6 +3,7 @@ package com.receiptofi.social.connect;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -32,8 +33,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.facebook.api.Reference;
+import org.springframework.social.facebook.api.User;
 import org.springframework.social.facebook.api.WorkEntry;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.social.google.api.Google;
@@ -93,6 +94,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         userAccount.setUserAuthentication(userAuthentication);
         registrationService.isRegistrationAllowed(userAccount);
         LOG.info("new account created user={} provider={}", userAccount.getReceiptUserId(), userAccount.getProviderId());
+        mongoTemplate.insert(userAccount.getBillingAccount());
         mongoTemplate.insert(userAccount);
     }
 
@@ -144,7 +146,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private void processFacebook(UserAccountEntity userAccountFromConnection, UserAccountEntity userAccount) {
         Facebook facebook = new FacebookTemplate(userAccountFromConnection.getAccessToken(), "notfoundexception");
-        FacebookProfile userProfile = facebook.userOperations().getUserProfile();
+        User userProfile = facebook.userOperations().getUserProfile();
         copyAndSaveFacebookToUserProfile(userProfile, userAccount);
         LOG.info("Facebook Id={}", userProfile.getId());
 
@@ -161,8 +163,8 @@ public class ConnectionServiceImpl implements ConnectionService {
      * @param facebook
      */
     private void populateFacebookFriends(UserAccountEntity userAccount, Facebook facebook) {
-        List<FacebookProfile> profiles = facebook.friendOperations().getFriendProfiles();
-        for (FacebookProfile facebookUserProfile : profiles) {
+        List<User> profiles = facebook.friendOperations().getFriendProfiles();
+        for (User facebookUserProfile : profiles) {
             UserAccountEntity userAccountEntity = mongoTemplate.findOne(
                     query(where("UID").is(facebookUserProfile.getId())), UserAccountEntity.class
             );
@@ -195,7 +197,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
     }
 
-    public void copyAndSaveFacebookToUserProfile(FacebookProfile facebookUserProfile, UserAccountEntity userAccount) {
+    public void copyAndSaveFacebookToUserProfile(User facebookUserProfile, UserAccountEntity userAccount) {
         LOG.info("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
         UserProfileEntity userProfile = mongoTemplate.findOne(
                 query(where("UID").is(facebookUserProfile.getId())),
@@ -267,12 +269,13 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (googleUserProfile.getOrganizations() != null) {
             for (Organization organization : googleUserProfile.getOrganizations()) {
                 Reference reference = new Reference(organization.getName());
-                WorkEntry workEntry = new WorkEntry(
-                        reference,
-                        organization.getStartDate(),
-                        organization.getEndDate()
-                );
-                userProfile.addWork(workEntry);
+                //TODO fix me or check me out when Google Auth bug is fixed
+//                WorkEntry workEntry = new WorkEntry(
+//                        reference,
+//                        organization.getStartDate(),
+//                        organization.getEndDate()
+//                );
+//                userProfile.addWork(workEntry);
             }
         }
 
