@@ -36,7 +36,7 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.FacebookProfile;
+import org.springframework.social.facebook.api.User;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.impl.GoogleTemplate;
@@ -312,7 +312,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserAccountEntity saveNewFacebookUserAccountEntity(
             String accessToken,
             ProviderEnum provider,
-            FacebookProfile facebookProfile
+            User facebookProfile
     ) {
         UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
                 RandomString.newInstance().nextString()
