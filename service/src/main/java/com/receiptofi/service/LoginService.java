@@ -40,11 +40,19 @@ public class LoginService {
         return userAuthenticationManager.getById(userAccount.getUserAuthentication().getId());
     }
 
-    public void saveUpdateBrowserInfo(String cookieId, String ip, String userAgent) {
+    public void saveUpdateBrowserInfo(
+            String cookieId,
+            String ip,
+            String userAgent,
+            String category,
+            String family,
+            String osFamilyName,
+            String versionNumber
+    ) {
         try {
             BrowserEntity browserEntity = browserManager.getByCookie(cookieId);
             if (null == browserEntity) {
-                browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent);
+                browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent, category, family, osFamilyName, versionNumber);
                 browserManager.save(browserEntity);
             } else {
                 browserEntity.setUpdated();

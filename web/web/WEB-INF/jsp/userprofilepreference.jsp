@@ -359,7 +359,10 @@
                     <div class="row_field">
                         <label class="profile_label" style="width: 200px;">Pending</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${billingForm.pendingDiskUsage_MB}"/> MB *
+                            <c:choose>
+                                <c:when test="${billingForm.pendingDiskUsage_MB.unscaledValue() == 0}">-</c:when>
+                                <c:otherwise><fmt:formatNumber value="${billingForm.pendingDiskUsage_MB}"/> MB *</c:otherwise>
+                            </c:choose>
                         </label>
                     </div>
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
