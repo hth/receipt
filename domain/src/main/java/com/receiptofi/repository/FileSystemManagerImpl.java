@@ -115,6 +115,14 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public List<FileSystemEntity> filesPending(String rid) {
-        return mongoTemplate.find(query(where("RID").is(rid).and("SLN").is(0)), FileSystemEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("RID").is(rid).and("SLN").is(0)
+                        .andOperator(
+                            isActive(),
+                            isNotDeleted()
+                        )
+                ),
+                FileSystemEntity.class,
+                TABLE);
     }
 }
