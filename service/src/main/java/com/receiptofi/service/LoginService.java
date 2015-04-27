@@ -44,15 +44,17 @@ public class LoginService {
             String cookieId,
             String ip,
             String userAgent,
-            String category,
-            String family,
-            String osFamilyName,
-            String versionNumber
+            String browser,
+            String browserVersion,
+            String device,
+            String deviceBrand,
+            String operatingSystem,
+            String operatingSystemVersion
     ) {
         try {
             BrowserEntity browserEntity = browserManager.getByCookie(cookieId);
             if (null == browserEntity) {
-                browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent, category, family, osFamilyName, versionNumber);
+                browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
                 browserManager.save(browserEntity);
             } else {
                 browserEntity.setUpdated();

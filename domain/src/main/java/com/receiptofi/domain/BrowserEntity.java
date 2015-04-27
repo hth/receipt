@@ -5,8 +5,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * User: hitender
  * Date: 5/26/13
@@ -33,70 +31,58 @@ public class BrowserEntity extends BaseEntity {
     @Field ("UA")
     private String userAgent;
 
-    @Field ("CA")
-    String category;
+    @Field ("BR")
+    private String browser;
 
-    @Field ("FA")
-    String family;
+    @Field ("BRV")
+    private String browserVersion;
+
+    @Field ("DV")
+    private String device;
+
+    @Field ("DVB")
+    private String deviceBrand;
 
     @Field ("OS")
-    String osFamilyName;
+    private String operatingSystem;
 
-    @Field ("VN")
-    String versionNumber;
+    @Field ("OSV")
+    private String operatingSystemVersion;
 
     private BrowserEntity(
             String cookieId,
             String ipAddress,
             String userAgent,
-            String category,
-            String family,
-            String osFamilyName,
-            String versionNumber
+            String browser,
+            String browserVersion,
+            String device,
+            String deviceBrand,
+            String operatingSystem,
+            String operatingSystemVersion
     ) {
         super();
         this.cookieId = cookieId;
         this.ipAddress = ipAddress;
         this.userAgent = userAgent;
-        this.category = category;
-        this.family = family;
-        this.osFamilyName = osFamilyName;
-        this.versionNumber = versionNumber;
+        this.browser = browser;
+        this.browserVersion = browserVersion;
+        this.device = device;
+        this.deviceBrand = deviceBrand;
+        this.operatingSystem = operatingSystem;
+        this.operatingSystemVersion = operatingSystemVersion;
     }
 
     public static BrowserEntity newInstance(
             String cookieId,
             String ip,
             String userAgent,
-            String category,
-            String family,
-            String osFamilyName,
-            String versionNumber
+            String browser,
+            String browserVersion,
+            String device,
+            String deviceBrand,
+            String operatingSystem,
+            String operatingSystemVersion
     ) {
-        return new BrowserEntity(cookieId, ip, userAgent, category, family, osFamilyName, versionNumber);
-    }
-
-    public String getCookieId() {
-        return cookieId;
-    }
-
-    public void setCookieId(String cookieId) {
-        this.cookieId = cookieId;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
+        return new BrowserEntity(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
     }
 }
