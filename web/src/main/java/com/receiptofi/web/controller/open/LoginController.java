@@ -6,8 +6,6 @@ import com.receiptofi.service.RegistrationService;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
 
-import net.sf.uadetector.ReadableUserAgent;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +17,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import net.pieroxy.ua.detection.UserAgentDetectionResult;
 
 import java.util.Locale;
 
@@ -93,30 +94,42 @@ public class LoginController {
      * reason why filter contains this HEAD request as everything is secure after login and there are no bots or
      * crawlers when a valid user has logged in.
      * <p>
-     * @see <a href="http://axelfontaine.com/blog/http-head.html">http://axelfontaine.com/blog/http-head.html</a>
      *
      * @param locale
      * @param map
      * @param request
      * @return
+     * @see <a href="http://axelfontaine.com/blog/http-head.html">http://axelfontaine.com/blog/http-head.html</a>
      */
     @RequestMapping (method = {RequestMethod.GET, RequestMethod.HEAD})
-    public String loadForm(Locale locale, ModelMap map, HttpServletRequest request) {
+    public String loadForm(
+            @RequestHeader ("User-Agent")
+            String userAgent,
+
+            Locale locale,
+            ModelMap map,
+            HttpServletRequest request
+    ) {
         LOG.info("Locale Type={}", locale);
 
-        ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
+        UserAgentDetectionResult res = parser.parse(userAgent);
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             Cookie cookie = cookies[0];
             String cookieId = cookie.getValue();
             String ip = getClientIpAddress(request);
-            String category = agent.getDeviceCategory().getCategory().toString();
-            String family = agent.getFamily().toString();
-            String osFamilyName = agent.getOperatingSystem().getFamilyName();
-            String versionNumber = agent.getVersionNumber().toVersionString();
 
-            LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, agent);
-            loginService.saveUpdateBrowserInfo(cookieId, ip, agent.toString(), category, family, osFamilyName, versionNumber);
+            String browser = res.getBrowser().description;
+            String browserVersion = res.getBrowser().version;
+
+            String device = res.getDevice().deviceType.getLabel();
+            String deviceBrand = res.getDevice().brand.getLabel();
+
+            String operatingSystem = res.getOperatingSystem().family.getLabel();
+            String operatingSystemVersion = res.getOperatingSystem().version;
+
+            LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, userAgent);
+            loginService.saveUpdateBrowserInfo(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

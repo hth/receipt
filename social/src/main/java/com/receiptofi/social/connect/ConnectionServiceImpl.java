@@ -3,7 +3,6 @@ package com.receiptofi.social.connect;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -35,7 +34,6 @@ import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.Reference;
 import org.springframework.social.facebook.api.User;
-import org.springframework.social.facebook.api.WorkEntry;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.impl.GoogleTemplate;

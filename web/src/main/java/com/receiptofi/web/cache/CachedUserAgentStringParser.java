@@ -3,12 +3,11 @@ package com.receiptofi.web.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import net.sf.uadetector.ReadableUserAgent;
-import net.sf.uadetector.UserAgentStringParser;
-import net.sf.uadetector.service.UADetectorServiceFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.pieroxy.ua.detection.UserAgentDetectionResult;
+import net.pieroxy.ua.detection.UserAgentDetector;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,13 +24,11 @@ import java.util.concurrent.TimeUnit;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class CachedUserAgentStringParser implements UserAgentStringParser {
+public final class CachedUserAgentStringParser {
     private static final Logger LOG = LoggerFactory.getLogger(CachedUserAgentStringParser.class);
 
-    private static UserAgentStringParser parser = UADetectorServiceFactory.getCachingAndUpdatingParser();
-
     //Set cache parameters
-    private final Cache<String, ReadableUserAgent> cache = CacheBuilder.newBuilder()
+    private final Cache<String, UserAgentDetectionResult> cache = CacheBuilder.newBuilder()
             .maximumSize(100)
             .expireAfterWrite(2, TimeUnit.HOURS)
             .build();
@@ -54,24 +51,13 @@ public final class CachedUserAgentStringParser implements UserAgentStringParser 
         return SingletonHolder.INSTANCE;
     }
 
-    @Override
-    public String getDataVersion() {
-        return parser.getDataVersion();
-    }
-
-    @Override
-    public ReadableUserAgent parse(final String userAgentString) {
-        ReadableUserAgent result = cache.getIfPresent(userAgentString);
+    public UserAgentDetectionResult parse(String userAgentString) {
+        UserAgentDetectionResult result = cache.getIfPresent(userAgentString);
         if (null == result) {
             LOG.info("Cache : No : UserAgentString: {}", userAgentString);
-            result = parser.parse(userAgentString);
+            result = new UserAgentDetector().parseUserAgent(userAgentString);
             cache.put(userAgentString, result);
         }
         return result;
-    }
-
-    @Override
-    public void shutdown() {
-        LOG.info("Shutting down - uadetector - UserAgentStringParser");
     }
 }
