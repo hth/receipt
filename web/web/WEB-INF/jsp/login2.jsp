@@ -56,7 +56,7 @@
             <br><br>
             <!-- FACEBOOK SIGNIN -->
             <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST" cssStyle="float: left;">
-                <input type="hidden" name="scope" value="email,basic_info,user_activities" />
+                <input type="hidden" name="scope" value="email,public_profile,user_friends,user_about_me,user_birthday" />
                 <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
                 <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
                 <button type="submit" class="submit_btn" style="width: 173px;">FACEBOOK SIGN IN</button>
