@@ -41,8 +41,8 @@
 
     <logger name="com.receiptofi" level="DEBUG" />
     <logger name="com.receiptofi.web.filter.LogContextFilter" level="OFF" />
-    <logger name="org.springframework" level="DEBUG" />
-    <logger name="org.springframework.social" level="DEBUG" />
+    <logger name="org.springframework" level="WARN" />
+    <logger name="org.springframework.social" level="WARN" />
 
     <logger name="net.bull.javamelody." level="ON" />
     <logger name="org.apache.activemq" level="OFF"/>
@@ -53,7 +53,7 @@
     <logger name="com.google.maps" level="INFO"/>
     <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </root>

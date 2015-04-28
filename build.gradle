@@ -32,14 +32,6 @@ ext {
     passFileLocal = file('web/resources/conf/pass.properties')
 
     baseName = "receiptofi"
-
-    springGroup = 'org.springframework'
-    springVersion = '4.1.6.RELEASE'
-
-    springSecurityGroup = 'org.springframework.security'
-    springSecurityVersion = '3.2.7.RELEASE'
-
-    springDataGroup = 'org.springframework.data'
 }
 
 allprojects {
@@ -155,12 +147,11 @@ subprojects {
         compile 'org.springframework.social:spring-social-google:1.0.0.RELEASE'
         compile 'org.springframework.social:spring-social-web:1.1.0.RELEASE'
         compile 'org.springframework.social:spring-social-security:1.1.0.RELEASE'
+        compile files('../lib/spring-social-facebook-2.0.2.BUILD-SNAPSHOT.jar')
+        compile files('../lib/user-agent-detector.jar')
 
         compile 'org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1'
         compile 'org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1'
-
-        compile files('../lib/user-agent-detector.jar')
-        compile files('../lib/spring-social-facebook-2.0.2.BUILD-SNAPSHOT.jar')
 
         compile "$springGroup:spring-aop:$springVersion"
         compile "$springGroup:spring-aspects:$springVersion"
@@ -185,9 +176,9 @@ subprojects {
         compile "$springSecurityGroup:spring-security-taglibs:$springSecurityVersion"
         compile "$springSecurityGroup:spring-security-web:$springSecurityVersion"
 
-        compile "$springDataGroup:spring-data-mongodb:1.7.0.RELEASE"
-        compile "$springDataGroup:spring-data-commons:1.10.0.RELEASE"
-        compile 'org.mongodb:mongo-java-driver:3.0.0'
+        compile "$springDataGroup:spring-data-mongodb:$springDataMongo"
+        compile "$springDataGroup:spring-data-commons:$springDataCommon"
+        compile "org.mongodb:mongo-java-driver:$mongoDriver"
 
         /** --- Specific to Receipt Web Application ---- */
         //TODO remove or use
