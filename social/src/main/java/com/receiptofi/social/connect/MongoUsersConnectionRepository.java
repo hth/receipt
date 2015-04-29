@@ -69,15 +69,14 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
     public List<String> findUserIdsWithConnection(final Connection<?> connection) {
         ProviderEnum providerId = ProviderEnum.valueOf(connection.getKey().getProviderId().toUpperCase());
-        List<String> result = connectionService.getUserIds(providerId, connection.getKey().getProviderUserId());
+        List<String> userIds = connectionService.getUserIds(providerId, connection.getKey().getProviderUserId());
 
-        if (null == result || result.isEmpty()) {
+        if (userIds.isEmpty()) {
             connectionService.create(connection.getKey().getProviderUserId(), connection);
-            result = new ArrayList<>();
-            result.add(connection.getKey().getProviderUserId());
+            userIds.add(connection.getKey().getProviderUserId());
         }
 
-        return result;
+        return userIds;
     }
 
     public Set<String> findUserIdsConnectedTo(String providerId, Set<String> providerUserIds) {
