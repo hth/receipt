@@ -40,8 +40,8 @@ public class UserProfilePreferenceService {
         return userProfileManager.forProfilePreferenceFindByReceiptUserId(receiptUserId);
     }
 
-    public UserProfileEntity findByUserId(String uid) {
-        return userProfileManager.findByUserId(uid);
+    public UserProfileEntity findByProviderUserId(String puid) {
+        return userProfileManager.findByProviderUserId(puid);
     }
 
     public void updateProfile(UserProfileEntity userProfile) throws Exception {

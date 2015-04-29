@@ -144,13 +144,20 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+    /**
+     * Loads user by provider user id from Google or Facebook.
+     *
+     * @param puid - Provider User Id
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Social
-    public UserDetails loadUserByUserId(String uid) throws UsernameNotFoundException {
-        LOG.info("login through Provider user={}", uid);
+    public UserDetails loadUserByProviderUserId(String puid) throws UsernameNotFoundException {
+        LOG.info("login through Provider user={}", puid);
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findByUserId(uid);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByProviderUserId(puid);
         if (null == userProfile) {
-            LOG.warn("not found user={}", uid);
+            LOG.warn("not found provider user={}", puid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
@@ -158,7 +165,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
             return new ReceiptUser(
-                    StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getUserId() : userAccount.getUserId(),
+                    StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getProviderUserId() : userAccount.getUserId(),
                     userAccount.getUserAuthentication().getPassword(),
                     getAuthorities(userAccount.getRoles()),
                     userProfile.getReceiptUserId(),
