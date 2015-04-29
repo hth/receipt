@@ -66,6 +66,12 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
         connectionService.remove(userId, connectionKey);
     }
 
+    /**
+     * Find or create new user account.
+     *
+     * @param connection
+     * @return
+     */
     public List<String> findUserIdsWithConnection(final Connection<?> connection) {
         ProviderEnum providerId = ProviderEnum.valueOf(connection.getKey().getProviderId().toUpperCase());
         List<String> userIds = connectionService.getUserIds(providerId, connection.getKey().getProviderUserId());

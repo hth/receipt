@@ -139,9 +139,15 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         //PageRequest request = new PageRequest(0, 1, new Sort("created", Directions.DESC));
 
         //Can add "^" + to force search only the names starting with
-        Criteria a = where("FN").regex(name, "i");
-        Criteria b = where("LN").regex(name, "i");
-        return mongoTemplate.find(query(new Criteria().orOperator(a, b)), UserProfileEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(new Criteria()
+                    .orOperator(
+                        where("FN").regex(name, "i"),
+                        where("LN").regex(name, "i")
+                    )
+                ),
+                UserProfileEntity.class, TABLE
+        );
     }
 
     @Override
