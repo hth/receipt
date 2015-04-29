@@ -99,6 +99,13 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
+            if(!condition && null == userAccount.getProviderId()) {
+                /** Throw exception when its NOT a social signup. */
+                throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
+                        (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
+                        " when we start accepting new users.");
+            }
+
             return new ReceiptUser(
                     userProfile.getEmail(),
                     userAccount.getUserAuthentication().getPassword(),
@@ -121,9 +128,12 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount, UserProfileEntity userProfile) {
         if (userAccount.isRegisteredWhenRegistrationIsOff()) {
-            throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
-                    (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
-                    " when we start accepting new users.");
+            /**
+             * Do not throw exception here as Social API will get exception that would not be handled properly.
+             * For regular sign up user to be notified during login is managed inside the method.
+             * @see com.receiptofi.social.service.CustomUserDetailsService#loadUserByUsername(String)
+             */
+            return false;
         } else if (userAccount.isActive()) {
             if (userAccount.isAccountValidated() || userAccount.isValidationExpired(mailValidationTimeoutPeriod)) {
                 return true;

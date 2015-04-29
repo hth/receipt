@@ -84,7 +84,7 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
     public ConnectionRepository createConnectionRepository(String userId) {
         if (null == userId) {
-            throw new IllegalArgumentException("userId cannot be null");
+            throw new IllegalArgumentException("UserId cannot be null");
         }
         return new MongoConnectionRepository(userId, connectionService, connectionFactoryLocator, textEncryptor);
     }

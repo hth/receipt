@@ -195,10 +195,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     public void copyAndSaveFacebookToUserProfile(User facebookUserProfile, UserAccountEntity userAccount) {
         LOG.info("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
-        UserProfileEntity userProfile = mongoTemplate.findOne(
-                query(where("UID").is(facebookUserProfile.getId())),
-                UserProfileEntity.class
-        );
+        UserProfileEntity userProfile = userProfileManager.findByProviderUserId(facebookUserProfile.getId());
         boolean createProfilePreference = false;
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
@@ -244,10 +241,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     public void copyAndSaveGoogleToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
         LOG.debug("copying googleUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
-        UserProfileEntity userProfile = mongoTemplate.findOne(
-                query(where("UID").is(googleUserProfile.getId())),
-                UserProfileEntity.class
-        );
+        UserProfileEntity userProfile = userProfileManager.findByProviderUserId(googleUserProfile.getId());
         boolean createProfilePreference = false;
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
