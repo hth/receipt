@@ -123,8 +123,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
                     " when we start accepting new users.");
         } else if (userAccount.isActive()) {
-            if (userAccount.isAccountValidated() ||
-                    userAccount.isAccountNotValidatedBeyondSelectedDays(mailValidationTimeoutPeriod)) {
+            if (userAccount.isAccountValidated() || userAccount.isValidationExpired(mailValidationTimeoutPeriod)) {
                 return true;
             } else {
                 throw new RuntimeException(accountNotValidatedMessage);
