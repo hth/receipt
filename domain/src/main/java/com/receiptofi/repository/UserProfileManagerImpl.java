@@ -114,12 +114,12 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     /**
      * Find any user matching with email; ignore active or not active
      *
-     * @param email
+     * @param uid
      * @return
      */
     @Override
-    public UserProfileEntity findByUserId(String email) {
-        return mongoTemplate.findOne(query(where("UID").is(email)), UserProfileEntity.class, TABLE);
+    public UserProfileEntity findByUserId(String uid) {
+        return mongoTemplate.findOne(query(where("UID").is(uid)), UserProfileEntity.class, TABLE);
     }
 
     @Override

@@ -25,7 +25,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid);
 
-    UserProfileEntity findByUserId(String email);
+    UserProfileEntity findByUserId(String uid);
 
     /**
      * Used for searching user based on name. Search could be based on First Name or Last Name.
