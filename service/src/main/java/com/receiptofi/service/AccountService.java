@@ -22,7 +22,6 @@ import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 
