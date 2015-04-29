@@ -35,7 +35,7 @@ public interface ConnectionService {
 
     List<String> getUserIds(ProviderEnum providerId, String providerUserId);
 
-    void copyAndSaveFacebookToUserProfile(User facebookUserProfile, UserAccountEntity userAccount);
+    void copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount);
 
-    void copyAndSaveGoogleToUserProfile(Person googleUserProfile, UserAccountEntity userAccount);
+    void copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount);
 }
