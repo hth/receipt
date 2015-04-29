@@ -162,7 +162,13 @@ public class ConnectionServiceImpl implements ConnectionService {
         List<User> profiles = facebook.friendOperations().getFriendProfiles();
         for (User facebookUserProfile : profiles) {
             UserAccountEntity userAccountEntity = mongoTemplate.findOne(
-                    query(where("UID").is(facebookUserProfile.getId())), UserAccountEntity.class
+                    query(new Criteria()
+                        .orOperator(
+                            where("PUID").is(facebookUserProfile.getId()),
+                            where("UID").is(facebookUserProfile.getId())
+                        )
+                    ),
+                    UserAccountEntity.class
             );
             if (null == userAccountEntity) {
                 userAccountEntity = UserAccountEntity.newInstance(
