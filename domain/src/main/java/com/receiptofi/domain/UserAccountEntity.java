@@ -305,7 +305,13 @@ public class UserAccountEntity extends BaseEntity {
         this.accountValidatedBeginDate = DateUtil.midnight(DateTime.now().plusDays(1).toDate());
     }
 
-    public boolean isAccountNotValidatedBeyondSelectedDays(int mailValidationFailPeriod) {
+    /**
+     * Condition to check if account is not validated beyond validation expired period.
+     *
+     * @param mailValidationFailPeriod
+     * @return
+     */
+    public boolean isValidationExpired(int mailValidationFailPeriod) {
         return accountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
                 new Date().getTime()).getStandardDays() > mailValidationFailPeriod);
     }
