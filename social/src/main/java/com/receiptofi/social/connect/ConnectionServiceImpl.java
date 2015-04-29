@@ -192,7 +192,10 @@ public class ConnectionServiceImpl implements ConnectionService {
             Person person = getGooglePerson(google);
             copyToUserProfile(person, userAccount);
 
-            // XXX TODO page Circle to get all the users in the circle
+            if (providerConfig.isPopulateSocialFriendOn()) {
+                // XXX TODO page Circle to get all the users in the circle
+                LOG.warn("Missing Google get friends");
+            }
         }
     }
 
@@ -231,7 +234,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 );
                 userAccountEntity.setUserAuthentication(userAuthentication);
                 registrationService.isRegistrationAllowed(userAccount);
-                LOG.info("new account created user={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
+                LOG.info("new account created user={} provider={}",
+                        userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
             } else {
                 userAccountEntity.setUpdated();
             }
