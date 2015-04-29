@@ -351,7 +351,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         accountService.saveUserAccount(userAccount);
 
         /** Save profile. */
-        connectionService.copyAndSaveFacebookToUserProfile(facebookProfile, userAccount);
+        connectionService.copyToUserProfile(facebookProfile, userAccount);
         return userAccount;
     }
 
@@ -395,7 +395,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         accountService.saveUserAccount(userAccount);
 
         /** Save profile. */
-        connectionService.copyAndSaveGoogleToUserProfile(person, userAccount);
+        connectionService.copyToUserProfile(person, userAccount);
         return userAccount;
     }
 

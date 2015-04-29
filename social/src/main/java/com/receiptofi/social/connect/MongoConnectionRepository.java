@@ -143,6 +143,11 @@ public class MongoConnectionRepository implements ConnectionRepository {
         connectionService.create(userId, connection);
     }
 
+    /**
+     * Right after create UserAccount, update connection is called for updating UserProfile information.
+     *
+     * @param connection
+     */
     public void updateConnection(Connection<?> connection) {
         connectionService.update(userId, connection);
     }

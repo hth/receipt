@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -57,21 +56,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public void save(UserProfileEntity object) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        try {
-//            if (findByEmail(object.getEmailId()) == null)
-//                mongoTemplate.save(object, TABLE);
-//            else {
-//                LOG.error("User seems to be already registered: " + object.getEmailId());
-//                throw new Exception("User already registered with email: " + object.getEmailId());
-//            }
-            if (object.getId() != null) {
-                object.setUpdated();
-            }
-            mongoTemplate.save(object, TABLE);
-        } catch (DataIntegrityViolationException e) {
-            LOG.error("Duplicate record entry for UserProfileEntity={}", e);
-            throw new RuntimeException(e.getMessage());
+        if (object.getId() != null) {
+            object.setUpdated();
         }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override
@@ -141,10 +129,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         //Can add "^" + to force search only the names starting with
         return mongoTemplate.find(
                 query(new Criteria()
-                    .orOperator(
-                        where("FN").regex(name, "i"),
-                        where("LN").regex(name, "i")
-                    )
+                                .orOperator(
+                                        where("FN").regex(name, "i"),
+                                        where("LN").regex(name, "i")
+                                )
                 ),
                 UserProfileEntity.class, TABLE
         );
