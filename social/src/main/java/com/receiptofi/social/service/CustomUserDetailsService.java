@@ -50,6 +50,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -88,7 +89,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         LOG.info("login attempted user={}", email);
 
-        //Always check user login with lower letter email case
+        /** Always check user login with lower letter email case. */
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
         if (null == userProfile) {
             LOG.warn("not found user={}", email);
@@ -332,9 +333,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         userAccount.setProfileUrl(facebookProfile.getLink());
         accountService.saveUserAccount(userAccount);
 
-        //save profile
+        /** Save profile. */
         connectionService.copyAndSaveFacebookToUserProfile(facebookProfile, userAccount);
-
         return userAccount;
     }
 
@@ -377,9 +377,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         userAccount.setAuthorizationCode(authorizationCode);
         accountService.saveUserAccount(userAccount);
 
-        //save profile
+        /** Save profile. */
         connectionService.copyAndSaveGoogleToUserProfile(person, userAccount);
-
         return userAccount;
     }
 
@@ -392,11 +391,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     private Collection<? extends GrantedAuthority> getAuthorities(Set<RoleEnum> roles) {
         List<GrantedAuthority> authList = new ArrayList<>(RoleEnum.values().length);
-
-        for (RoleEnum roleEnum : roles) {
-            authList.add(new SimpleGrantedAuthority(roleEnum.name()));
-        }
-
+        authList.addAll(roles.stream().map(roleEnum -> new SimpleGrantedAuthority(roleEnum.name())).collect(Collectors.toList()));
         return authList;
     }
 
