@@ -3,7 +3,6 @@ package com.receiptofi.service;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
 

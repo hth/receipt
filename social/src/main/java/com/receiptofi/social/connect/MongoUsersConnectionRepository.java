@@ -12,7 +12,6 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
