@@ -255,44 +255,40 @@ public class ConnectionServiceImpl implements ConnectionService {
             userProfile.setUpdated();
         }
 
-        try {
-            String id = userProfile.getId();
+        deepCopy(facebookUserProfile, userProfile);
 
-            BeanUtils.copyProperties(userProfile, facebookUserProfile);
-            userProfile.setProviderUserId(facebookUserProfile.getId());
-            userProfile.setProviderId(ProviderEnum.FACEBOOK);
-            userProfile.setReceiptUserId(userAccount.getReceiptUserId());
-            userProfile.setId(id);
-            if (userAccount.isActive()) {
-                userProfile.active();
-            } else {
-                userProfile.inActive();
-            }
-            try {
-                userProfileManager.save(userProfile);
-                if (createProfilePreference) {
-                    accountService.createPreferences(userProfile);
-                }
-            } catch (RuntimeException e) {
-                LOG.error("error found during updating userProfile from provider RID={} userId={} provider={} reason={}",
-                        userProfile.getReceiptUserId(),
-                        userProfile.getProviderUserId(),
-                        userProfile.getProviderId(),
-                        e.getLocalizedMessage(),
-                        e);
-
-                if (e instanceof MappingException || e instanceof DuplicateKeyException) {
-                    throw new UserAccountDuplicateException("Found existing user with similar login", e);
-                } else {
-                    throw e;
-                }
-            }
-
-            //TODO(hth) think about moving this up in previous method call
-            updateUserIdWithEmailWhenPresent(userAccount, userProfile);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            LOG.error(e.getLocalizedMessage(), e);
+        String id = userProfile.getId();
+        userProfile.setProviderUserId(facebookUserProfile.getId());
+        userProfile.setProviderId(ProviderEnum.FACEBOOK);
+        userProfile.setReceiptUserId(userAccount.getReceiptUserId());
+        userProfile.setId(id);
+        if (userAccount.isActive()) {
+            userProfile.active();
+        } else {
+            userProfile.inActive();
         }
+        try {
+            userProfileManager.save(userProfile);
+            if (createProfilePreference) {
+                accountService.createPreferences(userProfile);
+            }
+        } catch (RuntimeException e) {
+            LOG.error("error found during updating userProfile from provider rid={} userId={} provider={} reason={}",
+                    userProfile.getReceiptUserId(),
+                    userProfile.getProviderUserId(),
+                    userProfile.getProviderId(),
+                    e.getLocalizedMessage(),
+                    e);
+
+            if (e instanceof MappingException || e instanceof DuplicateKeyException) {
+                throw new UserAccountDuplicateException("Found existing user with similar login", e);
+            } else {
+                throw e;
+            }
+        }
+
+        //TODO(hth) think about moving this up in previous method call
+        updateUserIdWithEmailWhenPresent(userAccount, userProfile);
     }
 
     public void copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
@@ -306,8 +302,52 @@ public class ConnectionServiceImpl implements ConnectionService {
             userProfile.setUpdated();
         }
 
-        String id = userProfile.getId();
+        deepCopy(googleUserProfile, userProfile);
 
+        String id = userProfile.getId();
+        userProfile.setProviderUserId(googleUserProfile.getId());
+        userProfile.setProviderId(ProviderEnum.GOOGLE);
+        userProfile.setReceiptUserId(userAccount.getReceiptUserId());
+        userProfile.setId(id);
+        if (userAccount.isActive()) {
+            userProfile.active();
+        } else {
+            userProfile.inActive();
+        }
+        try {
+            userProfileManager.save(userProfile);
+            if (createProfilePreference) {
+                accountService.createPreferences(userProfile);
+            }
+        } catch (RuntimeException e) {
+            LOG.error("error found during updating userProfile from provider rid={} userId={} provider={} reason={}",
+                    userProfile.getReceiptUserId(),
+                    userProfile.getProviderUserId(),
+                    userProfile.getProviderId(),
+                    e.getLocalizedMessage(),
+                    e);
+
+            if (e instanceof MappingException || e instanceof DuplicateKeyException) {
+                throw new UserAccountDuplicateException("Found existing user with similar login", e);
+            } else {
+                throw e;
+            }
+        }
+
+        //TODO(hth) think about moving this up in previous method call
+        updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+    }
+
+    private void deepCopy(User facebookUserProfile, UserProfileEntity userProfile) {
+        try {
+            BeanUtils.copyProperties(userProfile, facebookUserProfile);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            LOG.error(e.getLocalizedMessage(), e);
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
+    }
+
+    private void deepCopy(Person googleUserProfile, UserProfileEntity userProfile) {
         userProfile.setFirstName(googleUserProfile.getGivenName());
         userProfile.setLastName(googleUserProfile.getFamilyName());
         userProfile.setName(googleUserProfile.getDisplayName());
@@ -341,24 +381,6 @@ public class ConnectionServiceImpl implements ConnectionService {
             }
         }
         userProfile.setEmail(googleUserProfile.getAccountEmail());
-
-        //same as facebook from here
-        userProfile.setProviderUserId(googleUserProfile.getId());
-        userProfile.setProviderId(ProviderEnum.GOOGLE);
-        userProfile.setReceiptUserId(userAccount.getReceiptUserId());
-        userProfile.setId(id);
-        if (userAccount.isActive()) {
-            userProfile.active();
-        } else {
-            userProfile.inActive();
-        }
-        userProfileManager.save(userProfile);
-        if (createProfilePreference) {
-            accountService.createPreferences(userProfile);
-        }
-
-        //TODO(hth) think about moving this up in previous method call
-        updateUserIdWithEmailWhenPresent(userAccount, userProfile);
     }
 
     /**
