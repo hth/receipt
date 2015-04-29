@@ -211,7 +211,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             String id = userProfile.getId();
 
             BeanUtils.copyProperties(userProfile, facebookUserProfile);
-            userProfile.setUserId(facebookUserProfile.getId());
+            userProfile.setProviderUserId(facebookUserProfile.getId());
             userProfile.setProviderId(ProviderEnum.FACEBOOK);
             userProfile.setReceiptUserId(userAccount.getReceiptUserId());
             userProfile.setId(id);
@@ -228,7 +228,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             } catch (MappingException e) {
                 LOG.error("error found during updating userProfile from provider RID={} userId={} provider={} reason={}",
                         userProfile.getReceiptUserId(),
-                        userProfile.getUserId(),
+                        userProfile.getProviderUserId(),
                         userProfile.getProviderId(),
                         e.getLocalizedMessage(),
                         e);
@@ -293,7 +293,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         userProfile.setEmail(googleUserProfile.getAccountEmail());
 
         //same as facebook from here
-        userProfile.setUserId(googleUserProfile.getId());
+        userProfile.setProviderUserId(googleUserProfile.getId());
         userProfile.setProviderId(ProviderEnum.GOOGLE);
         userProfile.setReceiptUserId(userAccount.getReceiptUserId());
         userProfile.setId(id);

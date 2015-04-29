@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "USER_PROFILE")
 @CompoundIndexes ({
-        @CompoundIndex (name = "user_profile_provider_uid_em_idx", def = "{'RID': -1, 'UID': -1, 'PID': 1, 'EM' : 1}", unique = true),
+        @CompoundIndex (name = "user_profile_rid_puid_pid_em_idx", def = "{'RID': -1, 'PUID': -1, 'PID': 1, 'EM' : 1}", unique = true),
         @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true)
 })
 public class UserProfileEntity extends BaseEntity {
@@ -42,9 +42,10 @@ public class UserProfileEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
+    /** Provider User Id matches id's from social provider. */
     @NotNull
-    @Field ("UID")
-    private String userId;
+    @Field ("PUID")
+    private String providerUserId;
 
     @NotNull
     @Field ("PID")
@@ -71,8 +72,9 @@ public class UserProfileEntity extends BaseEntity {
     @Field ("LO")
     private Locale locale;
 
+    /** Profile URL. */
     @Field ("URL")
-    private String link; //profile URL
+    private String link;
 
     @Field ("WS")
     private String website;
@@ -183,12 +185,12 @@ public class UserProfileEntity extends BaseEntity {
         this.receiptUserId = receiptUserId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getProviderUserId() {
+        return providerUserId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setProviderUserId(String providerUserId) {
+        this.providerUserId = providerUserId;
     }
 
     public ProviderEnum getProviderId() {
@@ -220,7 +222,7 @@ public class UserProfileEntity extends BaseEntity {
             }
         }
 
-        return userId;
+        return providerUserId;
     }
 
     public void setName(String name) {

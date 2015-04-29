@@ -50,6 +50,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -88,7 +89,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         LOG.info("login attempted user={}", email);
 
-        //Always check user login with lower letter email case
+        /** Always check user login with lower letter email case. */
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
         if (null == userProfile) {
             LOG.warn("not found user={}", email);
@@ -143,13 +144,20 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+    /**
+     * Loads user by provider user id from Google or Facebook.
+     *
+     * @param puid - Provider User Id
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Social
-    public UserDetails loadUserByUserId(String uid) throws UsernameNotFoundException {
-        LOG.info("login through Provider user={}", uid);
+    public UserDetails loadUserByProviderUserId(String puid) throws UsernameNotFoundException {
+        LOG.info("login through Provider user={}", puid);
 
-        UserProfileEntity userProfile = userProfilePreferenceService.findByUserId(uid);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByProviderUserId(puid);
         if (null == userProfile) {
-            LOG.warn("not found user={}", uid);
+            LOG.warn("not found provider user={}", puid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
@@ -157,7 +165,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
             return new ReceiptUser(
-                    StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getUserId() : userAccount.getUserId(),
+                    StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getProviderUserId() : userAccount.getUserId(),
                     userAccount.getUserAuthentication().getPassword(),
                     getAuthorities(userAccount.getRoles()),
                     userProfile.getReceiptUserId(),
@@ -332,9 +340,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         userAccount.setProfileUrl(facebookProfile.getLink());
         accountService.saveUserAccount(userAccount);
 
-        //save profile
+        /** Save profile. */
         connectionService.copyAndSaveFacebookToUserProfile(facebookProfile, userAccount);
-
         return userAccount;
     }
 
@@ -377,9 +384,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         userAccount.setAuthorizationCode(authorizationCode);
         accountService.saveUserAccount(userAccount);
 
-        //save profile
+        /** Save profile. */
         connectionService.copyAndSaveGoogleToUserProfile(person, userAccount);
-
         return userAccount;
     }
 
@@ -392,11 +398,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     private Collection<? extends GrantedAuthority> getAuthorities(Set<RoleEnum> roles) {
         List<GrantedAuthority> authList = new ArrayList<>(RoleEnum.values().length);
-
-        for (RoleEnum roleEnum : roles) {
-            authList.add(new SimpleGrantedAuthority(roleEnum.name()));
-        }
-
+        authList.addAll(roles.stream().map(roleEnum -> new SimpleGrantedAuthority(roleEnum.name())).collect(Collectors.toList()));
         return authList;
     }
 

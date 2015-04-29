@@ -68,7 +68,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
             user = customUserDetailsService.loadUserByUsername(StringUtils.lowerCase(localUserId));
         } else {
             userSignedInUsingProvider(localUserId, request);
-            user = customUserDetailsService.loadUserByUserId(localUserId);
+            user = customUserDetailsService.loadUserByProviderUserId(localUserId);
         }
         Assert.notNull(user);
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
