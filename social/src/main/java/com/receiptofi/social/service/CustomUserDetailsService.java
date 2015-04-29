@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
@@ -175,6 +176,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param accessToken Facebook sends accessToken and Google sends authorization code
      * @return
      */
+    @Mobile
     @Social
     public String signInOrSignup(ProviderEnum provider, String accessToken) {
         UserAccountEntity userAccount;

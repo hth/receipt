@@ -28,7 +28,6 @@ public class UserProfilePreferenceService {
 
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private UserPreferenceManager userPreferenceManager;
-    @Autowired private ExpenseTagManager expenseTagManager;
 
     public UserProfileEntity findByEmail(String email) {
         return userProfileManager.findByEmail(email);
@@ -42,8 +41,8 @@ public class UserProfilePreferenceService {
         return userProfileManager.forProfilePreferenceFindByReceiptUserId(receiptUserId);
     }
 
-    public UserProfileEntity findByUserId(String email) {
-        return userProfileManager.findByUserId(email);
+    public UserProfileEntity findByUserId(String uid) {
+        return userProfileManager.findByUserId(uid);
     }
 
     public void updateProfile(UserProfileEntity userProfile) throws Exception {
