@@ -408,11 +408,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         q.fields().include("UID");
 
         List<UserAccountEntity> results = mongoTemplate.find(q, UserAccountEntity.class);
-        Set<String> userIds = new HashSet<>();
-        for (UserAccountEntity mc : results) {
-            userIds.add(mc.getUserId());
-        }
-        return userIds;
+        return results.stream().map(UserAccountEntity::getUserId).collect(Collectors.toSet());
     }
 
     public List<String> getUserIds(ProviderEnum providerId, String providerUserId) {
@@ -420,19 +416,11 @@ public class ConnectionServiceImpl implements ConnectionService {
         q.fields().include("UID");
 
         List<UserAccountEntity> results = mongoTemplate.find(q, UserAccountEntity.class);
-        List<String> userIds = new ArrayList<>();
-        for (UserAccountEntity mc : results) {
-            userIds.add(mc.getUserId());
-        }
-        return userIds;
+        return results.stream().map(UserAccountEntity::getUserId).collect(Collectors.toList());
     }
 
     private List<Connection<?>> runQuery(Query query) {
         List<UserAccountEntity> results = mongoTemplate.find(query, UserAccountEntity.class);
-        List<Connection<?>> l = new ArrayList<>();
-        for (UserAccountEntity mc : results) {
-            l.add(connectionConverter.convert(mc));
-        }
-        return l;
+        return results.stream().map(connectionConverter::convert).collect(Collectors.toList());
     }
 }
