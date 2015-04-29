@@ -75,6 +75,9 @@ public class AccountService {
     @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
     private String[] expenseTags;
 
+    @Value("${ExpenseTagColors.Default:#1a9af9,#b492e8}")
+    private String[] expenseTagColors;
+
     @Autowired
     public AccountService(
             UserAccountManager userAccountManager,
@@ -232,14 +235,16 @@ public class AccountService {
      * @param rid
      */
     public void addDefaultExpenseTag(String rid) {
+        int i = 0;
         /** Add default expense tags. */
         for (String tag : expenseTags) {
             ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
                     tag,
                     rid,
-                    ColorUtil.getRandom());
+                    expenseTagColors[i]);
 
             expensesService.saveExpenseTag(expenseTag);
+            i++;
         }
     }
 
