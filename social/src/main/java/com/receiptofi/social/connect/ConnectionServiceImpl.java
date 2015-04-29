@@ -62,32 +62,21 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private MongoTemplate mongoTemplate;
     private ConnectionConverter connectionConverter;
-    private GenerateUserIdManager generateUserIdManager;
-    private AccountService accountService;
-    private RegistrationService registrationService;
-    private ProviderConfig providerConfig;
-    private UserAccountManager userAccountManager;
-    private UserProfileManager userProfileManager;
+
+    @Autowired private GenerateUserIdManager generateUserIdManager;
+    @Autowired private AccountService accountService;
+    @Autowired private RegistrationService registrationService;
+    @Autowired private ProviderConfig providerConfig;
+    @Autowired private UserAccountManager userAccountManager;
+    @Autowired private UserProfileManager userProfileManager;
 
     @Autowired
     public ConnectionServiceImpl(
             MongoTemplate mongoTemplate,
-            ConnectionConverter connectionConverter,
-            GenerateUserIdManager generateUserIdManager,
-            AccountService accountService,
-            RegistrationService registrationService,
-            ProviderConfig providerConfig,
-            UserAccountManager userAccountManager,
-            UserProfileManager userProfileManager
+            ConnectionConverter connectionConverter
     ) {
         this.mongoTemplate = mongoTemplate;
         this.connectionConverter = connectionConverter;
-        this.generateUserIdManager = generateUserIdManager;
-        this.accountService = accountService;
-        this.registrationService = registrationService;
-        this.providerConfig = providerConfig;
-        this.userAccountManager = userAccountManager;
-        this.userProfileManager = userProfileManager;
     }
 
     /**
