@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -184,6 +185,38 @@ public class AccountService {
             throw new RuntimeException("Error saving user profile");
         }
 
+        createPreferences(userProfile);
+        addDefaultExpenseTag(rid);
+        return userAccount;
+    }
+
+    /**
+     * Create new account using social login.
+     *
+     * @param userAccount
+     */
+    public void createNewAccount(UserAccountEntity userAccount) {
+        Assert.notNull(userAccount.getProviderId());
+        LOG.info("New account created using social user={} provider={}",
+                userAccount.getReceiptUserId(), userAccount.getProviderId());
+        /**
+         * UserAuthenticationEntity is not required but needed. Social user will not be able to reset the authentication
+         * since its a social account.
+         */
+        UserAuthenticationEntity userAuthentication = getUserAuthenticationEntity(RandomString.newInstance().nextString());
+        userAccount.setUserAuthentication(userAuthentication);
+        registrationService.isRegistrationAllowed(userAccount);
+        billAccount(userAccount);
+        userAccountManager.save(userAccount);
+        addDefaultExpenseTag(userAccount.getReceiptUserId());
+    }
+
+    /**
+     * Shared with social registration
+     *
+     * @param userProfile
+     */
+    public void createPreferences(UserProfileEntity userProfile) {
         try {
             UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userProfile);
             userPreferenceManager.save(userPreferenceEntity);
@@ -191,7 +224,14 @@ public class AccountService {
             LOG.error("During saving UserPreferenceEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user preference");
         }
+    }
 
+    /**
+     * Shared with social registration
+     *
+     * @param rid
+     */
+    public void addDefaultExpenseTag(String rid) {
         /** Add default expense tags. */
         for (String tag : expenseTags) {
             ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
@@ -201,11 +241,14 @@ public class AccountService {
 
             expensesService.saveExpenseTag(expenseTag);
         }
-
-        return userAccount;
     }
 
-    private void billAccount(UserAccountEntity userAccount) {
+    /**
+     * Shared with social registration
+     *
+     * @param userAccount
+     */
+    public void billAccount(UserAccountEntity userAccount) {
         BillingAccountEntity billingAccount = userAccount.getBillingAccount();
 
         /** Consider the account as billed from get go as BillingHistory is created with Promotional. */
@@ -348,11 +391,11 @@ public class AccountService {
      * Updates existing userId with new userId.
      * </p>
      * Do not add send email in this method. Any call invokes this method needs to call accountValidationMail after it.
-     * @see com.receiptofi.service.MailService#accountValidationMail(String, String, String) ()
      *
      * @param existingUserId
      * @param newUserId
      * @return
+     * @see com.receiptofi.service.MailService#accountValidationMail(String, String, String) ()
      */
     @Mobile
     @SuppressWarnings ("unused")
@@ -379,12 +422,12 @@ public class AccountService {
      * For Web Application use this method to change user email.
      * </p>
      * Do not add send email in this method. Any call invokes this method needs to call accountValidationMail after it.
-     * @see com.receiptofi.service.MailService#accountValidationMail(String, String, String) ()
      *
      * @param existingUserId
      * @param newUserId
      * @param rid
      * @return
+     * @see com.receiptofi.service.MailService#accountValidationMail(String, String, String) ()
      */
     public UserAccountEntity updateUID(String existingUserId, String newUserId, String rid) {
         if (findByUserId(newUserId) == null) {
@@ -437,7 +480,7 @@ public class AccountService {
     }
 
     public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {
-        if(userAccount.getAccountInactiveReason() != null) {
+        if (null != userAccount.getAccountInactiveReason()) {
             switch (userAccount.getAccountInactiveReason()) {
                 case ANV:
                     updateAccountToValidated(userAccount.getId(), AccountInactiveReasonEnum.ANV);
