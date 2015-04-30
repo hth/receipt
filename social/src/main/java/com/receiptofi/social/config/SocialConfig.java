@@ -56,6 +56,12 @@ public class SocialConfig {
     @Value ("${google.client.secret}")
     private String googleClientSecret;
 
+    @Value ("${indexController:/open/login.htm}")
+    private String loginController;
+
+    @Value ("${accessLanding:/access/landing.htm}")
+    private String accessLanding;
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -102,9 +108,9 @@ public class SocialConfig {
         SignInAdapterImpl signInAdapter = new SignInAdapterImpl(requestCache, customUserDetailsService, registrationService);
         ProviderSignInController controller = new ProviderSignInController(connFactLocator, usrConnRepo, signInAdapter);
 
-        controller.setSignUpUrl("/open/login.htm");
-        controller.setSignInUrl("/open/login.htm");
-        controller.setPostSignInUrl("/access/landing.htm");
+        controller.setSignUpUrl(loginController);
+        controller.setSignInUrl(loginController);
+        controller.setPostSignInUrl(accessLanding);
 
         return controller;
     }
