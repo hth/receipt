@@ -77,6 +77,11 @@
                 </div>
                 <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
             </c:if>
+            <c:if test="${!empty param.error and param.error eq 'provider'}">
+                <div class="r-error" style="margin-left: 0; width: 100%">
+                    Login not successful. Reason: You seems to be already registered with one of the other social provider.
+                </div>
+            </c:if>
 
             <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
                 <%--<form:label for="emailId" path="emailId" cssClass="sign_uplabel"><strong class="bold">Email Address</strong></form:label>--%>
