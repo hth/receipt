@@ -107,6 +107,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             } else {
                 LOG.info("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
+                throw new UserAccountDuplicateException("Found existing user with similar login");
             }
         } else {
             Google google = getGoogle(userAccountFromConnection);
@@ -121,6 +122,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             } else {
                 LOG.info("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
+                throw new UserAccountDuplicateException("Found existing user with similar login");
             }
         }
     }
