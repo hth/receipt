@@ -54,6 +54,11 @@
 
         <div class="loginl" style="width: 450px;">
             <br><br>
+            <c:if test="${!empty param.error and param.error eq 'provider'}">
+                <div class="r-error" style="margin-left: 0; width: 100%">
+                    Login not successful. Reason: You seems to be already registered with one of the other social provider.
+                </div>
+            </c:if>
             <!-- FACEBOOK SIGNIN -->
             <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST" cssStyle="float: left;">
                 <input type="hidden" name="scope" value="email,public_profile,user_friends,user_about_me,user_birthday" />
@@ -76,11 +81,6 @@
                     Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
                 </div>
                 <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
-            </c:if>
-            <c:if test="${!empty param.error and param.error eq 'provider'}">
-                <div class="r-error" style="margin-left: 0; width: 100%">
-                    Login not successful. Reason: You seems to be already registered with one of the other social provider.
-                </div>
             </c:if>
 
             <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
