@@ -23,7 +23,7 @@
         <request-cache ref="requestCache" />
 
         <intercept-url pattern="/**"
-                       access="hasIpAddress('192.168.1.*', '127.0.0.1', 'localhost')" />
+                       access="hasIpAddress('192.168.1.0/24') or hasIpAddress('127.0.0.1')" />
 
         <!--<intercept-url pattern="/**"-->
                        <!--access="permitAll" />-->
@@ -70,7 +70,7 @@
                        access="hasRole('ROLE_ANALYSIS_READ')" />
 
         <intercept-url pattern="/monitoring/**"
-                       access="hasIpAddress('192.168.1.*')" />
+                       access="hasIpAddress('192.168.1.0/24') or hasIpAddress('127.0.0.1')" />
         <form-login
                 login-page="/open/login.htm"
                 default-target-url="/access/landing.htm"
@@ -79,8 +79,6 @@
                 username-parameter="emailId"
                 password-parameter="password" />
 
-        <!-- not sure if this will work on https -->
-        <intercept-url pattern="/monitoring/**" requires-channel="https"/>
         <!-- this for REST API and all form submission -->
         <!--<intercept-url pattern="/spitter/form" requires-channel="https"/>-->
 
