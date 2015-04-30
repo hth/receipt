@@ -287,24 +287,9 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else {
             userProfile.inActive();
         }
-        try {
-            userProfileManager.save(userProfile);
-            if (createProfilePreference) {
-                accountService.createPreferences(userProfile);
-            }
-        } catch (RuntimeException e) {
-            LOG.error("error found during updating userProfile from provider rid={} userId={} provider={} reason={}",
-                    userProfile.getReceiptUserId(),
-                    userProfile.getProviderUserId(),
-                    userProfile.getProviderId(),
-                    e.getLocalizedMessage(),
-                    e);
-
-            if (e instanceof MappingException || e instanceof DuplicateKeyException) {
-                throw new UserAccountDuplicateException("Found existing user with similar login", e);
-            } else {
-                throw e;
-            }
+        userProfileManager.save(userProfile);
+        if (createProfilePreference) {
+            accountService.createPreferences(userProfile);
         }
 
         //TODO(hth) think about moving this up in previous method call
@@ -334,24 +319,9 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else {
             userProfile.inActive();
         }
-        try {
-            userProfileManager.save(userProfile);
-            if (createProfilePreference) {
-                accountService.createPreferences(userProfile);
-            }
-        } catch (RuntimeException e) {
-            LOG.error("error found during updating userProfile from provider rid={} userId={} provider={} reason={}",
-                    userProfile.getReceiptUserId(),
-                    userProfile.getProviderUserId(),
-                    userProfile.getProviderId(),
-                    e.getLocalizedMessage(),
-                    e);
-
-            if (e instanceof MappingException || e instanceof DuplicateKeyException) {
-                throw new UserAccountDuplicateException("Found existing user with similar login", e);
-            } else {
-                throw e;
-            }
+        userProfileManager.save(userProfile);
+        if (createProfilePreference) {
+            accountService.createPreferences(userProfile);
         }
 
         //TODO(hth) think about moving this up in previous method call
