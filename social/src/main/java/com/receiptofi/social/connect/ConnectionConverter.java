@@ -69,13 +69,18 @@ public class ConnectionConverter {
         );
         userAccount.setProviderId(ProviderEnum.valueOf(data.getProviderId().toUpperCase()));
         userAccount.setProviderUserId(data.getProviderUserId());
+
         userAccount.setDisplayName(data.getDisplayName());
         userAccount.setProfileUrl(data.getProfileUrl());
-        userAccount.setImageUrl(data.getImageUrl());
+        userAccount.setExpireTime(data.getExpireTime());
         userAccount.setAccessToken(encrypt(data.getAccessToken()));
+        userAccount.setImageUrl(data.getImageUrl());
+
         userAccount.setSecret(encrypt(data.getSecret()));
         userAccount.setRefreshToken(encrypt(data.getRefreshToken()));
-        userAccount.setExpireTime(data.getExpireTime());
+
+        /** Social account, hence account is considered validated by default. */
+        userAccount.setAccountValidated(true);
         return userAccount;
     }
 
