@@ -102,7 +102,7 @@ public class SocialConfig {
         SignInAdapterImpl signInAdapter = new SignInAdapterImpl(requestCache, customUserDetailsService, registrationService);
         ProviderSignInController controller = new ProviderSignInController(connFactLocator, usrConnRepo, signInAdapter);
 
-        controller.setSignUpUrl("/signup");
+        controller.setSignUpUrl("/open/login.htm");
         controller.setSignInUrl("/open/login.htm");
         controller.setPostSignInUrl("/access/landing.htm");
 
