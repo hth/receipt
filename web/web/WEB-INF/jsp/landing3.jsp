@@ -384,21 +384,22 @@
         <div id="tab3" class="ajx-content">
             <div class="rightside-title">
                 <h1 class="rightside-title-text left">
-                    Expense by business location
+                    Expenses by business location
                 </h1>
             </div>
+
+            <c:choose>
+            <c:when test="${!empty landingForm.receiptGroupedByBizLocations}">
             <div class="rightside-list-holder">
-                <c:choose>
-                <c:when test="${!empty landingForm.receiptGroupedByBizLocations}">
-                    <div id="map-placeholder"></div>
-                </c:when>
-                <c:otherwise>
-                    <div class="r-info temp_offset" id="noMapDataId">
-                        No receipt available to map with location.
-                    </div>
-                </c:otherwise>
-                </c:choose>
+                <div id="map-placeholder"></div>
             </div>
+            </c:when>
+            <c:otherwise>
+                <div class="r-info temp_offset" id="noMapDataId">
+                    No receipt available to map with location.
+                </div>
+            </c:otherwise>
+            </c:choose>
 		</div>
         </c:if>
 	</div>
