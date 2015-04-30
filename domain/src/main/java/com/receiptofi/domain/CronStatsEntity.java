@@ -1,5 +1,7 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.DateUtil;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -7,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.Duration;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ import java.util.Map;
 @Document (collection = "CRON_STATS")
 /** Updated index. */
 @CompoundIndexes (value = {
-    @CompoundIndex (name = "cron_stats_idx", def = "{'C': -1}", background = true)
+        @CompoundIndex (name = "cron_stats_idx", def = "{'C': -1}", background = true)
 })
 public class CronStatsEntity extends BaseEntity {
 
@@ -89,6 +90,6 @@ public class CronStatsEntity extends BaseEntity {
 
     @Transient
     public long getDuration() {
-        return Duration.between(getCreated().toInstant(), end.toInstant()).getSeconds();
+        return DateUtil.getDuration(getCreated(), end);
     }
 }

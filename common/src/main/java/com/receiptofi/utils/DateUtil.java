@@ -12,6 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -93,6 +94,10 @@ public final class DateUtil {
 
     public static Date midnight(Date date) {
         return midnight(new DateTime(date)).toDate();
+    }
+
+    public static long getDuration(Date begin, Date end) {
+        return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
     }
 
     //todo add support for small AM|PM

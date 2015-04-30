@@ -16,6 +16,7 @@ import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -25,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.model.MappingException;
@@ -41,10 +43,12 @@ import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.impl.GoogleTemplate;
 import org.springframework.social.google.api.plus.Organization;
 import org.springframework.social.google.api.plus.Person;
+import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -69,6 +73,9 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Autowired private ProviderConfig providerConfig;
     @Autowired private UserAccountManager userAccountManager;
     @Autowired private UserProfileManager userProfileManager;
+
+    @Value ("${social.profile.lastFetched:60}")
+    private long lastFetched;
 
     @Autowired
     public ConnectionServiceImpl(
@@ -160,17 +167,20 @@ public class ConnectionServiceImpl implements ConnectionService {
         );
         LOG.info("fetched userAccount={}", userAccount);
         if (userAccount != null) {
-            userAccount.setExpireTime(userAccountFromConnection.getExpireTime());
-            userAccount.setAccessToken(userAccountFromConnection.getAccessToken());
-            userAccount.setProfileUrl(userAccountFromConnection.getProfileUrl());
-            userAccount.setImageUrl(userAccountFromConnection.getImageUrl());
-            userAccount.setDisplayName(userAccountFromConnection.getDisplayName());
-            userAccount.setUpdated();
-            /** Social account, hence account is considered validated by default. */
-            userAccount.setAccountValidated(true);
+            if (DateUtil.getDuration(userAccount.getUpdated(), new Date()) > lastFetched) {
+                LOG.info("fetched before save userAccount={}", userAccount);
 
-            LOG.info("fetched before save userAccount={}", userAccount);
-            userAccountManager.save(userAccount);
+                userAccount.setDisplayName(userAccountFromConnection.getDisplayName());
+                userAccount.setProfileUrl(userAccountFromConnection.getProfileUrl());
+                userAccount.setExpireTime(userAccountFromConnection.getExpireTime());
+                userAccount.setAccessToken(userAccountFromConnection.getAccessToken());
+                userAccount.setImageUrl(userAccountFromConnection.getImageUrl());
+
+                userAccount.setUpdated();
+                userAccountManager.save(userAccount);
+            } else {
+                LOG.info("Skipped social userAccount update as it was last fetched within seconds={}", lastFetched);
+            }
         } else {
             UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
                     RandomString.newInstance().nextString()
@@ -179,20 +189,29 @@ public class ConnectionServiceImpl implements ConnectionService {
             userAccountManager.save(userAccountFromConnection);
         }
 
-        if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
-            Facebook facebook = getFacebook(userAccountFromConnection);
-            User user = getFacebookUser(facebook);
-            copyToUserProfile(user, userAccount);
+        Assert.notNull(userAccount, "UserAccount is null before social profile update.");
+        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(userAccount.getReceiptUserId());
+        if (DateUtil.getDuration(userProfile.getUpdated(), new Date()) > lastFetched) {
+            if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
+                Facebook facebook = getFacebook(userAccountFromConnection);
+                User user = getFacebookUser(facebook);
+                copyToUserProfile(user, userAccount);
 
-            if (providerConfig.isPopulateSocialFriendOn()) {
-                populateFacebookFriends(userAccount, facebook);
+                if (providerConfig.isPopulateSocialFriendOn()) {
+                    populateFacebookFriends(userAccount, facebook);
+                }
+            } else {
+                Google google = getGoogle(userAccountFromConnection);
+                Person person = getGooglePerson(google);
+                copyToUserProfile(person, userAccount);
+
+                if (providerConfig.isPopulateSocialFriendOn()) {
+                    // XXX TODO page Circle to get all the users in the circle
+                    LOG.warn("Missing Google get friends");
+                }
             }
         } else {
-            Google google = getGoogle(userAccountFromConnection);
-            Person person = getGooglePerson(google);
-            copyToUserProfile(person, userAccount);
-
-            // XXX TODO page Circle to get all the users in the circle
+            LOG.info("Skipped social userProfile update as it was last fetched within seconds={}", lastFetched);
         }
     }
 
@@ -231,7 +250,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 );
                 userAccountEntity.setUserAuthentication(userAuthentication);
                 registrationService.isRegistrationAllowed(userAccount);
-                LOG.info("new account created user={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
+                LOG.info("new account created user={} provider={}",
+                        userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
             } else {
                 userAccountEntity.setUpdated();
             }
@@ -373,12 +393,11 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         if (googleUserProfile.getPlacesLived() != null) {
-            for (String value : googleUserProfile.getPlacesLived().keySet()) {
-                if (googleUserProfile.getPlacesLived().get(value)) {
-                    Reference reference = new Reference(value);
-                    userProfile.setLocation(reference);
-                }
-            }
+            Set<String> places = googleUserProfile.getPlacesLived().keySet();
+            places.stream().filter(value -> googleUserProfile.getPlacesLived().get(value)).forEach(value -> {
+                Reference reference = new Reference(value);
+                userProfile.setLocation(reference);
+            });
         }
         userProfile.setEmail(googleUserProfile.getAccountEmail());
     }
