@@ -150,7 +150,7 @@ public class UserProfileEntity extends BaseEntity {
 
     @NotNull
     @Field ("ULE")
-    private UserLevelEnum level = UserLevelEnum.USER;
+    private UserLevelEnum level = UserLevelEnum.USER_PAID;
 
     /** To make bean happy. */
     public UserProfileEntity() {
