@@ -41,6 +41,9 @@ public class FileUtil {
     private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
     private static final int FILE_SIZE_IN_MB = 1024 * 1024;
 
+    private FileUtil() {
+    }
+
     public static File createTempFile(String name, String ext) throws IOException {
         try {
             if (name.startsWith(TEMP_FILE_START_WITH)) {
