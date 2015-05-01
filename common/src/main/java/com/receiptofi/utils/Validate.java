@@ -1,5 +1,7 @@
 package com.receiptofi.utils;
 
+import org.springframework.util.Assert;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,18 +27,21 @@ public class Validate {
     private Validate() {
     }
 
-    public static boolean isValidObjectId(String id) {
-        Matcher m = objectIdPattern.matcher(id);
+    public static boolean isValidObjectId(String text) {
+        Assert.hasText(text);
+        Matcher m = objectIdPattern.matcher(text);
         return m.matches();
     }
 
-    public static boolean isValidMail(String mail) {
-        Matcher m = mailPattern.matcher(mail);
+    public static boolean isValidMail(String text) {
+        Assert.hasText(text);
+        Matcher m = mailPattern.matcher(text);
         return m.matches();
     }
 
-    public static boolean isValidName(String name) {
-        Matcher m = namePattern.matcher(name);
+    public static boolean isValidName(String text) {
+        Assert.hasText(text);
+        Matcher m = namePattern.matcher(text);
         return m.matches();
     }
 }
