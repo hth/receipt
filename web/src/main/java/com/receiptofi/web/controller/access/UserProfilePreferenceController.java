@@ -62,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -297,12 +296,7 @@ public class UserProfilePreferenceController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     @ResponseBody
-    public String deleteExpenseTag(
-            @RequestBody
-            String expenseTagDetail,
-
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
+    public String deleteExpenseTag(@RequestBody String expenseTagDetail) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(expenseTagDetail);
