@@ -213,6 +213,182 @@ function loadMonthlyExpenses(date) {
     });
 }
 
+/**
+ * Delete pending document confirmation box.
+ * Note: added document ready around the function call and import main js at the end of the page.
+ */
+function confirmBeforeAction() {
+    $("#deletePendingDocument").click(function (event) {
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: "No, cancel please!",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $('form#receiptDocumentForm').submit();
+            }
+        })
+    });
+
+    $("#deleteBtnId").click(function (event) {
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: "No, cancel please!",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                var bn = $('.font3em').text();
+                var gt = $('#gtId').text();
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(
+                            $("meta[name='_csrf_header']").attr("content"),
+                            $("meta[name='_csrf']").attr("content")
+                        );
+                    },
+                    url: 'delete.htm',
+                    data: JSON.stringify({
+                        receiptId : $('#receiptId').val()
+                    }),
+                    contentType : "application/json",
+                    success: function (responseData) {
+                        if (responseData.result == true) {
+                            $('#actionMessageId').attr('hidden', false);
+                            $(".r-success").html("'" + bn + "' receipt for " + gt + " deleted successfully.").show();
+                            $("div.detail-view-container").html("");
+                        } else {
+                            $('#actionMessageId').attr('hidden', false);
+                            $(".r-error").html(responseData.message).show();
+                            $("div.detail-view-container").html("");
+                        }
+                    },
+                    error: function () {
+                        console.log("Error deleting receipt");
+                    }
+                })
+            }
+        })
+    });
+
+    $("#recheckBtnId").click(function (event) {
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "We are sorry to hear you found errors. \n " +
+            "This receipt will be re-processed for correction if any. \n\n " +
+            "During re-process receipt will be listed under pending.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Yes, re-process it!',
+            cancelButtonText: "No, cancel please!",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                var bn = $('.font3em').text();
+                var gt = $('#gtId').text();
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(
+                            $("meta[name='_csrf_header']").attr("content"),
+                            $("meta[name='_csrf']").attr("content")
+                        );
+                    },
+                    url: 'recheck.htm',
+                    data: JSON.stringify({
+                        receiptId : $('#receiptId').val()
+                    }),
+                    contentType : "application/json",
+                    success: function (responseData) {
+                        if (responseData.result == true) {
+                            $('#actionMessageId').attr('hidden', false);
+                            $(".r-success").html("'" + bn + "' receipt for " + gt + " sent for re-check.").show();
+                            $("div.detail-view-container").html("");
+                        } else {
+                            $('#actionMessageId').attr('hidden', false);
+                            $(".r-error").html(responseData.message).show();
+                            $("div.detail-view-container").html("");
+                        }
+                    },
+                    error: function () {
+                        console.log("Error deleting receipt");
+                    }
+                })
+            }
+        })
+    });
+
+    $("#expenseTagDelete_bt").click(function (event) {
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "Receipts and Items using this expense tag will be reset to blank.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: "No, cancel please!",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function (xhr) {
+                        $("#expenseTagSuccess").hide();
+                        $("#expenseTagError").hide();
+
+                        xhr.setRequestHeader(
+                            $("meta[name='_csrf_header']").attr("content"),
+                            $("meta[name='_csrf']").attr("content")
+                        );
+                    },
+                    url: 'deleteExpenseTag.htm',
+                    data: JSON.stringify({
+                        tagColor : $('input[name=tagColor]').val(),
+                        tagId : $('input[name=tagId]').val(),
+                        tagName : $('input[name=tagName]').val()
+                    }),
+                    contentType : "application/json",
+                    success: function (responseData) {
+                        if (responseData.result == true) {
+                            $("#expenseTagSuccess").html(responseData.message).show();
+                            $("#"+$('input[name=tagId]').val()).remove();
+                        } else {
+                            $("#expenseTagError").html(responseData.message).show();
+                        }
+                        $("#tagName").val('');
+                        $('#expenseTagSaveUpdate_bt').val('SAVE');
+                        $('#expenseTagDelete_bt').attr('hidden', true);
+                        $('#tagId').val('');
+                        inactiveExpenseTagSaveUpdate_bt.call(this);
+                    },
+                    error: function () {
+                        console.log()
+                    }
+                })
+            }
+        });
+    });
+}
+
 function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
     $('#expenseByBusiness').highcharts({
         chart: {

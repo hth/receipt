@@ -11,12 +11,13 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/dynamic_list_helper2.js"></script>--%>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <script>
         /* add background color to holder in tr tag */
@@ -46,6 +47,11 @@
                 </c:otherwise>
             </c:choose>
         };
+    </script>
+    <script>
+        $(document).ready(function() {
+            confirmBeforeAction();
+        });
     </script>
 </head>
 <body>
@@ -125,7 +131,7 @@
             <form:hidden path="receiptDocument.referenceDocumentId"/>
             <form:hidden path="receiptDocument.id"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <button class="gd-button" name="delete" id="deleteId">DELETE</button>
+            <button class="gd-button" name="delete" id="deletePendingDocument">DELETE</button>
         </form:form>
         </div>
     </c:when>
@@ -168,5 +174,6 @@
         <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>

@@ -13,6 +13,9 @@
     <c:choose>
         <c:when test="${!empty receiptForm.receipt}">
             <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
+
+            <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
         </c:when>
         <c:otherwise>
             <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
@@ -277,6 +280,11 @@
 
             updateExpensofiItemList();
         }
+
+        $(document).ready(function () {
+            confirmBeforeAction();
+            $('#actionMessageId').attr('hidden', true).removeClass("temp_offset");
+        })
     </script>
 </head>
 <body>
@@ -284,6 +292,26 @@
 <c:when test="${!empty receiptForm.receipt}">
 <div class="clear"></div>
 <div>
+    <div class="temp_offset" id="actionMessageId">
+        <header>
+        </header>
+        <div class="main clearfix">
+            <div class="rightside-title rightside-title-less-margin">
+                <h1 class="rightside-title-text">
+                    Receipt
+                </h1>
+            </div>
+            <div style="height: 605px;">
+                <div class="r-success" style="display: none;"></div>
+                <div class="r-error" style="display: none;"></div>
+            </div>
+            <div class="footer-tooth clearfix">
+                <div class="footer-tooth-middle"></div>
+                <div class="footer-tooth-right"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="detail-view-container">
         <form:form method="post" action="../receipt.htm" modelAttribute="receiptForm">
         <form:hidden path="receipt.id" id="receiptId"/>
@@ -417,7 +445,7 @@
                         <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Grand Total</td>
                         <td class="receipt-tag" style="background: none;"></td>
                         <td class="receipt-li-price-text"></td>
-                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.total" /></td>
+                        <td class="receipt-li-price-text" id="gtId"><spring:eval expression="receiptForm.receipt.total" /></td>
                     </tr>
                 </table>
 
@@ -611,5 +639,6 @@
     }
     document.getElementById("container").appendChild(df);
 </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>

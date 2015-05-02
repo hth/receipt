@@ -3,6 +3,8 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.google.gson.JsonObject;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
@@ -15,6 +17,8 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.ParseJsonStringToMap;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ReceiptByBizForm;
 import com.receiptofi.web.form.ReceiptForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
@@ -26,10 +30,12 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,6 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -55,9 +62,6 @@ import java.util.stream.Collectors;
 public class ReceiptController {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptController.class);
 
-    @Value ("${ReceiptController.redirectAccessLandingController:redirect:/access/landing.htm}")
-    private String redirectAccessLandingController;
-
     @Value ("${ReceiptController.nextPage:/receipt2}")
     private String nextPage;
 
@@ -70,7 +74,7 @@ public class ReceiptController {
     @Autowired private ExpensesService expensesService;
 
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
-    public ModelAndView loadForm(
+    public String loadForm(
             @PathVariable
             String receiptId,
 
@@ -92,9 +96,16 @@ public class ReceiptController {
             receiptForm.setExpenseTags(expenseTags);
             LOG.debug("receiptForm={}", receiptForm);
         }
-        return new ModelAndView(nextPage);
+        return nextPage;
     }
 
+    /**
+     * This method is not being used. Was suppose to support JSON representation of receipt data.
+     *
+     * @param receiptId
+     * @return
+     */
+    @Deprecated
     @RequestMapping (value = "/rest/{receiptId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonReceiptDetail loadReceipt(
@@ -120,37 +131,65 @@ public class ReceiptController {
         return jsonReceiptDetail;
     }
 
-    @RequestMapping (method = RequestMethod.POST, params = "delete")
-    public String delete(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
-        LOG.info("Delete receipt rid={}", receiptForm.getReceipt().getId());
+    @RequestMapping (
+            value = "/delete",
+            method = RequestMethod.POST,
+            headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    @ResponseBody
+    public String deleteExpenseTag(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
+        String receiptId = map.get("receiptId").getText();
+        LOG.info("Delete receiptId={}", receiptId);
+
+        JsonObject jsonObject = new JsonObject();
         try {
-            receiptService.deleteReceipt(receiptForm.getReceipt().getId(), receiptUser.getRid());
-            //TODO(hth) in case of failure to delete send message to USER
+            boolean result = receiptService.deleteReceipt(receiptId, receiptUser.getRid());
+            jsonObject.addProperty("result", result);
+            if (!result) {
+                jsonObject.addProperty("message", "Failed to deleted receipt.");
+            }
+            /** Success message is set in JS. */
         } catch (Exception e) {
-            LOG.error("Error occurred during receipt delete: Receipt={}, reason={}",
-                    receiptForm.getReceipt().getId(),
-                    e.getLocalizedMessage(),
-                    e);
+            LOG.error("Error occurred during receipt delete receiptId={} rid={} reason={}",
+                    receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+
+            jsonObject.addProperty("result", false);
+            jsonObject.addProperty("message", "Something went wrong while deleting receipt.");
         }
-        return redirectAccessLandingController;
+        return jsonObject.toString();
     }
 
-    @RequestMapping (method = RequestMethod.POST, params = "re-check")
-    public ModelAndView recheck(@ModelAttribute ("receiptForm") ReceiptForm receiptForm) {
-        LOG.info("Initiating re-check on receipt rid={}", receiptForm.getReceipt().getId());
-
+    @RequestMapping (
+            value = "/recheck",
+            method = RequestMethod.POST,
+            headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    @ResponseBody
+    public String recheck(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        try {
-            receiptService.reopen(receiptForm.getReceipt().getId(), receiptUser.getRid());
-        } catch (Exception exce) {
-            LOG.error("Receipt={} reason={}", receiptForm.getReceipt().getId(), exce.getLocalizedMessage(), exce);
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
+        String receiptId = map.get("receiptId").getText();
+        LOG.info("Initiating re-check on receiptId={}", receiptId);
 
-            receiptForm.setErrorMessage(exce.getLocalizedMessage());
-            return loadForm(receiptForm.getReceipt().getId(), receiptForm);
+        JsonObject jsonObject = new JsonObject();
+        try {
+            receiptService.reopen(receiptId, receiptUser.getRid());
+            jsonObject.addProperty("result", true);
+            /** Success message is set in JS. */
+        } catch (Exception e) {
+            LOG.error("Error occurred during receipt recheck receiptId={} rid={} reason={}",
+                    receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+
+            jsonObject.addProperty("result", false);
+            jsonObject.addProperty("message", e.getLocalizedMessage());
         }
-        return new ModelAndView(redirectAccessLandingController);
+        return jsonObject.toString();
     }
 
     /**
