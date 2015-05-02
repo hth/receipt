@@ -3,6 +3,8 @@
  */
 package com.receiptofi.web.controller.access;
 
+import com.google.gson.JsonObject;
+
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
@@ -19,6 +21,7 @@ import com.receiptofi.service.MailService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.BillingForm;
 import com.receiptofi.web.form.ExpenseTagForm;
@@ -36,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -45,9 +49,11 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -56,6 +62,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -283,68 +290,74 @@ public class UserProfilePreferenceController {
     }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (value = "/i", method = RequestMethod.POST, params = "expense_tag_delete")
+    @RequestMapping (
+            value = "/deleteExpenseTag",
+            method = RequestMethod.POST,
+            headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    @ResponseBody
     public String deleteExpenseTag(
-            @ModelAttribute ("expenseTagForm")
-            ExpenseTagForm expenseTagForm,
+            @RequestBody
+            String expenseTagDetail,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs
-    ) {
-        /** There is UI logic based on this. Set the right to be active when responding. */
-        redirectAttrs.addFlashAttribute("showTab", "#tabs-2");
-
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        expenseTagValidator.validate(expenseTagForm, result);
-        if (result.hasErrors()) {
-            LOG.error("validation error");
-            redirectAttrs.addFlashAttribute("result", result);
-            /** Re-direct to prevent resubmit. */
-            return "redirect:/access" + nextPage + "/i" + ".htm";
-        }
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(expenseTagDetail);
+        String tagId = map.get("tagId").getText();
+        String tagName = map.get("tagName").getText();
 
-        try {
+        boolean action = false;
+        StringBuilder message = new StringBuilder();
+        ExpenseTagEntity expenseTag = expensesService.getExpenseTag(receiptUser.getRid(), tagId);
+        if (expenseTag != null) {
             long tagItemCount = itemService.countItemsUsingExpenseType(
-                    expenseTagForm.getTagId(),
+                    tagId,
                     receiptUser.getRid());
 
             long tagReceiptCount = receiptService.countReceiptsUsingExpenseType(
-                    expenseTagForm.getTagId(),
+                    tagId,
                     receiptUser.getRid());
 
-            expensesService.deleteExpenseTag(
-                    expenseTagForm.getTagId(),
-                    expenseTagForm.getTagName(),
+            action = expensesService.deleteExpenseTag(
+                    tagId,
+                    tagName,
                     receiptUser.getRid()
             );
 
-            expenseTagForm.setSuccessMessage("Deleted Expense Tag: " + expenseTagForm.getTagName() + " successfully.");
-            if (tagReceiptCount > 0) {
-                expenseTagForm.setSuccessMessage("Removed expense tag from " + tagReceiptCount + " receipt(s).");
-                if (tagItemCount > 0) {
-                    expenseTagForm.setSuccessMessage("And, removed expense tag from  " + tagItemCount + " item(s).");
+            if (action) {
+                message.append("Deleted Expense Tag: ").append(tagName).append(" successfully.");
+                if (tagReceiptCount > 0) {
+                    message.append("Removed expense tag from ").append(tagReceiptCount).append(" receipt(s).");
+                    if (tagItemCount > 0) {
+                        message.append("And, removed expense tag from ").append(tagItemCount).append(" item(s).");
+                    }
+                } else if (tagItemCount > 0) {
+                    message.append("Removed expense tag from ").append(tagItemCount).append(" item(s).");
                 }
-            } else if (tagItemCount > 0) {
-                expenseTagForm.setSuccessMessage("Removed expense tag from  " + tagItemCount + " item(s).");
+            } else {
+                message.append("Failed to delete Expense Tag: ").append(tagName);
             }
-
-            redirectAttrs.addFlashAttribute("expenseTagForm", expenseTagForm);
-        } catch (Exception e) {
-            LOG.error("Error saving expenseTag={} reason={}", expenseTagForm.getTagName(), e.getLocalizedMessage(), e);
-            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
-            redirectAttrs.addFlashAttribute("result", result);
+        } else {
+            message.append("Expense Tag ").append(tagName).append(" not found.");
         }
 
-        /** Re-direct to prevent resubmit. */
-        return "redirect:/access" + nextPage + "/i" + ".htm";
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("result", action);
+        jsonObject.addProperty("message", message.toString());
+        return jsonObject.toString();
     }
 
     /**
      * Only admin has access to this link. Others get 403 error.
      *
      * @param rid
+     * @param profileForm
      * @param expenseTagForm
+     * @param billingForm
+     * @param model
      * @return
      * @throws IOException
      */

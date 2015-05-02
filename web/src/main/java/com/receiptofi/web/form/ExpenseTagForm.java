@@ -22,9 +22,6 @@ public final class ExpenseTagForm {
     private String tagColor;
     private String tagId;
 
-    private StringBuilder errorMessage = new StringBuilder();
-    private StringBuilder successMessage = new StringBuilder();
-
     private ExpenseTagForm() {
         this.tagColor = ColorUtil.getRandom();
     }
@@ -55,29 +52,5 @@ public final class ExpenseTagForm {
 
     public void setTagId(String tagId) {
         this.tagId = new ScrubbedInput(tagId).getText().toUpperCase();
-    }
-
-    public String getErrorMessage() {
-        return errorMessage.toString();
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        if (StringUtils.isBlank(this.errorMessage)) {
-            this.errorMessage.append(errorMessage);
-        } else {
-            this.errorMessage.append(" ").append(errorMessage);
-        }
-    }
-
-    public String getSuccessMessage() {
-        return successMessage.toString();
-    }
-
-    public void setSuccessMessage(String successMessage) {
-        if (StringUtils.isBlank(this.successMessage)) {
-            this.successMessage.append(successMessage);
-        } else {
-            this.successMessage.append(" ").append(successMessage);
-        }
     }
 }
