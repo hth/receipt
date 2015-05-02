@@ -82,15 +82,16 @@
                             contentType : "application/json",
                             success: function (responseData) {
                                 if (responseData.result == true) {
-                                    $("#expenseTagSuccess").html(responseData.message).show()
+                                    $("#expenseTagSuccess").html(responseData.message).show();
                                     $("#"+$('input[name=tagId]').val()).remove();
                                 } else {
-                                    $("#expenseTagError").html(responseData.message).show()
+                                    $("#expenseTagError").html(responseData.message).show();
                                 }
                                 $("#tagName").val('');
                                 $('#expenseTagSaveUpdate_bt').val('SAVE');
                                 $('#expenseTagDelete_bt').attr('hidden', true);
                                 $('#tagId').val('');
+                                inactiveExpenseTagSaveUpdate_bt.call(this);
                             },
                             error: function () {
                                 console.log()
@@ -325,9 +326,9 @@
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
                         <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSaveUpdate_bt"
-                                style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
+                                style="background: #808080; margin: 77px 10px 0px 0px;" class="read_btn" disabled="disabled">
                         <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt" hidden="true"
-                                style="background:#0079FF; margin: 77px 10px 0px 0px; !important;">
+                                style="background:#0079FF; margin: 77px 10px 0px 0px;">
                     </div>
                 </form:form>
             </div>
@@ -532,7 +533,22 @@
         $('#expenseTagDelete_bt').attr('hidden', false);
 
         $('#tagErrors').hide();
+        activeExpenseTagSaveUpdate_bt();
     }
+
+    function activeExpenseTagSaveUpdate_bt() {
+        $(this).prop("readonly", false).focus();
+        $('#expenseTagSaveUpdate_bt').attr('disabled', false).css('background', '#0079FF');
+    }
+
+    function inactiveExpenseTagSaveUpdate_bt() {
+        $(this).prop("readonly", true).focus();
+        $('#expenseTagSaveUpdate_bt').attr('disabled', true).css('background', '#808080');
+    }
+
+    $("#tagName").on('click', function () {
+        activeExpenseTagSaveUpdate_bt.call(this);
+    });
 
     <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
     $("#userProfile_firstName").on('click', function () {
