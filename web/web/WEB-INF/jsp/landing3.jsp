@@ -382,7 +382,7 @@
 
         <c:if test="${isValidForMap}">
         <div id="tab3" class="ajx-content">
-            <div class="rightside-title">
+            <div class="rightside-title temp_offset" id="title_MapDataId">
                 <h1 class="rightside-title-text left">
                     Expenses by business location
                 </h1>
@@ -557,6 +557,7 @@ function drawExpenseByBusiness() {
         $("#noReceiptId").removeClass("temp_offset");
         $("#noMileageId").removeClass("temp_offset");
         $("#noMapDataId").removeClass("temp_offset");
+        $("#title_MapDataId").removeClass("temp_offset");
     });
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
