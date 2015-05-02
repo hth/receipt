@@ -36,8 +36,8 @@ public class ExpenseTagValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[]{"Tag Name"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagColor", "field.required", new Object[]{"Tag Color"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[]{"Tag name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagColor", "field.required", new Object[]{"Tag color"});
 
         ExpenseTagForm expenseTagForm = (ExpenseTagForm) obj;
         if (expenseTagForm.getTagName() != null && expenseTagForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
@@ -46,7 +46,7 @@ public class ExpenseTagValidator implements Validator {
                     "tagName",
                     "expenseTag.tagName",
                     new Object[]{EXPENSE_TAG_MAX_CHAR},
-                    "Tag Name cannot extend " + EXPENSE_TAG_MAX_CHAR + " characters.");
+                    "Tag name cannot exceed " + EXPENSE_TAG_MAX_CHAR + " characters.");
         }
 
         if (expenseTagForm.getTagColor() != null && expenseTagForm.getTagColor().length() > EXPENSE_COLOR_TAG_MAX_CHAR) {
@@ -55,7 +55,7 @@ public class ExpenseTagValidator implements Validator {
                     "tagColor",
                     "expenseTag.tagColor",
                     new Object[]{EXPENSE_COLOR_TAG_MAX_CHAR},
-                    "Tag Color cannot extend " + EXPENSE_COLOR_TAG_MAX_CHAR + " characters.");
+                    "Tag color cannot extend " + EXPENSE_COLOR_TAG_MAX_CHAR + " characters.");
         }
 
         if (expenseTagForm.getTagColor() != null && !expenseTagForm.getTagColor().startsWith("#")) {

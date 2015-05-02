@@ -75,11 +75,11 @@ public class ExpensesService {
     }
 
     @Mobile
-    public void deleteExpenseTag(String expenseTypeId, String expenseTagName, String rid) {
+    public boolean deleteExpenseTag(String expenseTypeId, String expenseTagName, String rid) {
         boolean removedFromReceipts = receiptManager.removeExpenseTagReferences(rid, expenseTypeId);
         boolean removedFromItems = itemManager.removeExpenseTagReferences(rid, expenseTypeId);
 
         LOG.info("Deleted expense tags from receipt={} and items={}", removedFromReceipts, removedFromItems);
-        expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, rid);
+        return expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, rid);
     }
 }

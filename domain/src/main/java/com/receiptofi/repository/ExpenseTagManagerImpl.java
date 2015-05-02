@@ -121,13 +121,11 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public void deleteExpenseTag(String expenseTagId, String expenseTagName, String rid) {
+    public boolean deleteExpenseTag(String expenseTagId, String expenseTagName, String rid) {
         WriteResult writeResult = mongoTemplate.remove(
                 query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid).and("TAG").is(expenseTagName)),
                 ExpenseTagEntity.class);
-        if (writeResult.getN() == 0) {
-            throw new RuntimeException("Matching Tag Name: " + expenseTagName + ", could not be found");
-        }
+        return writeResult.getN() > 0;
     }
 
     @Override

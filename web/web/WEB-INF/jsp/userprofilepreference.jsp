@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
     <%--<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
@@ -44,6 +46,60 @@
         $(document).ready(function () {
             $('.timestamp').cuteTime({ refresh: 10000 });
         });
+
+        $(document).ready(function () {
+            $('body').on('click','input[value="DELETE"]', function (event) {
+                event.preventDefault();
+                swal({
+                    title: "Are you sure?",
+                    text: "Receipts and Items using this expense tag will be reset to blank.",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn-danger',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: "No, cancel please!",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            type: 'POST',
+                            beforeSend: function (xhr) {
+                                $("#expenseTagSuccess").hide();
+                                $("#expenseTagError").hide();
+
+                                xhr.setRequestHeader(
+                                        $("meta[name='_csrf_header']").attr("content"),
+                                        $("meta[name='_csrf']").attr("content")
+                                );
+                            },
+                            url: 'deleteExpenseTag.htm',
+                            data: JSON.stringify({
+                                tagColor : $('input[name=tagColor]').val(),
+                                tagId : $('input[name=tagId]').val(),
+                                tagName : $('input[name=tagName]').val()
+                            }),
+                            contentType : "application/json",
+                            success: function (responseData) {
+                                if (responseData.result == true) {
+                                    $("#expenseTagSuccess").html(responseData.message).show()
+                                    $("#"+$('input[name=tagId]').val()).remove();
+                                } else {
+                                    $("#expenseTagError").html(responseData.message).show()
+                                }
+                                $("#tagName").val('');
+                                $('#expenseTagSaveUpdate_bt').val('SAVE');
+                                $('#expenseTagDelete_bt').attr('hidden', true);
+                                $('#tagId').val('');
+                            },
+                            error: function () {
+                                console.log()
+                            }
+                        })
+                    }
+                });
+            });
+        })
     </script>
 
 </head>
@@ -226,16 +282,8 @@
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
 
-                <c:if test="${!empty expenseTagForm.successMessage}">
-                    <div class="r-success" style="width: 98%; margin: 20px 0 10px 0;">
-                        <c:out value="${expenseTagForm.successMessage}" />
-                    </div>
-                </c:if>
-                <c:if test="${!empty expenseTagForm.errorMessage}">
-                    <div class="r-error" style="width: 98%; margin: 20px 0 10px 0;">
-                        <c:out value="${expenseTagForm.errorMessage}" />
-                    </div>
-                </c:if>
+                <div class="r-success" style="width: 98%; margin: 20px 0 10px 0; display: none" id="expenseTagSuccess"></div>
+                <div class="r-error" style="width: 98%; margin: 20px 0 10px 0; display: none" id="expenseTagError"></div>
 
                 <h2 class="h2" style="padding-bottom:2%;">Tag Expenses</h2>
                 <div class="">
