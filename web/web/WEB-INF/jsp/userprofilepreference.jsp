@@ -17,7 +17,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
-    <%--<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/colpick.js" type="text/javascript"></script>
@@ -48,58 +47,7 @@
         });
 
         $(document).ready(function () {
-            $('body').on('click','input[value="DELETE"]', function (event) {
-                event.preventDefault();
-                swal({
-                    title: "Are you sure?",
-                    text: "Receipts and Items using this expense tag will be reset to blank.",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn-danger',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: "No, cancel please!",
-                    closeOnConfirm: true,
-                    closeOnCancel: true
-                }, function (isConfirm) {
-                    if (isConfirm) {
-                        $.ajax({
-                            type: 'POST',
-                            beforeSend: function (xhr) {
-                                $("#expenseTagSuccess").hide();
-                                $("#expenseTagError").hide();
-
-                                xhr.setRequestHeader(
-                                        $("meta[name='_csrf_header']").attr("content"),
-                                        $("meta[name='_csrf']").attr("content")
-                                );
-                            },
-                            url: 'deleteExpenseTag.htm',
-                            data: JSON.stringify({
-                                tagColor : $('input[name=tagColor]').val(),
-                                tagId : $('input[name=tagId]').val(),
-                                tagName : $('input[name=tagName]').val()
-                            }),
-                            contentType : "application/json",
-                            success: function (responseData) {
-                                if (responseData.result == true) {
-                                    $("#expenseTagSuccess").html(responseData.message).show();
-                                    $("#"+$('input[name=tagId]').val()).remove();
-                                } else {
-                                    $("#expenseTagError").html(responseData.message).show();
-                                }
-                                $("#tagName").val('');
-                                $('#expenseTagSaveUpdate_bt').val('SAVE');
-                                $('#expenseTagDelete_bt').attr('hidden', true);
-                                $('#tagId').val('');
-                                inactiveExpenseTagSaveUpdate_bt.call(this);
-                            },
-                            error: function () {
-                                console.log()
-                            }
-                        })
-                    }
-                });
-            });
+            confirmBeforeAction();
         })
     </script>
 
@@ -565,4 +513,5 @@
     });
     </c:if>
 </script>
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
