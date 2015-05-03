@@ -52,7 +52,7 @@
 <div class="main clearfix">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            ${receiptByBizForm.bizNameForTitle} <fmt:message key="receipt.by.biz" />
+            ${receiptByBizForm.bizNameForTitle}&nbsp;<fmt:message key="receipt.by.biz" />
                 <c:if test="${receiptByBizForm.receiptLandingViews.size() gt 1}">s</c:if>
                 for ${receiptByBizForm.monthYear}
         </h1>
