@@ -52,7 +52,7 @@ public class DocumentStatsController {
     @Value ("${PendingDocumentController.listRejectedDocuments:/rejectedDocument}")
     private String listRejectedDocuments;
 
-    @Value ("${PendingDocumentController.showDocument:/document2}")
+    @Value ("${PendingDocumentController.showDocument:/document}")
     private String showDocument;
 
     @Autowired private DocumentPendingService documentPendingService;
