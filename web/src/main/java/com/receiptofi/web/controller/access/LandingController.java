@@ -84,6 +84,9 @@ import javax.servlet.http.HttpServletRequest;
 public class LandingController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
+    @Value ("${LandingController.calendar.nextPage:/z/landingTabs}")
+    private String calendarNextPage;
+
     @Autowired
     private LandingService landingService;
 
@@ -104,7 +107,7 @@ public class LandingController {
     /**
      * Refers to landing.jsp
      */
-    @Value ("${nextPage:/landing3}")
+    @Value ("${nextPage:/landing}")
     private String nextPage;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
@@ -210,7 +213,7 @@ public class LandingController {
         /** bizNames and bizByExpenseTypes added below to landingForm*/
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
         /** Need to return ModelAndView as returning just string does not execute JSP. */
-        return new ModelAndView("/z/landingTabs2");
+        return new ModelAndView(calendarNextPage);
     }
 
     /**
