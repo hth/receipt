@@ -3,112 +3,109 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+
     <title><fmt:message key="login.title"/></title>
-
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/css/stylelogin.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
 
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/login.js"></script>
 </head>
 <body>
-<div class="wrapper">
-    <img src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" height="40px"/>
-    <p>&nbsp;</p>
-	<h2>
-		<fmt:message key="login.heading" />
-	</h2>
-    <c:if test="${!empty param.loginFailure and param.loginFailure eq '--'}">
-    <div class="error">
-        Your login attempt was not successful, try again.<br />
-        Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+<div class="main_wrapper">
+    <div class="header">
+        <div class="header_wrapper">
+            <div class="header_left_content">
+                <div id="logo">
+                    <h1 style="font-weight: 500;margin-top: 0.55em;">Receiptofi</h1>
+                </div>
+            </div>
+            <div class="header_right_login">
+                <div class="sing_up"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></div>
+                <div class="sing_up"><a href="${pageContext.request.contextPath}/open/registration.htm">Register</a>
+                </div>
+            </div>
+        </div>
     </div>
-    </c:if>
-	<form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
-		<table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5" style="width: 600px;">
-			<tr>
-				<td align="right" width="19%"><form:label for="emailId" path="emailId" cssErrorClass="error">Email Address:</form:label></td>
-				<td width="40%"><form:input class="tooltip" path="emailId" title="Please enter the email address when you registered with us." /></td>
-				<td width="41%"><form:errors path="emailId" cssClass="error" /></td>
-			</tr>
-			<tr>
-				<td align="right" width="19%"><form:label for="password" path="password" cssErrorClass="error">Password:</form:label></td>
-				<td width="40%"><form:password class="tooltip" path="password" title="Please enter the password you registered with." /></td>
-				<td width="41%"><form:errors path="password" cssClass="error" /></td>
-			</tr>
-            <tr>
-                <td></td>
-                <td><input type='checkbox' name='_spring_security_remember_me'/> Remember me on this computer</td>
-                <td></td>
-            </tr>
-			<tr>
-				<td>&nbsp;</td>
-				<td align="left"><input type="submit" value="Login" class="btn btn-default" /></td>
-			</tr>
-		</table>
-    </form:form>
-
-	<p>
-        <a href="${pageContext.request.contextPath}/open/registration.htm" title="Create a new account.">Register Now</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="${pageContext.request.contextPath}/open/forgot/password.htm" title="Click here to recover your password.">Forgot your password ?</a>
-    </p>
 </div>
+<div class="clear"></div>
+<div class="signup_containerl">
+    <div class="signup_mainl">
+        <c:if test="${deniedSignup}">
+        <div class="signup_label_text" style="padding-bottom: 10px;">
+            You have been registered, but we are currently not accepting new users. <br/>
+        </div>
+        <div class="signup_label_text" style="padding-bottom: 10px;">
+            Will notify you through email when we start accepting new users and will automatically grant access to you. <br/>
+        </div>
+        <div class="signup_label_text" style="padding-bottom: 10px;">
+            User: ${user}
+        </div>
+        <div class="signup_label_text" style="padding-bottom: 10px;">
+            Registration: ${pid}
+        </div>
+        </c:if>
 
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved. (<fmt:message key="build.version" />)</p>
+        <div class="loginl" style="width: 450px;">
+            <br><br>
+            <c:if test="${!empty param.error and param.error eq 'provider'}">
+                <div class="r-error" style="margin-left: 0; width: 100%">
+                    Login not successful. Reason: You seems to be already registered with one of the other social provider.
+                </div>
+            </c:if>
+            <!-- FACEBOOK SIGNIN -->
+            <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST" cssStyle="float: left;">
+                <input type="hidden" name="scope" value="email,public_profile,user_friends,user_about_me,user_birthday" />
+                <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
+                <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
+                <button type="submit" class="submit_btn" style="width: 173px;">FACEBOOK SIGN IN</button>
+            </form:form>
+            <!-- GOOGLE SIGNIN -->
+            <form:form name="g_signin" id="g_signin" action="${pageContext.request.contextPath}/signin/google.htm" method="POST" cssStyle="float: right;">
+                <button type="submit" class="submit_btn" style="width: 173px;">GOOGLE+ SIGN IN</button>
+                <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/latitude.all.best" />
+                <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
+                <input type="hidden" name="access_type" value="offline"/>
+            </form:form>
+            <br><br><br><br>
+            <hr>
+            <h1 class="h1 spacing"><fmt:message key="login.heading" /></h1>
+            <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
+                <div class="r-error" style="margin-left: 0; width: 100%">
+                    Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+                </div>
+                <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
+            </c:if>
+
+            <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
+                <%--<form:label for="emailId" path="emailId" cssClass="sign_uplabel"><strong class="bold">Email Address</strong></form:label>--%>
+                <form:input path="emailId" cssClass="text" placeholder="Email address"/>
+                <%--<form:label for="password" path="password" cssClass="sign_uplabel"><strong class="bold">Password</strong></form:label>--%>
+                <form:password path="password" cssClass="text" placeholder="Password"/>
+                <div class="checkbox">
+                    <input class="chk" type='checkbox' name='_spring_security_remember_me'/>
+                    <span class="checkbox_txt">Remember me on this computer</span>
+                </div>
+                <input class="right submit_btn" id="login" type="submit" value="SIGN IN"/>
+            </form:form>
+            <div class="clear"></div>
+            <hr>
+            <span class="link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
+        </div>
+    </div>
 </div>
-
-<script>
-    $(function() {
-        $("#emailId").focus();
-    });
-</script>
-
-<script>
-    $(function () {
-        $('.tooltip').each(function () {
-            var $this, id, t;
-
-            $this = $(this);
-            id = this.id;
-            t = $('<span />', {
-                title: $this.attr('title')
-            }).appendTo($this.parent()).tooltip({
-                position: {
-                    of: '#' + id,
-                    my: "left+190 center",
-                    at: "left center",
-                    collision: "fit"
-                }
-            });
-            // remove the title from the real element.
-            $this.attr('title', '');
-            $('#' + id).focusin(function () {
-                t.tooltip('open');
-            }).focusout(function () {
-                t.tooltip('close');
-            });
-        });
-    });
-
-    $(function () {
-        $(document).tooltip();
-    });
-</script>
-
-<!-- load dojo and provide config via data attribute -->
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"
-        data-dojo-config="isDebug: false, parseOnLoad: true">
-</script>
-
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
+    </div>
+</div>
 </body>
 </html>

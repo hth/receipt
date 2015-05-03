@@ -39,7 +39,7 @@ import java.util.List;
 public class ExpensesController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensesController.class);
 
-    @Value ("${ExpensesController.nextPage:/expenses2}")
+    @Value ("${ExpensesController.nextPage:/expenses}")
     private String nextPage;
 
     @Autowired private ItemService itemService;

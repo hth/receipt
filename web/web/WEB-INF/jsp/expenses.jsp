@@ -1,170 +1,160 @@
 <%@ include file="include.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+
     <title><fmt:message key="title"/></title>
-
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.4/highcharts.js"></script>
 
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-    </script>
-
+    <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
-
-    <p>&nbsp;</p>
-
+</div>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            All items for expense tag: ${expenseForm.name}
+        </h1>
+    </div>
     <c:choose>
-        <c:when test="${!empty expenseForm.items}">
-        <table style="width: 750px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding: 3px;"></th>
-                <th style="padding: 3px;">Business</th>
-                <th style="padding: 3px;">Transaction Date</th>
-                <th style="padding: 3px;">Name</th>
-                <th style="padding: 3px;">Price</th>
-                <th style="padding: 3px;">Tax</th>
-                <th style="padding: 3px;">Expense Type</th>
-            </tr>
-            </tbody>
+    <c:when test="${!empty expenseForm.items}">
+    <div class="rightside-list-holder full-list-holder">
+        <p class="analysis-text">
+            Found <b>${expenseForm.items.size()}</b>
+            item<c:if test="${expenseForm.items.size() gt 1}">s</c:if>
+            tagged under expense tag ${expenseForm.name}.
+        </p>
+        <ul>
             <form:form method="post" action="expenses.htm" modelAttribute="expenseForm">
-                <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
-                    <tr>
-                        <td style="padding:3px;" align="right">
-                            ${status.count}
-                        </td>
-                        <td style="padding: 3px;">
-                            <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm">
-                                ${item.receipt.bizName.businessName}
-                            </a>
-                        </td>
-                        <td style="padding: 3px;">
-                            <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
-                        </td>
-                        <td style="padding: 3px;">
-                            <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">
-                                ${item.name}
-                            </a>
-                        </td>
-                        <td style="padding: 3px; text-align: right;">
-                            <spring:eval expression="item.price" />
-                        </td>
-                        <td style="padding: 3px; text-align: left;">
-                            ${item.taxed.description}
-                        </td>
-                        <td style="padding: 3px; text-align: left;">
-                            <form:select path="items[${status.index}].expenseTag.id">
-                                <form:option value="NONE" label="--- Select ---" />
-                                <form:options items="${expenseForm.expenseTags}" itemValue="id" itemLabel="tagName" />
-                            </form:select>
-                        </td>
-                    </tr>
-                </c:forEach>
+            <c:forEach items="${expenseForm.items}" var="item" varStatus="status">
+            <li>
+                <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                <span class="rightside-li-date-text" style="width: 100px;"><fmt:formatDate value="${item.receipt.receiptDate}" pattern="MMM dd, yyyy"/></span>
+                <span style="background-color: ${item.expenseTag.tagColor}" title="${item.expenseTag.tagName}">&nbsp;&nbsp;&nbsp;</span>
+                <c:choose>
+                    <c:when test="${item.receipt.billedStatus eq 'NB'}">
+                        <a href="/access/userprofilepreference/i.htm#tabs-3"
+                                class="rightside-li-middle-text" style="width: 250px;">
+                            <c:choose>
+                                <c:when test="${item.receipt.bizName.businessName.length() gt 34}">
+                                    <spring:eval expression="item.receipt.bizName.businessName.substring(0, 34)"/>...
+                                </c:when>
+                                <c:otherwise>
+                                    <spring:eval expression="item.receipt.bizName.businessName"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm"
+                                class="rightside-li-middle-text" style="width: 250px;">
+                            <c:choose>
+                                <c:when test="${item.receipt.bizName.businessName.length() gt 34}">
+                                    <spring:eval expression="item.receipt.bizName.businessName.substring(0, 34)"/>...
+                                </c:when>
+                                <c:otherwise>
+                                    <spring:eval expression="item.receipt.bizName.businessName"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+                <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm" style="width: 250px;">
+                    ${item.nameAbb}
+                </a>
+                <span class="rightside-li-right-text" style="width: 50px;">
+                    <c:choose>
+                        <c:when test="${item.tax gt 0}">
+                            <spring:eval expression='item.tax'/>&nbsp;(T)
+                        </c:when>
+                        <c:otherwise>
+                            &nbsp;
+                        </c:otherwise>
+                    </c:choose>
+                </span>
+                <span class="rightside-li-right-text" style="width: 80px;">
+                    <spring:eval expression='item.price'/>
+                </span>
+                <span class="receipt-tag" style="margin-left: -5px;">
+                    <form:select path="items[${status.index}].expenseTag.id">
+                        <form:option value="NONE" label="SELECT" />
+                        <form:options items="${expenseForm.expenseTags}" itemValue="id" itemLabel="tagName" />
+                    </form:select>
+                </span>
+            </li>
+            </c:forEach>
             </form:form>
-        </table>
-        </c:when>
-        <c:otherwise>
-        <div class="ui-widget">
-            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                <p>
-                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width:410px;">
-                        No data available for selected expense type: <b>${expenseForm.name}</b>
-                    </span>
-                </p>
-            </div>
-        </div>
-        </c:otherwise>
+        </ul>
+    </div>
+    </c:when>
+    <c:otherwise>
+    <div class="r-error">
+        No item tagged under expense tag: <b>${expenseForm.name}</b>
+    </div>
+    <div class="rightside-list-holder full-list-holder">&nbsp;</div>
+    </c:otherwise>
     </c:choose>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+    <div class="footer-tooth clearfix">
+        <div class="footer-tooth-middle"></div>
+        <div class="footer-tooth-right"></div>
+    </div>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
 </div>
-
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
+</html>

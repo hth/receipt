@@ -2,58 +2,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="receipt.title"/></title>
-
+    <meta charset="UTF-8"/>
+    <meta name="description" content=""/>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
+    <title><fmt:message key="receipt.title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <c:choose>
+        <c:when test="${!empty receiptForm.receipt}">
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
 
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+        </c:when>
+        <c:otherwise>
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+        </c:otherwise>
+    </c:choose>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
-
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-            "use strict";
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-    </script>
 
     <script>
         $.ajaxSetup ({
@@ -140,7 +112,7 @@
                 max_chars: 250
             });
 
-            $('.timestamp').cuteTime({ refresh: 10000 });
+            $('.timestamp').cuteTime({refresh: 10000});
             blinkDownloadIcon();
         });
 
@@ -160,43 +132,65 @@
         }
 
         $(function() {
-            $("#expensofi_button").click(
-                function() {
-                    if(items && items.length > 0) {
-                        var jsonItems = {items:items};
+            $("#actionId").on('change',
+                    function() {
+                        if (this.value === 'expenseReport') {
+                            $("#notesContainer").show();
+                            $("#deleteBtnId").show();
+                            $('[id^="itemCell"]').show();
+                            $("#recheckContainer").hide();
+                            $("#recheckBtnId").hide();
 
-                        $.ajax({
-                            type: 'POST',
-                            url: '${pageContext. request. contextPath}/access/expensofi/items.htm',
-                            data: JSON.stringify(jsonItems),
-                            dataType: 'json',
-                            beforeSend: function(xhr) {
-                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-                                $('#download_expense_excel').html(
-                                    "<div class='spinner small' id='spinner'></div>"
-                                ).show();
-                            },
-                            success: function(data) {
-                                console.log(data.filename);
-                                if(data.filename.length > 0) {
-                                    $('#download_expense_excel').html(
-                                        "<input type='button' value='Expensofi' name='expensofi' id='expensofi_button' class='btn btn-default' />" +
-                                        "&nbsp;&nbsp;&nbsp;" +
-                                        "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
-                                            "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='30' height='32' class='downloadIconBlink'>" +
-                                        "</a>"
-                                    ).show();
-                                }
-                            },
-                            complete: function() {
-                                //no need to remove spinner as it is removed during show $('#spinner').remove();
-                                blinkDownloadIcon();
+                            if (items && items.length > 0) {
+                                var jsonItems = {items: items};
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '${pageContext. request. contextPath}/access/expensofi/items.htm',
+                                    data: JSON.stringify(jsonItems),
+                                    dataType: 'json',
+                                    beforeSend: function(xhr) {
+                                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                                        $('#download_expense_excel').html(
+                                                "<span style='padding-left: 40px;'></span>" +
+                                                "<span class='spinner medium-small' id='spinner'>&nbsp;&nbsp;&nbsp;&nbsp;</span>"
+                                        ).show();
+                                    },
+                                    success: function(data) {
+                                        console.log(data.filename);
+                                        if(data.filename.length > 0) {
+                                            $('#download_expense_excel').html(
+                                                    "<span style='padding-left: 40px;'></span>" +
+                                                    "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
+                                                    "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='26' height='26' title='Download Expense Report' class='downloadIconBlink'>" +
+                                                    "</a>"
+                                            ).show();
+                                        }
+                                    },
+                                    complete: function() {
+                                        //no need to remove spinner as it is removed during show $('#spinner').remove();
+                                        blinkDownloadIcon();
+                                        $("#actionId").val($("#actionId option:first").val());
+                                    }
+                                });
+                            } else {
+                                alert("Please select a checkbox to generate expense report");
+                                $("#actionId").val($("#actionId option:first").val());
                             }
-                        });
-                    } else {
-                        alert("Please select a checkbox to generate expense report");
+                        } else if (this.value === 'recheck') {
+                            $("#notesContainer").hide();
+                            $("#deleteBtnId").hide();
+                            $('[id^="itemCell"]').not('#itemCell1').hide();
+                            $("#recheckContainer").show();
+                            $("#recheckBtnId").show();
+                        } else {
+                            $("#notesContainer").show();
+                            $("#deleteBtnId").show();
+                            $('[id^="itemCell"]').show();
+                            $("#recheckContainer").hide();
+                            $("#recheckBtnId").hide();
+                        }
                     }
-                }
             );
 
             $(document).ready(function () {
@@ -204,6 +198,15 @@
                     $('.expensofiItem').prop('checked', isChecked('select_expense_all'));
                     updateExpensofiItemList();
                 });
+
+                <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
+                $('#download_expense_excel').html(
+                        "<span style='padding-left: 40px;'></span>" +
+                        "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
+                        "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='26' height='26' title='Download Expense Report' class='downloadIcon'>" +
+                        "</a>"
+                ).show();
+                </c:if>
             });
 
             $("#receiptExpenseTagId").change(
@@ -221,13 +224,17 @@
                             mimeType: 'application/json',
                             dataType:'json',
                             success: function(data) {
-                                console.log(data);
-                                if(data === true) {
-                                    //TODO update items drop down
+                                if(data.success === true) {
+                                    $('.noClassItem').each(function () {
+                                        $(this).val($("#receiptExpenseTagId").val());
+                                    });
+                                    $("#expenseTagColorId").css({'background-color' : data.tagColor})
+                                } else {
+                                    console.log("Response data is empty. This is error.");
                                 }
                             },
                             error: function(data) {
-                                console.log(data);
+                                console.error(data);
                             }
                         })
                     }
@@ -246,13 +253,7 @@
                                 expenseTagId: $(this).val()
                             },
                             mimeType: 'application/json',
-                            dataType:'json',
-                            success: function(data) {
-                                console.log("update item expense tag successfully");
-                            },
-                            error: function(data) {
-                                console.log(data);
-                            }
+                            dataType:'json'
                         })
                     }
             );
@@ -279,290 +280,293 @@
 
             updateExpensofiItemList();
         }
-    </script>
 
+        $(document).ready(function () {
+            confirmBeforeAction();
+            $('#actionMessageId').attr('hidden', true).removeClass("temp_offset");
+        })
+    </script>
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<c:choose>
+<c:when test="${!empty receiptForm.receipt}">
+<div class="clear"></div>
+<div>
+    <div class="temp_offset" id="actionMessageId">
+        <header>
+        </header>
+        <div class="main clearfix">
+            <div class="rightside-title rightside-title-less-margin">
+                <h1 class="rightside-title-text">
+                    Receipt
+                </h1>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
+            <div style="height: 605px;">
+                <div class="r-success" style="display: none;"></div>
+                <div class="r-error" style="display: none;"></div>
             </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
+            <div class="footer-tooth clearfix">
+                <div class="footer-tooth-middle"></div>
+                <div class="footer-tooth-right"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-view-container">
+        <form:form method="post" action="../receipt.htm" modelAttribute="receiptForm">
+        <form:hidden path="receipt.id" id="receiptId"/>
+        <form:hidden path="receipt.notes.id"/>
+        <form:hidden path="receipt.notes.version"/>
+        <div class="left" style="width: 560px; margin-right: 18px; margin-left: 10px">
+            <c:if test="${!empty receiptForm.errorMessage}">
+            <div class="r-error">
+                ${receiptForm.errorMessage}
+            </div>
+            </c:if>
+
+            <h1 class="h1"><fmt:formatDate pattern="MMMM dd, yyyy" value="${receiptForm.receipt.receiptDate}"/>
+                <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="time"/></span>
+            </h1>
+            <hr style="width: 100%;">
+            <div class="mar10px">
+                <h1 class="font3em"><spring:eval expression="receiptForm.receipt.bizName.businessName" /></h1>
+                <p class="address">
+                    <spring:eval expression="receiptForm.receipt.bizStore.addressWrapped"/>
+                    <br />
+                    <spring:eval expression="receiptForm.receipt.bizStore.phoneFormatted"/>
+                </p>
+            </div>
+            <div class="detailHead">
+                <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
+                    <table>
+                    <tr>
+                        <td width="220px">
+                            Map-93
+                            <span id="download_expense_excel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </td>
+                        <td width="160px" style="text-align: right;">
+                            <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="Expense Tag">
+                                <span style="background-color: ${receiptForm.receipt.expenseTag.tagColor}; margin-left: 90px;" id="expenseTagColorId">&nbsp;&nbsp;&nbsp;</span>
                             </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
+                        </td>
+                        <td width="170px">
+                            <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span>
+                        </td>
+                    </tr>
+                    </table>
+                </h1>
+            </div>
+            <div class="receipt-detail-holder border">
+                <table width="100%" style="margin-left: 4px; margin-right: 4px">
+                    <tr style="border-bottom: 1px dotted #919191;">
+                        <th class="receipt-item-check"><input type="checkbox" id="select_expense_all"/></th>
+                        <th class="rightside-li-date-text" style="width: 25px">&nbsp;</th>
+                        <th style="vertical-align: middle">
+                            <div class="receipt-tag left">
+                                <select id="actionId" name="action" style="width: 155px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
+                                    <option value="NONE">ACTION</option>
+                                    <option value="expenseReport">EXPENSE REPORT</option>
+                                    <option value="recheck">RE-CHECK RECEIPT</option>
+                                </select>
+                            </div>
+                        </th>
+                        <th class="receipt-tag" style="margin-left: -5px;">
+                            <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
+                                <form:option value="NONE" label="SELECT" />
+                                <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
+                            </form:select>
+                        </th>
+                        <th class="receipt-li-price-text"></th>
+                        <th class="receipt-li-price-text"></th>
+                    </tr>
+                    <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
+                    <form:hidden path="items[${status.index}].id"/>
+                    <tr style="border-bottom: 1px dotted #919191;" id="itemCell${status.count}">
+                        <td class="receipt-item-check">
+                            <input type="checkbox" value="${item.id}" class="expensofiItem" onclick="resetSelectItemExpenseAll();" />
+                        </td>
+                        <td class="rightside-li-date-text" style="width: 25px">
+                            ${status.count}.
+                        </td>
+                        <td class="receipt-item-name">
+                            <c:choose>
+                                <c:when test="${item.quantity eq 1}">
+                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.nameAbb}</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">${item.nameAbb}</a>
+                                    <div>
+                                        ${item.quantity} @ <fmt:formatNumber value="${item.price}" type="currency" pattern="###,###.####" /> each
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td class="receipt-tag">
+                            <form:select path="items[${status.index}].expenseTag.id" id="itemId" cssClass="noClassItem">
+                                <form:option value="NONE" label="SELECT" />
+                                <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
+                            </form:select>
+                        </td>
+                        <td class="receipt-li-price-text">
+                            <spring:eval expression="item.taxed == T(com.receiptofi.domain.types.TaxEnum).T" var="isValid" />
+                            <c:choose>
+                                <c:when test="${!isValid}">
+                                    &nbsp;
+                                </c:when>
+                                <c:otherwise>
+                                    <spring:eval expression="item.totalTax"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td class="receipt-li-price-text">
+                            <spring:eval expression="item.totalPriceWithoutTax" />
+                        </td>
+                    </tr>
+                    </c:forEach>
+                    <tr>
+                        <td class="receipt-item-check"></td>
+                        <td class="rightside-li-date-text" style="width: 25px"></td>
+                        <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Sub Total</td>
+                        <td class="receipt-tag" style="background: none;"></td>
+                        <td class="receipt-li-price-text"></td>
+                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.subTotal" /></td>
+                    </tr>
+                    <tr>
+                        <td class="receipt-item-check"></td>
+                        <td class="rightside-li-date-text" style="width: 25px"></td>
+                        <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Tax</td>
+                        <td class="receipt-tag" style="background: none;"></td>
+                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.tax" /></td>
+                        <td class="receipt-li-price-text"></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #919191;">
+                        <td class="receipt-item-check"></td>
+                        <td class="rightside-li-date-text" style="width: 25px"></td>
+                        <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Grand Total</td>
+                        <td class="receipt-tag" style="background: none;"></td>
+                        <td class="receipt-li-price-text"></td>
+                        <td class="receipt-li-price-text" id="gtId"><spring:eval expression="receiptForm.receipt.total" /></td>
+                    </tr>
+                </table>
 
+                <div style="padding-left: 10px">
+
+                    <div id="notesContainer">
+                    <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Receipt notes</h2>
+                    <form:textarea path="receipt.notes.text" id="notes" cols="50" rows="5" placeholder="Write receipt notes here..." cssStyle="font-size: 1.2em;"/>
+                    <br/>
+                    <span class="si-general-text remaining-characters"><span id="notesCount"></span> characters remaining.</span>
+                    <c:choose>
+                        <c:when test="${!empty receiptForm.receipt.notes.id}">
+                            <span id="savedNotes" class="si-general-text remaining-characters">
+                                Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="savedNotes" class="si-general-text remaining-characters"></span>
+                        </c:otherwise>
+                    </c:choose>
+                    <br/>
                     </div>
-                </h3>
+
+                    <div id="recheckContainer" style="display: none;">
+                    <h2 class="h2" style="padding-bottom:2%; margin-top: 14px;">Re-Check reason</h2>
+                    <form:textarea path="receipt.recheckComment.text" id="recheckComment" cols="50" rows="5" placeholder="Write receipt recheck reason here..." cssStyle="font-size: 1.2em;"/>
+                    <br/>
+                    <span class="si-general-text remaining-characters"><span id="recheckCount"></span> characters remaining.</span>
+                    <c:choose>
+                        <c:when test="${!empty receiptForm.receipt.notes.id}">
+                            <span id="savedRecheckComment" class="si-general-text remaining-characters">
+                                Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="savedRecheckComment" class="si-general-text remaining-characters"></span>
+                        </c:otherwise>
+                    </c:choose>
+                    <br/>
+                    </div>
+
+                    <input type="submit" value="DELETE" class="read_btn" name="delete" id="deleteBtnId"
+                            style="background:#FC462A; margin: 77px 10px 0px 0px;" />
+                    <input type="submit" value="RE-CHECK" class="read_btn" name="re-check" id="recheckBtnId"
+                            style="margin: 77px 10px 0px 0px; display: none;" />
+
+                    <div style="padding-bottom: 30px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="left" style="vertical-align: top;">
+            <!-- Script is called to populate div element container -->
+            <div id="container" style="height: 850px"></div>
+        </div>
+        </form:form>
+    </div>
+</div>
+</c:when>
+<c:otherwise>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
+            </div>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
-
-    <p>&nbsp;</p>
-
-    <c:choose>
-    <c:when test="${!empty receiptForm.receipt}">
-    <c:if test="${!empty receiptForm.errorMessage}">
-    <div class="ui-widget">
-        <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
-            <p>
-            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-            <span style="display:block; width: auto">
-            ${receiptForm.errorMessage}
-            </span>
-            </p>
-        </div>
-    </div>
-    </c:if>
-    <table>
-        <tr>
-            <td style="vertical-align: top;">
-                <form:form method="post" action="../receipt.htm" modelAttribute="receiptForm">
-                    <form:hidden path="receipt.id" id="receiptId"/>
-                    <form:hidden path="receipt.notes.id"/>
-                    <form:hidden path="receipt.notes.version"/>
-                    <form:hidden path="receipt.recheckComment.id"/>
-                    <form:hidden path="receipt.recheckComment.version"/>
-
-                    <table style="width: 700px" class="etable">
-                        <tr>
-                            <td colspan="5">
-                                <div style="text-align: center; font-size: 15px">
-                                    <b><spring:eval expression="receiptForm.receipt.bizName.businessName" /></b>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5">
-                                <div class="leftAlign">
-                                    <b><spring:eval expression="receiptForm.receipt.bizStore.addressWrappedMore"/></b>
-                                </div>
-                                <div class="rightAlign">
-                                    <b><fmt:formatDate value="${receiptForm.receipt.receiptDate}" type="both"/></b>
-                                    <p><b><spring:eval expression="receiptForm.receipt.bizStore.phoneFormatted"/></b></p>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th><input type="checkbox" id="select_expense_all"/></th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Tax</th>
-                            <th>Expense Type</th>
-                        </tr>
-                        <c:forEach items="${receiptForm.items}" var="item" varStatus="status">
-                            <form:hidden path="items[${status.index}].id"/>
-                            <tr>
-                                <td style="padding: 3px; text-align: right; width: 6px">
-                                    ${status.count}
-                                </td>
-                                <td style="text-align: center; width: 1px">
-                                    <input type="checkbox" value="${item.id}" class="expensofiItem" onclick="resetSelectItemExpenseAll();" />
-                                </td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${item.quantity eq 1}">
-                                            <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">
-                                                ${item.name}
-                                            </a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">
-                                                ${item.name}
-                                            </a>
-                                            <div style="margin-top: 5px">
-                                                ${item.quantity} @
-                                                <fmt:formatNumber value="${item.price}" type="currency" pattern="###,###.####" /> each
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td style="text-align: right;">
-                                    <spring:eval expression="item.totalPriceWithoutTax" />
-                                </td>
-                                <td style="text-align: left;">
-                                    <spring:eval expression="item.taxed == T(com.receiptofi.domain.types.TaxEnum).T" var="isValid" />
-                                    <c:choose>
-                                        <c:when test="${!isValid}">
-                                            &nbsp;
-                                        </c:when>
-                                        <c:otherwise>
-                                            <spring:eval expression="item.totalTax"/> (T)
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td style="text-align: left;">
-                                    <form:select path="items[${status.index}].expenseTag.id" id="itemId">
-                                        <form:option value="NONE" label="--- Select ---" />
-                                        <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
-                                    </form:select>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        <tr>
-                            <td style="text-align: right;" colspan="3">
-                                Sub Total
-                            </td>
-                            <td style="text-align: right;"><fmt:formatNumber value="${receiptForm.receipt.total - receiptForm.receipt.tax}" type="currency" /></td>
-                            <td style="text-align: right;">&nbsp;</td>
-                            <td style="text-align: left;">
-                                <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
-                                    <form:option value="NONE" label="--- Select ---" />
-                                    <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
-                                </form:select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right; white-space: nowrap;" colspan="3">
-                                <label style="font-size: 11px">
-                                    { Calculated Tax Rate : <b><spring:eval expression="receiptForm.receipt.percentTax4Display" /></b> }
-                                </label>&nbsp;&nbsp;&nbsp;
-                                <span>Tax &nbsp;</span>
-                                <b><spring:eval expression="receiptForm.receipt.tax" /></b>
-                                <span>&nbsp;&nbsp;Total</span>
-                            </td>
-                            <td style="text-align: right;">
-                                <b><spring:eval expression="receiptForm.receipt.total" /></b>
-                            </td>
-                            <td style="text-align: right;">&nbsp;</td>
-                            <td style="text-align: right;">&nbsp;</td>
-                        </tr>
-                        <tr style="height: 6em;">
-                            <td colspan="5">
-                                <div class="leftAlign" id="download_expense_excel">
-                                    <input type="button" value="Expensofi" name="expensofi" id="expensofi_button" class="btn btn-default" />
-                                    &nbsp;
-                                    <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
-                                        <a href="${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm">
-                                            <img src="${pageContext.request.contextPath}/static/images/download_icon_lg.png" class="downloadIcon" width="30" height="32">
-                                        </a>
-                                    </c:if>
-                                </div>
-                                <div class="rightAlign"><input type="submit" value="Re-Check" name="re-check" class="btn btn-default" /></div>
-                                <div class="rightAlign">&nbsp;&nbsp;</div>
-                                <div class="rightAlign"><input type="submit" value="Delete" name="delete" class="btn btn-danger" /></div>
-                            </td>
-                            <td>
-                                &nbsp;
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                <form:label for="receipt.notes.text" path="receipt.notes.text" cssErrorClass="error">
-                                    Receipt Notes:
-                                </form:label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                <form:textarea path="receipt.notes.text" id="notes" size="250" cols="50" rows="4" />
-                                <br/>
-                                <span id='notesCount'></span> characters remaining.
-                                <c:choose>
-                                    <c:when test="${!empty receiptForm.receipt.notes.id}">
-                                        <span id="savedNotes" class="okay">
-                                            Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.notes.updated}" type="both"/></span>
-                                        </span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span id="savedNotes" class="okay"></span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                <form:errors path="receipt.notes.text" cssClass="error" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                <form:label for="receipt.recheckComment.text" path="receipt.recheckComment.text" cssErrorClass="error">
-                                    Re-Check message:
-                                </form:label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                <form:textarea path="receipt.recheckComment.text" id="recheckComment" size="250" cols="50" rows="4" />
-                                <br/>
-                                <span id='recheckCount'></span> characters remaining.
-                                <c:choose>
-                                    <c:when test="${!empty receiptForm.receipt.recheckComment.id}">
-                                        <span id="savedRecheckComment" class="okay">
-                                            Saved - <span class="timestamp"><fmt:formatDate value="${receiptForm.receipt.recheckComment.updated}" type="both"/></span>
-                                        </span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span id="savedRecheckComment" class="okay"></span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                <form:errors path="receipt.recheckComment.text" cssClass="error" />
-                            </td>
-                        </tr>
-                    </table>
-                </form:form>
-            </td>
-            <td style="width: 6px;">&nbsp;</td>
-            <td style="vertical-align: top; text-align: center">
-                <!-- Script is called to populate div element container -->
-                <div id="container" style="height: 850px"></div>
-            </td>
-        </tr>
-    </table>
-    </c:when>
-    <c:otherwise>
-    <div class="ui-widget">
-        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-            <p>
-                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                <span style="display:block; width:700px;">
-                No receipt found!! Please hit back button and submit a valid request
-                </span>
-            </p>
-        </div>
-    </div>
-    </c:otherwise>
-    </c:choose>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            Receipt Not Found
+        </h1>
+    </div>
+    <div style="height: 605px;">
+        <div class="r-error">
+            Oops! we could not find this receipt.
+        </div>
+    </div>
+    <div class="footer-tooth clearfix">
+        <div class="footer-tooth-middle"></div>
+        <div class="footer-tooth-right"></div>
+    </div>
+</div>
+</c:otherwise>
+</c:choose>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
 </div>
 
 <script>
@@ -607,20 +611,20 @@
 
     // JSON data
     var topHeight = 0,
-        info = [
-            <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
-            {
-                src: "${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm",
-                pos: {
-                    top: topHeight = calculateTop(${arr.height}),
-                    left: 0
+            info = [
+                <c:forEach items="${receiptForm.receipt.fileSystemEntities}" var="arr" varStatus="status">
+                {
+                    src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/${arr.key}",
+                    pos: {
+                        top: topHeight = calculateTop(${arr.height}),
+                        left: 0
+                    },
+                    rotate: ${arr.imageOrientation},
+                    zIndex: 0
                 },
-                rotate: ${arr.imageOrientation},
-                zIndex: 0
-            },
-            </c:forEach>
-        ]
-    ;
+                </c:forEach>
+            ]
+            ;
 
     var df = document.createDocumentFragment();
     for (var i = 0, j = info.length; i < j; i++) {
@@ -635,6 +639,6 @@
     }
     document.getElementById("container").appendChild(df);
 </script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>

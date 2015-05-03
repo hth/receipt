@@ -1,271 +1,179 @@
 <%@ include file="include.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="receipt.update"/></title>
-
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
 
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
-    <link rel='stylesheet' type='text/css' href="${pageContext.request.contextPath}/static/jquery/fineuploader/fine-uploader.css"/>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/dynamic_list_helper2.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fine-uploader.min.js"></script>
-    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/beatak-imageloader/jquery.imageloader.js"></script>--%>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
 
     <script>
         /* add background color to holder in tr tag */
         window.onload = function () {
-            <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-                fetchReceiptImage('${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm', "holder_" + ${status.index}, '${arr.id}', ${arr.imageOrientation}, '${arr.blobId}', '${receiptDocumentForm.receiptDocument.receiptUserId}');
-            </c:forEach>
+            <c:choose>
+                <c:when test="${!empty receiptDocumentForm.receiptDocument.referenceDocumentId}">
+                    <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
+                        fetchReceiptImage(
+                        'https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/${arr.key}',
+                        "holder_" + ${status.index},
+                        '${arr.id}',
+                        ${arr.imageOrientation},
+                        '${arr.blobId}',
+                        '${receiptDocumentForm.receiptDocument.receiptUserId}');
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
+                    fetchReceiptImage(
+                        '${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm',
+                        "holder_" + ${status.index},
+                        '${arr.id}',
+                        ${arr.imageOrientation},
+                        '${arr.blobId}',
+                        '${receiptDocumentForm.receiptDocument.receiptUserId}');
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
         };
-
-        function fetchReceiptImage(location, holder, id, angle, blobId, receiptUserId) {
-            document.getElementById(holder).innerHTML = "";
-            var R = Raphael(holder, 930, 800);
-            /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
-            var img = R.image(location, 80, 20, 750, 750);
-            var butt1 = R.set(),
-                    butt2 = R.set();
-            butt1.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
-                    R.path("M12.582,9.551C3.251,16.237,0.921,29.021,7.08,38.564l-2.36,1.689l4.893,2.262l4.893,2.262l-0.568-5.36l-0.567-5.359l-2.365,1.694c-4.657-7.375-2.83-17.185,4.352-22.33c7.451-5.338,17.817-3.625,23.156,3.824c5.337,7.449,3.625,17.813-3.821,23.152l2.857,3.988c9.617-6.893,11.827-20.277,4.935-29.896C35.591,4.87,22.204,2.658,12.582,9.551z").attr({stroke: "none", fill: "#000"}),
-                    R.circle(24.833, 26.917, 26.667).attr({fill: "#fff", opacity: 0}));
-            butt2.push(R.circle(24.833, 26.917, 26.667).attr({stroke: "#ccc", fill: "#fff", "fill-opacity": .4, "stroke-width": 2}),
-                    R.path("M37.566,9.551c9.331,6.686,11.661,19.471,5.502,29.014l2.36,1.689l-4.893,2.262l-4.893,2.262l0.568-5.36l0.567-5.359l2.365,1.694c4.657-7.375,2.83-17.185-4.352-22.33c-7.451-5.338-17.817-3.625-23.156,3.824C6.3,24.695,8.012,35.06,15.458,40.398l-2.857,3.988C2.983,37.494,0.773,24.109,7.666,14.49C14.558,4.87,27.944,2.658,37.566,9.551z").attr({stroke: "none", fill: "#000"}),
-                    R.circle(24.833, 26.917, 26.667).attr({fill: "#fff", opacity: 0}));
-            butt1.translate(10, 181);
-            butt2.translate(10, 245);
-            butt1[2].click(function () {
-                angle -= 90;
-                img.stop().animate({transform: "r" + angle}, 1000, "<>");
-                orientation(id, -90, blobId, receiptUserId);
-            }).mouseover(function () {
-                butt1[1].animate({fill: "#fc0"}, 300);
-            }).mouseout(function () {
-                butt1[1].stop().attr({fill: "#000"});
-            });
-            butt2[2].click(function () {
-                angle += 90;
-                img.animate({transform: "r" + angle}, 1000, "<>");
-                orientation(id, 90, blobId, receiptUserId);
-            }).mouseover(function () {
-                butt2[1].animate({fill: "#fc0"}, 300);
-            }).mouseout(function () {
-                butt2[1].stop().attr({fill: "#000"});
-            });
-            // setTimeout(function () {R.safari();});
-
-            img.rotate(angle);
-        }
-
-        function orientation(id, angle, blobId, receiptUserId) {
-            $.ajax({
-                url: '${pageContext. request. contextPath}/ws/r/change_fs_image_orientation.htm',
-                data: {
-                    fileSystemId: id,
-                    orientation: angle,
-                    blobId: blobId,
-                    receiptUserId: receiptUserId
-                },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-                },
-                type: "POST",
-                success: function (data) {
-                    if(data == true) {
-                        console.log("Success: Receipt_ Image Orientation Updated");
-                    } else {
-                        console.log("Failed: Receipt_ Image Orientation Updated");
-                    }
-                }
-            });
-        }
     </script>
-
-    <!-- For drop down menu -->
     <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
+        $(document).ready(function() {
+            confirmBeforeAction();
         });
     </script>
-
 </head>
 <body>
-<div class="wrapper">
-<div class="divTable">
-    <div class="divRow">
-        <div class="divOfCell50" style="height: 46px">
-            <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
-        </div>
-        <div class="divOfCell75" style="height: 46px">
-            <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-        </div>
-        <div class="divOfCell250">
-            <h3>
-                <div class="dropdown" style="height: 17px">
-                    <div>
-                        <a class="account" style="color: #065c14">
-                            <sec:authentication property="principal.username" />
-                            <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                        </a>
-                    </div>
-                    <div class="submenu">
-                        <ul class="root">
-                            <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                            <li>
-                                <a href="#">
-                                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                        <input type="submit" value="Log out" class="button"/>
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                    </form>
-                                </a>
-                            </li>
-                            <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                        </ul>
-                    </div>
-
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>
-            </h3>
+            </div>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
     </div>
 </div>
-
+<header>
+</header>
+<div class="main clearfix">
 <c:choose>
-    <c:when test="${!empty receiptDocumentForm.receiptDocument}">
+<c:when test="${!empty receiptDocumentForm.receiptDocument}">
 
-        <spring:eval var="documentStat" expression="receiptDocumentForm.receiptDocument.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).REJECT" />
-        <c:choose>
-            <c:when test="${!documentStat}">
-                <h2 class="demoHeaders">Document pending</h2>
-            </c:when>
-            <c:otherwise>
-                <h2 class="demoHeaders">Document rejected</h2>
-            </c:otherwise>
-        </c:choose>
+    <spring:eval var="documentStat" expression="receiptDocumentForm.receiptDocument.documentStatus == T(com.receiptofi.domain.types.DocumentStatusEnum).REJECT"/>
 
-        <c:choose>
-            <c:when test="${empty receiptDocumentForm.receiptDocument.referenceDocumentId}">
-                <form:form method="post" action="delete.htm" modelAttribute="receiptDocumentForm">
-                    <form:hidden path="receiptDocument.documentStatus"/>
-                    <form:hidden path="receiptDocument.referenceDocumentId"/>
-                    <form:hidden path="receiptDocument.id"/>
-                    <input type="submit" value="Delete" name="delete" id="deleteId"/>
-                </form:form>
-            </c:when>
-            <c:otherwise>
-                <div class="ui-widget">
-                    <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
-                        <p>
-                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                            <span style="display:block; width: auto">
-                                This receipt is in the process of being Re-Checked.
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
+    <div class="rightside-title">
+        <h1 class="rightside-title-text">
+            <c:choose>
+                <c:when test="${!documentStat}">
+                    Document pending
+                </c:when>
+                <c:otherwise>
+                    Document rejected
+                </c:otherwise>
+            </c:choose>
+        </h1>
+    </div>
 
-        <c:choose>
-            <c:when test="${!empty receiptDocumentForm.errorMessage}">
-                <%--Currently this section of code is not executed unless the error message is added to the form directly without using 'result' --%>
-                <div class="ui-widget" id="existingErrorMessage">
-                    <div class="ui-state-highlight ui-corner-all alert-error" style="margin-top: 0px; padding: 0 .7em;">
-                        <p>
-                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                            <span style="display:block; width: auto">
-                                ${receiptDocumentForm.errorMessage}
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="ui-widget" id="errorMessage">
-
-                </div>
-            </c:otherwise>
-        </c:choose>
-
-        <table>
-            <tr>
-                <td style="vertical-align: top;">
-                    <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-                        <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;"></div>
-                    </c:forEach>
-                </td>
-            </tr>
-        </table>
+    <c:choose>
+    <c:when test="${!empty receiptDocumentForm.errorMessage}">
+    <div class="r-error" id="existingErrorMessage">
+        ${receiptDocumentForm.errorMessage}
+    </div>
     </c:when>
     <c:otherwise>
-        <div class="ui-widget">
-            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-            <p>
-            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-            <span style="display:block; width:700px;">
-            <c:choose>
-            <c:when test="${isTech}">
-                Oops! Seems like user has deleted this receipt recently.
-            </c:when>
-            <c:otherwise>
-                No receipt found!! Please hit back button and submit a valid request
-            </c:otherwise>
-            </c:choose>
-            </span>
-            </p>
-            </div>
+    <div class="blank-space">&nbsp;</div>
+    </c:otherwise>
+    </c:choose>
+
+    <c:choose>
+    <c:when test="${empty receiptDocumentForm.receiptDocument.referenceDocumentId}">
+        <div class="margin-left">
+        <form:form method="post" action="delete.htm" modelAttribute="receiptDocumentForm">
+            <form:hidden path="receiptDocument.documentStatus"/>
+            <form:hidden path="receiptDocument.referenceDocumentId"/>
+            <form:hidden path="receiptDocument.id"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <button class="gd-button" name="delete" id="deletePendingDocument">DELETE</button>
+        </form:form>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <div class="r-info">
+            This document is in the process of being Re-Checked.
         </div>
     </c:otherwise>
+    </c:choose>
+
+    <div class="rightside-list-holder full-list-holder">
+        <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
+        <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;"></div>
+        </c:forEach>
+    </div>
+</c:when>
+<c:otherwise>
+<div class="r-error">
+<c:choose>
+    <c:when test="${isTech}">
+        Oops! Seems like user has deleted this receipt recently.
+    </c:when>
+    <c:otherwise>
+        No document found. Please hit back button and submit a valid request.
+    </c:otherwise>
 </c:choose>
-
-<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+<div class="rightside-list-holder full-list-holder">&nbsp;</div>
+</c:otherwise>
+</c:choose>
+<div class="footer-tooth clearfix">
+    <div class="footer-tooth-middle"></div>
+    <div class="footer-tooth-right"></div>
 </div>
-
+</div>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
+</div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>

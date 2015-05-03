@@ -1,141 +1,98 @@
 <%@ include file="include.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="notification.title"/></title>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-    </script>
-
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
-
-    <p>&nbsp;</p>
-
-    <c:choose>
-        <c:when test="${!empty notificationForm.notifications}">
-            <div>
-                <section class="chunk">
-                    <fieldset>
-                        <legend class="hd">
-                            <span class="text"><fmt:message key="notification.title" /></span>
-                        </legend>
-                        <c:forEach var="notification" items="${notificationForm.notifications}" varStatus="status">
-                        <div class="bd">
-                            <div class="text">
-                            <fmt:formatNumber value="${status.count}" pattern="00"/>. &nbsp;&nbsp;
-                            <fmt:formatDate value="${notification.created}" pattern="MM/dd/yy hh:mm:ss a z" /> &nbsp; - &nbsp;
-                            ${notification.notificationMessage}
-                            </div>
-                        </div>
-                        </c:forEach>
-                    </fieldset>
-                </section>
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="ui-widget">
-                <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                    <p>
-                        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                        <span style="display:block; width:410px;">
-                            There are no <fmt:message key="notification.title" />
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </c:otherwise>
-    </c:choose>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+<header>
+</header>
+<div class="main clearfix">
+<c:choose>
+<c:when test="${!empty notificationForm.notifications}">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            <fmt:message key="notification.title" /><c:if test="${notificationForm.notifications.size() gt 1}">S</c:if>
+        </h1>
+    </div>
+    <div class="rightside-list-holder full-list-holder">
+        <ul>
+            <c:forEach var="notification" items="${notificationForm.notifications}" varStatus="status">
+            <li>
+                <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                <span class="rightside-li-date-text full-li-date-text"><fmt:formatDate value="${notification.created}" type="both"/></span>
+                ${notification.notificationMessage}
+            </li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:when>
+<c:otherwise>
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            <fmt:message key="notification.title" />
+        </h1>
+    </div>
+    <div style="height: 605px;">
+        <div class="r-info">
+            There are no notification.
+        </div>
+    </div>
+</c:otherwise>
+</c:choose>
+<div class="footer-tooth clearfix">
+    <div class="footer-tooth-middle"></div>
+    <div class="footer-tooth-right"></div>
 </div>
-
+</div>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
+</div>
 </body>
+</html>

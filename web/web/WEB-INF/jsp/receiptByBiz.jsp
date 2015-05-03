@@ -1,163 +1,142 @@
 <%@ include file="include.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="receipt.by.biz"/></title>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-    </script>
-
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
-
-    <p>&nbsp;</p>
-
-    <h2 class="demoHeaders"><fmt:message key="receipt.by.biz" /></h2>
-
-    <div id="onLoadReceiptForMonthId">
+</div>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            ${receiptByBizForm.bizNameForTitle}&nbsp;<fmt:message key="receipt.by.biz" />
+                <c:if test="${receiptByBizForm.receiptLandingViews.size() gt 1}">s</c:if>
+                for ${receiptByBizForm.monthYear}
+        </h1>
+    </div>
     <c:choose>
     <c:when test="${!empty receiptByBizForm.receiptLandingViews}">
-        <table>
-            <tr>
-                <td style="vertical-align: top">
-                    <table style="width: 470px" class="etable">
-                        <tr>
-                            <th style="padding: 3px;"></th>
-                            <th style="padding: 3px;">Business</th>
-                            <th style="padding: 3px;">Receipt Date</th>
-                            <th style="padding: 3px;">Tax</th>
-                            <th style="padding: 3px;">Total</th>
-                        </tr>
-                        <c:forEach var="receipt" items="${receiptByBizForm.receiptLandingViews}"  varStatus="status">
-                            <tr>
-                                <td style="padding: 3px; text-align: right">
-                                    ${status.count}
-                                </td>
-                                <td style="padding: 3px;">
-                                    <spring:eval expression="receipt.name" />
-                                </td>
-                                <td style="padding: 3px;">
-                                    <fmt:formatDate value="${receipt.date}" type="date"/>
-                                </td>
-                                <td style="padding: 3px; text-align: right">
-                                    <spring:eval expression="receipt.tax" />
-                                </td>
-                                <td style="padding: 3px; text-align: right">
-                                    <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm">
-                                        <spring:eval expression='receipt.total' />
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                </td>
-            </tr>
-        </table>
+    <div class="rightside-list-holder full-list-holder">
+        <p class="analysis-text">
+            <b>${receiptByBizForm.receiptLandingViews.size()}</b>
+                transaction<c:if test="${receiptByBizForm.receiptLandingViews.size() gt 1}">s</c:if>
+                occurred at ${receiptByBizForm.bizName} in the month.
+        </p>
+
+        <ul>
+            <c:forEach var="receipt" items="${receiptByBizForm.receiptLandingViews}" varStatus="status">
+            <li>
+                <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTag}">&nbsp;&nbsp;&nbsp;</span>
+                <c:choose>
+                <c:when test="${receipt.billedStatus eq 'NB'}">
+                    <a href="/access/userprofilepreference/i.htm#tabs-3"
+                            class="rightside-li-middle-text">
+                        <c:choose>
+                        <c:when test="${receipt.name.length() gt 34}">
+                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                        </c:when>
+                        <c:otherwise>
+                            <spring:eval expression="receipt.name"/>
+                        </c:otherwise>
+                        </c:choose>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
+                            class="rightside-li-middle-text">
+                        <c:choose>
+                        <c:when test="${receipt.name.length() gt 34}">
+                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                        </c:when>
+                        <c:otherwise>
+                            <spring:eval expression="receipt.name"/>
+                        </c:otherwise>
+                        </c:choose>
+                    </a>
+                </c:otherwise>
+                </c:choose>
+                <span class="rightside-li-right-text" style="width: 140px;">
+                    <c:choose>
+                        <c:when test="${receipt.tax gt 0}">
+                            <spring:eval expression='receipt.tax'/>&nbsp;&nbsp;&nbsp;(T)
+                        </c:when>
+                        <c:otherwise>
+                            &nbsp;&nbsp;&nbsp;
+                        </c:otherwise>
+                    </c:choose>
+                </span>
+                <span class="rightside-li-right-text" style="width: 140px;">
+                    <spring:eval expression='receipt.total'/>
+                </span>
+            </li>
+            </c:forEach>
+        </ul>
+    </div>
     </c:when>
     <c:otherwise>
-        <div class="ui-widget">
-            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                <p>
-                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width:410px;">
-                    No receipt(s) submitted or transformed for this month
-                    </span>
-                </p>
+        <div style="height: 605px;">
+            <div class="r-info">
+                No receipt submitted with this business name for the selected month.
             </div>
         </div>
     </c:otherwise>
     </c:choose>
+    <div class="footer-tooth clearfix">
+        <div class="footer-tooth-middle"></div>
+        <div class="footer-tooth-right"></div>
     </div>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
 </div>
-
 </body>
+</html>

@@ -62,10 +62,10 @@ import java.util.stream.Collectors;
 public class ReceiptController {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptController.class);
 
-    @Value ("${ReceiptController.nextPage:/receipt2}")
+    @Value ("${ReceiptController.nextPage:/receipt}")
     private String nextPage;
 
-    @Value ("${ReceiptController.nextPageByBiz:/receiptByBiz2}")
+    @Value ("${ReceiptController.nextPageByBiz:/receiptByBiz}")
     private String nextPageByBiz;
 
     @Autowired private ReceiptService receiptService;

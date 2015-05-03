@@ -1,956 +1,481 @@
 <%@ include file="include.jsp"%>
 <!DOCTYPE html>
-<html ng-app="App">
+<html lang="en" ng-app="scroll" ng-controller="Main">
 <head>
-    <meta charset="UTF-8">
-	<title><fmt:message key="title" /></title>
-
+	<meta charset="utf-8"/>
+	<meta name="description" content=""/>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" />
-
-    <!-- load dojo and provide config via data attribute -->
-    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojo/dojo.js" data-dojo-config="isDebug: false, parseOnLoad: true">
-    </script>
-    <script>
-        var loadingOverlay = (function(){
-            // the overlay object with its methods are the return value
-            // of this anonymous function
-
-            var overlayNode;
-            return {
-                init: function(){
-                    // create the container element for the overlay
-                    // We store the reference in the overlayNode closure variable
-                    overlayNode = dojo.create('div', {
-                        id: 'loadingOverlay',
-                        'class': 'loadingOverlay pageOverlay',
-                        innerHTML: '<div class="loadingMessage">Loading...</div>'
-                    }, dojo.body());
-
-                    return this;
-                },
-                show: function(){
-                    // show the overlay
-                    dojo.style( overlayNode, {
-                        display: 'block'
-                    });
-                },
-                hide: function(){
-                    // hide the overlay
-                    dojo.fadeOut({
-                        node: overlayNode,
-                        onEnd: function(){
-                            dojo.style(overlayNode, "display", "none");
-                        }
-                    }).play();
-                }
-            };
-        })();
-    </script>
-
-    <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css'/>
-    <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css' media='print'/>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'/>
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/fineuploader/fine-uploader.css'/>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/angular/animate-custom.css'/>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'/>
+    <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.css'/>
+    <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.print.css' media='print'/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.4/highcharts.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/jquery/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fine-uploader.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.4/highcharts.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.1.1/randomColor.min.js"></script>
 
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/angular/angular-animate.min.js"></script>
-    <%--<script src="${pageContext.request.contextPath}/static/external/js/angular/angular-animate.min.js.map"></script>--%>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-
-    <!-- For drop down menu -->
+    <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
     <script>
-        $(document).ready(function () {
-            "use strict";
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
+        function init() {
+            window.addEventListener('scroll', function(e){
+                var distanceY = window.pageYOffset || document.documentElement.scrollTop,
+                        shrinkOn = 300,
+                        header = document.querySelector("header");
+                if (distanceY > shrinkOn) {
+                    classie.add(header,"smaller");
+                } else {
+                    if (classie.has(header,"smaller")) {
+                        classie.remove(header,"smaller");
+                    }
                 }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
             });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-    </script>
-
-    <script>
-        function runCounter(max) {
-            "use strict";
-            incCounter();
-
-            function incCounter() {
-                var currCount = parseInt($('#pendingCountValue').html());
-                if (currCount < max) {
-                    $('#pendingCountValue').text(currCount + 1);
-                    setTimeout(incCounter, 1);
-                }
-            }
         }
+        window.onload = init();
     </script>
-
     <script>
-        $(document).ready(function () {
-            "use strict";
+        function Main($scope, $http) {
+            $scope.items = [];
 
-            var errorHandler = function (event, id, fileName, reason) {
-                qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
-            };
-
-            <%-- TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html --%>
-            var restricteduploader = new qq.FineUploader({
-                element: $('#restricted-fine-uploader')[0],
-                callbacks: {
-                    onError: errorHandler,
-                    onComplete: function (id, fileName, responseJSON) {
-                        if (responseJSON.success == true) {
-                            $(this.getItemByFileId(id)).hide('slow');
-
-                            $.ajax({
-                                type: 'POST',
-                                beforeSend: function(xhr) {
-                                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-                                },
-                                url:  '${pageContext. request. contextPath}/ws/r/pending.htm',
-                                success: function(response) {
-                                    if(response > 0) {
-                                        var html = '';
-                                        html = html +
-                                                "<div class='ui-widget'>" +
-                                                "<div class='ui-state-highlight ui-corner-all alert-success' style='margin-top: 0px; padding: 0 .7em;'>" +
-                                                "<p>" +
-                                                "<span class='ui-icon ui-icon-info' style='float: left; margin-right: .3em;' title='Shows number of pending receipt(s) to be processed'></span>" +
-                                                "<span style='width:280px;'>";
-                                        if (response == 1) {
-                                            html = html + "Pending receipt to be processed: ";
-                                        } else {
-                                            html = html + "Pending receipts to be processed: ";
-                                        }
-                                        html = html +
-                                                "<a href='${pageContext.request.contextPath}/access/pendingdocument.htm' style='text-decoration: none;'>" +
-                                                "<strong class='pendingCounter' id='pendingCountValue'>" +
-                                                0 +
-                                                "</strong>" +
-                                                "</a>";
-                                        html = html +
-                                                "</span>" +
-                                                "</p>" +
-                                                "</div>" +
-                                                "</div>";
-                                        $('#pendingCountInitial').hide();
-                                        $('#pendingCountId').html(html).show();
-                                        $(runCounter(response));
+            var page = 5;
+            $scope.loadMore = function() {
+                if (page < '${notificationForm.count}') {
+                    console.log("loading onwards: " + page + ", " + "total count: " + '${notificationForm.count}');
+                    $scope.loading = true;
+                    $http.get('${pageContext. request. contextPath}/access/notificationPaginated/' + page + '.htm')
+                            .success(function(data, status) {
+                                if(data.length <= 5) {
+                                    console.log('Request status ' + status + ":" + data.length + ":" + data + ", Page " + page);
+                                    for (var i = 0; i < 5 && i < data.length; i++) {
+                                        var d = data[i].split(":");
+                                        console.log("Adding: " + d[0] + ":" + d[1] + ":" + d[2]);
+                                        $scope.items.push({href : d[0], message : d[1], created : d[2]});
                                     }
+                                } else {
+                                    $scope.failed = true;
                                 }
+                                $scope.loading = false;
+                            }).error(function(data, status) {
+                                console.log('Request error, data:' + data + ",status:");
+                                $scope.loading = false;
+                                $scope.failed = true;
                             });
-                        }
-                    }
-                },
-                request: {
-                    endpoint: '${pageContext. request. contextPath}/access/landing/upload.htm',
-                    customHeaders: {
-                        Accept: 'multipart/form-data',
-                        'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-                    }
-                },
-                multiple: true,
-                validation: {
-                    allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
-                    sizeLimit: 10485760 // 10 MB in bytes
-                },
-                text: {
-                    uploadButton: '&uarr; &nbsp; Click or Drop to upload image(s)'
-                },
-                showMessage: function (message) {
-                    $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
+                    page += 5;
+                    console.log($scope.items);
                 }
-            });
+            };
+            $scope.loadMore();
+        }
+
+        angular.module('scroll', []).directive('whenScrolled', function() {
+            return function(scope, elm, attr) {
+                var raw = elm[0];
+
+                elm.bind('scroll', function() {
+                    if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+                        scope.$apply(attr.whenScrolled);
+                    }
+                });
+            };
         });
     </script>
-
-    <!-- For dashboard tabs -->
-    <script>
-        $(function () {
+    <script type='text/javascript'>
+        $(document).ready(function() {
             "use strict";
 
-            $('#tabs').css('width','1025px');
-            $("#tabs").tabs({
-                activate: function(){}
-            });
-        });
-    </script>
-    <script>
-        var App = angular.module('App', ['ngAnimate']);
-        App.constant('SERVICE', {
-            'F': '${pageContext.request.contextPath}/ws/m/f.json',
-            'M': '${pageContext.request.contextPath}/ws/m/m.json',
-            'S': '${pageContext.request.contextPath}/ws/m/s.json',
-            'TIMEOUT': 0
-        });
-
-        App.controller('mileageCtrl', function($scope, Server, SERVICE, $timeout) {
-            $scope.merging = $scope.splitting = false;
-            $scope.draggables = [];
-
-            $scope.mergeText = function() {
-                return $scope.merging ? 'Merging...' : 'Merge to compute miles driven';
-            };
-
-            $scope.splitText = function() {
-                return $scope.splitting ? 'Splitting...' : 'Split to odometer reading';
-            };
-
-            Server.load().success(function(data) {
-                $scope.records = data.ms;
-            }).error(function(data) {
-                // @todo handle error
+            $('#calendar').fullCalendar({
+                header : {
+                    left : 'prev,next today',
+                    center : '',
+                    right: ''
+                },
+                defaultView: 'month',
+                contentHeight: 500, //Adds another 50 in surrounding area hence 500 height
+                aspectRatio: 1,
+                editable : false,
+                eventLimit: true,
+                events : [
+                    <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
+                    <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
+                    {
+                        title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
+                        start : '${receiptGrouped.dateForFullCalendar}',
+                        end   : '${receiptGrouped.dateForFullCalendar}',
+                        url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}',
+                        allDay: true
+                    },
+                    </c:forEach>
+                ]
             });
 
-            $scope.grab = function(grabbed, index) {
-                var record = $scope.records[index],
-                        alreadyGrabbed = _.where($scope.draggables, {i: record.i}).length !== 0,
-                        isSplitIn = $scope.draggables[0] && $scope.draggables[0].c, // assuming split alone will be in the house
-                        limitReached = $scope.draggables.length === 2;
+            $('body')
+                    .on('click', 'button.fc-prev-button', function () {
+                        $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $("#btnList").addClass('toggle_disabled');
+                        $("#btnCalendar").addClass('toggle_disabled');
 
-                // If 2 records are already selected and the current one is `merge`
-                // then undo the first and insert the current one
-                if (limitReached && !record.c) {
-                    $scope.records[_.indexOf($scope.records, $scope.draggables[0])].grabbed = false;
-                    $scope.draggables.shift();
-                }
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
+                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
+                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
+                    })
+                    .on('click', 'button.fc-next-button', function () {
+                        $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
+                        $("#btnList").addClass('toggle_disabled');
+                        $("#btnCalendar").addClass('toggle_disabled');
 
-                // If already selected, undo it
-                if (alreadyGrabbed) {
-                    $scope.draggables = _.reject($scope.draggables, function(draggable) { return draggable.i === record.i; });
-                } else if (grabbed) {
-                    // If the current one is `split` or `split` in the house already
-                    // then undo/uncheck all and insert the current one
-                    if (record.c || isSplitIn) {
-                        $scope.draggables.forEach(function(draggable) {
-                            $scope.records[_.indexOf($scope.records, draggable)].grabbed = false;
-                        });
-                        $scope.draggables.length = 0;
-                    }
-                    $scope.draggables.push(record);
-                }
-
-                $scope.errorMessage = '';
-            };
-
-            $scope.merge = function() {
-                var merger = 0, newRecord = {}, ids = [];
-
-                $scope.saveSnapshot();
-
-                $scope.draggables.forEach(function(draggable, i) {
-                    // remove the original grabbed records
-                    $scope.records = _.reject($scope.records, function(record) {
-                        return record.i === draggable.i;
+                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
+                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
+                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
                     });
-                    // and merge them into a single draggable
-                    merger = Math.abs(merger) - draggable.t;
-
-                    ids.push(draggable.i);
-                });
-
-                // finally update both records and draggables
-                newRecord = {i: new Date().getTime(), t: Math.abs(merger), c: true, grabbed: true};
-                $scope.draggables = [newRecord];
-                $scope.records.push(newRecord);
-
-                // initiate a server call for updates
-                $scope.merging = true;
-                Server.merge(ids).success(function(data) {
-                    $timeout(function() {
-                        if (data.s === false) {
-                            $scope.loadSnapshot();
-                            $scope.errorMessage = data.m;
-                        } else {
-                            // this also updates id in $scope.draggables, magical??
-                            // Not at All. Because of ng-change below
-                            angular.extend($scope.records[_.indexOf($scope.records, newRecord)], data.ms[0]);
-                            $scope.merging = false;
-                            if(data.mm >= 0) {
-                                $("#mmText").html(data.mm +
-                                        " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
-                                        "&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                        "<img id='car' src='${pageContext.request.contextPath}/static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
-                                );
-                            }
-                        }
-                    }, SERVICE.TIMEOUT);
-                }).error(function(data) {
-                    $timeout(function() {
-                        $scope.loadSnapshot();
-                    }, SERVICE.TIMEOUT);
-                });
-
-                $scope.errorMessage = '';
-            };
-
-            $scope.split = function() {
-                var newRecords = [], i = $scope.draggables[0].i;
-
-                $scope.saveSnapshot();
-
-                // remove the original grabbed record
-                $scope.records = _.reject($scope.records, function(record) {
-                    return record.i === i;
-                });
-                // and split the record in two separate records
-                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].e, e: 0, t: $scope.draggables[0].e, c: false, sd: $scope.draggables[0].ed, n: "", na: ""});
-                newRecords.push({i: $scope.draggables[0].i, s: $scope.draggables[0].s, e: 0, t: $scope.draggables[0].s, c: false, sd: $scope.draggables[0].sd, n: $scope.draggables[0].n, na: $scope.draggables[0].na});
-                // finally update both records and draggables
-                $scope.records = $scope.records.concat(newRecords);
-                $scope.draggables = newRecords;
-
-                // initiate a server call for updates
-                $scope.splitting = true;
-                Server.split(i).success(function(data) {
-                    $timeout(function() {
-                        if (data.s === false) {
-                            $scope.loadSnapshot();
-                            $scope.errorMessage = data.m;
-                        } else {
-                            // this also updates id in $scope.draggables, magical??
-                            // Not at All. Because of ng-change below
-                            $scope.records[_.indexOf($scope.records, newRecords[0])].i = data.ms[0].i;
-                            $scope.records[_.indexOf($scope.records, newRecords[1])].i = data.ms[1].i;
-                            $scope.splitting = false;
-                            if(data.mm >= 0) {
-                                $("#mmText").html(data.mm +
-                                        " Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>" +
-                                        "&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                        "<img id='car' src='${pageContext.request.contextPath}/static/images/car.png' style='margin: 0px; height: 15px; width: 20px'>"
-                                );
-                            }
-                        }
-                    }, SERVICE.TIMEOUT);
-                }).error(function(data) {
-                    $timeout(function() {
-                        $scope.loadSnapshot();
-                    }, SERVICE.TIMEOUT);
-                });
-            };
-
-            $scope.saveSnapshot = function() {
-                $scope.recordsSnapshot = $scope.records;
-                $scope.draggablesSnapshot = $scope.draggables;
-            };
-
-            $scope.loadSnapshot = function() {
-                $scope.records = $scope.recordsSnapshot;
-                $scope.draggables = $scope.draggablesSnapshot;
-                $scope.merging = $scope.splitting = false;
-            };
-        });
-
-        App.service('Server', function($http, SERVICE) {
-            return {
-                load: function() {
-                    $http.defaults.headers.post['X-CSRF-TOKEN'] = $("meta[name='_csrf']").attr("content");
-                    return $http.post(SERVICE.F);
-                },
-                merge: function(ids) {
-                    $http.defaults.headers.post['X-CSRF-TOKEN'] = $("meta[name='_csrf']").attr("content");
-                    return $http.post(SERVICE.M, {id1: ids[0], id2: ids[1]});
-                },
-                split: function(id) {
-                    $http.defaults.headers.post['X-CSRF-TOKEN'] = $("meta[name='_csrf']").attr("content");
-                    return $http.post(SERVICE.S, {id: id});
-                }
-            }
         });
     </script>
 </head>
 <body>
-<script>
-    // put up the loading overlay while the page initializes
-    loadingOverlay.init().show();
-
-    dojo.ready(function () {
-        // take down the loading overlay when the page is ready
-        loadingOverlay.hide();
-    })
-</script>
-
-<div class="wrapper">
- 	<div class="divTable" style="width: 810px">
-		<div class="divRow">
-            <div class="divOfCell250" style="height: 46px"><img src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" alt="receipt-o-fi logo" style="height: 40px"/></div>
-			<div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-		    <div class="divOfCell300" id="active-tab-3" style="height: 46px"><h3>YTD Expense: <a href="#" style="color: #065c14"><fmt:formatNumber value="${total}" type="currency"/></a></h3></div>
-		</div>
-   	</div>
-
-	<table style="width: 1025px">
-		<tr>
-			<td style="vertical-align: top; width: 280px">
-                <div id="pendingCountInitial" style="width: 280px;">
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
-                <c:when test="${pendingCount gt 0}">
-                <div class="ui-widget">
-                    <div class="ui-state-highlight ui-corner-all default-state" style="margin-top: 0px; padding: 0 .7em;">
-                        <p>
-                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;" title="Shows number of pending receipt(s) to be processed"></span>
-                            <span style="width:280px;">
-                            <c:choose>
-                                <c:when test="${pendingCount} eq 1">
-                                    Pending receipt to be processed:
-                                    <a href="${pageContext.request.contextPath}/access/pendingdocument.htm" style="text-decoration: none;">
-                                        <strong class="pendingCounter">
-                                        ${pendingCount}
-                                        </strong>
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    Pending receipts to be processed:
-                                    <a href="${pageContext.request.contextPath}/access/pendingdocument.htm" style="text-decoration: none;">
-                                        <strong class="pendingCounter">
-                                        ${pendingCount}
-                                        </strong>
-                                    </a>
-                                </c:otherwise>
-                            </c:choose>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                </c:when>
-                <c:otherwise>
-                <div class="ui-widget">
-                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                        <p>
-                            <span class="ui-icon ui-icon-circle-check" style="float: left; margin-right: .3em;" title="No pending receipt to be processed"></span>
-                            <span style="display:block; width:280px;">
-                                No pending receipt
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                </c:otherwise>
-                </c:choose>
-                </div>
-                <div id="pendingCountId" style="width: 280px"></div>
-                &nbsp;&nbsp;&nbsp;
-                <fieldset style="width: 260px; margin-bottom: 10px;">
-                    <legend style="color: #065c14; font-weight: bold; font-size: 1.05em">&nbsp;Upload Receipt (and | or) Mileage image &nbsp;</legend>
-                    <div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em"></div>
-                    <%--<div style="margin-top: 10px; margin-bottom:1px; font-size: 12px">&#8277; Upload 3 files at a time; &#8277; Max upload size - 10 MB</div>--%>
-                </fieldset>
-                <div style="width: 280px; display: inline">
-                    <input id="inviteEmailId" type="text"
-                           onfocus="this.value=''; setInviteBackGroundColor('white'); $('#info').html('&#8277; Invitation is sent with your name and email address');                                                         "
-                           onblur="setInviteBackGroundColor('#fefefe')"
-                           value=" Email address of friend here ..."
-                           class="inputForInvitationEmail"
-                           />
-                    <input type="button" onclick="submitInvitationForm()" name="Invite" value="Invite" class="btn btn-default" />
-                </div>
-                <div id="info" style="color: black; margin-top: 5px">&#8277; Invitation is sent with your name and email address</div>
-			</td>
-			<td style="vertical-align: top;">
-				<div>
-					<script type='text/javascript'>
-						$(document).ready(function() {
-                            "use strict";
-
-							$('#calendar').fullCalendar({
-								header : {
-									left : 'prev,next today',
-									center : '',
-									right : 'title'
-								},
-                                contentHeight: 225,
-                                aspectRatio: 1,
-								editable : false,
-                                weekMode : 'liquid',
-								events : [
-                                <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
-                                <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
-								{
-									title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
-									start : '${receiptGrouped.date}',
-									end   : '${receiptGrouped.date}',
-									url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}'
-								},
-                                </c:forEach>
-								]
-							});
-
-                            $('.fc-button-prev').click(function(){
-                                var start = $("#calendar").fullCalendar('getView').start;
-                                var eventTime = $.fullCalendar.formatDate(start, "MMM, yyyy");
-                                $(loadMonthlyExpenses(eventTime, 'prev'));
-                            });
-
-                            $('.fc-button-next').click(function(){
-                                var end = $("#calendar").fullCalendar('getView').end;
-                                var eventTime = $.fullCalendar.formatDate(end, "MMM, yyyy");
-                                $(loadMonthlyExpenses(eventTime, 'next'));
-                            });
-
-						});
-					</script>
-					<div id='calendar'></div>
-			    </div>
-			</td>
-            <td style="vertical-align: top;" style="width: 250px">
-                <div>
-                    <section class="chunk">
-                        <fieldset>
-                            <legend class="hd">
-                                <span class="text"><fmt:message key="notification.title" /></span>
-                            </legend>
-                            <c:choose>
-                            <c:when test="${!empty landingForm.notificationForm.notifications}">
-                            <c:forEach var="notification" items="${landingForm.notificationForm.notifications}" varStatus="status">
-                            <div class="bd">
-                                <div class="text"><fmt:formatDate value="${notification.created}" pattern="MM/dd" /> - ${notification.notificationMessageForDisplay}</div>
-                            </div>
-                            </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                            <div class="bd">
-                                <div class="text">There are no Notifications &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                            </div>
-                            </c:otherwise>
-                            </c:choose>
-                            <div class="bd">
-                                <div class="text"><a href="${pageContext.request.contextPath}/access/notification.htm">more...</a></div>
-                            </div>
-                        </fieldset>
-                    </section>
-                </div>
-            </td>
-		</tr>
-	</table>
-
-    <spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
-    <div id="off_screen">
-        <div id="map-canvas"></div>
-    </div>
-
-	<!-- Tabs -->
-	<div id="tabs">
-		<ul>
-			<li><a href="#tabs-1">Receipts</a></li>
-			<li><a href="#tabs-2">Mileage</a></li>
-			<li><a href="#tabs-3">Expense Analysis</a></li>
-            <li><a href="#tabs-4">Reports</a></li>
-            <c:if test="${isValidForMap}">
-            <li><a href="#tabs-5">Geographical</a></li>
-            </c:if>
-		</ul>
-		<div id="tabs-1" style="height: 500px">
-            <div id="onLoadReceiptForMonthId">
-            <c:choose>
-            <c:when test="${!empty landingForm.receiptForMonth.receipts}">
-            <table>
-                <tr>
-                    <td style="vertical-align: top">
-                        <table style="width: 470px" class="etable" id="tableReceiptForMonth">
-                            <tr>
-                                <th style="padding: 3px;"></th>
-                                <th style="padding: 3px;"></th>
-                                <th style="padding: 3px;">Business</th>
-                                <th style="padding: 3px;">Date</th>
-                                <th style="padding: 3px;">Tax</th>
-                                <th style="padding: 3px;">Total</th>
-                            </tr>
-                            <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
-                            <tr id="${receipt.bizNameForId}">
-                                <td style="padding: 3px; text-align: right">
-                                    <fmt:formatNumber value="${status.count}" pattern="00"/>.
-                                </td>
-                                <td style="padding: 3px; text-align: center">
-                                    <c:if test="${!empty receipt.expenseReportInFS}">
-                                        <a href="${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm">
-                                            <img src="${pageContext.request.contextPath}/static/images/download_icon_lg.png" class="downloadIcon" width="14" height="14" title="Download expensed receipt">
-                                        </a>
-                                    </c:if>
-                                </td>
-                                <td style="padding: 3px;">
-                                    <spring:eval expression="receipt.name" />
-                                </td>
-                                <td style="padding: 3px;">
-                                    <fmt:formatDate value="${receipt.date}" pattern="dd, MMM" />
-                                </td>
-                                <td style="padding: 3px; text-align: right">
-                                    <spring:eval expression="receipt.tax" />
-                                </td>
-                                <td style="padding: 3px; text-align: right">
-                                    <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm">
-                                        <spring:eval expression='receipt.total' />
-                                    </a>
-                                </td>
-                            </tr>
-                            </c:forEach>
-                        </table>
-                    </td>
-                    <td style="vertical-align: top">
-                        <div id="container" style="min-width: 530px; height: 425px; margin: 0 auto"></div>
-                    </td>
-                </tr>
-            </table>
-            </c:when>
-            <c:otherwise>
-            <div class="ui-widget">
-                <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                    <p>
-                        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                        <span style="display:block; width:510px;">
-                            No receipt(s) submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>
-                        </span>
-                    </p>
-                </div>
-            </div>
-            </c:otherwise>
-            </c:choose>
-            </div>
-
-            <div id="refreshReceiptForMonthId"></div>
-		</div>
-        <div id="tabs-2" style="height: 500px;">
-            <div ng-controller="mileageCtrl">
-                <c:choose>
-                    <c:when test="${!empty landingForm.mileageEntities}">
-                    <div style="display:block; width:410px; margin-bottom: 10px" id="mmText">
-                        <fmt:formatNumber value="${landingForm.mileageMonthlyTotal}" type="number" /> Miles driven in <b>${landingForm.receiptForMonth.monthYear}</b>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <img id="car" src="${pageContext.request.contextPath}/static/images/car.png" style="margin: 0px; height: 15px; width: 20px">
-                    </div>
-                    <div class='alert alert-danger' ng-bind="errorMessage" ng-show="errorMessage"></div>
-                    <div class="col-xs-6">
-                        <table style="width: 465px" class="etable" id="tableMileageForMonth">
-                            <tr>
-                                <th style="padding: 3px;"></th>
-                                <th style="padding: 3px;"></th>
-                                <th style="padding: 3px;">Day</th>
-                                <th style="padding: 3px;">Odometer reading / Miles driven</th>
-                                <th style="padding: 3px">Notes</th>
-                            </tr>
-                            <tbody ng-repeat="record in records">
-                            <tr ng-switch on="record.c">
-                                <td style="padding: 3px; text-align: center" ng-switch-when="true">
-                                    <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                </td>
-                                <td style="padding: 3px; text-align: center" ng-switch-when="false">
-                                    <input type="checkbox" ng-model="record.grabbed" ng-change="grab(record.grabbed, $index)" ng-disabled="merging || splitting">
-                                </td>
-                                <td style="padding: 3px; text-align: center" ng-switch-when="true">
-                                    <img src="${pageContext.request.contextPath}/static/images/cars.png" style="height: 18px; width: 25px"/>
-                                </td>
-                                <td style="padding: 3px; text-align: center" ng-switch-when="false">
-                                    <img src="${pageContext.request.contextPath}/static/images/odometers.png" />
-                                </td>
-                                <td style="padding: 3px; text-align: left" ng-switch-when="false">
-                                    {{record.sd | date:'dd MMM'}}
-                                </td>
-                                <td style="padding: 3px; text-align: left" ng-switch-when="true">
-                                    {{record.sd | date:'dd MMM'}} - {{record.ed | date:'dd MMM'}}
-                                </td>
-                                <td style="padding: 3px; text-align: left" ng-switch-when="true">
-                                    <a href="modv/{{record.i}}.htm" style="color: #065c14;">{{record.t | number:2}} Miles driven</a>
-                                </td>
-                                <td style="padding: 3px; text-align: left" ng-switch-when="false">
-                                    <a href="modv/{{record.i}}.htm" style="color: darkred">{{record.t | number:2}} Odometer reading</a>
-                                </td>
-                                <td style="padding: 3px; text-align: left" ng-switch-when="false" title="{{record.n}}">
-                                    {{record.na}}
-                                </td>
-                                <td style="padding: 3px; text-align: left" ng-switch-when="true" title="{{record.n}}">
-                                    {{record.na}}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-xs-6">
-                        <button class="btn btn-success" ng-show="(draggables.length == 2 && !splitting) || merging" ng-click="merge()" ng-disabled="merging" ng-bind="mergeText()"></button>
-                        <button class="btn btn-danger" ng-show="(draggables[0].c && !merging) || splitting" ng-click="split()" ng-disabled="splitting" ng-bind="splitText()"></button>
-                        <br><br>
-                        <div class="btn btn-default btn-lg btn-block draggable-animation" ng-repeat="draggable in draggables">
-                        <span ng-switch on="draggable.c">
-                            <div ng-switch-when="true">
-                                <img src="${pageContext.request.contextPath}/static/images/cars.png" style="height: 18px; width: 25px"/> {{draggable.t | number:2}} Miles driven
-                            </div>
-                            <div ng-switch-when="false">
-                                <img src="${pageContext.request.contextPath}/static/images/odometers.png" /> {{draggable.t | number:2}} Odometer reading
-                            </div>
-                        </span>
-                        </div>
-                    </div>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
                     </c:when>
                     <c:otherwise>
-                    <div class="ui-widget">
-                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                            <p>
-                                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                <span style="display:block; width:510px;">
-                                    No odometer reading submitted or transformed for <b>${landingForm.receiptForMonth.monthYear}</b>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
                     </c:otherwise>
                 </c:choose>
             </div>
         </div>
-		<div id="tabs-3" style="height: 500px">
-            <c:choose>
-            <c:when test="${!empty months}">
-            <table>
-                <tr>
-                    <td style="vertical-align: top">
-                        <div id="monthly" style="min-width: 475px; height: 425px; margin: 0 auto"></div>
+    </div>
+</div>
 
-                        <fieldset style="width:295px;">
-                            <legend>YTD Expense</legend>
-                            <div class="divTable">
-                                <div class="headRow">
-                                    <div class="divCell">Sub Total</div>
-                                    <div class="divOfCell75">
-                                        &nbsp;&nbsp;&nbsp;Tax
-                                    </div>
-                                    <div class="divOfCell110">
-                                        &nbsp;&nbsp;&nbsp;Total
-                                    </div>
-                                </div>
-                                <div class="divRow">
-                                    <div class="divCell">${total}</div>
-                                    <div class="divOfCell75">+ ${tax}</div>
-                                    <div class="divOfCell110">= ${totalWithoutTax}</div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </td>
-                    <td style="vertical-align: top">
-                        <div id="allExpenseTypes" style="min-width: 525px; height: 420px; margin: 0 auto"></div>
-                    </td>
-                </tr>
-            </table>
+<header>
+</header>
+<div class="main clearfix">
+<div class="sidebar">
+    <div class="sidebar-top-summary">
+        <div class="sidebar-top-summary-upper clearfix">
+            <h1 id="pendingCountInitial">
+                <a href='${pageContext. request. contextPath}/access/document/pending.htm' class="big-view">
+                    ${documentStatsForm.pendingCount}
+                </a>
+            </h1>
+            <h1 id="pendingCountId"></h1>
+
+            <div class="sts-upper-right">
+                <span class="top-summary-textb">
+                <c:choose>
+                    <c:when test="${documentStatsForm.pendingCount le 1}">Receipt pending</c:when>
+                    <c:otherwise>Receipts pending</c:otherwise>
+                </c:choose>
+                </span>
+				<span class="general-text">
+                    Last sync: <span class="timestamp" id="pendingCountSyncedId"></span>
+                </span>
+            </div>
+        </div>
+        <div class="sidebar-top-summary-lower clearfix">
+            <h1>
+                <a href='${pageContext. request. contextPath}/access/document/rejected.htm' class="big-view-lower">
+                    ${documentStatsForm.rejectedCount}
+                </a>
+            </h1>
+
+            <div class="sts-upper-right">
+				<span class="top-summary-textb">
+                    <c:choose>
+                        <c:when test="${documentStatsForm.rejectedCount le 1}">Receipt rejected</c:when>
+                        <c:otherwise>Receipts rejected</c:otherwise>
+                    </c:choose>
+                </span>
+				<span class="general-text">
+                    Last sync: <span class="timestamp"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+	<div class="sidebar-git-datum">
+		<div class="gd-title">
+			<h1 class="widget-title-text">Upload new receipt</h1>
+		</div>
+        <div id="restricted-fine-uploader" class="upload-text"></div>
+	</div>
+	<div class="sidebar-indication">
+		<div class="si-title">
+			<h1 class="widget-title-text">Notifications (${notificationForm.count})</h1>
+		</div>
+		<div class="si-list-holder" when-scrolled="loadMore()">
+            <c:choose>
+            <c:when test="${!empty notificationForm.notifications}">
+                <ul>
+                    <c:forEach var="notification" items="${notificationForm.notifications}" varStatus="status">
+                    <li class="si-list">
+                        <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
+                        <span class="si-general-text">${notification.notificationMessageForDisplay}</span>
+                        <span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
+                    </li>
+                    </c:forEach>
+                    <li class="si-list" ng-repeat="i in items">
+                        <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
+                        <span class="si-general-text"><a class='rightside-li-middle-text full-li-middle-text' href="{{i.href}}">{{i.message}}</a></span>
+                        <span class="si-date-text">{{i.created}}</span>
+                    </li>
+                </ul>
+                <p class="si-list-footer si-list-footer-success" ng-show="loading">
+                    <%--<img src="${pageContext.request.contextPath}/static/img/notification-loading.gif"/>--%>
+                    <em>Loading ...</em>
+                </p>
+                <p class="si-list-footer si-list-footer-error" ng-show="failed">
+                    <em>Failed to retrieve data</em>
+                </p>
             </c:when>
             <c:otherwise>
-            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                <p>
-                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width:510px;">
-                        No expense analysis available as no receipt submitted or transformed
-                    </span>
-                </p>
-            </div>
+                <p class="si-general-text">There are no Notifications &nbsp;</p>
             </c:otherwise>
             </c:choose>
 		</div>
-        <div id="tabs-4" style="height: 500px">
-            <c:choose>
-                <c:when test="${!empty landingForm.receiptGroupedByMonths}">
-                    <p>
-                    <span style="display:block; width:410px;">
-                        <b>Archived monthly report(s) for active month(s)</b>
-                    </span>
-                    </p>
+		<div class="si-footer">
+            <c:if test="${!empty notificationForm.notifications}">
+                <p class="view-more-text">
+                    <a class="view-more-text" ng-href="${pageContext.request.contextPath}/access/notification.htm">View All Notifications</a>
+                </p>
+            </c:if>
+		</div>
+	</div>
+	<div class="sidebar-invite">
+		<div class="gd-title">
+			<h1 class="widget-title-text">Friend Invite</h1>
+		</div>
+        <div id="inviteTextMessage"></div>
+		<form>
+            <input type="text" placeholder="Email address of friend here ..." size="20"
+                    onfocus="changeInviteText(this, 'focus')"
+                    onblur="changeInviteText(this, 'blur')"
+                    id="inviteEmailId"/>
+		</form>
+		<div class="gd-button-holder">
+			<button class="gd-button" style="background: #808080;" onclick="submitInvitationForm()" id="sendInvite_bt" disabled="disabled">SEND INVITE</button>
+		</div>
+        <div id="inviteText" class="si-general-text invite-general-text">Invitation is sent with your name and email address</div>
+	</div>
+</div>
 
-                    <table style="width: 100px" class="etable">
-                        <c:forEach var="item" items="${landingForm.receiptGroupedByMonths}"  varStatus="status">
-                            <tr>
-                                <td style="padding: 3px;">
-                                    <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" target="_blank">
-                                        <spring:eval expression='item.dateTime.toString("MMM, yyyy")' />
-                                    </a>
-                                </td>
-                            </tr>
+<spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
+<div id="off_screen">
+    <div id="map-canvas"></div>
+</div>
+
+<div class="rightside-content">
+	<div id="tabs" class="nav-list">
+		<ul class="nav-block">
+			<li><a href="#tab1">OVERVIEW</a></li>
+			<li><a href="#tab2">FIRST</a></li>
+            <c:if test="${isValidForMap}">
+			<li><a href="#tab3">MAP</a></li>
+            </c:if>
+		</ul>
+		<div id="tab1" class="ajx-content">
+			<div class="rightside-title">
+				<h1 class="rightside-title-text left" id="monthShownId"><fmt:formatDate value="${landingForm.receiptForMonth.monthYearDateTime}" pattern="MMMM, yyyy" /></h1>
+                <span class="right right_view" style="width: 24%;">
+					<input type="button" value="List" class="overview_view toggle_button_left toggle_selected" id="btnList" onclick="toggleListCalendarView(this)">
+					<span style="width:1px;background:white;float:left;">&nbsp;</span>
+					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">
+				</span>
+			</div>
+
+            <div id="onLoadReceiptForMonthId">
+                <c:choose>
+                <c:when test="${!empty landingForm.receiptForMonth.receipts}">
+                <div class="rightside-list-holder mouseScroll" id="receiptListId">
+                    <ul>
+                        <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
+                        <li>
+                            <c:choose>
+                                <c:when test="${!empty receipt.expenseReportInFS}">
+                                    <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receipt.date}" pattern="MMM. dd"/></span>
+                                    <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
+                                        <a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm' style="margin-top: -2px;">
+                                            <img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png'
+                                                    width='15' height='16' title='Download Expense Report' class='downloadIcon'>
+                                        </a>
+                                    </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                                </c:otherwise>
+                            </c:choose>
+                            <span style="background-color: ${receipt.expenseColor};">&nbsp;&nbsp;</span>
+                            <c:choose>
+                            <c:when test="${receipt.billedStatus eq 'NB'}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-3"
+                                        class="rightside-li-middle-text">
+                                    <spring:eval expression="receipt.name"/>
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
+                                        class="rightside-li-middle-text" target="_blank">
+                                    <spring:eval expression="receipt.name"/>
+                                </a>
+                            </c:otherwise>
+                            </c:choose>
+                            <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>
+                        </li>
                         </c:forEach>
-                    </table>
+                    </ul>
+                </div>
                 </c:when>
                 <c:otherwise>
-                    <div class="ui-widget">
-                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                            <p>
-                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                            <span style="display:block; width:510px;">
-                                No receipt(s) submitted or transformed
-                            </span>
-                            </p>
-                        </div>
-                    </div>
+                <div class="r-info" id="noReceiptId">
+                    No receipt data available for this month.
+                </div>
                 </c:otherwise>
-            </c:choose>
-        </div>
+                </c:choose>
+            </div>
+
+            <div id="refreshReceiptForMonthId"></div>
+
+            <div class="calendar" id="calendarId">
+                <div id="calendar"></div>
+            </div>
+            <div class="pie-chart">
+                <div id="expenseByBusiness"></div>
+			</div>
+		</div>
+		<div id="tab2" class="ajx-content">
+            <div class="r-info temp_offset" id="noMileageId">
+                No data here submitted for August 2014.
+            </div>
+		</div>
+
         <c:if test="${isValidForMap}">
-		<div id="tabs-5" style="height: 500px">
+        <div id="tab3" class="ajx-content">
+            <div class="rightside-title temp_offset" id="title_MapDataId">
+                <h1 class="rightside-title-text left">
+                    Expenses by business location
+                </h1>
+            </div>
+
             <c:choose>
-            <c:when test="${!empty months}">
-            <div id="map-placeholder"></div>
+            <c:when test="${!empty landingForm.receiptGroupedByBizLocations}">
+            <div class="rightside-list-holder">
+                <div id="map-placeholder"></div>
+            </div>
             </c:when>
             <c:otherwise>
-            <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-                <p>
-                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                    <span style="display:block; width:510px;">
-                        No data available as no receipt submitted or transformed
-                    </span>
-                </p>
-            </div>
+                <div class="r-info temp_offset" id="noMapDataId">
+                    No receipt available to map with location.
+                </div>
             </c:otherwise>
             </c:choose>
 		</div>
         </c:if>
 	</div>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved. (<fmt:message key="build.version" />)</p>
+<div class="footer-tooth clearfix">
+	<div class="footer-tooth-middle"></div>
+	<div class="footer-tooth-right"></div>
 </div>
-
-<script>
-    $("#active-tab-3").click(function() {
-        $("#tabs").tabs({ active: 2 });
-    });
-
-    $('#car').click(function () {
-        $(this).stop().css({
-            'margin': '0'
-        });
-        $(this).animate({
-            marginLeft: '+=160px'
-        }, 2000)
-    });
-
-    $("#tabs").on("tabsactivate", function () {
-        var active = $("#tabs").tabs("option", "active");
-        if (active == 1) {
-            $('#car').animate({
-                marginLeft: '+=160px'
-            }, 2000);
-        } else {
-            $('#car').stop().css({
-                'margin': '0'
-            });
-        }
-    });
-    <c:if test="${!empty param.showTab}">
-        $("#tabs").tabs({ active: ${param.showTab} });
-    </c:if>
-</script>
-
-<script>
-    function loadMonthlyExpenses(date, clicked) {
-        $.ajax({
-            type: "POST",
-            url: '${pageContext. request. contextPath}/access/landing/monthly_expenses.htm',
-            data: {
-                monthView: date,
-                buttonClick: clicked
-            },
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-                $('#onLoadReceiptForMonthId').hide();
-                $('#refreshReceiptForMonthId').html(
-                        "<div class='spinner large' id='spinner'></div>"
-                ).show();
-            },
-            success: function (response) {
-                $('#refreshReceiptForMonthId').html(response).show();
-            },
-            complete: function() {
-                //do nothing as load removes spinner
-            }
-        });
-    }
-</script>
-
+</div>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
+</div>
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
 <script>
+$(document).ready(function() {
+    drawExpenseByBusiness();
+});
+</script>
+</c:if>
+
+<script>
+var observeDOM = (function () {
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
+            eventListenerSupported = window.addEventListener;
+
+    return function (obj, callback) {
+        if (MutationObserver) {
+            // define a new observer
+            var obs = new MutationObserver(function (mutations, observer) {
+                if (mutations[0].addedNodes.length || mutations[0].removedNodes.length)
+                    callback();
+            });
+            // have the observer observe foo for changes in children
+            obs.observe(obj, {childList: true, subtree: true});
+        }
+        else if (eventListenerSupported) {
+            obj.addEventListener('DOMNodeInserted', callback, false);
+            obj.addEventListener('DOMNodeRemoved', callback, false);
+        }
+    }
+});
+
+// Observe a specific DOM element:
+observeDOM(document.getElementById('refreshReceiptForMonthId'), function () {
+    drawExpenseByBusiness();
+});
+
+function drawExpenseByBusiness() {
     $(function () {
         "use strict";
 
-        var colors = Highcharts.getOptions().colors,
-            categories = [${landingForm.bizNames}],
-            data = [
-                <c:forEach var="item" items="${landingForm.bizByExpenseTypes}"  varStatus="status">
-                {
-                    y: ${item.total},
+        var colors = randomColor({hue: 'blue', luminosity: 'bright', count: ${landingForm.bizByExpenseTypes.size()}});
+        var categories = [${landingForm.bizNames}];
+        var data = [
+            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
+            {
+                y: ${item.total},
+                color: colors[${status.count-1}],
+                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
+                id: '${item.bizNameForId}',
+                drilldown: {
+                    name: '${item.bizName}',
+                    categories: [${item.expenseTags}],
+                    data: [${item.expenseValues}],
                     color: colors[${status.count-1}],
-                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                    id: '${item.bizNameForId}',
-                    drilldown: {
-                        name: '${item.bizName}',
-                        categories: [${item.expenseTags}],
-                        data: [${item.expenseValues}],
-                        color: colors[${status.count-1}],
-                        url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}.htm',
-                        id: '${item.bizNameForId}'
-                    }
-                },
-                </c:forEach>
-            ];
-
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
+                    id: '${item.bizNameForId}'
+                }
+            },
+            </c:forEach>
+        ];
 
         // Build the data arrays
         var bizNames = [];
@@ -979,506 +504,62 @@
             }
         }
 
-        // Create the chart
-        $('#container').highcharts({
-            chart: {
-                type: 'pie'
-            },
-            credits: {
-                enabled: false
-            },
-            title: {
-                text: 'Business By Expense, ${landingForm.receiptForMonth.monthYear}'
-            },
-            yAxis: {
-                title: {
-                    text: 'Total expense'
-                }
-            },
-            plotOptions: {
-                pie: {
-                    shadow: false,
-                    center: ['50%', '50%'],
-                    slicedOffset: 0
-                }
-            },
-            tooltip: {
-                valueSuffix: '$',
-                formatter: function() {
-                    return this.point.name + ": " + '$' + Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            series: [
-                {
-                    name: 'Total',
-                    data: bizNames,
-                    size: '60%',
-                    dataLabels: {
-                        enabled: false,
-                        formatter: function () {
-                            return this.y > 1 ? this.point.name : null;
-                        },
-                        color: 'white',
-                        distance: -30
-                    },
-                    point: {
-                        events: {
-                            click: function(e) {
-                                console.log(this.options.url);
-                                location.href = this.options.url;
-                            },
-                            mouseOver: function(e) {
-                                console.log('#' + this.options.id);
-                                $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
-                            },
-                            mouseOut: function(e) {
-                                console.log('#' + this.options.id);
-                                $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
-                            }
-                        }
-                    },
-                    allowPointSelect: true,
-                    cursor: 'pointer'
-                },
-                {
-                    name: 'Total',
-                    data: expenseTags,
-                    size: '80%',
-                    innerSize: '60%',
-                    dataLabels: {
-                        enabled: false,
-                        formatter: function () {
-                            // display only if larger than 1
-                            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + '$' + Highcharts.numberFormat(this.y, 2) : null;
-                        }
-                    },
-                    point: {
-                        events: {
-                            click: function(e) {
-                                console.log(this.options.url);
-                                location.href = this.options.url;
-                            },
-                            mouseOver: function(e) {
-                                console.log('#' + this.options.id);
-                                $('#tableReceiptForMonth tr#' + this.options.id).toggleClass('highlight');
-                            },
-                            mouseOut: function(e) {
-                                console.log('#' + this.options.id);
-                                $('#tableReceiptForMonth tr#' + this.options.id).removeClass('highlight');
-                            }
-                        }
-                    },
-                    allowPointSelect: true,
-                    cursor: 'pointer'
-                }
-            ]
-        });
+        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
     });
+}
 </script>
-</c:if>
 
-<c:if test="${!empty months}">
-<!-- Monthly expense graph -->
-<script>
-    $(function () {
-        "use strict";
-
-        $('#monthly').highcharts({
-            chart: {
-                type: 'column',
-                margin: [ 50, 50, 100, 50]
-            },
-            title: {
-                text: 'Monthly Expenses for 13 months: ${months.get(months.size() - 1).year - 1} - ${months.get(months.size() - 1).year}'
-            },
-            credits: {
-                enabled: false
-            },
-            xAxis: {
-                categories: [
-                    <c:forEach var="month" items="${months}"  varStatus="status">
-                    '${month.monthName}',
-                    </c:forEach>
-                ],
-                labels: {
-                    rotation: -45,
-                    align: 'right',
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
-                    }
-                }
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Expenses in Dollar($)'
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            tooltip: {
-                formatter: function() {
-                    return '<b>'+ this.x +'</b> ' +
-                            'total expense : '+ Highcharts.numberFormat(this.y, 2) +
-                            '$';
-                }
-            },
-            series: [{
-                name: 'Monthly Expense',
-                data: [
-                    <c:forEach var="month" items="${months}" varStatus="status">
-                    {y: ${month.stringTotal}, color: 'darkgreen'},
-                    </c:forEach>
-                ],
-                dataLabels: {
-                    enabled: false,
-                    rotation: -90,
-                    color: '#FFFFFF',
-                    align: 'right',
-                    x: 4,
-                    y: 10,
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
-                    },
-                    formatter:function(){
-                        if(this.y > 0)
-                            return this.y;
-                    }
-                }
-            }]
-        });
-    });
-</script>
-</c:if>
-
-<c:if test="${!empty months && isValidForMap}">
+<c:if test="${!empty landingForm.receiptGroupedByBizLocations && isValidForMap}">
 <!-- Google Map -->
 <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG0ce7n_9QZBXMRtBZoVmIGbgim-Z7YbA&sensor=false">
+        src="https://maps.googleapis.com/maps/api/js?key=<spring:eval expression="@environmentProperty.getProperty('google-browser-api-key')" />&sensor=false">
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
         "use strict";
 
-        var bounds = new google.maps.LatLngBounds ();
-        var map, infowindow;
+        /**
+         * Data for the markers consisting of a businessName, a LatLng and a zIndex for
+         * the order in which these markers should display on top of each
+         * other.
+         */
+        var locations = [
+            <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
+            <c:if test="${loc.bizStore.validatedUsingExternalAPI && !empty loc.bizStore.coordinate}">
+            [
+                '<div class="mapContainer">' +
+                '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
+                '<div>' +
+                '<div>${loc.bizStore.address}</div>' +
+                '</div>' +
+                '</div>',
+                ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
+            ],
+            </c:if>
+            </c:forEach>
+        ];
 
-        getGoogleMap();
-
-        function getGoogleMap() {
-            var myOptions = {
-                zoom: 4,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-
-            var $mapCanvas = $("#map-canvas");
-            map = new google.maps.Map($mapCanvas.get(0), myOptions);
-            map.fitBounds(bounds);  //Fit these bounds to the map
-            var listenerHandle = google.maps.event.addListener(map, 'idle', function() {
-                $mapCanvas.appendTo($("#map-placeholder"));
-                google.maps.event.removeListener(listenerHandle);
-            });
-
-            infowindow = new google.maps.InfoWindow();
-            google.maps.event.addListener(map, 'click', function() {
-                infowindow.close();
-            });
-
-            /**
-             * Data for the markers consisting of a businessName, a LatLng and a zIndex for
-             * the order in which these markers should display on top of each
-             * other.
-             */
-            var locations = [
-                <c:forEach var="loc" items="${landingForm.receiptGroupedByBizLocations}" varStatus="status">
-                    [
-                        '<div class="mapContainer">' +
-                            '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
-                            '<div>' +
-                                '<div>${loc.bizStore.address}</div>' +
-                            '</div>' +
-                        '</div>',
-                        ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
-                    ],
-                </c:forEach>
-            ];
-
-            for (var i = 0; i < locations.length; i++) {
-                var location    = locations[i];
-                var title       = location[0];
-                var latitude    = location[1];
-                var longitude   = location[2];
-                var xindex      = location[3];
-                displayMarker(title, latitude, longitude, xindex);
-
-                // And increase the bounds to take this point
-                bounds.extend(new google.maps.LatLng (latitude, longitude));
-            }
-        }
-
-        function displayMarker(title, latitude, longitude, xindex) {
-            // Add markers to the map
-
-            // Marker sizes are expressed as a Size of X,Y
-            // where the origin of the image (0,0) is located
-            // in the top left of the image.
-
-            // Origins, anchor positions and coordinates of the marker
-            // increase in the X direction to the right and in
-            // the Y direction down.
-            var image = {
-                url: '${pageContext.request.contextPath}/static/images/beachflag.png',
-                // This marker is 20 pixels wide by 32 pixels tall.
-                size: new google.maps.Size(20, 32),
-                // The origin for this image is 0,0.
-                origin: new google.maps.Point(0,0),
-                // The anchor for this image is the base of the flagpole at 0,32.
-                anchor: new google.maps.Point(0, 32)
-            };
-            var shadow = {
-                url: '${pageContext.request.contextPath}/static/images/beachflag_shadow.png',
-                // The shadow image is larger in the horizontal dimension
-                // while the position and offset are the same as for the main image.
-                size: new google.maps.Size(37, 32),
-                origin: new google.maps.Point(0,0),
-                anchor: new google.maps.Point(0, 32)
-            };
-            // Shapes define the clickable region of the icon.
-            // The type defines an HTML &lt;area&gt; element 'poly' which
-            // traces out a polygon as a series of X,Y points. The final
-            // coordinate closes the poly by connecting to the first
-            // coordinate.
-            var shape = {
-                coord: [1, 1, 1, 20, 18, 20, 18 , 1],
-                type: 'poly'
-            };
-
-
-            var myLatLng = new google.maps.LatLng(latitude, longitude);
-
-            //Why re-center the US Map
-            //map.setCenter(myLatLng);
-
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                shadow: shadow,
-                icon: image,
-                shape: shape,
-                title: title,
-                zIndex: xindex
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(title);
-                infowindow.open(map, marker);
-            });
-
-            google.maps.event.addListener(marker, 'mouseover', function() {
-                infowindow.setContent(title);
-                infowindow.open(map, marker);
-            });
-        }
+        getGoogleMap(locations);
     });
 </script>
 </c:if>
 
-<c:if test="${!empty itemExpenses}">
-<!-- Expense by Item types -->
-<script>
-    $(function () {
+<script type="text/javascript">
+    $(document).ready(function () {
         "use strict";
 
-        $('#allExpenseTypes').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            credits: {
-                enabled: false
-            },
-            title: {
-                text: 'Expense Share'
-            },
-            subtitle: {
-                text: 'For ${landingForm.receiptForMonth.year}'
-            },
-            tooltip: {
-                formatter: function () {
-                    return this.point.name + ': <b>' + Highcharts.numberFormat(this.percentage, 2) + '%</b>';
-                }
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        color: '#000000',
-                        connectorColor: '#000000',
-                        formatter: function() {
-                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 2) +' %';
-                        }
-                    }
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Expense share',
-                point: {
-                    events: {
-                        click: function(e) {
-                            location.href = e.point.url;
-                            e.preventDefault();
-                        }
-                    }
-                },
-                data: [
+        $("#calendarId").hide();
+        <c:if test="${empty landingForm.receiptForMonth.receipts}">
+        $("#btnList").addClass("toggle_selected");
+        $("#btnCalendar").removeClass("toggle_selected");
+        </c:if>
 
-                    <c:choose>
-                        <c:when test="${!empty itemExpenses}">
-                            <c:set var="first" value="false"/>
-                            <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
-                            <c:choose>
-                                <c:when test="${first eq false}">
-                                    {
-                                        name: '${item.key}',
-                                        y: ${item.value},
-                                        sliced: true,
-                                        selected: true,
-                                        url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
-                                    },
-                                    <c:set var="first" value="true"/>
-                                </c:when>
-                                <c:otherwise>
-                                    {
-                                        name: '${item.key}',
-                                        y: ${item.value},
-                                        sliced: false,
-                                        selected: false,
-                                        url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
-                                    },
-                                </c:otherwise>
-                            </c:choose>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="item" items="${itemExpenses}"  varStatus="status">
-                                {
-                                    name: '${item.key}',
-                                    y: ${item.value},
-                                    sliced: false,
-                                    selected: false,
-                                    url: '${pageContext.request.contextPath}/access/expenses/${item.key}.htm'
-                                },
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                ]
-            }]
-        });
+        $("#noReceiptId").removeClass("temp_offset");
+        $("#noMileageId").removeClass("temp_offset");
+        $("#noMapDataId").removeClass("temp_offset");
+        $("#title_MapDataId").removeClass("temp_offset");
     });
 </script>
-</c:if>
-
-<script>
-    function setInviteBackGroundColor(color) {
-        "use strict";
-
-        document.getElementById("inviteEmailId").style.background=color
-    }
-
-    function submitInvitationForm() {
-        "use strict";
-
-        var inviteEmailId = jQuery("#inviteEmailId").val();
-        var object = {mail: inviteEmailId};
-
-        $.ajax({
-            type: "POST",
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            },
-            url: "${pageContext. request. contextPath}/access/landing/invite.htm",
-            data: object,
-            success: function(response) {
-                $('#info').html(response);
-                $('#inviteEmailId').val(' Email address of friend here ...');
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        });
-
-//TODO
-//      http://stackoverflow.com/questions/377644/jquery-ajax-error-handling-show-custom-exception-messages
-        $("div#errorcontainer")
-            $.ajaxError(
-            function(e, x, settings, exception) {
-                var message;
-                var statusErrorMap = {
-                    '400' : "Server understood the request but request content was invalid.",
-                    '401' : "Unauthorised access.",
-                    '403' : "Forbidden resource can't be accessed",
-                    '500' : "Internal Server Error.",
-                    '503' : "Service Unavailable"
-                };
-                if (x.status) {
-                    message =statusErrorMap[x.status];
-                    if(!message){
-                        message="Unknow Error \n.";
-                    }
-                }else if(exception=='parsererror'){
-                    message="Error.\nParsing JSON Request failed.";
-                }else if(exception=='timeout'){
-                    message="Request Time out.";
-                }else if(exception=='abort'){
-                    message="Request was aborted by the server";
-                }else {
-                    message="Unknown Error \n.";
-                }
-                $(this).css("display","inline");
-                $(this).html(message);
-            });
-    }
-</script>
-
-<script>
-    $(function () {
-        $('.tooltip').each(function () {
-            var $this, id, t;
-
-            $this = $(this);
-            id = this.id;
-            t = $('<span />', {
-                title: $this.attr('title')
-            }).appendTo($this.parent()).tooltip({
-                position: {
-                    of: '#' + id,
-                    my: "left+190 center",
-                    at: "left center",
-                    collision: "fit"
-                }
-            });
-            // remove the title from the real element.
-            $this.attr('title', '');
-            $('#' + id).focusin(function () {
-                t.tooltip('open');
-            }).focusout(function () {
-                t.tooltip('close');
-            });
-        });
-    });
-
-    $(function () {
-        $(document).tooltip();
-    });
-</script>
-
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>
