@@ -14,8 +14,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/login.js"></script>
 </head>
 <body>
 <div class="main_wrapper">
