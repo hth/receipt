@@ -118,27 +118,7 @@
                 ]
             });
 
-            $('body')
-                    .on('click', 'button.fc-prev-button', function () {
-                        $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
-                        $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
-                        $("#btnList").addClass('toggle_disabled');
-                        $("#btnCalendar").addClass('toggle_disabled');
-
-                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
-                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
-                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
-                    })
-                    .on('click', 'button.fc-next-button', function () {
-                        $(".fc-prev-button").prop('disabled', true).addClass('fc-state-disabled');
-                        $(".fc-next-button").prop('disabled', true).addClass('fc-state-disabled');
-                        $("#btnList").addClass('toggle_disabled');
-                        $("#btnCalendar").addClass('toggle_disabled');
-
-                        loadMonthlyExpenses($("#calendar").fullCalendar('getDate').format("MMM, YYYY"));
-                        $("#monthShownId").html($("#calendar").fullCalendar('getDate').format("MMMM, YYYY"));
-                        $("#expenseByBusiness").html('');  //Set to blank pie chart and reload
-                    });
+            calendarActions();
         });
     </script>
 </head>
@@ -480,30 +460,7 @@ function drawExpenseByBusiness() {
         // Build the data arrays
         var bizNames = [];
         var expenseTags = [];
-        for (var i = 0; i < data.length; i++) {
-
-            // add browser data
-            bizNames.push({
-                name: categories[i],
-                y: data[i].y,
-                color: data[i].color,
-                url: data[i].url,
-                id: data[i].id
-            });
-
-            // add version data
-            for (var j = 0; j < data[i].drilldown.data.length; j++) {
-                var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
-                expenseTags.push({
-                    name: data[i].drilldown.categories[j],
-                    y: data[i].drilldown.data[j],
-                    color: Highcharts.Color(data[i].color).brighten(brightness).get(),
-                    url: data[i].drilldown.url,
-                    id: data[i].drilldown.id
-                });
-            }
-        }
-
+        populateExpenseByBusiness(data, bizNames, categories, expenseTags);
         loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
     });
 }

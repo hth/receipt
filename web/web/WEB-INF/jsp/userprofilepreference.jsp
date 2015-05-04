@@ -41,26 +41,7 @@
             </c:choose>
         });
         </c:if>
-
-        $(document).ready(function () {
-            confirmBeforeAction();
-            userProfilePreferences();
-
-            $('.timestamp').cuteTime({ refresh: 10000 });
-
-            $('.color-box').colpick({
-                colorScheme:'dark',
-                layout:'hex',
-                color: '${expenseTagForm.tagColor.substring(1)}',
-                onSubmit:function(hsb,hex,rgb,el) {
-                    $(el).css('background-color', '#'+hex);
-                    $(el).colpickHide();
-                    $('#tagColor').val('#' + hex);
-                }
-            }).css('background-color', '${expenseTagForm.tagColor}');
-        });
     </script>
-
 </head>
 <body>
 <div class="header_main">
@@ -451,6 +432,22 @@
 </div>
 </body>
 <script>
+    $(document).ready(function () {
+        confirmBeforeAction();
+        userProfilePreferences();
+
+        $('.color-box').colpick({
+            colorScheme:'dark',
+            layout:'hex',
+            color: '${expenseTagForm.tagColor.substring(1)}',
+            onSubmit:function(hsb,hex,rgb,el) {
+                $(el).css('background-color', '#'+hex);
+                $(el).colpickHide();
+                $('#tagColor').val('#' + hex);
+            }
+        }).css('background-color', '${expenseTagForm.tagColor}');
+    });
+
     <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
     $("#userProfile_firstName").on('click', function () {
         $(this).prop("readonly", false).focus();
