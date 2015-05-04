@@ -389,6 +389,52 @@ function confirmBeforeAction() {
     });
 }
 
+function userProfilePreferences() {
+    $('#tagName').NobleCount('#textCount', {
+        on_negative: 'error',
+        on_positive: 'success',
+        max_chars: 12
+    });
+
+    $("#tagName").on('click', function () {
+        activeExpenseTagSaveUpdate_bt.call(this);
+    });
+}
+
+function clickedExpenseTag(button) {
+    var buttonValue = button.value.split(" ");
+    var tagName = '', space = '';
+    for(var i = 0; i < buttonValue.length - 1; i ++) {
+        if(i != 0) {
+            tagName = tagName + space;
+            space = ' ';
+            tagName = tagName + buttonValue[i];
+        }
+    }
+    $('#tagColor').val($(button).attr('style').split(" ")[1]);
+    $('#tagId').val($(button).attr('id'));
+
+    $('#tagName').focus().val(tagName);
+    $('.color-box').css('background-color', $(button).attr('style').split(" ")[1]);
+    $('#textCount').text(12 - tagName.length);
+
+    $('#expenseTagSaveUpdate_bt').val('UPDATE');
+    $('#expenseTagDelete_bt').attr('hidden', false);
+
+    $('#tagErrors').hide();
+    activeExpenseTagSaveUpdate_bt();
+}
+
+function activeExpenseTagSaveUpdate_bt() {
+    $(this).prop("readonly", false).focus();
+    $('#expenseTagSaveUpdate_bt').attr('disabled', false).css('background', '#0079FF');
+}
+
+function inactiveExpenseTagSaveUpdate_bt() {
+    $(this).prop("readonly", true).focus();
+    $('#expenseTagSaveUpdate_bt').attr('disabled', true).css('background', '#808080');
+}
+
 function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
     $('#expenseByBusiness').highcharts({
         chart: {
