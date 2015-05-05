@@ -3,8 +3,6 @@ package com.receiptofi.web.form;
 import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.utils.ScrubbedInput;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Used in adding new expense tag.
  * User: hitender
