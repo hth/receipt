@@ -11,7 +11,7 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/fineuploader/fine-uploader.css'/>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/fineuploader/fine-uploader.css'/>
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.css'/>
     <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.print.css' media='print'/>
 
@@ -20,7 +20,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.4/highcharts.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fine-uploader.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/external/js/fineuploader/jquery.fine-uploader.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.1.1/randomColor.min.js"></script>
@@ -209,7 +209,7 @@
 		<div class="gd-title">
 			<h1 class="widget-title-text">Upload new receipt</h1>
 		</div>
-        <div id="restricted-fine-uploader" class="upload-text"></div>
+        <div id="fine-uploader-validation" class="upload-text"></div>
 	</div>
 	<div class="sidebar-indication">
 		<div class="si-title">
@@ -517,6 +517,119 @@ function drawExpenseByBusiness() {
         $("#title_MapDataId").removeClass("temp_offset");
     });
 </script>
+
+<script type="text/template" id="qq-template">
+    <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
+        <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+            <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+        </div>
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+            <span class="qq-upload-drop-area-text-selector"></span>
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button">
+            <div>&uarr; &nbsp; UPLOAD IMAGE(S)</div>
+        </div>
+            <span class="qq-drop-processing-selector qq-drop-processing">
+                <span>Processing dropped files...</span>
+                <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+            </span>
+        <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals">
+            <li>
+                <div class="qq-progress-bar-container-selector">
+                    <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                </div>
+                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+                <span class="qq-upload-file-selector qq-upload-file"></span>
+                <span class="qq-upload-size-selector qq-upload-size"></span>
+                <button class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
+                <button class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
+                <button class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+            </li>
+        </ul>
+
+        <dialog class="qq-alert-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <div class="qq-dialog-buttons">
+                <button class="qq-cancel-button-selector">Close</button>
+            </div>
+        </dialog>
+
+        <dialog class="qq-confirm-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <div class="qq-dialog-buttons">
+                <button class="qq-cancel-button-selector">No</button>
+                <button class="qq-ok-button-selector">Yes</button>
+            </div>
+        </dialog>
+
+        <dialog class="qq-prompt-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <input type="text">
+            <div class="qq-dialog-buttons">
+                <button class="qq-cancel-button-selector">Cancel</button>
+                <button class="qq-ok-button-selector">Ok</button>
+            </div>
+        </dialog>
+    </div>
+</script>
+
+<script>
+    $('#fine-uploader-validation').fineUploader({
+        template: 'qq-template',
+        callbacks: {
+            onComplete: function (id, fileName, responseJSON) {
+                if (responseJSON.success == true) {
+                    $(this.getItemByFileId(id)).hide('slow');
+
+                    $.ajax({
+                        type: 'POST',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(
+                                    $("meta[name='_csrf_header']").attr("content"),
+                                    $("meta[name='_csrf']").attr("content")
+                            );
+                        },
+                        url: ctx + '/ws/r/pending.htm',
+                        success: function (response) {
+                            if (response > 0) {
+                                var html =
+                                        "<a href='" + ctx + "/access/document/pending.htm' class='big-view'>" +
+                                        "<span class='pendingCounter' id='pendingCountValue'>0</span>" +
+                                        "</a>";
+                                $('#pendingCountInitial').hide();
+                                $('#pendingCountId').html(html).show();
+                                $(runCounter(response));
+                                $('#pendingCountSyncedId').attr('data-timestamp', 'asd');
+                                $('#pendingCountSyncedId').text("just now");
+                            }
+                        }
+                    });
+                }
+            }
+        },
+        request: {
+            endpoint: ctx + '/access/landing/upload.htm',
+            customHeaders: {
+                Accept: 'multipart/form-data',
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        },
+        multiple: true,
+        validation: {
+            allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+            sizeLimit: 10485760 // 10 MB in bytes
+        },
+        text: {
+            uploadButton: '&uarr; &nbsp; UPLOAD IMAGE(S)'
+        },
+        showMessage: function (message) {
+            $('#fine-uploader-validation').append('<div class="alert-error">' + message + '</div>');
+        }
+    });
+</script>
+
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>
