@@ -55,10 +55,10 @@ jQuery(document).ready(function ($) {
     };
 
     //TODO http://blog.fineuploader.com/2013/01/resume-failed-uploads-from-previous.html
-    //$("#restricted-fine-uploader")
-    //    .fineUploader({
+    //$('#fine-uploader-validation').fineUploader({
     new qq.FineUploader({
-        element: $('#restricted-fine-uploader')[0],
+        element: $('#fine-uploader-validation')[0],
+        template: 'qq-template',
         callbacks: {
             onError: errorHandler,
             onComplete: function (id, fileName, responseJSON) {
@@ -107,7 +107,7 @@ jQuery(document).ready(function ($) {
             uploadButton: '&uarr; &nbsp; UPLOAD IMAGE(S)'
         },
         showMessage: function (message) {
-            $('#restricted-fine-uploader').append('<div class="alert-error">' + message + '</div>');
+            $('#fine-uploader-validation').append('<div class="alert-error">' + message + '</div>');
         }
     });
     //Fineuploader ends
