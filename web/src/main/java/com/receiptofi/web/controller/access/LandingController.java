@@ -83,6 +83,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping (value = "/access")
 public class LandingController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
+    private static final String SUCCESS = "success";
+    private static final String UPLOAD_MESSAGE = "uploadMessage";
+    private static final String FILE_UPLOADED_SUCCESSFULLY = "File uploaded successfully";
 
     @Value ("${LandingController.calendar.nextPage:/z/landingTabs}")
     private String calendarNextPage;
@@ -270,7 +273,9 @@ public class LandingController {
         LOG.info("uploading document");
 
         String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
-        String outcome = "{\"success\" : false}";
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(SUCCESS, false);
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if (isMultipart) {
@@ -284,9 +289,11 @@ public class LandingController {
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
                     landingService.uploadDocument(uploadReceiptImage);
-                    outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
+                    jsonObject.addProperty(SUCCESS, true);
+                    jsonObject.addProperty(UPLOAD_MESSAGE, FILE_UPLOADED_SUCCESSFULLY);
                 } catch (Exception exce) {
-                    outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
+                    jsonObject.addProperty(SUCCESS, false);
+                    jsonObject.addProperty(UPLOAD_MESSAGE, exce.getLocalizedMessage());
                     LOG.error("document upload failed reason={} rid={}", exce.getLocalizedMessage(), rid, exce);
                 }
             }
@@ -297,7 +304,7 @@ public class LandingController {
             String filename = httpServletRequest.getHeader("X-File-Name");
             InputStream is = httpServletRequest.getInputStream();
         }
-        return outcome;
+        return jsonObject.toString();
     }
 
     /**
