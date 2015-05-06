@@ -60,7 +60,7 @@ public class DocumentStatsController {
     @Autowired private FileDBService fileDBService;
 
     @RequestMapping (value = "/pending", method = RequestMethod.GET)
-    public ModelAndView getPendingDocuments(
+    public String getPendingDocuments(
             @ModelAttribute ("pendingReceiptForm")
             PendingReceiptForm pendingReceiptForm
     ) {
@@ -70,22 +70,7 @@ public class DocumentStatsController {
         List<DocumentEntity> pendingDocumentEntityList = documentPendingService.getAllPending(receiptUser.getRid());
         for (DocumentEntity document : pendingDocumentEntityList) {
             if (document.getFileSystemEntities() != null) {
-                for (FileSystemEntity scaledId : document.getFileSystemEntities()) {
-                    switch(document.getDocumentStatus()) {
-                        case REPROCESS:
-                            //TODO(hth) map S3 to get file from cloud as during reprocess file does not exist in system.
-                            pendingReceiptForm.addPending(scaledId.getOriginalFilename(), 0, document);
-                            break;
-                        case PENDING:
-                            GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
-                            String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
-                            pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), document);
-                            break;
-                        default:
-                            LOG.error("Reached unreachable condition ", document.getDocumentStatus());
-                            throw new UnsupportedOperationException("Reached unreachable condition " + document.getDocumentStatus());
-                    }
-                }
+                populatePendingReceiptForm(pendingReceiptForm, document);
             } else {
                 LOG.error("pending document does not contains receipt documentId={}", document.getId());
                 ++pendingMissingReceipt;
@@ -95,7 +80,31 @@ public class DocumentStatsController {
             LOG.error("total pending documents missing receipts count={}", pendingMissingReceipt);
         }
 
-        return new ModelAndView(listPendingDocuments);
+        return listPendingDocuments;
+    }
+
+    private void populatePendingReceiptForm(
+            @ModelAttribute ("pendingReceiptForm")
+            PendingReceiptForm pendingReceiptForm,
+
+            DocumentEntity document
+    ) {
+        for (FileSystemEntity scaledId : document.getFileSystemEntities()) {
+            switch(document.getDocumentStatus()) {
+                case REPROCESS:
+                    //TODO(hth) map S3 to get file from cloud as during reprocess file does not exist in system.
+                    pendingReceiptForm.addPending(scaledId.getOriginalFilename(), 0, document);
+                    break;
+                case PENDING:
+                    GridFSDBFile gridFSDBFile = fileDBService.getFile(scaledId.getBlobId());
+                    String originalFileName = (String) gridFSDBFile.getMetaData().get("ORIGINAL_FILENAME");
+                    pendingReceiptForm.addPending(originalFileName, gridFSDBFile.getLength(), document);
+                    break;
+                default:
+                    LOG.error("Reached unreachable condition ", document.getDocumentStatus());
+                    throw new UnsupportedOperationException("Reached unreachable condition " + document.getDocumentStatus());
+            }
+        }
     }
 
     @RequestMapping (value = "/rejected", method = RequestMethod.GET)
