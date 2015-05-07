@@ -8,6 +8,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.util.TimeZone;
+
 /**
  * User: hitender
  * Date: 4/19/15 3:22 PM
@@ -42,10 +46,14 @@ public class JsonBillingHistory {
     @JsonProperty ("bm")
     private String billedForMonth;
 
+    @JsonProperty ("bd")
+    private String billedDate;
+
     public JsonBillingHistory(BillingHistoryEntity billingHistory) {
         this.id = billingHistory.getId();
         this.billedStatus = billingHistory.getBilledStatus().name();
         this.accountBillingType = billingHistory.getAccountBillingType().name();
         this.billedForMonth = billingHistory.getBilledForMonthYear();
+        this.billedDate = DateFormatUtils.format(billingHistory.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 }
