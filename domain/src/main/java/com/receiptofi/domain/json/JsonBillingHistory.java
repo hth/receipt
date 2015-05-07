@@ -53,7 +53,7 @@ public class JsonBillingHistory {
         this.id = billingHistory.getId();
         this.billedStatus = billingHistory.getBilledStatus().name();
         this.accountBillingType = billingHistory.getAccountBillingType().name();
-        this.billedForMonth = billingHistory.getBilledForMonthYear();
+        this.billedForMonth = billingHistory.getBilledForMonth();
         this.billedDate = DateFormatUtils.format(billingHistory.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 }
