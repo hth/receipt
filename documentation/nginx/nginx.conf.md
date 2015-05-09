@@ -1,4 +1,4 @@
-    # Date: May 09 10:15 AM
+    # Date: May 09 1:15 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -49,9 +49,28 @@
     
         client_max_body_size 10M;
     
+        ssl on;                                                    
+        ssl_session_cache   shared:SSL:10m;
+        ssl_session_timeout 10m;
+        ssl_buffer_size     1400;
+        ssl_session_tickets off;
+    
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers AES256+EECDH:AES256+EDH:!aNULL;
+        ssl_prefer_server_ciphers on;          
+        
+        ssl_certificate      /var/certs/498290154bdc4.crt;
+        ssl_certificate_key  /var/certs/www_receiptofi_com.key;
+        
+        ssl_stapling        on;
+        ssl_stapling_verify on;
+        resolver            8.8.4.4 8.8.8.8 valid=300s;
+        resolver_timeout    10s;                       
+        
         # Remember this setting for 365 days
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
         add_header X-Frame-Options DENY;
+        add_header X-Content-Type-Options nosniff;
     
         server {
             listen       8080;
@@ -76,16 +95,6 @@
                 root   html;
             }
         }
-    
-        ssl_certificate      /var/certs/498290154bdc4.crt;
-        ssl_certificate_key  /var/certs/www_receiptofi_com.key;
-    
-        ssl_session_cache    shared:SSL:10m;
-        ssl_session_timeout  10m;
-    
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        ssl_ciphers HIGH:!aNULL:!MD5;
-        ssl_prefer_server_ciphers on;
     
         server {
             listen          8443 ssl;
