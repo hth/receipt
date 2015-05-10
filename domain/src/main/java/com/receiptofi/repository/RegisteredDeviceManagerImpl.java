@@ -53,7 +53,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         mongoTemplate.save(object);
     }
 
-    private RegisteredDeviceEntity find(String rid, String did) {
+    @Override
+    public RegisteredDeviceEntity find(String rid, String did) {
         return mongoTemplate.findOne(
                 query(where("RID").is(rid).and("DID").is(did)),
                 RegisteredDeviceEntity.class,

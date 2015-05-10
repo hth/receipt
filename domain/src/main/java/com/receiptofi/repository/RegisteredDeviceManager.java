@@ -10,6 +10,16 @@ import com.receiptofi.domain.annotation.Mobile;
 public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDeviceEntity> {
 
     /**
+     * Find if device is registered with receipt user.
+     *
+     * @param rid
+     * @param did
+     * @return
+     */
+    @Mobile
+    RegisteredDeviceEntity find(String rid, String did);
+
+    /**
      * If updates are available then return device and mark the device as inactive else return null
      *
      * @param rid
