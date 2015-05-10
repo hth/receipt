@@ -1,6 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.PaymentGatewayProviderEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -29,6 +30,9 @@ public class BillingAccountEntity extends BaseEntity {
     @Field ("ABT")
     private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.P;
 
+    @Field ("BP")
+    private PaymentGatewayProviderEnum paymentGatewayProvider;
+
     /**
      * This is true when at least one billing has been done with @BillingAccountTypeEnum set for this record. If user
      * changes their mind then this field with be marked as false until next billing cycle.
@@ -56,6 +60,14 @@ public class BillingAccountEntity extends BaseEntity {
 
     public void setAccountBillingType(AccountBillingTypeEnum accountBillingType) {
         this.accountBillingType = accountBillingType;
+    }
+
+    public PaymentGatewayProviderEnum getPaymentGatewayProvider() {
+        return paymentGatewayProvider;
+    }
+
+    public void setPaymentGatewayProvider(PaymentGatewayProviderEnum paymentGatewayProvider) {
+        this.paymentGatewayProvider = paymentGatewayProvider;
     }
 
     public boolean isBilledAccount() {
