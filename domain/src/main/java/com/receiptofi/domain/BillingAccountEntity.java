@@ -30,7 +30,7 @@ public class BillingAccountEntity extends BaseEntity {
     @Field ("ABT")
     private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.P;
 
-    @Field ("BP")
+    @Field ("PG")
     private PaymentGatewayProviderEnum paymentGatewayProvider;
 
     /**
