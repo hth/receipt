@@ -1,20 +1,14 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
-import com.receiptofi.domain.types.PaymentGatewayEnum;
 import com.receiptofi.domain.value.PaymentGatewayUser;
-
-import org.apache.commons.collections.map.LinkedMap;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Each users current billing status.
