@@ -2,6 +2,7 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.domain.types.PaymentGatewayEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,12 @@ public class BillingHistoryEntity extends BaseEntity {
     @Field ("BM")
     private String billedForMonth;
 
+    @Field ("TX")
+    private String transactionId;
+
+    @Field ("PG")
+    private PaymentGatewayEnum paymentGatewayProvider;
+
     @SuppressWarnings("unused")
     private BillingHistoryEntity() {
         super();
@@ -96,5 +103,21 @@ public class BillingHistoryEntity extends BaseEntity {
             LOG.error("Date parsing date={} reason={}", billedForMonth, e.getLocalizedMessage(), e);
             return "Missing";
         }
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public PaymentGatewayEnum getPaymentGatewayProvider() {
+        return paymentGatewayProvider;
+    }
+
+    public void setPaymentGatewayProvider(PaymentGatewayEnum paymentGatewayProvider) {
+        this.paymentGatewayProvider = paymentGatewayProvider;
     }
 }
