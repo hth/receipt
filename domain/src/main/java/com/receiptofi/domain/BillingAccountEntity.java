@@ -1,12 +1,20 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
-import com.receiptofi.domain.types.PaymentGatewayProviderEnum;
+import com.receiptofi.domain.types.PaymentGatewayEnum;
+import com.receiptofi.domain.value.PaymentGatewayUser;
+
+import org.apache.commons.collections.map.LinkedMap;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Each users current billing status.
@@ -30,8 +38,11 @@ public class BillingAccountEntity extends BaseEntity {
     @Field ("ABT")
     private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.P;
 
+    /**
+     * PaymentGateway and customerId of this payment gateway.
+     */
     @Field ("PG")
-    private PaymentGatewayProviderEnum paymentGatewayProvider;
+    private LinkedList<PaymentGatewayUser> paymentGateway = new LinkedList<>();
 
     /**
      * This is true when at least one billing has been done with @BillingAccountTypeEnum set for this record. If user
@@ -62,12 +73,12 @@ public class BillingAccountEntity extends BaseEntity {
         this.accountBillingType = accountBillingType;
     }
 
-    public PaymentGatewayProviderEnum getPaymentGatewayProvider() {
-        return paymentGatewayProvider;
+    public LinkedList<PaymentGatewayUser> getPaymentGateway() {
+        return paymentGateway;
     }
 
-    public void setPaymentGatewayProvider(PaymentGatewayProviderEnum paymentGatewayProvider) {
-        this.paymentGatewayProvider = paymentGatewayProvider;
+    public void addPaymentGateway(PaymentGatewayUser paymentGateway) {
+        this.paymentGateway.add(paymentGateway);
     }
 
     public boolean isBilledAccount() {

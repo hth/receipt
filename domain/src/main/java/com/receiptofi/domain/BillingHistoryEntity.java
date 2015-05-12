@@ -2,7 +2,7 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
-import com.receiptofi.domain.types.PaymentGatewayProviderEnum;
+import com.receiptofi.domain.types.PaymentGatewayEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class BillingHistoryEntity extends BaseEntity {
     private String transactionId;
 
     @Field ("PG")
-    private PaymentGatewayProviderEnum paymentGatewayProvider;
+    private PaymentGatewayEnum paymentGatewayProvider;
 
     @SuppressWarnings("unused")
     private BillingHistoryEntity() {
@@ -113,11 +113,11 @@ public class BillingHistoryEntity extends BaseEntity {
         this.transactionId = transactionId;
     }
 
-    public PaymentGatewayProviderEnum getPaymentGatewayProvider() {
+    public PaymentGatewayEnum getPaymentGatewayProvider() {
         return paymentGatewayProvider;
     }
 
-    public void setPaymentGatewayProvider(PaymentGatewayProviderEnum paymentGatewayProvider) {
+    public void setPaymentGatewayProvider(PaymentGatewayEnum paymentGatewayProvider) {
         this.paymentGatewayProvider = paymentGatewayProvider;
     }
 }
