@@ -1,4 +1,4 @@
-    # Date: May 09 1:15 PM
+    # Date: May 13 2:15 AM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -49,7 +49,8 @@
     
         client_max_body_size 10M;
     
-        ssl on;                                                    
+        # Cannot mark ssl on as it will make http as not working. Only works on https. Redirect to https is better choice.
+        #ssl on;                                                    
         ssl_session_cache   shared:SSL:10m;
         ssl_session_timeout 10m;
         ssl_buffer_size     1400;
