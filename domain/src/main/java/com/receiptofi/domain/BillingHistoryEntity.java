@@ -55,7 +55,7 @@ public class BillingHistoryEntity extends BaseEntity {
     private String transactionId;
 
     @Field ("PG")
-    private PaymentGatewayEnum paymentGatewayProvider;
+    private PaymentGatewayEnum paymentGateway;
 
     @SuppressWarnings("unused")
     private BillingHistoryEntity() {
@@ -113,11 +113,11 @@ public class BillingHistoryEntity extends BaseEntity {
         this.transactionId = transactionId;
     }
 
-    public PaymentGatewayEnum getPaymentGatewayProvider() {
-        return paymentGatewayProvider;
+    public PaymentGatewayEnum getPaymentGateway() {
+        return paymentGateway;
     }
 
-    public void setPaymentGatewayProvider(PaymentGatewayEnum paymentGatewayProvider) {
-        this.paymentGatewayProvider = paymentGatewayProvider;
+    public void setPaymentGateway(PaymentGatewayEnum paymentGateway) {
+        this.paymentGateway = paymentGateway;
     }
 }
