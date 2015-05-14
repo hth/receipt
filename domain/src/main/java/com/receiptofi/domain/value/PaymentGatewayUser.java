@@ -24,6 +24,9 @@ public class PaymentGatewayUser {
     @Field ("LN")
     private String lastName;
 
+    @Field ("AD")
+    private String addressId;
+
     @Field ("PC")
     private String postalCode;
 
@@ -57,6 +60,14 @@ public class PaymentGatewayUser {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
     }
 
     public String getPostalCode() {
