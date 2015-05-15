@@ -31,7 +31,7 @@ import java.util.Date;
 @Document (collection = "BILLING_HISTORY")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "billing_history_rid_idx", def = "{'RID': 1}"),
-        @CompoundIndex (name = "billing_history_rid_bm_idx", def = "{'RID': 1, 'BM': -1}", unique = true)
+        @CompoundIndex (name = "billing_history_rid_bm_idx", def = "{'RID': 1, 'BM': -1}")
 })
 public class BillingHistoryEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(BillingHistoryEntity.class);
