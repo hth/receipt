@@ -36,8 +36,8 @@ import java.util.Date;
 public class BillingHistoryEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(BillingHistoryEntity.class);
 
-    public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM");
-    private static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy");
+    public static final SimpleDateFormat YYYY_MM = new SimpleDateFormat("yyyy-MM");
+    private static final SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM, yyyy");
 
     @Field ("RID")
     private String rid;
@@ -65,7 +65,7 @@ public class BillingHistoryEntity extends BaseEntity {
     public BillingHistoryEntity(String rid, Date billedForMonth) {
         super();
         this.rid = rid;
-        this.billedForMonth = SDF.format(billedForMonth);
+        this.billedForMonth = YYYY_MM.format(billedForMonth);
     }
 
     public String getRid() {
@@ -93,12 +93,12 @@ public class BillingHistoryEntity extends BaseEntity {
     }
 
     public void setBilledForMonth(Date billedForMonth) {
-        this.billedForMonth = SDF.format(billedForMonth);
+        this.billedForMonth = YYYY_MM.format(billedForMonth);
     }
 
     public String getBilledForMonthYear() {
         try {
-            return SDF_MMM_YYYY.format(SDF.parse(billedForMonth));
+            return MMM_YYYY.format(YYYY_MM.parse(billedForMonth));
         } catch (ParseException e) {
             LOG.error("Date parsing date={} reason={}", billedForMonth, e.getLocalizedMessage(), e);
             return "Missing";
