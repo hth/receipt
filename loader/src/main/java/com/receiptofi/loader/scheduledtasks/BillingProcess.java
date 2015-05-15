@@ -246,7 +246,7 @@ public class BillingProcess {
             } catch (Exception e) {
                 LOG.error("error during billing reason={}", e.getLocalizedMessage(), e);
             } finally {
-                cronStats.addStats("billedForMonth", BillingHistoryEntity.SDF.format(billedForMonth));
+                cronStats.addStats("billedForMonth", BillingHistoryEntity.YYYY_MM.format(billedForMonth));
                 cronStats.addStats("totalCount", totalCount);
                 cronStats.addStats("successCount", successCount);
                 cronStats.addStats("failureCount", failureCount);
@@ -266,7 +266,7 @@ public class BillingProcess {
                                 "monthlyCount={} skippedMonthlyCount={}, " +
                                 "annualCount={} skippedAnnualCount={}"
                         ,
-                        BillingHistoryEntity.SDF.format(billedForMonth), totalCount, successCount, failureCount,
+                        BillingHistoryEntity.YYYY_MM.format(billedForMonth), totalCount, successCount, failureCount,
                         noBillingCount, skippedNoBillingCount,
                         promotionCount, skippedPromotionCount,
                         monthlyCount, skippedMonthlyCount,

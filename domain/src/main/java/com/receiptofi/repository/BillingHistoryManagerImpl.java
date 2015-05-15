@@ -80,8 +80,8 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
                         where("RID").is(rid)
                                 .and("BS").is(BilledStatusEnum.P)
                                 .orOperator(
-                                        where("BM").is(BillingHistoryEntity.SDF.format(previousMonth)),
-                                        where("BM").is(BillingHistoryEntity.SDF.format(thisMonth))
+                                        where("BM").is(BillingHistoryEntity.YYYY_MM.format(previousMonth)),
+                                        where("BM").is(BillingHistoryEntity.YYYY_MM.format(thisMonth))
                                 )
                 ),
                 BillingHistoryEntity.class

@@ -87,7 +87,7 @@ public class BillingService {
                 /** Mark all receipts before account creation as PROMOTIONAL. */
                 LOG.warn("Create billing history rid={} yearMonth={}",
                         receipt.getReceiptUserId(),
-                        BillingHistoryEntity.SDF.format(receipt.getReceiptDate()));
+                        BillingHistoryEntity.YYYY_MM.format(receipt.getReceiptDate()));
 
                 billingHistory.setBilledStatus(BilledStatusEnum.P);
                 billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
@@ -99,7 +99,7 @@ public class BillingService {
     }
 
     public BillingHistoryEntity findBillingHistoryForMonth(Date date, String rid) {
-        return billingHistoryManager.findBillingHistoryForMonth(BillingHistoryEntity.SDF.format(date), rid);
+        return billingHistoryManager.findBillingHistoryForMonth(BillingHistoryEntity.YYYY_MM.format(date), rid);
     }
 
     public List<BillingHistoryEntity> getHistory(String rid) {
