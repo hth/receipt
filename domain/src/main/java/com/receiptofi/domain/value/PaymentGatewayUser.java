@@ -44,7 +44,23 @@ public class PaymentGatewayUser {
     @Field ("U")
     private Date updated;
 
-    public PaymentGatewayUser() {
+    public PaymentGatewayUser(
+            PaymentGatewayEnum paymentGateway,
+            String customerId,
+            String firstName,
+            String lastName,
+            String company,
+            String addressId,
+            String postalCode
+    ) {
+        this.paymentGateway = paymentGateway;
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.company = company;
+        this.addressId = addressId;
+        this.postalCode = postalCode;
+
         this.created = new Date();
         this.updated = this.created;
     }
