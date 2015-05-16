@@ -6,6 +6,8 @@ import com.receiptofi.domain.types.PaymentGatewayEnum;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 /**
  * User: hitender
  * Date: 5/10/15 8:10 PM
@@ -24,6 +26,9 @@ public class PaymentGatewayUser {
     @Field ("LN")
     private String lastName;
 
+    @Field ("CM")
+    private String company;
+
     @Field ("AD")
     private String addressId;
 
@@ -32,6 +37,17 @@ public class PaymentGatewayUser {
 
     @Field ("SD")
     private String subscriptionId;
+
+    @Field ("C")
+    private Date created;
+
+    @Field ("U")
+    private Date updated;
+
+    public PaymentGatewayUser() {
+        this.created = new Date();
+        this.updated = this.created;
+    }
 
     public PaymentGatewayEnum getPaymentGateway() {
         return paymentGateway;
@@ -65,6 +81,14 @@ public class PaymentGatewayUser {
         this.lastName = lastName;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
     public String getAddressId() {
         return addressId;
     }
@@ -87,6 +111,18 @@ public class PaymentGatewayUser {
 
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 
     @Transient
