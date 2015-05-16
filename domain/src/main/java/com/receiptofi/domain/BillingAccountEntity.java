@@ -33,9 +33,9 @@ public class BillingAccountEntity extends BaseEntity {
     private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.P;
 
     /**
-     * PaymentGateway and customerId of this payment gateway.
+     * PaymentGateway details.
      */
-    @Field ("PG")
+    @Field ("PGU")
     private LinkedList<PaymentGatewayUser> paymentGateway = new LinkedList<>();
 
     /**
