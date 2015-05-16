@@ -30,6 +30,9 @@ public class PaymentGatewayUser {
     @Field ("PC")
     private String postalCode;
 
+    @Field ("SD")
+    private String subscriptionId;
+
     public PaymentGatewayEnum getPaymentGateway() {
         return paymentGateway;
     }
@@ -76,6 +79,14 @@ public class PaymentGatewayUser {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
     @Transient
