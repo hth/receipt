@@ -35,7 +35,7 @@ import java.util.List;
 public class MessageDocumentOrphanReport {
     private static final Logger LOG = LoggerFactory.getLogger(MessageDocumentOrphanReport.class);
 
-    private String messageDocumentOrphanReport;
+    private String messageDocumentOrphanReportSwitch;
     private int pendingSinceDays;
     private MessageDocumentService messageDocumentService;
     private DocumentUpdateService documentUpdateService;
@@ -43,8 +43,8 @@ public class MessageDocumentOrphanReport {
 
     @Autowired
     public MessageDocumentOrphanReport(
-            @Value ("${messageDocumentOrphanReport:ON}")
-            String messageDocumentOrphanReport,
+            @Value ("${messageDocumentOrphanReportSwitch:ON}")
+            String messageDocumentOrphanReportSwitch,
 
             @Value ("${pendingSinceDays:2}")
             int pendingSinceDays,
@@ -53,7 +53,7 @@ public class MessageDocumentOrphanReport {
             DocumentUpdateService documentUpdateService,
             CronStatsService cronStatsService
     ) {
-        this.messageDocumentOrphanReport = messageDocumentOrphanReport;
+        this.messageDocumentOrphanReportSwitch = messageDocumentOrphanReportSwitch;
         this.pendingSinceDays = pendingSinceDays;
         this.messageDocumentService = messageDocumentService;
         this.documentUpdateService = documentUpdateService;
@@ -65,9 +65,9 @@ public class MessageDocumentOrphanReport {
         CronStatsEntity cronStats = new CronStatsEntity(
                 MessageDocumentOrphanReport.class.getName(),
                 "Message_Document_Orphan_Report",
-                messageDocumentOrphanReport);
+                messageDocumentOrphanReportSwitch);
 
-        if ("ON".equals(messageDocumentOrphanReport)) {
+        if ("ON".equals(messageDocumentOrphanReportSwitch)) {
             Instant since = LocalDateTime.now().minusDays(pendingSinceDays).toInstant(ZoneOffset.UTC);
             Date sinceDate = Date.from(since);
             List<MessageDocumentEntity> pendingDocuments = messageDocumentService.findAllPending(sinceDate);
@@ -104,7 +104,7 @@ public class MessageDocumentOrphanReport {
                         count, success, skipped, failure);
             }
         } else {
-            LOG.info("feature is {}", messageDocumentOrphanReport);
+            LOG.info("feature is {}", messageDocumentOrphanReportSwitch);
         }
     }
 }

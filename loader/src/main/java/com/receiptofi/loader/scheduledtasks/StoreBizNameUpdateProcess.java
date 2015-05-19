@@ -36,7 +36,7 @@ public class StoreBizNameUpdateProcess {
     private static final Logger LOG = LoggerFactory.getLogger(StoreBizNameUpdateProcess.class);
 
     private int recordFetchLimit;
-    private String storeBizNameUpdateProcess;
+    private String storeBizNameUpdateProcessSwitch;
     private BizNameManager bizNameManager;
     private CronStatsService cronStatsService;
 
@@ -45,14 +45,14 @@ public class StoreBizNameUpdateProcess {
             @Value ("${recordFetchLimit:1000}")
             int recordFetchLimit,
 
-            @Value ("${storeBizNameUpdateProcess:OFF}")
-            String storeBizNameUpdateProcess,
+            @Value ("${storeBizNameUpdateProcessSwitch:OFF}")
+            String storeBizNameUpdateProcessSwitch,
 
             BizNameManager bizNameManager,
             CronStatsService cronStatsService
     ) {
         this.recordFetchLimit = recordFetchLimit;
-        this.storeBizNameUpdateProcess = storeBizNameUpdateProcess;
+        this.storeBizNameUpdateProcessSwitch = storeBizNameUpdateProcessSwitch;
         this.bizNameManager = bizNameManager;
         this.cronStatsService = cronStatsService;
     }
@@ -64,9 +64,9 @@ public class StoreBizNameUpdateProcess {
         CronStatsEntity cronStats = new CronStatsEntity(
                 StoreBizNameUpdateProcess.class.getName(),
                 "Update_Name_Of_Biz",
-                storeBizNameUpdateProcess);
+                storeBizNameUpdateProcessSwitch);
 
-        if ("ON".equalsIgnoreCase(storeBizNameUpdateProcess)) {
+        if ("ON".equalsIgnoreCase(storeBizNameUpdateProcessSwitch)) {
             List<BizNameEntity> bizNames;
 
             int success = 0, failure = 0, total = 0;
@@ -104,7 +104,7 @@ public class StoreBizNameUpdateProcess {
                 LOG.info("Complete updated bizName count={} success={} failure={}", total, success, failure);
             }
         } else {
-            LOG.info("feature is {}", storeBizNameUpdateProcess);
+            LOG.info("feature is {}", storeBizNameUpdateProcessSwitch);
         }
     }
 }
