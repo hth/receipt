@@ -31,8 +31,8 @@ public class InactiveNonValidatedAccount {
     @Value ("${mail.validation.timeout.period}")
     private int mailValidationTimeoutPeriod;
 
-    @Value ("${inactiveNonValidatedAccount:ON}")
-    private String inactiveNonValidatedAccount;
+    @Value ("${inactiveNonValidatedAccountSwitch:ON}")
+    private String inactiveNonValidatedAccountSwitch;
 
     private AccountService accountService;
     private CronStatsService cronStatsService;
@@ -54,17 +54,17 @@ public class InactiveNonValidatedAccount {
         CronStatsEntity cronStats = new CronStatsEntity(
                 InactiveNonValidatedAccount.class.getName(),
                 "Mark_Account_Inactive_When_Not_Validated",
-                inactiveNonValidatedAccount);
+                inactiveNonValidatedAccountSwitch);
 
         int count = 0;
         LOG.info("begins");
-        if ("ON".equals(inactiveNonValidatedAccount)) {
+        if ("ON".equals(inactiveNonValidatedAccountSwitch)) {
             DateTime pastActivationDate = DateTime.now().minusDays(mailValidationTimeoutPeriod);
             LOG.info("marking accounts inactive which are past activation date={}", pastActivationDate.toString());
             count = accountService.inactiveNonValidatedAccount(pastActivationDate.toDate());
             LOG.info("marked total number of account markedInactive={}", count);
         } else {
-            LOG.info("feature is {}", inactiveNonValidatedAccount);
+            LOG.info("feature is {}", inactiveNonValidatedAccountSwitch);
         }
 
         cronStats.addStats("markedInactive", count);
