@@ -82,7 +82,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public RegisteredDeviceEntity lastAccessed(String rid, String did) {
         return mongoTemplate.findAndModify(
                 query(where("RID").is(rid).and("DID").is(did)),
-                update("U", deviceLastAccessedNow.equals("ON") ? new Date() : DateTime.now().minusYears(1).toDate()),
+                update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate()),
                 RegisteredDeviceEntity.class,
                 TABLE
         );

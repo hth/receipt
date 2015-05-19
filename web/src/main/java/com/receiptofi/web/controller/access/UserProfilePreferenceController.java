@@ -121,7 +121,7 @@ public class UserProfilePreferenceController {
         /** Gymnastic to show BindingResult errors if any. */
         if (model.containsKey("result")) {
             BeanPropertyBindingResult result = (BeanPropertyBindingResult) model.get("result");
-            if (result.getObjectName().equals("expenseTagForm")) {
+            if ("expenseTagForm".equals(result.getObjectName())) {
                 model.addAttribute("org.springframework.validation.BindingResult.expenseTagForm", result);
 
                 populateProfile(profileForm, receiptUser.getRid());
@@ -131,7 +131,7 @@ public class UserProfilePreferenceController {
                 model.addAttribute("profileForm", profileForm);
             }
 
-            if (result.getObjectName().equals("profileForm")) {
+            if ("profileForm".equals(result.getObjectName())) {
                 model.addAttribute("org.springframework.validation.BindingResult.profileForm", result);
 
                 profileForm = (ProfileForm) result.getTarget();

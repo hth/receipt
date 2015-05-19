@@ -71,7 +71,7 @@ public class RestoreBizStoreDataProcess {
                 "Restore_Addresses",
                 restoreAddresses);
 
-        if (restoreAddresses.equals("ON")) {
+        if ("ON".equals(restoreAddresses)) {
             List<BizStoreEntity> bizStores;
 
             int success = 0, failure = 0, total = 0;
