@@ -21,7 +21,7 @@ import java.util.List;
         "PMD.LongVariable"
 })
 public final class ReceiptForMonth {
-    public static DateTimeFormatter dtf = DateTimeFormat.forPattern("MMM, yyyy");
+    public static final DateTimeFormatter MMM_YYYY = DateTimeFormat.forPattern("MMM, yyyy");
 
     private DateTime monthYearDateTime;
     private List<ReceiptLandingView> receipts = new ArrayList<>();
@@ -34,11 +34,11 @@ public final class ReceiptForMonth {
     }
 
     public String getMonthYear() {
-        return dtf.print(monthYearDateTime);
+        return MMM_YYYY.print(monthYearDateTime);
     }
 
     public String getYear() {
-        return dtf.print(monthYearDateTime).substring(5, dtf.print(monthYearDateTime).length());
+        return MMM_YYYY.print(monthYearDateTime).substring(5, MMM_YYYY.print(monthYearDateTime).length());
     }
 
     public Date getMonthYearDateTime() {
