@@ -218,7 +218,7 @@ public class ReceiptController {
             List<ReceiptEntity> receipts = receiptService.findReceipt(
                     bizNameEntity,
                     receiptUser.getRid(),
-                    ReceiptForMonth.dtf.parseDateTime(monthYear));
+                    ReceiptForMonth.MMM_YYYY.parseDateTime(monthYear));
             for (ReceiptEntity receiptEntity : receipts) {
                 receiptByBizForm.getReceiptLandingViews().add(ReceiptLandingView.newInstance(receiptEntity));
             }
