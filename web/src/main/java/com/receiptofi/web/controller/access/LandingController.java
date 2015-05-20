@@ -156,7 +156,7 @@ public class LandingController {
 //        modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
 //        landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
 
-        if (receiptUser.getUserLevel().value >= UserLevelEnum.USER_COMMUNITY.value) {
+        if (receiptUser.getUserLevel().getValue() >= UserLevelEnum.USER_COMMUNITY.getValue()) {
             List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(receiptUser.getRid());
             landingForm.setReceiptGroupedByBizLocations(receiptGroupedByBizLocations);
         }

@@ -32,8 +32,8 @@ public enum UserLevelEnum {
     ANALYSIS_READ("Analysis Read", 70),
     ADMIN("Admin", 80);
 
-    public final String description;
-    public final int value;
+    private final String description;
+    private final int value;
 
     /**
      *
