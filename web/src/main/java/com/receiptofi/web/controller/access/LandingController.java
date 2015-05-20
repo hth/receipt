@@ -146,7 +146,7 @@ public class LandingController {
         documentStatsForm.setPendingCount(landingService.pendingReceipt(receiptUser.getRid()));
         documentStatsForm.setRejectedCount(landingService.rejectedReceipt(receiptUser.getRid()));
 
-        /** Receipt grouped by date */
+        /** Receipt grouped by date. */
         LOG.info("Calculating calendar grouped expense");
         Iterator<ReceiptGrouped> receiptGrouped = landingService.getReceiptGroupedByDate(receiptUser.getRid());
         landingForm.setReceiptGrouped(receiptGrouped);
@@ -161,19 +161,19 @@ public class LandingController {
             landingForm.setReceiptGroupedByBizLocations(receiptGroupedByBizLocations);
         }
 
-        /** Used for donut chart of each receipts with respect to expense types in TAB 1 */
+        /** Used for donut chart of each receipts with respect to expense types in TAB 1. */
         LOG.info("Calculating Donut chart - receipt expense");
-        /** bizNames and bizByExpenseTypes added below to landingForm*/
+        /** bizNames and bizByExpenseTypes added below to landingForm. */
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
 
         Map<String, BigDecimal> ytdExpenseMap = landingService.computeYearToDateExpense(receiptUser.getRid());
         modelAndView.addAllObjects(ytdExpenseMap);
 
-        /** Notification */
+        /** Notification. */
         notificationForm.setNotifications(notificationService.getNotifications(receiptUser.getRid()));
         notificationForm.setCount(Long.toString(notificationService.notificationCount(receiptUser.getRid())));
 
-        /** Mileage */
+        /** Mileage. */
         List<MileageEntity> mileageEntityList = mileageService.getMileageForThisMonth(receiptUser.getRid(), time);
         landingForm.setMileageEntities(mileageEntityList);
         landingForm.setMileageMonthlyTotal(mileageService.mileageTotal(mileageEntityList));
@@ -185,7 +185,7 @@ public class LandingController {
     }
 
     /**
-     * Loads monthly data for the selected month in the calendar
+     * Loads monthly data for the selected month in the calendar.
      *
      * @param monthView
      * @return
@@ -211,9 +211,9 @@ public class LandingController {
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, monthYear);
         landingForm.setReceiptForMonth(receiptForMonth);
 
-        /** Used for donut chart of each receipts with respect to expense types in TAB 1*/
+        /** Used for donut chart of each receipts with respect to expense types in TAB 1. */
         LOG.info("Calculating Donut chart - receipt expense");
-        /** bizNames and bizByExpenseTypes added below to landingForm*/
+        /** bizNames and bizByExpenseTypes added below to landingForm. */
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
         /** Need to return ModelAndView as returning just string does not execute JSP. */
         return new ModelAndView(calendarNextPage);
