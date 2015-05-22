@@ -59,6 +59,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -113,6 +116,8 @@ public class LandingController {
     @Value ("${nextPage:/landing}")
     private String nextPage;
 
+    @Timed
+    @ExceptionMetered
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
             value = "/landing",
