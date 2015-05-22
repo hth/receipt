@@ -1363,6 +1363,7 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-transform: uppercase;
     text-align: left;
+    white-space: nowrap;
 }
 
 .analysis-text {
