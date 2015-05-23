@@ -575,5 +575,6 @@ function drawExpenseByBusiness() {
     </div>
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/fineupload.js"></script>
 </body>
 </html>
