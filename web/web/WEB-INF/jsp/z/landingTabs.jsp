@@ -24,7 +24,7 @@
             </c:choose>
             <span style="background-color: ${receipt.expenseColor};">&nbsp;&nbsp;</span>
             <c:choose>
-            <c:when test="${receipt.billedStatus eq 'NB'}">
+            <c:when test="${receipt.billedStatus eq 'NB' || receipt.billedStatus eq 'E'}">
                 <a href="/access/userprofilepreference/i.htm#tabs-3"
                         class="rightside-li-middle-text">
                     <spring:eval expression="receipt.name"/>
