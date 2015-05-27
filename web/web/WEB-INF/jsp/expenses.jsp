@@ -81,7 +81,7 @@
                 <span class="rightside-li-date-text" style="width: 100px;"><fmt:formatDate value="${item.receipt.receiptDate}" pattern="MMM dd, yyyy"/></span>
                 <span style="background-color: ${item.expenseTag.tagColor}" title="${item.expenseTag.tagName}">&nbsp;&nbsp;&nbsp;</span>
                 <c:choose>
-                    <c:when test="${item.receipt.billedStatus eq 'NB'}">
+                    <c:when test="${item.receipt.billedStatus eq 'NB' || item.receipt.billedStatus eq 'E'}">
                         <a href="/access/userprofilepreference/i.htm#tabs-3"
                                 class="rightside-li-middle-text" style="width: 250px;">
                             <c:choose>
