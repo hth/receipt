@@ -156,7 +156,7 @@ public class BillingProcess {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.P,
-                                                AccountBillingTypeEnum.P,
+                                                billingAccount.getAccountBillingType(),
                                                 billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
@@ -166,12 +166,15 @@ public class BillingProcess {
                                         skippedPromotionCount++;
                                     }
                                     break;
+                                case M10:
                                 case M30:
+                                case M50:
+                                case M100:
                                     if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.NB,
-                                                AccountBillingTypeEnum.M30,
+                                                billingAccount.getAccountBillingType(),
                                                 billingAccount.getRid());
 
                                         markBillingAccountAsBilled(billingAccount);
@@ -181,14 +184,17 @@ public class BillingProcess {
                                         skippedMonthlyCount++;
                                     }
                                     break;
+                                case A120:
                                 case A360:
+                                case A600:
+                                case A1200:
                                     /** This would get executed on December of every year. */
                                     if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         for (int i = 1; i <= 12; i++) {
                                             insertBillingHistory(
                                                     Date.from(LocalDateTime.now().plusMonths(i).toInstant(ZoneOffset.UTC)),
                                                     BilledStatusEnum.NB,
-                                                    AccountBillingTypeEnum.A360,
+                                                    billingAccount.getAccountBillingType(),
                                                     billingAccount.getRid());
                                         }
 
@@ -201,10 +207,10 @@ public class BillingProcess {
                                     break;
                                 default:
                                     failureCount++;
-                                    LOG.error("Reached unreachable condition rid={} billingAccountTypeEnum={} ",
+                                    LOG.error("Reached unreachable condition for billing placeholder rid={} billingAccountTypeEnum={} ",
                                             userAccount.getReceiptUserId(), billingAccount.getAccountBillingType());
 
-                                    throw new RuntimeException("Reached unreachable condition");
+                                    throw new RuntimeException("Reached unreachable condition for billing placeholder");
                             }
                         } else {
                             //This condition would not happen in prod. TODO remove me in future.
