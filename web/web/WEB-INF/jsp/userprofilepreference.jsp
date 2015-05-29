@@ -321,7 +321,7 @@
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             <c:choose>
-                            <c:when test="${billing.billedStatus eq 'NB' || billing.billedStatus eq 'E'}">
+                            <c:when test="${billing.billedStatus eq 'NB' || billing.billedStatus eq 'S'}">
                                 <span style="color: red; font-weight: bold">Payment Due</span>
                             </c:when>
                             <c:when test="${billing.billedStatus eq 'P'}">
