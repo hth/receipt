@@ -280,6 +280,12 @@
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 150px;">Plan Subscribed</label>
+                        <%--<form:form method="post" modelAttribute="billingForm">--%>
+                            <%--<form:select path="billingAccountType" cssClass="styled-select slate" cssStyle="width: 175px;" onchange="">--%>
+                                <%--<form:option value="0" label="Select Billing Type" />--%>
+                                <%--<form:options itemLabel="description" />--%>
+                            <%--</form:select>--%>
+                        <%--</form:form>--%>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
                             ${billingForm.billingAccountType.description}
                         </label>
