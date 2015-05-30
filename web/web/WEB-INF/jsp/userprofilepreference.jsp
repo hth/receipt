@@ -299,20 +299,51 @@
                     </div>
                 </div>
 
-                <div class="down_form" style="width: 53%">
+                <div class="down_form" style="width: 42%">
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Disk Usage</h2>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 150px;">Used</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <fmt:formatNumber value="${billingForm.totalSLN_MB}"/> MB
+                        </label>
+                    </div>
+                    <div class="row_field">
+                        <label class="profile_label" style="width: 150px;">Pending</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            <c:choose>
+                                <c:when test="${billingForm.pendingDiskUsage_MB.unscaledValue() == 0}">-</c:when>
+                                <c:otherwise><fmt:formatNumber value="${billingForm.pendingDiskUsage_MB}"/> MB *</c:otherwise>
+                            </c:choose>
+                        </label>
+                    </div>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <div class="row_field">
+                            <label class="profile_label" style="width: 150px;">Usage saved by scaling</label>
+                            <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                                <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
+                            </label>
+                        </div>
+                    </sec:authorize>
+                </div>
+
+                <div class="down_form" style="width: 80%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing History</h2>
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px;">Month</label>
-                        <label class="profile_label" style="width: 200px;">Bill Status</label>
-                        <label class="profile_label" style="width: 150px;">Bill Date</label>
+                        <label class="profile_label" style="width: 175px;">Plan</label>
+                        <label class="profile_label" style="width: 250px;">Bill Status</label>
+                        <label class="profile_label" style="width: 150px;">Transaction Date</label>
                     </div>
                     <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px; font-weight: normal; !important;">
                             ${billing.billedForMonthYear}
                         </label>
-                        <label class="profile_label" style="width: 200px; font-weight: normal; !important;">
+                        <label class="profile_label" style="width: 175px; font-weight: normal; !important;">
+                            ${billing.accountBillingType.description}
+                        </label>
+                        <label class="profile_label" style="width: 250px; font-weight: normal; !important;">
                             ${billing.billedStatus.description}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
@@ -336,33 +367,6 @@
                         </label>
                     </div>
                     </c:forEach>
-                </div>
-
-                <div class="down_form" style="width: 42%">
-                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Disk Usage</h2>
-                    <div class="row_field">
-                        <label class="profile_label" style="width: 150px;">Used</label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${billingForm.totalSLN_MB}"/> MB
-                        </label>
-                    </div>
-                    <div class="row_field">
-                        <label class="profile_label" style="width: 150px;">Pending</label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <c:choose>
-                                <c:when test="${billingForm.pendingDiskUsage_MB.unscaledValue() == 0}">-</c:when>
-                                <c:otherwise><fmt:formatNumber value="${billingForm.pendingDiskUsage_MB}"/> MB *</c:otherwise>
-                            </c:choose>
-                        </label>
-                    </div>
-                    <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <div class="row_field">
-                        <label class="profile_label" style="width: 150px;">Usage saved by scaling</label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
-                        </label>
-                    </div>
-                    </sec:authorize>
                 </div>
             </div>
 
