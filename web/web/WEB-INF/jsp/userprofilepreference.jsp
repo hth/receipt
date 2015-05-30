@@ -317,20 +317,20 @@
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             <c:choose>
-                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).NB}">
+                            <c:when test="${billing.billedStatus eq 'NB'}">
                                 <span style="color: red; font-weight: bold">Payment Due</span>
                             </c:when>
-                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).P}">
+                            <c:when test="${billing.billedStatus eq 'P'}">
                                 NA
                             </c:when>
-                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).S}">
+                            <c:when test="${billing.billedStatus eq 'S'}">
                                 <span style="color: darkblue; font-weight: bold">Pending</span>
                             </c:when>
-                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).B}">
+                            <c:when test="${billing.billedStatus eq 'B'}">
                                 <fmt:formatDate value="${billing.updated}" type="date"/>
                             </c:when>
                             <c:otherwise>
-                                --
+                                <span style="color: red; font-weight: bold">Contact Support</span>
                             </c:otherwise>
                             </c:choose>
                         </label>
