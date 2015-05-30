@@ -275,40 +275,30 @@
             <div id="tabs-3" class="ajx-content report_my">
                 <h1 class="h1">BILLING &amp; USAGE</h1>
                 <hr>
-                <div class="down_form">
+                <div class="down_form" style="width: 42%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing</h2>
 
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Monthly billed as</label>
-                        <!--
-                         For Mobile user and payer: do not let them change this
-                         whereas of credit card payment: allow them to change this
-                         But for now this is temporary to test monthly billing changes
-                         -->
-                        <form:form method="post" modelAttribute="billingForm">
-                        <form:select path="billingAccountType" cssClass="styled-select slate" cssStyle="width: 175px;" onchange="">
-                            <form:option value="0" label="Select Billing Type" />
-                            <form:options itemLabel="description" />
-                        </form:select>
-                        </form:form>
-                        <%--<label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">--%>
-                            <%--${billingForm.billingAccountType.description}--%>
-                        <%--</label>--%>
+                        <label class="profile_label" style="width: 150px;">Plan Subscribed</label>
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                            ${billingForm.billingAccountType.description}
+                        </label>
                     </div>
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Billed</label>
+                        <label class="profile_label" style="width: 150px;">Billed</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            ${billingForm.billedAccountString()}
+                            <%--${billingForm.billedAccountString()}--%>
+                            1<sup>st</sup> of month
                         </label>
                     </div>
                 </div>
 
-                <div class="down_form">
+                <div class="down_form" style="width: 53%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing History</h2>
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px;">Month</label>
-                        <label class="profile_label" style="width: 150px;">Bill Status</label>
+                        <label class="profile_label" style="width: 200px;">Bill Status</label>
                         <label class="profile_label" style="width: 150px;">Bill Date</label>
                     </div>
                     <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
@@ -316,19 +306,25 @@
                         <label class="profile_label" style="width: 100px; font-weight: normal; !important;">
                             ${billing.billedForMonthYear}
                         </label>
-                        <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
+                        <label class="profile_label" style="width: 200px; font-weight: normal; !important;">
                             ${billing.billedStatus.description}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             <c:choose>
-                            <c:when test="${billing.billedStatus eq 'NB' || billing.billedStatus eq 'S'}">
+                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).NB}">
                                 <span style="color: red; font-weight: bold">Payment Due</span>
                             </c:when>
-                            <c:when test="${billing.billedStatus eq 'P'}">
+                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).P}">
                                 NA
                             </c:when>
-                            <c:otherwise>
+                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).S}">
+                                <span style="color: darkblue; font-weight: bold">Pending</span>
+                            </c:when>
+                            <c:when test="${billing.billedStatus == T(com.receiptofi.domain.types.BilledStatusEnum).B}">
                                 <fmt:formatDate value="${billing.updated}" type="date"/>
+                            </c:when>
+                            <c:otherwise>
+                                --
                             </c:otherwise>
                             </c:choose>
                         </label>
@@ -336,16 +332,16 @@
                     </c:forEach>
                 </div>
 
-                <div class="down_form">
+                <div class="down_form" style="width: 42%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Disk Usage</h2>
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Used</label>
+                        <label class="profile_label" style="width: 150px;">Used</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
                             <fmt:formatNumber value="${billingForm.totalSLN_MB}"/> MB
                         </label>
                     </div>
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Pending</label>
+                        <label class="profile_label" style="width: 150px;">Pending</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
                             <c:choose>
                                 <c:when test="${billingForm.pendingDiskUsage_MB.unscaledValue() == 0}">-</c:when>
@@ -355,7 +351,7 @@
                     </div>
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                     <div class="row_field">
-                        <label class="profile_label" style="width: 200px;">Usage saved by scaling</label>
+                        <label class="profile_label" style="width: 150px;">Usage saved by scaling</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
                             <fmt:formatNumber value="${billingForm.diskSaved_MB}"/> MB
                         </label>
