@@ -57,3 +57,6 @@ In server.xml there is no need to set the alias as 'tomcat'. Tomcat considered t
                keystoreFile="/Location/receiptofi.com/domain_keystore.jks"
                keystorePass="ASK_FOR_PASSWORD"
                compressableMimeType ="text/html,text/xml,text/plain,text/css,text/javascript"/>
+               
+
+    Note: The above Tomcat should not do https instead Nginx should be on https. Run tomcat on HTTP and NOT HTTPS.               
