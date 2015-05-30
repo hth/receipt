@@ -275,7 +275,7 @@
             <div id="tabs-3" class="ajx-content report_my">
                 <h1 class="h1">BILLING &amp; USAGE</h1>
                 <hr>
-                <div class="down_form" style="width: 42%">
+                <div class="down_form">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing</h2>
 
                     <div class="row_field">
@@ -292,14 +292,14 @@
                     </div>
                     <div class="row_field">
                         <label class="profile_label" style="width: 150px;">Billed</label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; width: 150px">
                             <%--${billingForm.billedAccountString()}--%>
-                            1<sup>st</sup> of month
+                            1<sup style="font-size:small; vertical-align:super;">st</sup> of every month
                         </label>
                     </div>
                 </div>
 
-                <div class="down_form" style="width: 42%">
+                <div class="down_form">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Disk Usage</h2>
                     <div class="row_field">
                         <label class="profile_label" style="width: 150px;">Used</label>
