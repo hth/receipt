@@ -65,7 +65,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
 
     @Override
     public void deleteHard(ExpenseTagEntity object) {
-        throw new UnsupportedOperationException("Method not implemented");
+        mongoTemplate.remove(object);
     }
 
     @Override

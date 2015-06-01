@@ -3,15 +3,20 @@ package com.receiptofi.social.connect;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
+import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.repository.UserAccountManager;
+import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.BillingService;
+import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
@@ -72,6 +77,10 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Autowired private ProviderConfig providerConfig;
     @Autowired private UserAccountManager userAccountManager;
     @Autowired private UserProfileManager userProfileManager;
+    @Autowired private BillingService billingService;
+    @Autowired private UserAuthenticationManager userAuthenticationManager;
+    @Autowired private ExpensesService expensesService;
+    @Autowired private ExpenseTagManager expenseTagManager;
 
     @Value ("${social.profile.lastFetched:60}")
     private long lastFetched;
@@ -192,6 +201,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         Assert.notNull(userAccount, "UserAccount is null before social profile update.");
         UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(userAccount.getReceiptUserId());
+        Assert.notNull(userProfile, "UserProfile is null for rid=" + userAccount.getReceiptUserId());
         if (DateUtil.getDuration(userProfile.getUpdated(), new Date()) > lastFetched) {
             if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
                 Facebook facebook = getFacebook(userAccountFromConnection);
@@ -288,13 +298,52 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else {
             userProfile.inActive();
         }
-        userProfileManager.save(userProfile);
-        if (createProfilePreference) {
-            accountService.createPreferences(userProfile);
-        }
+        createOrSaveUserProfile(userAccount, userProfile, createProfilePreference);
 
         //TODO(hth) think about moving this up in previous method call
         updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+    }
+
+    /**
+     * Any failure in the process of creating UserProfile, delete all reminiscence of that user including user account.
+     *
+     * @param userAccount
+     * @param userProfile
+     * @param createProfilePreference
+     */
+    private void createOrSaveUserProfile(
+            UserAccountEntity userAccount,
+            UserProfileEntity userProfile,
+            boolean createProfilePreference
+    ) {
+        try {
+            userProfileManager.save(userProfile);
+            if (createProfilePreference) {
+                accountService.createPreferences(userProfile);
+            }
+        } catch (Exception e) {
+            LOG.error("Something went wrong in creating user profile email={} rid={} userAccount={} userProfile={} reason={}",
+                    userProfile.getEmail(), userAccount.getReceiptUserId(), userAccount.getId(), userProfile.getId(), e.getLocalizedMessage(), e);
+
+            /**
+             * Keep this code commented out since we are not sure if this will happen how often. Note: If there is any
+             * error in saving user profile, this will delete all the user information, billing and account. It would be
+             * nice to know if the account is newly created or old. Better to check user account create time stamp is
+             * less than a minute to decide in deleting. Could opt of softdelete instead.
+             */
+
+            /*List<ExpenseTagEntity> expenseTagEntities = expensesService.getAllExpenseTypes(userAccount.getReceiptUserId());
+            expenseTagEntities.forEach(expenseTagManager::deleteHard);
+
+            userAuthenticationManager.deleteHard(userAccount.getUserAuthentication());
+            userAccountManager.deleteHard(userAccount);
+            billingService.deleteHardBillingWhenAccountCreationFails(userProfile.getReceiptUserId());
+            if (StringUtils.isNotBlank(userProfile.getId())) {
+                userProfileManager.deleteHard(userProfile);
+            }*/
+
+            throw new RuntimeException("Something went wrong and we failed to create or save userProfile. Please bear with us until an engineer looks into this issue.");
+        }
     }
 
     public void copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
@@ -320,10 +369,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else {
             userProfile.inActive();
         }
-        userProfileManager.save(userProfile);
-        if (createProfilePreference) {
-            accountService.createPreferences(userProfile);
-        }
+        createOrSaveUserProfile(userAccount, userProfile, createProfilePreference);
 
         //TODO(hth) think about moving this up in previous method call
         updateUserIdWithEmailWhenPresent(userAccount, userProfile);
