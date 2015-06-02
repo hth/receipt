@@ -420,7 +420,8 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     /**
-     * Replaces userId number with email if exists. Social providers provides Id when email is not shared.
+     * Replaces userId number with email if exists. Social providers provides Id when email is not shared or user
+     * email is not verified.
      *
      * @param userAccount
      * @param userProfile
