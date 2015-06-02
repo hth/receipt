@@ -98,7 +98,7 @@ public class BillingProcess {
                     failureCount = 0,
                     totalCount = 0;
 
-            Instant nextMonth = LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC);
+            Instant nextMonth = LocalDateTime.now().toInstant(ZoneOffset.UTC);
             Date billedForMonth = Date.from(nextMonth);
 
             try {
