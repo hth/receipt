@@ -1,11 +1,15 @@
-package com.receiptofi.loader.webhooks;
+package com.receiptofi.loader.controller.webhooks;
+
+import com.receiptofi.loader.service.PaymentGatewayService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * User: hitender
@@ -17,14 +21,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping (value = "/open/webhooks/subscription")
 public class Subscription {
     private static final Logger LOG = LoggerFactory.getLogger(Subscription.class);
 
+    @Autowired private PaymentGatewayService paymentGatewayService;
+
     @RequestMapping (method = RequestMethod.GET)
-    public String getSubscription() {
+    public String getSubscription(@RequestParam String bt_challenge) {
         LOG.info("Subscription called");
-        return "";
+        return paymentGatewayService.getGateway().webhookNotification().verify(bt_challenge);
     }
 }
