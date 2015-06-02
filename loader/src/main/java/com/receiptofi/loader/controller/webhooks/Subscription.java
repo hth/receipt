@@ -1,5 +1,7 @@
 package com.receiptofi.loader.controller.webhooks;
 
+import com.braintreegateway.WebhookNotification;
+
 import com.receiptofi.loader.service.PaymentGatewayService;
 
 import org.slf4j.Logger;
@@ -32,5 +34,19 @@ public class Subscription {
     public String getSubscription(@RequestParam String bt_challenge) {
         LOG.info("Subscription called");
         return paymentGatewayService.getGateway().webhookNotification().verify(bt_challenge);
+    }
+
+    @RequestMapping (method = RequestMethod.POST)
+    public String postSubscription(
+            @RequestParam String bt_signature,
+            @RequestParam String bt_payload
+    ) {
+        LOG.info("Subscription post called");
+        WebhookNotification webhookNotification = paymentGatewayService.getGateway().webhookNotification().parse(
+                bt_signature,
+                bt_payload
+        );
+        LOG.info("[Webhook Received " + webhookNotification.getTimestamp().getTime() + "] | Kind: " + webhookNotification.getKind() + " | Subscription: " + webhookNotification.getSubscription().getId());
+        return("");
     }
 }
