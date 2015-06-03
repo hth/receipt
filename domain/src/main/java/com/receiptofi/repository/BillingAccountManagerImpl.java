@@ -7,6 +7,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BillingAccountEntity;
+import com.receiptofi.domain.types.PaymentGatewayEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -64,5 +65,13 @@ public class BillingAccountManagerImpl implements BillingAccountManager {
     @Override
     public List<BillingAccountEntity> getAllBillingAccount(String rid) {
         return mongoTemplate.find(query(where("RID").is(rid)), BillingAccountEntity.class);
+    }
+
+    @Override
+    public BillingAccountEntity getBySubscription(String subscriptionId, PaymentGatewayEnum paymentGateway) {
+        return mongoTemplate.findOne(
+                query(where("PGU.SD").is(subscriptionId).and("PGU.PG").is(paymentGateway)),
+                BillingAccountEntity.class
+        );
     }
 }

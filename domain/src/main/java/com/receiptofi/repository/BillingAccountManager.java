@@ -1,6 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.BillingAccountEntity;
+import com.receiptofi.domain.types.PaymentGatewayEnum;
 
 import java.util.List;
 
@@ -10,5 +11,8 @@ import java.util.List;
  */
 public interface BillingAccountManager extends RepositoryManager<BillingAccountEntity> {
     BillingAccountEntity getBillingAccount(String rid);
+
     List<BillingAccountEntity> getAllBillingAccount(String rid);
+
+    BillingAccountEntity getBySubscription(String subscriptionId, PaymentGatewayEnum paymentGatewayEnum);
 }
