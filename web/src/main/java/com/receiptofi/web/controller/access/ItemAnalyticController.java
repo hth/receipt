@@ -42,13 +42,13 @@ import java.util.List;
 public class ItemAnalyticController {
     private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticController.class);
 
-    @Value ("${ItemAnalyticController.nextPage:/itemanalytic2}")
+    @Value ("${ItemAnalyticController.nextPage:/itemanalytic}")
     private String nextPage;
 
-    @Value ("${ItemAnalyticController.searchLimitForDays:90}")
+    @Value ("${ItemAnalyticController.searchLimitForDays:180}")
     private int searchLimitForDays;
 
-    @Value ("${ItemAnalyticController.itemLimit:10}")
+    @Value ("${ItemAnalyticController.itemLimit:20}")
     private int itemLimit;
 
     @Autowired private ItemAnalyticService itemAnalyticService;
