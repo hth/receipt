@@ -23,8 +23,8 @@ import java.util.LinkedList;
 })
 @Document (collection = "BILLING_ACCOUNT")
 @CompoundIndexes ({
-        @CompoundIndex (name = "billing_account_idx", def = "{'RID': 1}", unique = true),
-        @CompoundIndex (name = "billing_account_sub_idx", def = "{'PGU.SD': 1, 'PGU.PG': 1}", unique = true)
+        @CompoundIndex (name = "billing_account_idx", def = "{'RID': -1}", unique = true, background = true),
+        @CompoundIndex (name = "billing_account_sub_idx", def = "{'PGU.SD': -1, 'PGU.PG': -1, 'U' : -1}", unique = true, background = true)
 })
 public class BillingAccountEntity extends BaseEntity {
 
