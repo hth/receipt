@@ -22,7 +22,10 @@ import java.util.LinkedList;
         "PMD.LongVariable"
 })
 @Document (collection = "BILLING_ACCOUNT")
-@CompoundIndexes ({@CompoundIndex (name = "billing_account_idx", def = "{'RID': 1}", unique = true)})
+@CompoundIndexes ({
+        @CompoundIndex (name = "billing_account_idx", def = "{'RID': 1}", unique = true),
+        @CompoundIndex (name = "billing_account_sub_idx", def = "{'PGU.SD': 1, 'PGU.PG': 1}", unique = true)
+})
 public class BillingAccountEntity extends BaseEntity {
 
     @Field ("RID")

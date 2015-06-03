@@ -46,7 +46,32 @@ public class Subscription {
                 bt_signature,
                 bt_payload
         );
-        LOG.info("[Webhook Received " + webhookNotification.getTimestamp().getTime() + "] | Kind: " + webhookNotification.getKind() + " | Subscription: " + webhookNotification.getSubscription().getId());
+        LOG.info("[Webhook Received " + webhookNotification.getTimestamp().getTime() + "] | " +
+                "Kind: " + webhookNotification.getKind() + " | " +
+                "Subscription: " + webhookNotification.getSubscription().getId());
+
+
+        switch (webhookNotification.getKind()) {
+            case SUBSCRIPTION_CANCELED:
+                webhookNotification.getTimestamp();
+                webhookNotification.getSubscription().getId();
+                break;
+            case SUBSCRIPTION_CHARGED_SUCCESSFULLY:
+                break;
+            case SUBSCRIPTION_CHARGED_UNSUCCESSFULLY:
+                break;
+            case SUBSCRIPTION_EXPIRED:
+                break;
+            case SUBSCRIPTION_TRIAL_ENDED:
+                break;
+            case SUBSCRIPTION_WENT_ACTIVE:
+                break;
+            case SUBSCRIPTION_WENT_PAST_DUE:
+                break;
+            default:
+                LOG.error("WebhookNotification kind={} not defined {}", webhookNotification.getKind(), webhookNotification);
+                throw new UnsupportedOperationException("WebhookNotification kind not defined" + webhookNotification.getKind());
+        }
         return("");
     }
 }
