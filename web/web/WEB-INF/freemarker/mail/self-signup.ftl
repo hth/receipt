@@ -1,3 +1,4 @@
+<#assign ftlDateTime = .now>
 <html>
 <body>
 <p>
@@ -31,8 +32,12 @@ Receiptofi Customer Support
 
 
 <br/><br/><br/>
-<span style="font-size: 9px">
+<span style="font-size: 9px;">
     This email is intended solely for the individual or entity to which it is addressed. If you are not the intended recipient of this email, you should know that any dissemination, distribution, copying, or action taken in relation to this email's contents or attachments is prohibited and may be unlawful. If you received this email in error, please notify the sender immediately and delete all electronic and hard copies of both the e-mail and its attachments. Thank you.
+</span>
+<br/>
+<span style="font-size: 9px;">
+    Time: ${ftlDateTime?iso_local}
 </span>
 </body>
 </html>
