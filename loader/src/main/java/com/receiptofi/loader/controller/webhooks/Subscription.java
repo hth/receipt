@@ -72,6 +72,6 @@ public class Subscription {
                 LOG.error("WebhookNotification kind={} not defined {}", webhookNotification.getKind(), webhookNotification);
                 throw new UnsupportedOperationException("WebhookNotification kind not defined" + webhookNotification.getKind());
         }
-        return("");
+        return ("");
     }
 }

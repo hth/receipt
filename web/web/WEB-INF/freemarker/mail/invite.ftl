@@ -43,7 +43,7 @@ ${from} (${fromEmail})
 </span>
 <br/>
 <span style="font-size: 9px;">
-    Time: ${ftlDateTime?iso_local}
+    Time: ${ftlDateTime?iso("PST")}
 </span>
 </body>
 </html>
