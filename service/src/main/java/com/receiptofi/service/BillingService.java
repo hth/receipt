@@ -6,6 +6,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.domain.types.PaymentGatewayEnum;
 import com.receiptofi.repository.BillingAccountManager;
 import com.receiptofi.repository.BillingHistoryManager;
 import com.receiptofi.repository.UserAccountManager;
@@ -108,6 +109,10 @@ public class BillingService {
 
     public BillingAccountEntity getBillingAccount(String rid) {
         return billingAccountManager.getBillingAccount(rid);
+    }
+
+    public BillingAccountEntity getBySubscription(String subscriptionId, PaymentGatewayEnum paymentGateway) {
+        return billingAccountManager.getBySubscription(subscriptionId, paymentGateway);
     }
 
     public long countLastPromotion(Date date, String rid) {
