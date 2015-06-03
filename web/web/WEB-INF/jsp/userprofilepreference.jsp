@@ -354,9 +354,6 @@
                             <c:when test="${billing.billedStatus eq 'P'}">
                                 NA
                             </c:when>
-                            <c:when test="${billing.billedStatus eq 'S'}">
-                                <span style="color: darkblue; font-weight: bold">Pending</span>
-                            </c:when>
                             <c:when test="${billing.billedStatus eq 'B'}">
                                 <fmt:formatDate value="${billing.updated}" type="date"/>
                             </c:when>

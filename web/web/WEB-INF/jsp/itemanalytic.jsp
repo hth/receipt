@@ -1,240 +1,236 @@
 <%@ include file="include.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+
     <title><fmt:message key="item.analytic.title"/></title>
-
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-    <script type='text/javascript' src="${pageContext.request.contextPath}/static/jquery/js/highcharts.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.5/highcharts.js"></script>
 
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-    </script>
-
+    <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png" alt="receipt-o-fi logo" height="46px"/>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
             </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </h3>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
+</div>
 
-    <p>&nbsp;</p>
-
+<header>
+</header>
+<div class="main clearfix">
+    <div class="rightside-title rightside-title-less-margin">
+        <h1 class="rightside-title-text">
+            Historical Analysis
+        </h1>
+    </div>
     <c:if test="${!empty itemAnalyticForm.message}">
-    <div class="ui-widget">
-        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-            <p>
-                <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                <span style="display:block; width:410px;">
-                    ${itemAnalyticForm.message}
-                </span>
-            </p>
-        </div>
+    <div class="r-info">
+        ${itemAnalyticForm.message}
     </div>
     </c:if>
-
     <c:choose>
     <c:when test="${!empty itemAnalyticForm.yourHistoricalItems}">
-    <table style="width: 900px" class="etable">
-        <tbody>
-        <tr>
-            <th style="padding:3px;">Business</th>
-            <th style="padding:3px;">Location</th>
-            <th style="padding:3px;">Date</th>
-            <th style="padding:3px;">Item</th>
-            <th style="padding:3px;">Price</th>
-            <th style="padding:3px;">Your ${itemAnalyticForm.days} days <br> Average</th>
-            <th style="padding:3px;">Compared with Site's <br> ${itemAnalyticForm.days} days Average</th>
-        </tr>
-        </tbody>
-        <tr>
-            <td style="padding:3px;">
-                <a href="${pageContext.request.contextPath}/access/receipt/${itemAnalyticForm.item.receipt.id}.htm">
-                ${itemAnalyticForm.item.receipt.bizName.businessName}
-                </a>
-            </td>
-            <td style="padding:3px;">
-                ${itemAnalyticForm.item.receipt.bizStore.addressWrapped}
-            </td>
-            <td style="padding:3px;">
-                <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
-            </td>
-            <td style="padding:3px; text-align: left;">
-                ${itemAnalyticForm.item.name}
-            </td>
-            <td style="padding:3px; text-align: right;">
-                <spring:eval expression="itemAnalyticForm.item.price" />
-            </td>
-            <td style="padding:3px; text-align: right;">
-                <fmt:formatNumber value="${itemAnalyticForm.yourAveragePrice}" type="currency" />
-            </td>
-            <td style="padding:3px; text-align: right;">
-                <fmt:formatNumber value="${itemAnalyticForm.siteAveragePrice}" type="currency" />
-            </td>
-        </tr>
-    </table>
+    <div class="rightside-list-holder" style="height: 850px; width: 940px;">
+        <div class="receipt-detail-holder border">
+            <p class="analysis-text">
+                Below is the analysis for <b>${itemAnalyticForm.item.name}</b> bought on
+                <b><fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/></b>. The chart
+                shows pricing of the same item bought by you with respect to same item bought by loyal customers like
+                you over same ${itemAnalyticForm.days} days period.
+            </p>
+            <p class="analysis-text">
+                Your purchase history shows, you have purchased <b>${itemAnalyticForm.item.name}</b> at least
+                <b>${itemAnalyticForm.historicalCount}</b>
+                time<c:if test="${itemAnalyticForm.historicalCount gt 1}">s</c:if>.
+            </p>
 
-    <div id="container" style="min-width: 525px; height: 275px; margin: 25px auto;"></div>
-
-    <h2 class="demoHeaders">Your historical purchases of similar Item(s)</h2>
-    <c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">
-    <table style="width: 900px" class="etable">
-        <tbody>
-        <tr>
-            <th style="padding:3px;"></th>
-            <th style="padding:3px;">Business</th>
-            <th style="padding:3px;">Location</th>
-            <th style="padding:3px;">Date</th>
-            <th style="padding:3px;">Item</th>
-            <th style="padding:3px;">Price</th>
-            <th style="padding:3px;">Tax</th>
-            <th style="padding:3px;">Expense Type</th>
-        </tr>
-        </tbody>
-        <form:form method="post" action="itemanalytic.htm" modelAttribute="itemAnalyticForm">
-            <c:forEach items="${itemAnalyticForm.yourHistoricalItems}" var="item" varStatus="status">
+            <table width="95%" style="margin-left: 4px; margin-right: 4px;">
+                <tr style="border-bottom: 1px dotted #919191;">
+                    <th class="analysis" style="width: 50px; !important;">Date</th>
+                    <th class="analysis">Business</th>
+                    <th class="analysis">Location</th>
+                    <th class="analysis">Price</th>
+                    <th class="analysis">Your Average</th>
+                    <th class="analysis">Site's Average</th>
+                </tr>
                 <tr>
-                    <td style="padding:3px; text-align: right;">
-                        ${status.count}
+                    <td class="analysis" style="width: 50px; !important;">
+                        <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
                     </td>
-                    <td style="padding:3px;">
-                        <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm">
-                        ${item.receipt.bizName.businessName}
-                        </a>
+                    <td class="analysis">
+                        <c:choose>
+                            <c:when test="${itemAnalyticForm.item.receipt.billedStatus eq 'NB'}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-3"
+                                        style="color: #007AFF">
+                                    ${itemAnalyticForm.item.receipt.bizName.businessName}
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${!empty item.expenseTag.tagColor}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                                    <span style="background-color: ${itemAnalyticForm.item.expenseTag.tagColor}; margin-left: 0px;">&nbsp;&nbsp;</span>
+                                </a>
+                                </c:if>
+                                <a href="${pageContext.request.contextPath}/access/receipt/${itemAnalyticForm.item.receipt.id}.htm"
+                                        style="color: #007AFF">
+                                    ${itemAnalyticForm.item.receipt.bizName.businessName}
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
-                    <td style="padding:3px;">
-                        ${item.receipt.bizStore.addressWrapped}
+                    <td class="analysis">
+                        ${itemAnalyticForm.item.receipt.bizStore.location}
                     </td>
-                    <td style="padding:3px; width: 75px;">
+                    <td class="analysis">
+                        <spring:eval expression="itemAnalyticForm.item.price" />
+                    </td>
+                    <td class="analysis">
+                        <fmt:formatNumber value="${itemAnalyticForm.yourAveragePrice}" type="currency" />
+                    </td>
+                    <td class="analysis">
+                        <fmt:formatNumber value="${itemAnalyticForm.siteAveragePrice}" type="currency" />
+                    </td>
+                </tr>
+            </table>
+
+            <div id="container" style="min-width: 600px; max-width: 905px; height: 275px; margin: 35px 10px 20px 0px;"></div>
+
+            <c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">
+            <c:choose>
+                <c:when test="${itemAnalyticForm.yourHistoricalItems.size() gt 10}">
+                    <h2 class="h2" style="padding-top: 3%;">
+                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() gt 1}">s</c:if>
+                        of ${itemAnalyticForm.item.name}.
+                    </h2>
+                    <p class="analysis-text">
+                        Table below shows ${itemAnalyticForm.yourHistoricalItems.size()} of ${itemAnalyticForm.historicalCount} items.
+                    </p>
+                </c:when>
+                <c:otherwise>
+                    <h2 class="h2" style="padding-bottom:3%; padding-top: 3%;">
+                        Your historical purchase<c:if test="${itemAnalyticForm.yourHistoricalItems.size() gt 1}">s</c:if>
+                        of ${itemAnalyticForm.item.name}.
+                    </h2>
+                </c:otherwise>
+            </c:choose>
+
+            <table width="95%" style="margin-left: 4px; margin-right: 4px;">
+                <tr style="border-bottom: 1px dotted #919191;">
+                    <th class="analysis" style="width: 5px !important;"></th>
+                    <th class="analysis" style="width: 40px !important;">Date</th>
+                    <th class="analysis">Business</th>
+                    <th class="analysis">Location</th>
+                    <th class="analysis">Price</th>
+                </tr>
+                <c:forEach items="${itemAnalyticForm.yourHistoricalItems}" var="item" varStatus="status">
+                <tr>
+                    <td class="analysis" style="width: 5px !important;">
+                        ${status.count}.
+                    </td>
+                    <td class="analysis" style="width: 40px !important;">
                         <fmt:formatDate value="${item.receipt.receiptDate}" type="date"/>
                     </td>
-                    <td style="padding:3px;">
-                        <a href="${pageContext.request.contextPath}/access/itemanalytic/${item.id}.htm">
-                        ${item.name}
-                        </a>
+                    <td class="analysis">
+                        <c:choose>
+                            <c:when test="${item.receipt.billedStatus eq 'NB'}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                                    <span style="background-color: ${item.expenseTag.tagColor}; margin-left: 0px;">&nbsp;&nbsp;</span>
+                                </a>
+                                <a href="/access/userprofilepreference/i.htm#tabs-3"
+                                        style="color: #007AFF">
+                                    ${item.receipt.bizName.businessName}
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                                    <span style="background-color: ${item.expenseTag.tagColor}; margin-left: 0px;">&nbsp;&nbsp;</span>
+                                </a>
+                                <a href="${pageContext.request.contextPath}/access/receipt/${item.receipt.id}.htm"
+                                        style="color: #007AFF">
+                                    ${item.receipt.bizName.businessName}
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
-                    <td style="padding:3px; text-align: right; width: 80px;">
+                    <td class="analysis">
+                        ${item.receipt.bizStore.location}
+                    </td>
+                    <td class="analysis">
                         <spring:eval expression="item.price" />
-                    </td>
-                    <td style="padding:3px; text-align: right; width: 70px;">
                         <spring:eval expression="item.taxed == T(com.receiptofi.domain.types.TaxEnum).T" var="isValid" />
                         <c:choose>
                             <c:when test="${!isValid}">
                                 &nbsp;
                             </c:when>
                             <c:otherwise>
-                                <spring:eval expression="item.tax"/> (T)
+                                &nbsp; + (TAX)
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td style="padding:3px; text-align: left; width: 100px">
-                        <form:select path="yourHistoricalItems[${status.index}].expenseTag.id">
-                            <form:option value="NONE" label="--- Select ---" />
-                            <form:options items="${itemAnalyticForm.expenseTags}" itemValue="id" itemLabel="tagName" />
-                        </form:select>
-                    </td>
                 </tr>
-            </c:forEach>
-        </form:form>
-    </table>
-    </c:if>
-    </c:when>
-    <c:otherwise>
-    <div class="ui-widget">
-        <div class="ui-state-highlight ui-corner-all" style="margin-top: 0px; padding: 0 .7em;">
-            <p>
-            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-            <span style="display:block; width:700px;">
-                No item found. Please hit back button and submit a valid request.
-            </span>
-            </p>
+                </c:forEach>
+            </table>
+            </c:if>
         </div>
     </div>
-    </c:otherwise>
-    </c:choose>
-
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+</c:when>
+<c:otherwise>
+    <div class="r-info">
+        No item found. Please hit back button and submit a valid request.
+    </div>
+    <div class="rightside-list-holder full-list-holder" style="width: 95%;">&nbsp;</div>
+</c:otherwise>
+</c:choose>
+<div class="footer-tooth clearfix">
+    <div class="footer-tooth-middle"></div>
+    <div class="footer-tooth-right"></div>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+</div>
+<div class="maha_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
 </div>
 
 <c:if test="${!empty itemAnalyticForm.yourHistoricalItems}">
@@ -248,7 +244,8 @@
                 enabled: false
             },
             title: {
-                text: 'Site ${itemAnalyticForm.days} days vs. Historical ${itemAnalyticForm.days} days for ${userSession.emailId}'
+                text: 'Site ${itemAnalyticForm.days} days vs. Historical ' +
+                '${itemAnalyticForm.days} days for ${itemAnalyticForm.item.name}'
             },
             xAxis: {
                 type: 'datetime',
@@ -263,29 +260,45 @@
                 },
                 min: 0
             },
-
-            series: [{
-                name: 'Site ${itemAnalyticForm.days} days',
-                // Define the data points. All series have a dummy year
-                // of 1970/71 in order to be compared on the same x axis. Note
-                // that in JavaScript, months start at 0 for January, 1 for February etc.
-                data: [
-                    <c:forEach items="${itemAnalyticForm.siteAverageItems}" var="item" varStatus="status">
-                    [Date.UTC(${item.receipt.year},  ${item.receipt.month - 1}, ${item.receipt.day}), ${item.price} ],
-                    </c:forEach>
-                ]
-            }, {
-                name: 'Historical for ${userSession.emailId}',
-                data: [
-                    <c:forEach items="${itemAnalyticForm.yourAverageItems}" var="item" varStatus="status">
-                    [Date.UTC(${item.receipt.year},  ${item.receipt.month - 1}, ${item.receipt.day}), ${item.price} ],
-                    </c:forEach>
-                ]
-            }]
+            plotOptions: {
+                spline: {
+                    lineWidth: 3,
+                    states: {
+                        hover: {
+                            lineWidth: 4
+                        }
+                    },
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [
+                {
+                    name: 'Your ${itemAnalyticForm.days} days average',
+                    data: [
+                        <c:forEach items="${itemAnalyticForm.yourAverageItems}" var="item" varStatus="status">
+                        [Date.UTC(${item.receipt.year},  ${item.receipt.month - 1}, ${item.receipt.day}), ${item.price} ],
+                        </c:forEach>
+                    ],
+                    color: '${itemAnalyticForm.item.expenseTag.tagColor}'
+                },
+                {
+                    name: 'Site\'s ${itemAnalyticForm.days} days average',
+                    // Define the data points. All series have a dummy year
+                    // of 1970/71 in order to be compared on the same x axis. Note
+                    // that in JavaScript, months start at 0 for January, 1 for February etc.
+                    data: [
+                        <c:forEach items="${itemAnalyticForm.siteAverageItems}" var="item" varStatus="status">
+                        [Date.UTC(${item.receipt.year},  ${item.receipt.month - 1}, ${item.receipt.day}), ${item.price} ],
+                        </c:forEach>
+                    ]
+                }
+            ]
         });
     });
 </script>
 </c:if>
-
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>
