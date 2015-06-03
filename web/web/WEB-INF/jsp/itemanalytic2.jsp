@@ -172,6 +172,9 @@
                     <td class="analysis">
                         <c:choose>
                             <c:when test="${item.receipt.billedStatus eq 'NB' || item.receipt.billedStatus eq 'S'}">
+                                <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="${item.expenseTag.tagName} Expense Tag">
+                                    <span style="background-color: ${item.expenseTag.tagColor}; margin-left: 0px;">&nbsp;&nbsp;</span>
+                                </a>
                                 <a href="/access/userprofilepreference/i.htm#tabs-3"
                                         style="color: #007AFF">
                                     ${item.receipt.bizName.businessName}
