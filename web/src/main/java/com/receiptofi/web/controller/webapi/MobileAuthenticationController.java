@@ -109,6 +109,18 @@ public class MobileAuthenticationController {
                 result.add("error", error);
 
                 return new Gson().toJson(result);
+            } catch (Exception e) {
+                LOG.error("internal error pid={} reason={}", map.get("pid"), e.getLocalizedMessage(), e);
+
+                JsonObject error = new JsonObject();
+                error.addProperty("reason", MobileSystemErrorCodeEnum.SOCIAL_LOGIN_ERROR.getMessage());
+                error.addProperty("systemErrorCode", MobileSystemErrorCodeEnum.SOCIAL_LOGIN_ERROR.getCode());
+                error.addProperty("systemError", MobileSystemErrorCodeEnum.SOCIAL_LOGIN_ERROR.name());
+
+                JsonObject result = new JsonObject();
+                result.add("error", error);
+
+                return new Gson().toJson(result);
             }
         }
         LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
