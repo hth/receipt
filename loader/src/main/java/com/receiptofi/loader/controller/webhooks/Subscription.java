@@ -14,11 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
@@ -32,7 +32,7 @@ import java.util.Date;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@RestController
+@Controller
 @RequestMapping (value = "/open/webhooks/subscription")
 public class Subscription {
     private static final Logger LOG = LoggerFactory.getLogger(Subscription.class);
