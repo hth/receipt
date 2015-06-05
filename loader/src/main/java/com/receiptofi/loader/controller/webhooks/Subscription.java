@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 
@@ -41,12 +42,14 @@ public class Subscription {
     @Autowired private BillingService billingService;
 
     @RequestMapping (method = RequestMethod.GET)
+    @ResponseBody
     public String getSubscription(@RequestParam String bt_challenge) {
         LOG.info("Subscription called with bt_challenge");
         return paymentGatewayService.getGateway().webhookNotification().verify(bt_challenge);
     }
 
     @RequestMapping (method = RequestMethod.POST)
+    @ResponseBody
     public String postSubscription(
             @RequestParam String bt_signature,
             @RequestParam String bt_payload
