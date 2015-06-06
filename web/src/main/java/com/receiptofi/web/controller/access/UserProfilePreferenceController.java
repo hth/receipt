@@ -87,6 +87,9 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
     private int expenseTagCountMax;
 
+    @Value ("${UserProfilePreferenceController.ExpenseTagSize:12}")
+    private int expenseTagSize;
+
     @Value ("${mail.validation.timeout.period}")
     private int mailValidationTimeoutPeriod;
 
