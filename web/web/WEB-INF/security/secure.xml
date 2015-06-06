@@ -46,13 +46,13 @@
         <intercept-url pattern="/webhooks/**"
                        access="permitAll" />
 
-        <headers>
-            <cache-control />
-            <content-type-options />
-            <hsts />
-            <frame-options />
-            <xss-protection />
-        </headers>
+        <!--<headers>-->
+            <!--<cache-control />-->
+            <!--<content-type-options />-->
+            <!--<hsts />-->
+            <!--<frame-options />-->
+            <!--<xss-protection />-->
+        <!--</headers>-->
     </http>
 
     <http auto-config="true" use-expressions="true">
