@@ -34,7 +34,7 @@ import java.util.Date;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/open/webhooks/subscription")
+@RequestMapping (value = "/webhooks/subscription")
 public class Subscription {
     private static final Logger LOG = LoggerFactory.getLogger(Subscription.class);
 
@@ -43,7 +43,9 @@ public class Subscription {
 
     @RequestMapping (method = RequestMethod.GET)
     @ResponseBody
-    public String getSubscription(@RequestParam String bt_challenge) {
+    public String getSubscription(
+            @RequestParam(required = true) String bt_challenge
+    ) {
         LOG.info("Subscription called with bt_challenge");
         return paymentGatewayService.getGateway().webhookNotification().verify(bt_challenge);
     }
@@ -51,8 +53,8 @@ public class Subscription {
     @RequestMapping (method = RequestMethod.POST)
     @ResponseBody
     public String postSubscription(
-            @RequestParam String bt_signature,
-            @RequestParam String bt_payload
+            @RequestParam(required = true) String bt_signature,
+            @RequestParam(required = true) String bt_payload
     ) {
         LOG.debug("Subscription post called");
         WebhookNotification notification = paymentGatewayService.getGateway().webhookNotification().parse(
