@@ -39,6 +39,22 @@
         </headers>
     </http>
 
+    <!--Carved out specially for braintree webhook-->
+    <http pattern="/webhooks/**" auto-config="true" use-expressions="true" create-session="stateless">
+        <request-cache ref="requestCache" />
+
+        <intercept-url pattern="/webhooks/**"
+                       access="permitAll" />
+
+        <headers>
+            <cache-control />
+            <content-type-options />
+            <hsts />
+            <frame-options />
+            <xss-protection />
+        </headers>
+    </http>
+
     <http auto-config="true" use-expressions="true">
         <request-cache ref="requestCache" />
         <!-- this does not seems to help here -->
