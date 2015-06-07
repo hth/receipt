@@ -50,7 +50,7 @@ public class ExpensesService {
     }
 
     /**
-     * Lists all the expenseTypes.
+     * Lists all the expenseTypes including deleted and not visible.
      *
      * @param rid
      * @return
@@ -75,11 +75,11 @@ public class ExpensesService {
     }
 
     @Mobile
-    public boolean deleteExpenseTag(String expenseTypeId, String expenseTagName, String rid) {
+    public boolean softDeleteExpenseTag(String expenseTypeId, String expenseTagName, String rid) {
         boolean removedFromReceipts = receiptManager.removeExpenseTagReferences(rid, expenseTypeId);
         boolean removedFromItems = itemManager.removeExpenseTagReferences(rid, expenseTypeId);
 
         LOG.info("Deleted expense tags from receipt={} and items={}", removedFromReceipts, removedFromItems);
-        return expenseTagManager.deleteExpenseTag(expenseTypeId, expenseTagName, rid);
+        return expenseTagManager.softDeleteExpenseTag(expenseTypeId, expenseTagName, rid);
     }
 }

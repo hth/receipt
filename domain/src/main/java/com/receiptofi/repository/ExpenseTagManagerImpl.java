@@ -121,9 +121,12 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public boolean deleteExpenseTag(String expenseTagId, String expenseTagName, String rid) {
-        WriteResult writeResult = mongoTemplate.remove(
-                query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid).and("TAG").is(expenseTagName)),
+    public boolean softDeleteExpenseTag(String expenseTagId, String expenseTagName, String rid) {
+        WriteResult writeResult = mongoTemplate.updateFirst(
+                query(where("id").is(new ObjectId(expenseTagId))
+                        .and("RID").is(rid)
+                        .and("TAG").is(expenseTagName)),
+                entityUpdate(update("A", false).set("D", true)),
                 ExpenseTagEntity.class);
         return writeResult.getN() > 0;
     }

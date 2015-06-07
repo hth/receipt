@@ -26,7 +26,7 @@ public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
 
     void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid);
 
-    boolean deleteExpenseTag(String expenseTagId, String expenseTagName, String rid);
+    boolean softDeleteExpenseTag(String expenseTagId, String expenseTagName, String rid);
 
     @Mobile
     boolean doesExits(String rid, String expenseTagName);
