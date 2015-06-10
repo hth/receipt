@@ -1,6 +1,7 @@
 package com.receiptofi.loader.controller.webhooks;
 
 import com.braintreegateway.WebhookNotification;
+import com.braintreegateway.exceptions.InvalidSignatureException;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -54,13 +58,22 @@ public class Subscription {
     @ResponseBody
     public String postSubscription(
             @RequestParam(required = true) String bt_signature,
-            @RequestParam(required = true) String bt_payload
-    ) {
+            @RequestParam(required = true) String bt_payload,
+            HttpServletResponse httpServletResponse
+
+    ) throws IOException {
         LOG.debug("Subscription post called");
-        WebhookNotification notification = paymentGatewayService.getGateway().webhookNotification().parse(
-                bt_signature,
-                bt_payload
-        );
+        WebhookNotification notification;
+        try {
+            notification = paymentGatewayService.getGateway().webhookNotification().parse(
+                    bt_signature,
+                    bt_payload
+            );
+        } catch(InvalidSignatureException e) {
+            LOG.error("Failed parsing payload reason={}", e.getLocalizedMessage(), e);
+            httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
+            return null;
+        }
 
         LOG.info("Webhook time={} kind={} subscription={}",
                 notification.getTimestamp().getTime(),
