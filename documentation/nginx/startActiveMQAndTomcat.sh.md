@@ -1,7 +1,7 @@
     echo "sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist"
     sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist
-    echo "waiting 10 seconds"
-    sleep 10
+    echo "waiting 20 seconds"
+    sleep 20
     echo "sudo launchctl unload -w /Library/LaunchDaemons/activemq.plist"
     sudo launchctl unload -w /Library/LaunchDaemons/activemq.plist
     echo "waiting 5 seconds"

@@ -1,4 +1,4 @@
-    # Date: May 13 2:15 AM
+    # Date: Jun 09 7:00 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -57,17 +57,20 @@
         ssl_session_tickets off;
     
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        ssl_ciphers AES256+EECDH:AES256+EDH:!aNULL;
-        ssl_prefer_server_ciphers on;          
-        
+    
+        ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+    
+        ssl_prefer_server_ciphers on;    
+    
+        ssl_dhparam          /var/certs/dhparams.pem;
         ssl_certificate      /var/certs/498290154bdc4.crt;
         ssl_certificate_key  /var/certs/www_receiptofi_com.key;
         
         ssl_stapling        on;
         ssl_stapling_verify on;
         resolver            8.8.4.4 8.8.8.8 valid=300s;
-        resolver_timeout    10s;                       
-        
+        resolver_timeout    10s;
+                    
         # Remember this setting for 365 days
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
         add_header X-Frame-Options DENY;
