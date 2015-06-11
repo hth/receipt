@@ -20,7 +20,6 @@ public class BillingForm {
     private List<BillingHistoryEntity> billings;
 
     private AccountBillingTypeEnum billingAccountType;
-    private boolean billedAccount = false;
 
     public void setDiskUsage(DiskUsageGrouped diskUsage) {
         this.diskUsage = diskUsage;
@@ -64,17 +63,5 @@ public class BillingForm {
 
     public void setBillingAccountType(AccountBillingTypeEnum billingAccountType) {
         this.billingAccountType = billingAccountType;
-    }
-
-    public boolean isBilledAccount() {
-        return billedAccount;
-    }
-
-    public void setBilledAccount(boolean billedAccount) {
-        this.billedAccount = billedAccount;
-    }
-
-    public String billedAccountString() {
-        return billedAccount ? "Yes" : "No";
     }
 }

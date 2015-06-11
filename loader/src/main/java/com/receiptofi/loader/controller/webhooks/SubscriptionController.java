@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,7 +56,6 @@ public class SubscriptionController {
             HttpServletResponse httpServletResponse
 
     ) throws IOException {
-        LOG.debug("Subscription post called");
         WebhookNotification notification;
         try {
             notification = paymentGatewayService.getGateway().webhookNotification().parse(
@@ -68,7 +68,18 @@ public class SubscriptionController {
             return null;
         }
 
-        subscriptionService.processSubscription(notification);
-        return "";
+        try {
+            LOG.info("Webhook time={} kind={} subscription={}",
+                    notification.getTimestamp().getTime(),
+                    notification.getKind(),
+                    notification.getSubscription().getId());
+            subscriptionService.processSubscription(notification);
+            httpServletResponse.sendError(HttpServletResponse.SC_OK, "");
+            return null;
+        } catch (Exception e) {
+            LOG.error("Failed parsing payload reason={}", e.getLocalizedMessage(), e);
+            httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
+            return null;
+        }
     }
 }

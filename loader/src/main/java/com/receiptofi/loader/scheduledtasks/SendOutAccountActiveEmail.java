@@ -69,7 +69,6 @@ public class SendOutAccountActiveEmail {
                         /** Reset new account create date as this is the time onwards PROMOTIONAL is going to be active. */
                         BillingAccountEntity billingAccount = userAccount.getBillingAccount();
                         billingAccount.setCreateAndUpdate(new Date());
-                        billingAccount.markAccountBilled();
                         billingService.save(billingAccount);
 
                         BillingHistoryEntity billingHistory = billingService.findBillingHistoryForMonth(

@@ -123,7 +123,6 @@ public class BillingProcess {
                                                 AccountBillingTypeEnum.NB,
                                                 billingAccount.getRid());
 
-                                        markBillingAccountAsBilled(billingAccount);
                                         noBillingCount++;
                                         successCount++;
                                     } else {
@@ -143,7 +142,6 @@ public class BillingProcess {
                                                     AccountBillingTypeEnum.NB,
                                                     billingAccount.getRid());
 
-                                            markBillingAccountAsBilled(billingAccount);
                                             billingAccount.setAccountBillingType(AccountBillingTypeEnum.NB);
                                             billingService.save(billingAccount);
 
@@ -159,7 +157,6 @@ public class BillingProcess {
                                                 billingAccount.getAccountBillingType(),
                                                 billingAccount.getRid());
 
-                                        markBillingAccountAsBilled(billingAccount);
                                         promotionCount++;
                                         successCount++;
                                     } else {
@@ -177,7 +174,6 @@ public class BillingProcess {
                                                 billingAccount.getAccountBillingType(),
                                                 billingAccount.getRid());
 
-                                        markBillingAccountAsBilled(billingAccount);
                                         monthlyCount++;
                                         successCount++;
                                     } else {
@@ -198,7 +194,6 @@ public class BillingProcess {
                                                     billingAccount.getRid());
                                         }
 
-                                        markBillingAccountAsBilled(billingAccount);
                                         annualCount++;
                                         successCount++;
                                     } else {
@@ -215,7 +210,6 @@ public class BillingProcess {
                         } else {
                             //This condition would not happen in prod. TODO remove me in future.
                             billingAccount = new BillingAccountEntity(userAccount.getReceiptUserId());
-                            billingAccount.markAccountBilled();
                             billingService.save(billingAccount);
 
                             userAccount.setBillingAccount(billingAccount);
@@ -280,7 +274,7 @@ public class BillingProcess {
                 );
             }
         } else {
-            LOG.info("feature is {}", billingProcessStatus);
+            LOG.info("Feature is {}", billingProcessStatus);
         }
     }
 
@@ -308,17 +302,5 @@ public class BillingProcess {
         billingHistory.setBilledStatus(bs);
         billingHistory.setAccountBillingType(abt);
         billingService.save(billingHistory);
-    }
-
-    /**
-     * If BillingAccount is not marked as Billed then mark it as billed.
-     *
-     * @param billingAccount
-     */
-    private void markBillingAccountAsBilled(BillingAccountEntity billingAccount) {
-        if (!billingAccount.isBilledAccount()) {
-            billingAccount.markAccountBilled();
-            billingService.save(billingAccount);
-        }
     }
 }
