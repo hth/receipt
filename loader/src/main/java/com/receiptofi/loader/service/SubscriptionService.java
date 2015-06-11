@@ -52,23 +52,28 @@ public class SubscriptionService {
                 billingService.save(billingAccount);
                 break;
             case SUBSCRIPTION_CHARGED_SUCCESSFULLY:
-                billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
-                //And check for transactionId too or if BillingHistory is active
-                /** This can happen when sign up and subscription are on the same day. */
-                if (billingHistory.getBilledStatus() == BilledStatusEnum.B && billingHistory.isActive()) {
-                    LOG.info("Found existing history with billed status. Creating another history.");
-                    billingHistory = new BillingHistoryEntity(billingAccount.getRid(), new Date());
-                    billingHistory.setBilledStatus(BilledStatusEnum.B);
-                    AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.valueOf(subscription.getPlanId());
-                    billingHistory.setAccountBillingType(accountBillingType);
-                    billingHistory.setPaymentGateway(PaymentGatewayEnum.BT);
-                    billingHistory.setTransactionId(notification.getTransaction().getId());
-                } else {
-                    billingHistory.setBilledStatus(BilledStatusEnum.B);
-                    billingHistory.setTransactionId(notification.getTransaction().getId());
-                }
+                try {
+                    billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
+                    //And check for transactionId too or if BillingHistory is active
+                    /** This can happen when sign up and subscription are on the same day. */
+                    if (billingHistory.getBilledStatus() == BilledStatusEnum.B && billingHistory.isActive()) {
+                        LOG.info("Found existing history with billed status. Creating another history.");
+                        billingHistory = new BillingHistoryEntity(billingAccount.getRid(), new Date());
+                        billingHistory.setBilledStatus(BilledStatusEnum.B);
+                        AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.valueOf(subscription.getPlanId());
+                        billingHistory.setAccountBillingType(accountBillingType);
+                        billingHistory.setPaymentGateway(PaymentGatewayEnum.BT);
+                        billingHistory.setTransactionId(notification.getTransaction().getId());
+                    } else {
+                        billingHistory.setBilledStatus(BilledStatusEnum.B);
+                        billingHistory.setTransactionId(notification.getTransaction().getId());
+                    }
 
-                billingService.save(billingHistory);
+                    LOG.info("Saved Billing History");
+                    billingService.save(billingHistory);
+                } catch (Exception e) {
+                    LOG.error("SUBSCRIPTION_CHARGED_SUCCESSFULLY reason={}", e.getLocalizedMessage(), e);
+                }
                 break;
             case SUBSCRIPTION_CHARGED_UNSUCCESSFULLY:
                 billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
