@@ -253,14 +253,8 @@ public class AccountService {
      * @param userAccount
      */
     public void billAccount(UserAccountEntity userAccount) {
-        BillingAccountEntity billingAccount = userAccount.getBillingAccount();
-
-        /** Consider the account as billed from get go as BillingHistory is created with Promotional. */
-        billingAccount.markAccountBilled();
-        billingService.save(billingAccount);
-
         /**
-         * Mark PROMOTIONAL as billed for the first and second month.
+         * Mark first and second month as PROMOTIONAL.
          * First month marked PROMOTIONAL during signup.
          */
         BillingHistoryEntity billingHistory = new BillingHistoryEntity(
@@ -271,12 +265,12 @@ public class AccountService {
         billingService.save(billingHistory);
 
         /** Second month marked as PROMOTIONAL too. */
-//        billingHistory = new BillingHistoryEntity(
-//                userAccount.getReceiptUserId(),
-//                Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
-//        billingHistory.setBilledStatus(BilledStatusEnum.P);
-//        billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
-//        billingService.save(billingHistory);
+        billingHistory = new BillingHistoryEntity(
+                userAccount.getReceiptUserId(),
+                Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
+        billingHistory.setBilledStatus(BilledStatusEnum.P);
+        billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+        billingService.save(billingHistory);
     }
 
     /**

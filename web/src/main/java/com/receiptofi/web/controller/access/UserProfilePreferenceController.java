@@ -512,7 +512,6 @@ public class UserProfilePreferenceController {
 
         BillingAccountEntity billingAccount = billingService.getBillingAccount(rid);
         billingForm.setBillingAccountType(billingAccount.getAccountBillingType());
-        billingForm.setBilledAccount(billingAccount.isBilledAccount());
         return billingForm;
     }
 

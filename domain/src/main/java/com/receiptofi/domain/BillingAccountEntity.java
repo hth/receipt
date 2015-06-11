@@ -41,15 +41,6 @@ public class BillingAccountEntity extends BaseEntity {
     @Field ("PGU")
     private LinkedList<PaymentGatewayUser> paymentGateway = new LinkedList<>();
 
-    /**
-     * This is true when at least one billing has been done with @BillingAccountTypeEnum set for this record. If user
-     * changes their mind then this field with be marked as false until next billing cycle.
-     * <p>
-     * This will marked true through Web Hook of Payment Gateway.
-     */
-    @Field ("BA")
-    private boolean billedAccount = false;
-
     @SuppressWarnings ("unused")
     private BillingAccountEntity() {
         super();
@@ -78,13 +69,5 @@ public class BillingAccountEntity extends BaseEntity {
 
     public void addPaymentGateway(PaymentGatewayUser paymentGateway) {
         this.paymentGateway.add(paymentGateway);
-    }
-
-    public boolean isBilledAccount() {
-        return billedAccount;
-    }
-
-    public void markAccountBilled() {
-        this.billedAccount = true;
     }
 }

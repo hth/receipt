@@ -293,7 +293,6 @@
                     <div class="row_field">
                         <label class="profile_label" style="width: 150px;">Billed</label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; width: 150px">
-                            <%--${billingForm.billedAccountString()}--%>
                             1<sup style="font-size:small; vertical-align:super;">st</sup> of every month
                         </label>
                     </div>

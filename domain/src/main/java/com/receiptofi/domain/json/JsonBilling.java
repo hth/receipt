@@ -38,15 +38,11 @@ public class JsonBilling {
     @JsonProperty ("bt")
     private String accountBillingType;
 
-    @JsonProperty ("ba")
-    private boolean billedAccount;
-
     @JsonProperty ("billingHistories")
     private List<JsonBillingHistory> billingHistories = new LinkedList<>();
 
     public JsonBilling(BillingAccountEntity billingAccount, List<BillingHistoryEntity> billings) {
         this.accountBillingType = billingAccount.getAccountBillingType().name();
-        this.billedAccount = billingAccount.isBilledAccount();
         this.billingHistories.addAll(billings.stream().map(JsonBillingHistory::new).collect(Collectors.toList()));
     }
 }
