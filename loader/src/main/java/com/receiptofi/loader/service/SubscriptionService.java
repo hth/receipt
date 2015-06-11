@@ -1,35 +1,27 @@
-package com.receiptofi.loader.controller.webhooks;
+package com.receiptofi.loader.service;
 
+import com.braintreegateway.Subscription;
 import com.braintreegateway.WebhookNotification;
-import com.braintreegateway.exceptions.InvalidSignatureException;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
-import com.receiptofi.loader.service.PaymentGatewayService;
 import com.receiptofi.service.BillingService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
 import java.util.Date;
 
 /**
  * User: hitender
- * Date: 6/1/15 11:12 PM
+ * Date: 6/10/15 10:54 PM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -37,52 +29,21 @@ import java.util.Date;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Controller
-@RequestMapping (value = "/webhooks/subscription")
-public class Subscription {
-    private static final Logger LOG = LoggerFactory.getLogger(Subscription.class);
+@Component
+public class SubscriptionService {
+    private static final Logger LOG = LoggerFactory.getLogger(SubscriptionService.class);
 
-    @Autowired private PaymentGatewayService paymentGatewayService;
     @Autowired private BillingService billingService;
 
-    @RequestMapping (method = RequestMethod.GET)
-    @ResponseBody
-    public String getSubscription(
-            @RequestParam(required = true) String bt_challenge
-    ) {
-        LOG.info("Subscription called with bt_challenge");
-        return paymentGatewayService.getGateway().webhookNotification().verify(bt_challenge);
-    }
-
-    @RequestMapping (method = RequestMethod.POST)
-    @ResponseBody
-    public String postSubscription(
-            @RequestParam(required = true) String bt_signature,
-            @RequestParam(required = true) String bt_payload,
-            HttpServletResponse httpServletResponse
-
-    ) throws IOException {
-        LOG.debug("Subscription post called");
-        WebhookNotification notification;
-        try {
-            notification = paymentGatewayService.getGateway().webhookNotification().parse(
-                    bt_signature,
-                    bt_payload
-            );
-        } catch(InvalidSignatureException e) {
-            LOG.error("Failed parsing payload reason={}", e.getLocalizedMessage(), e);
-            httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
-            return null;
-        }
-
+    public void processSubscription(WebhookNotification notification) {
         LOG.info("Webhook time={} kind={} subscription={}",
                 notification.getTimestamp().getTime(),
                 notification.getKind(),
                 notification.getSubscription().getId());
 
-        String subscriptionId = notification.getSubscription().getId();
-        Assert.hasText(subscriptionId, "SubscriptionId is empty");
-        BillingAccountEntity billingAccount = billingService.getBySubscription(subscriptionId, PaymentGatewayEnum.BT);
+        Subscription subscription = notification.getSubscription();
+        Assert.hasText(subscription.getId(), "SubscriptionId is empty");
+        BillingAccountEntity billingAccount = billingService.getBySubscription(subscription.getId(), PaymentGatewayEnum.BT);
         BillingHistoryEntity billingHistory;
 
         switch (notification.getKind()) {
@@ -95,9 +56,10 @@ public class Subscription {
                 //And check for transactionId too or if BillingHistory is active
                 /** This can happen when sign up and subscription are on the same day. */
                 if (billingHistory.getBilledStatus() == BilledStatusEnum.B && billingHistory.isActive()) {
+                    LOG.info("Found existing history with billed status. Creating another history.");
                     billingHistory = new BillingHistoryEntity(billingAccount.getRid(), new Date());
                     billingHistory.setBilledStatus(BilledStatusEnum.B);
-                    AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.valueOf(notification.getSubscription().getPlanId());
+                    AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.valueOf(subscription.getPlanId());
                     billingHistory.setAccountBillingType(accountBillingType);
                     billingHistory.setPaymentGateway(PaymentGatewayEnum.BT);
                     billingHistory.setTransactionId(notification.getTransaction().getId());
@@ -105,6 +67,7 @@ public class Subscription {
                     billingHistory.setBilledStatus(BilledStatusEnum.B);
                     billingHistory.setTransactionId(notification.getTransaction().getId());
                 }
+
                 billingService.save(billingHistory);
                 break;
             case SUBSCRIPTION_CHARGED_UNSUCCESSFULLY:
@@ -115,16 +78,16 @@ public class Subscription {
                 break;
             case SUBSCRIPTION_EXPIRED:
                 LOG.error("Subscription={} subscription={} rid={}",
-                        notification.getKind(), notification.getSubscription().getId(), billingAccount.getRid());
+                        notification.getKind(), subscription.getId(), billingAccount.getRid());
                 break;
             case SUBSCRIPTION_TRIAL_ENDED:
                 LOG.error("Subscription={} subscription={} rid={}",
-                        notification.getKind(), notification.getSubscription().getId(), billingAccount.getRid());
+                        notification.getKind(), subscription.getId(), billingAccount.getRid());
                 break;
             case SUBSCRIPTION_WENT_ACTIVE:
                 /** Subscription when active only after first successful transaction. */
                 LOG.info("Subscription={} subscription={} rid={}",
-                        notification.getKind(), notification.getSubscription().getId(), billingAccount.getRid());
+                        notification.getKind(), subscription.getId(), billingAccount.getRid());
                 break;
             case SUBSCRIPTION_WENT_PAST_DUE:
                 billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
@@ -136,6 +99,5 @@ public class Subscription {
                 LOG.error("WebhookNotification kind={} not defined {}", notification.getKind(), notification);
                 throw new UnsupportedOperationException("WebhookNotification kind not defined" + notification.getKind());
         }
-        return "";
     }
 }
