@@ -1,3 +1,8 @@
+#### Date Jun 11 2015 - Build 1124
+Removed BilledAccount boolean as was not being used
+    
+    db.getCollection('BILLING_ACCOUNT').update({}, {$unset : {'BA': ''}}, false, true);
+
 #### Date Apr 29 2015 - Build 1030
 
 Rename field name from UID to PUID
@@ -32,3 +37,4 @@ Changing all records to active status from false
     db.getCollection('ITEM').update({'TT' : 'TAXED'}, {$set : {'TT' : 'T'}}, false, true)
     db.getCollection('ITEM_OCR').update({'TT' : 'NOT_TAXED'}, {$set : {'TT' : 'NT'}}, false, true)
     db.getCollection('ITEM_OCR').update({'TT' : 'TAXED'}, {$set : {'TT' : 'T'}}, false, true)
+    

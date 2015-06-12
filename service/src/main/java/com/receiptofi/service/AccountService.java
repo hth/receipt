@@ -253,6 +253,8 @@ public class AccountService {
      * @param userAccount
      */
     public void billAccount(UserAccountEntity userAccount) {
+        billingService.save(userAccount.getBillingAccount());
+
         /**
          * Mark first and second month as PROMOTIONAL.
          * First month marked PROMOTIONAL during signup.
