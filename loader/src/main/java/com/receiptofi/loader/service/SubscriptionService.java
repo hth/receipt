@@ -62,7 +62,7 @@ public class SubscriptionService {
                  */
                 if (billingHistory.getBilledStatus() == BilledStatusEnum.B && billingHistory.isActive()) {
                     LOG.info("Found existing history with billed status. Creating another history.");
-                    TransactionStatusEnum transactionStatus = billingService.refundTransaction(billingHistory);
+                    TransactionStatusEnum transactionStatus = billingService.voidTransaction(billingHistory);
                     if (null != transactionStatus) {
                         billingHistory.setTransactionStatus(transactionStatus);
                         billingService.save(billingHistory);
