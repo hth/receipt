@@ -46,6 +46,9 @@ public class JsonBillingHistory {
     @JsonProperty ("bm")
     private String billedForMonth;
 
+    @JsonProperty ("ts")
+    private String transactionStatus;
+
     @JsonProperty ("bd")
     private String billedDate;
 
@@ -54,6 +57,7 @@ public class JsonBillingHistory {
         this.billedStatus = billingHistory.getBilledStatus().name();
         this.accountBillingType = billingHistory.getAccountBillingType().name();
         this.billedForMonth = billingHistory.getBilledForMonth();
+        this.transactionStatus = billingHistory.getTransactionStatus().name();
         this.billedDate = DateFormatUtils.format(billingHistory.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 }
