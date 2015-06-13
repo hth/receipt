@@ -163,10 +163,11 @@ public class BillingService {
                 Result<Transaction> result = paymentGatewayService.getGateway().transaction().refund(billingHistory.getTransactionId());
                 if (result.isSuccess()) {
                     LOG.info("refund success transactionId={} rid={}", billingHistory.getTransactionId(), billingHistory.getRid());
+                    return TransactionStatusEnum.R;
                 } else {
                     LOG.warn("refund failed transactionId={} rid={} reason={}", billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
                 }
-                return TransactionStatusEnum.R;
+                return null;
             } catch (NotFoundException e) {
                 LOG.error("Could not find transactionId reason={}", e.getLocalizedMessage(), e);
                 return null;
