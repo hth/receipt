@@ -3,6 +3,7 @@ package com.receiptofi.repository;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.domain.Sort.Order;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
@@ -65,7 +66,7 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
     @Override
     public List<BillingHistoryEntity> getHistory(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid)).with(new Sort(DESC, "BM")),
+                query(where("RID").is(rid)).with(new Sort(new Order(DESC, "BM"), new Order(DESC, "U"))),
                 BillingHistoryEntity.class
         );
     }
