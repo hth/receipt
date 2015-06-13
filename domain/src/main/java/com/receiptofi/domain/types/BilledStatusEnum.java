@@ -15,7 +15,8 @@ package com.receiptofi.domain.types;
 public enum BilledStatusEnum {
     NB("NB", "Not Billed"),
     P("P", "Promotion"),
-    B("B", "Billed");
+    B("B", "Billed"),
+    R("R", "Refund");
 
     private final String description;
     private final String name;
