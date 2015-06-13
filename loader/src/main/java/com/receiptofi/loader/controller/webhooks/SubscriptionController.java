@@ -3,7 +3,7 @@ package com.receiptofi.loader.controller.webhooks;
 import com.braintreegateway.WebhookNotification;
 import com.braintreegateway.exceptions.InvalidSignatureException;
 
-import com.receiptofi.loader.service.PaymentGatewayService;
+import com.receiptofi.service.PaymentGatewayService;
 import com.receiptofi.loader.service.SubscriptionService;
 
 import org.slf4j.Logger;

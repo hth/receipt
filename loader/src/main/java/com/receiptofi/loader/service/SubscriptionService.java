@@ -9,6 +9,7 @@ import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
+import com.receiptofi.domain.types.TransactionStatusEnum;
 import com.receiptofi.service.BillingService;
 
 import org.slf4j.Logger;
@@ -55,19 +56,29 @@ public class SubscriptionService {
                 break;
             case SUBSCRIPTION_CHARGED_SUCCESSFULLY:
                 billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
-                //And check for transactionId too or if BillingHistory is active
-                /** This can happen when sign up and subscription are on the same day. */
+                /**
+                 * This can happen when sign up and subscription are on the same day. Refund the transaction and
+                 * keep the subscription as settled transaction. Never remove the transactionId any time.
+                 */
                 if (billingHistory.getBilledStatus() == BilledStatusEnum.B && billingHistory.isActive()) {
                     LOG.info("Found existing history with billed status. Creating another history.");
+                    TransactionStatusEnum transactionStatus = billingService.refundTransaction(billingHistory);
+                    if (null != transactionStatus) {
+                        billingHistory.setTransactionStatus(transactionStatus);
+                        billingService.save(billingHistory);
+                    }
+
                     billingHistory = new BillingHistoryEntity(billingAccount.getRid(), new Date());
                     billingHistory.setBilledStatus(BilledStatusEnum.B);
                     AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.valueOf(subscription.getPlanId());
                     billingHistory.setAccountBillingType(accountBillingType);
                     billingHistory.setPaymentGateway(PaymentGatewayEnum.BT);
                     billingHistory.setTransactionId(transaction.getId());
+                    billingHistory.setTransactionStatus(TransactionStatusEnum.S);
                 } else {
                     billingHistory.setBilledStatus(BilledStatusEnum.B);
                     billingHistory.setTransactionId(transaction.getId());
+                    billingHistory.setTransactionStatus(TransactionStatusEnum.S);
                 }
 
                 LOG.info("Saved Billing History");

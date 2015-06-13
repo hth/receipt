@@ -1,4 +1,4 @@
-package com.receiptofi.loader.service;
+package com.receiptofi.service;
 
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
@@ -28,10 +28,6 @@ public class PaymentGatewayService {
     private static final Logger LOG = LoggerFactory.getLogger(PaymentGatewayService.class);
 
     private BraintreeGateway gateway;
-    private BillingAccountManager billingAccountManager;
-    private BillingHistoryManager billingHistoryManager;
-
-    private String merchantAccountId;
 
     @Autowired
     public PaymentGatewayService(
@@ -47,12 +43,6 @@ public class PaymentGatewayService {
             @Value ("${braintree.private_key}")
             String brainTreePrivateKey,
 
-            @Value ("${braintree.merchant_account_id}")
-            String merchantAccountId,
-
-            @Value ("${plan.cache.minutes}")
-            int planCacheMinutes,
-
             BillingAccountManager billingAccountManager,
             BillingHistoryManager billingHistoryManager
     ) {
@@ -63,6 +53,7 @@ public class PaymentGatewayService {
                     brainTreePublicKey,
                     brainTreePrivateKey
             );
+            LOG.info("{} gateway initialized", brainTreeEnvironment);
         } else {
             gateway = new BraintreeGateway(
                     Environment.SANDBOX,
@@ -70,11 +61,8 @@ public class PaymentGatewayService {
                     brainTreePublicKey,
                     brainTreePrivateKey
             );
+            LOG.info("{} gateway initialized", brainTreeEnvironment);
         }
-
-        this.billingAccountManager = billingAccountManager;
-        this.billingHistoryManager = billingHistoryManager;
-        this.merchantAccountId = merchantAccountId;
     }
 
     public BraintreeGateway getGateway() {

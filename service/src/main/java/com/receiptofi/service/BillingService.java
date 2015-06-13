@@ -1,15 +1,23 @@
 package com.receiptofi.service;
 
+import com.braintreegateway.Result;
+import com.braintreegateway.Transaction;
+import com.braintreegateway.exceptions.NotFoundException;
+
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.AccountBillingTypeEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
+import com.receiptofi.domain.types.TransactionStatusEnum;
 import com.receiptofi.repository.BillingAccountManager;
 import com.receiptofi.repository.BillingHistoryManager;
 import com.receiptofi.repository.UserAccountManager;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +45,7 @@ public class BillingService {
     @Autowired private UserAccountManager userAccountManager;
     @Autowired private BillingAccountManager billingAccountManager;
     @Autowired private BillingHistoryManager billingHistoryManager;
+    @Autowired private PaymentGatewayService paymentGatewayService;
 
     public void save(BillingAccountEntity billingAccount) {
         billingAccountManager.save(billingAccount);
@@ -117,5 +126,54 @@ public class BillingService {
 
     public long countLastPromotion(Date date, String rid) {
         return billingHistoryManager.countLastPromotion(date, rid);
+    }
+
+    /**
+     * Voids unsettled transaction.
+     */
+    @Mobile
+    public TransactionStatusEnum voidTransaction(BillingHistoryEntity billingHistory) {
+        if (StringUtils.isNotBlank(billingHistory.getTransactionId())) {
+            try {
+                Result<Transaction> result = paymentGatewayService.getGateway().transaction().voidTransaction(billingHistory.getTransactionId());
+                if (result.isSuccess()) {
+                    LOG.info("void success transactionId={} rid={} resultId={}", billingHistory.getTransactionId(), billingHistory.getRid(), result.getTarget().getId());
+                    return TransactionStatusEnum.V;
+                } else {
+                    LOG.warn("void failed transactionId={} rid={} reason={}, trying refund", billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
+                    return refundTransaction(billingHistory);
+                }
+            } catch (NotFoundException e) {
+                LOG.error("Could not find transactionId reason={}", e.getLocalizedMessage(), e);
+                return null;
+            }
+        } else {
+            LOG.error("TransactionId is empty rid={}", billingHistory.getRid());
+            return null;
+        }
+    }
+
+    /**
+     * Refunds transaction. All transactions are settled at 5:00 PM or 7:00 AM CDT.
+     */
+    @Mobile
+    public TransactionStatusEnum refundTransaction(BillingHistoryEntity billingHistory) {
+        if (StringUtils.isNotBlank(billingHistory.getTransactionId())) {
+            try {
+                Result<Transaction> result = paymentGatewayService.getGateway().transaction().refund(billingHistory.getTransactionId());
+                if (result.isSuccess()) {
+                    LOG.info("refund success transactionId={} rid={}", billingHistory.getTransactionId(), billingHistory.getRid());
+                } else {
+                    LOG.warn("refund failed transactionId={} rid={} reason={}", billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
+                }
+                return TransactionStatusEnum.R;
+            } catch (NotFoundException e) {
+                LOG.error("Could not find transactionId reason={}", e.getLocalizedMessage(), e);
+                return null;
+            }
+        } else {
+            LOG.error("TransactionId is empty rid={}", billingHistory.getRid());
+            return null;
+        }
     }
 }
