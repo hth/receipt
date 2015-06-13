@@ -325,13 +325,14 @@
                     </sec:authorize>
                 </div>
 
-                <div class="down_form" style="width: 80%">
+                <div class="down_form" style="width: 95%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing History</h2>
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px;">Month</label>
                         <label class="profile_label" style="width: 175px;">Plan</label>
-                        <label class="profile_label" style="width: 250px;">Bill Status</label>
+                        <label class="profile_label" style="width: 150px;">Bill Status</label>
+                        <label class="profile_label" style="width: 175px;">Transaction Status</label>
                         <label class="profile_label" style="width: 150px;">Transaction Date</label>
                     </div>
                     <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
@@ -342,8 +343,11 @@
                         <label class="profile_label" style="width: 175px; font-weight: normal; !important;">
                             ${billing.accountBillingType.description}
                         </label>
-                        <label class="profile_label" style="width: 250px; font-weight: normal; !important;">
+                        <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             ${billing.billedStatus.description}
+                        </label>
+                        <label class="profile_label" style="width: 175px; font-weight: normal; !important;">
+                                ${billing.transactionStatus.description}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             <c:choose>
