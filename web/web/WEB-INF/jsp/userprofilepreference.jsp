@@ -287,7 +287,7 @@
                             <%--</form:select>--%>
                         <%--</form:form>--%>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            ${billingForm.billingAccountType.description}
+                            ${billingForm.billingPlan.description}
                         </label>
                     </div>
                     <div class="row_field">
@@ -325,31 +325,35 @@
                     </sec:authorize>
                 </div>
 
-                <div class="down_form" style="width: 95%">
+                <div class="down_form" style="width: 99%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Billing History</h2>
 
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px;">Month</label>
-                        <label class="profile_label" style="width: 175px;">Plan</label>
+                        <label class="profile_label" style="width: 160px;">Plan</label>
                         <label class="profile_label" style="width: 150px;">Bill Status</label>
-                        <label class="profile_label" style="width: 175px;">Transaction Status</label>
-                        <label class="profile_label" style="width: 220px;">Transaction Date</label>
+                        <label class="profile_label" style="width: 75px;">Id</label>
+                        <label class="profile_label" style="width: 150px;">Tx Status</label>
+                        <label class="profile_label" style="width: 240px;">Date</label>
                     </div>
                     <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
                     <div class="row_field">
                         <label class="profile_label" style="width: 100px; font-weight: normal; !important;">
                             ${billing.billedForMonthYear}
                         </label>
-                        <label class="profile_label" style="width: 175px; font-weight: normal; !important;">
-                            ${billing.accountBillingType.description}
+                        <label class="profile_label" style="width: 160px; font-weight: normal; !important;">
+                            ${billing.billingPlan.description}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             ${billing.billedStatus.description}
                         </label>
-                        <label class="profile_label" style="width: 175px; font-weight: normal; !important;">
-                                ${billing.transactionStatus.description}
+                        <label class="profile_label" style="width: 75px; font-weight: normal; !important;">
+                            ${billing.transactionId}
                         </label>
-                        <label class="profile_label" style="width: 220px; font-weight: normal; !important;">
+                        <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
+                            ${billing.transactionStatus.description}
+                        </label>
+                        <label class="profile_label" style="width: 240px; font-weight: normal; !important;">
                             <c:choose>
                             <c:when test="${billing.billedStatus eq 'NB'}">
                                 <span style="color: red; font-weight: bold">Payment Due</span>
@@ -357,8 +361,8 @@
                             <c:when test="${billing.billedStatus eq 'P'}">
                                 NA
                             </c:when>
-                            <c:when test="${billing.billedStatus eq 'B'}">
-                                <fmt:formatDate value="${billing.updated}" pattern="MMM dd, yyyy hh:MM a z"/>
+                            <c:when test="${billing.billedStatus eq 'B' || billing.billedStatus eq 'R'}">
+                                <fmt:formatDate value="${billing.updated}" pattern="MMM dd, yyyy hh:mm:ss a z"/>
                             </c:when>
                             <c:otherwise>
                                 <span style="color: red; font-weight: bold">Contact Support</span>

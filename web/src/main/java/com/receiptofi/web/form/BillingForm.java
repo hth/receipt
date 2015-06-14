@@ -1,7 +1,7 @@
 package com.receiptofi.web.form;
 
 import com.receiptofi.domain.BillingHistoryEntity;
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.value.DiskUsageGrouped;
 import com.receiptofi.utils.Maths;
 
@@ -19,7 +19,7 @@ public class BillingForm {
     private long pendingDiskUsage;
     private List<BillingHistoryEntity> billings;
 
-    private AccountBillingTypeEnum billingAccountType;
+    private BillingPlanEnum billingPlan;
 
     public void setDiskUsage(DiskUsageGrouped diskUsage) {
         this.diskUsage = diskUsage;
@@ -57,11 +57,11 @@ public class BillingForm {
         this.billings = billings;
     }
 
-    public AccountBillingTypeEnum getBillingAccountType() {
-        return billingAccountType;
+    public BillingPlanEnum getBillingPlan() {
+        return billingPlan;
     }
 
-    public void setBillingAccountType(AccountBillingTypeEnum billingAccountType) {
-        this.billingAccountType = billingAccountType;
+    public void setBillingPlan(BillingPlanEnum billingPlan) {
+        this.billingPlan = billingPlan;
     }
 }

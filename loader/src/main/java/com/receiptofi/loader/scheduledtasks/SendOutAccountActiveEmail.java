@@ -4,7 +4,7 @@ import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
@@ -84,11 +84,11 @@ public class SendOutAccountActiveEmail {
                                     userAccount.getReceiptUserId(),
                                     new Date());
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingHistory.setBillingPlan(BillingPlanEnum.P);
                             billingService.save(billingHistory);
                         } else {
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingHistory.setBillingPlan(BillingPlanEnum.P);
                             billingService.save(billingHistory);
                         }
 
@@ -106,11 +106,11 @@ public class SendOutAccountActiveEmail {
                                     userAccount.getReceiptUserId(),
                                     Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingHistory.setBillingPlan(BillingPlanEnum.P);
                             billingService.save(billingHistory);
                         } else {
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingHistory.setBillingPlan(BillingPlanEnum.P);
                             billingService.save(billingHistory);
                         }
 

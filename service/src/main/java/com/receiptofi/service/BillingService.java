@@ -9,7 +9,7 @@ import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
 import com.receiptofi.domain.types.TransactionStatusEnum;
@@ -100,7 +100,7 @@ public class BillingService {
                         BillingHistoryEntity.YYYY_MM.format(receipt.getReceiptDate()));
 
                 billingHistory.setBilledStatus(BilledStatusEnum.P);
-                billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                billingHistory.setBillingPlan(BillingPlanEnum.P);
             }
 
             billingHistoryManager.save(billingHistory);

@@ -41,7 +41,7 @@ public class JsonBillingHistory {
     private String billedStatus;
 
     @JsonProperty ("bt")
-    private String accountBillingType;
+    private String billingPlan;
 
     @JsonProperty ("bm")
     private String billedForMonth;
@@ -55,7 +55,7 @@ public class JsonBillingHistory {
     public JsonBillingHistory(BillingHistoryEntity billingHistory) {
         this.id = billingHistory.getId();
         this.billedStatus = billingHistory.getBilledStatus().name();
-        this.accountBillingType = billingHistory.getAccountBillingType().name();
+        this.billingPlan = billingHistory.getBillingPlan().name();
         this.billedForMonth = billingHistory.getBilledForMonth();
         this.transactionStatus = billingHistory.getTransactionStatus().name();
         this.billedDate = DateFormatUtils.format(billingHistory.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));

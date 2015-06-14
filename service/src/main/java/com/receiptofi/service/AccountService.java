@@ -1,6 +1,5 @@
 package com.receiptofi.service;
 
-import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
@@ -10,7 +9,7 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.ProviderEnum;
@@ -194,8 +193,6 @@ public class AccountService {
 
     /**
      * Create new account using social login.
-     *
-     * @param userAccount
      */
     public void createNewAccount(UserAccountEntity userAccount) {
         Assert.notNull(userAccount.getProviderId());
@@ -209,14 +206,23 @@ public class AccountService {
         userAccount.setUserAuthentication(userAuthentication);
         registrationService.isRegistrationAllowed(userAccount);
         billAccount(userAccount);
-        userAccountManager.save(userAccount);
+        save(userAccount);
         addDefaultExpenseTag(userAccount.getReceiptUserId());
     }
 
+    public void save(UserAccountEntity userAccount) {
+        userAccountManager.save(userAccount);
+    }
+
     /**
-     * Shared with social registration
-     *
-     * @param userProfile
+     * Save userProfile.
+     */
+    public void save(UserProfileEntity userProfile) {
+        userProfileManager.save(userProfile);
+    }
+
+    /**
+     * Create and Save user preferences. Shared with social registration.
      */
     public void createPreferences(UserProfileEntity userProfile) {
         try {
@@ -263,7 +269,7 @@ public class AccountService {
                 userAccount.getReceiptUserId(),
                 new Date());
         billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+        billingHistory.setBillingPlan(BillingPlanEnum.P);
         billingService.save(billingHistory);
 
         /** Second month marked as PROMOTIONAL too. */
@@ -271,7 +277,7 @@ public class AccountService {
                 userAccount.getReceiptUserId(),
                 Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
         billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+        billingHistory.setBillingPlan(BillingPlanEnum.P);
         billingService.save(billingHistory);
     }
 

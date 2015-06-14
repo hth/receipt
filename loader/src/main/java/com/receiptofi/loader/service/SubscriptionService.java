@@ -6,7 +6,7 @@ import com.braintreegateway.WebhookNotification;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
 import com.receiptofi.domain.types.TransactionStatusEnum;
@@ -39,21 +39,20 @@ public class SubscriptionService {
 
     public void processSubscription(WebhookNotification notification) {
         Subscription subscription = notification.getSubscription();
-        Assert.hasText(subscription.getId(), "SubscriptionId is empty");
         LOG.info("subscriptionId={}", subscription.getId());
 
         Transaction transaction = subscription.getTransactions().get(0);
-        Assert.hasText(transaction.getId(), "Transaction is empty");
-        LOG.info("transactionId={} rid={}", transaction.getId());
+        LOG.info("transactionId={}", transaction.getId());
 
         BillingAccountEntity billingAccount = billingService.getBySubscription(subscription.getId(), PaymentGatewayEnum.BT);
-        LOG.info("rid={}", billingAccount.getRid());
+        Assert.notNull(billingAccount, "Billing account null for subscriptionId=" + subscription.getId());
+        LOG.info("subscriptionId={} transactionId={} rid={}", subscription.getId(), transaction.getId(), billingAccount.getRid());
 
         BillingHistoryEntity billingHistory;
 
         switch (notification.getKind()) {
             case SUBSCRIPTION_CANCELED:
-                billingAccount.setAccountBillingType(AccountBillingTypeEnum.NB);
+                billingAccount.setBillingPlan(BillingPlanEnum.NB);
                 billingService.save(billingAccount);
                 break;
             case SUBSCRIPTION_CHARGED_SUCCESSFULLY:
@@ -72,8 +71,8 @@ public class SubscriptionService {
 
                     billingHistory = new BillingHistoryEntity(billingAccount.getRid(), new Date());
                     billingHistory.setBilledStatus(BilledStatusEnum.B);
-                    AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.valueOf(subscription.getPlanId());
-                    billingHistory.setAccountBillingType(accountBillingType);
+                    BillingPlanEnum billingPlan = BillingPlanEnum.valueOf(subscription.getPlanId());
+                    billingHistory.setBillingPlan(billingPlan);
                     billingHistory.setPaymentGateway(PaymentGatewayEnum.BT);
                     billingHistory.setTransactionId(transaction.getId());
                     billingHistory.setTransactionStatus(TransactionStatusEnum.S);

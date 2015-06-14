@@ -36,13 +36,13 @@ import java.util.stream.Collectors;
 public class JsonBilling {
 
     @JsonProperty ("bt")
-    private String accountBillingType;
+    private String billingPlan;
 
     @JsonProperty ("billingHistories")
     private List<JsonBillingHistory> billingHistories = new LinkedList<>();
 
     public JsonBilling(BillingAccountEntity billingAccount, List<BillingHistoryEntity> billings) {
-        this.accountBillingType = billingAccount.getAccountBillingType().name();
+        this.billingPlan = billingAccount.getBillingPlan().name();
         this.billingHistories.addAll(billings.stream().map(JsonBillingHistory::new).collect(Collectors.toList()));
     }
 }

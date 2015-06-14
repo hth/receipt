@@ -5,7 +5,7 @@ import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
@@ -114,13 +114,13 @@ public class BillingProcess {
                     for (UserAccountEntity userAccount : userAccounts) {
                         BillingAccountEntity billingAccount = userAccount.getBillingAccount();
                         if (billingAccount != null) {
-                            switch (billingAccount.getAccountBillingType()) {
+                            switch (billingAccount.getBillingPlan()) {
                                 case NB:
                                     if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.NB,
-                                                AccountBillingTypeEnum.NB,
+                                                BillingPlanEnum.NB,
                                                 billingAccount.getRid());
 
                                         noBillingCount++;
@@ -139,10 +139,10 @@ public class BillingProcess {
                                             insertBillingHistory(
                                                     billedForMonth,
                                                     BilledStatusEnum.NB,
-                                                    AccountBillingTypeEnum.NB,
+                                                    BillingPlanEnum.NB,
                                                     billingAccount.getRid());
 
-                                            billingAccount.setAccountBillingType(AccountBillingTypeEnum.NB);
+                                            billingAccount.setBillingPlan(BillingPlanEnum.NB);
                                             billingService.save(billingAccount);
 
                                             noBillingCount++;
@@ -154,7 +154,7 @@ public class BillingProcess {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.P,
-                                                billingAccount.getAccountBillingType(),
+                                                billingAccount.getBillingPlan(),
                                                 billingAccount.getRid());
 
                                         promotionCount++;
@@ -171,7 +171,7 @@ public class BillingProcess {
                                         insertBillingHistory(
                                                 billedForMonth,
                                                 BilledStatusEnum.NB,
-                                                billingAccount.getAccountBillingType(),
+                                                billingAccount.getBillingPlan(),
                                                 billingAccount.getRid());
 
                                         monthlyCount++;
@@ -190,7 +190,7 @@ public class BillingProcess {
                                             insertBillingHistory(
                                                     Date.from(LocalDateTime.now().plusMonths(i).toInstant(ZoneOffset.UTC)),
                                                     BilledStatusEnum.NB,
-                                                    billingAccount.getAccountBillingType(),
+                                                    billingAccount.getBillingPlan(),
                                                     billingAccount.getRid());
                                         }
 
@@ -203,7 +203,7 @@ public class BillingProcess {
                                 default:
                                     failureCount++;
                                     LOG.error("Reached unreachable condition for billing placeholder rid={} billingAccountTypeEnum={} ",
-                                            userAccount.getReceiptUserId(), billingAccount.getAccountBillingType());
+                                            userAccount.getReceiptUserId(), billingAccount.getBillingPlan());
 
                                     throw new RuntimeException("Reached unreachable condition for billing placeholder");
                             }
@@ -223,7 +223,7 @@ public class BillingProcess {
                                     userAccount.getReceiptUserId(),
                                     new Date());
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingHistory.setBillingPlan(BillingPlanEnum.P);
                             billingService.save(billingHistory);
 
                             /** Second month marked as PROMOTIONAL too. */
@@ -231,7 +231,7 @@ public class BillingProcess {
                                     userAccount.getReceiptUserId(),
                                     Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setAccountBillingType(AccountBillingTypeEnum.P);
+                            billingHistory.setBillingPlan(BillingPlanEnum.P);
                             billingService.save(billingHistory);
 
                             List<ReceiptEntity> receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
@@ -297,10 +297,10 @@ public class BillingProcess {
      * @param abt
      * @param rid
      */
-    private void insertBillingHistory(Date billedForMonth, BilledStatusEnum bs, AccountBillingTypeEnum abt, String rid) {
+    private void insertBillingHistory(Date billedForMonth, BilledStatusEnum bs, BillingPlanEnum abt, String rid) {
         BillingHistoryEntity billingHistory = new BillingHistoryEntity(rid, billedForMonth);
         billingHistory.setBilledStatus(bs);
-        billingHistory.setAccountBillingType(abt);
+        billingHistory.setBillingPlan(abt);
         billingService.save(billingHistory);
     }
 }

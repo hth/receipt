@@ -1,6 +1,7 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.TransactionStatusEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
@@ -49,7 +50,7 @@ public class BillingHistoryEntity extends BaseEntity {
     private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
     @Field ("ABT")
-    private AccountBillingTypeEnum accountBillingType;
+    private BillingPlanEnum billingPlan;
 
     @Field ("BM")
     private String billedForMonth;
@@ -78,6 +79,10 @@ public class BillingHistoryEntity extends BaseEntity {
         return rid;
     }
 
+    private void setRid(String rid) {
+        this.rid = rid;
+    }
+
     public BilledStatusEnum getBilledStatus() {
         return billedStatus;
     }
@@ -86,12 +91,12 @@ public class BillingHistoryEntity extends BaseEntity {
         this.billedStatus = billedStatus;
     }
 
-    public AccountBillingTypeEnum getAccountBillingType() {
-        return accountBillingType;
+    public BillingPlanEnum getBillingPlan() {
+        return billingPlan;
     }
 
-    public void setAccountBillingType(AccountBillingTypeEnum accountBillingType) {
-        this.accountBillingType = accountBillingType;
+    public void setBillingPlan(BillingPlanEnum billingPlan) {
+        this.billingPlan = billingPlan;
     }
 
     public String getBilledForMonth() {
@@ -100,6 +105,10 @@ public class BillingHistoryEntity extends BaseEntity {
 
     public void setBilledForMonth(Date billedForMonth) {
         this.billedForMonth = YYYY_MM.format(billedForMonth);
+    }
+
+    private void setBilledForMonth(String billedForMonth) {
+        this.billedForMonth = billedForMonth;
     }
 
     public String getBilledForMonthYear() {
@@ -133,5 +142,19 @@ public class BillingHistoryEntity extends BaseEntity {
 
     public void setTransactionStatus(TransactionStatusEnum transactionStatus) {
         this.transactionStatus = transactionStatus;
+    }
+
+    /**
+     * Used when creating a new transaction for existing billing history.
+     *
+     * @return
+     */
+    @Mobile
+    public BillingHistoryEntity build() {
+        BillingHistoryEntity billingHistory = new BillingHistoryEntity();
+        billingHistory.setRid(rid);
+        billingHistory.setBilledForMonth(billedForMonth);
+        billingHistory.setPaymentGateway(paymentGateway);
+        return billingHistory;
     }
 }

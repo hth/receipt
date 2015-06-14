@@ -1,6 +1,6 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.value.PaymentGatewayUser;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -33,7 +33,7 @@ public class BillingAccountEntity extends BaseEntity {
 
     /** Defaults to P to begin with. */
     @Field ("ABT")
-    private AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.P;
+    private BillingPlanEnum billingPlan = BillingPlanEnum.P;
 
     /**
      * PaymentGateway details.
@@ -55,12 +55,12 @@ public class BillingAccountEntity extends BaseEntity {
         return rid;
     }
 
-    public AccountBillingTypeEnum getAccountBillingType() {
-        return accountBillingType;
+    public BillingPlanEnum getBillingPlan() {
+        return billingPlan;
     }
 
-    public void setAccountBillingType(AccountBillingTypeEnum accountBillingType) {
-        this.accountBillingType = accountBillingType;
+    public void setBillingPlan(BillingPlanEnum billingPlan) {
+        this.billingPlan = billingPlan;
     }
 
     public LinkedList<PaymentGatewayUser> getPaymentGateway() {

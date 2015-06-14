@@ -12,7 +12,7 @@ package com.receiptofi.domain.types;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public enum AccountBillingTypeEnum {
+public enum BillingPlanEnum {
     P("P", "Promotion", 1000),
     NB("NB", "No Billing", 0),
     M10("M10", "Monthly 10", 10),
@@ -28,7 +28,7 @@ public enum AccountBillingTypeEnum {
     private final String name;
     private final int allowedDocumentsPerMonth;
 
-    AccountBillingTypeEnum(String name, String description, int allowedDocumentsPerMonth) {
+    BillingPlanEnum(String name, String description, int allowedDocumentsPerMonth) {
         this.name = name;
         this.description = description;
         this.allowedDocumentsPerMonth = allowedDocumentsPerMonth;
