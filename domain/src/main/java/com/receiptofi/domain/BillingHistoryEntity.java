@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.TransactionStatusEnum;
@@ -78,6 +79,10 @@ public class BillingHistoryEntity extends BaseEntity {
         return rid;
     }
 
+    private void setRid(String rid) {
+        this.rid = rid;
+    }
+
     public BilledStatusEnum getBilledStatus() {
         return billedStatus;
     }
@@ -100,6 +105,10 @@ public class BillingHistoryEntity extends BaseEntity {
 
     public void setBilledForMonth(Date billedForMonth) {
         this.billedForMonth = YYYY_MM.format(billedForMonth);
+    }
+
+    private void setBilledForMonth(String billedForMonth) {
+        this.billedForMonth = billedForMonth;
     }
 
     public String getBilledForMonthYear() {
@@ -135,8 +144,17 @@ public class BillingHistoryEntity extends BaseEntity {
         this.transactionStatus = transactionStatus;
     }
 
+    /**
+     * Used when creating a new transaction for existing billing history.
+     *
+     * @return
+     */
+    @Mobile
     public BillingHistoryEntity build() {
-        BillingHistoryEntity billingHistory = new BillingHistoryEntity(rid, new Date());
+        BillingHistoryEntity billingHistory = new BillingHistoryEntity();
+        billingHistory.setRid(rid);
+        billingHistory.setBilledForMonth(billedForMonth);
+        billingHistory.setPaymentGateway(paymentGateway);
         return billingHistory;
     }
 }
