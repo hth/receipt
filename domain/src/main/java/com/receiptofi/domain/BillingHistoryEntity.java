@@ -19,6 +19,8 @@ import java.util.Date;
 
 /**
  * Contains users billing history with status for that month. This status will be reflected on receipts of that month.
+ * Each instance if billing history reflects a single transaction. This means each transaction id must have a billing
+ * history.
  *
  * User: hitender
  * Date: 3/19/15 1:32 AM

@@ -333,7 +333,7 @@
                         <label class="profile_label" style="width: 175px;">Plan</label>
                         <label class="profile_label" style="width: 150px;">Bill Status</label>
                         <label class="profile_label" style="width: 175px;">Transaction Status</label>
-                        <label class="profile_label" style="width: 150px;">Transaction Date</label>
+                        <label class="profile_label" style="width: 220px;">Transaction Date</label>
                     </div>
                     <c:forEach var="billing" items="${billingForm.billings}"  varStatus="status">
                     <div class="row_field">
@@ -349,7 +349,7 @@
                         <label class="profile_label" style="width: 175px; font-weight: normal; !important;">
                                 ${billing.transactionStatus.description}
                         </label>
-                        <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
+                        <label class="profile_label" style="width: 220px; font-weight: normal; !important;">
                             <c:choose>
                             <c:when test="${billing.billedStatus eq 'NB'}">
                                 <span style="color: red; font-weight: bold">Payment Due</span>
@@ -358,7 +358,7 @@
                                 NA
                             </c:when>
                             <c:when test="${billing.billedStatus eq 'B'}">
-                                <fmt:formatDate value="${billing.updated}" type="date"/>
+                                <fmt:formatDate value="${billing.updated}" pattern="MMM dd, yyyy hh:MM a z"/>
                             </c:when>
                             <c:otherwise>
                                 <span style="color: red; font-weight: bold">Contact Support</span>
