@@ -193,8 +193,6 @@ public class AccountService {
 
     /**
      * Create new account using social login.
-     *
-     * @param userAccount
      */
     public void createNewAccount(UserAccountEntity userAccount) {
         Assert.notNull(userAccount.getProviderId());
@@ -208,14 +206,23 @@ public class AccountService {
         userAccount.setUserAuthentication(userAuthentication);
         registrationService.isRegistrationAllowed(userAccount);
         billAccount(userAccount);
-        userAccountManager.save(userAccount);
+        save(userAccount);
         addDefaultExpenseTag(userAccount.getReceiptUserId());
     }
 
+    public void save(UserAccountEntity userAccount) {
+        userAccountManager.save(userAccount);
+    }
+
     /**
-     * Shared with social registration
-     *
-     * @param userProfile
+     * Save userProfile.
+     */
+    public void save(UserProfileEntity userProfile) {
+        userProfileManager.save(userProfile);
+    }
+
+    /**
+     * Create and Save user preferences. Shared with social registration.
      */
     public void createPreferences(UserProfileEntity userProfile) {
         try {
