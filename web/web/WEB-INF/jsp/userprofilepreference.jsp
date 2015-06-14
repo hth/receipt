@@ -287,7 +287,7 @@
                             <%--</form:select>--%>
                         <%--</form:form>--%>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important;">
-                            ${billingForm.billingAccountType.description}
+                            ${billingForm.billingPlan.description}
                         </label>
                     </div>
                     <div class="row_field">
@@ -341,7 +341,7 @@
                             ${billing.billedForMonthYear}
                         </label>
                         <label class="profile_label" style="width: 175px; font-weight: normal; !important;">
-                            ${billing.accountBillingType.description}
+                            ${billing.billingPlan.description}
                         </label>
                         <label class="profile_label" style="width: 150px; font-weight: normal; !important;">
                             ${billing.billedStatus.description}

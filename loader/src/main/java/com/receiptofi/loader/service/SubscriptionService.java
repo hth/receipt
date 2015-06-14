@@ -6,7 +6,7 @@ import com.braintreegateway.WebhookNotification;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
-import com.receiptofi.domain.types.AccountBillingTypeEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
 import com.receiptofi.domain.types.TransactionStatusEnum;
@@ -52,7 +52,7 @@ public class SubscriptionService {
 
         switch (notification.getKind()) {
             case SUBSCRIPTION_CANCELED:
-                billingAccount.setAccountBillingType(AccountBillingTypeEnum.NB);
+                billingAccount.setBillingPlan(BillingPlanEnum.NB);
                 billingService.save(billingAccount);
                 break;
             case SUBSCRIPTION_CHARGED_SUCCESSFULLY:
@@ -71,8 +71,8 @@ public class SubscriptionService {
 
                     billingHistory = new BillingHistoryEntity(billingAccount.getRid(), new Date());
                     billingHistory.setBilledStatus(BilledStatusEnum.B);
-                    AccountBillingTypeEnum accountBillingType = AccountBillingTypeEnum.valueOf(subscription.getPlanId());
-                    billingHistory.setAccountBillingType(accountBillingType);
+                    BillingPlanEnum billingPlan = BillingPlanEnum.valueOf(subscription.getPlanId());
+                    billingHistory.setBillingPlan(billingPlan);
                     billingHistory.setPaymentGateway(PaymentGatewayEnum.BT);
                     billingHistory.setTransactionId(transaction.getId());
                     billingHistory.setTransactionStatus(TransactionStatusEnum.S);
