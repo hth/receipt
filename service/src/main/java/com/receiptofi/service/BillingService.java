@@ -137,14 +137,19 @@ public class BillingService {
             try {
                 Result<Transaction> result = paymentGatewayService.getGateway().transaction().voidTransaction(billingHistory.getTransactionId());
                 if (result.isSuccess()) {
-                    LOG.info("void success transactionId={} rid={} resultId={}", billingHistory.getTransactionId(), billingHistory.getRid(), result.getTarget().getId());
+                    LOG.info("void success transactionId={} rid={} resultId={}",
+                            billingHistory.getTransactionId(), billingHistory.getRid(), result.getTarget().getId());
+
                     return TransactionStatusEnum.V;
                 } else {
-                    LOG.warn("void failed transactionId={} rid={} reason={}, trying refund", billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
+                    LOG.warn("void failed transactionId={} rid={} reason={}, trying refund",
+                            billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
                     return refundTransaction(billingHistory);
                 }
             } catch (NotFoundException e) {
-                LOG.error("Could not find transactionId reason={}", e.getLocalizedMessage(), e);
+                LOG.error("Could not find transactionId={} reason={}",
+                        billingHistory.getTransactionId(), e.getLocalizedMessage(), e);
+
                 return null;
             }
         } else {
@@ -162,14 +167,19 @@ public class BillingService {
             try {
                 Result<Transaction> result = paymentGatewayService.getGateway().transaction().refund(billingHistory.getTransactionId());
                 if (result.isSuccess()) {
-                    LOG.info("refund success transactionId={} rid={}", billingHistory.getTransactionId(), billingHistory.getRid());
+                    LOG.info("refund success transactionId={} rid={}",
+                            billingHistory.getTransactionId(), billingHistory.getRid());
+
                     return TransactionStatusEnum.R;
                 } else {
-                    LOG.warn("refund failed transactionId={} rid={} reason={}", billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
+                    LOG.warn("refund failed transactionId={} rid={} reason={}",
+                            billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
                 }
                 return null;
             } catch (NotFoundException e) {
-                LOG.error("Could not find transactionId reason={}", e.getLocalizedMessage(), e);
+                LOG.error("Could not find transactionId={} reason={}",
+                        billingHistory.getTransactionId(), e.getLocalizedMessage(), e);
+
                 return null;
             }
         } else {
