@@ -69,9 +69,9 @@ public class SubscriptionController {
 
         try {
             LOG.info("Webhook kind={} subscription={} time={}",
-                    notification.getTimestamp().getTime(),
                     notification.getKind(),
-                    notification.getSubscription().getId());
+                    notification.getSubscription().getId(),
+                    notification.getTimestamp().getTime());
             subscriptionService.processSubscription(notification);
             httpServletResponse.sendError(HttpServletResponse.SC_OK, "");
             return null;
