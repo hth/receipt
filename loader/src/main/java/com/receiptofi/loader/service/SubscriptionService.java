@@ -83,7 +83,6 @@ public class SubscriptionService {
                     billingHistory.setTransactionStatus(TransactionStatusEnum.S);
                 }
 
-                LOG.info("Saved Billing History");
                 billingService.save(billingHistory);
                 break;
             case SUBSCRIPTION_CHARGED_UNSUCCESSFULLY:

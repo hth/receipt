@@ -132,23 +132,31 @@ public class BillingService {
      * Voids unsettled transaction.
      */
     @Mobile
-    public TransactionStatusEnum voidTransaction(BillingHistoryEntity billingHistory) {
-        if (StringUtils.isNotBlank(billingHistory.getTransactionId())) {
+    public TransactionStatusEnum voidTransaction(BillingHistoryEntity billing) {
+        if (StringUtils.isNotBlank(billing.getTransactionId())) {
             try {
-                Result<Transaction> result = paymentGatewayService.getGateway().transaction().voidTransaction(billingHistory.getTransactionId());
+                Result<Transaction> result =
+                        paymentGatewayService.getGateway().transaction().voidTransaction(billing.getTransactionId());
+
                 if (result.isSuccess()) {
-                    LOG.info("void success transactionId={} rid={} resultId={}", billingHistory.getTransactionId(), billingHistory.getRid(), result.getTarget().getId());
+                    LOG.info("void success transactionId={} rid={} resultId={}",
+                            billing.getTransactionId(), billing.getRid(), result.getTarget().getId());
+
                     return TransactionStatusEnum.V;
                 } else {
-                    LOG.warn("void failed transactionId={} rid={} reason={}, trying refund", billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
-                    return refundTransaction(billingHistory);
+                    LOG.warn("void failed transactionId={} rid={} reason={}, trying refund",
+                            billing.getTransactionId(), billing.getRid(), result.getMessage());
+
+                    return refundTransaction(billing);
                 }
             } catch (NotFoundException e) {
-                LOG.error("Could not find transactionId reason={}", e.getLocalizedMessage(), e);
+                LOG.error("Could not find transactionId={} reason={}",
+                        billing.getTransactionId(), e.getLocalizedMessage(), e);
+
                 return null;
             }
         } else {
-            LOG.error("TransactionId is empty rid={}", billingHistory.getRid());
+            LOG.error("TransactionId is empty rid={}", billing.getRid());
             return null;
         }
     }
@@ -157,23 +165,30 @@ public class BillingService {
      * Refunds transaction. All transactions are settled at 5:00 PM or 7:00 AM CDT.
      */
     @Mobile
-    public TransactionStatusEnum refundTransaction(BillingHistoryEntity billingHistory) {
-        if (StringUtils.isNotBlank(billingHistory.getTransactionId())) {
+    public TransactionStatusEnum refundTransaction(BillingHistoryEntity billing) {
+        if (StringUtils.isNotBlank(billing.getTransactionId())) {
             try {
-                Result<Transaction> result = paymentGatewayService.getGateway().transaction().refund(billingHistory.getTransactionId());
+                Result<Transaction> result =
+                        paymentGatewayService.getGateway().transaction().refund(billing.getTransactionId());
+
                 if (result.isSuccess()) {
-                    LOG.info("refund success transactionId={} rid={}", billingHistory.getTransactionId(), billingHistory.getRid());
+                    LOG.info("refund success transactionId={} rid={}",
+                            billing.getTransactionId(), billing.getRid());
+
                     return TransactionStatusEnum.R;
                 } else {
-                    LOG.warn("refund failed transactionId={} rid={} reason={}", billingHistory.getTransactionId(), billingHistory.getRid(), result.getMessage());
+                    LOG.warn("refund failed transactionId={} rid={} reason={}",
+                            billing.getTransactionId(), billing.getRid(), result.getMessage());
                 }
                 return null;
             } catch (NotFoundException e) {
-                LOG.error("Could not find transactionId reason={}", e.getLocalizedMessage(), e);
+                LOG.error("Could not find transactionId={} reason={}",
+                        billing.getTransactionId(), e.getLocalizedMessage(), e);
+
                 return null;
             }
         } else {
-            LOG.error("TransactionId is empty rid={}", billingHistory.getRid());
+            LOG.error("TransactionId is empty rid={}", billing.getRid());
             return null;
         }
     }
