@@ -76,7 +76,7 @@ public class SubscriptionController {
             httpServletResponse.sendError(HttpServletResponse.SC_OK, "");
             return null;
         } catch (Exception e) {
-            LOG.error("Failed parsing payload {}", e.getLocalizedMessage(), e);
+            LOG.error("Failed subscription {}", e.getLocalizedMessage(), e);
             //httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
             httpServletResponse.sendError(HttpServletResponse.SC_OK, "");
             return null;
