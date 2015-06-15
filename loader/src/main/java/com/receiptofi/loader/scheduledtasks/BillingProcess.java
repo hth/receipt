@@ -286,7 +286,7 @@ public class BillingProcess {
      * @return
      */
     private boolean doesDocumentExistsInBillingHistory(Date billedForMonth, BillingAccountEntity billingAccount) {
-        return billingService.findBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null;
+        return billingService.findLatestBillingHistoryForMonth(billedForMonth, billingAccount.getRid()) == null;
     }
 
     /**

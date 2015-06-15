@@ -56,9 +56,9 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
     }
 
     @Override
-    public BillingHistoryEntity findBillingHistoryForMonth(String billedForMonth, String rid) {
+    public BillingHistoryEntity findLatestBillingHistoryForMonth(String billedForMonth, String rid) {
         return mongoTemplate.findOne(
-                query(where("RID").is(rid).and("BM").is(billedForMonth)),
+                query(where("RID").is(rid).and("BM").is(billedForMonth)).with(new Sort(DESC, "U")),
                 BillingHistoryEntity.class,
                 TABLE);
     }

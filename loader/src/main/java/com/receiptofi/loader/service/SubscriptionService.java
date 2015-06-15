@@ -38,6 +38,7 @@ public class SubscriptionService {
     @Autowired private BillingService billingService;
 
     public void processSubscription(WebhookNotification notification) {
+        Date now = new Date();
         Subscription subscription = notification.getSubscription();
         Assert.hasText(subscription.getId(), "SubscriptionId is empty");
 
@@ -56,7 +57,7 @@ public class SubscriptionService {
                 billingService.save(billingAccount);
                 break;
             case SUBSCRIPTION_CHARGED_SUCCESSFULLY:
-                billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
+                billingHistory = billingService.findLatestBillingHistoryForMonth(now, billingAccount.getRid());
                 /**
                  * This can happen when sign up and subscription are on the same day. Refund the transaction and
                  * keep the subscription as settled transaction. Never remove the transactionId any time.
@@ -69,7 +70,7 @@ public class SubscriptionService {
                         billingService.save(billingHistory);
                     }
 
-                    billingHistory = new BillingHistoryEntity(billingAccount.getRid(), new Date());
+                    billingHistory = new BillingHistoryEntity(billingAccount.getRid(), now);
                     billingHistory.setBilledStatus(BilledStatusEnum.B);
                     BillingPlanEnum billingPlan = BillingPlanEnum.valueOf(subscription.getPlanId());
                     billingHistory.setBillingPlan(billingPlan);
@@ -86,7 +87,7 @@ public class SubscriptionService {
                 billingService.save(billingHistory);
                 break;
             case SUBSCRIPTION_CHARGED_UNSUCCESSFULLY:
-                billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
+                billingHistory = billingService.findLatestBillingHistoryForMonth(now, billingAccount.getRid());
                 billingHistory.setBilledStatus(BilledStatusEnum.NB);
                 billingHistory.setTransactionId(transaction.getId());
                 billingService.save(billingHistory);
@@ -99,7 +100,7 @@ public class SubscriptionService {
                 /** Subscription when active only after first successful transaction. */
                 break;
             case SUBSCRIPTION_WENT_PAST_DUE:
-                billingHistory = billingService.findBillingHistoryForMonth(new Date(), billingAccount.getRid());
+                billingHistory = billingService.findLatestBillingHistoryForMonth(now, billingAccount.getRid());
                 billingHistory.setBilledStatus(BilledStatusEnum.NB);
                 billingHistory.setTransactionId(transaction.getId());
                 billingService.save(billingHistory);

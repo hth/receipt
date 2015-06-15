@@ -86,7 +86,7 @@ public class BillingService {
      * @param receipt
      */
     public void updateReceiptWithBillingHistory(ReceiptEntity receipt) {
-        BillingHistoryEntity billingHistory = findBillingHistoryForMonth(receipt.getReceiptDate(), receipt.getReceiptUserId());
+        BillingHistoryEntity billingHistory = findLatestBillingHistoryForMonth(receipt.getReceiptDate(), receipt.getReceiptUserId());
         if (null != billingHistory) {
             receipt.setBilledStatus(billingHistory.getBilledStatus());
         } else {
@@ -108,8 +108,8 @@ public class BillingService {
         }
     }
 
-    public BillingHistoryEntity findBillingHistoryForMonth(Date date, String rid) {
-        return billingHistoryManager.findBillingHistoryForMonth(BillingHistoryEntity.YYYY_MM.format(date), rid);
+    public BillingHistoryEntity findLatestBillingHistoryForMonth(Date date, String rid) {
+        return billingHistoryManager.findLatestBillingHistoryForMonth(BillingHistoryEntity.YYYY_MM.format(date), rid);
     }
 
     public List<BillingHistoryEntity> getHistory(String rid) {
