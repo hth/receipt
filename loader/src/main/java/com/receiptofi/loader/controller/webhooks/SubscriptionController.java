@@ -62,13 +62,13 @@ public class SubscriptionController {
                     bt_payload
             );
         } catch (InvalidSignatureException e) {
-            LOG.error("Failed parsing payload reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed parsing payload {}", e.getLocalizedMessage(), e);
             httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
             return null;
         }
 
         try {
-            LOG.info("Webhook time={} kind={} subscription={}",
+            LOG.info("Webhook kind={} subscription={} time={}",
                     notification.getTimestamp().getTime(),
                     notification.getKind(),
                     notification.getSubscription().getId());
@@ -76,7 +76,7 @@ public class SubscriptionController {
             httpServletResponse.sendError(HttpServletResponse.SC_OK, "");
             return null;
         } catch (Exception e) {
-            LOG.error("Failed parsing payload reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed parsing payload {}", e.getLocalizedMessage(), e);
             httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
             return null;
         }

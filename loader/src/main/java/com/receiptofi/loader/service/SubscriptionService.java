@@ -39,10 +39,10 @@ public class SubscriptionService {
 
     public void processSubscription(WebhookNotification notification) {
         Subscription subscription = notification.getSubscription();
-        LOG.info("subscriptionId={}", subscription.getId());
+        Assert.hasText(subscription.getId(), "SubscriptionId is empty");
 
         Transaction transaction = subscription.getTransactions().get(0);
-        LOG.info("transactionId={}", transaction.getId());
+        Assert.hasText(transaction.getId(), "Transaction is empty");
 
         BillingAccountEntity billingAccount = billingService.getBySubscription(subscription.getId(), PaymentGatewayEnum.BT);
         Assert.notNull(billingAccount, "Billing account null for subscriptionId=" + subscription.getId());
