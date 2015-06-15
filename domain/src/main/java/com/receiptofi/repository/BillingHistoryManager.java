@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface BillingHistoryManager extends RepositoryManager<BillingHistoryEntity> {
 
-    BillingHistoryEntity findBillingHistoryForMonth(String billedForMonth, String rid);
+    BillingHistoryEntity findLatestBillingHistoryForMonth(String billedForMonth, String rid);
 
     List<BillingHistoryEntity> getHistory(String rid);
 

@@ -52,6 +52,7 @@ public class SendOutAccountActiveEmail {
     @Scheduled (cron = "${loader.SendOutAccountActiveEmail.registrationCompleteEmail}")
     public void registrationCompleteEmail() {
         LOG.info("begins");
+        Date now = new Date();
 
         CronStatsEntity cronStats = new CronStatsEntity(
                 SendOutAccountActiveEmail.class.getName(),
@@ -68,11 +69,11 @@ public class SendOutAccountActiveEmail {
 
                         /** Reset new account create date as this is the time onwards PROMOTIONAL is going to be active. */
                         BillingAccountEntity billingAccount = userAccount.getBillingAccount();
-                        billingAccount.setCreateAndUpdate(new Date());
+                        billingAccount.setCreateAndUpdate(now);
                         billingService.save(billingAccount);
 
-                        BillingHistoryEntity billingHistory = billingService.findBillingHistoryForMonth(
-                                new Date(),
+                        BillingHistoryEntity billingHistory = billingService.findLatestBillingHistoryForMonth(
+                                now,
                                 billingAccount.getRid());
 
                         if (billingHistory == null) {
@@ -82,7 +83,7 @@ public class SendOutAccountActiveEmail {
                              */
                             billingHistory = new BillingHistoryEntity(
                                     userAccount.getReceiptUserId(),
-                                    new Date());
+                                    now);
                             billingHistory.setBilledStatus(BilledStatusEnum.P);
                             billingHistory.setBillingPlan(BillingPlanEnum.P);
                             billingService.save(billingHistory);
@@ -92,7 +93,7 @@ public class SendOutAccountActiveEmail {
                             billingService.save(billingHistory);
                         }
 
-                        billingHistory = billingService.findBillingHistoryForMonth(
+                        billingHistory = billingService.findLatestBillingHistoryForMonth(
                                 Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)),
                                 billingAccount.getRid());
 
