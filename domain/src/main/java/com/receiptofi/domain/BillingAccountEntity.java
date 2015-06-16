@@ -1,14 +1,13 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.BillingPlanEnum;
-import com.receiptofi.domain.value.PaymentGatewayUser;
+import com.receiptofi.domain.types.PaymentGatewayEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.LinkedList;
 
 /**
  * Each users current billing status.
@@ -23,23 +22,41 @@ import java.util.LinkedList;
 })
 @Document (collection = "BILLING_ACCOUNT")
 @CompoundIndexes ({
-        @CompoundIndex (name = "billing_account_idx", def = "{'RID': -1}", unique = true, background = true),
-        @CompoundIndex (name = "billing_account_sub_idx", def = "{'PGU.SD': -1, 'PGU.PG': -1, 'U' : -1}", unique = true, background = true)
+        @CompoundIndex (name = "billing_account_idx", def = "{'RID': -1}", background = true),
+        @CompoundIndex (name = "billing_account_sub_idx", def = "{'SD': -1}", background = true),
 })
 public class BillingAccountEntity extends BaseEntity {
 
     @Field ("RID")
     private String rid;
 
-    /** Defaults to P to begin with. */
+    /** Defaults to Promotional to begin with. */
     @Field ("ABT")
     private BillingPlanEnum billingPlan = BillingPlanEnum.P;
 
-    /**
-     * PaymentGateway details.
-     */
-    @Field ("PGU")
-    private LinkedList<PaymentGatewayUser> paymentGateway = new LinkedList<>();
+    @Field ("PG")
+    private PaymentGatewayEnum paymentGateway;
+
+    @Field ("CD")
+    private String customerId;
+
+    @Field ("FN")
+    private String firstName;
+
+    @Field ("LN")
+    private String lastName;
+
+    @Field ("CM")
+    private String company;
+
+    @Field ("AD")
+    private String addressId;
+
+    @Field ("PC")
+    private String postalCode;
+
+    @Field ("SD")
+    private String subscriptionId;
 
     @SuppressWarnings ("unused")
     private BillingAccountEntity() {
@@ -63,11 +80,72 @@ public class BillingAccountEntity extends BaseEntity {
         this.billingPlan = billingPlan;
     }
 
-    public LinkedList<PaymentGatewayUser> getPaymentGateway() {
+    public PaymentGatewayEnum getPaymentGateway() {
         return paymentGateway;
     }
 
-    public void addPaymentGateway(PaymentGatewayUser paymentGateway) {
-        this.paymentGateway.add(paymentGateway);
+    public void setPaymentGateway(PaymentGatewayEnum paymentGateway) {
+        this.paymentGateway = paymentGateway;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+    }
+
+    @Transient
+    public String getName() {
+        return firstName + " " + lastName;
     }
 }

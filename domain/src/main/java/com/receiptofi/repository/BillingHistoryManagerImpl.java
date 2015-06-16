@@ -1,5 +1,7 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -66,9 +68,13 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
     @Override
     public List<BillingHistoryEntity> getHistory(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid)).with(new Sort(new Order(DESC, "BM"), new Order(DESC, "U"))),
-                BillingHistoryEntity.class
-        );
+                query(where("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(new Order(DESC, "BM"), new Order(DESC, "U"))),
+                BillingHistoryEntity.class);
     }
 
     @Override
