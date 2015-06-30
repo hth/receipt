@@ -52,7 +52,7 @@
 
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.1.1/randomColor.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.3.0/randomColor.min.js"></script>
 <script>
     $(function () {
         "use strict";
