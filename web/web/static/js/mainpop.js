@@ -257,6 +257,7 @@ function confirmBeforeAction() {
                         if (responseData.result == true) {
                             $('#actionMessageId').attr('hidden', false);
                             $(".r-success").html("'" + bn + "' receipt for " + gt + " sent for re-check.").show();
+                            $('link[href="/static/css/popup.css"]').attr('href','/static/css/stylelogin.css');
                             $("div.detail-view-container").html("");
                         } else {
                             $('#actionMessageId').attr('hidden', false);
