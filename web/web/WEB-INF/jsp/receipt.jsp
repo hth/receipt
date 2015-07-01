@@ -293,6 +293,42 @@
 <div class="clear"></div>
 <div>
     <div class="temp_offset" id="actionMessageId">
+        <div class="header_main">
+            <div class="header_wrappermain">
+                <div class="header_wrapper">
+                    <div class="header_left_contentmain">
+                        <div id="logo">
+                            <h1><a href="/access/landing.htm">Receiptofi</a></h1>
+                        </div>
+                    </div>
+                    <div class="header_right_login">
+                        <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                            <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                                <input type="submit" value="LOG OUT" class="logout_btn"/>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            </form>
+                        </a>
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <sec:authentication var="validated" property="principal.accountValidated"/>
+                        <c:choose>
+                            <c:when test="${!validated}">
+                                <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                                    <sec:authentication property="principal.username" />
+                                    <span class="notification-counter">1</span>
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="top-account-bar-text user-email" href="#">
+                                    <sec:authentication property="principal.username" />
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+        </div>
         <header>
         </header>
         <div class="main clearfix">
