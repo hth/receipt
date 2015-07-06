@@ -1,10 +1,10 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
-import com.receiptofi.domain.types.TransactionStatusEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
+import com.receiptofi.domain.types.TransactionStatusEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

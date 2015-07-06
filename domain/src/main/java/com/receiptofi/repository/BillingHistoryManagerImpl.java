@@ -3,9 +3,9 @@ package com.receiptofi.repository;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.domain.Sort.Order;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.domain.Sort.Order;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
