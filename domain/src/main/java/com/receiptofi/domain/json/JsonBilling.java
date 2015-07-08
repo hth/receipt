@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.BillingPlanEnum;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +43,13 @@ public class JsonBilling {
     private List<JsonBillingHistory> billingHistories = new LinkedList<>();
 
     public JsonBilling(BillingAccountEntity billingAccount, List<BillingHistoryEntity> billings) {
-        this.billingPlan = billingAccount.getBillingPlan().name();
+        //TODO(hth) fix this issue as there should be a default NB status for all account
+        /** BillingAccount can be inactive when user has un-subscribed. */
+        if (billingAccount == null) {
+            this.billingPlan = BillingPlanEnum.NB.name();
+        } else {
+            this.billingPlan = billingAccount.getBillingPlan().name();
+        }
         this.billingHistories.addAll(billings.stream().map(JsonBillingHistory::new).collect(Collectors.toList()));
     }
 }
