@@ -6,8 +6,8 @@ import com.braintreegateway.WebhookNotification;
 
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
-import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
 import com.receiptofi.domain.types.TransactionStatusEnum;
 import com.receiptofi.service.BillingService;
