@@ -49,12 +49,10 @@ public class JsonBilling {
     private List<JsonBillingHistory> billingHistories = new LinkedList<>();
 
     public JsonBilling(BillingAccountEntity billingAccount, List<BillingHistoryEntity> billings) {
-        //TODO(hth) fix this issue as there should be a default NB status for all account
-        /** BillingAccount can be inactive when user has un-subscribed. */
         if (billingAccount == null) {
             Assert.notEmpty(billings, "Billing Histories are empty");
             LOG.error("Billing Account is null for rid=", billings.get(0).getRid());
-            this.billingPlan = BillingPlanEnum.NB.name();
+            throw new RuntimeException("Billing Account is empty for rid=" + billings.get(0).getRid());
         } else {
             this.billingPlan = billingAccount.getBillingPlan().name();
         }
