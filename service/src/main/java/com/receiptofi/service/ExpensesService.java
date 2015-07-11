@@ -76,8 +76,11 @@ public class ExpensesService {
         if (expenseTag == null) {
             expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
         } else {
-            expenseTag.setTagName(expenseTag.getTagName() + RandomString.newInstance(3).nextString());
+            LOG.warn("Previously existing expense tag by name={}", expenseTag.getTagName());
+            expenseTag.setTagName(expenseTag.getTagName() + "-" + RandomString.newInstance(3).nextString());
+            LOG.warn("Previously existing expense tag saved by new name={}", expenseTag.getTagName());
             expenseTagManager.save(expenseTag);
+
             expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
         }
     }
