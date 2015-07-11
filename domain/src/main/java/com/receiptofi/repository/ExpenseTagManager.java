@@ -24,6 +24,8 @@ public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
 
     ExpenseTagEntity getExpenseTag(String rid, String expenseTagId);
 
+    ExpenseTagEntity getExpenseTagByName(String rid, String expenseTagName);
+
     void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid);
 
     boolean softDeleteExpenseTag(String expenseTagId, String expenseTagName, String rid);
